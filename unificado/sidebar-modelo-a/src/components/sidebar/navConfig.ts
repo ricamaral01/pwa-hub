@@ -166,6 +166,7 @@ export const NAV_MODULES: NavModule[] = [
       ['suprimentosCotacoes','Cotações e pedidos','suprimentos/cotacoes/','doc'],
       ['suprimentosRecebimento','Recebimento','suprimentos/recebimento/','post'],
       ['suprimentosFornecedores','Fornecedores','suprimentos/fornecedores/','users'],
+      ['suprimentosIndicadores','Indicadores','suprimentos/analises/','map'],
     ]),
     section('ADMINISTRAÇÃO', [
       ['suprimentosCadastros','Cadastros e alçadas','suprimentos/cadastros/','sliders'],

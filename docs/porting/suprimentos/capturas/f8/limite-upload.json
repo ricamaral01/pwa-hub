@@ -1,0 +1,5 @@
+{
+  "antes": {"limite_api": "3M", "requisicao_anonima_4mb_http": 413},
+  "tentativa_1": {"limite_api": "16M", "limite_auth": "herdado", "requisicao_anonima_4mb_http": 500, "causa": "auth_request recebeu 413 e nginx converteu em 500"},
+  "final": {"limite_api": "16M", "limite_auth": "16M", "requisicao_anonima_4mb_http": 401, "requisicao_autenticada_4mb_com_id_inexistente_http": 404, "requisicao_autenticada_12mb_com_id_inexistente_http": 404, "versao": "1.0.94", "smoke": "43/43"}
+}

@@ -6016,7 +6016,8 @@ const cn = {
     pe("COMPRAS", [
       ["suprimentosCotacoes", "Cotações e pedidos", "suprimentos/cotacoes/", "doc"],
       ["suprimentosRecebimento", "Recebimento", "suprimentos/recebimento/", "post"],
-      ["suprimentosFornecedores", "Fornecedores", "suprimentos/fornecedores/", "users"]
+      ["suprimentosFornecedores", "Fornecedores", "suprimentos/fornecedores/", "users"],
+      ["suprimentosIndicadores", "Indicadores", "suprimentos/analises/", "map"]
     ]),
     pe("ADMINISTRAÇÃO", [
       ["suprimentosCadastros", "Cadastros e alçadas", "suprimentos/cadastros/", "sliders"]

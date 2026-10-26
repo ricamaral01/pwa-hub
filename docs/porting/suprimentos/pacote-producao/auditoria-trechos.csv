@@ -1,0 +1,751 @@
+arquivo,linhas_producao,linhas_branch,operacao,classe,observacao
+unificado/mapa/api/app.py,45-44,45-45,insert,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,64-65,65-67,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,80-82,82-81,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,285-287,284-285,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,643-642,641-770,insert,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,790-792,918-918,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,851-852,977-977,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1156-1156,1281-1284,replace,suprimentos,comparação de bytes com produção
+unificado/mapa/api/app.py,1442-1442,1570-1570,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1448-1448,1576-1575,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1452-1452,1579-1579,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1455-1456,1582-1581,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1460-1460,1585-1585,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1468-1469,1593-1592,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1494-1513,1617-1616,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1524-1525,1627-1628,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1538-1546,1641-1640,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1641-1641,1735-1743,replace,misto — separado no patch,comparação de bytes com produção
+unificado/mapa/api/app.py,1656-1656,1758-1758,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1665-1739,1767-1766,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1779-1779,1806-1806,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1782-1792,1809-1808,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1797-1799,1813-1812,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1851-1871,1864-1863,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1876-1881,1868-1867,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1907-1908,1893-1892,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1915-1924,1899-1898,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1966-1968,1940-1940,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,1970-1973,1942-1942,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2121-2121,2090-2092,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2136-2136,2107-2106,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2153-2153,2123-2125,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2158-2158,2130-2130,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2162-2162,2134-2133,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2166-2166,2137-2137,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2190-2190,2161-2161,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2199-2199,2170-2169,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2208-2208,2178-2178,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2220-2224,2190-2191,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2238-2237,2205-2207,insert,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2250-2250,2220-2220,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2261-2260,2231-2231,insert,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2270-2270,2241-2241,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,2384-2383,2355-2359,insert,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/app.py,3213-3212,3189-3304,insert,suprimentos,comparação de bytes com produção
+unificado/mapa/api/app.py,3225-3224,3317-3318,insert,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,44-43,44-44,insert,suprimentos,comparação de bytes com produção
+unificado/shell/shell.js,50-50,51-53,replace,suprimentos,comparação de bytes com produção
+unificado/shell/shell.js,88-87,91-91,insert,suprimentos,comparação de bytes com produção
+unificado/shell/shell.js,135-134,139-139,insert,suprimentos,comparação de bytes com produção
+unificado/shell/shell.js,142-141,147-147,insert,suprimentos,comparação de bytes com produção
+unificado/shell/shell.js,260-260,266-266,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,262-268,268-268,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,271-286,271-271,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,288-288,273-273,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,292-294,277-280,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,296-297,282-285,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,345-346,333-337,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,348-348,339-339,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,350-361,341-340,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,383-385,362-364,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,387-406,366-365,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,480-481,439-440,replace,suprimentos,comparação de bytes com produção
+unificado/shell/shell.js,648-648,607-607,replace,suprimentos,comparação de bytes com produção
+unificado/shell/shell.js,868-867,827-840,insert,suprimentos,comparação de bytes com produção
+unificado/shell/shell.js,939-942,912-912,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,971-972,941-940,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/shell.js,1005-1005,973-972,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/router.js,60-60,60-59,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/router.js,63-63,62-62,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/router.js,71-70,70-71,insert,suprimentos,comparação de bytes com produção
+unificado/shell/router.js,80-79,81-85,insert,suprimentos,comparação de bytes com produção
+unificado/shell/router.js,267-266,273-273,insert,suprimentos,comparação de bytes com produção
+unificado/shell/router.js,287-286,294-299,insert,suprimentos,comparação de bytes com produção
+unificado/shell/menu.config.js,9-8,9-9,insert,suprimentos,comparação de bytes com produção
+unificado/shell/menu.config.js,54-54,55-55,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/menu.config.js,62-62,63-63,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/menu.config.js,67-67,68-68,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/menu.config.js,74-74,75-75,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/menu.config.js,79-85,80-79,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/menu.config.js,110-119,104-103,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/menu.config.js,139-138,123-130,insert,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/menu.config.js,140-140,132-133,replace,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/menu.config.js,148-148,141-140,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/menu.config.js,166-165,158-178,insert,suprimentos,comparação de bytes com produção
+unificado/shell/menu.config.js,181-180,194-195,insert,suprimentos,comparação de bytes com produção
+unificado/shell/menu.config.js,187-188,202-201,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/shell/modelo-a/menu.js,1-1,1-1,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,12-13,12-13,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,15-16,15-16,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,19-19,19-19,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,25-26,25-26,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,28-28,28-28,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,30-30,30-30,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,37-38,37-38,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,42-43,42-43,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,45-45,45-45,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,47-47,47-47,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,53-53,53-53,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,55-56,55-56,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,62-64,62-64,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,68-69,68-69,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,71-71,71-71,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,84-84,84-84,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,88-88,88-88,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,90-90,90-90,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,94-94,94-94,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,96-97,96-97,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,100-100,100-100,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,104-104,104-104,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,107-107,107-107,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,109-114,109-114,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,119-119,119-119,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,123-123,123-123,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,125-126,125-126,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,128-128,128-128,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,130-131,130-131,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,133-134,133-134,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,139-139,139-139,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,142-144,142-144,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,147-147,147-147,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,154-154,154-154,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,156-159,156-159,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,161-161,161-161,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,163-168,163-168,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,173-173,173-173,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,175-177,175-177,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,179-180,179-180,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,182-184,182-184,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,186-196,186-196,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,198-198,198-198,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,200-202,200-202,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,204-204,204-204,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,206-208,206-208,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,219-226,219-226,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,229-229,229-229,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,233-235,233-235,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,237-237,237-237,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,247-247,247-247,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,249-250,249-250,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,252-252,252-252,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,254-255,254-255,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,264-265,264-265,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,267-267,267-267,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,269-270,269-270,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,274-274,274-274,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,276-278,276-278,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,291-291,291-291,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,294-296,294-296,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,298-298,298-298,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,302-302,302-302,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,304-305,304-305,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,308-310,308-310,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,312-312,312-312,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,315-317,315-317,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,321-321,321-321,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,323-324,323-324,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,326-326,326-326,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,328-328,328-328,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,331-331,331-331,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,336-336,336-336,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,339-339,339-339,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,341-341,341-341,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,343-343,343-343,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,345-345,345-345,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,359-360,359-360,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,362-362,362-362,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,365-365,365-365,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,370-370,370-370,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,374-374,374-374,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,378-378,378-378,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,382-382,382-382,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,385-385,385-385,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,387-388,387-388,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,392-392,392-392,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,396-396,396-396,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,407-408,407-408,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,410-410,410-410,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,412-412,412-412,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,414-414,414-414,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,418-418,418-418,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,421-421,421-421,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,424-424,424-424,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,427-427,427-427,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,430-430,430-430,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,432-432,432-432,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,434-434,434-434,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,436-437,436-437,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,441-441,441-441,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,445-445,445-445,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,447-447,447-447,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,449-449,449-449,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,460-460,460-460,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,462-464,462-464,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,476-478,476-478,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,480-480,480-480,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,493-493,493-493,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,554-554,554-554,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,556-557,556-557,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,561-561,561-561,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,571-571,571-571,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,573-574,573-574,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,623-623,623-623,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,625-625,625-625,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,630-630,630-630,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,632-632,632-632,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,634-634,634-634,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,636-636,636-636,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,654-654,654-654,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,656-656,656-656,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,677-677,677-677,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,773-773,773-773,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,788-788,788-788,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,792-792,792-792,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,796-796,796-796,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,799-800,799-800,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,807-807,807-807,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,809-809,809-809,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,817-817,817-817,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,820-821,820-821,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,837-837,837-837,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,846-846,846-846,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,874-874,874-874,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,890-890,890-890,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,991-991,991-991,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1000-1000,1000-1000,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1003-1005,1003-1005,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1020-1020,1020-1020,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1063-1064,1063-1064,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1173-1173,1173-1173,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1184-1184,1184-1184,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1234-1234,1234-1234,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1298-1299,1298-1299,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1328-1328,1328-1328,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1333-1333,1333-1333,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1337-1337,1337-1337,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1341-1341,1341-1341,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1358-1357,1358-1359,insert,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1359-1359,1361-1361,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1361-1362,1363-1362,delete,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1391-1391,1391-1391,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1405-1405,1405-1405,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1408-1408,1408-1408,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1411-1411,1411-1411,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1417-1420,1417-1420,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1424-1425,1424-1425,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1427-1427,1427-1427,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1429-1430,1429-1430,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1434-1434,1434-1434,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1438-1439,1438-1439,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1443-1443,1443-1443,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1447-1447,1447-1447,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1449-1449,1449-1449,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1454-1454,1454-1454,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1458-1458,1458-1458,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1461-1461,1461-1461,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1463-1463,1463-1463,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1471-1471,1471-1471,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1565-1565,1565-1565,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1567-1568,1567-1568,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1572-1572,1572-1572,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1574-1574,1574-1574,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1581-1581,1581-1581,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1588-1588,1588-1588,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1600-1600,1600-1600,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1602-1602,1602-1602,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1608-1608,1608-1608,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1610-1610,1610-1610,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1623-1623,1623-1623,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1670-1670,1670-1670,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1673-1673,1673-1673,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1675-1675,1675-1675,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1679-1680,1679-1680,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1689-1689,1689-1689,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1691-1691,1691-1691,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1695-1695,1695-1695,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1709-1710,1709-1710,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1722-1723,1722-1723,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1739-1739,1739-1739,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1742-1742,1742-1742,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1748-1748,1748-1748,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1752-1753,1752-1753,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1755-1755,1755-1755,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1771-1772,1771-1772,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1774-1774,1774-1774,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1777-1777,1777-1777,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1780-1781,1780-1781,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1783-1783,1783-1783,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1807-1807,1807-1807,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1811-1812,1811-1812,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1829-1829,1829-1829,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1832-1833,1832-1833,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1835-1835,1835-1835,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1853-1854,1853-1854,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1860-1861,1860-1861,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1872-1873,1872-1873,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1875-1875,1875-1875,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1881-1882,1881-1882,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1887-1887,1887-1887,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1890-1891,1890-1891,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1896-1896,1896-1896,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1898-1898,1898-1898,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1930-1930,1930-1930,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1938-1938,1938-1938,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1941-1941,1941-1941,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1957-1957,1957-1957,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1982-1982,1982-1982,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,1989-1989,1989-1989,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2014-2014,2014-2014,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2032-2032,2032-2032,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2069-2069,2069-2069,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2075-2080,2075-2080,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2083-2083,2083-2083,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2092-2092,2092-2092,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2095-2096,2095-2096,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2100-2100,2100-2100,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2103-2103,2103-2103,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2105-2105,2105-2105,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2107-2107,2107-2107,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2110-2110,2110-2110,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2118-2118,2118-2118,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2124-2124,2124-2124,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2126-2126,2126-2126,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2130-2130,2130-2130,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2133-2133,2133-2133,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2136-2136,2136-2136,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2139-2139,2139-2139,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2141-2142,2141-2142,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2157-2157,2157-2157,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2209-2209,2209-2209,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2234-2234,2234-2234,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2253-2253,2253-2253,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2260-2261,2260-2261,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2265-2265,2265-2265,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2268-2268,2268-2268,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2270-2271,2270-2271,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2273-2273,2273-2273,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2280-2280,2280-2280,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2284-2284,2284-2284,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2287-2288,2287-2288,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2298-2298,2298-2298,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2303-2303,2303-2303,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2333-2333,2333-2333,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2335-2335,2335-2335,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2353-2353,2353-2353,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2365-2365,2365-2365,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2377-2377,2377-2377,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2384-2384,2384-2384,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2404-2404,2404-2404,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2414-2414,2414-2414,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2424-2424,2424-2424,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2428-2428,2428-2428,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2430-2430,2430-2430,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2433-2433,2433-2433,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2493-2493,2493-2493,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2498-2498,2498-2498,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2507-2507,2507-2507,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2509-2509,2509-2509,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2513-2513,2513-2513,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2525-2525,2525-2525,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2527-2527,2527-2527,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2535-2535,2535-2535,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2546-2546,2546-2546,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2548-2550,2548-2550,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2552-2552,2552-2552,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2558-2560,2558-2560,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2562-2562,2562-2562,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2565-2565,2565-2565,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2567-2570,2567-2570,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2572-2573,2572-2573,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2575-2575,2575-2575,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2578-2578,2578-2578,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2581-2583,2581-2583,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2585-2585,2585-2585,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2588-2588,2588-2588,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2592-2596,2592-2596,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2598-2601,2598-2601,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2604-2604,2604-2604,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2608-2612,2608-2612,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2615-2616,2615-2616,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2619-2619,2619-2619,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2621-2622,2621-2622,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2624-2624,2624-2624,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2627-2627,2627-2627,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2629-2630,2629-2630,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2643-2644,2643-2644,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2646-2647,2646-2647,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2654-2656,2654-2656,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2658-2658,2658-2658,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2662-2662,2662-2662,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2669-2670,2669-2670,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2674-2674,2674-2674,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2676-2677,2676-2677,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2681-2681,2681-2681,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2686-2686,2686-2686,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2695-2695,2695-2695,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2711-2711,2711-2711,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2743-2744,2743-2744,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2748-2748,2748-2748,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2752-2752,2752-2752,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2781-2781,2781-2781,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2787-2787,2787-2787,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2805-2805,2805-2805,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2810-2810,2810-2810,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2814-2814,2814-2814,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2817-2817,2817-2817,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2821-2821,2821-2821,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2826-2826,2826-2826,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2832-2832,2832-2832,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2858-2858,2858-2858,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2872-2872,2872-2872,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2875-2875,2875-2875,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2887-2887,2887-2887,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2890-2890,2890-2890,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2892-2892,2892-2892,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2895-2895,2895-2895,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2906-2906,2906-2906,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2918-2919,2918-2919,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2922-2922,2922-2922,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2928-2928,2928-2928,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2932-2932,2932-2932,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2953-2953,2953-2953,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2961-2962,2961-2962,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2970-2970,2970-2970,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,2973-2973,2973-2973,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3010-3011,3010-3011,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3056-3057,3056-3057,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3070-3070,3070-3070,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3075-3075,3075-3075,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3077-3078,3077-3078,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3083-3083,3083-3083,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3090-3090,3090-3090,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3096-3096,3096-3096,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3099-3099,3099-3099,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3103-3103,3103-3103,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3108-3108,3108-3108,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3148-3148,3148-3148,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3153-3153,3153-3153,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3158-3158,3158-3158,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3160-3160,3160-3160,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3183-3183,3183-3183,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3191-3191,3191-3191,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3197-3197,3197-3197,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3201-3201,3201-3201,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3217-3217,3217-3217,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3221-3221,3221-3221,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3225-3225,3225-3225,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3228-3228,3228-3228,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3231-3233,3231-3233,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3235-3235,3235-3235,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3240-3240,3240-3240,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3242-3242,3242-3242,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3271-3271,3271-3271,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3316-3318,3316-3318,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3323-3323,3323-3323,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3339-3339,3339-3339,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3346-3346,3346-3346,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3348-3349,3348-3349,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3351-3352,3351-3352,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3359-3360,3359-3360,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3363-3363,3363-3363,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3367-3367,3367-3367,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3372-3374,3372-3374,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3376-3376,3376-3376,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3378-3378,3378-3378,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3380-3380,3380-3380,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3382-3382,3382-3382,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3392-3392,3392-3392,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3396-3396,3396-3396,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3399-3399,3399-3399,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3408-3408,3408-3408,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3421-3421,3421-3421,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3425-3425,3425-3425,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3431-3432,3431-3432,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3473-3473,3473-3473,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3478-3478,3478-3478,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3486-3486,3486-3486,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3543-3543,3543-3543,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3549-3549,3549-3549,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3552-3552,3552-3552,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3599-3599,3599-3599,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3605-3605,3605-3605,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3669-3669,3669-3669,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3671-3671,3671-3671,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3712-3712,3712-3712,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3731-3731,3731-3731,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3775-3775,3775-3775,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3784-3784,3784-3784,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3792-3792,3792-3792,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3796-3796,3796-3796,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3805-3805,3805-3805,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3852-3852,3852-3852,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3858-3858,3858-3858,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3860-3860,3860-3860,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3863-3863,3863-3863,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3865-3865,3865-3865,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3867-3867,3867-3867,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3869-3869,3869-3869,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3874-3874,3874-3874,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3903-3903,3903-3903,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3905-3905,3905-3905,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3911-3911,3911-3911,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3917-3917,3917-3917,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3919-3919,3919-3919,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3947-3948,3947-3948,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3963-3963,3963-3963,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3969-3969,3969-3969,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,3979-3979,3979-3979,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4018-4018,4018-4018,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4087-4087,4087-4087,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4100-4101,4100-4101,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4104-4104,4104-4104,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4107-4107,4107-4107,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4160-4160,4160-4160,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4163-4163,4163-4163,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4166-4166,4166-4166,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4171-4172,4171-4172,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4188-4188,4188-4188,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4190-4190,4190-4190,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4195-4195,4195-4195,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4202-4202,4202-4202,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4205-4205,4205-4205,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4208-4208,4208-4208,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4216-4216,4216-4216,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4219-4220,4219-4220,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4224-4224,4224-4224,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4233-4233,4233-4233,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4238-4238,4238-4238,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4247-4247,4247-4247,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4258-4258,4258-4258,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4265-4265,4265-4265,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4268-4268,4268-4268,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4271-4273,4271-4273,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4279-4279,4279-4279,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4304-4304,4304-4304,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4306-4306,4306-4306,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4308-4309,4308-4309,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4317-4317,4317-4317,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4329-4329,4329-4329,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4331-4331,4331-4331,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4336-4336,4336-4336,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4344-4344,4344-4344,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4347-4347,4347-4347,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4364-4364,4364-4364,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4383-4383,4383-4383,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4465-4467,4465-4467,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4569-4570,4569-4570,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4574-4574,4574-4574,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4578-4578,4578-4578,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4583-4583,4583-4583,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4614-4615,4614-4615,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4622-4623,4622-4623,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4632-4632,4632-4632,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4635-4635,4635-4635,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4638-4638,4638-4638,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4644-4644,4644-4644,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4648-4648,4648-4648,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4650-4650,4650-4650,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4653-4653,4653-4653,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4656-4656,4656-4656,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4665-4665,4665-4665,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4668-4668,4668-4668,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4671-4671,4671-4671,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4682-4682,4682-4682,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4684-4685,4684-4685,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4714-4714,4714-4714,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4721-4722,4721-4722,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4729-4729,4729-4729,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4731-4731,4731-4731,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4733-4733,4733-4733,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4743-4743,4743-4743,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4754-4754,4754-4754,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4759-4759,4759-4759,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4766-4766,4766-4766,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4772-4772,4772-4772,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4781-4781,4781-4781,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4789-4789,4789-4789,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4805-4805,4805-4805,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4807-4807,4807-4807,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4814-4815,4814-4815,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4820-4824,4820-4824,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4845-4845,4845-4845,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4849-4849,4849-4849,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4854-4854,4854-4854,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4872-4872,4872-4872,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4878-4880,4878-4880,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4883-4883,4883-4883,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4888-4889,4888-4889,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4898-4899,4898-4899,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4902-4902,4902-4902,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4905-4905,4905-4905,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4907-4907,4907-4907,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4909-4909,4909-4909,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4917-4917,4917-4917,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4922-4922,4922-4922,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4927-4927,4927-4927,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4932-4932,4932-4932,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4935-4935,4935-4935,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4937-4937,4937-4937,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4950-4950,4950-4950,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4959-4960,4959-4960,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4966-4966,4966-4966,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4970-4970,4970-4970,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4972-4972,4972-4972,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4988-4989,4988-4989,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4993-4993,4993-4993,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4995-4996,4995-4996,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,4998-5000,4998-5000,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5032-5032,5032-5032,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5084-5084,5084-5084,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5095-5095,5095-5095,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5104-5104,5104-5104,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5107-5108,5107-5108,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5132-5132,5132-5132,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5134-5135,5134-5135,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5137-5137,5137-5137,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5142-5143,5142-5143,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5145-5145,5145-5145,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5185-5185,5185-5185,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5187-5187,5187-5187,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5191-5191,5191-5191,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5197-5197,5197-5197,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5199-5199,5199-5199,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5203-5203,5203-5203,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5207-5207,5207-5207,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5209-5209,5209-5209,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5211-5211,5211-5211,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5215-5215,5215-5215,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5230-5231,5230-5231,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5234-5234,5234-5234,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5246-5246,5246-5246,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5262-5262,5262-5262,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5266-5266,5266-5266,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5272-5272,5272-5272,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5309-5309,5309-5309,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5336-5336,5336-5336,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5360-5360,5360-5360,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5362-5362,5362-5362,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5364-5364,5364-5364,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5367-5367,5367-5367,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5378-5378,5378-5378,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5389-5389,5389-5389,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5394-5394,5394-5394,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5397-5397,5397-5397,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5418-5418,5418-5418,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5448-5449,5448-5449,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5455-5455,5455-5455,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5460-5460,5460-5460,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5485-5485,5485-5485,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5497-5497,5497-5497,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5513-5513,5513-5513,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5522-5522,5522-5522,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5531-5531,5531-5531,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5548-5548,5548-5548,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5555-5555,5555-5555,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5564-5564,5564-5564,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5566-5567,5566-5567,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5569-5569,5569-5569,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5571-5573,5571-5573,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5577-5577,5577-5577,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5580-5580,5580-5580,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5595-5596,5595-5596,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5606-5607,5606-5607,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5609-5609,5609-5609,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5611-5611,5611-5611,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5615-5616,5615-5616,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5618-5618,5618-5618,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5621-5621,5621-5621,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5623-5624,5623-5624,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5629-5630,5629-5630,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5633-5633,5633-5633,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5635-5635,5635-5635,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5637-5638,5637-5638,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5640-5640,5640-5640,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5695-5695,5695-5695,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5703-5703,5703-5703,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5705-5705,5705-5705,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5707-5707,5707-5707,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5709-5712,5709-5712,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5714-5714,5714-5714,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5716-5716,5716-5716,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5718-5718,5718-5718,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5720-5722,5720-5722,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5724-5725,5724-5725,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5728-5729,5728-5729,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5731-5731,5731-5731,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5736-5737,5736-5737,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5739-5739,5739-5739,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5749-5749,5749-5749,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5754-5754,5754-5754,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5761-5761,5761-5761,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5786-5786,5786-5786,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5791-5791,5791-5791,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5794-5794,5794-5794,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5805-5805,5805-5805,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5813-5813,5813-5813,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5819-5819,5819-5819,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5824-5824,5824-5824,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5826-5826,5826-5826,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5828-5828,5828-5827,delete,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5849-5849,5848-5848,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5856-5856,5855-5855,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5865-5865,5864-5864,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5871-5872,5870-5872,replace,suprimentos,bundle gerado
+unificado/shell/modelo-a/menu.js,5874-5877,5874-5877,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5881-5881,5881-5881,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5888-5888,5888-5888,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5893-5893,5893-5893,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5898-5898,5898-5898,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5905-5905,5905-5905,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5913-5920,5913-5920,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5922-5925,5922-5925,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5927-5932,5927-5932,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5934-5937,5934-5937,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5939-5945,5939-5938,delete,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5948-5949,5941-5942,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5956-5957,5949-5969,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5962-5963,5974-5974,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5970-5970,5981-5981,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5980-5981,5991-5992,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5988-5989,5999-6000,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,5996-5995,6007-6024,insert,suprimentos,bundle gerado
+unificado/shell/modelo-a/menu.js,5998-5999,6027-6029,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6002-6003,6032-6033,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6012-6014,6042-6044,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6016-6017,6046-6047,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6019-6019,6049-6049,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6021-6022,6051-6052,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6024-6025,6054-6055,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6028-6031,6058-6061,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6035-6035,6065-6065,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6037-6037,6067-6067,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6052-6052,6082-6082,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6054-6054,6084-6084,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6058-6059,6088-6089,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6062-6064,6092-6091,delete,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6066-6070,6093-6095,replace,outra frente ou rebuild,bundle gerado
+unificado/shell/modelo-a/menu.js,6074-6075,6099-6100,replace,outra frente ou rebuild,bundle gerado
+unificado/mapa/api/screen_catalog.json,354-373,354-353,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/screen_catalog.json,563-562,543-543,insert,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/screen_catalog.json,569-569,550-549,delete,outra frente ou rebuild,comparação de bytes com produção
+unificado/mapa/api/screen_catalog.json,571-571,551-561,replace,suprimentos,comparação de bytes com produção
+unificado/sidebar-modelo-a/src/components/sidebar/navConfig.ts,13-13,13-13,replace,suprimentos,base Git anterior à E3; fonte ausente na VPS
+unificado/sidebar-modelo-a/src/components/sidebar/navConfig.ts,86-86,86-86,replace,outra frente ou rebuild,base Git anterior à E3; fonte ausente na VPS
+unificado/sidebar-modelo-a/src/components/sidebar/navConfig.ts,94-93,94-94,insert,outra frente ou rebuild,base Git anterior à E3; fonte ausente na VPS
+unificado/sidebar-modelo-a/src/components/sidebar/navConfig.ts,98-97,99-117,insert,outra frente ou rebuild,base Git anterior à E3; fonte ausente na VPS
+unificado/sidebar-modelo-a/src/components/sidebar/navConfig.ts,126-126,146-146,replace,outra frente ou rebuild,base Git anterior à E3; fonte ausente na VPS
+unificado/sidebar-modelo-a/src/components/sidebar/navConfig.ts,137-136,157-174,insert,suprimentos,base Git anterior à E3; fonte ausente na VPS
+unificado/sidebar-modelo-a/src/components/sidebar/navConfig.ts,140-139,178-179,insert,outra frente ou rebuild,base Git anterior à E3; fonte ausente na VPS
+unificado/sidebar-modelo-a/src/components/sidebar/navConfig.ts,141-141,181-180,delete,outra frente ou rebuild,base Git anterior à E3; fonte ausente na VPS

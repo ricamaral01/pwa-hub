@@ -1,0 +1,63 @@
+{
+  "consultas": {
+    "lista_solicitacoes": {
+      "tempo_ms": 0.065,
+      "no_raiz": "Limit",
+      "linhas": 2,
+      "buffers_lidos": 0
+    },
+    "lista_pedidos": {
+      "tempo_ms": 0.03,
+      "no_raiz": "Limit",
+      "linhas": 4,
+      "buffers_lidos": 0
+    },
+    "saldo": {
+      "tempo_ms": 0.055,
+      "no_raiz": "Limit",
+      "linhas": 3,
+      "buffers_lidos": 0
+    },
+    "indicador_consumo": {
+      "tempo_ms": 0.064,
+      "no_raiz": "Aggregate",
+      "linhas": 1,
+      "buffers_lidos": 0
+    },
+    "indicador_prazo": {
+      "tempo_ms": 0.068,
+      "no_raiz": "Aggregate",
+      "linhas": 1,
+      "buffers_lidos": 0
+    }
+  },
+  "indices": [
+    "ix_sup_analise_aprovacao",
+    "ix_sup_analise_estorno",
+    "ix_sup_analise_movimento",
+    "ix_sup_analise_pedido",
+    "ix_sup_analise_preco",
+    "ix_sup_analise_solicitacao",
+    "ix_sup_evento_alvo",
+    "ix_sup_fornecedor_doc_validade",
+    "ix_sup_fornecedor_u_filtro",
+    "ix_sup_integracao_recebimento_pedido",
+    "ix_sup_iqf_periodo",
+    "ix_sup_movimento_referencia",
+    "ix_sup_movimento_saldo",
+    "ix_sup_nf_job_fila",
+    "ix_sup_recebimento_fila",
+    "ix_sup_solicitacao_fila",
+    "ix_sup_sugestao_fila"
+  ],
+  "flags": {
+    "S0": true,
+    "S1": true,
+    "S2": true,
+    "S3A": true,
+    "S3A_EMAIL": false,
+    "S3B": true,
+    "S4": false,
+    "S5": true
+  }
+}

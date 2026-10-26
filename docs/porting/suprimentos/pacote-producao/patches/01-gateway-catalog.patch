@@ -1,0 +1,168 @@
+--- a/unificado/mapa/api/app.py
++++ b/unificado/mapa/api/app.py
+@@ -1153,7 +1153,10 @@
+     lab_users = LAB_ALLOWED_USERS | {user['id']} if any(
+         key.startswith('lab') and value for key, value in overrides.items()
+     ) else LAB_ALLOWED_USERS
+-    return allowed_screens(user, planning_role, overrides, lab_users), planning_role
++    allowed = allowed_screens(user, planning_role, overrides, lab_users)
++    if any(SCREENS_BY_ID[item]['module'] == 'suprimentos' for item in allowed) and not supply_flags().get('S1'):
++        allowed = [item for item in allowed if SCREENS_BY_ID[item]['module'] != 'suprimentos']
++    return allowed, planning_role
+ 
+ 
+ def guest_request_action(method, path):
+@@ -1638,7 +1641,10 @@
+     preview_modules = (user['id'] in MASTER_USER_IDS
+                        or user['id'].startswith(('e2e-', 'unif-pcp-'))
+                        or user['id'] == 'ricardo.teste')
+-    response = jsonify(ok=True, screens=allowed, preview_modules=preview_modules)
++    suprimentos_enabled = any(SCREENS_BY_ID[item]['module'] == 'suprimentos' for item in allowed)
++    response = jsonify(ok=True, screens=allowed, preview_modules=preview_modules,
++                       suprimentos_flags=supply_flags() if suprimentos_enabled else {},
++                       suprimentos_enabled=suprimentos_enabled)
+     scope, age = session_scope_and_age(user)
+     token = signer().dumps({"scope": "legacy_session" if user["primeiro_acesso"] else scope, "id": user["id"],
+                             "updated_at": user["updated_at"].isoformat()})
+@@ -3210,6 +3216,122 @@
+     response.delete_cookie(PCP_SCREEN_COOKIE_NAME, path="/unificado/pcp/")
+     response.delete_cookie(PCP_REFRESH_COOKIE_NAME, path=PCP_REFRESH_PATH)
+     response.delete_cookie(LAB_COOKIE_NAME, path="/unificado/laboratorio/")
++    response.delete_cookie(SUPRIMENTOS_COOKIE_NAME, path="/api/suprimentos/")
++    response.delete_cookie(SUPRIMENTOS_COOKIE_NAME, path="/unificado/suprimentos/")
++    response.delete_cookie(SUPRIMENTOS_REFRESH_COOKIE_NAME, path="/unificado/suprimentos/")
++    return response
++
++
++# Suprimentos: extensão isolada do gateway. O papel efetivo fica no banco do serviço.
++SUPRIMENTOS_COOKIE_NAME = 'unificado_suprimentos_session'
++SUPRIMENTOS_REFRESH_COOKIE_NAME = 'unificado_suprimentos_refresh'
++SUPRIMENTOS_REFRESH_SECONDS = 30 * 24 * 60 * 60
++
++
++def supply_flags():
++    url = os.environ.get('SUPRIMENTOS_INTERNAL_URL', 'http://127.0.0.1:13067').rstrip('/')
++    try:
++        with urllib.request.urlopen(url + '/api/suprimentos/flags?unidade=campinas', timeout=0.25) as upstream:
++            data = json.load(upstream)
++        return {key: bool(value) for key, value in data.get('flags', {}).items()}
++    except (OSError, ValueError, TypeError, urllib.error.URLError):
++        return {}  # sem serviço/flag: menu oculto e autorização fechada
++
++
++def supply_session_claim(user, scope='session'):
++    return {'scope': scope, 'id': user['id'], 'updated_at': user['updated_at'].isoformat()}
++
++
++def supply_set_cookies(response, user):
++    token = signer().dumps(supply_session_claim(user))
++    for path in ('/api/suprimentos/', '/unificado/suprimentos/'):
++        response.set_cookie(SUPRIMENTOS_COOKIE_NAME, token, max_age=SESSION_SECONDS,
++                            httponly=True, secure=True, samesite='Lax', path=path)
++    refresh = signer().dumps(supply_session_claim(user, scope='suprimentos_refresh'))
++    response.set_cookie(SUPRIMENTOS_REFRESH_COOKIE_NAME, refresh,
++                        max_age=SUPRIMENTOS_REFRESH_SECONDS, httponly=True,
++                        secure=True, samesite='Lax', path='/unificado/suprimentos/')
++    response.headers['Cache-Control'] = 'no-store'
++    return response
++
++
++def supply_cookie_user(cookie_name, max_age, scope):
++    token = request.cookies.get(cookie_name)
++    if not token:
++        return None
++    try:
++        claim = signer().loads(token, max_age=max_age)
++        if claim.get('scope') != scope:
++            return None
++        with connect() as conn, conn.cursor() as cur:
++            cur.execute('''SELECT id,nome,perfil,ativo,primeiro_acesso,updated_at
++                           FROM public.usuarios WHERE id=%s AND deleted_at IS NULL''', (claim['id'],))
++            user = cur.fetchone()
++        if (not user or not user['ativo'] or user['primeiro_acesso']
++                or user['updated_at'].isoformat() != claim.get('updated_at')):
++            return None
++        return user
++    except (BadSignature, SignatureExpired, KeyError, TypeError, psycopg.Error):
++        return None
++
++
++def supply_allowed(user):
++    screens, _ = screen_access_state(user)
++    return any(SCREENS_BY_ID[item]['module'] == 'suprimentos' for item in screens)
++
++
++@app.post('/unified/suprimentos-bootstrap')
++def suprimentos_bootstrap():
++    user = authenticated_user()
++    if not user:
++        return jsonify(ok=False, error='Sessão expirada.'), 401
++    if not supply_allowed(user):
++        return jsonify(ok=False, error='Suprimentos indisponível ou sem concessão.'), 403
++    return supply_set_cookies(jsonify(ok=True, unidade='campinas'), user)
++
++
++@app.get('/unified/suprimentos-renew')
++def suprimentos_renew():
++    """Nginx expõe esta rota apenas dentro do escopo do PWA de Suprimentos."""
++    user = authenticated_user() or supply_cookie_user(
++        SUPRIMENTOS_REFRESH_COOKIE_NAME, SUPRIMENTOS_REFRESH_SECONDS, 'suprimentos_refresh')
++    if not user:
++        return jsonify(ok=False, error='Sessão expirada. Entre novamente.'), 401
++    if not supply_allowed(user):
++        return jsonify(ok=False, error='Suprimentos indisponível ou sem concessão.'), 403
++    response = supply_set_cookies(jsonify(ok=True, unidade='campinas'), user)
++    scope, age = session_scope_and_age(user)
++    response.set_cookie(COOKIE_NAME, signer().dumps(supply_session_claim(user, scope)),
++                        max_age=age, httponly=True, secure=True, samesite='Lax', path=COOKIE_PATH)
++    return response
++
++
++@app.get('/unified/suprimentos-authorize')
++def suprimentos_authorize():
++    original = urllib.parse.urlsplit(request.headers.get('X-Original-URI', '')).path
++    if not (original.startswith('/api/suprimentos/') or original.startswith('/unificado/suprimentos/')):
++        return Response(status=403)
++    user = supply_cookie_user(SUPRIMENTOS_COOKIE_NAME, SESSION_SECONDS, 'session')
++    if not user and original.startswith('/unificado/suprimentos/'):
++        # A primeira abertura ainda não tem cookie próprio; a shell recebe
++        # somente os arquivos estáticos após conferir a sessão principal.
++        user = authenticated_user() or supply_cookie_user(
++            SUPRIMENTOS_REFRESH_COOKIE_NAME, SUPRIMENTOS_REFRESH_SECONDS, 'suprimentos_refresh')
++    if not user:
++        return Response(status=401)
++    if not supply_allowed(user):
++        return Response(status=403)
++    secret = os.environ.get('SUPRIMENTOS_GATEWAY_SIGNING_KEY', '')
++    if len(secret) < 32:
++        return Response(status=503)
++    payload = base64.urlsafe_b64encode(json.dumps({
++        'iss':'unificado', 'aud':'suprimentos', 'id':user['id'], 'name':user['nome'],
++        'exp':int(time.time()) + 20,
++    }, separators=(',', ':')).encode()).rstrip(b'=').decode()
++    signature = base64.urlsafe_b64encode(hmac.new(secret.encode(), payload.encode(), hashlib.sha256).digest()).rstrip(b'=').decode()
++    response = Response(status=204)
++    response.headers['X-Suprimentos-Assertion'] = payload + '.' + signature
++    response.headers['Cache-Control'] = 'no-store'
+     return response
+ 
+ 
+--- a/unificado/mapa/api/screen_catalog.json
++++ b/unificado/mapa/api/screen_catalog.json
+@@ -568,5 +568,15 @@
+   {"id":"labCecLeitura","module":"laboratorio","label":"Leitura de CP","path":"/unificado/laboratorio/cec/leitura/","query":"","screen":null,"require":null},
+   {"id":"labCertificados","module":"laboratorio","label":"Certificados de qualidade","path":"/unificado/laboratorio/certificados-qualidade/","query":"","screen":null,"require":null},
+   {"id":"labUsinasRelatorios","module":"laboratorio","label":"Relatórios e custos de Campinas","path":"/unificado/laboratorio/usinas-relatorios/","query":"","screen":null,"require":null},
+-  {"id":"labCartaTraco","module":"laboratorio","label":"Carta traço e MCC","path":"/unificado/laboratorio/carta-traco/","query":"","screen":null,"require":null}
++  {"id":"labCartaTraco","module":"laboratorio","label":"Carta traço e MCC","path":"/unificado/laboratorio/carta-traco/","query":"","screen":null,"require":null},
++  {"id":"suprimentosPainel","module":"suprimentos","label":"Painel","path":"/unificado/suprimentos/painel/","query":"","screen":null,"require":null},
++  {"id":"suprimentosSolicitacoes","module":"suprimentos","label":"Solicitações","path":"/unificado/suprimentos/solicitacoes/","query":"","screen":null,"require":null},
++  {"id":"suprimentosNova","module":"suprimentos","label":"Nova solicitação","path":"/unificado/suprimentos/nova/","query":"","screen":null,"require":null},
++  {"id":"suprimentosAlmoxarifado","module":"suprimentos","label":"Almoxarifado","path":"/unificado/suprimentos/almoxarifado/","query":"","screen":null,"require":null},
++  {"id":"suprimentosInventario","module":"suprimentos","label":"Inventário","path":"/unificado/suprimentos/inventario/","query":"","screen":null,"require":null},
++  {"id":"suprimentosFornecedores","module":"suprimentos","label":"Fornecedores","path":"/unificado/suprimentos/fornecedores/","query":"","screen":null,"require":null},
++  {"id":"suprimentosCotacoes","module":"suprimentos","label":"Cotações e pedidos","path":"/unificado/suprimentos/cotacoes/","query":"","screen":null,"require":null},
++  {"id":"suprimentosRecebimento","module":"suprimentos","label":"Recebimento","path":"/unificado/suprimentos/recebimento/","query":"","screen":null,"require":null},
++  {"id":"suprimentosIndicadores","module":"suprimentos","label":"Indicadores","path":"/unificado/suprimentos/analises/","query":"","screen":null,"require":null},
++  {"id":"suprimentosCadastros","module":"suprimentos","label":"Cadastros e alçadas","path":"/unificado/suprimentos/cadastros/","query":"","screen":null,"require":null}
+ ]

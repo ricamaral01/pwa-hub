@@ -1,0 +1,36 @@
+--- a/unificado/sidebar-modelo-a/src/components/sidebar/navConfig.ts
++++ b/unificado/sidebar-modelo-a/src/components/sidebar/navConfig.ts
+@@ -10,7 +10,7 @@
+ 
+ export const MODULE_COLORS = {
+   planejamento: '#5B8DEF', producao: '#F08A3C', qualidade: '#2FB38A',
+-  laboratorio: '#F2B705', usinas: '#168E9A', ged: '#9B7BF0',
++  laboratorio: '#F2B705', usinas: '#168E9A', ged: '#9B7BF0', suprimentos: '#2DD4BF',
+ } as const;
+ 
+ type Entry = [id: string, label: string, route: string, icon: IconName, badge?: NavBadge];
+@@ -134,6 +134,24 @@
+       ['ged-calibrations','Calibrações','ged/calibrations','sliders'],
+     ]),
+   ] },
++  { id:'suprimentos', label:'Suprimentos', color:MODULE_COLORS.suprimentos, icon:'database', sections:[
++    section('SOLICITAÇÕES', [
++      ['suprimentosPainel','Painel','suprimentos/painel/','map'],
++      ['suprimentosSolicitacoes','Solicitações','suprimentos/solicitacoes/','doc'],
++      ['suprimentosNova','Nova solicitação','suprimentos/nova/','post'],
++      ['suprimentosAlmoxarifado','Almoxarifado','suprimentos/almoxarifado/','database'],
++      ['suprimentosInventario','Inventário','suprimentos/inventario/','sliders'],
++    ]),
++    section('COMPRAS', [
++      ['suprimentosCotacoes','Cotações e pedidos','suprimentos/cotacoes/','doc'],
++      ['suprimentosRecebimento','Recebimento','suprimentos/recebimento/','post'],
++      ['suprimentosFornecedores','Fornecedores','suprimentos/fornecedores/','users'],
++      ['suprimentosIndicadores','Indicadores','suprimentos/analises/','map'],
++    ]),
++    section('ADMINISTRAÇÃO', [
++      ['suprimentosCadastros','Cadastros e alçadas','suprimentos/cadastros/','sliders'],
++    ]),
++  ] },
+ ];
+ 
+ export const FOOTER_ITEMS: NavItem[] = [

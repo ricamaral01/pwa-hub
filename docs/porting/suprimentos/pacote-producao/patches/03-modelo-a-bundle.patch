@@ -1,0 +1,37 @@
+--- a/unificado/shell/modelo-a/menu.js
++++ b/unificado/shell/modelo-a/menu.js
+@@ -5868,7 +5868,8 @@
+   qualidade: "#2FB38A",
+   laboratorio: "#F2B705",
+   usinas: "#168E9A",
+-  ged: "#9B7BF0"
++  ged: "#9B7BF0",
++  suprimentos: "#2DD4BF"
+ }, ji = (v) => "/unificado/?view=" + encodeURIComponent(v), xe = (v, I) => ({
+   title: v,
+   items: I.map(([m, Q, K, G, ee]) => ({ id: m, label: Q, href: ji(K), icon: G, ...ee ? { badge: ee } : {} }))
+@@ -5993,6 +5994,24 @@
+       ["ged-tasks", "Tarefas", "ged/tasks", "calendar"],
+       ["ged-calibrations", "Calibrações", "ged/calibrations", "sliders"]
+     ])
++  ] },
++  { id: "suprimentos", label: "Suprimentos", color: Dn.suprimentos, icon: "database", sections: [
++    xe("SOLICITAÇÕES", [
++      ["suprimentosPainel", "Painel", "suprimentos/painel/", "map"],
++      ["suprimentosSolicitacoes", "Solicitações", "suprimentos/solicitacoes/", "doc"],
++      ["suprimentosNova", "Nova solicitação", "suprimentos/nova/", "post"],
++      ["suprimentosAlmoxarifado", "Almoxarifado", "suprimentos/almoxarifado/", "database"],
++      ["suprimentosInventario", "Inventário", "suprimentos/inventario/", "sliders"]
++    ]),
++    xe("COMPRAS", [
++      ["suprimentosCotacoes", "Cotações e pedidos", "suprimentos/cotacoes/", "doc"],
++      ["suprimentosRecebimento", "Recebimento", "suprimentos/recebimento/", "post"],
++      ["suprimentosFornecedores", "Fornecedores", "suprimentos/fornecedores/", "users"],
++      ["suprimentosIndicadores", "Indicadores", "suprimentos/analises/", "map"]
++    ]),
++    xe("ADMINISTRAÇÃO", [
++      ["suprimentosCadastros", "Cadastros e alçadas", "suprimentos/cadastros/", "sliders"]
++    ])
+   ] }
+ ], qf = [
+   { id: "labHelp", label: "Como funciona", href: ji("laboratorio/?view=help"), icon: "help" },
