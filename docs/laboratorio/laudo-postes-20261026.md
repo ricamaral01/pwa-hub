@@ -30,7 +30,7 @@ O formulário agora exibe os campos dimensionais aplicáveis, inclusive engastam
 
 A primeira tentativa de publicação em produção foi revertida automaticamente porque o teste de prontidão consultava `/openapi.json`, rota não exposta pelo serviço. Corrigimos o teste para `/`, confirmamos a versão anterior após o retorno e publicamos novamente com o gate aprovado.
 
-Backups: `/opt/concrefer-unificado/backups/laudo-postes-stage-20261026T154219Z` e `/opt/concrefer-unificado/backups/laudo-postes-production-20261026T154230Z`. O procedimento reproduzível está em `deploy/scripts/deploy-laudo-postes-20261026.sh`.
+Backups: `/opt/concrefer-unificado/backups/laudo-postes-stage-20261026T154219Z` e `/opt/concrefer-unificado/backups/laudo-postes-production-20261026T154230Z`. O procedimento reproduzível está em `deploy/scripts/deploy-laudo-postes-20261026.sh`; as verificações HTTP estão em `deploy/scripts/smoke-laudo-postes-20261026.py` (copiado no pacote como `smoke_laudo_remote.py`).
 
 ## Arquivos
 

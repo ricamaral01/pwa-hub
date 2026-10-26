@@ -116,7 +116,7 @@ done
 [[ "$(curl -fkLsS "$origin/unificado/VERSION")" == '1.0.105' ]]
 curl -fkLsS "$origin/unificado/laboratorio/novo/postes/assets/novo-16d78bdbc677.js" -o /dev/null
 [[ "$(curl -kLsS -o /dev/null -w '%{http_code}' "$origin/v/postes/not-a-record/bad-token")" == 404 ]]
-python3 /tmp/smoke_laudo_remote.py "$environment" "$final_id" "$draft_id"
+python3 "$payload/smoke_laudo_remote.py" "$environment" "$final_id" "$draft_id"
 echo "DEPLOY_OK=$environment"
 echo "BACKUP_PATH=$backup"
 trap - ERR
