@@ -1,4 +1,5 @@
 /* Telas S3-A: fornecedores, cotações e pedidos. Escopo exclusivo do módulo. */
+import {supAsk, supDialog} from './dialog.js';
 const API='/api/suprimentos', ROOT='/unificado/suprimentos/';
 const app=document.querySelector('#app');
 const page=location.pathname.split('/').filter(Boolean).pop();
@@ -166,7 +167,7 @@ async function quoteDetail(id){
   const offerForm=app.querySelector('#offer-form');
   offerForm?.querySelector('.sup-span')?.insertAdjacentHTML('beforebegin','<label class="field"><span>Anexo da proposta · PDF, JPG ou PNG</span><input name="anexo" type="file" accept=".pdf,.jpg,.jpeg,.png"></label>');
   app.querySelector('[data-do="approve-close"]')?.addEventListener('click',()=>act(async()=>{await send('/compras/cotacoes/'+id+'/aprovar-fechamento',{});quoteDetail(id)}));
-  app.querySelectorAll('[data-do^="choose:"]').forEach(b=>b.onclick=()=>act(async()=>{const justification=prompt('Justificativa se não for o menor custo (deixe vazio quando for o menor):')||'';await send('/compras/cotacoes/'+id+'/escolher',{proposta_id:b.dataset.do.split(':')[1],justificativa});quoteDetail(id)}));
+  app.querySelectorAll('[data-do^="choose:"]').forEach(b=>b.onclick=()=>act(async()=>{const justification=await supAsk('Escolher proposta',{label:'Justificativa se não for o menor custo',required:false,multiline:true});if(justification===null)return;await send('/compras/cotacoes/'+id+'/escolher',{proposta_id:b.dataset.do.split(':')[1],justificativa});quoteDetail(id)}));
   app.querySelector('[data-do="invite"]')?.addEventListener('click',()=>act(async()=>{await send('/compras/cotacoes/'+id+'/convidar',{fornecedor_id:document.getElementById('invite-supplier').value});quoteDetail(id)}));
   app.querySelector('#invite-status')?.addEventListener('change',event=>{
     const available=eligible.filter(s=>!event.target.value||s.situacao===event.target.value);
@@ -175,7 +176,7 @@ async function quoteDetail(id){
   });
   offerForm?.addEventListener('submit',e=>{e.preventDefault();act(async()=>{const form=new FormData(e.target),file=form.get('anexo');form.delete('anexo');const saved=await send('/compras/cotacoes/'+id+'/propostas',Object.fromEntries(form));if(file?.size){const upload=new FormData();upload.set('arquivo',file);await api('/compras/cotacoes/'+id+'/propostas/'+saved.id+'/anexo',{method:'POST',body:upload})}quoteDetail(id)})});
   app.querySelector('#emergency-form')?.addEventListener('submit',e=>{e.preventDefault();act(async()=>{await send('/compras/cotacoes/'+id+'/excecao-fornecedor',Object.fromEntries(new FormData(e.target)));quoteDetail(id)})});
-  app.querySelector('[data-do="close"]')?.addEventListener('click',()=>act(async()=>{const justificativa=prompt('Justificativa para fechamento, se houver menos de 3 propostas:')||'';await send('/compras/cotacoes/'+id+'/fechar',{justificativa});quoteDetail(id)}));
+  app.querySelector('[data-do="close"]')?.addEventListener('click',()=>act(async()=>{const justificativa=await supAsk('Fechar cotação',{label:'Justificativa se houver menos de 3 propostas',required:false,multiline:true});if(justificativa===null)return;await send('/compras/cotacoes/'+id+'/fechar',{justificativa});quoteDetail(id)}));
   app.querySelector('[data-do="generate"]')?.addEventListener('click',()=>act(async()=>{const x=await send('/compras/cotacoes/'+id+'/gerar-pedidos',{});notice(x.pedidos.map(p=>p.numero).join(', ')+' criado(s).');location.assign(link('cotacoes',x.pedidos[0].id)+'&tab=pedido')}));
 }
 async function orderDetail(id){
@@ -197,8 +198,11 @@ async function orderDetail(id){
     if(kind==='pdf'){const b=await api('/compras/pedidos/'+id+'/pdf');const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=order.numero+'.pdf';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),10000);return}
     const path={approve:'aprovar',emit:'emitir',send:'enviar',follow:'follow-up',receive:'receber',finish:'encerrar',cancel:'cancelar'}[kind];
     let body={};
-    if(kind==='receive'){const item=prompt('ID do item do pedido:',order.itens[0]?.id);if(!item)return;body={item_id:item,qtd:prompt('Quantidade recebida:')||'',numero_nf:prompt('Número da NF:')||''}}
-    if(['follow','cancel'].includes(kind)){body.comentario=prompt('Comentário ou motivo:')||'';if(!body.comentario)return}
+    if(kind==='receive'){
+      const form=await supDialog({title:'Receber pedido',content:`<label class="sup-dialog-field"><span>Item do pedido</span><select name="item_id" required>${order.itens.map(item=>`<option value="${esc(item.id)}">${esc(item.descricao_livre||item.material_id)}</option>`).join('')}</select></label><label class="sup-dialog-field"><span>Quantidade recebida</span><input name="qtd" type="number" min="0.0001" step="0.0001" required></label><label class="sup-dialog-field"><span>Número da NF</span><input name="numero_nf" required></label>`});
+      if(!form)return;body=Object.fromEntries(form);
+    }
+    if(['follow','cancel'].includes(kind)){body.comentario=await supAsk(kind==='cancel'?'Cancelar pedido':'Registrar acompanhamento',{label:'Comentário ou motivo',multiline:true});if(!body.comentario)return}
     await send('/compras/pedidos/'+id+'/'+path,body);orderDetail(id);
   };
   app.querySelectorAll('[data-do]').forEach(b=>b.onclick=()=>act(()=>doAction(b.dataset.do)));

@@ -1,8 +1,9 @@
+import {supAsk} from './dialog.js';
 const ROOT = '/unificado/suprimentos/';
 const API = '/api/suprimentos';
 const view = location.pathname.split('/').filter(Boolean).pop() || 'painel';
 const app = document.getElementById('app');
-const state = {me:null, rows:[], counts:{}, tab:'Todas', selected:new Set(), filters:{}, page:1,
+const state = {me:null, rows:[], counts:{}, countsAt:0, tab:'Todas', selected:new Set(), filters:{}, page:1,
   catalog:[], measures:[], centers:[], draftItems:[], draftPhotos:[], draftStep:1,
   resource:'materiais', resourceRows:[], edit:null};
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -99,12 +100,15 @@ async function loadRequestList(){
   for(const [key,value] of Object.entries(state.filters))if(value)base.set(key,value);
   const tab=TABS.find(x=>x[0]===state.tab)||TABS[0];
   const statuses=tab[1].length?tab[1]:[null];
-  const results=await Promise.all(statuses.map(status=>{const query=new URLSearchParams(base);if(status)query.set('status',status);return api('/solicitacoes?'+query);}));
+  const unique=[...new Set(TABS.flatMap(x=>x[1]))];
+  const refreshCounts=Date.now()-state.countsAt>30000;
+  const [results,totals]=await Promise.all([
+    Promise.all(statuses.map(status=>{const query=new URLSearchParams(base);if(status)query.set('status',status);return api('/solicitacoes?'+query);})),
+    refreshCounts?Promise.all(unique.map(status=>api('/solicitacoes?status='+status+'&size=1'))):Promise.resolve(null)
+  ]);
   state.rows=results.flatMap(x=>x.items).sort((a,b)=>new Date(b.criado_em)-new Date(a.criado_em));
   state.total=results.reduce((sum,x)=>sum+x.total,0);
-  const unique=[...new Set(TABS.flatMap(x=>x[1]))];
-  const totals=await Promise.all(unique.map(status=>api('/solicitacoes?status='+status+'&size=1')));
-  state.counts=Object.fromEntries(unique.map((status,index)=>[status,totals[index].total]));
+  if(totals){state.counts=Object.fromEntries(unique.map((status,index)=>[status,totals[index].total]));state.countsAt=Date.now();}
   renderRequestList();
 }
 function renderRequestList(){
@@ -131,7 +135,7 @@ function renderRequestList(){
   updateBatch();
 }
 function updateBatch(){const bar=document.getElementById('batch');if(!bar)return;bar.hidden=!state.selected.size;const selected=state.rows.filter(x=>state.selected.has(x.id));document.getElementById('batch-count').textContent=`${selected.length} selecionada(s) · ${selected.every(canApprove)?'dentro da sua alçada':'há itens fora da sua alçada'}`;document.getElementById('batch-value').textContent=money(selected.reduce((sum,x)=>sum+Number(x.valor_estimado),0));}
-async function batchDecision(decisao){const ids=[...state.selected];if(!ids.length)return;let comentario='';if(decisao==='DEVOLVIDA'){comentario=prompt('Motivo da devolução (obrigatório):')?.trim()||'';if(!comentario)return;}try{const result=await data('/solicitacoes/aprovar-lote',{ids,decisao,comentario});const ok=result.resultados.filter(x=>x.ok).length;toast(`${ok} de ${ids.length} solicitações processadas.`);state.selected.clear();await loadRequestList();}catch(error){humanError(error);}}
+async function batchDecision(decisao){const ids=[...state.selected];if(!ids.length)return;let comentario='';if(decisao==='DEVOLVIDA'){comentario=await supAsk('Devolver solicitações',{label:'Motivo da devolução',multiline:true});if(!comentario)return;}try{const result=await data('/solicitacoes/aprovar-lote',{ids,decisao,comentario});const ok=result.resultados.filter(x=>x.ok).length;toast(`${ok} de ${ids.length} solicitações processadas.`);state.selected.clear();state.countsAt=0;await loadRequestList();}catch(error){humanError(error);}}
 
 async function loadDetail(){
   const id=new URLSearchParams(location.search).get('id');if(!id)throw new Error('Informe uma solicitação.');
@@ -165,12 +169,12 @@ function renderDetail(){
 async function detailAction(action){
   const row=state.detail;let body={};
   if(['devolver','reprovar'].includes(action)){body.comentario=document.getElementById('comment')?.value.trim();if(!body.comentario){toast('Escreva um comentário antes de continuar.');return;}}
-  if(action==='problema'){body.comentario=prompt('Descreva o problema (obrigatório):')?.trim();if(!body.comentario)return;action='recebi-com-problema';}
-  if(action==='reentregar'){body.comentario=prompt('Descreva a solução aplicada:')?.trim();if(!body.comentario)return;}
+  if(action==='problema'){body.comentario=await supAsk('Problema no recebimento',{label:'Descreva o problema',multiline:true});if(!body.comentario)return;action='recebi-com-problema';}
+  if(action==='reentregar'){body.comentario=await supAsk('Registrar solução',{label:'Solução aplicada',multiline:true});if(!body.comentario)return;}
   if(action==='confirmar')action='confirmar-recebimento';
   try{await data(`/solicitacoes/${row.id}/${action}`,body);toast('Solicitação atualizada.');await loadDetail();}catch(error){humanError(error);}
 }
-async function itemAction(id,action){let body={};if(action==='entregar'){const quantity=prompt('Quantidade entregue:')?.trim();if(!quantity)return;body.qtd=quantity;}if(action==='cancelar'){body.comentario=prompt('Motivo do cancelamento do item:')?.trim();if(!body.comentario)return;}try{if(action==='comprar')await data(`/compras/itens/${id}/destino`,{destino:'COMPRA'});else await data(`/itens/${id}/${action}`,body);toast('Item atualizado.');await loadDetail();}catch(error){humanError(error);}}
+async function itemAction(id,action){let body={};if(action==='entregar'){const quantity=await supAsk('Entregar item',{label:'Quantidade entregue',type:'number'});if(!quantity)return;body.qtd=quantity;}if(action==='cancelar'){body.comentario=await supAsk('Cancelar item',{label:'Motivo do cancelamento',multiline:true});if(!body.comentario)return;}try{if(action==='comprar')await data(`/compras/itens/${id}/destino`,{destino:'COMPRA'});else await data(`/itens/${id}/${action}`,body);toast('Item atualizado.');await loadDetail();}catch(error){humanError(error);}}
 
 async function loadNew(){
   const [catalog,measures]=await Promise.all([api('/cadastros/materiais?size=100'),api('/cadastros/unidades-medida?size=100')]);
@@ -189,7 +193,7 @@ function newItemsHtml(){return `<h2>O que você precisa?</h2><div class="item-bu
 function bindNewItems(){
   document.getElementById('material-search').onchange=()=>{const found=state.catalog.find(x=>x.codigo===document.getElementById('material-search').value);if(found)document.getElementById('measure').value=found.un_estoque;};
   document.getElementById('add-item').onclick=()=>{const value=document.getElementById('material-search').value.trim();const found=state.catalog.find(x=>x.codigo===value||x.descricao.toLowerCase()===value.toLowerCase());const qty=Number(document.getElementById('quantity').value);if(!found||!(qty>0)){toast('Escolha um material e quantidade válida.');return;}state.draftItems.push({material_id:found.id,qtd:qty,un:document.getElementById('measure').value,label:`${found.codigo} · ${found.descricao}`});renderNew();};
-  document.getElementById('free-item').onclick=()=>{const description=prompt('Descreva o item fora do catálogo:')?.trim();if(!description)return;const qty=Number(document.getElementById('quantity').value)||1;state.draftItems.push({descricao_livre:description,qtd:qty,un:document.getElementById('measure').value,label:description});renderNew();toast('Anexe uma foto na próxima etapa, se possível.');};
+  document.getElementById('free-item').onclick=async()=>{const qty=Number(document.getElementById('quantity').value)||1,un=document.getElementById('measure').value;const description=await supAsk('Item fora do catálogo',{label:'Descrição do material',multiline:true});if(!description)return;state.draftItems.push({descricao_livre:description,qtd:qty,un,label:description});renderNew();toast('Anexe uma foto na próxima etapa, se possível.');};
   app.querySelectorAll('[data-remove]').forEach(button=>button.onclick=()=>{state.draftItems.splice(Number(button.dataset.remove),1);renderNew();});
   document.getElementById('continue').onclick=()=>{state.draftStep=2;renderNew();};
 }
@@ -238,7 +242,7 @@ async function openDrawer(row){state.edit=row;const resource=view==='fornecedore
 }
 function closeDrawer(){document.querySelector('.drawer')?.remove();document.querySelector('.drawer-backdrop')?.remove();}
 
-async function init(){try{loading();state.me=await api('/me');state.centers=(await api('/cadastros/centros-custo?size=100')).items;
+async function init(){try{loading();const [me,centers]=await Promise.all([api('/me'),api('/cadastros/centros-custo?size=100')]);state.me=me;state.centers=centers.items;
   if(view==='painel')await loadPanel();else if(view==='solicitacoes')await loadRequestList();else if(view==='solicitacao')await loadDetail();else if(view==='nova')await loadNew();else if(view==='fornecedores'||view==='cadastros')await loadResources();else throw new Error('Tela não encontrada.');
 }catch(error){showError(error);}}
 init();

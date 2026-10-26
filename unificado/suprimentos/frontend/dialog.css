@@ -1,0 +1,19 @@
+body[data-modulo="suprimentos"] .sup-dialog, body.sup-pwa .sup-dialog {width:min(520px, calc(100vw - 32px));max-height:min(86vh, 780px);padding:0;border:1px solid #c9dedb;border-radius:18px;background:#fff;box-shadow:0 24px 80px #103b3850;color:#173e3a;overflow:auto}
+body[data-modulo="suprimentos"] .sup-dialog::backdrop, body.sup-pwa .sup-dialog::backdrop {background:#102e3180;backdrop-filter:blur(3px)}
+.sup-dialog form {padding:22px}
+.sup-dialog-head {display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.sup-dialog-head h2 {font-size:19px;line-height:1.3;margin:0;color:#163c38}
+.sup-dialog-close {display:grid;place-items:center;flex:none;width:34px;height:34px;border:0;border-radius:9px;background:#e9f4f2;color:#315e57;cursor:pointer}
+.sup-dialog-close svg {fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.sup-dialog-message {font-size:14px;line-height:1.55;color:#607570;margin:12px 0 18px}
+.sup-dialog-body {display:grid;gap:14px;margin:18px 0;max-height:56vh;overflow:auto}
+.sup-dialog-field,.sup-dialog-body .field {display:grid;gap:7px;font-size:13px;font-weight:700;color:#355a54}
+.sup-dialog input,.sup-dialog textarea,.sup-dialog select {box-sizing:border-box;width:100%;min-height:43px;border:1px solid #bdcfcb;border-radius:10px;padding:10px 12px;background:#fff;color:#173e3a;font:inherit}
+.sup-dialog textarea {min-height:96px;resize:vertical}
+.sup-dialog :is(input,textarea,select):focus {outline:2px solid #0f766e55;border-color:#0f766e}
+.sup-dialog-actions {display:flex;justify-content:flex-end;gap:10px;margin-top:22px;padding-top:16px;border-top:1px solid #e0ebe8}
+.sup-dialog-actions button {min-height:42px;border-radius:10px;padding:0 17px;font:inherit;font-weight:700;cursor:pointer}
+.sup-dialog-cancel {background:#fff;border:1px solid #c9d8d4;color:#31564f}
+.sup-dialog-submit {background:#0f766e;border:1px solid #0f766e;color:#fff}
+.sup-dialog-submit.danger {background:#b4232f;border-color:#b4232f}
+@media(max-width:600px){.sup-dialog form{padding:18px}.sup-dialog-actions button{flex:1}}

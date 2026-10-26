@@ -1,3 +1,4 @@
+import {supDialog, supConfirm} from './dialog.js';
 const API='/api/suprimentos',ROOT='/unificado/suprimentos/',app=document.querySelector('#app');
 const query=new URLSearchParams(location.search);
 let me,receipt,orders=[];
@@ -14,11 +15,7 @@ async function api(path,opt={},retry=true){const headers={...opt.headers};if(opt
 const send=(path,body,method='POST')=>api(path,{method,body:JSON.stringify(body)});
 async function act(fn){try{await fn()}catch(e){notice(e.message)}}
 function dialog(title,content,onSubmit){
-  const box=document.createElement('dialog');box.className='sup-rec-dialog';
-  box.innerHTML=`<form method="dialog"><div class="section-head"><h2>${esc(title)}</h2><button class="btn small" value="cancel" formnovalidate aria-label="Fechar">×</button></div>${content}<div class="sup-rec-actions"><button class="btn" value="cancel" formnovalidate>Cancelar</button><button class="btn primary" value="ok">Confirmar</button></div></form>`;
-  document.body.append(box);box.addEventListener('close',()=>box.remove());
-  box.querySelector('form').addEventListener('submit',e=>{if(e.submitter?.value==='cancel')return;e.preventDefault();act(async()=>{await onSubmit(new FormData(e.target));box.close()})});
-  box.showModal();return box;
+  return supDialog({title,content}).then(form=>{if(form)return act(()=>onSubmit(form));});
 }
 function error(e){app.innerHTML=`<div class="error-state"><strong>Não foi possível carregar recebimentos.</strong><span>${esc(e.message)}</span><button class="btn" onclick="location.reload()">Tentar novamente</button></div>`}
 async function list(){const rows=await api('/recebimentos');app.innerHTML=head('Recebimento','NF, conferência, inspeção e entrada rastreável.',role('ALMOXARIFE')?btn('Novo recebimento','new','primary'):'')+
@@ -61,10 +58,10 @@ async function detail(){receipt=await api('/recebimentos/'+query.get('id'));cons
   }
   app.querySelectorAll('[data-action=save-item]').forEach(b=>b.onclick=()=>act(async()=>{const node=b.closest('[data-item]'),form=node.querySelectorAll('[name]'),data={};for(const input of form){if(input.name==='frete_rateado')continue;data[input.name]=input.type==='checkbox'?input.checked:input.value}await send('/recebimentos/'+x.id+'/itens/'+node.dataset.item,data,'PUT');notice('Item salvo');await detail()}));
   app.querySelector('[data-action=upload]')?.addEventListener('click',()=>act(async()=>{const file=app.querySelector('#nf-file').files[0];if(!file)throw Error('Selecione um arquivo.');const body=new FormData();body.append('arquivo',file);const result=await api('/recebimentos/'+x.id+'/nf',{method:'POST',body});notice(result.status==='DESLIGADO'?'Leitura por IA desligada; continue manualmente.':'NF enviada para leitura.');await detail()}));
-  app.querySelector('[data-action=confer]')?.addEventListener('click',()=>act(async()=>{if(!confirm('Você conferiu número, quantidades e preços da NF?'))return;await send('/recebimentos/'+x.id+'/conferir',{confirmo_campos_nf:true});await detail()}));
+  app.querySelector('[data-action=confer]')?.addEventListener('click',()=>act(async()=>{if(!await supConfirm('Conferir nota fiscal','Confirma que número, quantidades e preços da NF foram conferidos?'))return;await send('/recebimentos/'+x.id+'/conferir',{confirmo_campos_nf:true});await detail()}));
   app.querySelector('[data-action=resolve]')?.addEventListener('click',()=>dialog('Resolver divergências',`<label class="field"><span>Justificativa do comprador</span><textarea name="justificativa" minlength="10" required></textarea></label>`,async form=>{await send('/recebimentos/'+x.id+'/resolver',{justificativa:form.get('justificativa')});await detail()}));
   app.querySelector('[data-action=inspect]')?.addEventListener('click',()=>dialog('Inspeção do recebimento',x.itens.map((item,index)=>`<div class="sup-rec-item"><strong>${esc(item.descricao)}</strong><div class="sup-rec-fields"><label class="field"><span>Decisão</span><select name="decisao_${index}"><option value="LIBERADO">Liberado</option><option value="CONDICIONAL">Condicional</option><option value="REPROVADO">Reprovado</option></select></label><label class="field"><span>Parecer (obrigatório se não liberado)</span><input name="parecer_${index}"></label></div></div>`).join(''),async form=>{let itens=x.itens.map((item,index)=>({item_id:item.id,decisao:form.get(`decisao_${index}`),parecer:form.get(`parecer_${index}`)}));await send('/recebimentos/'+x.id+'/inspecionar',{itens});await detail()}));
-  app.querySelector('[data-action=confirm]')?.addEventListener('click',()=>act(async()=>{if(!confirm('Confirmar entrada, custo e entrega?'))return;await send('/recebimentos/'+x.id+'/confirmar',{});await detail()}));
+  app.querySelector('[data-action=confirm]')?.addEventListener('click',()=>act(async()=>{if(!await supConfirm('Confirmar recebimento','Confirmar entrada, custo e entrega?'))return;await send('/recebimentos/'+x.id+'/confirmar',{});await detail()}));
   app.querySelector('[data-action=reverse]')?.addEventListener('click',()=>dialog('Estornar recebimento',`<p>Será criada a versão ${x.versao+1}. O histórico ficará preservado.</p><label class="field"><span>Motivo do estorno</span><textarea name="motivo" minlength="10" required></textarea></label>`,async form=>{const r=await send('/recebimentos/'+x.id+'/estornar',{motivo:form.get('motivo')});location.href=ROOT+'recebimento/?id='+r.nova_versao_id}));
   if(x.nf_job_id){api('/recebimentos/'+x.id+'/job').then(j=>{const n=app.querySelector('#job');if(n)n.textContent='Leitura: '+j.status}).catch(()=>{})}
 }

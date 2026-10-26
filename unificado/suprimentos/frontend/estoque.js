@@ -1,3 +1,4 @@
+import {supDialog} from './dialog.js';
 const API='/api/suprimentos';
 const app=document.getElementById('app');
 const page=location.pathname.includes('/inventario/')?'inventario':'almoxarifado';
@@ -18,17 +19,8 @@ const post=(path,body)=>api(path,{method:'POST',body:JSON.stringify(body)});
 function notify(message){document.querySelector('.sup-toast')?.remove();const node=document.createElement('div');node.className='sup-toast';node.textContent=message;node.style.cssText='position:fixed;bottom:18px;right:18px;z-index:2000;background:#0f766e;color:#fff;padding:12px 16px;border-radius:10px;max-width:min(90vw,400px)';document.body.append(node);setTimeout(()=>node.remove(),4200)}
 function error(e){notify(e.message||String(e))}
 function dialog(title,detail,fields,submit='Salvar'){
-  return new Promise(resolve=>{
-    const layer=document.createElement('div');layer.className='sup-stock-overlay';
-    layer.innerHTML=`<div class="sup-stock-dialog" role="dialog" aria-modal="true" aria-label="${esc(title)}"><h2>${esc(title)}</h2><p>${esc(detail)}</p><form>${fields.map(f=>`<label>${esc(f.label)}${f.options?`<select name="${esc(f.name)}" ${f.required?'required':''}>${f.options.map(o=>`<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('')}</select>`:`<input name="${esc(f.name)}" type="${esc(f.type||'text')}" value="${esc(f.value||'')}" ${f.min!==undefined?`min="${esc(f.min)}"`:''} ${f.step?`step="${esc(f.step)}"`:''} ${f.required?'required':''}>`}</label>`).join('')}<div class="sup-stock-actions"><button type="button" data-cancel>Cancelar</button><button type="submit">${esc(submit)}</button></div></form></div>`;
-    const close=value=>{layer.remove();document.removeEventListener('keydown',key);resolve(value)};
-    const key=e=>{if(e.key==='Escape')close(null)};
-    document.addEventListener('keydown',key);document.body.append(layer);
-    layer.querySelector('[data-cancel]').onclick=()=>close(null);
-    layer.addEventListener('click',e=>{if(e.target===layer)close(null)});
-    layer.querySelector('form').onsubmit=e=>{e.preventDefault();close(Object.fromEntries(new FormData(e.currentTarget)))};
-    layer.querySelector('input,select')?.focus();
-  });
+  const content=fields.map(f=>`<label class="sup-dialog-field"><span>${esc(f.label)}</span>${f.options?`<select name="${esc(f.name)}" ${f.required?'required':''}>${f.options.map(o=>`<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('')}</select>`:`<input name="${esc(f.name)}" type="${esc(f.type||'text')}" value="${esc(f.value||'')}" ${f.min!==undefined?`min="${esc(f.min)}"`:''} ${f.step?`step="${esc(f.step)}"`:''} ${f.required?'required':''}>`}</label>`).join('');
+  return supDialog({title,message:detail,content,submit}).then(form=>form?Object.fromEntries(form):null);
 }
 function frame(title,detail){return `<header class="page-head"><div><p class="eyebrow">CAMPINAS · SUPRIMENTOS</p><h1>${title}</h1><p>${detail}</p></div><div class="head-actions"><a class="btn" href="../painel/">Voltar ao painel</a></div></header>`}
 const empty=message=>`<div class="sup-stock-empty">${esc(message)}</div>`;
