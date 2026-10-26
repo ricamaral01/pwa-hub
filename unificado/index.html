@@ -8,17 +8,21 @@
   <link rel="icon" href="data:,">
   <title>Concrefer — Sistema unificado</title>
   <script>if(new URLSearchParams(location.search).has('view'))document.documentElement.classList.add('unificado-routing')</script>
-  <link rel="stylesheet" href="shell/shell.css?v=1.0.36-usinas">
+  <link rel="stylesheet" href="shell/shell.css?v=1.0.101">
   <link rel="stylesheet" href="shell/shared-menu.css?v=1.0.36-usinas">
-  <link rel="stylesheet" href="shell/modelo-a/menu.css?v=1.0.36-usinas">
+  <link rel="stylesheet" href="shell/modelo-a/menu.css?v=1.0.98">
   <link rel="stylesheet" href="shell/modelo-a-host.css?v=1.0.36-usinas">
+  <link rel="stylesheet" href="shell/home-header-compact.css?v=20261024-1">
+  <link rel="stylesheet" href="shell/navigation.css?v=1.0.98">
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css">
-  <script defer src="shell/menu.config.js?v=1.0.38-campinas"></script>
+  <script defer src="shell/menu.config.js?v=1.0.98"></script>
   <script defer src="shell/auth.js?v=1.0.18-fechamento-menu"></script>
-  <script defer src="shell/shell.js?v=1.0.38-campinas"></script>
-  <script defer src="shell/router.js?v=1.0.36-usinas"></script>
-  <script defer src="shell/module-pages.js?v=1.0.36-usinas"></script>
-  <script defer src="shell/modelo-a-loader.js?v=1.0.38-campinas"></script>
+  <script defer src="shell/shell.js?v=1.0.101"></script>
+  <script defer src="shell/home-header-compact.js?v=20261024-1"></script>
+  <script defer src="shell/router.js?v=1.0.101"></script>
+  <script defer src="shell/module-pages.js?v=1.0.101"></script>
+  <script defer src="shell/modelo-a-loader.js?v=1.0.98"></script>
+  <script defer src="shell/navigation.js?v=1.0.98"></script>
 </head>
 <body>
   <div class="desktop-only">
@@ -30,12 +34,19 @@
         <div class="topbar-actions">
           <span class="sync-pill"><span class="sync-dot"></span>Sincronizado</span>
           <span class="user-pill"><span class="avatar">C</span><span><strong>Concrefer</strong><small>Sistema unificado</small></span></span>
-          <a class="report-link" href="/unificado/testar/#relatar">Relatar problema</a>
           <button class="exit-button" type="button" aria-label="Sair" title="Sair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3M16 16l4-4-4-4M20 12H9"/></svg></button>
         </div>
       </header>
       <div class="content">
         <div class="welcome opening-hero">
+          <div class="opening-compact" aria-label="Boas-vindas">
+            <img class="opening-compact-logo" src="assets/img/logo-concrefer.png" alt="Concrefer">
+            <span class="opening-compact-divider" aria-hidden="true"></span>
+            <div class="opening-compact-copy">
+              <span class="opening-compact-title">Bem-vindo<span class="accent-mark">.</span></span>
+              <span class="opening-compact-subtitle"><span id="opening-compact-date"></span> · Unificado Concrefer<span class="opening-compact-extra"> · seus módulos e operações em um só lugar</span></span>
+            </div>
+          </div>
           <div class="opening-identity">
             <img class="opening-logo" src="assets/img/logo-concrefer.png" alt="Concrefer">
             <p class="eyebrow">PLATAFORMA CONCREFER</p>
@@ -43,12 +54,11 @@
             <p class="opening-description">Acesse seus módulos e acompanhe as operações em um só lugar.</p>
             <p id="today" class="date"></p>
           </div>
-          <div class="opening-update" aria-labelledby="platform-update-title">
+          <button id="platform-update" class="opening-update" type="button" disabled aria-labelledby="platform-update-title platform-update-status">
             <span class="opening-update-icon" aria-hidden="true">↻</span>
-            <h2 id="platform-update-title">Atualização da plataforma</h2>
-            <p id="platform-update-status" role="status">Verificando se há uma versão nova…</p>
-            <button id="platform-update" class="platform-update-button" type="button" disabled>Verificando versão…</button>
-          </div>
+            <span class="opening-update-copy"><strong id="platform-update-title">Atualização</strong><span id="platform-update-status" role="status">Verificando…</span></span>
+            <span class="opening-update-compact-label" aria-hidden="true"></span>
+          </button>
         </div>
         <section class="opening-modules" aria-labelledby="opening-modules-title">
           <div class="section-heading"><div><h2 id="opening-modules-title">Módulos</h2><p>Escolha onde deseja trabalhar.</p></div></div>
@@ -59,7 +69,6 @@
           <div id="sector-cards" class="sector-grid"></div>
         </section>
         <section class="shortcuts-section" aria-labelledby="shortcuts-title"><div class="section-heading"><div><h2 id="shortcuts-title">Acesso rápido</h2><p>As rotinas mais usadas em um só lugar.</p></div></div><div id="shortcut-grid" class="shortcut-grid"></div></section>
-        <p class="preview-footnote"><a class="button button-secondary" href="testar/#relatar">Relatar problema</a></p>
       </div>
       <div id="module-host" class="module-host" hidden aria-label="Tela do sistema unificado"></div>
     </main>

@@ -156,7 +156,14 @@ function canUse(item) {
 function makeLink(item, className = 'nav-link') {
   const a = document.createElement('a');
   a.className = className;
-  a.href = MENU_ITEMS[item.id].url;
+  const routeUrl = MENU_ITEMS[item.id].url;
+  const target = new URL(routeUrl, location.origin);
+  a.href = item.id !== 'tvFormas' && target.origin === location.origin &&
+    target.pathname.startsWith(UNIFICADO_BASE.pathname)
+    ? new URL('?view=' + encodeURIComponent(
+      target.pathname.slice(UNIFICADO_BASE.pathname.length) + target.search + target.hash
+    ) + target.hash, UNIFICADO_BASE).href
+    : routeUrl;
   a.setAttribute('aria-disabled', String(!canUse(item)));
   if (!canUse(item)) a.classList.add('is-unavailable');
   a.dataset.item = item.id;
@@ -183,6 +190,7 @@ function makeLink(item, className = 'nav-link') {
       event.preventDefault();
       return;
     }
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     if (item.id === 'tvFormas') {
       if (phoneDevice || installedPwa) return;
       event.preventDefault();
@@ -191,7 +199,7 @@ function makeLink(item, className = 'nav-link') {
     }
     if (window.UnificadoRouter) {
       event.preventDefault();
-      window.UnificadoRouter.open(a.href, item.id);
+      window.UnificadoRouter.open(routeUrl, item.id);
       return;
     }
     activeItem = item.id;
@@ -263,7 +271,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.98';
+const APP_VERSION = '1.0.101';
 let platformUpdateAvailable = false;
 let platformUpdateState = 'checking';
 let platformLatestVersion = APP_VERSION;
@@ -904,6 +912,12 @@ function renderOpeningModules() {
     link.querySelector('small').textContent = description;
     target.append(link);
   }
+  target.querySelectorAll('.opening-module').forEach((card, index) => {
+    const kind = card.dataset.module === 'pederh' || card.dataset.module === 'faleaqui'
+      ? 'APLICAÇÃO' : 'MÓDULO';
+    card.querySelector('.opening-module-number').textContent =
+      `${String(index + 1).padStart(2, '0')} / ${kind}`;
+  });
   document.querySelector('.opening-modules').hidden = !target.children.length;
 }
 

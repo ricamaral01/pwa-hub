@@ -125,6 +125,17 @@ def screen_for_uri(original_uri, screen_header=''):
         mode = query.get('tela', ['LIBERACAO'])[0]
         return next((row for row in CATALOG if row['module'] == 'producao'
                      and row['screen'] == mode), None)
+    if path.startswith('/unificado/producao/pederneiras/'):
+        if path.startswith('/unificado/producao/pederneiras/mao-de-obra/app/'):
+            return BY_ID.get('pdrMaoDeObra')
+        if path.startswith('/unificado/producao/pederneiras/app/'):
+            return BY_ID.get('pdrApontamento')
+        if path == '/unificado/producao/pederneiras/':
+            tab = query.get('tab', ['apontamento'])[0]
+            return next((row for row in CATALOG
+                         if row['id'].startswith('pdr')
+                         and parse_qs(row['query'].lstrip('?')).get('tab') == [tab]), None)
+        return None
     if path.startswith('/unificado/pcp/') and not path.startswith('/unificado/pcp/api/'):
         return next((row for row in CATALOG if row['module'] == 'planejamento'
                      and row['path'] == path), None)

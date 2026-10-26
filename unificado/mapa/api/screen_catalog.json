@@ -351,6 +351,26 @@
     "require": null
   },
   {
+    "id": "pdrApontamento", "module": "producao", "label": "Apontamento do dia",
+    "path": "/unificado/producao/pederneiras/", "query": "?tab=apontamento", "screen": null, "require": null
+  },
+  {
+    "id": "pdrMaoDeObra", "module": "producao", "label": "Mão de obra",
+    "path": "/unificado/producao/pederneiras/", "query": "?tab=mao-de-obra", "screen": null, "require": null
+  },
+  {
+    "id": "pdrMensal", "module": "producao", "label": "Produção Pederneiras",
+    "path": "/unificado/producao/pederneiras/", "query": "?tab=mensal", "screen": null, "require": null
+  },
+  {
+    "id": "pdrIndicadores", "module": "producao", "label": "Indicadores",
+    "path": "/unificado/producao/pederneiras/", "query": "?tab=indicadores", "screen": null, "require": null
+  },
+  {
+    "id": "pdrProdutos", "module": "producao", "label": "Cadastro de produtos",
+    "path": "/unificado/producao/pederneiras/", "query": "?tab=produtos", "screen": null, "require": null
+  },
+  {
     "id": "fechamentoDiario",
     "module": "producao",
     "label": "Fechamento Diário",
@@ -409,15 +429,6 @@
     "module": "laboratorio",
     "label": "Registro de slump / flow",
     "path": "/unificado/laboratorio/slump",
-    "query": "",
-    "screen": null,
-    "require": null
-  },
-  {
-    "id": "labCertificados",
-    "module": "laboratorio",
-    "label": "Certificados de qualidade",
-    "path": "/unificado/laboratorio/certificados-qualidade/",
     "query": "",
     "screen": null,
     "require": null
@@ -549,13 +560,13 @@
   {"id":"cronoanalise.simular","module":"laboratorio","label":"Cronoanálise: Simular","path":"/unificado/laboratorio/cronoanalise/simular","query":"","screen":null,"require":null},
   {"id":"cronoanalise.metodologia","module":"laboratorio","label":"Cronoanálise: Metodologia","path":"/unificado/laboratorio/cronoanalise/metodologia","query":"","screen":null,"require":null},
   {"id":"usinasInicio","module":"usinas","label":"Cartas de traço","path":"/unificado/usinas/","query":"","screen":null,"require":"GERENCIA"},
-  {"id":"usinasCartaTraco","module":"usinas","label":"Carta traço · MCC","path":"/unificado/usinas/carta-traco.html","query":"","screen":null,"require":"GERENCIA"},
   {"id":"labCec","module":"laboratorio","label":"Controle estatístico","path":"/unificado/laboratorio/cec/","query":"","screen":null,"require":null},
   {"id":"labCecResultados","module":"laboratorio","label":"Resultados dos corpos de prova","path":"/unificado/laboratorio/cec/analise/resultado-cp.html","query":"","screen":null,"require":null},
   {"id":"labCecRelatorio","module":"laboratorio","label":"Relatório CEC","path":"/unificado/laboratorio/cec/analise/relatorio.html","query":"","screen":null,"require":null},
   {"id":"labCecAnalise","module":"laboratorio","label":"Análise estatística","path":"/unificado/laboratorio/cec/analise/","query":"","screen":null,"require":null},
   {"id":"labCecEtiquetas","module":"laboratorio","label":"Etiquetas QR","path":"/unificado/laboratorio/cec/etiquetas/","query":"","screen":null,"require":null},
   {"id":"labCecLeitura","module":"laboratorio","label":"Leitura de CP","path":"/unificado/laboratorio/cec/leitura/","query":"","screen":null,"require":null},
+  {"id":"labCertificados","module":"laboratorio","label":"Certificados de qualidade","path":"/unificado/laboratorio/certificados-qualidade/","query":"","screen":null,"require":null},
   {"id":"labUsinasRelatorios","module":"laboratorio","label":"Relatórios e custos de Campinas","path":"/unificado/laboratorio/usinas-relatorios/","query":"","screen":null,"require":null},
   {"id":"labCartaTraco","module":"laboratorio","label":"Carta traço e MCC","path":"/unificado/laboratorio/carta-traco/","query":"","screen":null,"require":null},
   {"id":"suprimentosPainel","module":"suprimentos","label":"Painel","path":"/unificado/suprimentos/painel/","query":"","screen":null,"require":null},

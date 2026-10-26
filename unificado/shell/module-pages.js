@@ -25,6 +25,13 @@
 
   function hide() { page.hidden = true; }
 
+  function shellHref(value) {
+    const url = new URL(value, location.origin);
+    if (url.origin !== location.origin || !url.pathname.startsWith(root)) return url.href;
+    const view = url.pathname.slice(root.length) + url.search + url.hash;
+    return root + '?view=' + encodeURIComponent(view) + url.hash;
+  }
+
   function itemLink(label, href, open) {
     const link = document.createElement('a');
     link.className = 'module-page-link';
@@ -95,7 +102,11 @@
           }));
         } else {
           const route = MENU_ITEMS[item.id];
-          grid.append(itemLink(item.label, route.url, () => {
+          const opensCertificateTab = moduleId === 'qualidade' &&
+            ['labCertificados', 'labCertificadosHistorico',
+              'labCertificadosCadastros', 'labTests'].includes(item.id);
+          const link = itemLink(item.label, shellHref(route.url), () => {
+            if (opensCertificateTab) return false;
             if (item.id === 'tvFormas') {
               if (matchMedia('(display-mode: standalone)').matches || navigator.standalone === true ||
                   navigator.userAgentData?.mobile === true || /iPhone|iPod|Android.*Mobile/i.test(navigator.userAgent)) return false;
@@ -104,7 +115,13 @@
             }
             if (!window.UnificadoRouter?.open) return false;
             window.UnificadoRouter.open(route.url, item.id);
-          }));
+          });
+          if (opensCertificateTab) {
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.setAttribute('aria-label', item.label + ' (abre em nova guia)');
+          }
+          grid.append(link);
         }
       }
       section.append(h2, grid);
