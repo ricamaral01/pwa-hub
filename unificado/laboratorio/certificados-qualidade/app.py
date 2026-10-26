@@ -357,7 +357,8 @@ def pdf(cert_id:int, actor:dict=Depends(user)):
     if cert['status']=='legado': raise HTTPException(404,'PDF legado não armazenado.')
     days=sorted({str(item['data_producao']) for item in items})
     rows=source_days(days,float(cert['fck_mpa']))
-    return Response(make_pdf(cert,items,rows,issued=False,logo_path=LOGO,verify_base=VERIFY),media_type='application/pdf')
+    if not Path(SIGNATURE).is_file(): raise HTTPException(503,'Assinatura do engenheiro indisponível.')
+    return Response(make_pdf(cert,items,rows,issued=False,signature_path=SIGNATURE,logo_path=LOGO,verify_base=VERIFY),media_type='application/pdf')
 
 
 @app.post('/api/prensas')

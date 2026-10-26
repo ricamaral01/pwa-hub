@@ -140,7 +140,7 @@ def main():
             draft_data = draft_pdf.content
         draft_obs = pdf_observation(draft_data, expanded=count <= 5)
         assert len(draft_obs['signature_lines_pt']) == 2
-        assert not draft_obs['signature_images_pt']
+        assert len(draft_obs['signature_images_pt']) == 1
         draft_path.write_bytes(draft_data)
         pymupdf.open(stream=draft_data, filetype='pdf')[0].get_pixmap(
             matrix=pymupdf.Matrix(2, 2), alpha=False).save(draft_path.with_suffix('.png'))

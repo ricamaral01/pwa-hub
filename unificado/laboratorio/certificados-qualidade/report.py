@@ -182,7 +182,7 @@ def _signatures(canvas, cert, issued, signature_path, expanded):
     canvas.setStrokeColor(INK); canvas.setLineWidth(.75)
     canvas.line(x1,line_y,x1+col,line_y)
     canvas.line(x2,line_y,x2+col,line_y)
-    if issued and signature_path and Path(signature_path).is_file():
+    if signature_path and Path(signature_path).is_file():
         height=54 if expanded else 37
         canvas.drawImage(signature_path,x2+col/2-58,line_y+2,
                          width=116,height=height,preserveAspectRatio=True,mask='auto')

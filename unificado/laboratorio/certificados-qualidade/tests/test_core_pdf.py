@@ -3,6 +3,7 @@ from datetime import date,timedelta
 from pathlib import Path
 
 import pytest
+from PIL import Image
 from pypdf import PdfReader
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
@@ -100,3 +101,22 @@ def test_missing_weight_renders_dash():
                 r28_media=40,resultado='conforme')
     text=PdfReader(__import__('io').BytesIO(make_pdf(cert,[item],[result],issued=False))).pages[0].extract_text()
     assert '—' in text
+
+
+def test_draft_pdf_includes_engineer_signature_and_remains_draft(tmp_path):
+    signature=tmp_path/'assinatura.png'
+    Image.new('RGB',(120,40),'white').save(signature)
+    day='2026-10-01'
+    cert=dict(numero=None,revisao=0,cliente='TESTE 1',endereco='Campinas',
+              nota_fiscal='123456',data_emissao=day,resp_laboratorio='Ricardo Do Amaral',
+              fck_mpa=35,prensa_snapshot={})
+    item=dict(modelo='C 10/2500',altura_m=10,carga_dan=2500,peso_kg=None,
+              quantidade=1,data_producao=day)
+    result=dict(data_producao=day,n_cps=2,r3_media=32.9,r7_media=39.1,
+                r28_media=None,resultado='aguardando_28_dias')
+    page=PdfReader(__import__('io').BytesIO(make_pdf(
+        cert,[item],[result],issued=False,signature_path=str(signature)))).pages[0]
+    assert len(page.images)==1
+    text=page.extract_text()
+    assert 'RASCUNHO' in text
+    assert 'Prévia de rascunho, sem validade comercial.' in text
