@@ -20,3 +20,13 @@ Fonte: `prompt-execucao-s0-s1.md`, aprovado por Ricardo em 25/10/2026. Esta pág
 | D14 | Notificações nesta fase só em badge/lista interna; push posterior. |
 
 Os itens D1–D14 são vinculantes. A implementação deve registrar qualquer impossibilidade real em `progresso.md` antes de parar.
+
+## Decisões F1 — compras e fornecedores
+
+| ID | Decisão |
+|---|---|
+| D15 | A fase S3A funciona em Campinas na homologação sem depender de estoque. O destino `COMPRA` do item aprovado alimenta a fila de cotação e o recebimento simples atende diretamente à solicitação de origem. |
+| D16 | Homologação de fornecedor exige parecer da QUALIDADE; somente `HOMOLOGADO` ou `HOMOLOGADO_CONDICIONAL` pode receber OC. Exceção emergencial requer aprovação da QUALIDADE no evento da cotação. |
+| D17 | Validade de homologação de 12 meses, mínimo de três propostas acima de R$ 1.000, retorno à alçada quando a OC excede o aprovado em 10%, pesos e faixas de IQF são parâmetros `a_confirmar` editáveis em Cadastros e alçadas. |
+| D18 | O envio de OC por e-mail permanece desligado por `S3A_EMAIL` até configuração e validação de SMTP. O envio manual registra o evento e preserva o PDF do pedido. |
+| D19 | O custo posto da proposta inclui preço líquido, IPI, ICMS-ST e frete FOB rateado; a recuperação fiscal de tributos depende de definição contábil futura e não é presumida. |

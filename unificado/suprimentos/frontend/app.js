@@ -72,6 +72,11 @@ async function loadPanel(){
     `<div class="kpi-grid"><section class="card kpi"><span class="label">Aguardando sua aprovação</span><span class="value">${mine.length}</span><small>${late} há mais de 24 h</small></section>
     <section class="card kpi alert"><span class="label">Em atendimento</span><span class="value">${active.length}</span><small>${urgent} urgentes / parou produção</small></section></div>
     <section class="card"><div class="section-head"><h2>Fila de trabalho</h2><a href="${path('solicitacoes')}">Ver todas →</a></div>${tableRows(state.rows.slice(0,20),true)}</section>`;
+  if(state.me?.flags?.S3A&&(hasRole('COMPRADOR')||hasRole('QUALIDADE')||canAdmin())){
+    try{const s=await api('/compras/resumo');app.insertAdjacentHTML('beforeend',`<div class="kpi-grid sup-purchase-kpis">
+      <section class="card kpi"><span class="label">Pedidos abertos</span><span class="value">${s.pedidos_abertos}</span><small>${s.pedidos_atrasados} atrasados</small></section>
+      <section class="card kpi"><span class="label">Fornecedores</span><span class="value">${s.homologacoes_pendentes}</span><small>em qualificação · ${s.documentos_vencendo} documentos vencendo</small></section></div>`)}catch(error){console.warn('Indicadores de compras indisponíveis',error.message)}
+  }
 }
 function tableRows(rows,panel=false){
   if(!rows.length)return empty('Nenhuma solicitação nesta fila','As novas solicitações aparecerão aqui.');
@@ -140,6 +145,12 @@ function renderDetail(){
     ${row.fotos.length?`<section class="card"><h2>Fotos</h2><div class="photo-list">${row.fotos.map(photo=>`<a href="${API}/solicitacoes/${row.id}/fotos/${photo.id}" target="_blank" rel="noopener">📷 ${esc(photo.nome_original)}</a>`).join('')}</div></section>`:'<p class="photo-empty">Sem fotos anexadas</p>'}</div>
     <aside class="card"><h2>Histórico</h2><ol class="timeline">${row.eventos.map(event=>`<li><strong>${esc(eventLabel(event,row.niveis_total))}</strong><span class="cell-muted">${esc(event.por_nome||'Sistema')}</span>${event.comentario?`<p>${esc(event.comentario)}</p>`:''}<time>${dateTime(event.em)}</time></li>`).join('')}</ol>${approver?'<div class="comment-box"><div class="field"><label for="comment">Comentário para devolver ou reprovar</label><textarea id="comment" placeholder="Explique o ajuste necessário"></textarea></div></div>':''}</aside></div>`;
   app.querySelectorAll('[data-action]').forEach(button=>button.onclick=()=>detailAction(button.dataset.action));
+  if(alm&&state.me?.flags?.S3A){
+    for(const item of row.itens.filter(x=>x.status==='PENDENTE'&&['APROVADA','EM_ATENDIMENTO'].includes(row.status))){
+      const group=app.querySelector(`[data-item-id="${item.id}"]`)?.closest('.item-row-actions');
+      if(group){const button=document.createElement('button');button.className='btn small soft';button.type='button';button.textContent=item.destino==='COMPRA'?'Destino: compra':'Enviar à compra';button.disabled=item.destino==='COMPRA';button.onclick=()=>itemAction(item.id,'comprar');group.append(button)}
+    }
+  }
   app.querySelectorAll('[data-item-action]').forEach(button=>button.onclick=()=>itemAction(button.dataset.itemId,button.dataset.itemAction));
 }
 async function detailAction(action){
@@ -150,7 +161,7 @@ async function detailAction(action){
   if(action==='confirmar')action='confirmar-recebimento';
   try{await data(`/solicitacoes/${row.id}/${action}`,body);toast('Solicitação atualizada.');await loadDetail();}catch(error){humanError(error);}
 }
-async function itemAction(id,action){let body={};if(action==='entregar'){const quantity=prompt('Quantidade entregue:')?.trim();if(!quantity)return;body.qtd=quantity;}if(action==='cancelar'){body.comentario=prompt('Motivo do cancelamento do item:')?.trim();if(!body.comentario)return;}try{await data(`/itens/${id}/${action}`,body);toast('Item atualizado.');await loadDetail();}catch(error){humanError(error);}}
+async function itemAction(id,action){let body={};if(action==='entregar'){const quantity=prompt('Quantidade entregue:')?.trim();if(!quantity)return;body.qtd=quantity;}if(action==='cancelar'){body.comentario=prompt('Motivo do cancelamento do item:')?.trim();if(!body.comentario)return;}try{if(action==='comprar')await data(`/compras/itens/${id}/destino`,{destino:'COMPRA'});else await data(`/itens/${id}/${action}`,body);toast('Item atualizado.');await loadDetail();}catch(error){humanError(error);}}
 
 async function loadNew(){
   const [catalog,measures]=await Promise.all([api('/cadastros/materiais?size=100'),api('/cadastros/unidades-medida?size=100')]);

@@ -71,11 +71,12 @@ def test_schema_seed_and_uuidv7(env):
     engine, _ = env
     with engine.connect() as conn:
         assert conn.execute(text("SELECT count(*) FROM suprimentos.sup_unidade_medida")).scalar_one() == 15
-        assert conn.execute(text("SELECT count(*) FROM suprimentos.sup_parametro WHERE a_confirmar")).scalar_one() == 6
+        assert conn.execute(text("SELECT count(*) FROM suprimentos.sup_parametro WHERE a_confirmar")).scalar_one() >= 6
         assert conn.execute(text("SELECT count(*) FROM suprimentos.sup_alcada WHERE a_confirmar")).scalar_one() == 2
         assert conn.execute(text("SELECT count(*) FROM suprimentos.sup_material")).scalar_one() == 0
         assert conn.execute(text("SELECT count(*) FROM suprimentos.sup_fornecedor")).scalar_one() == 0
-        assert conn.execute(text("SELECT bool_and(habilitado) FROM suprimentos.sup_flag WHERE unidade_id=1")).scalar_one()
+        assert conn.execute(text("SELECT bool_and(habilitado) FROM suprimentos.sup_flag WHERE unidade_id=1 AND fase IN ('S0','S1')")).scalar_one()
+        assert conn.execute(text("SELECT NOT habilitado FROM suprimentos.sup_flag WHERE unidade_id=1 AND fase='S3A'")).scalar_one()
     assert uuid7().version == 7
 
 def test_assertion_expiry_and_audience():

@@ -105,6 +105,16 @@ def unit_context(db: Session, user: Actor, unit_code: str, action: str, *, write
     check_action(ctx, action, write=write, db=db)
     return ctx
 
+def guard_legacy_supplier_write(db: Session, ctx, resource: str):
+    """Once S3-A is active, supplier changes must use its audited unit profile."""
+    if resource != "fornecedores":
+        return
+    flag = table("sup_flag")
+    enabled = db.execute(select(flag.c.habilitado).where(and_(
+        flag.c.unidade_id == ctx.unit_id, flag.c.fase == "S3A"))).scalar_one_or_none()
+    if enabled:
+        raise HTTPException(409, "Use a ficha de Fornecedores do módulo Compras")
+
 def key_where(t, key: str, ctx):
     primary = t.c.get("id")
     if primary is None:
@@ -199,6 +209,7 @@ def get_cadastro(resource: str, item_id: str, unidade: str = "campinas", user: A
 def create_cadastro(resource: str, payload: dict, unidade: str = "campinas", user: Actor = Depends(current_actor), db: Session = Depends(session)):
     name, action, unit_scoped, *_ = config(resource)
     ctx = unit_context(db, user, unidade, action, write=True)
+    guard_legacy_supplier_write(db, ctx, resource)
     values = normalize(resource, payload, creating=True)
     if unit_scoped:
         values["unidade_id"] = ctx.unit_id
@@ -219,6 +230,7 @@ def create_cadastro(resource: str, payload: dict, unidade: str = "campinas", use
 def edit_cadastro(resource: str, item_id: str, payload: dict, unidade: str = "campinas", user: Actor = Depends(current_actor), db: Session = Depends(session)):
     name, action, _unit, *_ = config(resource)
     ctx = unit_context(db, user, unidade, action, write=True)
+    guard_legacy_supplier_write(db, ctx, resource)
     values = normalize(resource, payload, creating=False)
     for immutable in ("material_id", "iam_user_id", "fase", "chave", "codigo"):
         if immutable in values and resource in {"materiais-unidade", "usuarios-papeis", "flags", "parametros"}:
@@ -244,6 +256,7 @@ def status_cadastro(resource: str, item_id: str, payload: dict, unidade: str = "
     if set(payload) != {"ativo"} or not isinstance(payload["ativo"], bool):
         raise HTTPException(422, "Informe ativo=true/false")
     ctx = unit_context(db, user, unidade, action, write=True)
+    guard_legacy_supplier_write(db, ctx, resource)
     t = table(name)
     row = db.execute(update(t).where(key_where(t, item_id, ctx)).values(
         ativo=payload["ativo"], atualizado_por=user.id, atualizado_em=datetime.now(timezone.utc)).returning(t)).mappings().one_or_none()
@@ -258,6 +271,7 @@ async def import_csv(resource: str, arquivo: UploadFile = File(...), unidade: st
     if resource not in {"materiais", "fornecedores"}:
         raise HTTPException(404, "Importação indisponível")
     ctx = unit_context(db, user, unidade, RESOURCE[resource][1], write=True)
+    guard_legacy_supplier_write(db, ctx, resource)
     raw = await arquivo.read(2_000_001)
     if len(raw) > 2_000_000:
         raise HTTPException(413, "CSV excede 2 MB")

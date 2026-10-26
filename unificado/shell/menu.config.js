@@ -167,9 +167,9 @@ const MENU_CONFIG = {
         { id:'suprimentosInventario', label:'Inventário', path:'inventario/', futurePhase:'S2' }
       ] },
       { label: 'Compras', items: [
-        { id:'suprimentosCotacoes', label:'Cotações e pedidos', path:'cotacoes/', futurePhase:'S3' },
+        { id:'suprimentosCotacoes', label:'Cotações e pedidos', path:'cotacoes/', futurePhase:'S3A' },
         { id:'suprimentosRecebimento', label:'Recebimento', path:'recebimento/', futurePhase:'S3' },
-        { id:'suprimentosFornecedores', label:'Fornecedores', path:'fornecedores/' }
+        { id:'suprimentosFornecedores', label:'Fornecedores', path:'fornecedores/', futurePhase:'S3A' }
       ] },
       { label: 'Administração', items: [
         { id:'suprimentosCadastros', label:'Cadastros e alçadas', path:'cadastros/' }

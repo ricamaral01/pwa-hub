@@ -1,0 +1,354 @@
+[
+  {
+    "size": "1440x900",
+    "zoom": 100,
+    "menu": "aberto",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-1440x900-z100-aberto.png"
+  },
+  {
+    "size": "1440x900",
+    "zoom": 100,
+    "menu": "recolhido",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-1440x900-z100-recolhido.png"
+  },
+  {
+    "size": "1440x900",
+    "zoom": 125,
+    "menu": "aberto",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-1440x900-z125-aberto.png"
+  },
+  {
+    "size": "1440x900",
+    "zoom": 125,
+    "menu": "recolhido",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-1440x900-z125-recolhido.png"
+  },
+  {
+    "size": "820x1180",
+    "zoom": 100,
+    "menu": "aberto",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-820x1180-z100-aberto.png"
+  },
+  {
+    "size": "820x1180",
+    "zoom": 100,
+    "menu": "recolhido",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-820x1180-z100-recolhido.png"
+  },
+  {
+    "size": "820x1180",
+    "zoom": 125,
+    "menu": "aberto",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-820x1180-z125-aberto.png"
+  },
+  {
+    "size": "820x1180",
+    "zoom": 125,
+    "menu": "recolhido",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-820x1180-z125-recolhido.png"
+  },
+  {
+    "size": "390x844",
+    "zoom": 100,
+    "menu": "aberto",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-390x844-z100-aberto.png"
+  },
+  {
+    "size": "390x844",
+    "zoom": 100,
+    "menu": "recolhido",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-390x844-z100-recolhido.png"
+  },
+  {
+    "size": "390x844",
+    "zoom": 125,
+    "menu": "aberto",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-390x844-z125-aberto.png"
+  },
+  {
+    "size": "390x844",
+    "zoom": 125,
+    "menu": "recolhido",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-390x844-z125-recolhido.png"
+  },
+  {
+    "size": "360x780",
+    "zoom": 100,
+    "menu": "aberto",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-360x780-z100-aberto.png"
+  },
+  {
+    "size": "360x780",
+    "zoom": 100,
+    "menu": "recolhido",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-360x780-z100-recolhido.png"
+  },
+  {
+    "size": "360x780",
+    "zoom": 125,
+    "menu": "aberto",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-360x780-z125-aberto.png"
+  },
+  {
+    "size": "360x780",
+    "zoom": 125,
+    "menu": "recolhido",
+    "opcoes_categorias": 3,
+    "epi_excluido": true,
+    "filtro_situacao": true,
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      {
+        "status": 403,
+        "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+      }
+    ],
+    "screenshot": "convite-360x780-z125-recolhido.png"
+  }
+]

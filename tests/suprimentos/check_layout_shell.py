@@ -51,11 +51,12 @@ def context_for(browser, actor, width, height, zoom, passwords, token):
     mobile=width<768
     ctx=browser.new_context(viewport={"width":css_width,"height":css_height},
                             device_scale_factor=factor,is_mobile=mobile,has_touch=mobile)
-    if actor=="ricardo.teste":
+    if token:
         ctx.add_cookies([{"name":"mapa_unificado_homolog_session","value":token,
                           "domain":"concrefer.concretrack.com.br","path":"/unificado/",
                           "httpOnly":True,"secure":True,"sameSite":"Lax"}])
-        user={"id":actor,"name":"Ricardo","role":"GERENCIA","setor":"Todos"}
+        user={"id":actor,"name":"Ricardo" if actor=="ricardo.teste" else actor,
+              "role":"GERENCIA" if actor=="ricardo.teste" else "USUARIO","setor":"Todos"}
     else:
         response=ctx.request.post(ROOT+"/unificado/mapa/api/login",
                                   data={"name":actor,"password":passwords[actor]})

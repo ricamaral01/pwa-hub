@@ -553,5 +553,6 @@
   {"id":"suprimentosSolicitacoes","module":"suprimentos","label":"Solicitações","path":"/unificado/suprimentos/solicitacoes/","query":"","screen":null,"require":null},
   {"id":"suprimentosNova","module":"suprimentos","label":"Nova solicitação","path":"/unificado/suprimentos/nova/","query":"","screen":null,"require":null},
   {"id":"suprimentosFornecedores","module":"suprimentos","label":"Fornecedores","path":"/unificado/suprimentos/fornecedores/","query":"","screen":null,"require":null},
+  {"id":"suprimentosCotacoes","module":"suprimentos","label":"Cotações e pedidos","path":"/unificado/suprimentos/cotacoes/","query":"","screen":null,"require":null},
   {"id":"suprimentosCadastros","module":"suprimentos","label":"Cadastros e alçadas","path":"/unificado/suprimentos/cadastros/","query":"","screen":null,"require":null}
 ]

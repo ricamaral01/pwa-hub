@@ -19,9 +19,9 @@ from .db import session, table
 ROLE_ACTIONS = {
     "SOLICITANTE": frozenset({"catalogo.ver", "solicitacao.criar", "solicitacao.ver_propria", "solicitacao.confirmar"}),
     "APROVADOR": frozenset({"catalogo.ver", "solicitacao.ver_alcada", "solicitacao.aprovar", "solicitacao.devolver", "solicitacao.reprovar"}),
-    "ALMOXARIFE": frozenset({"catalogo.ver", "cadastro.local", "cadastro.material_unidade", "solicitacao.ver_unidade", "solicitacao.separar", "solicitacao.entregar", "solicitacao.vincular_material"}),
-    "COMPRADOR": frozenset({"catalogo.ver", "cadastro.material", "cadastro.fornecedor", "solicitacao.ver_unidade", "solicitacao.precificar", "solicitacao.vincular_material"}),
-    "QUALIDADE": frozenset({"catalogo.ver", "cadastro.fornecedor", "solicitacao.ver_unidade"}),
+    "ALMOXARIFE": frozenset({"catalogo.ver", "cadastro.local", "cadastro.material_unidade", "solicitacao.ver_unidade", "solicitacao.separar", "solicitacao.entregar", "solicitacao.vincular_material", "compras.receber", "fornecedor.avaliar"}),
+    "COMPRADOR": frozenset({"catalogo.ver", "cadastro.material", "cadastro.fornecedor", "solicitacao.ver_unidade", "solicitacao.precificar", "solicitacao.vincular_material", "compras.cotar", "compras.pedido", "fornecedor.ver", "fornecedor.editar", "fornecedor.avaliar"}),
+    "QUALIDADE": frozenset({"catalogo.ver", "cadastro.fornecedor", "solicitacao.ver_unidade", "fornecedor.ver", "fornecedor.homologar", "fornecedor.avaliar"}),
     "ADMIN": frozenset({"*"}),
 }
 
