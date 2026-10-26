@@ -40,3 +40,13 @@ Os itens D1–D14 são vinculantes. A implementação deve registrar qualquer im
 | D22 | Inventário cíclico é cego até o corte; movimentos posteriores permanecem. Diferença de EPI exige aprovação por outro almoxarife; para os demais, diferença acima de R$ 200 e fora da tolerância de 2% exige aprovação. Os dois valores estão em `sup_parametro` com `a_confirmar=true`. |
 | D23 | O ponto de pedido usa consumo dos últimos 30 dias × (lead time + dias de segurança). A sugestão reaproveita `sup_sugestao_ressuprimento`; o comprador informa o CC ao confirmar, criando uma solicitação em rascunho que segue à aprovação normal. Sugestões ativas ou já confirmadas com solicitação aberta não se duplicam. |
 | D24 | A valoração definitiva do recebimento de NF (item + IPI + frete rateado, sem crédito presumido de ICMS) entra na F3; a entrada manual da F2 exige custo unitário informado e mantém o custo médio móvel. O tratamento fiscal permanece `a_confirmar` pela contabilidade. |
+
+## Decisões F3 — recebimento, NF e inspeção
+
+| ID | Decisão |
+|---|---|
+| D25 | Leitura de NF usa a fila transacional `sup_nf_job` e um timer próprio de um minuto. Provedor é configurado por URL e chave de ambiente. Sem ambos, o job fica `DESLIGADO` e o fluxo manual segue. O JSON sugerido nunca altera campos confirmados sem ação humana. |
+| D26 | O frete total da NF é rateado pelo valor `quantidade contada × preço da NF` de cada item liberado, arredondado a centavos com resíduo no último item. Custo de entrada = item + IPI + frete; não presume crédito de ICMS. A regra fiscal continua provisória para validação contábil. |
+| D27 | O IQF automático usa prazo, quantidade, qualidade e documentação do recebimento. Atendimento começa com nota provisória 3/5 e é confirmado manualmente, com evento e recálculo da média móvel de 12 meses. A avaliação estornada permanece no histórico, excluída da média vigente. |
+| D28 | Reprovação gera `sup_nc_pendente` com chave idempotente e fila visível à Qualidade. A integração automática serviço a serviço aguarda contrato de autenticação da Qualidade; não será usada a sessão privilegiada do operador. |
+| D29 | Recebimento confirmado só é corrigido por estorno e documento de versão seguinte. Movimentos do estoque são compensados, a entrega histórica recebe marca de estorno e a avaliação IQF é preservada como estornada. Não há exclusão física. |

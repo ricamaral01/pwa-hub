@@ -67,7 +67,7 @@
     if (path === 'qualidade/' || path === 'qualidade/abrir' ||
         path === 'qualidade/cadastros' || /^qualidade\/nc\/[a-zA-Z0-9-]+$/.test(path))
       return {url, module:'qualidade', path};
-    if (/^suprimentos\/(?:painel|solicitacoes|solicitacao|nova|fornecedores|cotacoes|almoxarifado|inventario|cadastros)\/$/.test(path))
+    if (/^suprimentos\/(?:painel|solicitacoes|solicitacao|nova|fornecedores|cotacoes|recebimento|almoxarifado|inventario|cadastros)\/$/.test(path))
       return {url, module:'suprimentos', path};
     return null;
   }
@@ -81,6 +81,7 @@
     if (route.module === 'suprimentos' && route.path === 'suprimentos/solicitacao/') return 'suprimentosSolicitacoes';
     if (route.module === 'suprimentos' && route.path === 'suprimentos/fornecedores/') return 'suprimentosFornecedores';
     if (route.module === 'suprimentos' && route.path === 'suprimentos/cotacoes/') return 'suprimentosCotacoes';
+    if (route.module === 'suprimentos' && route.path === 'suprimentos/recebimento/') return 'suprimentosRecebimento';
     const found = Object.entries(MENU_ITEMS).find(([, item]) => item.url === route.url.href);
     if (found) return found[0];
     if (route.module === 'producao' && !route.url.search) return 'liberacao';

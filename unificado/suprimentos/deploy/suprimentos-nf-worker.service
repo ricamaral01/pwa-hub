@@ -1,0 +1,15 @@
+[Unit]
+Description=Suprimentos NF outbox worker (homologacao)
+After=network-online.target postgresql.service
+
+[Service]
+Type=oneshot
+User=concrefer-suprimentos
+Group=concrefer-suprimentos
+WorkingDirectory=/opt/concrefer-unificado/homolog-next/suprimentos/service
+EnvironmentFile=/etc/concrefer-unificado/homolog/suprimentos.env
+ExecStart=/opt/concrefer-unificado/homolog-next/suprimentos/venv/bin/python -m suprimentos.nf_worker
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/concrefer-unificado/homolog-next/suprimentos/data

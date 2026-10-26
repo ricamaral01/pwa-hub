@@ -477,7 +477,8 @@ def evaluate(supplier_id: str, data: dict, unidade: str = "campinas",
         iqf=weighted, **audit(user)))
     start = datetime.now(UTC) - timedelta(days=365)
     average = db.execute(select(func.avg(t.c.iqf)).where(and_(t.c.unidade_id == ctx.unit_id,
-        t.c.fornecedor_unidade_id == row["id"], t.c.avaliado_em >= start))).scalar_one()
+        t.c.fornecedor_unidade_id == row["id"], t.c.avaliado_em >= start,
+        t.c.estornada_em.is_(None)))).scalar_one()
     previous = Decimal(row["iqf"]) if row["iqf"] is not None else None
     current = money(average)
     trend = "SUBINDO" if previous is not None and current > previous else (
@@ -1278,6 +1279,10 @@ def simple_receive(order_id: str, data: dict, unidade: str = "campinas",
                    user: Actor = Depends(current_actor), db: Session = Depends(session)):
     """F1: recebimento digitado e cross-docking, sem livro de estoque da F2/F3."""
     ctx = gate(db, user, unidade, "compras.receber")
+    f = table("sup_flag")
+    if db.execute(select(f.c.habilitado).where(and_(f.c.unidade_id == ctx.unit_id,
+            f.c.fase == "S3B"))).scalar_one_or_none():
+        raise HTTPException(409, "Use Recebimento com NF e inspeção para esta unidade")
     row = order(db, ctx, order_id, lock=True)
     require_order_scope(db, ctx, row, "compras.receber")
     if row["status"] not in {"ENVIADO", "PARCIAL"}:

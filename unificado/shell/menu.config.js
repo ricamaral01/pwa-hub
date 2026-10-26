@@ -168,7 +168,7 @@ const MENU_CONFIG = {
       ] },
       { label: 'Compras', items: [
         { id:'suprimentosCotacoes', label:'Cotações e pedidos', path:'cotacoes/', futurePhase:'S3A' },
-        { id:'suprimentosRecebimento', label:'Recebimento', path:'recebimento/', futurePhase:'S3' },
+        { id:'suprimentosRecebimento', label:'Recebimento', path:'recebimento/', futurePhase:'S3B' },
         { id:'suprimentosFornecedores', label:'Fornecedores', path:'fornecedores/', futurePhase:'S3A' }
       ] },
       { label: 'Administração', items: [

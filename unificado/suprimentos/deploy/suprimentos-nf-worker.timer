@@ -1,0 +1,10 @@
+[Unit]
+Description=Suprimentos NF outbox every minute (homologacao)
+
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=1min
+Unit=suprimentos-nf-worker.service
+
+[Install]
+WantedBy=timers.target
