@@ -2,7 +2,7 @@
 
 ## Resultado
 
-A correção está em homologação (`:18446`) e produção. A versão publicada da casca é **1.0.97**. Os logins IAM `user-ricardo`, `philippe`, `alex` e `marcelo` recebem todas as telas distintas do catálogo do Unificado. O catálogo tem 94 linhas e 93 IDs distintos, pois `formasPorSetor` já aparece duas vezes.
+O menu e a regra de acesso estão em homologação (`:18446`) e produção. A rota Nginx da Dosagem nativa foi ativada em produção, onde o serviço está instalado; não há backend isolado de Dosagem em `:18446`. A versão publicada da casca é **1.0.97**. Os logins IAM `user-ricardo`, `philippe`, `alex` e `marcelo` recebem todas as telas distintas do catálogo do Unificado. O catálogo tem 94 linhas e 93 IDs distintos, pois `formasPorSetor` já aparece duas vezes.
 
 No menu de **Qualidade → Certificados**, aparecem **Certificados de qualidade** e **Certificados de ensaios**. O segundo abre o histórico de ensaios de postes, onde o documento disponível é o **Laudo PDF**. Não foi encontrada uma emissão independente chamada “certificado de ensaios”; a navegação aponta para o documento existente, sem mudar o conteúdo do laudo.
 
@@ -41,4 +41,4 @@ O script de deploy restaura automaticamente os arquivos e reinicia o serviço Ma
 
 ## Limite do ensaio
 
-A navegação foi verificada por catálogo, resolução das URLs, regras de menu e requisições autenticadas aos serviços. Não houve captura visual de uma sessão interativa de cada usuário. PedeRH e FaleAqui possuem autenticação própria fora do catálogo de telas do Unificado e não foram alterados nesta correção.
+A navegação foi verificada por catálogo, resolução das URLs, regras de menu e requisições autenticadas aos serviços de produção. Não houve captura visual de uma sessão interativa de cada usuário. PedeRH e FaleAqui possuem autenticação própria fora do catálogo de telas do Unificado e não foram alterados nesta correção. A branch local ainda diverge de outras partes já publicadas; o deploy desta correção usou cópias verificadas dos arquivos em produção, sem publicar a árvore inteira.
