@@ -11,7 +11,7 @@
   function load() {
     if (started || !document.body.classList.contains('unificado-model-a')) return;
     started = true;
-    import('./modelo-a/menu.js?v=1.0.46-pederneiras').catch(showFallback);
+    import('./modelo-a/menu.js?v=1.0.107-ribeirao').catch(showFallback);
     setTimeout(() => {
       if (!document.querySelector('#sidebar-model-a .sb')) showFallback();
     }, 8000);

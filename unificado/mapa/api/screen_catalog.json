@@ -371,6 +371,26 @@
     "path": "/unificado/producao/pederneiras/", "query": "?tab=produtos", "screen": null, "require": null
   },
   {
+    "id": "rbrApontamento", "module": "producao", "label": "Apontamento do dia",
+    "path": "/unificado/producao/ribeirao/", "query": "?tab=apontamento", "screen": null, "require": null
+  },
+  {
+    "id": "rbrMaoDeObra", "module": "producao", "label": "Mão de obra",
+    "path": "/unificado/producao/ribeirao/", "query": "?tab=mao-de-obra", "screen": null, "require": null
+  },
+  {
+    "id": "rbrMensal", "module": "producao", "label": "Produção Ribeirão",
+    "path": "/unificado/producao/ribeirao/", "query": "?tab=mensal", "screen": null, "require": null
+  },
+  {
+    "id": "rbrIndicadores", "module": "producao", "label": "Indicadores",
+    "path": "/unificado/producao/ribeirao/", "query": "?tab=indicadores", "screen": null, "require": null
+  },
+  {
+    "id": "rbrProdutos", "module": "producao", "label": "Cadastro de produtos",
+    "path": "/unificado/producao/ribeirao/", "query": "?tab=produtos", "screen": null, "require": null
+  },
+  {
     "id": "fechamentoDiario",
     "module": "producao",
     "label": "Fechamento Diário",
@@ -566,5 +586,17 @@
   {"id":"labCecAnalise","module":"laboratorio","label":"Análise estatística","path":"/unificado/laboratorio/cec/analise/","query":"","screen":null,"require":null},
   {"id":"labCecEtiquetas","module":"laboratorio","label":"Etiquetas QR","path":"/unificado/laboratorio/cec/etiquetas/","query":"","screen":null,"require":null},
   {"id":"labCecLeitura","module":"laboratorio","label":"Leitura de CP","path":"/unificado/laboratorio/cec/leitura/","query":"","screen":null,"require":null},
-  {"id":"labCertificados","module":"laboratorio","label":"Certificados de qualidade","path":"/unificado/laboratorio/certificados-qualidade/","query":"","screen":null,"require":null}
+  {"id":"labCertificados","module":"laboratorio","label":"Certificados de qualidade","path":"/unificado/laboratorio/certificados-qualidade/","query":"","screen":null,"require":null},
+  {"id":"labUsinasRelatorios","module":"laboratorio","label":"Relatórios e custos de Campinas","path":"/unificado/laboratorio/usinas-relatorios/","query":"","screen":null,"require":null},
+  {"id":"labCartaTraco","module":"laboratorio","label":"Carta traço e MCC","path":"/unificado/laboratorio/carta-traco/","query":"","screen":null,"require":null},
+  {"id":"suprimentosPainel","module":"suprimentos","label":"Painel","path":"/unificado/suprimentos/painel/","query":"","screen":null,"require":null},
+  {"id":"suprimentosSolicitacoes","module":"suprimentos","label":"Solicitações","path":"/unificado/suprimentos/solicitacoes/","query":"","screen":null,"require":null},
+  {"id":"suprimentosNova","module":"suprimentos","label":"Nova solicitação","path":"/unificado/suprimentos/nova/","query":"","screen":null,"require":null},
+  {"id":"suprimentosAlmoxarifado","module":"suprimentos","label":"Almoxarifado","path":"/unificado/suprimentos/almoxarifado/","query":"","screen":null,"require":null},
+  {"id":"suprimentosInventario","module":"suprimentos","label":"Inventário","path":"/unificado/suprimentos/inventario/","query":"","screen":null,"require":null},
+  {"id":"suprimentosFornecedores","module":"suprimentos","label":"Fornecedores","path":"/unificado/suprimentos/fornecedores/","query":"","screen":null,"require":null},
+  {"id":"suprimentosCotacoes","module":"suprimentos","label":"Cotações e pedidos","path":"/unificado/suprimentos/cotacoes/","query":"","screen":null,"require":null},
+  {"id":"suprimentosRecebimento","module":"suprimentos","label":"Recebimento","path":"/unificado/suprimentos/recebimento/","query":"","screen":null,"require":null},
+  {"id":"suprimentosIndicadores","module":"suprimentos","label":"Indicadores","path":"/unificado/suprimentos/analises/","query":"","screen":null,"require":null},
+  {"id":"suprimentosCadastros","module":"suprimentos","label":"Cadastros e alçadas","path":"/unificado/suprimentos/cadastros/","query":"","screen":null,"require":null}
 ]

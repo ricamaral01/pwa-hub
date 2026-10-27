@@ -6,6 +6,7 @@ const MAPA_BASE = new URL('mapa/', UNIFICADO_BASE);
 const LAB_BASE = new URL('laboratorio/', UNIFICADO_BASE);
 const QUALITY_BASE = new URL('qualidade/', UNIFICADO_BASE);
 const USINAS_BASE = new URL('usinas/', UNIFICADO_BASE);
+const SUPRIMENTOS_BASE = new URL('suprimentos/', UNIFICADO_BASE);
 
 const MENU_CONFIG = {
   planejamento: {
@@ -69,7 +70,8 @@ const MENU_CONFIG = {
         { id: 'historico', mono: 'HI', label: 'Histórico', path: '/index.html', screen: 'HISTORICO' },
         { id: 'acmpConcretagem', mono: 'CC', label: 'Acmp. Concretagem', path: '/index.html', screen: 'ACMP_CONCRETAGEM' },
         { id: 'manutencao', mono: 'MF', label: 'Manutenção Formas', path: '/index.html', screen: 'RELATORIO_MANUTENCAO' },
-        { id: 'tratativa', mono: 'TD', label: 'Tratativa Defeitos', path: '/index.html', screen: 'TRATATIVA_DEFEITOS' }
+        { id: 'tratativa', mono: 'TD', label: 'Tratativa Defeitos', path: '/index.html', screen: 'TRATATIVA_DEFEITOS' },
+        { id: 'fechamentoDiario', label: 'Fechamento diário', path: '/unificado/relatorios/fechamento-diario/' }
       ] },
       { label: 'Campinas · Indicadores', items: [
         { id: 'dashMontagem', mono: 'DM', label: 'Dashboard Montagem', path: '/index.html', screen: 'MONTAGEM_INDICADORES' },
@@ -83,6 +85,13 @@ const MENU_CONFIG = {
         { id: 'pdrMensal', mono: 'PM', label: 'Produção Pederneiras', path: 'mensal', pederneiras: true },
         { id: 'pdrIndicadores', mono: 'IN', label: 'Indicadores', path: 'indicadores', pederneiras: true },
         { id: 'pdrProdutos', mono: 'CP', label: 'Cadastro de produtos', path: 'produtos', pederneiras: true }
+      ] },
+      { label: 'Ribeirão', items: [
+        { id: 'rbrApontamento', mono: 'AP', label: 'Apontamento do dia', path: 'apontamento', ribeirao: true },
+        { id: 'rbrMaoDeObra', mono: 'MO', label: 'Mão de obra', path: 'mao-de-obra', ribeirao: true },
+        { id: 'rbrMensal', mono: 'PM', label: 'Produção Ribeirão', path: 'mensal', ribeirao: true },
+        { id: 'rbrIndicadores', mono: 'IN', label: 'Indicadores', path: 'indicadores', ribeirao: true },
+        { id: 'rbrProdutos', mono: 'CP', label: 'Cadastro de produtos', path: 'produtos', ribeirao: true }
       ] }
     ]
   },
@@ -93,7 +102,13 @@ const MENU_CONFIG = {
       { id:'qualidadeAbertura', label:'Abrir NC', path:'abrir' },
       { id:'qualidadeResultadosBancada', label:'Resultados de bancada', path:'resultados-bancada' },
       { id:'qualidadeCadastros', label:'Cadastros', path:'cadastros' }
-    ] }]
+    ] },
+      { label: 'Certificados', items: [
+        { id:'labCertificados', label:'Emitir certificado de qualidade', path:'/unificado/laboratorio/certificados-qualidade/' },
+        { id:'labCertificadosHistorico', label:'Histórico de certificados', path:'/unificado/laboratorio/certificados-qualidade/?tab=historico', permissionId:'labCertificados' },
+        { id:'labCertificadosCadastros', label:'Cadastros de certificados', path:'/unificado/laboratorio/certificados-qualidade/?tab=cadastros', permissionId:'labCertificados' },
+        { id:'labTests', label:'Certificados de ensaios', path:'/unificado/laboratorio/novo/postes?tab=historico' }
+      ] }]
   },
   usinas: {
     label: 'Usinas',
@@ -114,6 +129,7 @@ const MENU_CONFIG = {
       ] },
       { label: 'Controle estatístico', items: [
         { id:'labCec', label:'Visão geral', path:'cec/' },
+        { id:'labCecRompimentosMes', label:'Rompimentos por mês', path:'cec/rompimentos-mes/', permissionId:'labCec' },
         { id:'labCecAnalise', label:'Análise estatística', path:'cec/analise/', permissionId:'labCec' },
         { id:'labCecRelatorio', label:'Relatório CEC', path:'cec/analise/relatorio.html', permissionId:'labCec' }
       ] },
@@ -135,6 +151,9 @@ const MENU_CONFIG = {
       ] },
       { label: 'Concreto fresco', items: [
         { id:'labSlump', label:'Registro de slump / flow', path:'slump' }
+      ] },
+      { label: 'Usina de Campinas', items: [
+        { id:'labUsinasRelatorios', label:'Relatórios e custos', path:'usinas-relatorios/' }
       ] },
       { label: 'Cura térmica', items: [
         { id:'labMonitor', label:'Monitoramento', path:'' },
@@ -158,7 +177,34 @@ const MENU_CONFIG = {
         { id:'cronoanalise.simular', label:'Simular', path:'cronoanalise/simular' },
         { id:'cronoanalise.metodologia', label:'Metodologia', path:'cronoanalise/metodologia' }
       ] },
+      { label: 'Carta de traço', items: [
+        { id:'labCartaTraco', label:'Carta de traço e MCC', path:'carta-traco/' }
+      ] },
+      { label: 'Administração', items: [
+        { id:'labUsuarios', label:'Usuários', path:'novo/postes?tab=usuarios' }
+      ] },
       { items: [{ id:'labHelp', label:'Como funciona', path:'?view=help' }] }
+    ]
+  },
+  suprimentos: {
+    label: 'Suprimentos',
+    groups: [
+      { label: 'Solicitações', items: [
+        { id:'suprimentosPainel', label:'Painel', path:'painel/' },
+        { id:'suprimentosSolicitacoes', label:'Solicitações', path:'solicitacoes/' },
+        { id:'suprimentosNova', label:'Nova solicitação', path:'nova/' },
+        { id:'suprimentosAlmoxarifado', label:'Almoxarifado', path:'almoxarifado/', futurePhase:'S2' },
+        { id:'suprimentosInventario', label:'Inventário', path:'inventario/', futurePhase:'S2' }
+      ] },
+      { label: 'Compras', items: [
+        { id:'suprimentosCotacoes', label:'Cotações e pedidos', path:'cotacoes/', futurePhase:'S3A' },
+        { id:'suprimentosRecebimento', label:'Recebimento', path:'recebimento/', futurePhase:'S3B' },
+        { id:'suprimentosFornecedores', label:'Fornecedores', path:'fornecedores/', futurePhase:'S3A' },
+        { id:'suprimentosIndicadores', label:'Indicadores', path:'analises/', futurePhase:'S5' }
+      ] },
+      { label: 'Administração', items: [
+        { id:'suprimentosCadastros', label:'Cadastros e alçadas', path:'cadastros/' }
+      ] }
     ]
   }
 };
@@ -175,6 +221,8 @@ const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([modu
       item.id === 'testeProgramacao' ? 'ADMIN' : null) : null,
     url: module === 'usinas'
       ? new URL(item.path, USINAS_BASE).href
+      : module === 'suprimentos'
+      ? new URL(item.path, SUPRIMENTOS_BASE).href
       : module === 'qualidade'
       ? new URL(item.path, QUALITY_BASE).href
       : module === 'laboratorio'
@@ -183,8 +231,12 @@ const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([modu
       ? new URL(item.path.replace(/^\/pages\//, ''), PCP_BASE).href
       : item.pederneiras
       ? new URL(`producao/pederneiras/?tab=${encodeURIComponent(item.path)}`, UNIFICADO_BASE).href
+      : item.ribeirao
+      ? new URL(`producao/ribeirao/?tab=${encodeURIComponent(item.path)}`, UNIFICADO_BASE).href
       : item.id === 'tvFormas'
       ? new URL('tv/formas/', UNIFICADO_BASE).href
+      : item.id === 'fechamentoDiario'
+      ? new URL('relatorios/fechamento-diario/', UNIFICADO_BASE).href
       : new URL(`operacao/?tela=${encodeURIComponent(item.screen)}`, MAPA_BASE).href,
     available: true
   }]))

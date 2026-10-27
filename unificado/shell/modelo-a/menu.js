@@ -5821,10 +5821,11 @@ function Gf(v) {
           R.items.map(q)
         ] }, R.title)) }),
         /* @__PURE__ */ w.jsxs("div", { className: "sb-footer", children: [
-          v.updateAvailable && /* @__PURE__ */ w.jsxs("button", { type: "button", className: "sb-update", "data-tip": "Atualizar aplicativo", onClick: v.onUpdate, children: [
+          /* @__PURE__ */ w.jsxs("button", { type: "button", className: "sb-update", "data-state": v.updateState, "data-tip": "Estado da atualização", disabled: v.updateState === "updating" || v.updateState === "checking", onClick: v.updateState === "current" ? v.onCheck : v.onUpdate, children: [
             /* @__PURE__ */ w.jsx("span", { className: "sb-update-dot", "aria-hidden": "true" }),
-            /* @__PURE__ */ w.jsx("span", { className: "sb-label", children: "Nova versão — atualizar" })
+            /* @__PURE__ */ w.jsx("span", { className: "sb-label", children: v.updateState === "available" ? `Nova versão ${v.latestVersion} — toque para atualizar` : v.updateState === "updating" ? "Atualizando… não feche" : v.updateState === "failed" ? "Não atualizou — tentar de novo" : v.updateState === "checking" ? "Verificando versão…" : `Versão ${v.version} · em dia · Verificar` })
           ] }),
+          v.updateFailures >= 2 && /* @__PURE__ */ w.jsx("button", { type: "button", className: "sb-update-reset", onClick: v.onClearUpdateCache, children: "Recarregar e limpar cache" }),
           v.footerItems.map(q),
           /* @__PURE__ */ w.jsxs("div", { className: "sb-user", children: [
             /* @__PURE__ */ w.jsx("span", { className: "sb-avatar", "aria-hidden": "true", children: v.user.name.trim().charAt(0).toUpperCase() }),
@@ -5867,7 +5868,8 @@ const Dn = {
   qualidade: "#2FB38A",
   laboratorio: "#F2B705",
   usinas: "#168E9A",
-  ged: "#9B7BF0"
+  ged: "#9B7BF0",
+  suprimentos: "#2DD4BF"
 }, ji = (v) => "/unificado/?view=" + encodeURIComponent(v), xe = (v, I) => ({
   title: v,
   items: I.map(([m, Q, K, G, ee]) => ({ id: m, label: Q, href: ji(K), icon: G, ...ee ? { badge: ee } : {} }))
@@ -5928,7 +5930,8 @@ const Dn = {
       ["historico", "Histórico", Se("HISTORICO"), "history"],
       ["acmpConcretagem", "Acmp. Concretagem", Se("ACMP_CONCRETAGEM"), "sliders"],
       ["manutencao", "Manutenção Formas", Se("RELATORIO_MANUTENCAO"), "sliders"],
-      ["tratativa", "Tratativa Defeitos", Se("TRATATIVA_DEFEITOS"), "alert"]
+      ["tratativa", "Tratativa Defeitos", Se("TRATATIVA_DEFEITOS"), "alert"],
+      ["fechamentoDiario", "Fechamento diário", "relatorios/fechamento-diario/", "doc"]
     ]),
     xe("CAMPINAS · INDICADORES", [
       ["dashMontagem", "Dashboard Montagem", Se("MONTAGEM_INDICADORES"), "map"],
@@ -5942,6 +5945,13 @@ const Dn = {
       ["pdrMensal", "Produção Pederneiras", "producao/pederneiras/?tab=mensal", "map"],
       ["pdrIndicadores", "Indicadores", "producao/pederneiras/?tab=indicadores", "map"],
       ["pdrProdutos", "Cadastro de produtos", "producao/pederneiras/?tab=produtos", "database"]
+    ]),
+    xe("RIBEIRÃO", [
+      ["rbrApontamento", "Apontamento do dia", "producao/ribeirao/?tab=apontamento", "factory"],
+      ["rbrMaoDeObra", "Mão de obra", "producao/ribeirao/?tab=mao-de-obra", "users"],
+      ["rbrMensal", "Produção Ribeirão", "producao/ribeirao/?tab=mensal", "map"],
+      ["rbrIndicadores", "Indicadores", "producao/ribeirao/?tab=indicadores", "map"],
+      ["rbrProdutos", "Cadastro de produtos", "producao/ribeirao/?tab=produtos", "database"]
     ])
   ] },
   { id: "qualidade", label: "Qualidade", color: Dn.qualidade, icon: "shield", sections: [
@@ -5951,8 +5961,47 @@ const Dn = {
       ["qualidadeResultadosBancada", "Resultados de bancada", "qualidade/resultados-bancada", "doc"],
       ["qualidadeCadastros", "Cadastros", "qualidade/cadastros", "database"]
     ])
+    ,xe("CERTIFICADOS", [
+      ["labCertificados", "Emitir certificado de qualidade", "laboratorio/certificados-qualidade/", "doc"],
+      ["labCertificadosHistorico", "Histórico de certificados", "laboratorio/certificados-qualidade/?tab=historico", "history"],
+      ["labCertificadosCadastros", "Cadastros de certificados", "laboratorio/certificados-qualidade/?tab=cadastros", "database"],
+      ["labTests", "Certificados de ensaios", "laboratorio/novo/postes?tab=historico", "doc"]
+    ])
   ] },
   { id: "laboratorio", label: "Laboratório", color: Dn.laboratorio, icon: "flask", sections: [
+    xe("CORPOS DE PROVA", [
+      ["labCecEtiquetas", "Etiquetas QR", "laboratorio/cec/etiquetas/", "doc"],
+      ["labCecLeitura", "Leitura de CP", "laboratorio/cec/leitura/", "flask"],
+      ["labCecResultados", "Resultados dos corpos de prova", "laboratorio/cec/analise/resultado-cp.html", "map"]
+    ]),
+    xe("CONTROLE ESTATÍSTICO", [
+      ["labCec", "Visão geral", "laboratorio/cec/", "map"],
+      ["labCecRompimentosMes", "Rompimentos por mês", "laboratorio/cec/rompimentos-mes/", "calendar"],
+      ["labCecAnalise", "Análise estatística", "laboratorio/cec/analise/", "map"],
+      ["labCecRelatorio", "Relatório CEC", "laboratorio/cec/analise/relatorio.html", "doc"]
+    ]),
+    xe("DOSAGEM", [
+      ["labDosagem", "Visão geral", "laboratorio/dosagem/", "flask"],
+      ["labDosagemEmpacotamento", "Empacotamento", "laboratorio/dosagem/#/dosagem/empacotamento", "flask"],
+      ["labDosagemVolume", "Volume", "laboratorio/dosagem/#/dosagem/volume", "flask"],
+      ["labDosagemComparacao", "Comparação dos métodos", "laboratorio/dosagem/#/comparacao-metodos", "sliders"],
+      ["labDosagemTracos", "Traços", "laboratorio/dosagem/#/tracos", "doc"],
+      ["labDosagemMateriais", "Materiais", "laboratorio/dosagem/#/materiais", "database"],
+      ["labDosagemFornecedores", "Fornecedores", "laboratorio/dosagem/#/fornecedores", "database"],
+      ["labDosagemEnsaios", "Ensaios", "laboratorio/dosagem/#/ensaios", "flask"],
+      ["labDosagemFerramentas", "Ferramentas", "laboratorio/dosagem/#/ferramentas", "sliders"],
+      ["labDosagemCustos", "Custos", "laboratorio/dosagem/#/custos", "doc"],
+      ["labDosagemReferencia", "Referência", "laboratorio/dosagem/#/referencia", "help"],
+      ["labDosagemProducao", "Produção", "laboratorio/dosagem/#/producao-r1", "factory"],
+      ["labDosagemImportacao", "Importação", "laboratorio/dosagem/#/importacao-r1", "database"],
+      ["labDosagemConfig", "Configurações", "laboratorio/dosagem/#/config", "sliders"]
+    ]),
+    xe("CONCRETO FRESCO", [
+      ["labSlump", "Registro de slump / flow", "laboratorio/slump", "thermometer"]
+    ]),
+    xe("USINA DE CAMPINAS", [
+      ["labUsinasRelatorios", "Relatórios e custos", "laboratorio/usinas-relatorios/", "doc"]
+    ]),
     xe("CURA TÉRMICA", [
       ["labMonitor", "Monitoramento", "laboratorio/", "thermometer", { text: "AO VIVO", tone: "live" }],
       ["labHistory", "Histórico de medições", "laboratorio/?view=history", "history"],
@@ -5965,6 +6014,12 @@ const Dn = {
       ["labTests", "Histórico de ensaios", "laboratorio/novo/postes?tab=historico", "history"],
       ["labRegisters", "Cadastros", "laboratorio/novo/postes?tab=cadastros", "database"],
       ["labCriteria", "Critérios", "laboratorio/novo/postes?tab=criterios", "sliders"]
+    ]),
+    xe("CARTA DE TRAÇO", [
+      ["labCartaTraco", "Carta de traço e MCC", "laboratorio/carta-traco/", "doc"]
+    ]),
+    xe("ADMINISTRAÇÃO", [
+      ["labUsuarios", "Usuários", "laboratorio/novo/postes?tab=usuarios", "users"]
     ]),
     xe("CRONOANÁLISE", [
       ["cronoanalise.inicio", "Início", "laboratorio/cronoanalise", "history"],
@@ -5991,6 +6046,24 @@ const Dn = {
       ["ged-approvals", "Aprovações", "ged/approvals", "shield"],
       ["ged-tasks", "Tarefas", "ged/tasks", "calendar"],
       ["ged-calibrations", "Calibrações", "ged/calibrations", "sliders"]
+    ])
+  ] },
+  { id: "suprimentos", label: "Suprimentos", color: Dn.suprimentos, icon: "database", sections: [
+    xe("SOLICITAÇÕES", [
+      ["suprimentosPainel", "Painel", "suprimentos/painel/", "map"],
+      ["suprimentosSolicitacoes", "Solicitações", "suprimentos/solicitacoes/", "doc"],
+      ["suprimentosNova", "Nova solicitação", "suprimentos/nova/", "post"],
+      ["suprimentosAlmoxarifado", "Almoxarifado", "suprimentos/almoxarifado/", "database"],
+      ["suprimentosInventario", "Inventário", "suprimentos/inventario/", "sliders"]
+    ]),
+    xe("COMPRAS", [
+      ["suprimentosCotacoes", "Cotações e pedidos", "suprimentos/cotacoes/", "doc"],
+      ["suprimentosRecebimento", "Recebimento", "suprimentos/recebimento/", "post"],
+      ["suprimentosFornecedores", "Fornecedores", "suprimentos/fornecedores/", "users"],
+      ["suprimentosIndicadores", "Indicadores", "suprimentos/analises/", "map"]
+    ]),
+    xe("ADMINISTRAÇÃO", [
+      ["suprimentosCadastros", "Cadastros e alçadas", "suprimentos/cadastros/", "sliders"]
     ])
   ] }
 ], qf = [
@@ -6058,10 +6131,15 @@ function Jf() {
         return (T = window.UnificadoSidebarModelA) == null ? void 0 : T.logout();
       },
       updateAvailable: v.updateAvailable,
+      updateState: v.updateState,
+      latestVersion: v.latestVersion,
+      updateFailures: v.updateFailures,
       onUpdate: () => {
         var T;
         return (T = window.UnificadoSidebarModelA) == null ? void 0 : T.update();
-      }
+      },
+      onCheck: () => window.UnificadoSidebarModelA?.checkUpdate(),
+      onClearUpdateCache: () => window.UnificadoSidebarModelA?.clearUpdateCache()
     }
   );
 }

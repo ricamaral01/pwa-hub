@@ -37,17 +37,20 @@ const pcpUser = (() => { try { return JSON.parse(localStorage.getItem('pcp_user'
 const mapaUser = (() => { try { return JSON.parse(localStorage.getItem('pwa_mapa_auth_session_v1') || 'null'); } catch { return null; } })();
 const hasPcp = Boolean(localStorage.getItem('pcp_token') && pcpUser);
 const hasMapa = Boolean(mapaUser?.id && mapaUser?.role);
-const masterIds = new Set(['user-ricardo', 'marcelo', 'alex']);
+const masterIds = new Set(['user-ricardo', 'marcelo', 'alex', 'alex51', 'philippe']);
 let hasLab = hasMapa;
 let previewModules = false;
 let hasGedAccess = false;
+let suprimentosFlags = {};
 let grantedScreens = null;
 const moduleHasScreens = module => grantedScreens === null || Object.values(MENU_ITEMS).some(
   item => item.module === module && grantedScreens.has(item.permissionId || item.id));
 const canAccessModule = module =>
   (masterIds.has(mapaUser?.id) && hasMapa ? true :
    module === 'qualidade' ? previewModules && hasMapa :
-   module === 'planejamento' ? hasPcp : module === 'producao' || module === 'usinas' ? hasMapa : hasLab) && moduleHasScreens(module);
+   module === 'planejamento' ? hasPcp : module === 'producao' || module === 'usinas' ? hasMapa :
+   module === 'suprimentos' ? hasMapa && suprimentosFlags.S1 === true : hasLab) &&
+   (module !== 'suprimentos' || suprimentosFlags.S1 === true) && moduleHasScreens(module);
 async function recoverMdoShellSession() {
   const view = new URLSearchParams(location.search).get('view');
   if (view !== 'pcp/maodeobra/') return false;
@@ -85,6 +88,7 @@ const accessReady = hasMapa ? fetch('/unificado/mapa/api/unified/screen-access/m
   grantedScreens = new Set(result.screens || []);
   previewModules = result.preview_modules === true;
   hasGedAccess = hasMapa && (result.ged_access === true || previewModules);
+  suprimentosFlags = result.suprimentos_flags || {};
   hasLab = hasLab && moduleHasScreens('laboratorio');
   if (!canAccessModule(currentModule))
     currentModule = ['planejamento','producao','laboratorio'].find(canAccessModule) || '';
@@ -132,6 +136,7 @@ let menuModuleOverride = null;
 
 function canUse(item) {
   const route = MENU_ITEMS[item.id] || item;
+  if (route.module === 'suprimentos' && (!suprimentosFlags.S1 || route.futurePhase && !suprimentosFlags[route.futurePhase])) return false;
   if (route.dosagemAdmin && !masterIds.has(mapaUser?.id)) return false;
   if (grantedScreens !== null && !grantedScreens.has(route.permissionId || route.id)) return false;
   if (masterIds.has(mapaUser?.id) && hasMapa) return true;
@@ -139,6 +144,7 @@ function canUse(item) {
   if (route.module === 'laboratorio') return hasLab;
   if (route.module === 'producao') return hasMapa;
   if (route.module === 'usinas') return hasMapa;
+  if (route.module === 'suprimentos') return hasMapa;
   if (!hasPcp) return false;
   const role = pcpUser?.nivel_acesso;
   if (route.require === 'ADMIN') return role === 'ADMIN';
@@ -150,7 +156,14 @@ function canUse(item) {
 function makeLink(item, className = 'nav-link') {
   const a = document.createElement('a');
   a.className = className;
-  a.href = MENU_ITEMS[item.id].url;
+  const routeUrl = MENU_ITEMS[item.id].url;
+  const target = new URL(routeUrl, location.origin);
+  a.href = item.id !== 'tvFormas' && target.origin === location.origin &&
+    target.pathname.startsWith(UNIFICADO_BASE.pathname)
+    ? new URL('?view=' + encodeURIComponent(
+      target.pathname.slice(UNIFICADO_BASE.pathname.length) + target.search + target.hash
+    ) + target.hash, UNIFICADO_BASE).href
+    : routeUrl;
   a.setAttribute('aria-disabled', String(!canUse(item)));
   if (!canUse(item)) a.classList.add('is-unavailable');
   a.dataset.item = item.id;
@@ -177,6 +190,7 @@ function makeLink(item, className = 'nav-link') {
       event.preventDefault();
       return;
     }
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     if (item.id === 'tvFormas') {
       if (phoneDevice || installedPwa) return;
       event.preventDefault();
@@ -185,7 +199,7 @@ function makeLink(item, className = 'nav-link') {
     }
     if (window.UnificadoRouter) {
       event.preventDefault();
-      window.UnificadoRouter.open(a.href, item.id);
+      window.UnificadoRouter.open(routeUrl, item.id);
       return;
     }
     activeItem = item.id;
@@ -257,26 +271,44 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.48';
+const APP_VERSION = '1.0.105';
 let platformUpdateAvailable = false;
-async function checkPlatformUpdate() {
+let platformUpdateState = 'checking';
+let platformLatestVersion = APP_VERSION;
+let platformUpdateFailures = 0;
+function publishUpdateState(state, latest = platformLatestVersion) {
+  platformUpdateState = state;
+  platformLatestVersion = latest;
+  platformUpdateAvailable = state === 'available';
   const button = document.getElementById('platform-update');
   const status = document.getElementById('platform-update-status');
-  if (!button || !status) return;
+  if (button && status) {
+    button.disabled = !['available', 'failed'].includes(state);
+    status.textContent = state === 'available' ? `v${latest} disponível` :
+      state === 'updating' ? 'Atualizando… não feche' :
+      state === 'failed' ? 'Não atualizou — tentar de novo' :
+      state === 'checking' ? 'Verificando…' : `v${APP_VERSION} em dia`;
+    button.title = state === 'available' ? `Atualizar aplicação para a versão ${latest}` :
+      state === 'failed' ? 'Tentar atualizar novamente' : `Aplicação na versão ${APP_VERSION}`;
+  }
+  dispatchEvent(new Event('unificado-sidebar-model-a-update'));
+  document.dispatchEvent(new CustomEvent('unificado-update-state', {
+    detail: {state, current:APP_VERSION, latest, failures:platformUpdateFailures}
+  }));
+}
+async function checkPlatformUpdate() {
+  if (platformUpdateState === 'updating') return;
   try {
-    const response = await fetch('/unificado/VERSION', {cache:'no-store'});
+    const response = await fetch(`/unificado/VERSION?check=${Date.now()}`, {cache:'no-store'});
     if (!response.ok) throw new Error('Versão indisponível');
     const latest = (await response.text()).trim();
     if (!latest) throw new Error('Versão indisponível');
-    platformUpdateAvailable = latest.localeCompare(APP_VERSION, undefined, {numeric:true}) > 0;
-    button.disabled = !platformUpdateAvailable;
-    status.textContent = platformUpdateAvailable ? `v${latest} disponível` : `v${APP_VERSION} em dia`;
-    button.title = platformUpdateAvailable ? `Atualizar aplicação para a versão ${latest}` : `Aplicação atualizada na versão ${APP_VERSION}`;
+    const newer = latest.localeCompare(APP_VERSION, undefined, {numeric:true}) > 0;
+    if (!newer) platformUpdateFailures = 0;
+    publishUpdateState(newer ? 'available' : 'current', latest);
   } catch {
-    platformUpdateAvailable = false;
-    button.disabled = true;
-    button.title = 'Não foi possível verificar a versão';
-    status.textContent = 'Não verificado';
+    platformUpdateFailures++;
+    publishUpdateState('failed');
   }
 }
 function waitForWorkerState(worker, accepted, timeoutMs = 15000) {
@@ -324,14 +356,23 @@ async function waitForController(worker) {
   });
 }
 async function updateApplication(button) {
-  if (button.disabled || !platformUpdateAvailable) return;
-  const label = button.querySelector('#platform-update-status, .sb-label') || button;
-  const originalLabel = label.textContent;
-  button.disabled = true;
-  label.textContent = 'Atualizando…';
+  if (platformUpdateState === 'updating') return;
+  publishUpdateState('updating');
   try {
-    const version = await fetch('/unificado/VERSION', {cache:'no-store'});
+    const version = await fetch(`/unificado/VERSION?update=${Date.now()}`, {cache:'no-store'});
     if (!version.ok) throw new Error('Não foi possível consultar a versão.');
+    const latest = (await version.text()).trim();
+    if (!latest) throw new Error('Versão indisponível.');
+    if (latest.localeCompare(APP_VERSION, undefined, {numeric:true}) <= 0) {
+      if ('serviceWorker' in navigator) {
+        const shell = await navigator.serviceWorker.getRegistration('/unificado/');
+        if (shell) await shell.update();
+      }
+      sessionStorage.setItem('unificado-update-toast', `Você já está na versão mais recente (${APP_VERSION})`);
+      location.reload();
+      return;
+    }
+    platformLatestVersion = latest;
     if ('serviceWorker' in navigator) {
       await accessReady;
       const shell = await navigator.serviceWorker.register('/unificado/sw.js',
@@ -353,10 +394,30 @@ async function updateApplication(button) {
     }
     location.reload();
   } catch (error) {
-    label.textContent = 'Falha ao atualizar';
-    button.title = error.message || 'Tente novamente.';
-    setTimeout(() => { label.textContent = originalLabel; button.disabled = !platformUpdateAvailable; }, 4000);
+    platformUpdateFailures++;
+    publishUpdateState('failed');
+    console.warn('Atualização do Unificado falhou:', error);
   }
+}
+window.addEventListener('load', () => {
+  const message = sessionStorage.getItem('unificado-update-toast');
+  if (!message) return;
+  sessionStorage.removeItem('unificado-update-toast');
+  const toast = document.createElement('div');
+  toast.className = 'unificado-update-toast';
+  toast.setAttribute('role', 'status');
+  toast.textContent = message;
+  document.body.append(toast);
+  setTimeout(() => toast.remove(), 4000);
+}, {once:true});
+async function clearShellCacheAndReload() {
+  if (platformUpdateFailures < 2) return;
+  const registrations = await navigator.serviceWorker?.getRegistrations?.() || [];
+  await Promise.all(registrations.filter(registration => registration.scope ===
+    new URL('/unificado/', location.origin).href).map(registration => registration.unregister()));
+  await Promise.all((await caches.keys()).filter(key => key.startsWith('concrefer-unificado-shell-v'))
+    .map(key => caches.delete(key)));
+  location.reload();
 }
 function appendVersionBadge(container) {
   const badge = document.createElement('span');
@@ -430,8 +491,8 @@ function renderSharedSidebar() {
     button.type = 'button';
     button.className = `module-button${key === currentModule ? ' is-active' : ''}`;
     button.dataset.module = key;
-    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : key === 'usinas' ? 'US' : 'LB';
-    button.dataset.railName = key === 'planejamento' ? 'Plan.' : key === 'producao' ? 'Prod.' : key === 'qualidade' ? 'Qual.' : key === 'usinas' ? 'Usinas' : 'Lab.';
+    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : key === 'usinas' ? 'US' : key === 'suprimentos' ? 'SU' : 'LB';
+    button.dataset.railName = key === 'planejamento' ? 'Plan.' : key === 'producao' ? 'Prod.' : key === 'qualidade' ? 'Qual.' : key === 'usinas' ? 'Usinas' : key === 'suprimentos' ? 'Supri.' : 'Lab.';
     button.innerHTML = `<span class="shared-module-dot" aria-hidden="true"></span><span class="shared-module-code">${button.dataset.short}</span><span class="shared-module-name">${config.label}</span>`;
     button.title = config.label;
     button.setAttribute('aria-label', config.label);
@@ -598,7 +659,7 @@ function renderSidebar() {
     button.className = `module-button${key === currentModule ? ' is-active' : ''}`;
     button.dataset.module = key;
     button.textContent = config.label;
-    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : key === 'usinas' ? 'US' : 'LB';
+    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : key === 'usinas' ? 'US' : key === 'suprimentos' ? 'SU' : 'LB';
     button.title = config.label;
     button.setAttribute('aria-label', config.label);
     button.setAttribute('aria-pressed', key === currentModule ? 'true' : 'false');
@@ -818,6 +879,20 @@ function renderOpeningModules() {
     });
     target.append(link);
   }
+  if (canAccessModule('suprimentos')) {
+    const link = document.createElement('a');
+    link.className = 'opening-module';
+    link.dataset.module = 'suprimentos';
+    link.href = new URL('?module=suprimentos', UNIFICADO_BASE).href;
+    link.innerHTML = `<span class="opening-module-copy"><span class="opening-module-number">07 / MÓDULO</span><span><strong class="opening-module-title">Suprimentos</strong><small>Solicitações e almoxarifado geral</small></span></span>${ICONS.arrow}`;
+    link.addEventListener('click', event => {
+      if (phoneDevice || installedPwa || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
+          !window.UnificadoSidebarModelA?.selectModule || !window.UnificadoModulePages?.show) return;
+      event.preventDefault();
+      window.UnificadoSidebarModelA.selectModule('suprimentos');
+    });
+    target.append(link);
+  }
   for (const [module, number, title, description, url, icon] of [
     ['pederh', '07', 'PedeRH', 'Solicitações e fluxos de RH', 'https://rh.concretrack.com.br/', 'pederh-icon.png'],
     ['faleaqui', '08', 'FaleAqui', 'Solicitações e atendimento', 'https://faleaqui.concretrack.com.br/', 'faleaqui-icon.png'],
@@ -837,6 +912,12 @@ function renderOpeningModules() {
     link.querySelector('small').textContent = description;
     target.append(link);
   }
+  target.querySelectorAll('.opening-module').forEach((card, index) => {
+    const kind = card.dataset.module === 'pederh' || card.dataset.module === 'faleaqui'
+      ? 'APLICAÇÃO' : 'MÓDULO';
+    card.querySelector('.opening-module-number').textContent =
+      `${String(index + 1).padStart(2, '0')} / ${kind}`;
+  });
   document.querySelector('.opening-modules').hidden = !target.children.length;
 }
 
@@ -889,7 +970,10 @@ window.UnificadoSidebarModelA = Object.freeze({
       activePath: window.UnificadoSidebarActivePath || location.pathname + location.search,
       allowedModuleIds, allowedItemIds, footerItemIds,
       user: {name, role}, version: APP_VERSION,
-      updateAvailable: false,
+      updateAvailable: platformUpdateAvailable,
+      updateState: platformUpdateState,
+      latestVersion: platformLatestVersion,
+      updateFailures: platformUpdateFailures,
     };
   },
   navigate: href => {
@@ -918,6 +1002,8 @@ window.UnificadoSidebarModelA = Object.freeze({
     const button = document.getElementById('platform-update');
     if (button) updateApplication(button);
   },
+  checkUpdate: checkPlatformUpdate,
+  clearUpdateCache: clearShellCacheAndReload,
   logout: () => UnificadoAuth.logout(),
 });
 document.querySelector('.user-pill strong').textContent = displayUser?.nome || displayUser?.name || 'Usuário';
@@ -950,6 +1036,7 @@ renderSectors();
 renderShortcuts();
 document.getElementById('platform-update')?.addEventListener('click', event => updateApplication(event.currentTarget));
 checkPlatformUpdate();
+setInterval(checkPlatformUpdate, 15 * 60 * 1000);
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) checkPlatformUpdate();
 });

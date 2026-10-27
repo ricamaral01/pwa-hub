@@ -71,22 +71,22 @@ class AreaInputCadastro(BaseModel):
 
 
 def _unit(db: Session, slug: str) -> dict:
-    row = db.execute(text("SELECT id,codigo,nome FROM producao.unidade WHERE codigo=:c AND ativo"), {"c": slug}).mappings().first()
+    row = db.execute(text("SELECT id,codigo,nome,passo_homens FROM producao.unidade WHERE codigo=:c AND ativo"), {"c": slug}).mappings().first()
     if not row:
         raise HTTPException(404, "Unidade não encontrada")
     return dict(row)
 
 
 def _authorize(db: Session, unit: dict, user: Usuario, *, write: bool = False, supervisor: bool = False) -> str:
-    # These three administrators remain masters of every unit.
-    if user.username.casefold() in {"ricardo", "marcelo", "alex"} and user.nivel_acesso == NivelAcesso.ADMIN:
+    # Core administrators remain masters of every production unit.
+    if user.username.casefold() in {"ricardo", "marcelo", "alex", "alex51", "philippe"} and user.nivel_acesso == NivelAcesso.ADMIN:
         return "supervisor"
     row = db.execute(text("""
         SELECT papel FROM producao.usuario_unidade
         WHERE usuario_id=:user_id AND unidade_id=:unit_id AND ativo
     """), {"user_id": user.id, "unit_id": unit["id"]}).first()
     role = row[0] if row else None
-    if role is None or (write and role not in {"gestor", "supervisor"}) or (supervisor and role != "supervisor"):
+    if role is None or (write and role not in {"gestor", "supervisor", "operador"}) or (supervisor and role != "supervisor"):
         raise HTTPException(403, "Sem acesso a esta unidade ou ação")
     return role
 
@@ -566,7 +566,7 @@ def save_labor(unidade: str, dia: date, payload: MaoDeObraInput,
         raise HTTPException(422, "Área repetida")
     for area in payload.areas:
         try:
-            validate_people(area.homens)
+            validate_people(area.homens, step=unit["passo_homens"])
         except ValueError as exc:
             raise HTTPException(422, str(exc)) from exc
         if not db.execute(text("SELECT 1 FROM public.atividades_mao_de_obra WHERE id=:id AND unidade_id=:uid AND ativo"),
@@ -725,7 +725,7 @@ def confirm_day(unidade: str, dia: date, db: Session = Depends(get_db), user: Us
         """), {"id": marker["id"], "non_post": NON_POST_FAMILY}).scalar_one()
         people = _labor(db, unit, dia)["homens"]
         try:
-            assert_can_confirm(int(posts), people)
+            assert_can_confirm(int(posts), people, step=unit["passo_homens"])
         except ValueError as exc:
             raise HTTPException(409, str(exc)) from exc
         db.execute(text("""
@@ -760,7 +760,7 @@ def monthly(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$"),
         labor = _labor(db, unit, day)
         days.append({"data": day, "status": production["status"], "postes": production["postes"],
                      "homens": labor["homens"], "mod": labor["mod"], "moi": labor["moi"],
-                     "postes_homem": posts_per_person(production["postes"], labor["homens"]),
+                     "postes_homem": posts_per_person(production["postes"], labor["homens"], step=unit["passo_homens"]),
                      "volume_m3": production["volume_m3"],
                      "produtos_sem_volume": production["produtos_sem_volume"],
                      "areas": labor["areas"],
@@ -777,7 +777,7 @@ def monthly(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$"),
             "meta_total": monthly_target(meta["dias_uteis"], meta["pcs_dia"]) if meta else None,
             "dias": days, "dias_producao": len(days), "postes": total_posts,
             "media_postes_dia": round(total_posts / len(days), 2) if days else None,
-            "homens": total_people, "postes_homem": posts_per_person(total_posts, total_people),
+            "homens": total_people, "postes_homem": posts_per_person(total_posts, total_people, step=unit["passo_homens"]),
             "volume_m3": total_volume,
             "produtos_sem_volume": sum(day["produtos_sem_volume"] for day in days),
             "pendencias": [day["data"] for day in days if day["postes"] and not day["homens"]]}

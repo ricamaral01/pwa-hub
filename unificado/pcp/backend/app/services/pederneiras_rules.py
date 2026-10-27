@@ -28,10 +28,10 @@ def validate_quantity(value: int) -> int:
     return value
 
 
-def validate_people(value: Decimal) -> Decimal:
+def validate_people(value: Decimal, *, step: Decimal = QUARTER) -> Decimal:
     amount = Decimal(str(value))
-    if not amount.is_finite() or amount < 0 or amount % QUARTER != 0:
-        raise ValueError("Mão de obra deve ser não negativa, em passos de 0,25")
+    if not amount.is_finite() or amount < 0 or amount % step != 0:
+        raise ValueError(f"Mão de obra deve ser não negativa, em passos de {str(step).replace('.', ',')}")
     return amount
 
 
@@ -56,17 +56,17 @@ def production_summary(items: list[tuple[int, Decimal | None]]) -> dict:
     }
 
 
-def posts_per_person(posts: int, people: Decimal) -> Decimal | None:
+def posts_per_person(posts: int, people: Decimal, *, step: Decimal = QUARTER) -> Decimal | None:
     validate_quantity(posts)
-    people = validate_people(people)
+    people = validate_people(people, step=step)
     if not people:
         return None
     return (Decimal(posts) / people).quantize(Decimal("0.01"))
 
 
-def assert_can_confirm(posts: int, people: Decimal) -> None:
+def assert_can_confirm(posts: int, people: Decimal, *, step: Decimal = QUARTER) -> None:
     validate_quantity(posts)
-    people = validate_people(people)
+    people = validate_people(people, step=step)
     if posts and not people:
         raise ValueError("Há produção sem mão de obra confirmada")
 

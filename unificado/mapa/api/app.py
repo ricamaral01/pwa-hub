@@ -80,6 +80,13 @@ SECTORS = frozenset({"Setor 1", "Setor 2", "Setor 3", "Setor 4"})
 USER_UNITS = frozenset({'campinas', 'pederneiras', 'ribeirao', 'noroeste'})
 PEDERNEIRAS_SCREENS = frozenset(row['id'] for row in SCREEN_CATALOG
                                if row['id'].startswith('pdr'))
+RIBEIRAO_SCREENS = frozenset(row['id'] for row in SCREEN_CATALOG
+                             if row['id'].startswith('rbr'))
+PRODUCTION_UNIT_SCREENS = {
+    'pederneiras': PEDERNEIRAS_SCREENS,
+    'ribeirao': RIBEIRAO_SCREENS,
+}
+UNIT_PRODUCTION_SCREENS = PEDERNEIRAS_SCREENS | RIBEIRAO_SCREENS
 GUEST_ACTIONS = frozenset({'view', 'create', 'edit', 'delete', 'export', 'approve'})
 CHECKLISTS = json.loads((Path(__file__).parent / "checklists.json").read_text(encoding="utf-8"))
 ACTION_CATALOG = json.loads((Path(__file__).parent / "action_catalog.json").read_text(encoding="utf-8"))
@@ -282,9 +289,9 @@ def unified_pcp_session():
         return response
     try:
         allowed, _ = screen_access_state(mapa)
-        if not any(SCREENS_BY_ID[item]['module'] == 'planejamento' or item in PEDERNEIRAS_SCREENS
+        if not any(SCREENS_BY_ID[item]['module'] == 'planejamento' or item in UNIT_PRODUCTION_SCREENS
                    for item in allowed):
-            return jsonify(ok=False, error='Esta conta não tem telas liberadas no Planejamento ou Pederneiras.'), 403
+            return jsonify(ok=False, error='Esta conta não tem telas liberadas no Planejamento ou na Produção da unidade.'), 403
         link = link_for(mapa_login=mapa["id"])
         if not link:
             return jsonify(ok=False, error="Esta conta não tem acesso ao Planejamento."), 403
@@ -653,7 +660,7 @@ def quality_actions(user_id):
 
 
 def crono_actions(user_id):
-    if user_id == MASTER_USER_ID:
+    if user_id in MASTER_USER_IDS:
         return sorted(CRONO_ACTION_IDS)
     with connect() as conn, conn.cursor() as cur:
         cur.execute("""SELECT action_id FROM unificado_auth.user_action_permissions
@@ -1153,7 +1160,12 @@ def screen_access_state(user):
     lab_users = LAB_ALLOWED_USERS | {user['id']} if any(
         key.startswith('lab') and value for key, value in overrides.items()
     ) else LAB_ALLOWED_USERS
-    return allowed_screens(user, planning_role, overrides, lab_users), planning_role
+    allowed = allowed_screens(user, planning_role, overrides, lab_users)
+    if (user['id'] not in MASTER_USER_IDS
+            and any(SCREENS_BY_ID[item]['module'] == 'suprimentos' for item in allowed)
+            and not supply_flags().get('S1')):
+        allowed = [item for item in allowed if SCREENS_BY_ID[item]['module'] != 'suprimentos']
+    return allowed, planning_role
 
 
 def guest_request_action(method, path):
@@ -1494,12 +1506,16 @@ def master_planning_user_screens_update(user_id):
                 cur.execute("""INSERT INTO unificado_auth.user_units
                                (user_id,unit_code,updated_by) VALUES (%s,%s,%s)""",
                             (shadow_id, unit, actor['id']))
-                if PEDERNEIRAS_SCREENS.intersection(selected):
-                    planning.execute("SELECT id FROM producao.unidade WHERE codigo='pederneiras'")
-                    pederneiras_unit = planning.fetchone()
-                    if not pederneiras_unit:
-                        return jsonify(ok=False, error='Unidade Pederneiras indisponível.'), 503
-                    unit_grant_id = pederneiras_unit['id']
+                selected_production_unit = next(
+                    (code for code, screens in PRODUCTION_UNIT_SCREENS.items()
+                     if screens.intersection(selected)), None)
+                if selected_production_unit:
+                    planning.execute("SELECT id FROM producao.unidade WHERE codigo=%s",
+                                     (selected_production_unit,))
+                    production_unit = planning.fetchone()
+                    if not production_unit:
+                        return jsonify(ok=False, error='Unidade de produção indisponível.'), 503
+                    unit_grant_id = production_unit['id']
                     planning.execute("""SELECT papel,ativo FROM producao.usuario_unidade
                                         WHERE usuario_id=%s AND unidade_id=%s FOR UPDATE""",
                                      (user_id, unit_grant_id))
@@ -1510,7 +1526,7 @@ def master_planning_user_screens_update(user_id):
                                         (usuario_id,unidade_id,papel,ativo) VALUES (%s,%s,%s,true)
                                         ON CONFLICT (usuario_id,unidade_id) DO UPDATE SET
                                         papel=excluded.papel,ativo=true""",
-                                     (user_id, pederneiras_unit['id'], unit_role))
+                                     (user_id, production_unit['id'], unit_role))
             target_key = shadow_id if non_planning else f'pcp:{user_id}'
             for screen in SCREEN_CATALOG:
                 if not non_planning and screen['module'] != 'planejamento':
@@ -1522,7 +1538,7 @@ def master_planning_user_screens_update(user_id):
                                updated_at=now()""",
                             (target_key, screen['id'], screen['id'] in selected, actor['id']))
             # Keep the existing PCP identity, password and access level.
-            # Only an explicit Pederneiras selection adds its unit grant.
+            # Only an explicit production-unit selection adds its unit grant.
         pcp_conn.commit()
         pcp_committed = True
         try:
@@ -1638,7 +1654,10 @@ def my_screen_access():
     preview_modules = (user['id'] in MASTER_USER_IDS
                        or user['id'].startswith(('e2e-', 'unif-pcp-'))
                        or user['id'] == 'ricardo.teste')
-    response = jsonify(ok=True, screens=allowed, preview_modules=preview_modules)
+    suprimentos_enabled = any(SCREENS_BY_ID[item]['module'] == 'suprimentos' for item in allowed)
+    response = jsonify(ok=True, screens=allowed, preview_modules=preview_modules,
+                       suprimentos_flags=supply_flags() if suprimentos_enabled else {},
+                       suprimentos_enabled=suprimentos_enabled)
     scope, age = session_scope_and_age(user)
     token = signer().dumps({"scope": "legacy_session" if user["primeiro_acesso"] else scope, "id": user["id"],
                             "updated_at": user["updated_at"].isoformat()})
@@ -1653,7 +1672,7 @@ def required_planning_role(selected):
     planning = [SCREENS_BY_ID[item] for item in selected
                 if SCREENS_BY_ID[item]['module'] == 'planejamento']
     if not planning:
-        return 'PRODUCAO' if PEDERNEIRAS_SCREENS.intersection(selected) else None
+        return 'PRODUCAO' if UNIT_PRODUCTION_SCREENS.intersection(selected) else None
     requirements = {row['require'] for row in planning}
     if 'ADMIN' in requirements:
         return 'ADMIN'
@@ -1665,8 +1684,10 @@ def required_planning_role(selected):
 
 
 def unit_allows_screen(unit, screen_id):
-    screen = SCREENS_BY_ID[screen_id]
-    return screen['module'] != 'producao' or screen_id not in PEDERNEIRAS_SCREENS or unit == 'pederneiras'
+    for code, screens in PRODUCTION_UNIT_SCREENS.items():
+        if screen_id in screens:
+            return unit == code
+    return True
 
 
 @app.get('/unified/users/catalog')
@@ -1779,7 +1800,7 @@ def save_unified_access(user_id, selected, actor, *, name=None, role=None, secto
                         unit=None, guest_actions=None):
     """Persist explicit grants; provision a personal PCP account on a master grant."""
     requested_role = required_planning_role(selected)
-    if unit is None and PEDERNEIRAS_SCREENS.intersection(selected):
+    if unit is None and UNIT_PRODUCTION_SCREENS.intersection(selected):
         with connect() as lookup, lookup.cursor() as cur:
             cur.execute('SELECT unit_code FROM unificado_auth.user_units WHERE user_id=%s', (user_id,))
             existing_unit = cur.fetchone()
@@ -1788,15 +1809,14 @@ def save_unified_access(user_id, selected, actor, *, name=None, role=None, secto
         return 400, 'Unidade inválida.'
     if unit is not None and any(not unit_allows_screen(unit, item) for item in selected):
         return 400, 'Uma tela não pertence à unidade selecionada.'
-    if (unit == 'pederneiras' or PEDERNEIRAS_SCREENS.intersection(selected)) and actor['id'] not in MASTER_USER_IDS:
-        return 403, 'Somente administradores master podem alterar acessos de Pederneiras.'
+    if (unit in PRODUCTION_UNIT_SCREENS or UNIT_PRODUCTION_SCREENS.intersection(selected)) and actor['id'] not in MASTER_USER_IDS:
+        return 403, 'Somente administradores master podem alterar acessos da produção por unidade.'
     mapa_conn = connect()
     pcp_conn = None
     created_pcp_id = None
     changed_pcp = None
-    old_unit_grant = None
+    old_unit_grants = {}
     unit_grant_user_id = None
-    pederneiras_unit_id = None
     pcp_committed = False
     try:
         with mapa_conn.cursor() as cur:
@@ -1850,25 +1870,26 @@ def save_unified_access(user_id, selected, actor, *, name=None, role=None, secto
                                        VALUES (%s,%s,false)""", (created_pcp_id, user_id))
                     linked_pcp_id = created_pcp_id or (link and link['pcp_user_id'])
                     if unit is not None and linked_pcp_id:
-                        planning.execute("SELECT id FROM producao.unidade WHERE codigo='pederneiras'")
-                        unit_row = planning.fetchone()
-                        if not unit_row:
-                            return 503, 'Unidade Pederneiras indisponível.'
-                        pederneiras_unit_id = unit_row['id']
                         unit_grant_user_id = linked_pcp_id
-                        planning.execute("""SELECT papel,ativo FROM producao.usuario_unidade
-                                            WHERE usuario_id=%s AND unidade_id=%s FOR UPDATE""",
-                                         (linked_pcp_id, pederneiras_unit_id))
-                        old_unit_grant = planning.fetchone()
-                        can_open = unit == 'pederneiras' and bool(PEDERNEIRAS_SCREENS.intersection(selected))
                         effective_role = role or target['perfil']
                         unit_role = ('supervisor' if effective_role in {'GERENCIA','GESTOR'}
                                      else 'operador' if effective_role == 'APONTADOR' else 'leitor')
-                        planning.execute("""INSERT INTO producao.usuario_unidade
-                                            (usuario_id,unidade_id,papel,ativo) VALUES (%s,%s,%s,%s)
-                                            ON CONFLICT (usuario_id,unidade_id) DO UPDATE SET
-                                            papel=excluded.papel,ativo=excluded.ativo""",
-                                         (linked_pcp_id, pederneiras_unit_id, unit_role, can_open))
+                        for code, screens in PRODUCTION_UNIT_SCREENS.items():
+                            planning.execute("SELECT id FROM producao.unidade WHERE codigo=%s", (code,))
+                            unit_row = planning.fetchone()
+                            if not unit_row:
+                                return 503, 'Unidade de produção indisponível.'
+                            unit_id = unit_row['id']
+                            planning.execute("""SELECT papel,ativo FROM producao.usuario_unidade
+                                                WHERE usuario_id=%s AND unidade_id=%s FOR UPDATE""",
+                                             (linked_pcp_id, unit_id))
+                            old_unit_grants[unit_id] = planning.fetchone()
+                            can_open = unit == code and bool(screens.intersection(selected))
+                            planning.execute("""INSERT INTO producao.usuario_unidade
+                                                (usuario_id,unidade_id,papel,ativo) VALUES (%s,%s,%s,%s)
+                                                ON CONFLICT (usuario_id,unidade_id) DO UPDATE SET
+                                                papel=excluded.papel,ativo=excluded.ativo""",
+                                             (linked_pcp_id, unit_id, unit_role, can_open))
             if name is not None:
                 cur.execute("""UPDATE public.usuarios SET nome=%s,perfil=%s,setor=%s,
                                updated_at=now() WHERE id=%s""",
@@ -1913,15 +1934,16 @@ def save_unified_access(user_id, selected, actor, *, name=None, role=None, secto
                                     (str(changed_pcp['nivel_acesso']), changed_pcp['ativo'],
                                      changed_pcp['token_revoked_at'], changed_pcp['id']))
                     if unit_grant_user_id and not created_pcp_id:
-                        if old_unit_grant:
-                            cur.execute("""UPDATE producao.usuario_unidade SET papel=%s,ativo=%s
-                                           WHERE usuario_id=%s AND unidade_id=%s""",
-                                        (old_unit_grant['papel'], old_unit_grant['ativo'],
-                                         unit_grant_user_id, pederneiras_unit_id))
-                        else:
-                            cur.execute("""DELETE FROM producao.usuario_unidade
-                                           WHERE usuario_id=%s AND unidade_id=%s""",
-                                        (unit_grant_user_id, pederneiras_unit_id))
+                        for unit_id, old_unit_grant in old_unit_grants.items():
+                            if old_unit_grant:
+                                cur.execute("""UPDATE producao.usuario_unidade SET papel=%s,ativo=%s
+                                               WHERE usuario_id=%s AND unidade_id=%s""",
+                                            (old_unit_grant['papel'], old_unit_grant['ativo'],
+                                             unit_grant_user_id, unit_id))
+                            else:
+                                cur.execute("""DELETE FROM producao.usuario_unidade
+                                               WHERE usuario_id=%s AND unidade_id=%s""",
+                                            (unit_grant_user_id, unit_id))
             raise
         return 200, None
     except (psycopg.Error, KeyError, ValueError):
@@ -1964,12 +1986,12 @@ def user_screen_access(user_id):
                     (actor['id'] in MASTER_USER_IDS and
                      (screen['module'] == 'planejamento' or user['perfil'] == 'CONVIDADO')
                      or role_allows(user, screen, planning_role or 'PRODUCAO'
-                                    if screen['id'] in PEDERNEIRAS_SCREENS else planning_role,
+                                    if screen['id'] in UNIT_PRODUCTION_SCREENS else planning_role,
                                     editable_lab_users))),
                 "mapa_roles": [role for role in ("GERENCIA", "GESTOR", "MONTADOR", "APONTADOR")
                                if role_allows({**user, "perfil": role}, screen,
                                               planning_role or 'PRODUCAO'
-                                              if screen['id'] in PEDERNEIRAS_SCREENS else planning_role,
+                                              if screen['id'] in UNIT_PRODUCTION_SCREENS else planning_role,
                                               LAB_ALLOWED_USERS)]
                                if screen["module"] == "producao" else [],
                 "checked": screen["id"] in allowed,
@@ -3210,6 +3232,122 @@ def logout():
     response.delete_cookie(PCP_SCREEN_COOKIE_NAME, path="/unificado/pcp/")
     response.delete_cookie(PCP_REFRESH_COOKIE_NAME, path=PCP_REFRESH_PATH)
     response.delete_cookie(LAB_COOKIE_NAME, path="/unificado/laboratorio/")
+    response.delete_cookie(SUPRIMENTOS_COOKIE_NAME, path="/api/suprimentos/")
+    response.delete_cookie(SUPRIMENTOS_COOKIE_NAME, path="/unificado/suprimentos/")
+    response.delete_cookie(SUPRIMENTOS_REFRESH_COOKIE_NAME, path="/unificado/suprimentos/")
+    return response
+
+
+# Suprimentos: extensão isolada do gateway. O papel efetivo fica no banco do serviço.
+SUPRIMENTOS_COOKIE_NAME = 'unificado_suprimentos_session'
+SUPRIMENTOS_REFRESH_COOKIE_NAME = 'unificado_suprimentos_refresh'
+SUPRIMENTOS_REFRESH_SECONDS = 30 * 24 * 60 * 60
+
+
+def supply_flags():
+    url = os.environ.get('SUPRIMENTOS_INTERNAL_URL', 'http://127.0.0.1:13067').rstrip('/')
+    try:
+        with urllib.request.urlopen(url + '/api/suprimentos/flags?unidade=campinas', timeout=0.25) as upstream:
+            data = json.load(upstream)
+        return {key: bool(value) for key, value in data.get('flags', {}).items()}
+    except (OSError, ValueError, TypeError, urllib.error.URLError):
+        return {}  # sem serviço/flag: menu oculto e autorização fechada
+
+
+def supply_session_claim(user, scope='session'):
+    return {'scope': scope, 'id': user['id'], 'updated_at': user['updated_at'].isoformat()}
+
+
+def supply_set_cookies(response, user):
+    token = signer().dumps(supply_session_claim(user))
+    for path in ('/api/suprimentos/', '/unificado/suprimentos/'):
+        response.set_cookie(SUPRIMENTOS_COOKIE_NAME, token, max_age=SESSION_SECONDS,
+                            httponly=True, secure=True, samesite='Lax', path=path)
+    refresh = signer().dumps(supply_session_claim(user, scope='suprimentos_refresh'))
+    response.set_cookie(SUPRIMENTOS_REFRESH_COOKIE_NAME, refresh,
+                        max_age=SUPRIMENTOS_REFRESH_SECONDS, httponly=True,
+                        secure=True, samesite='Lax', path='/unificado/suprimentos/')
+    response.headers['Cache-Control'] = 'no-store'
+    return response
+
+
+def supply_cookie_user(cookie_name, max_age, scope):
+    token = request.cookies.get(cookie_name)
+    if not token:
+        return None
+    try:
+        claim = signer().loads(token, max_age=max_age)
+        if claim.get('scope') != scope:
+            return None
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute('''SELECT id,nome,perfil,ativo,primeiro_acesso,updated_at
+                           FROM public.usuarios WHERE id=%s AND deleted_at IS NULL''', (claim['id'],))
+            user = cur.fetchone()
+        if (not user or not user['ativo'] or user['primeiro_acesso']
+                or user['updated_at'].isoformat() != claim.get('updated_at')):
+            return None
+        return user
+    except (BadSignature, SignatureExpired, KeyError, TypeError, psycopg.Error):
+        return None
+
+
+def supply_allowed(user):
+    screens, _ = screen_access_state(user)
+    return any(SCREENS_BY_ID[item]['module'] == 'suprimentos' for item in screens)
+
+
+@app.post('/unified/suprimentos-bootstrap')
+def suprimentos_bootstrap():
+    user = authenticated_user()
+    if not user:
+        return jsonify(ok=False, error='Sessão expirada.'), 401
+    if not supply_allowed(user):
+        return jsonify(ok=False, error='Suprimentos indisponível ou sem concessão.'), 403
+    return supply_set_cookies(jsonify(ok=True, unidade='campinas'), user)
+
+
+@app.get('/unified/suprimentos-renew')
+def suprimentos_renew():
+    """Nginx expõe esta rota apenas dentro do escopo do PWA de Suprimentos."""
+    user = authenticated_user() or supply_cookie_user(
+        SUPRIMENTOS_REFRESH_COOKIE_NAME, SUPRIMENTOS_REFRESH_SECONDS, 'suprimentos_refresh')
+    if not user:
+        return jsonify(ok=False, error='Sessão expirada. Entre novamente.'), 401
+    if not supply_allowed(user):
+        return jsonify(ok=False, error='Suprimentos indisponível ou sem concessão.'), 403
+    response = supply_set_cookies(jsonify(ok=True, unidade='campinas'), user)
+    scope, age = session_scope_and_age(user)
+    response.set_cookie(COOKIE_NAME, signer().dumps(supply_session_claim(user, scope)),
+                        max_age=age, httponly=True, secure=True, samesite='Lax', path=COOKIE_PATH)
+    return response
+
+
+@app.get('/unified/suprimentos-authorize')
+def suprimentos_authorize():
+    original = urllib.parse.urlsplit(request.headers.get('X-Original-URI', '')).path
+    if not (original.startswith('/api/suprimentos/') or original.startswith('/unificado/suprimentos/')):
+        return Response(status=403)
+    user = supply_cookie_user(SUPRIMENTOS_COOKIE_NAME, SESSION_SECONDS, 'session')
+    if not user and original.startswith('/unificado/suprimentos/'):
+        # A primeira abertura ainda não tem cookie próprio; a shell recebe
+        # somente os arquivos estáticos após conferir a sessão principal.
+        user = authenticated_user() or supply_cookie_user(
+            SUPRIMENTOS_REFRESH_COOKIE_NAME, SUPRIMENTOS_REFRESH_SECONDS, 'suprimentos_refresh')
+    if not user:
+        return Response(status=401)
+    if not supply_allowed(user):
+        return Response(status=403)
+    secret = os.environ.get('SUPRIMENTOS_GATEWAY_SIGNING_KEY', '')
+    if len(secret) < 32:
+        return Response(status=503)
+    payload = base64.urlsafe_b64encode(json.dumps({
+        'iss':'unificado', 'aud':'suprimentos', 'id':user['id'], 'name':user['nome'],
+        'exp':int(time.time()) + 20,
+    }, separators=(',', ':')).encode()).rstrip(b'=').decode()
+    signature = base64.urlsafe_b64encode(hmac.new(secret.encode(), payload.encode(), hashlib.sha256).digest()).rstrip(b'=').decode()
+    response = Response(status=204)
+    response.headers['X-Suprimentos-Assertion'] = payload + '.' + signature
+    response.headers['Cache-Control'] = 'no-store'
     return response
 
 
@@ -3220,6 +3358,8 @@ from usinas_receitas import register as register_usinas_receitas
 register_usinas_receitas(app, connect, authenticated_user, screen_access_state)
 from usinas_legacy_read import register as register_usinas_legacy_read
 register_usinas_legacy_read(app, authenticated_user, screen_access_state)
+from usinas_reporting import register as register_usinas_reporting
+register_usinas_reporting(app, connect, authenticated_user, screen_access_state)
 from usinas_cec import register as register_usinas_cec
 register_usinas_cec(app, authenticated_user, screen_access_state)
 

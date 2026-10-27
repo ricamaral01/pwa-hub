@@ -32,6 +32,14 @@ def test_people_step_and_confirmation():
     assert_can_confirm(8, Decimal("1.25"))
 
 
+def test_ribeirao_hundredths_do_not_change_pederneiras_quarters():
+    with pytest.raises(ValueError):
+        validate_people(Decimal("3.30"))
+    assert validate_people(Decimal("3.30"), step=Decimal("0.01")) == Decimal("3.30")
+    assert_can_confirm(8, Decimal("3.30"), step=Decimal("0.01"))
+    assert posts_per_person(8, Decimal("3.30"), step=Decimal("0.01")) == Decimal("2.42")
+
+
 def test_shared_indicators():
     assert counts_as_post("Padrão")
     assert not counts_as_post("Acessórios")

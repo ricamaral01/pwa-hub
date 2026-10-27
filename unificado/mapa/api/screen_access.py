@@ -9,7 +9,7 @@ from urllib.parse import parse_qs, urlsplit
 CATALOG = json.loads((Path(__file__).parent / 'screen_catalog.json').read_text(encoding='utf-8'))
 BY_ID = {row['id']: row for row in CATALOG}
 MASTER_USER_ID = 'user-ricardo'
-MASTER_USER_IDS = frozenset({MASTER_USER_ID, 'marcelo', 'alex'})
+MASTER_USER_IDS = frozenset({MASTER_USER_ID, 'marcelo', 'alex', 'alex51', 'philippe'})
 DEFAULT_LAB_USERS = frozenset({'user-ricardo', 'ricardo.teste', 'user-alex'})
 GUEST_FORBIDDEN_SCREENS = frozenset({'prodUsuarios', 'pcpUsuarios', 'labUsuarios'})
 MAPA_ROLE_MODES = {
@@ -27,16 +27,12 @@ MAPA_ROLE_MODES = {
 
 
 def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
+    if screen['id'] == 'labCartaTraco':
+        return user['id'] in MASTER_USER_IDS or user['id'] in lab_users
+    if screen['id'] == 'usinasCartaTraco':
+        return user['id'] in MASTER_USER_IDS
     if user['id'] in MASTER_USER_IDS:
         return True
-    if screen['id'].startswith('pdr'):
-        # Visibility is an explicit per-screen grant and requires a PCP account.
-        # Unit membership is checked again by the PCP API for every request.
-        if screen['id'] == 'pdrProdutos':
-            return bool(planning_role) and user['perfil'] in {'GERENCIA', 'GESTOR'}
-        if screen['id'] in {'pdrApontamento', 'pdrMaoDeObra'}:
-            return bool(planning_role) and user['perfil'] in {'GERENCIA', 'GESTOR', 'APONTADOR'}
-        return bool(planning_role)
     if screen['id'] == 'tvFormas':
         return bool(user.get('id'))
     module = screen['module']
@@ -48,6 +44,8 @@ def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
         return bool(user.get('id'))
     if module == 'usinas':
         return False  # liberado inicialmente apenas aos administradores master acima
+    if module == 'suprimentos':
+        return bool(user.get('id'))  # a concessão individual e o papel na API continuam obrigatórios
     if module == 'planejamento':
         if not planning_role:
             return False
@@ -59,6 +57,8 @@ def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
         if required == 'PRODUCAO':
             return planning_role != 'CONSULTA'
         return True
+    if screen['id'].startswith(('pdr', 'rbr')):
+        return bool(planning_role)
     mode = screen['screen']
     if mode in MAPA_ROLE_MODES.get(user['perfil'], set()):
         return True
@@ -71,27 +71,26 @@ def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
 
 def allowed_screens(user, planning_role, overrides, lab_users):
     if user['id'] in MASTER_USER_IDS:
-        return [row['id'] for row in CATALOG
-                if not row['id'].startswith('cronoanalise.') or user['id'] == MASTER_USER_ID]
+        return [row['id'] for row in CATALOG]
     if user['perfil'] == 'CONVIDADO':
-        allowed = [row['id'] for row in CATALOG if row['id'] != 'labCertificados' and row['id'] not in GUEST_FORBIDDEN_SCREENS
+        return [row['id'] for row in CATALOG if row['id'] not in GUEST_FORBIDDEN_SCREENS
+                and row['id'] != 'labCartaTraco'
                 and overrides.get(row['id']) is True
                 and (row['module'] != 'planejamento' or
                      role_allows(user, row, planning_role, lab_users))]
-        if user['id'] == 'philippe' or any(BY_ID[item]['module'] == 'laboratorio' for item in allowed):
-            allowed.append('labCertificados')
-        return allowed
-    allowed = [row['id'] for row in CATALOG if row['id'] != 'labCertificados' and role_allows(user, row, planning_role, lab_users)
+    allowed = [row['id'] for row in CATALOG if role_allows(user, row, planning_role, lab_users)
             and overrides.get(row['id'],
-                              not row['id'].startswith('pdr') and (
-                                row['module'] not in {'laboratorio', 'qualidade'} and row['id'] != 'tvFormas'
-                                or row['module'] == 'laboratorio' and user['id'] in DEFAULT_LAB_USERS
-                                and not row['id'].startswith('cronoanalise.')))]
+                              False if row['id'].startswith(('pdr', 'rbr')) else
+                              row['module'] not in {'laboratorio', 'qualidade', 'suprimentos'} and row['id'] != 'tvFormas'
+                              or row['module'] == 'laboratorio' and user['id'] in DEFAULT_LAB_USERS
+                              and not row['id'].startswith('cronoanalise.'))]
+    if (overrides.get('labUsinasRelatorios') is not False
+            and 'labUsinasRelatorios' not in allowed
+            and any(BY_ID[item]['module'] == 'laboratorio' for item in allowed)):
+        allowed.append('labUsinasRelatorios')
     if ('qualidadePainel' in allowed and 'qualidadeResultadosBancada' not in allowed
             and overrides.get('qualidadeResultadosBancada') is not False):
         allowed.append('qualidadeResultadosBancada')
-    if user['id'] == 'philippe' or any(BY_ID[item]['module'] == 'laboratorio' for item in allowed):
-        allowed.append('labCertificados')
     return allowed
 
 
@@ -99,9 +98,12 @@ def screen_for_uri(original_uri, screen_header=''):
     uri = urlsplit(original_uri)
     path = uri.path.replace('index.html', '')
     query = parse_qs(uri.query)
-    if path.startswith('/unificado/laboratorio/certificados-qualidade/'):
-        return BY_ID.get('labCertificados')
+    if (path.startswith('/unificado/laboratorio/carta-traco/') or
+            path.startswith('/unificado/mapa/api/laboratorio/carta-traco/')):
+        return BY_ID.get('labCartaTraco')
     if path.startswith('/unificado/laboratorio/cec-api/'):
+        return BY_ID.get('labCec')
+    if path.startswith('/unificado/laboratorio/cec/rompimentos-mes/'):
         return BY_ID.get('labCec')
     if path.rstrip('/') == '/unificado/laboratorio/cec/resultados':
         return BY_ID.get('labCecResultados')
@@ -109,6 +111,12 @@ def screen_for_uri(original_uri, screen_header=''):
         return BY_ID.get('labCecRelatorio')
     if path.startswith('/unificado/laboratorio/dosagem/'):
         return BY_ID.get('labDosagem')
+    if path.startswith('/unificado/laboratorio/certificados-qualidade/'):
+        return BY_ID.get('labCertificados')
+    if path.startswith('/unificado/laboratorio/usinas-relatorios/'):
+        return BY_ID.get('labUsinasRelatorios')
+    if path.startswith('/unificado/laboratorio/slump/'):
+        return BY_ID.get('labSlump')
     if path in {'/unificado/relatorios/fechamento-diario/',
                 '/unificado/relatorios/api/fechamento-diario'}:
         return BY_ID.get('fechamentoDiario')
@@ -124,14 +132,28 @@ def screen_for_uri(original_uri, screen_header=''):
         mode = query.get('tela', ['LIBERACAO'])[0]
         return next((row for row in CATALOG if row['module'] == 'producao'
                      and row['screen'] == mode), None)
-    if path == '/unificado/producao/pederneiras/':
-        tab = query.get('tab', ['apontamento'])[0]
-        return next((row for row in CATALOG if row['id'].startswith('pdr')
-                     and row['query'] == f'?tab={tab}'), None)
-    if path == '/unificado/producao/pederneiras/app/':
-        return BY_ID.get('pdrApontamento')
-    if path == '/unificado/producao/pederneiras/mao-de-obra/app/':
-        return BY_ID.get('pdrMaoDeObra')
+    if path.startswith('/unificado/producao/pederneiras/'):
+        if path.startswith('/unificado/producao/pederneiras/mao-de-obra/app/'):
+            return BY_ID.get('pdrMaoDeObra')
+        if path.startswith('/unificado/producao/pederneiras/app/'):
+            return BY_ID.get('pdrApontamento')
+        if path == '/unificado/producao/pederneiras/':
+            tab = query.get('tab', ['apontamento'])[0]
+            return next((row for row in CATALOG
+                         if row['id'].startswith('pdr')
+                         and parse_qs(row['query'].lstrip('?')).get('tab') == [tab]), None)
+        return None
+    if path.startswith('/unificado/producao/ribeirao/'):
+        if path.startswith('/unificado/producao/ribeirao/mao-de-obra/app/'):
+            return BY_ID.get('rbrMaoDeObra')
+        if path.startswith('/unificado/producao/ribeirao/app/'):
+            return BY_ID.get('rbrApontamento')
+        if path == '/unificado/producao/ribeirao/':
+            tab = query.get('tab', ['apontamento'])[0]
+            return next((row for row in CATALOG
+                         if row['id'].startswith('rbr')
+                         and parse_qs(row['query'].lstrip('?')).get('tab') == [tab]), None)
+        return None
     if path.startswith('/unificado/pcp/') and not path.startswith('/unificado/pcp/api/'):
         return next((row for row in CATALOG if row['module'] == 'planejamento'
                      and row['path'] == path), None)
@@ -150,8 +172,17 @@ def screen_for_uri(original_uri, screen_header=''):
             return BY_ID.get('qualidadeTratativa')
         return next((row for row in CATALOG if row['module'] == 'qualidade'
                      and row['path'].rstrip('/') == path.rstrip('/')), None)
+    if path.startswith('/unificado/suprimentos/'):
+        if path.startswith('/unificado/suprimentos/pwa/'):
+            return BY_ID.get('suprimentosSolicitacoes')
+        if path.startswith('/unificado/suprimentos/solicitacao/'):
+            return BY_ID.get('suprimentosSolicitacoes')
+        return next((row for row in CATALOG if row['module'] == 'suprimentos'
+                     and row['path'].rstrip('/') == path.rstrip('/')), None)
     if path == '/unificado/usinas/':
         return BY_ID.get('usinasInicio')
+    if path == '/unificado/usinas/carta-traco.html':
+        return BY_ID.get('usinasCartaTraco')
     if path.startswith('/unificado/pcp/api/usuarios'):
         return BY_ID['pcpUsuarios'] if screen_header == 'pcpUsuarios' else None
     if screen_header in BY_ID:
@@ -159,7 +190,8 @@ def screen_for_uri(original_uri, screen_header=''):
         expected = {'planejamento':'/unificado/pcp/', 'producao':'/unificado/mapa/',
                     'laboratorio':'/unificado/laboratorio/',
                     'qualidade':'/unificado/qualidade/',
-                    'usinas':'/unificado/usinas/'}[candidate['module']]
+                    'usinas':'/unificado/usinas/',
+                    'suprimentos':'/unificado/suprimentos/'}[candidate['module']]
         return candidate if path.startswith(expected) else None
     if path.startswith('/unificado/mapa/api/'):
         if screen_header in {'INSPECAO_DETALHE','MONTAGEM_POSTES_DETALHE'}:
@@ -171,7 +203,7 @@ def screen_for_uri(original_uri, screen_header=''):
             return BY_ID['dashboard']
         return None
     if path.startswith('/unificado/laboratorio/api/'):
-        if path == '/unificado/laboratorio/api/slump':
+        if path == '/unificado/laboratorio/api/slump' or path.startswith('/unificado/laboratorio/api/slump/'):
             return BY_ID['labSlump']
         if path.startswith('/unificado/laboratorio/api/laboratorio/cronoanalise/'):
             return None  # the Cronoanalise router checks its signed actions per endpoint

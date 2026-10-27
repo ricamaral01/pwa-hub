@@ -58,16 +58,20 @@
     if (/^pcp\/[a-z0-9-]+\/$/.test(path)) return {url, module:'planejamento', path};
     if (path === 'mapa/operacao/') return {url, module:'producao', path};
     if (path === 'producao/pederneiras/') return {url, module:'producao', path};
+    if (path === 'producao/ribeirao/') return {url, module:'producao', path};
     if (path === 'usinas/') return {url, module:'usinas', path};
     if (path === 'relatorios/fechamento-diario/') return {url, module:'producao', path};
-    if (path === 'laboratorio/' || path === 'laboratorio/certificados-qualidade/' || path === 'laboratorio/dosagem/' || path === 'laboratorio/slump' || path === 'laboratorio/slump/' || path === 'laboratorio/novo/postes' ||
-        /^laboratorio\/cec(?:\/(?:resultados|relatorio|analise|etiquetas|leitura))?\/?$/.test(path) ||
+    if (path === 'laboratorio/' || path === 'laboratorio/certificados-qualidade/' || path === 'laboratorio/carta-traco/' || path === 'laboratorio/usinas-relatorios/' || path === 'laboratorio/dosagem/' || path === 'laboratorio/slump' || path === 'laboratorio/slump/' || path === 'laboratorio/novo/postes' ||
+        /^laboratorio\/cec(?:\/(?:resultados|relatorio|analise|etiquetas|leitura|rompimentos-mes))?\/?$/.test(path) ||
         /^laboratorio\/cec\/analise\/(?:resultado-cp|relatorio)\.html$/.test(path) ||
         /^laboratorio\/cronoanalise(?:\/(?:inicio|coletar|medicoes|catalogo|dimensionar|simular|metodologia))?\/?$/.test(path))
       return {url, module:'laboratorio', path};
     if (path === 'qualidade/' || path === 'qualidade/abrir' ||
+        path === 'qualidade/resultados-bancada' ||
         path === 'qualidade/cadastros' || /^qualidade\/nc\/[a-zA-Z0-9-]+$/.test(path))
       return {url, module:'qualidade', path};
+    if (/^suprimentos\/(?:painel|solicitacoes|solicitacao|nova|fornecedores|cotacoes|recebimento|analises|almoxarifado|inventario|cadastros)\/$/.test(path))
+      return {url, module:'suprimentos', path};
     return null;
   }
 
@@ -77,6 +81,11 @@
     if (route.module === 'producao' && route.url.searchParams.get('tela') === 'USUARIOS') return 'prodUsuarios';
     if (route.module === 'laboratorio' && route.url.searchParams.get('tab') === 'usuarios') return 'labUsuarios';
     if (route.module === 'qualidade' && route.path.startsWith('qualidade/nc/')) return 'qualidadeTratativa';
+    if (route.module === 'suprimentos' && route.path === 'suprimentos/solicitacao/') return 'suprimentosSolicitacoes';
+    if (route.module === 'suprimentos' && route.path === 'suprimentos/fornecedores/') return 'suprimentosFornecedores';
+    if (route.module === 'suprimentos' && route.path === 'suprimentos/cotacoes/') return 'suprimentosCotacoes';
+    if (route.module === 'suprimentos' && route.path === 'suprimentos/recebimento/') return 'suprimentosRecebimento';
+    if (route.module === 'suprimentos' && route.path === 'suprimentos/analises/') return 'suprimentosIndicadores';
     const found = Object.entries(MENU_ITEMS).find(([, item]) => item.url === route.url.href);
     if (found) return found[0];
     if (route.module === 'producao' && !route.url.search) return 'liberacao';
@@ -259,11 +268,12 @@
     const screenId = screenFor(route);
     if (!screenId || !window.UnificadoScreenAccess.moduleAllowed(route.module) ||
         !window.UnificadoScreenAccess.allowed(screenId)) { deny(); return; }
-    if (route.module === 'planejamento' && !hasPcp) return;
     if (route.module === 'producao' && !hasMapa) return;
     if (route.module === 'usinas' && !hasMapa) return;
     if (route.module === 'laboratorio' && !hasLab) return;
     if (route.module === 'qualidade' && !hasMapa) return;
+    if (route.module === 'suprimentos' && !hasMapa) return;
+    window.UnificadoModulePages?.hide();
     const ticket = ++pending;
     host.hidden = false;
     homeContent.hidden = true;
@@ -284,6 +294,12 @@
     }
     if (route.module === 'qualidade') {
       const response = await fetch(root + 'mapa/api/unified/qualidade-bootstrap', {
+        method:'POST', credentials:'same-origin', cache:'no-store'
+      });
+      if (!response.ok) { if (ticket === pending) deny(); return; }
+    }
+    if (route.module === 'suprimentos') {
+      const response = await fetch(root + 'mapa/api/unified/suprimentos-bootstrap', {
         method:'POST', credentials:'same-origin', cache:'no-store'
       });
       if (!response.ok) { if (ticket === pending) deny(); return; }
@@ -374,6 +390,7 @@
     if (!gedRoutes.has(path)) path = 'dashboard';
     await window.UnificadoScreenAccess.ready;
     if (!previewModules || !hasMapa) { deny(true); return; }
+    window.UnificadoModulePages?.hide();
     const ticket = ++pending;
     expectedGedRoute = path;
     clearTimeout(gedLoadTimer);

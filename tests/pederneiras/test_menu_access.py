@@ -30,6 +30,21 @@ def test_pederneiras_requires_explicit_grant_and_pcp_identity():
 
 
 def test_master_screen_visibility():
-    for user_id in ("user-ricardo", "marcelo", "alex"):
+    for user_id in ("user-ricardo", "marcelo", "alex", "alex51", "philippe"):
         user = {"id": user_id, "perfil": "GERENCIA", "nome": user_id}
         assert "pdrProdutos" in access.allowed_screens(user, None, {}, frozenset())
+        assert "rbrProdutos" in access.allowed_screens(user, None, {}, frozenset())
+
+
+def test_ribeirao_routes_and_opt_in():
+    for suffix, expected in (("?tab=apontamento", "rbrApontamento"),
+                             ("?tab=mao-de-obra", "rbrMaoDeObra"),
+                             ("?tab=mensal", "rbrMensal"),
+                             ("?tab=indicadores", "rbrIndicadores"),
+                             ("?tab=produtos", "rbrProdutos"),
+                             ("app/", "rbrApontamento"),
+                             ("mao-de-obra/app/", "rbrMaoDeObra")):
+        assert access.screen_for_uri("/unificado/producao/ribeirao/" + suffix)["id"] == expected
+    user = {"id": "ribeirao-operador", "perfil": "GESTOR", "nome": "Operador"}
+    assert "rbrApontamento" not in access.allowed_screens(user, "PRODUCAO", {}, frozenset())
+    assert "rbrApontamento" in access.allowed_screens(user, "PRODUCAO", {"rbrApontamento": True}, frozenset())
