@@ -1,8 +1,9 @@
-const CACHE = 'concrefer-unificado-shell-v1.0.48';
+const CACHE = 'concrefer-unificado-shell-v20261028-mobile-scroll';
 const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const ROOT = '/unificado/';
 const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.36-usinas',
   ROOT + 'shell/shared-menu.css?v=1.0.36-usinas',
+  ROOT + 'shell/navigation.css?v=20261028-mobile-scroll',
   ROOT + 'shell/modelo-a/menu.css?v=1.0.20-modulos', ROOT + 'shell/modelo-a-host.css?v=1.0.36-usinas',
   ROOT + 'shell/modelo-a/menu.js?v=1.0.46-pederneiras',
   ROOT + 'shell/modelo-a-loader.js?v=1.0.46-pederneiras',
