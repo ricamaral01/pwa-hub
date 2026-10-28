@@ -3,8 +3,8 @@
 body.unificado-model-a .desktop-only {
   display: flex;
   flex-direction: row;
-  height: 100vh;
-  min-height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
   padding: 0;
   overflow: hidden;
 }
@@ -14,9 +14,12 @@ body.unificado-model-a #sidebar-model-a:has(.sb.is-collapsed) { width: 80px; }
 body.unificado-model-a .main-panel {
   flex: 1;
   min-width: 0;
-  height: 100vh;
+  height: 100dvh;
   min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior-y: contain;
   border-radius: 0;
 }
 body.unificado-model-a .module-host { height: calc(100vh - 70px); min-height: 0; }

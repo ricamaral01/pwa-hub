@@ -73,6 +73,7 @@
   }
 
   function screenFor(route) {
+    if (route.path === 'relatorios/acmp-concretagem/') return 'acmpConcretagem';
     if (route.path === 'laboratorio/dosagem/') return 'labDosagem';
     if (route.path === 'pcp/usuarios/') return 'pcpUsuarios';
     if (route.module === 'producao' && route.url.searchParams.get('tela') === 'USUARIOS') return 'prodUsuarios';

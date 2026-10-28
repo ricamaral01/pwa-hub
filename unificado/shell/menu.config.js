@@ -214,6 +214,8 @@ const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([modu
       ? new URL('tv/formas/', UNIFICADO_BASE).href
       : item.id === 'fechamentoDiario'
       ? new URL('relatorios/fechamento-diario/', UNIFICADO_BASE).href
+      : item.id === 'acmpConcretagem'
+      ? new URL('relatorios/acmp-concretagem/', UNIFICADO_BASE).href
       : new URL(`operacao/?tela=${encodeURIComponent(item.screen)}`, MAPA_BASE).href,
     available: true
   }]))
