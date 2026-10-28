@@ -44,6 +44,7 @@ def xlsx(month: dict, products: list[dict]) -> bytes:
         ("MOD", [day["mod"] for day in days], sum((day["mod"] for day in days), 0)),
         ("MOI", [day["moi"] for day in days], sum((day["moi"] for day in days), 0)),
         ("Postes/homem", [day["postes_homem"] for day in days], None),
+        ("kg/homem", [day["kg_homem"] for day in days], month["kg_homem"]),
         ("m³", [day["volume_m3"] for day in days], None),
         ("Acessórios (fora do total de postes)", _accessory_counts(days),
          sum(_accessory_counts(days))),
@@ -94,9 +95,12 @@ def pdf(month: dict, products: list[dict]) -> bytes:
                       *[value or "" for value in values], total])
     for label, field in (("Total postes", "postes"), ("Homens", "homens"),
                          ("MOD", "mod"), ("MOI", "moi"), ("Postes/homem", "postes_homem"),
+                         ("kg/homem", "kg_homem"),
                          ("m³", "volume_m3")):
         values = [day[field] if day[field] is not None else "-" for day in days]
-        total = month["postes"] if field == "postes" else month["homens"] if field == "homens" else ""
+        total = (month["postes"] if field == "postes" else
+                 month["homens"] if field == "homens" else
+                 month["kg_homem"] if field == "kg_homem" and month["kg_homem"] is not None else "")
         table.append([label, "", "", *values, total])
     accessory_counts = _accessory_counts(days)
     table.append(["Acessórios (fora do total de postes)", "", "",

@@ -121,8 +121,14 @@ def _audit(db: Session, unit: dict, entity: str, entity_id: int, field: str,
 
 def _product_rows(db: Session, unit: dict):
     return [dict(row) for row in db.execute(text("""
-      SELECT id,familia,letra,descricao,cod_pro,cod_sma,volume_m3,ativo,pendencia
-      FROM producao.produto WHERE unidade_id=:uid
+      SELECT p.id,p.familia,p.letra,p.descricao,p.cod_pro,p.cod_sma,p.volume_m3,
+             p.ativo,p.pendencia,ref.peso AS peso_unitario_kg
+      FROM producao.produto p
+      LEFT JOIN LATERAL (
+        SELECT peso FROM public.produtos WHERE codigo=p.cod_pro AND peso IS NOT NULL
+        ORDER BY id LIMIT 1
+      ) ref ON true
+      WHERE p.unidade_id=:uid
       ORDER BY (pendencia IS NULL),familia,descricao,id
     """), {"uid": unit["id"]}).mappings()]
 
@@ -284,20 +290,29 @@ def _production(db: Session, unit: dict, day: date) -> dict:
       FROM producao.apontamento_dia WHERE unidade_id=:uid AND data=:day
     """), {"uid": unit["id"], "day": day}).mappings().first()
     rows = [dict(row) for row in db.execute(text("""
-      SELECT i.id,i.produto_id,i.quantidade,p.descricao,p.familia,p.volume_m3
+      SELECT i.id,i.produto_id,i.quantidade,p.descricao,p.familia,p.volume_m3,
+             ref.peso AS peso_unitario_kg
       FROM producao.apontamento_item i
       JOIN producao.apontamento_dia d ON d.id=i.apontamento_dia_id
       JOIN producao.produto p ON p.id=i.produto_id AND p.unidade_id=d.unidade_id
+      LEFT JOIN LATERAL (
+        SELECT peso FROM public.produtos WHERE codigo=p.cod_pro AND peso IS NOT NULL
+        ORDER BY id LIMIT 1
+      ) ref ON true
       WHERE d.unidade_id=:uid AND d.data=:day
       ORDER BY p.familia,p.descricao
     """), {"uid": unit["id"], "day": day}).mappings()]
     summary = production_summary([(r["quantidade"], r["volume_m3"]) for r in rows
                                   if counts_as_post(r["familia"])])
+    post_rows = [row for row in rows if counts_as_post(row["familia"])]
+    missing_weight = sum(1 for row in post_rows if row["quantidade"] and row["peso_unitario_kg"] is None)
+    weight_kg = None if missing_weight else sum(
+        (Decimal(row["quantidade"]) * row["peso_unitario_kg"] for row in post_rows), Decimal("0"))
     return {"unidade": unit, "data": day, "status": marker["status"] if marker else "rascunho",
             "enviado_em": marker["enviado_em"] if marker else None,
             "confirmado_em": marker["confirmado_em"] if marker else None,
             "liberacao_prevista": date.fromordinal(day.toordinal() + 3),
-            "itens": rows, **summary}
+            "itens": rows, "peso_kg": weight_kg, "produtos_sem_peso": missing_weight, **summary}
 
 
 @router.get("/apontamentos/{dia}")
@@ -544,7 +559,7 @@ def monthly_labor(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2]
                   db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
     data = monthly(unidade, mes, db, user)
     return {"unidade": data["unidade"], "mes": mes,
-            "dias": [{key: day[key] for key in ("data", "postes", "homens", "mod", "moi", "postes_homem", "areas")}
+            "dias": [{key: day[key] for key in ("data", "postes", "homens", "mod", "moi", "postes_homem", "kg_homem", "areas")}
                      for day in data["dias"]]}
 
 
@@ -761,6 +776,10 @@ def monthly(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$"),
         days.append({"data": day, "status": production["status"], "postes": production["postes"],
                      "homens": labor["homens"], "mod": labor["mod"], "moi": labor["moi"],
                      "postes_homem": posts_per_person(production["postes"], labor["homens"], step=unit["passo_homens"]),
+                     "peso_kg": production["peso_kg"],
+                     "produtos_sem_peso": production["produtos_sem_peso"],
+                     "kg_homem": ((production["peso_kg"] / labor["homens"]).quantize(Decimal("0.01"))
+                                  if production["peso_kg"] is not None and labor["homens"] else None),
                      "volume_m3": production["volume_m3"],
                      "produtos_sem_volume": production["produtos_sem_volume"],
                      "areas": labor["areas"],
@@ -771,6 +790,8 @@ def monthly(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$"),
     """), {"uid": unit["id"], "mes": mes}).mappings().first()
     total_posts = sum(day["postes"] for day in days)
     total_people = sum((day["homens"] for day in days), Decimal("0"))
+    total_weight = (sum((day["peso_kg"] for day in days), Decimal("0"))
+                    if all(day["peso_kg"] is not None for day in days) else None)
     total_volume = (sum((day["volume_m3"] for day in days), Decimal("0"))
                     if all(day["volume_m3"] is not None for day in days) else None)
     return {"unidade": unit, "mes": mes, "meta": dict(meta) if meta else None,
@@ -778,6 +799,10 @@ def monthly(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$"),
             "dias": days, "dias_producao": len(days), "postes": total_posts,
             "media_postes_dia": round(total_posts / len(days), 2) if days else None,
             "homens": total_people, "postes_homem": posts_per_person(total_posts, total_people, step=unit["passo_homens"]),
+            "peso_kg": total_weight,
+            "produtos_sem_peso": sum(day["produtos_sem_peso"] for day in days),
+            "kg_homem": ((total_weight / total_people).quantize(Decimal("0.01"))
+                         if total_weight is not None and total_people else None),
             "volume_m3": total_volume,
             "produtos_sem_volume": sum(day["produtos_sem_volume"] for day in days),
             "pendencias": [day["data"] for day in days if day["postes"] and not day["homens"]]}

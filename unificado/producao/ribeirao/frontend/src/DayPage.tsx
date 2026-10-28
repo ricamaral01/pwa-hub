@@ -33,6 +33,9 @@ export function DayPage({products,notify}:{products:Product[];notify:(message:st
   const volume=missing?null:products.reduce((sum,product)=>sum+number(qty[product.id])*number(product.volume_m3),0);
   const people=number(labor?.homens);
   const perPerson=people?total/people:null;
+  const postProducts=products.filter(product=>product.familia.normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase()!=='acessorios');
+  const missingWeight=postProducts.some(product=>number(qty[product.id])>0&&product.peso_unitario_kg===null);
+  const kgPerPerson=people&&!missingWeight?postProducts.reduce((sum,product)=>sum+number(qty[product.id])*number(product.peso_unitario_kg),0)/people:null;
   const outliers=reference&&reference.dias>=5?products.filter(product=>{
     const mean=reference.medias[String(product.id)]||0,current=number(qty[product.id]);
     return current>0&&mean>=3&&Math.abs(current-mean)>=3&&(current>mean*1.5||current<mean*.5);
@@ -57,7 +60,7 @@ export function DayPage({products,notify}:{products:Product[];notify:(message:st
       })}</tbody></table>{visible.length===0&&<div className="empty-inline">Nenhum produto neste filtro.</div>}</div>}
     </section>
     <aside className="side-stack"><section className="panel sticky"><span className="eyebrow">RESUMO DO DIA</span><h2>{new Date(`${date}T12:00:00`).toLocaleDateString('pt-BR',{day:'2-digit',month:'long'})}</h2>
-      <div className="metric-stack"><div><span>Postes</span><strong>{fmt(total)}</strong></div><div><span>Homens</span><strong>{fmt(people,2)}</strong></div><div><span>Postes / homem</span><strong>{fmt(perPerson,2)}</strong><small>Meta {fmt(month?.meta?.meta_postes_homem,1)}</small></div><div><span>Volume</span><strong>{fmt(volume,3)} m³</strong></div><div><span>Variação vs ontem</span><strong>{fmt(total-(yesterday?.postes||0))}</strong></div></div>
+      <div className="metric-stack"><div><span>Postes</span><strong>{fmt(total)}</strong></div><div><span>Homens</span><strong>{fmt(people,2)}</strong></div><div><span>Postes / homem</span><strong>{fmt(perPerson,2)}</strong><small>Meta {fmt(month?.meta?.meta_postes_homem,1)}</small></div><div><span>kg / homem</span><strong>{fmt(kgPerPerson,2)}</strong></div><div><span>Volume</span><strong>{fmt(volume,3)} m³</strong></div><div><span>Variação vs ontem</span><strong>{fmt(total-(yesterday?.postes||0))}</strong></div></div>
       {missing>0&&<p className="alert-line">{missing} produto(s) sem volume por peça. O m³ permanece pendente.</p>}
       {total>0&&!people&&<p className="alert-line">Mão de obra ausente: confirmação bloqueada.</p>}
       {outliers.length>0&&<p className="alert-line">Fora do padrão dos últimos {reference?.dias} dias: {outliers.slice(0,3).map(p=>p.descricao).join(', ')}{outliers.length>3?' e outros':''}.</p>}

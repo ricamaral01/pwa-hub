@@ -1,13 +1,13 @@
 export type Tab = 'apontamento' | 'mao-de-obra' | 'mensal' | 'indicadores' | 'produtos';
 export type Product = {
   id:number; familia:string; letra:string|null; descricao:string; cod_pro:string|null;
-  cod_sma:string|null; volume_m3:number|null; ativo:boolean; pendencia:string|null;
+  cod_sma:string|null; volume_m3:number|null; peso_unitario_kg:number|null; ativo:boolean; pendencia:string|null;
 };
 export type Item = {id:number; produto_id:number; quantidade:number; descricao:string; familia:string; volume_m3:number|null};
 export type Day = {
   data:string; status:'rascunho'|'enviado'|'confirmado'; enviado_em:string|null;
   confirmado_em:string|null; liberacao_prevista:string; itens:Item[];
-  postes:number; volume_m3:number|null; produtos_sem_volume:number;
+  postes:number; volume_m3:number|null; produtos_sem_volume:number; peso_kg:number|null; produtos_sem_peso:number;
 };
 export type Area = {
   id?:number; atividade_id:number; descricao:string; tipo:'MOD'|'MOI'; ordem:number;
@@ -19,13 +19,13 @@ export type Labor = {
 };
 export type MonthDay = {
   data:string; status:Day['status']; postes:number; homens:number; mod:number; moi:number;
-  postes_homem:number|null; volume_m3:number|null; produtos_sem_volume:number;
+  postes_homem:number|null; kg_homem:number|null; peso_kg:number|null; produtos_sem_peso:number; volume_m3:number|null; produtos_sem_volume:number;
   areas:Area[]; itens:Item[];
 };
 export type Month = {
   mes:string; meta:{dias_uteis:number;pcs_dia:number;meta_postes_homem:number}|null;
   meta_total:number|null; dias:MonthDay[]; dias_producao:number; postes:number;
-  media_postes_dia:number|null; homens:number; postes_homem:number|null;
+  media_postes_dia:number|null; homens:number; postes_homem:number|null; kg_homem:number|null; peso_kg:number|null; produtos_sem_peso:number;
   volume_m3:number|null; produtos_sem_volume:number; pendencias:string[];
 };
 export type Preview = {
