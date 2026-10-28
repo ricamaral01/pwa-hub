@@ -3276,6 +3276,20 @@ async function toggleFormaProgramada(forma, setor, card) {
     await unprogramFormaInApiOrLocal(data, setor, normalized);
     showLibFeedback(`Forma ${forma} desprogramada.`, "ok");
   } else {
+    const ordered = getOperationalFormsForSector(setor);
+    const selected = ordered.find((item) => normalizeUpper(item.forma) === normalized);
+    const selectedProduct = normalizeUpper(withPosteData(selected, setor).codigoProduto);
+    const selectedGroup = selectedProduct || normalizeUpper(selected?.modelo);
+    const nearest = selectedGroup && ordered.find((item) => {
+      const product = normalizeUpper(withPosteData(item, setor).codigoProduto);
+      const group = product || normalizeUpper(item.modelo);
+      return group === selectedGroup && !state.programmedFormas.has(normalizeUpper(item.forma))
+        && !isFormaEmManutencao(setor, item.forma);
+    });
+    if (nearest && normalizeUpper(nearest.forma) !== normalized) {
+      showLibFeedback(`Programe primeiro a forma ${nearest.forma}, mais próxima da monovia para este produto.`, "error");
+      return;
+    }
     state.programmedFormas.add(normalized);
     card.classList.add("is-programmed");
     await programFormaInApiOrLocal(data, setor, normalized);
@@ -3440,8 +3454,17 @@ async function loadClickedFormsFromSupabase(dateOverride) {
 
 function getOperationalFormsForSector(setor) {
   const groups = SECTOR_FORMS[setor] || {};
-  return ["left", "right", "col1", "col2", "col3"]
-    .flatMap((key) => Array.isArray(groups[key]) ? groups[key] : []);
+  const lanes = (groups.left || groups.right)
+    ? [groups.left || [], groups.right || []]
+    : [groups.col1 || [], groups.col2 || [], groups.col3 || []];
+  const ordered = [];
+  const depth = Math.max(0, ...lanes.map((lane) => lane.length));
+  for (let position = 0; position < depth; position++) {
+    for (const lane of lanes) {
+      if (lane[position]) ordered.push(lane[position]);
+    }
+  }
+  return ordered;
 }
 
 function resolveOfficialProgrammedFormas(rows, setor) {
@@ -3477,7 +3500,7 @@ function resolveOfficialProgrammedFormas(rows, setor) {
     if (setor === "Setor 2" && getFormaCatalogKey(item.forma) === "PL") return;
     const produtoCodigo = normalizeUpper(item.codigoProduto);
     const restante = remainingByProduct.get(produtoCodigo) || 0;
-    if (!produtoCodigo || restante <= 0) return;
+    if (!produtoCodigo || restante <= 0 || programmed.has(normalizeUpper(item.forma))) return;
     programmed.add(normalizeUpper(item.forma));
     remainingByProduct.set(produtoCodigo, restante - 1);
   });

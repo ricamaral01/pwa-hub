@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acmp. Concretagem · Campinas</title>
+  <meta http-equiv="Cache-Control" content="no-store">
+  <script src="/unificado/shell/auth.js?v=1.0.17-fechamento"></script>
+  <link rel="stylesheet" href="./confirmacao.css?v=20261028-acmp-1">
+  <style>
+    :root{font-family:Montserrat,"Segoe UI",Arial,sans-serif;color:#17324e;background:#eef3f7}
+    *{box-sizing:border-box}
+    body{margin:0}
+    .topbar{background:#12385a;color:white;border-bottom:4px solid #e8762a}
+    .topbar-inner,.page{max-width:1280px;margin:auto;padding:18px 24px}
+    .topbar-inner{display:flex;justify-content:space-between;align-items:center;gap:16px}
+    .topbar strong{font-size:19px}.topbar small{display:block;color:#cce0ef;margin-top:4px}
+    .back{color:white;border:1px solid #7495b2;border-radius:8px;padding:9px 12px;text-decoration:none;font-weight:700}
+    h1{font-size:25px;margin:0 0 6px}h2{margin:0}
+    .subtitle{color:#5b7085;margin:0 0 20px;line-height:1.5}
+    .toolbar{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+    .toolbar label{display:grid;gap:5px;font-size:12px;font-weight:800}
+    .toolbar input,.toolbar button{height:40px;border:1px solid #c4d4e1;border-radius:8px;padding:0 12px;font:inherit}
+    .toolbar button{background:#12385a;color:white;font-size:13px;font-weight:800;cursor:pointer}
+    .toolbar .print{background:white;color:#12385a}
+    .kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .kpi{background:white;border:1px solid #d2deea;border-radius:10px;padding:14px}
+    .kpi span{display:block;color:#52697f;font-size:11px;font-weight:800;text-transform:uppercase;min-height:30px}
+    .kpi strong{display:block;font-size:26px;margin-top:6px;color:#12385a}
+    .kpi.final{background:#e9f7ee;border-color:#9bd6b2}.kpi.final strong{color:#126334}
+    .section-confirmacao{background:white;border:1px solid #d2deea;border-radius:12px;padding:18px;margin:0}
+    .section-head{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:2px solid #12385a;padding-bottom:8px}
+    .section-head h3{font-size:16px;text-transform:uppercase;margin:0}.section-head span{font-size:11px;color:#52697f;font-weight:700}
+    .note{font-size:12px;color:#5b7085;line-height:1.5;margin-top:14px}
+    @media(max-width:850px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:620px){.topbar-inner,.page{padding:14px}.topbar strong{font-size:16px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi strong{font-size:22px}.section-confirmacao{padding:12px}}
+    @media print{.topbar,.toolbar{display:none}.page{max-width:none;padding:0}.section-confirmacao{border:0;padding:0}.kpis{grid-template-columns:repeat(5,minmax(0,1fr))}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner"><div><strong>Acmp. Concretagem</strong><small>Produção · Campinas</small></div><a class="back" href="/unificado/">Voltar</a></div></header>
+  <main class="page">
+    <h1>Acompanhamento da concretagem</h1>
+    <p class="subtitle">Conferência das formas na sequência física e contagem final da produção.</p>
+    <div class="toolbar">
+      <label for="dataRel">Data de produção<input id="dataRel" type="date"></label>
+      <button id="btnAtualizar" type="button">Atualizar</button>
+      <button class="print" type="button" onclick="window.print()">Imprimir</button>
+    </div>
+    <div class="kpis" aria-label="Indicadores do dia">
+      <div class="kpi"><span>Formas no mapa</span><strong id="kpi-formas">—</strong></div>
+      <div class="kpi"><span>Programadas</span><strong id="kpi-programadas">—</strong></div>
+      <div class="kpi"><span>Liberadas</span><strong id="kpi-liberadas">—</strong></div>
+      <div class="kpi"><span>Concretadas</span><strong id="kpi-concretadas">—</strong></div>
+      <div class="kpi final"><span>Efetivo confirmado</span><strong id="confirm-kpi">—</strong></div>
+    </div>
+    <section id="confirmacao-formas" class="section-confirmacao" aria-label="Conferência física das formas"><div class="confirm-loading">Carregando formas...</div></section>
+    <p class="note">A contagem final considera apenas as concretagens confirmadas por José Carlos da Silva. Programação, liberação e concretagem são exibidas como apontamentos separados.</p>
+  </main>
+  <script src="./confirmacao.js?v=20261028-acmp-1"></script>
+  <script>
+    const input = document.getElementById('dataRel');
+    const now = new Date();
+    input.value = [now.getFullYear(), String(now.getMonth()+1).padStart(2,'0'), String(now.getDate()).padStart(2,'0')].join('-');
+    window.onAcmpResumo = resumo => {
+      for (const key of ['formas','programadas','liberadas','concretadas']) {
+        document.getElementById('kpi-' + key).textContent = resumo ? Number(resumo[key] || 0).toLocaleString('pt-BR') : '—';
+      }
+      if (!resumo) document.getElementById('confirm-kpi').textContent = '—';
+    };
+    function refresh() { window.loadConfirmacaoFormas(input.value); }
+    document.getElementById('btnAtualizar').addEventListener('click', refresh);
+    input.addEventListener('change', refresh);
+    refresh();
+  </script>
+</body>
+</html>

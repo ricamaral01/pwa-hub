@@ -3318,6 +3318,9 @@ from usinas_carta_traco import register as register_usinas_carta_traco
 register_usinas_carta_traco(app, authenticated_user, screen_access_state)
 from usinas_cec import register as register_usinas_cec
 register_usinas_cec(app, authenticated_user, screen_access_state)
+from fechamento_producao import register as register_fechamento_producao
+register_fechamento_producao(app, authenticated_user, screen_access_state,
+                            writer_connect, pcp_connect)
 
 
 if __name__ == "__main__":

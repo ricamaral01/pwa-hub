@@ -58,7 +58,7 @@
     if (/^pcp\/[a-z0-9-]+\/$/.test(path)) return {url, module:'planejamento', path};
     if (path === 'mapa/operacao/') return {url, module:'producao', path};
     if (path === 'usinas/') return {url, module:'usinas', path};
-    if (path === 'relatorios/fechamento-diario/') return {url, module:'producao', path};
+    if (path === 'relatorios/fechamento-diario/' || path === 'relatorios/acmp-concretagem/') return {url, module:'producao', path};
     if (path === 'laboratorio/' || path === 'laboratorio/certificados-qualidade/' || path === 'laboratorio/carta-traco/' || path === 'laboratorio/dosagem/' || path === 'laboratorio/slump' || path === 'laboratorio/slump/' || path === 'laboratorio/novo/postes' || path === 'laboratorio/usinas-relatorios/' ||
         /^laboratorio\/cec(?:\/(?:resultados|relatorio|analise|etiquetas|leitura))?\/?$/.test(path) ||
         /^laboratorio\/cec\/analise\/(?:resultado-cp|relatorio)\.html$/.test(path) ||

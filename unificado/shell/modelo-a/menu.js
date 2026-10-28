@@ -5927,7 +5927,7 @@ const cn = {
     pe("CONTROLE", [
       ["relatorioMapa", "Relatório Enc. Produção", ke("RELATORIO"), "doc"],
       ["historico", "Histórico", ke("HISTORICO"), "history"],
-      ["acmpConcretagem", "Acmp. Concretagem", ke("ACMP_CONCRETAGEM"), "sliders"],
+      ["acmpConcretagem", "Acmp. Concretagem", "relatorios/acmp-concretagem/", "sliders"],
       ["manutencao", "Manutenção Formas", ke("RELATORIO_MANUTENCAO"), "sliders"],
       ["tratativa", "Tratativa Defeitos", ke("TRATATIVA_DEFEITOS"), "alert"],
       ["fechamentoDiario", "Fechamento diário", "relatorios/fechamento-diario/", "doc"]
