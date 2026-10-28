@@ -34,7 +34,7 @@ def rows_by_key(cursor, table, day, sectors):
     fields = {
         'programacao_pcp': 'id, setor, forma, data_hora, modelo',
         'liberacao_formas': 'id, setor, forma, data_hora, colaborador',
-        'producao': 'id, setor, forma, data_hora, status, tipo_concreto, modelo, colaborador',
+        'producao': 'id, setor, forma, data_hora, status, tipo_concreto, modelo, colaborador, codigo_produto',
     }
     query = f"""SELECT DISTINCT ON (setor, regexp_replace(upper(forma), '[^A-Z0-9]', '', 'g'))
                     {fields[table]}
@@ -93,6 +93,35 @@ def register(app, authenticated_user, screen_access_state, writer_connect, pcp_c
                                 AND p.quantidade_programada>0""",
                            (day, [int(s[-1]) for s in sectors]))
             pcp_rows = cursor.fetchall()
+            cursor.execute("""SELECT a.tipo, a.grupo_setor,
+                                     coalesce(m.setor_id, a.setor_id) AS setor_id,
+                                     sum(m.quantidade_pessoas) AS quantidade
+                              FROM public.maodeobra m
+                              JOIN public.atividades_mao_de_obra a ON a.id=m.atividade_id
+                              WHERE m.data=%s AND coalesce(m.unidade_id, 1)=1
+                              GROUP BY a.tipo, a.grupo_setor, coalesce(m.setor_id, a.setor_id)""", (day,))
+            labor_rows = cursor.fetchall()
+            cursor.execute("""SELECT codigo, max(peso) AS peso
+                              FROM public.produtos
+                              WHERE codigo IS NOT NULL AND peso>0
+                              GROUP BY codigo""")
+            weights = {key(row['codigo']): float(row['peso']) for row in cursor.fetchall()}
+        labor = {group: {'mod': 0.0, 'moi': 0.0} for group in ('12', '3', '4')}
+        for row in labor_rows:
+            quantity = float(row['quantidade'] or 0)
+            sector_id = row['setor_id']
+            if row['tipo'] == 'MOD':
+                group = '12' if sector_id in (1, 2) or row['grupo_setor'] == '12' else str(sector_id)
+                if group in labor:
+                    labor[group]['mod'] += quantity
+            elif row['tipo'] == 'MOI':
+                if row['grupo_setor'] == '12':
+                    labor['12']['moi'] += quantity
+                elif row['grupo_setor'] == '34':
+                    labor['3']['moi'] += quantity / 2
+                    labor['4']['moi'] += quantity / 2
+                elif str(sector_id) in labor:
+                    labor[str(sector_id)]['moi'] += quantity
         pcp_programmed = {(f"Setor {row['setor_id']}", key(row['codigo_forma']))
                           for row in pcp_rows if row['codigo_forma']}
         for name in sectors:
@@ -133,6 +162,16 @@ def register(app, authenticated_user, screen_access_state, writer_connect, pcp_c
                             'lado': lane['lado'], 'posicao': position,
                             'programada': reference in programmed or reference in pcp_programmed,
                             'liberada': reference in released, 'concretada': concreted,
+                            'programada_em': programmed[reference]['data_hora'].isoformat()
+                                if reference in programmed and programmed[reference]['data_hora'] else None,
+                            'programacao_origem': 'Mapa' if reference in programmed else
+                                'PCP sem horário' if reference in pcp_programmed else None,
+                            'liberada_em': released[reference]['data_hora'].isoformat()
+                                if reference in released and released[reference]['data_hora'] else None,
+                            'liberada_por': released[reference]['colaborador'] if reference in released else None,
+                            'concretada_em': production['data_hora'].isoformat() if concreted else None,
+                            'codigo_produto': production.get('codigo_produto') if production and production.get('codigo_produto')
+                                else form.get('codigo_produto'),
                             'confirmada': bool(confirmation),
                             'confirmado_por': confirmation['confirmado_por'] if confirmation else None,
                             'confirmado_em': confirmation['confirmado_em'].isoformat() if confirmation else None,
@@ -150,6 +189,15 @@ def register(app, authenticated_user, screen_access_state, writer_connect, pcp_c
                                 'lado': 'Fora do mapa', 'posicao': None,
                                 'programada': reference in programmed or reference in pcp_programmed,
                                 'liberada': reference in released, 'concretada': concreted,
+                                'programada_em': programmed[reference]['data_hora'].isoformat()
+                                    if reference in programmed and programmed[reference]['data_hora'] else None,
+                                'programacao_origem': 'Mapa' if reference in programmed else
+                                    'PCP sem horário' if reference in pcp_programmed else None,
+                                'liberada_em': released[reference]['data_hora'].isoformat()
+                                    if reference in released and released[reference]['data_hora'] else None,
+                                'liberada_por': released[reference]['colaborador'] if reference in released else None,
+                                'concretada_em': production['data_hora'].isoformat() if concreted else None,
+                                'codigo_produto': production.get('codigo_produto'),
                                 'confirmada': bool(confirmation),
                                 'confirmado_por': confirmation['confirmado_por'] if confirmation else None,
                                 'confirmado_em': confirmation['confirmado_em'].isoformat() if confirmation else None,
@@ -162,9 +210,28 @@ def register(app, authenticated_user, screen_access_state, writer_connect, pcp_c
                                   ('concretadas', 'concretada'), ('confirmadas', 'confirmada')]:
                 summary[field] += int(item[source])
         summary['pendentes'] = summary['concretadas'] - summary['confirmadas']
+        indicator = None
+        if 'Setor 1' in sectors and 'Setor 2' in sectors:
+            people = labor['12']['mod'] + labor['12']['moi']
+            indicator = {'mod': labor['12']['mod'], 'moi': labor['12']['moi'],
+                         'pessoas': people}
+            for label, included in [('apontado', lambda item: item['concretada']),
+                                    ('confirmado', lambda item: item['confirmada'])]:
+                forms = [item for item in results if item['setor'] in ('Setor 1', 'Setor 2')
+                         and included(item)]
+                known_weights = [weights.get(key(item.get('codigo_produto'))) for item in forms]
+                missing = sum(weight is None for weight in known_weights)
+                total_kg = sum(weight for weight in known_weights if weight is not None)
+                indicator[label] = {
+                    'postes': len(forms), 'peso_kg': round(total_kg, 2),
+                    'sem_peso': missing,
+                    'postes_por_homem': round(len(forms) / people, 2) if people else None,
+                    'kg_por_homem': round(total_kg / people, 2) if people and not missing else None,
+                }
         response = jsonify(ok=True, data=day.isoformat(), setor=sector,
                            pode_confirmar=user['id'] == CONFIRMER_ID,
-                           responsavel='José Carlos da Silva', resumo=summary, formas=results)
+                           responsavel='José Carlos da Silva', resumo=summary, formas=results,
+                           mao_obra=labor, indicadores_12=indicator)
         response.headers['Cache-Control'] = 'no-store'
         return response
 

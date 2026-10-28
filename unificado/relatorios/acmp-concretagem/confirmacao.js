@@ -2,7 +2,7 @@
   'use strict';
   const api = '/unificado/mapa/api/fechamento-producao';
   const sectors = ['Setor 1', 'Setor 2', 'Setor 3', 'Setor 4'];
-  let selected = 'Setor 1';
+  let selected = 'Todos';
   let snapshot = null;
   const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
   const number = value => Number(value || 0).toLocaleString('pt-BR');
@@ -38,17 +38,15 @@
     return ordered;
   }
 
-  function render() {
-    const root = document.getElementById('confirmacao-formas');
-    if (!root || !snapshot) return;
-    const forms = snapshot.formas.filter(form => form.setor === selected);
+  function renderSector(sector) {
+    const forms = snapshot.formas.filter(form => form.setor === sector);
     const byLane = new Map();
     for (const form of forms) {
       if (!byLane.has(form.lado)) byLane.set(form.lado, []);
       byLane.get(form.lado).push(form);
     }
     let left, right, leftTitle, rightTitle;
-    if (selected === 'Setor 4') {
+    if (sector === 'Setor 4') {
       left = byLane.get('Coluna 1') || [];
       right = [...byDepth(byLane.get('Coluna 2') || [], byLane.get('Coluna 3') || []), ...(byLane.get('Fora do mapa') || [])];
       leftTitle = 'Coluna física 1'; rightTitle = 'Colunas físicas 2 e 3';
@@ -59,15 +57,28 @@
     }
     const total = forms.filter(form => form.confirmada).length;
     const concreted = forms.filter(form => form.concretada).length;
-    root.innerHTML = `<div class="section-head"><h3>Conferência física por forma</h3><span>Responsável: José Carlos da Silva</span></div>
-      <div class="confirm-intro"><p>Conferir as formas na sequência do mapa físico, da monovia para o fundo. A contagem final inclui somente as produções confirmadas por José Carlos.</p>
-        <label>Setor <select id="confirm-sector">${sectors.map(sector => `<option value="${sector}" ${sector === selected ? 'selected' : ''}>${sector}</option>`).join('')}</select></label></div>
-      <div class="confirm-summary"><span><b>${number(forms.length)}</b> formas no mapa</span><span><b>${number(concreted)}</b> concretadas</span><span class="is-final"><b>${number(total)}</b> efetivo confirmado neste setor</span></div>
+    return `<div class="confirm-sector-block"><h4>${esc(sector)}</h4>
+      <div class="confirm-summary"><span><b>${number(forms.length)}</b> formas no mapa</span><span><b>${number(concreted)}</b> concretadas</span><span class="is-final"><b>${number(total)}</b> confirmadas</span></div>
       <div class="confirm-grid">${column(left, leftTitle)}${column(right, rightTitle)}</div>
-      ${forms.some(form => form.fora_mapa) ? '<p class="confirm-alert">Há produção apontada em forma fora do mapa físico. Confira o código da forma antes de encerrar o dia.</p>' : ''}`;
-    document.getElementById('confirm-sector').addEventListener('change', event => { selected = event.target.value; render(); });
-    root.querySelectorAll('[data-confirm-index]').forEach(button => button.addEventListener('click', confirmForm));
+      ${forms.some(form => form.fora_mapa) ? '<p class="confirm-alert">Há produção apontada em forma fora do mapa físico. Confira o código da forma antes de encerrar o dia.</p>' : ''}</div>`;
   }
+
+  function render() {
+    const root = document.getElementById('confirmacao-formas');
+    if (!root || !snapshot) return;
+    const visible = selected === 'Todos' ? snapshot.formas : snapshot.formas.filter(form => form.setor === selected);
+    root.innerHTML = `<div class="section-head"><h3>Conferência física por forma</h3><span>Responsável: José Carlos da Silva</span></div>
+      <p class="confirm-explanation">As formas seguem o mapa físico da monovia para o fundo. O efetivo confirmado conta somente as concretagens que José Carlos conferiu, uma forma por vez.</p>
+      ${(selected === 'Todos' ? sectors : [selected]).map(renderSector).join('')}`;
+    root.querySelectorAll('[data-confirm-index]').forEach(button => button.addEventListener('click', confirmForm));
+    window.onAcmpView?.(snapshot, selected, visible);
+  }
+
+  window.setAcmpSector = sector => {
+    if (sector !== 'Todos' && !sectors.includes(sector)) return;
+    selected = sector;
+    render();
+  };
 
   async function confirmForm(event) {
     const button = event.currentTarget;
@@ -94,21 +105,16 @@
   window.loadConfirmacaoFormas = async day => {
     const root = document.getElementById('confirmacao-formas');
     if (root) root.innerHTML = '<div class="confirm-loading">Carregando formas para conferência...</div>';
-    window.fechamentoResumo = null;
     try {
       const response = await fetch(`${api}?data=${encodeURIComponent(day)}&setor=Todos`, {credentials:'same-origin', cache:'no-store'});
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || `Erro ${response.status}`);
       snapshot = data;
-      window.fechamentoResumo = data.resumo;
-      const kpi = document.getElementById('confirm-kpi');
-      if (kpi) kpi.textContent = number(data.resumo.confirmadas);
-      window.onAcmpResumo?.(data.resumo);
       render();
     } catch (error) {
       snapshot = null;
       if (root) root.innerHTML = `<p class="confirm-alert">Conferência indisponível: ${esc(error.message)}. O efetivo final não foi calculado.</p>`;
-      window.onAcmpResumo?.(null, error.message);
+      window.onAcmpView?.(null, selected, [], error.message);
     }
   };
 })();
