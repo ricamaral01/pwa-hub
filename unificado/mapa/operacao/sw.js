@@ -1,9 +1,9 @@
-const CACHE_NAME = "concrefer-unificado-mapa-operacao-v__UNIFICADO_VERSION__-taxa5-insdef5-d8";
+const CACHE_NAME = "concrefer-unificado-mapa-operacao-v__UNIFICADO_VERSION__-odin1";
 const SHELL = ["./index.html", "./manifest.json", "./unificado-icon.png",
   "./styles.css", "./inspecao-defeitos.css", "./inspecao-defeitos.js", "./montagem-taxa.css", "./montagem-taxa.js", "./dashboard-reference-layout.css", "./dashboard-reference-layout.js", "./dashboard-defeitos-v4.css", "./dashboard-defeitos-v5.css", "./dashboards-v6.css", "./dashboards-v7.css", "./assets/msgbox.css",
   "./supabase.js", "./chart.min.js", "./chartjs-plugin-datalabels.min.js",
   "./assets/msgbox.js", "./xlsx.full.min.js", "./modelos-formas.js",
-  "./bridge.js", "./app.js", "./screen-context.js", "./users-unificado.js", "./users-unificado.css",
+  "./bridge.js", "./app.js", "./odin-mode.js", "./screen-context.js", "./users-unificado.js", "./users-unificado.css",
   "./unificado-bridge.css", "./unificado-bridge.js", "./mandril-report.js", "./dashboard-defeitos-v5.js", "./dashboards-v6.js", "./dashboards-v7.js",
   "/unificado/vendor/html2pdf/html2pdf.bundle.min.js"];
 self.addEventListener("install", event => {
