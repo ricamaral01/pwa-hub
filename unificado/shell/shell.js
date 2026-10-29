@@ -858,7 +858,7 @@ function renderOpeningModules() {
     link.querySelector('.opening-module-title').textContent = MENU_CONFIG[module.id].label;
     link.querySelector('small').textContent = module.description;
     link.addEventListener('click', event => {
-      if (phoneDevice || installedPwa || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
+      if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
           !window.UnificadoSidebarModelA?.selectModule || !window.UnificadoModulePages?.show) return;
       event.preventDefault();
       window.UnificadoSidebarModelA.selectModule(module.id);
@@ -872,7 +872,7 @@ function renderOpeningModules() {
     link.href = new URL('?module=ged', UNIFICADO_BASE).href;
     link.innerHTML = `<span class="opening-module-copy"><span class="opening-module-number">06 / MÓDULO</span><span><strong class="opening-module-title">GED</strong><small>Documentos e aprovações</small></span></span>${ICONS.arrow}`;
     link.addEventListener('click', event => {
-      if (phoneDevice || installedPwa || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
+      if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
           !window.UnificadoSidebarModelA?.selectModule || !window.UnificadoModulePages?.show) return;
       event.preventDefault();
       window.UnificadoSidebarModelA.selectModule('ged');
@@ -886,7 +886,7 @@ function renderOpeningModules() {
     link.href = new URL('?module=suprimentos', UNIFICADO_BASE).href;
     link.innerHTML = `<span class="opening-module-copy"><span class="opening-module-number">07 / MÓDULO</span><span><strong class="opening-module-title">Suprimentos</strong><small>Solicitações e almoxarifado geral</small></span></span>${ICONS.arrow}`;
     link.addEventListener('click', event => {
-      if (phoneDevice || installedPwa || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
+      if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
           !window.UnificadoSidebarModelA?.selectModule || !window.UnificadoModulePages?.show) return;
       event.preventDefault();
       window.UnificadoSidebarModelA.selectModule('suprimentos');

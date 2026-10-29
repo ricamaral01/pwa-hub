@@ -59,8 +59,9 @@
     if (path === 'mapa/operacao/') return {url, module:'producao', path};
     if (path === 'producao/pederneiras/') return {url, module:'producao', path};
     if (path === 'producao/ribeirao/') return {url, module:'producao', path};
+    if (path === 'producao/indicadores-gerais/') return {url, module:'producao', path};
     if (path === 'usinas/') return {url, module:'usinas', path};
-    if (path === 'relatorios/fechamento-diario/') return {url, module:'producao', path};
+    if (path === 'relatorios/fechamento-diario/' || path === 'relatorios/acmp-concretagem/') return {url, module:'producao', path};
     if (path === 'laboratorio/' || path === 'laboratorio/certificados-qualidade/' || path === 'laboratorio/carta-traco/' || path === 'laboratorio/usinas-relatorios/' || path === 'laboratorio/dosagem/' || path === 'laboratorio/slump' || path === 'laboratorio/slump/' || path === 'laboratorio/novo/postes' ||
         /^laboratorio\/cec(?:\/(?:resultados|relatorio|analise|etiquetas|leitura|rompimentos-mes))?\/?$/.test(path) ||
         /^laboratorio\/cec\/analise\/(?:resultado-cp|relatorio)\.html$/.test(path) ||
@@ -76,6 +77,7 @@
   }
 
   function screenFor(route) {
+    if (route.path === 'relatorios/acmp-concretagem/') return 'acmpConcretagem';
     if (route.path === 'laboratorio/dosagem/') return 'labDosagem';
     if (route.path === 'pcp/usuarios/') return 'pcpUsuarios';
     if (route.module === 'producao' && route.url.searchParams.get('tela') === 'USUARIOS') return 'prodUsuarios';

@@ -68,12 +68,13 @@ const MENU_CONFIG = {
       { label: 'Campinas · Controle', items: [
         { id: 'relatorioMapa', mono: 'RE', label: 'Relatório Enc. Produção', path: '/index.html', screen: 'RELATORIO' },
         { id: 'historico', mono: 'HI', label: 'Histórico', path: '/index.html', screen: 'HISTORICO' },
-        { id: 'acmpConcretagem', mono: 'CC', label: 'Acmp. Concretagem', path: '/index.html', screen: 'ACMP_CONCRETAGEM' },
+        { id: 'acmpConcretagem', mono: 'CC', label: 'Acmp. Concretagem', path: '/unificado/relatorios/acmp-concretagem/' },
         { id: 'manutencao', mono: 'MF', label: 'Manutenção Formas', path: '/index.html', screen: 'RELATORIO_MANUTENCAO' },
         { id: 'tratativa', mono: 'TD', label: 'Tratativa Defeitos', path: '/index.html', screen: 'TRATATIVA_DEFEITOS' },
         { id: 'fechamentoDiario', label: 'Fechamento diário', path: '/unificado/relatorios/fechamento-diario/' }
       ] },
       { label: 'Campinas · Indicadores', items: [
+        { id: 'indicadorGeralProducao', mono: 'IG', label: 'Indicador geral · 3 unidades', path: '/unificado/producao/indicadores-gerais/', permissionId: 'produtividade' },
         { id: 'dashMontagem', mono: 'DM', label: 'Dashboard Montagem', path: '/index.html', screen: 'MONTAGEM_INDICADORES' },
         { id: 'dashDefeitos', mono: 'DF', label: 'Dashboard Defeitos', path: '/index.html', screen: 'DASHBOARD_DEFEITOS' },
         { id: 'produtividade', mono: 'CO', label: 'Dashboard Concretagem Matriz', path: '/index.html', screen: 'PROD_ANALISE' },
@@ -237,6 +238,10 @@ const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([modu
       ? new URL('tv/formas/', UNIFICADO_BASE).href
       : item.id === 'fechamentoDiario'
       ? new URL('relatorios/fechamento-diario/', UNIFICADO_BASE).href
+      : item.id === 'indicadorGeralProducao'
+      ? new URL('producao/indicadores-gerais/', UNIFICADO_BASE).href
+      : item.id === 'acmpConcretagem'
+      ? new URL('relatorios/acmp-concretagem/', UNIFICADO_BASE).href
       : new URL(`operacao/?tela=${encodeURIComponent(item.screen)}`, MAPA_BASE).href,
     available: true
   }]))
