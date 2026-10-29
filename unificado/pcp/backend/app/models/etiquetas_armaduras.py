@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Date, DateTime, Integer, Numeric, String, Text, UniqueConstraint, func
+from sqlalchemy import Boolean, Column, Date, DateTime, Integer, LargeBinary, Numeric, String, Text, UniqueConstraint, func
 from app.core.database import Base
 
 
@@ -19,6 +19,18 @@ class EtiquetaArmaduraModelo(Base):
     peso_texto = Column(String(80), nullable=True)
     source_raw = Column(Text, nullable=False)
     ativo = Column(Boolean, nullable=False, default=True)
+
+
+class EtiquetaArmaduraFonte(Base):
+    __tablename__ = 'etiquetas_armaduras_fontes'
+
+    id = Column(Integer, primary_key=True)
+    source_sha256 = Column(String(64), nullable=False, unique=True)
+    nome_arquivo = Column(String(255), nullable=False)
+    conteudo_docx = Column(LargeBinary, nullable=False)
+    quantidade_modelos = Column(Integer, nullable=False)
+    enviado_por = Column(Integer, nullable=True)
+    enviado_em = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
 
 
 class SaqueMandril(Base):

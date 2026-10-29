@@ -108,8 +108,8 @@ async function loadWordSource() {
   try {
     const source = await API.get('/api/etiquetas-armaduras/fonte');
     document.getElementById('arm-source').textContent = source.consistente
-      ? `Fonte: última versão do Word enviada · ${source.modelos} fichas · revisão ${source.sha256.slice(0, 12)}`
-      : 'A fonte Word precisa de conferência: há revisões diferentes no cadastro.';
+      ? `Word guardado no banco: ${source.nome_arquivo} · ${source.modelos} fichas · revisão ${source.sha256.slice(0, 12)}`
+      : 'O arquivo Word precisa ser guardado no banco para conferir a revisão das fichas.';
   } catch (error) {
     document.getElementById('arm-source').textContent = 'Não foi possível conferir a revisão do Word.';
   }
@@ -120,7 +120,7 @@ async function uploadWord() {
   if (!file) return showToast('Selecione o Word completo das armaduras.', 'warning');
   const button = document.getElementById('arm-upload');button.disabled = true;
   try {
-    const response = await fetch('/unificado/pcp/api/etiquetas-armaduras/word', {
+    const response = await fetch(`/unificado/pcp/api/etiquetas-armaduras/word?filename=${encodeURIComponent(file.name)}`, {
       method: 'PUT', headers: {'Authorization': `Bearer ${API.getToken()}`,
         'X-Unificado-Screen': 'etiquetasArmaduras',
         'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'},
