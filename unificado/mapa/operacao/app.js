@@ -11358,96 +11358,47 @@ function renderizarProducaoSetoresUltimos7(rows, selectedDate) {
 function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
   const diasUnicos = Array.from(new Set(metricas.filteredRows.map(r => r.data_fabricacao))).sort().reverse();
 
-  // Novos Gráficos de Volume
-  const dataVolDia = [];
-  const dataVolForaPadraoDia = [];
-  diasUnicos.forEach(d => {
-    let vTotal = 0;
-    let vFora = 0;
-    const rowsDia = metricas.filteredRows.filter(r => r.data_fabricacao === d);
-    rowsDia.forEach(r => {
-      const vol = getFormVolume(r.codigo_produto, r.modelo, r.setor);
-      vTotal += vol;
-      const isPadrao = isConcretePadrao(r);
-      if (!isPadrao) vFora += vol;
-    });
-    dataVolDia.push(vTotal);
-    dataVolForaPadraoDia.push(vFora);
-  });
-
-  const chartLabels = diasUnicos.map(d => d.split("-").reverse().join("/"));
-
-  // O dataVolDia contém o Total. Para o gráfico empilhado, precisamos separar em "Padrão" e "Fora do Padrão"
-  const dataVolPadraoDia = [];
-  const dataVolForaPadraoDiaArr = [];
-  diasUnicos.forEach(d => {
-    let vPadrao = 0;
-    let vFora = 0;
-    const rowsDia = metricas.filteredRows.filter(r => r.data_fabricacao === d);
-    rowsDia.forEach(r => {
-      const vol = getFormVolume(r.codigo_produto, r.modelo, r.setor);
-      const isPadrao = isConcretePadrao(r);
-      if (isPadrao) {
-        vPadrao += vol;
-      } else {
-        vFora += vol;
-      }
-    });
-    dataVolPadraoDia.push(vPadrao);
-    dataVolForaPadraoDiaArr.push(vFora);
-  });
+  const volumes = metricas.filteredRows.reduce((total, row) => {
+    const volume = getFormVolume(row.codigo_produto, row.modelo, row.setor);
+    if (isConcretePadrao(row)) total.padrao += volume;
+    else total.fora += volume;
+    return total;
+  }, { padrao: 0, fora: 0 });
+  const volumeTotal = volumes.padrao + volumes.fora;
+  const volumeCenter = document.getElementById("paVolumeTotalRosca");
+  if (volumeCenter) volumeCenter.textContent = volumeTotal.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
 
   destroyChart("chartPaVolDiaStacked");
   const ctxVolDiaStacked = document.getElementById("chartPaVolDiaStacked");
   if (ctxVolDiaStacked && typeof Chart !== "undefined") {
     chartInstances["chartPaVolDiaStacked"] = new Chart(ctxVolDiaStacked, {
-      type: "bar",
+      type: "doughnut",
       data: {
-        labels: chartLabels,
-        datasets: [
-          {
-            label: 'Concreto Padrão (Bom) (m³)',
-            data: dataVolPadraoDia,
-            backgroundColor: "rgba(16, 185, 129, 0.85)", // Verde Esmeralda
-            borderRadius: 4
-          },
-          {
-            label: 'Fora do Padrão (m³)',
-            data: dataVolForaPadraoDiaArr,
-            backgroundColor: "rgba(239, 68, 68, 0.85)", // Vermelho
-            borderRadius: 4
-          }
-        ]
+        labels: ["Concreto bom", "Fora do padrão"],
+        datasets: [{
+          data: [volumes.padrao, volumes.fora],
+          backgroundColor: ["#15966c", "#dc5454"],
+          borderColor: "#fff",
+          borderWidth: 3,
+          hoverOffset: 5
+        }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        cutout: "70%",
         plugins: {
-          legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8, font: { weight: 'bold' } } },
-          tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 },
-          datalabels: {
-            display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
-            color: '#334155',
-            anchor: 'end',
-            align: 'top',
-            offset: 2,
-            font: { weight: 'bold', size: 9 },
-            formatter: (v) => v.toFixed(1)
-          }
-        },
-        scales: {
-          x: { stacked: false, grid: { display: false } },
-          y: { stacked: false, beginAtZero: true, grid: { color: '#f1f5f9' }, suggestedMax: Math.max(...dataVolDia) * 1.15 }
+          legend: { position: "bottom", labels: { usePointStyle: true, boxWidth: 9, padding: 14 } },
+          tooltip: { callbacks: { label: context => `${context.label}: ${Number(context.parsed).toLocaleString("pt-BR", { maximumFractionDigits: 2 })} m³` } },
+          datalabels: { display: false }
         }
       },
-      plugins: [typeof ChartDataLabels !== 'undefined' ? ChartDataLabels : {}]
+      plugins: [typeof ChartDataLabels !== "undefined" ? ChartDataLabels : {}]
     });
   }
 
-  // 1. Ciclo Médio por Dia
+  // Ciclo médio diário no período filtrado, sem intervalos de pausa acima de 60 minutos.
   destroyChart("chartPaCicloDia");
-  const ctxCicloDia = document.getElementById("chartPaCicloDia");
-  if (ctxCicloDia && typeof Chart !== "undefined") {
     const mapCicloDia = {};
     diasUnicos.forEach(d => { mapCicloDia[d] = []; });
 
@@ -11476,22 +11427,13 @@ function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
       return list.reduce((s, v) => s + v, 0) / list.length;
     });
 
-    chartInstances["chartPaCicloDia"] = new Chart(ctxCicloDia, {
-      type: 'line',
-      data: {
-        labels: diasUnicos.map(d => d.split("-").reverse().join("/")),
-        datasets: [{
-          label: 'Ciclo Médio (min)',
-          data: dataCicloDia,
-          borderColor: '#1e40af',
-          backgroundColor: 'rgba(30, 64, 175, 0.1)',
-          fill: true,
-          tension: 0.3
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
-  }
+    const validDays = dataCicloDia.filter(value => value > 0);
+    const cycleValue = document.getElementById("paCicloDiaValor");
+    const cycleDetail = document.getElementById("paCicloDiaDetalhe");
+    if (cycleValue) cycleValue.textContent = validDays.length
+      ? `${Math.round(validDays.reduce((sum, value) => sum + value, 0) / validDays.length)} min` : "—";
+    if (cycleDetail) cycleDetail.textContent = validDays.length
+      ? `Média de ${validDays.length} dia(s) com ciclos válidos` : "Sem ciclos válidos no período";
 
   // 2. Histograma de Tempos de Ciclo
   destroyChart("chartPaHistograma");

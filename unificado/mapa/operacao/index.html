@@ -50,7 +50,7 @@
   </style>
   <script src="chart.min.js"></script>
   <script src="chartjs-plugin-datalabels.min.js"></script>
-<link rel="stylesheet" href="dashboard-defeitos-v5.css?v=1.0.7"><link rel="stylesheet" href="dashboards-v6.css?v=20261023-montagem-defeitos-v8b"><link rel="stylesheet" href="dashboards-v7.css?v=20261024-dashboards-v7"><link rel="stylesheet" href="users-unificado.css?v=20261024-user-units"><style>@media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}</style><link rel="stylesheet" href="unificado-bridge.css?v=1.0.7-kpi-postes-1"></head>
+<link rel="stylesheet" href="dashboard-defeitos-v5.css?v=1.0.7"><link rel="stylesheet" href="dashboards-v6.css?v=20261023-montagem-defeitos-v8b"><link rel="stylesheet" href="dashboards-v7.css?v=20261024-dashboards-v7"><link rel="stylesheet" href="users-unificado.css?v=20261024-user-units"><style>@media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}</style><link rel="stylesheet" href="unificado-bridge.css?v=1.0.7-kpi-postes-1"><link rel="stylesheet" href="produtividade-refactor.css?v=20261029-1"></head>
 <body data-app-key="mapa-concretagem">
 <section id="loginScreen" class="login-screen">
   <div class="login-card">
@@ -305,7 +305,8 @@
       <!-- Análise de Produtividade da Concretagem -->
       <section id="viewProdAnalise" class="hidden">
         <div class="mi-topbar pa-topbar">
-          <div>
+          <div class="pa-topbar-heading">
+            <span class="pa-topbar-eyebrow">Campinas · Indicadores de produção</span>
             <h2>Produtividade</h2>
             <p id="paFiltroResumo">Hoje - Todos os setores</p>
           </div>
@@ -378,13 +379,15 @@
 
         <div id="paSecaoProducao" class="pa-tab-section">
           <h3 class="pa-section-heading">Produção <small>Volume, horário e setores</small></h3>
+          <div class="mi-charts-row pa-volume-pair">
+            <div class="mi-chart-card pa-donut-card"><div class="mi-chart-title">Volume de concreto · bom e fora do padrão</div><div class="pa-donut-wrap"><canvas id="chartPaVolDiaStacked"></canvas><div class="pa-donut-center"><strong id="paVolumeTotalRosca">—</strong><small>m³ no período</small></div></div></div>
+            <div class="mi-chart-card"><div class="mi-chart-title">Volume de concreto por setor</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaVolumeSetor"></canvas></div></div>
+          </div>
           <div class="mi-charts-row">
-            <div class="mi-chart-card mi-chart-card-wide"><div class="mi-chart-title">Volume de Concreto Diário - Bom vs Fora do Padrão</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaVolDiaStacked"></canvas></div></div>
             <div class="mi-chart-card"><div class="mi-chart-title">Producao por hora produtiva</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaHeatmap"></canvas></div></div>
             <div class="mi-chart-card"><div class="mi-chart-title">Volume por hora produtiva</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaM3Hora"></canvas></div></div>
             <div class="mi-chart-card"><div class="mi-chart-title">Producao por Setor (Ultimos 7 dias)</div><div class="mi-chart-canvas-wrap"><canvas id="chartProdSetores"></canvas></div></div>
             <div class="mi-chart-card"><div class="mi-chart-title">Formas por setor no periodo</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaFormasSetor"></canvas></div></div>
-            <div class="mi-chart-card"><div class="mi-chart-title">Volume por setor no periodo</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaVolumeSetor"></canvas></div></div>
             <div class="mi-chart-card"><div class="mi-chart-title">Historico por Data</div><div id="dbHistory" class="ins-dash-history"></div></div>
           </div>
         </div>
@@ -399,7 +402,7 @@
         <div id="paSecaoProdutividade" class="pa-tab-section">
           <h3 class="pa-section-heading">Ritmo e produtividade <small>Ciclo médio e distribuição</small></h3>
           <div class="mi-charts-row">
-            <div class="mi-chart-card"><div class="mi-chart-title">Ciclo medio por dia</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaCicloDia"></canvas></div></div>
+            <div class="mi-chart-card pa-ciclo-card"><div class="mi-chart-title">Ciclo médio por dia</div><strong id="paCicloDiaValor" class="pa-ciclo-card-value">—</strong><span id="paCicloDiaDetalhe" class="pa-ciclo-card-detail">Sem dados no período</span></div>
             <div class="mi-chart-card"><div class="mi-chart-title">Distribuicao de tempos de ciclo</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaHistograma"></canvas></div></div>
           </div>
           <div class="pa-glossary-panel"><div class="pa-glossary-title">Guia de indicadores</div><div class="pa-glossary-grid"><div class="pa-glossary-item"><h4>Ciclo medio</h4><p>Tempo medio real entre concretagens, descartando paradas longas para nao distorcer o ritmo operacional.</p></div><div class="pa-glossary-item"><h4>Eficiencia operacional</h4><p>Compara a producao realizada com a producao teorica da meta de ciclo configurada.</p></div><div class="pa-glossary-item"><h4>Paradas</h4><p>Intervalos acima do ritmo esperado. Intervalos de 60 minutos ou mais sao tratados como pausa operacional nos graficos por hora produtiva.</p></div></div></div>
@@ -1866,7 +1869,7 @@
   <script src="supabase.js"></script>
   <script src="modelos-formas.js?v=1.0.7"></script>
   <script src="montagem-taxa.js?v=20261023-montagem-defeitos-v8b"></script>
-  <script src="bridge.js?v=1.0.7"></script><script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script><script src="screen-context.js?v=1.0.7-photo1"></script><script src="app.js?v=20261029-odin-1"></script><script src="odin-mode.js?v=20261029-1"></script><script src="inspecao-defeitos.js?v=20261021f"></script><script src="mandril-report.js?v=1.0.7"></script><script src="users-unificado.js?v=20261024-user-units"></script><script src="unificado-bridge.js?v=20261027-programacao-v1"></script><script src="dashboard-defeitos-v5.js?v=1.0.7"></script>
+  <script src="bridge.js?v=1.0.7"></script><script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script><script src="screen-context.js?v=1.0.7-photo1"></script><script src="app.js?v=20261029-produtividade-layout-1"></script><script src="odin-mode.js?v=20261029-1"></script><script src="inspecao-defeitos.js?v=20261021f"></script><script src="mandril-report.js?v=1.0.7"></script><script src="users-unificado.js?v=20261024-user-units"></script><script src="unificado-bridge.js?v=20261027-programacao-v1"></script><script src="dashboard-defeitos-v5.js?v=1.0.7"></script>
   <script src="dashboard-reference-layout.js?v=20261007c"></script><script src="dashboards-v6.js?v=1.0.38-hotfix1"></script><script src="dashboards-v7.js?v=20261024-dashboards-v7"></script>
 
 </body>

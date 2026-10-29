@@ -1,6 +1,6 @@
-const CACHE_NAME = "concrefer-unificado-mapa-operacao-v__UNIFICADO_VERSION__-odin1";
+const CACHE_NAME = "concrefer-unificado-mapa-operacao-v__UNIFICADO_VERSION__-produtividade2";
 const SHELL = ["./index.html", "./manifest.json", "./unificado-icon.png",
-  "./styles.css", "./inspecao-defeitos.css", "./inspecao-defeitos.js", "./montagem-taxa.css", "./montagem-taxa.js", "./dashboard-reference-layout.css", "./dashboard-reference-layout.js", "./dashboard-defeitos-v4.css", "./dashboard-defeitos-v5.css", "./dashboards-v6.css", "./dashboards-v7.css", "./assets/msgbox.css",
+  "./styles.css", "./inspecao-defeitos.css", "./inspecao-defeitos.js", "./montagem-taxa.css", "./montagem-taxa.js", "./dashboard-reference-layout.css", "./dashboard-reference-layout.js", "./dashboard-defeitos-v4.css", "./dashboard-defeitos-v5.css", "./dashboards-v6.css", "./dashboards-v7.css", "./produtividade-refactor.css", "./assets/msgbox.css",
   "./supabase.js", "./chart.min.js", "./chartjs-plugin-datalabels.min.js",
   "./assets/msgbox.js", "./xlsx.full.min.js", "./modelos-formas.js",
   "./bridge.js", "./app.js", "./odin-mode.js", "./screen-context.js", "./users-unificado.js", "./users-unificado.css",
