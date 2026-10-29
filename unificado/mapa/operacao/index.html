@@ -50,7 +50,7 @@
   </style>
   <script src="chart.min.js"></script>
   <script src="chartjs-plugin-datalabels.min.js"></script>
-<link rel="stylesheet" href="dashboard-defeitos-v5.css?v=1.0.7"><link rel="stylesheet" href="dashboards-v6.css?v=20261023-montagem-defeitos-v8b"><link rel="stylesheet" href="dashboards-v7.css?v=20261024-dashboards-v7"><link rel="stylesheet" href="users-unificado.css?v=20261024-user-units"><style>@media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}</style><link rel="stylesheet" href="unificado-bridge.css?v=1.0.7-kpi-postes-1"><link rel="stylesheet" href="produtividade-refactor.css?v=20261029-1"></head>
+<link rel="stylesheet" href="dashboard-defeitos-v5.css?v=1.0.7"><link rel="stylesheet" href="dashboards-v6.css?v=20261023-montagem-defeitos-v8b"><link rel="stylesheet" href="dashboards-v7.css?v=20261024-dashboards-v7"><link rel="stylesheet" href="users-unificado.css?v=20261024-user-units"><style>@media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}</style><link rel="stylesheet" href="unificado-bridge.css?v=1.0.7-kpi-postes-1"><link rel="stylesheet" href="produtividade-refactor.css?v=20261029-2"></head>
 <body data-app-key="mapa-concretagem">
 <section id="loginScreen" class="login-screen">
   <div class="login-card">
@@ -379,11 +379,8 @@
 
         <div id="paSecaoProducao" class="pa-tab-section">
           <h3 class="pa-section-heading">Produção <small>Volume, horário e setores</small></h3>
-          <div class="mi-charts-row pa-volume-pair">
-            <div class="mi-chart-card pa-donut-card"><div class="mi-chart-title">Volume de concreto · bom e fora do padrão</div><div class="pa-donut-wrap"><canvas id="chartPaVolDiaStacked"></canvas><div class="pa-donut-center"><strong id="paVolumeTotalRosca">—</strong><small>m³ no período</small></div></div></div>
-            <div class="mi-chart-card"><div class="mi-chart-title">Volume de concreto por setor</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaVolumeSetor"></canvas></div></div>
-          </div>
           <div class="mi-charts-row">
+            <div class="mi-chart-card"><div class="mi-chart-title">Volume de concreto por setor</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaVolumeSetor"></canvas></div></div>
             <div class="mi-chart-card"><div class="mi-chart-title">Producao por hora produtiva</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaHeatmap"></canvas></div></div>
             <div class="mi-chart-card"><div class="mi-chart-title">Volume por hora produtiva</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaM3Hora"></canvas></div></div>
             <div class="mi-chart-card"><div class="mi-chart-title">Producao por Setor (Ultimos 7 dias)</div><div class="mi-chart-canvas-wrap"><canvas id="chartProdSetores"></canvas></div></div>
@@ -394,8 +391,9 @@
 
         <div id="paSecaoQualidade" class="pa-tab-section">
           <h3 class="pa-section-heading">Qualidade <small>Composição do concreto por setor</small></h3>
-          <div class="mi-charts-row">
-            <div class="mi-chart-card mi-chart-card-wide"><div class="mi-chart-title">Volume de concreto por setor - Padrao vs fora do padrao</div><div id="paVolumeTipoSetor" class="pa-volume-sector-list"></div></div>
+          <div class="mi-charts-row pa-volume-pair">
+            <div class="mi-chart-card pa-donut-card"><div class="mi-chart-title">Volume de concreto · bom e fora do padrão</div><div class="pa-donut-wrap"><canvas id="chartPaVolDiaStacked"></canvas><div class="pa-donut-center"><strong id="paVolumeTotalRosca">—</strong><small>m³ no período</small></div></div></div>
+            <div class="mi-chart-card pa-volume-sector-card"><div class="mi-chart-title">Volume de concreto por setor · Padrão vs fora do padrão</div><div id="paVolumeTipoSetor" class="pa-volume-sector-list"></div></div>
           </div>
         </div>
 

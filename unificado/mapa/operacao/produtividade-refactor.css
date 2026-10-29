@@ -17,6 +17,11 @@
   grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch
 }
 #viewProdAnalise .pa-volume-pair .mi-chart-card{min-width:0}
+#viewProdAnalise .pa-volume-sector-card .pa-volume-sector-list{gap:8px}
+#viewProdAnalise .pa-volume-sector-card .pa-volume-sector-row{padding:9px 11px}
+#viewProdAnalise .pa-volume-sector-card .pa-volume-sector-head,
+#viewProdAnalise .pa-volume-sector-card .pa-volume-sector-legend{font-size:11px;gap:5px}
+#viewProdAnalise .pa-volume-sector-card .pa-volume-sector-track{height:10px;margin:6px 0}
 #viewProdAnalise .pa-donut-wrap{
   position:relative;width:min(100%,310px);height:250px;margin:0 auto
 }
@@ -35,6 +40,7 @@
   #viewProdAnalise .pa-topbar{padding:10px 12px}
   #viewProdAnalise .pa-topbar h2{font-size:18px}
   #viewProdAnalise .pa-volume-pair{grid-template-columns:minmax(0,1fr)}
+  #viewProdAnalise .pa-volume-sector-card .pa-volume-sector-row{padding:10px}
   #viewProdAnalise .pa-donut-wrap{height:230px}
   #viewProdAnalise .pa-ciclo-card{min-height:140px}
 }
