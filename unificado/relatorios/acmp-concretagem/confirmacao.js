@@ -11,7 +11,7 @@
 
   function formCard(form, index) {
     const action = form.confirmada
-      ? `<span class="confirm-done" title="${esc(form.confirmado_em || '')}">✓ Confirmada</span>`
+      ? `<span class="confirm-done" title="${esc(form.confirmado_em || '')}">✓ Confirmada por ${esc(form.confirmado_por || 'usuário autorizado')}</span>`
       : form.concretada && snapshot.pode_confirmar
         ? `<button class="confirm-action" type="button" data-confirm-index="${index}">Confirmar produção</button>`
         : `<button class="confirm-action" type="button" disabled title="${form.concretada ? 'Entre como José Carlos da Silva ou administrador' : 'Regularize a concretagem apontada antes de confirmar'}">Confirmar produção</button>`;
@@ -72,7 +72,7 @@
     const visible = selected === 'Todos' ? snapshot.formas : snapshot.formas.filter(form => form.setor === selected);
     const pending = visible.filter(form => form.concretada && !form.confirmada).length;
     root.innerHTML = `<div class="section-head"><h3>Conferência física por forma</h3><span>Responsável: José Carlos da Silva</span></div>
-      <p class="confirm-explanation">As formas seguem o mapa físico da monovia para o fundo. O efetivo confirmado conta somente as concretagens que José Carlos conferiu, uma forma por vez.</p>
+      <p class="confirm-explanation">As formas seguem o mapa físico da monovia para o fundo. O efetivo confirmado conta somente as concretagens conferidas por José Carlos ou um administrador, uma forma por vez.</p>
       <div class="confirm-guidance ${snapshot.pode_confirmar ? 'ready' : 'restricted'}">${snapshot.pode_confirmar
         ? `<strong>${number(pending)} concretagem(ns) aguardando sua confirmação.</strong> ${snapshot.confirmador_admin
           ? 'Você está como administrador; cada confirmação será registrada em seu usuário. Use o filtro abaixo para localizar as formas pendentes.'

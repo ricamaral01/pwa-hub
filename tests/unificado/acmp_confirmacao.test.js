@@ -46,3 +46,23 @@ test('other users see who can confirm instead of unexplained disabled buttons', 
   assert.match(allHtml, /Confirmação reservada a José Carlos da Silva ou administrador/);
   assert.doesNotMatch(allHtml, /data-confirm-index/);
 });
+
+test('printed report identifies the account that confirmed each form', () => {
+  const printSource = fs.readFileSync(path.join(__dirname,
+    '../../unificado/relatorios/acmp-concretagem/impressao.js'), 'utf8');
+  const elements = new Map();
+  const context = {
+    document: {getElementById: id => {
+      if (!elements.has(id)) elements.set(id, {innerHTML: '', textContent: '', disabled: false});
+      return elements.get(id);
+    }},
+    window: {},
+  };
+  vm.runInNewContext(printSource, context);
+  context.window.onAcmpView({data: '2026-10-29', mao_obra: {}, indicadores_12: null},
+    'Setor 1', [{setor: 'Setor 1', forma: 'AE-13', modelo: '1 CX VR',
+      programada: true, liberada: true, concretada: true, confirmada: true,
+      confirmado_por: 'user-ricardo'}]);
+  assert.match(elements.get('print-report').innerHTML, /Usuário que confirmou/);
+  assert.match(elements.get('print-report').innerHTML, /user-ricardo/);
+});

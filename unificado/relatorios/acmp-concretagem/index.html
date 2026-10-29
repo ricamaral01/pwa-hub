@@ -51,12 +51,11 @@
       #print-report th{background:#e7edf3;font-weight:700}
       #print-report thead{display:table-header-group}
       #print-report tr{break-inside:avoid}
-      .print-forms th:nth-child(1),.print-forms th:nth-child(2){width:9%}
-      .print-forms th:nth-child(3){width:13%}
-      .print-forms th:nth-child(4),.print-forms th:nth-child(5),.print-forms th:nth-child(7){width:10%}
-      .print-forms th:nth-child(6){width:15%}
-      .print-forms th:nth-child(8){width:14%}
-      .print-forms th:nth-child(9){width:10%}
+      .print-forms th:nth-child(1){width:7%}.print-forms th:nth-child(2){width:8%}
+      .print-forms th:nth-child(3),.print-forms th:nth-child(8){width:12%}
+      .print-forms th:nth-child(4),.print-forms th:nth-child(5),.print-forms th:nth-child(7){width:9%}
+      .print-forms th:nth-child(6),.print-forms th:nth-child(10){width:13%}
+      .print-forms th:nth-child(9){width:8%}
       .print-summary{break-inside:avoid;margin-top:6mm}
       .print-summary h2{font-size:11pt;margin:0 0 2mm}
       .print-summary p,.print-footnote{font-size:7.5pt;line-height:1.4;margin:2mm 0 0}
@@ -81,12 +80,12 @@
       <div class="kpi"><span>Concretadas</span><strong id="kpi-concretadas">—</strong></div>
       <div class="kpi final"><span>Efetivo confirmado</span><strong id="confirm-kpi">—</strong></div>
     </div>
-    <p class="definition"><strong>Efetivo confirmado</strong> é a quantidade de formas com concretagem apontada que José Carlos da Silva conferiu e confirmou. É a contagem final e pode ser menor que o número de concretagens registradas.</p>
+    <p class="definition"><strong>Efetivo confirmado</strong> é a quantidade de formas com concretagem apontada que José Carlos da Silva ou um administrador conferiu e confirmou. É a contagem final e pode ser menor que o número de concretagens registradas.</p>
     <section id="confirmacao-formas" class="section-confirmacao" aria-label="Conferência física das formas"><div class="confirm-loading">Carregando formas...</div></section>
-    <p class="note">A contagem final considera apenas as concretagens confirmadas por José Carlos da Silva. Programação, liberação e concretagem são exibidas como apontamentos separados.</p>
+    <p class="note">A contagem final considera apenas as concretagens confirmadas por José Carlos da Silva ou um administrador. Cada confirmação registra o usuário que a realizou.</p>
   </main>
   <article id="print-report" aria-label="Formulário para impressão"></article>
-  <script src="./impressao.js?v=20261028-acmp-3"></script>
+  <script src="./impressao.js?v=20261029-confirmacao-1"></script>
   <script src="./confirmacao.js?v=20261029-confirmacao-1"></script>
   <script>
     const input = document.getElementById('dataRel');
