@@ -959,6 +959,7 @@ def consultar_acompanhamento_mensal(
 def consultar_pcp_diario(
     data_inicio: date = Query(...),
     dias: int = Query(5, ge=1, le=31),
+    apenas_oficial: bool = Query(False),
     db: Session = Depends(get_db),
     _=Depends(require_roles(*_LEITURA)),
 ):
@@ -1033,11 +1034,13 @@ def consultar_pcp_diario(
         item["cod_forma"] = " / ".join(sorted(formas)) if formas else ""
         item["qtde_formas"] = max(int(item["qtde_formas"] or 0), qtd)
 
-    alex_rows = db.query(ProgramacaoAlex).filter(
-        ProgramacaoAlex.data >= data_inicio,
-        ProgramacaoAlex.data <= data_fim,
-        ProgramacaoAlex.producao_diaria > 0,
-    ).order_by(ProgramacaoAlex.data, ProgramacaoAlex.setor_id, ProgramacaoAlex.codigo_item).all()
+    alex_rows = []
+    if not apenas_oficial:
+        alex_rows = db.query(ProgramacaoAlex).filter(
+            ProgramacaoAlex.data >= data_inicio,
+            ProgramacaoAlex.data <= data_fim,
+            ProgramacaoAlex.producao_diaria > 0,
+        ).order_by(ProgramacaoAlex.data, ProgramacaoAlex.setor_id, ProgramacaoAlex.codigo_item).all()
 
     for row in alex_rows:
         produto = row.produto

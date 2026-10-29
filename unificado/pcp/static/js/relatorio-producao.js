@@ -131,7 +131,7 @@ async function loadReport() {
       currentPayload = await API.get(`/api/programacao-circular-s${sectorInput.value}/relatorio?data_inicio=${encodeURIComponent(startInput.value)}&dias=${count}`);
     } else {
       const [daily, products1, products2] = await Promise.all([
-        API.get(`/api/pcp-diario?data_inicio=${encodeURIComponent(startInput.value)}&dias=${count}`),
+        API.get(`/api/pcp-diario?data_inicio=${encodeURIComponent(startInput.value)}&dias=${count}&apenas_oficial=true`),
         API.get('/api/produtos?setor_id=1'),
         API.get('/api/produtos?setor_id=2'),
       ]);
