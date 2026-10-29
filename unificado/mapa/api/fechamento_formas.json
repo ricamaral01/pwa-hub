@@ -1,0 +1,1600 @@
+{
+  "Setor 1": {
+    "colunas": [
+      {
+        "lado": "Esquerda",
+        "formas": [
+          {
+            "forma": "IE-01",
+            "modelo": "3 CXS VL",
+            "codigo_produto": "4929"
+          },
+          {
+            "forma": "BD-01",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-02",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-03",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-04",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-05",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-06",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-07",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-08",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-09",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-10",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-11",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-12",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-13",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-14",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "BD-15",
+            "modelo": "1 CX VL",
+            "codigo_produto": "957"
+          },
+          {
+            "forma": "AE-27",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-26",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-25",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-24",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-23",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-22",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-21",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-20",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-19",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-18",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-17",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-16",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-15",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-14",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-13",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-12",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-11",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-10",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-09",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-08",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-07",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-06",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-05",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-04",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-03",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-02",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "AE-01",
+            "modelo": "1 CX VR",
+            "codigo_produto": "4031"
+          },
+          {
+            "forma": "100-1",
+            "modelo": "SUB. 100-AMP",
+            "codigo_produto": "949"
+          },
+          {
+            "forma": "100-2",
+            "modelo": "SUB. 100-AMP",
+            "codigo_produto": "949"
+          },
+          {
+            "forma": "100-3",
+            "modelo": "SUB. 100-AMP",
+            "codigo_produto": "949"
+          },
+          {
+            "forma": "F-01",
+            "modelo": "Ec. 1 cx VL",
+            "codigo_produto": "930"
+          }
+        ]
+      },
+      {
+        "lado": "Direita",
+        "formas": [
+          {
+            "forma": "L-01",
+            "modelo": "4 CXS VR",
+            "codigo_produto": "948"
+          },
+          {
+            "forma": "L-02",
+            "modelo": "4 CXS VR",
+            "codigo_produto": "948"
+          },
+          {
+            "forma": "J-01",
+            "modelo": "4 CXS VL",
+            "codigo_produto": "947"
+          },
+          {
+            "forma": "H-01",
+            "modelo": "3 CXS VR",
+            "codigo_produto": "946"
+          },
+          {
+            "forma": "H-02",
+            "modelo": "3 CXS VR",
+            "codigo_produto": "946"
+          },
+          {
+            "forma": "I-01",
+            "modelo": "3 CXS VL",
+            "codigo_produto": "945"
+          },
+          {
+            "forma": "P-01",
+            "modelo": "Ec. 3 CXS",
+            "codigo_produto": "933"
+          },
+          {
+            "forma": "P-02",
+            "modelo": "Ec. 3 CXS",
+            "codigo_produto": "933"
+          },
+          {
+            "forma": "I-02",
+            "modelo": "3 CXS VL",
+            "codigo_produto": "945"
+          },
+          {
+            "forma": "BE-04",
+            "modelo": "1 CX VL",
+            "codigo_produto": "4764"
+          },
+          {
+            "forma": "BE-03",
+            "modelo": "1 CX VL",
+            "codigo_produto": "4764"
+          },
+          {
+            "forma": "BE-02",
+            "modelo": "1 CX VL",
+            "codigo_produto": "4764"
+          },
+          {
+            "forma": "BE-01",
+            "modelo": "1 CX VL",
+            "codigo_produto": "4764"
+          },
+          {
+            "forma": "G-01",
+            "modelo": "Ec. 2CXS VR",
+            "codigo_produto": "932"
+          },
+          {
+            "forma": "G-02",
+            "modelo": "Ec. 2CXS VR",
+            "codigo_produto": "932"
+          },
+          {
+            "forma": "G-03",
+            "modelo": "Ec. 2CXS VR",
+            "codigo_produto": "932"
+          },
+          {
+            "forma": "G-04",
+            "modelo": "Ec. 2CXS VR",
+            "codigo_produto": "932"
+          },
+          {
+            "forma": "G-05",
+            "modelo": "Ec. 2CXS VR",
+            "codigo_produto": "932"
+          },
+          {
+            "forma": "BC - 01",
+            "modelo": "1 CX VL 7,0 x 150",
+            "codigo_produto": "953"
+          },
+          {
+            "forma": "300-VL",
+            "modelo": "2 CXS VL",
+            "codigo_produto": "942"
+          },
+          {
+            "forma": "300-VR",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "944"
+          },
+          {
+            "forma": "E-01",
+            "modelo": "Ec. 1CX VR",
+            "codigo_produto": "931"
+          },
+          {
+            "forma": "E-02",
+            "modelo": "Ec. 1CX VR",
+            "codigo_produto": "931"
+          },
+          {
+            "forma": "E-03",
+            "modelo": "Ec. 1CX VR",
+            "codigo_produto": "931"
+          },
+          {
+            "forma": "E-04",
+            "modelo": "Ec. 1CX VR",
+            "codigo_produto": "931"
+          },
+          {
+            "forma": "E-05",
+            "modelo": "Ec. 1CX VR",
+            "codigo_produto": "931"
+          },
+          {
+            "forma": "E-06",
+            "modelo": "Ec. 1CX VR",
+            "codigo_produto": "931"
+          },
+          {
+            "forma": "D-03",
+            "modelo": "2 CXS VL",
+            "codigo_produto": "941"
+          },
+          {
+            "forma": "D-04",
+            "modelo": "2 CXS VL",
+            "codigo_produto": "941"
+          },
+          {
+            "forma": "D-05",
+            "modelo": "2 CXS VL",
+            "codigo_produto": "941"
+          },
+          {
+            "forma": "D-06",
+            "modelo": "2 CXS VL",
+            "codigo_produto": "941"
+          },
+          {
+            "forma": "D-07",
+            "modelo": "2 CXS VL",
+            "codigo_produto": "941"
+          },
+          {
+            "forma": "M-01",
+            "modelo": "1 CX VR - 600",
+            "codigo_produto": "939"
+          },
+          {
+            "forma": "CE-13",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "4032"
+          },
+          {
+            "forma": "CE-12",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "4032"
+          },
+          {
+            "forma": "CE-11",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "4032"
+          },
+          {
+            "forma": "CE-10",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "4032"
+          },
+          {
+            "forma": "CE-09",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "4032"
+          },
+          {
+            "forma": "CE-05",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "4032"
+          },
+          {
+            "forma": "CE-04",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "4032"
+          },
+          {
+            "forma": "CE-03",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "4032"
+          },
+          {
+            "forma": "100 - 4",
+            "modelo": "SUB. 100 AMP.",
+            "codigo_produto": "949"
+          },
+          {
+            "forma": "100 - 5",
+            "modelo": "SUB. 100 AMP.",
+            "codigo_produto": "949"
+          },
+          {
+            "forma": "SBE-1",
+            "modelo": "SUB. 100-AMP-E",
+            "codigo_produto": "4848"
+          },
+          {
+            "forma": "SBE-2",
+            "modelo": "SUB. 100-AMP-E",
+            "codigo_produto": "4848"
+          },
+          {
+            "forma": "200 -1",
+            "modelo": "SUB. 200-AMP C/ TC",
+            "codigo_produto": "5017"
+          },
+          {
+            "forma": "200 -2",
+            "modelo": "SUB. 200-AMP C/ TC",
+            "codigo_produto": "5017"
+          },
+          {
+            "forma": "DE-03",
+            "modelo": "2 CXS VL",
+            "codigo_produto": "4765"
+          },
+          {
+            "forma": "DE-02",
+            "modelo": "2 CXS VL",
+            "codigo_produto": "4765"
+          },
+          {
+            "forma": "DE-01",
+            "modelo": "2 CXS VL",
+            "codigo_produto": "4765"
+          },
+          {
+            "forma": "N-01",
+            "modelo": "1 CX VL - 600",
+            "codigo_produto": "936"
+          }
+        ]
+      }
+    ]
+  },
+  "Setor 2": {
+    "colunas": [
+      {
+        "lado": "Esquerda",
+        "formas": [
+          {
+            "forma": "TCR-1",
+            "modelo": "600-VR",
+            "codigo_produto": "940"
+          },
+          {
+            "forma": "PL - 1",
+            "modelo": "7,5x300 c/ Lente",
+            "codigo_produto": "934"
+          },
+          {
+            "forma": "PL - 2",
+            "modelo": "7,5x300 c/ Lente",
+            "codigo_produto": "934"
+          },
+          {
+            "forma": "PL - 3",
+            "modelo": "7,5x300 c/ Lente",
+            "codigo_produto": "934"
+          },
+          {
+            "forma": "PL - 4",
+            "modelo": "7,5x300 c/ Lente",
+            "codigo_produto": "934"
+          },
+          {
+            "forma": "A-10",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-36",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-82",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-22",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-11",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-28",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-85",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-23",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-52",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-70",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-83",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-18",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-42",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-54",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-31",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-63",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-62",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-61",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-60",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-14",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-58",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-57",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-30",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-55",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-02",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-03",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "B-22",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "B-21",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "B-08",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "B-09",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "B-07",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "B-20",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "B-10",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "B-17",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "B-14",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "B-05",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "B-16",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "B-15",
+            "modelo": "1 CX VL",
+            "codigo_produto": "935"
+          },
+          {
+            "forma": "TMIE-1",
+            "label": "TMIE-1",
+            "modelo": "Totem Med. Ind. Elecktro",
+            "codigo_produto": "13570"
+          }
+        ]
+      },
+      {
+        "lado": "Direita",
+        "formas": [
+          {
+            "forma": "TCL-1",
+            "modelo": "600-VL",
+            "codigo_produto": "937"
+          },
+          {
+            "forma": "TCL-2",
+            "modelo": "600-VL",
+            "codigo_produto": "937"
+          },
+          {
+            "forma": "TCR-4",
+            "modelo": "600-VR",
+            "codigo_produto": "940"
+          },
+          {
+            "forma": "TCR-3",
+            "modelo": "600-VR",
+            "codigo_produto": "940"
+          },
+          {
+            "forma": "TCR-2",
+            "modelo": "600-VR",
+            "codigo_produto": "940"
+          },
+          {
+            "forma": "PL - 5",
+            "modelo": "7,5x300 c/ Lente",
+            "codigo_produto": "934"
+          },
+          {
+            "forma": "PL - 6",
+            "modelo": "7,5x300 c/ Lente",
+            "codigo_produto": "934"
+          },
+          {
+            "forma": "A-17",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-35",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-24",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-59",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-34",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-33",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-07",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-05",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-06",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-16",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-43",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-32",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-84",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-19",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-15",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-12",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-38",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-39",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-44",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-45",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "A-48",
+            "modelo": "1 CX VR",
+            "codigo_produto": "938"
+          },
+          {
+            "forma": "C-03",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-14",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-16",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-18",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-11",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-19",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-20",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-21",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-22",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-23",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-12",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-25",
+            "modelo": "2 CXS VR",
+            "codigo_produto": "943"
+          }
+        ]
+      }
+    ]
+  },
+  "Setor 3": {
+    "colunas": [
+      {
+        "lado": "Esquerda",
+        "formas": [
+          {
+            "forma": "SC01",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC03",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC05",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC07",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC09",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC11",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC13",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC15",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC17",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC19",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC21",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC23",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC25",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC27",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC29",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC31",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC33",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC35",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC37",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC39",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC41",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC43",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC45",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC47",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC49",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC51",
+            "modelo": "SC",
+            "codigo_produto": ""
+          }
+        ]
+      },
+      {
+        "lado": "Direita",
+        "formas": [
+          {
+            "forma": "SC02",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC04",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC06",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC08",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC10",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC12",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC14",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC16",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC18",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC20",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC22",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC24",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC26",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC28",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC30",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC32",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC34",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC36",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC38",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC40",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC42",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC44",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC46",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC48",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC50",
+            "modelo": "SC",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "SC52",
+            "modelo": "SC",
+            "codigo_produto": ""
+          }
+        ]
+      }
+    ]
+  },
+  "Setor 4": {
+    "colunas": [
+      {
+        "lado": "Coluna 1",
+        "formas": [
+          {
+            "forma": "DTB 01",
+            "label": "DTB 01",
+            "modelo": "DTB 01",
+            "codigo_produto": "13580"
+          },
+          {
+            "forma": "DTB 02",
+            "label": "DTB 02",
+            "modelo": "DTB 02",
+            "codigo_produto": "13580"
+          },
+          {
+            "forma": "DTB 03",
+            "label": "DTB 03",
+            "modelo": "DTB 03",
+            "codigo_produto": "13580"
+          },
+          {
+            "forma": "DTB 04",
+            "label": "DTB 04",
+            "modelo": "DTB 04",
+            "codigo_produto": "13580"
+          },
+          {
+            "forma": "DTB 05",
+            "label": "DTB 05",
+            "modelo": "DTB 05",
+            "codigo_produto": "13580"
+          },
+          {
+            "forma": "DTB 06",
+            "label": "DTB 06",
+            "modelo": "DTB 06",
+            "codigo_produto": "13580"
+          },
+          {
+            "forma": "DTB 07",
+            "label": "DTB 07",
+            "modelo": "DTB 07",
+            "codigo_produto": "13580"
+          },
+          {
+            "forma": "DTB 08",
+            "label": "DTB 08",
+            "modelo": "DTB 08",
+            "codigo_produto": "13580"
+          },
+          {
+            "forma": "DTB 09",
+            "label": "DTB 09",
+            "modelo": "DTB 09",
+            "codigo_produto": "13580"
+          },
+          {
+            "forma": "DTB 10",
+            "label": "DTB 10",
+            "modelo": "DTB 10",
+            "codigo_produto": "13580"
+          },
+          {
+            "forma": "DTBM 01",
+            "label": "DTBM 01",
+            "modelo": "DTBM 01",
+            "codigo_produto": "13581"
+          },
+          {
+            "forma": "DTBM 02",
+            "label": "DTBM 02",
+            "modelo": "DTBM 02",
+            "codigo_produto": "13581"
+          },
+          {
+            "forma": "DTD 01",
+            "label": "DTD 01",
+            "modelo": "DTD 01",
+            "codigo_produto": "13582"
+          },
+          {
+            "forma": "DTD 02",
+            "label": "DTD 02",
+            "modelo": "DTD 02",
+            "codigo_produto": "13582"
+          },
+          {
+            "forma": "DTD 03",
+            "label": "DTD 03",
+            "modelo": "DTD 03",
+            "codigo_produto": "13582"
+          }
+        ]
+      },
+      {
+        "lado": "Coluna 2",
+        "formas": [
+          {
+            "forma": "C-F1-1",
+            "label": "1",
+            "modelo": "6,0 x 90",
+            "codigo_produto": "952"
+          },
+          {
+            "forma": "C-F1-2",
+            "label": "2",
+            "modelo": "6,0 x 90",
+            "codigo_produto": "952"
+          },
+          {
+            "forma": "C-F2-9",
+            "label": "9",
+            "modelo": "7,5 x 200",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F2-5",
+            "label": "5",
+            "modelo": "7,5 x 200",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F2-8",
+            "label": "8",
+            "modelo": "7,5 x 200",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F2-7",
+            "label": "7",
+            "modelo": "7,5 x 200",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F2-6",
+            "label": "6",
+            "modelo": "7,5 x 200",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-15",
+            "label": "15",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-14",
+            "label": "14",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-13",
+            "label": "13",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-12",
+            "label": "12",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-11",
+            "label": "11",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-10",
+            "label": "10",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-9",
+            "label": "9",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-8",
+            "label": "8",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-7",
+            "label": "7",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-6",
+            "label": "6",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-5",
+            "label": "5",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-4",
+            "label": "4",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-3",
+            "label": "3",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-2",
+            "label": "2",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-1",
+            "label": "1",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          },
+          {
+            "forma": "C-F3-16",
+            "label": "16",
+            "modelo": "7,5 x 90",
+            "codigo_produto": "943"
+          }
+        ]
+      },
+      {
+        "lado": "Coluna 3",
+        "formas": [
+          {
+            "forma": "R-F1-3",
+            "label": "3",
+            "modelo": "6,0 x 90",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-F2-9",
+            "label": "9",
+            "modelo": "* 7,5 x 300",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-F2-8",
+            "label": "8",
+            "modelo": "* 7,5 x 300",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-F2-7",
+            "label": "7",
+            "modelo": "* 7,5 x 300",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-F2-6",
+            "label": "6",
+            "modelo": "* 7,5 x 300",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-F2-5",
+            "label": "5",
+            "modelo": "* 7,5 x 300",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-F3-4",
+            "label": "4",
+            "modelo": "* 7,5 x",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-F3-3",
+            "label": "3",
+            "modelo": "* 7,5 x",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-F3-2",
+            "label": "2",
+            "modelo": "* 7,5 x",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-E17",
+            "label": "17",
+            "modelo": "7,5 x 90",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-E22",
+            "label": "22",
+            "modelo": "7,5 x 90",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-E21",
+            "label": "21",
+            "modelo": "7,5 x 90",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-E23",
+            "label": "23",
+            "modelo": "7,5 x 90",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-E24",
+            "label": "24",
+            "modelo": "7,5 x 90",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-E20",
+            "label": "20",
+            "modelo": "7,5 x 90",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-E19",
+            "label": "19",
+            "modelo": "7,5 x 90",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-E18",
+            "label": "18",
+            "modelo": "7,5 x 90",
+            "codigo_produto": ""
+          },
+          {
+            "forma": "R-G6",
+            "label": "6",
+            "modelo": "7,0 x 150",
+            "codigo_produto": "953"
+          },
+          {
+            "forma": "R-G5",
+            "label": "5",
+            "modelo": "7,0 x 150",
+            "codigo_produto": "953"
+          },
+          {
+            "forma": "R-G3",
+            "label": "3",
+            "modelo": "7,0 x 150",
+            "codigo_produto": "953"
+          },
+          {
+            "forma": "R-G4",
+            "label": "4",
+            "modelo": "7,0 x 150",
+            "codigo_produto": "953"
+          },
+          {
+            "forma": "R-G1",
+            "label": "1",
+            "modelo": "7,0 x 150",
+            "codigo_produto": "953"
+          },
+          {
+            "forma": "R-G2",
+            "label": "2",
+            "modelo": "7,0 x 150",
+            "codigo_produto": "953"
+          }
+        ]
+      }
+    ]
+  }
+}

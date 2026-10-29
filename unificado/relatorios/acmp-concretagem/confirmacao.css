@@ -5,6 +5,12 @@
 .confirm-intro label{display:grid;gap:4px;font-size:10px;font-weight:800;text-transform:uppercase;color:#506278;min-width:150px}
 .confirm-intro select{border:1px solid #c5d2e0;border-radius:7px;padding:8px;background:#fff;color:#12385a;font-weight:700}
 .confirm-summary{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.confirm-guidance{padding:12px 14px;border-radius:8px;font-size:12px;line-height:1.5;margin:12px 0}
+.confirm-guidance.ready{background:#e9f7ee;border:1px solid #9bd6b2;color:#126334}
+.confirm-guidance.restricted{background:#fff2e8;border:1px solid #f3c6a8;color:#9a3d19}
+.confirm-show-all{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#12385a;cursor:pointer}
+.confirm-show-all input{width:17px;height:17px}
+.confirm-empty{border:1px dashed #c5d2e0;border-radius:8px;padding:14px;color:#52697f;font-size:12px}
 .confirm-summary span{padding:8px 11px;background:#f2f6fa;border:1px solid #d2deea;border-radius:8px;font-size:11px;font-weight:700;color:#34455b}
 .confirm-summary b{font-size:17px;color:#12385a;margin-right:4px}
 .confirm-summary .is-final{background:#e9f7ee;border-color:#a7dabb;color:#126334}
@@ -26,7 +32,7 @@
 .confirm-concrete{display:block;color:#506278;font-size:10px;margin-top:2px}
 .confirm-form-action{display:flex;justify-content:flex-end;margin-top:7px}
 .confirm-action,.confirm-done{padding:6px 9px;border-radius:6px;font-size:10px;font-weight:800}
-.confirm-action{background:#12385a;border:1px solid #12385a;color:#fff;cursor:pointer}
+.confirm-action{background:#12385a;border:1px solid #12385a;color:#fff;cursor:pointer;padding:9px 12px;font-size:12px}
 .confirm-action:disabled{background:#edf1f5;border-color:#d2deea;color:#8391a0;cursor:not-allowed}
 .confirm-done{color:#14784a;background:#e5f4eb}
 .confirm-alert{padding:12px;background:#fff2e8;border:1px solid #f3c6a8;border-radius:8px;color:#9a3d19;font-size:12px;font-weight:700}
