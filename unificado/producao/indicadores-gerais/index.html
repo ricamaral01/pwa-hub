@@ -1,12 +1,21 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Indicador geral · Produção</title><link rel="stylesheet" href="./style.css?v=20261029-totais-1">
-<script defer src="./app.js?v=20261029-totais-1"></script></head>
+<title>Indicador geral · Produção</title><link rel="stylesheet" href="./style.css?v=20261029-concreto-1">
+<script defer src="./app.js?v=20261029-concreto-1"></script></head>
 <body><main class="dashboard">
   <header class="hero"><div><span class="eyebrow">Produção · 4 unidades</span><h1>Indicador geral</h1><p>Compare a produtividade diária de Campinas, Pederneiras, Ribeirão e Noroeste.</p></div><span class="hero-mark" aria-hidden="true">▦</span></header>
   <section class="toolbar" aria-label="Filtros"><label>Mês <input id="month" type="month"></label><button id="reload" type="button">Atualizar dados</button><span id="updated" role="status"></span></section>
   <div id="feedback" class="feedback" role="alert" hidden></div>
   <section class="summary" aria-label="Resumo do período" id="summary"></section>
+  <section class="concrete-section" aria-label="Indicadores de concreto de Campinas">
+    <div class="section-heading"><div><span class="kicker">CAMPINAS · CONCRETAGEM</span><h2>Volume e ritmo</h2><p>Volume estimado das formas concretadas no mês selecionado.</p></div></div>
+    <div class="concrete-grid">
+      <article class="chart-card concrete-donut-card"><h3>Concreto bom e fora do padrão</h3><div id="concrete-donut" class="concrete-donut" role="img" aria-label="Aguardando dados de concreto"><div class="concrete-donut-hole"><strong id="concrete-total">—</strong><small>m³ no período</small></div></div><div id="concrete-legend" class="concrete-legend"></div></article>
+      <article class="chart-card concrete-sector-card"><h3>Volume de concreto por setor</h3><div id="concrete-sectors" class="concrete-sectors" role="img" aria-label="Aguardando dados por setor"></div></article>
+      <article class="chart-card concrete-cycle-card"><h3>Ciclo médio por dia</h3><strong id="concrete-cycle">—</strong><p id="concrete-cycle-detail">Aguardando dados</p></article>
+    </div>
+    <p id="concrete-feedback" class="concrete-feedback" role="status"></p>
+  </section>
   <section class="chart-card"><div class="section-heading"><div><span class="kicker">PRODUÇÃO DO MÊS</span><h2>Total produzido por unidade</h2><p>Quantidade de postes apontados em cada unidade no período.</p></div><span class="unit-label">postes</span></div><div id="chart-units" class="production-bars" role="img" aria-label="Gráfico do total produzido por unidade"></div></section>
   <section class="chart-card"><div class="section-heading"><div><span class="kicker">SOMA DAS 4 UNIDADES</span><h2>Produção total dia a dia</h2><p>Postes apontados em Campinas, Pederneiras, Ribeirão e Noroeste.</p></div><strong id="combined-total" class="combined-total"></strong></div><div class="chart-scroll"><svg id="chart-combined" role="img" aria-label="Gráfico diário da soma de postes produzidos nas quatro unidades"></svg></div></section>
   <section class="chart-card"><div class="section-heading"><div><span class="kicker">COMPARAÇÃO DIÁRIA</span><h2>Quilos por homem</h2><p>Peso produzido ÷ MOD + MOI apontados no dia.</p></div><span class="unit-label">kg/homem</span></div><div class="chart-scroll"><svg id="chart-weight" role="img" aria-label="Gráfico diário de quilos por homem das quatro unidades"></svg></div><div class="legend" id="legend-weight"></div></section>
