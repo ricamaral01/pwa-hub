@@ -652,8 +652,8 @@ LAB_ALLOWED_USERS = DEFAULT_LAB_USERS
 QUALITY_COOKIE_NAME = "unificado_qualidade_session"
 
 
-def quality_actions(user_id):
-    if user_id in MASTER_USER_IDS:
+def quality_actions(user_id, planning_role=None):
+    if user_id in MASTER_USER_IDS or planning_role == 'ADMIN':
         return sorted(QUALITY_ACTION_IDS)
     with connect() as conn, conn.cursor() as cur:
         cur.execute("""SELECT action_id FROM unificado_auth.user_action_permissions
@@ -662,8 +662,8 @@ def quality_actions(user_id):
         return [row["action_id"] for row in cur.fetchall()]
 
 
-def crono_actions(user_id):
-    if user_id in MASTER_USER_IDS:
+def crono_actions(user_id, planning_role=None):
+    if user_id in MASTER_USER_IDS or planning_role == 'ADMIN':
         return sorted(CRONO_ACTION_IDS)
     with connect() as conn, conn.cursor() as cur:
         cur.execute("""SELECT action_id FROM unificado_auth.user_action_permissions
@@ -672,8 +672,8 @@ def crono_actions(user_id):
         return [row["action_id"] for row in cur.fetchall()]
 
 
-def quality_areas(user_id):
-    if user_id in MASTER_USER_IDS:
+def quality_areas(user_id, planning_role=None):
+    if user_id in MASTER_USER_IDS or planning_role == 'ADMIN':
         return sorted(QUALITY_AREA_CODES)
     with connect() as conn, conn.cursor() as cur:
         cur.execute("""SELECT area_codigo FROM unificado_auth.user_quality_areas
@@ -714,7 +714,7 @@ def qualidade_authorize():
         if (not user or not user["ativo"] or user["primeiro_acesso"]
                 or user["updated_at"].isoformat() != claim.get("updated_at")):
             return Response(status=401)
-        screens, _ = screen_access_state(user)
+        screens, planning_role = screen_access_state(user)
         if not any(item.startswith("qualidade") for item in screens):
             return Response(status=403)
         secret = os.environ["QUALIDADE_GATEWAY_SIGNING_KEY"].encode()
@@ -722,9 +722,9 @@ def qualidade_authorize():
             return Response(status=503)
         payload = base64.urlsafe_b64encode(json.dumps({
             "id": user["id"], "name": user["nome"], "iss": "unificado",
-            "actions": quality_actions(user["id"]),
-            "areas": quality_areas(user["id"]),
-            "superuser": user["id"] in MASTER_USER_IDS,
+            "actions": quality_actions(user["id"], planning_role),
+            "areas": quality_areas(user["id"], planning_role),
+            "superuser": user["id"] in MASTER_USER_IDS or planning_role == 'ADMIN',
             "exp": int(time.time()) + 20,
         }, separators=(",", ":")).encode()).rstrip(b"=").decode()
         signature = base64.urlsafe_b64encode(hmac.new(secret, payload.encode(), hashlib.sha256).digest()).rstrip(b"=").decode()
@@ -828,7 +828,7 @@ def laboratorio_authorize():
                 accepted = {'labDevice'}
             else:
                 accepted = {'labMonitor', 'labHistory', 'labDevice'}
-        allowed, _ = screen_access_state(user)
+        allowed, planning_role = screen_access_state(user)
         role = laboratory_role(user['id'], allowed, user['perfil'] == 'CONVIDADO')
         crono_prefix = '/unificado/laboratorio/api/laboratorio/cronoanalise/'
         crono_api = path.startswith(crono_prefix)
@@ -868,10 +868,10 @@ def laboratorio_authorize():
         payload = base64.urlsafe_b64encode(json.dumps({
             "id": user["id"], "name": user["nome"], "role": role,
             "dosagem": "labDosagem" in allowed and screen is not None and screen["id"] == "labDosagem",
-            "dosagem_role": "admin" if user["id"] in MASTER_USER_IDS else
+            "dosagem_role": "admin" if user["id"] in MASTER_USER_IDS or planning_role == 'ADMIN' else
                             "engenheiro" if role in {"admin", "engenheiro"} else "laboratorista",
             "crono_screens": [item for item in allowed if item.startswith('cronoanalise.')],
-            "crono_actions": crono_actions(user['id']) if crono_allowed else [],
+            "crono_actions": crono_actions(user['id'], planning_role) if crono_allowed else [],
             "exp": int(time.time()) + 20,
         }, separators=(",", ":")).encode()).rstrip(b"=").decode()
         signature = base64.urlsafe_b64encode(hmac.new(secret, payload.encode(), hashlib.sha256).digest()).rstrip(b"=").decode()
@@ -1257,7 +1257,7 @@ def screen_access_state(user):
         key.startswith('lab') and value for key, value in overrides.items()
     ) else LAB_ALLOWED_USERS
     allowed = allowed_screens(user, planning_role, overrides, lab_users)
-    if (user['id'] not in MASTER_USER_IDS
+    if (user['id'] not in MASTER_USER_IDS and planning_role != 'ADMIN'
             and any(SCREENS_BY_ID[item]['module'] == 'suprimentos' for item in allowed)
             and not supply_flags().get('S1')):
         allowed = [item for item in allowed if SCREENS_BY_ID[item]['module'] != 'suprimentos']
@@ -2939,6 +2939,40 @@ def dashboard_defeitos_indicadores():
         return jsonify(detail="Indicadores temporariamente indisponíveis."), 503
     response = jsonify(result)
     response.headers["Cache-Control"] = "no-store"
+    return response
+
+
+@app.get('/operations/programmed-forms')
+def programmed_forms_for_map():
+    """Expose confirmed PCP form assignments to the Mapa production screen."""
+    user = authenticated_user()
+    if not user:
+        return jsonify(detail='Entre na Produção.'), 401
+    try:
+        production_date = date.fromisoformat(request.args.get('data', ''))
+    except ValueError:
+        return jsonify(detail='Data inválida.'), 400
+    sector = request.args.get('setor', '')
+    screen = {'Setor 3': 'setor3', 'Setor 4': 'setor4'}.get(sector)
+    if not screen:
+        return jsonify(detail='Setor inválido.'), 400
+    if user['perfil'] == 'APONTADOR' and user['setor'] != sector:
+        return jsonify(detail='Sem acesso a este setor.'), 403
+    if not screen_data_allowed(user, {screen}):
+        return jsonify(detail='Sem acesso a esta tela.'), 403
+    source = 'programacoes_circular_s3' if sector == 'Setor 3' else 'programacoes_circular_s4'
+    try:
+        with pcp_connect() as conn, conn.cursor() as cur:
+            cur.execute(sql.SQL('''SELECT codigo_forma,modelo,codigo_produto
+                                   FROM public.{} WHERE data=%s
+                                   ORDER BY codigo_forma''').format(sql.Identifier(source)),
+                        (production_date,))
+            rows = cur.fetchall()
+    except psycopg.Error:
+        app.logger.exception('programmed_forms_for_map_error')
+        return jsonify(detail='Programação por forma indisponível.'), 503
+    response = jsonify(rows)
+    response.headers['Cache-Control'] = 'no-store'
     return response
 
 

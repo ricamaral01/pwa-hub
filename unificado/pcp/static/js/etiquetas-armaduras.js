@@ -100,7 +100,40 @@ function renderLabel(template, row) {
     <article class="arm-label"><div class="arm-title">${escapeHtml(template.titulo)}</div>
       ${lines.map(line => `<div class="arm-field">${escapeHtml(line)}</div>`).join('')}
       ${template.peso_texto ? `<div class="arm-weight">PESO: ${escapeHtml(template.peso_texto)}</div>` : ''}
+      <div class="arm-form">FORMA DE PRODUÇÃO: ${escapeHtml(row.codigo_forma)}</div>
     </article></div>`;
+}
+
+async function loadWordSource() {
+  try {
+    const source = await API.get('/api/etiquetas-armaduras/fonte');
+    document.getElementById('arm-source').textContent = source.consistente
+      ? `Fonte: última versão do Word enviada · ${source.modelos} fichas · revisão ${source.sha256.slice(0, 12)}`
+      : 'A fonte Word precisa de conferência: há revisões diferentes no cadastro.';
+  } catch (error) {
+    document.getElementById('arm-source').textContent = 'Não foi possível conferir a revisão do Word.';
+  }
+}
+
+async function uploadWord() {
+  const file = document.getElementById('arm-word').files[0];
+  if (!file) return showToast('Selecione o Word completo das armaduras.', 'warning');
+  const button = document.getElementById('arm-upload');button.disabled = true;
+  try {
+    const response = await fetch('/unificado/pcp/api/etiquetas-armaduras/word', {
+      method: 'PUT', headers: {'Authorization': `Bearer ${API.getToken()}`,
+        'X-Unificado-Screen': 'etiquetasArmaduras',
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'},
+      body: file,
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.detail || `Falha ${response.status}`);
+    showToast(result.atualizado ? `${result.modelos} fichas atualizadas pelo Word.` : 'Esta versão do Word já está em uso.', 'success');
+    await loadWordSource();
+    await loadArmaduras();
+  } catch (error) {
+    showToast(error.message || 'Não foi possível atualizar o Word.', 'error');
+  } finally {button.disabled = false;}
 }
 
 function generateArmaduras() {
@@ -134,4 +167,9 @@ document.getElementById('arm-print').addEventListener('click',() => {
   if (!generateArmaduras()) return;
   window.print();
 });
-if (armUser) loadArmaduras();
+document.getElementById('arm-upload').addEventListener('click',uploadWord);
+if (armUser) {
+  document.getElementById('arm-word-controls').hidden = armUser.nivel_acesso !== 'ADMIN';
+  loadWordSource();
+  loadArmaduras();
+}

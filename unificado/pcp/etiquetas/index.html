@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=0.6.33"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Etiquetas Padrão — PCP Concrefer</title>
@@ -45,7 +51,8 @@
       .label-preview{width:95mm!important;height:39.5mm!important;max-width:none!important;border:0;border-radius:0;margin:0;page-break-after:auto;break-after:auto}
     }
   </style>
-  <script src="/unificado/pcp/readonly-guard.js"></script>
+    <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=0.6.33">
 </head>
 <body>
 
@@ -125,8 +132,6 @@
             <option value="">Todos</option>
             <option value="1">Setor 1</option>
             <option value="2">Setor 2</option>
-            <option value="3">Setor 3</option>
-            <option value="4">Setor 4</option>
           </select>
         </div>
         <div>
@@ -189,7 +194,7 @@
 </div>
 
 <script src="/unificado/vendor/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
-<script src="/unificado/pcp/static/js/etiquetas.js?v=0.6.8-codigo1"></script>
+<script src="/unificado/pcp/static/js/app.js?v=20261029-etiquetas-1"></script>
+<script src="/unificado/pcp/static/js/etiquetas.js?v=20261029-setores-1"></script>
 </body>
 </html>

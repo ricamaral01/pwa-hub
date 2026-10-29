@@ -30,7 +30,8 @@ const MENU_CONFIG = {
       ] },
       { label: 'Etiquetas', items: [
         { id: 'etiquetas', label: 'Padrão', path: '/pages/etiquetas/' },
-        { id: 'etiquetasSc', label: 'SC-Prod.', path: '/pages/etiquetas-sc/' },
+        { id: 'etiquetasSc', label: 'Setor 3', path: '/pages/etiquetas-sc/' },
+        { id: 'etiquetasSetor4', label: 'Setor 4', path: '/pages/etiquetas-setor4/' },
         { id: 'etiquetasArmaduras', label: 'Armaduras', path: '/pages/etiquetas-armaduras/' }
       ] },
       { label: 'Acompanhamento', items: [
@@ -74,7 +75,6 @@ const MENU_CONFIG = {
         { id: 'fechamentoDiario', label: 'Fechamento diário', path: '/unificado/relatorios/fechamento-diario/' }
       ] },
       { label: 'Campinas · Indicadores', items: [
-        { id: 'indicadorGeralProducao', mono: 'IG', label: 'Indicador geral · 4 unidades', path: '/unificado/producao/indicadores-gerais/', permissionId: 'produtividade' },
         { id: 'dashMontagem', mono: 'DM', label: 'Dashboard Montagem', path: '/index.html', screen: 'MONTAGEM_INDICADORES' },
         { id: 'dashDefeitos', mono: 'DF', label: 'Dashboard Defeitos', path: '/index.html', screen: 'DASHBOARD_DEFEITOS' },
         { id: 'produtividade', mono: 'CO', label: 'Dashboard Concretagem Matriz', path: '/index.html', screen: 'PROD_ANALISE' },
@@ -100,6 +100,9 @@ const MENU_CONFIG = {
         { id: 'norMensal', mono: 'PM', label: 'Produção Noroeste', path: 'mensal', noroeste: true },
         { id: 'norIndicadores', mono: 'IN', label: 'Indicadores', path: 'indicadores', noroeste: true },
         { id: 'norProdutos', mono: 'CP', label: 'Produtos Campinas', path: 'produtos', noroeste: true }
+      ] },
+      { label: 'Indicadores gerais', items: [
+        { id: 'indicadorGeralProducao', mono: 'IG', label: 'Indicador geral · 4 unidades', path: '/unificado/producao/indicadores-gerais/', permissionId: 'produtividade' }
       ] }
     ]
   },
@@ -223,7 +226,7 @@ const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([modu
     module,
     require: module === 'planejamento' ? (
       ['programacao12','programacao34','circular3','dt4','programacaoFinal',
-       'relatorio12','relatorio3','relatorio4','etiquetas','etiquetasSc',
+       'relatorio12','relatorio3','relatorio4','etiquetas','etiquetasSc','etiquetasSetor4',
        'etiquetasArmaduras','acompMensal','acompMensal34','formasPorSetor'].includes(item.id) ? 'PCP' :
       ['pcpDiario','apontamentoMega','producaoPcp','fechamentoDiarioPcp','maodeobra','maodeobraRateio'].includes(item.id) ? 'PRODUCAO' :
       item.id === 'testeProgramacao' ? 'ADMIN' : null) : null,

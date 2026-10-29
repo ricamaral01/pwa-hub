@@ -100,7 +100,7 @@
         }));
     const visibleGroups = groups.filter(group => group.items.length);
     const isProduction = moduleId === 'producao';
-    const unitFor = group => !isProduction ? '' : /^Pederneiras$/i.test(group.label) ? 'Pederneiras' : /^Ribeirão$/i.test(group.label) ? 'Ribeirão' : /^Noroeste$/i.test(group.label) ? 'Noroeste' : 'Campinas';
+    const unitFor = group => !isProduction ? '' : /^Pederneiras$/i.test(group.label) ? 'Pederneiras' : /^Ribeirão$/i.test(group.label) ? 'Ribeirão' : /^Noroeste$/i.test(group.label) ? 'Noroeste' : /^Indicadores gerais$/i.test(group.label) ? 'Indicadores gerais' : 'Campinas';
     const units = [...new Set(visibleGroups.map(unitFor))];
     const active = {unit: units[0], group: 0, query: ''};
     const selector = document.createElement('div'); selector.className = 'module-page-selector';

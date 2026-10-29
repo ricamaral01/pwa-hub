@@ -1,4 +1,4 @@
-const CACHE_NAME = "concrefer-unificado-mapa-operacao-v__UNIFICADO_VERSION__-taxa5-insdef5-d7";
+const CACHE_NAME = "concrefer-unificado-mapa-operacao-v__UNIFICADO_VERSION__-taxa5-insdef5-d8";
 const SHELL = ["./index.html", "./manifest.json", "./unificado-icon.png",
   "./styles.css", "./inspecao-defeitos.css", "./inspecao-defeitos.js", "./montagem-taxa.css", "./montagem-taxa.js", "./dashboard-reference-layout.css", "./dashboard-reference-layout.js", "./dashboard-defeitos-v4.css", "./dashboard-defeitos-v5.css", "./dashboards-v6.css", "./dashboards-v7.css", "./assets/msgbox.css",
   "./supabase.js", "./chart.min.js", "./chartjs-plugin-datalabels.min.js",

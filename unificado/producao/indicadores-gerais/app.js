@@ -101,6 +101,51 @@
     for(const [key,value] of Object.entries(attrs))node.setAttribute(key,String(value));
     return node;
   };
+  function renderProductionTotals(result) {
+    const target=document.getElementById('chart-units');target.replaceChildren();
+    const totals=units.map(unit=>({unit,posts:result[unit.id].error?null:
+      result[unit.id].rows.reduce((sum,row)=>sum+Math.max(0,Number(row.posts)||0),0)}));
+    const max=Math.max(1,...totals.map(item=>item.posts||0));
+    for(const item of totals){
+      const row=document.createElement('div');row.className='production-bar';
+      row.style.setProperty('--unit-color',item.unit.color);
+      const name=document.createElement('span');name.className='production-bar-name';name.textContent=item.unit.name;
+      const track=document.createElement('span');track.className='production-bar-track';
+      const fill=document.createElement('span');fill.className='production-bar-fill';
+      fill.style.width=`${item.posts==null?0:100*item.posts/max}%`;track.append(fill);
+      const value=document.createElement('span');value.className='production-bar-value';
+      value.textContent=item.posts==null?'Indisponível':fmt(item.posts,0);
+      row.append(name,track,value);target.append(row);
+    }
+    target.setAttribute('aria-label','Total produzido: '+totals.map(item=>`${item.unit.name}: ${item.posts==null?'indisponível':fmt(item.posts,0)+' postes'}`).join('; '));
+  }
+  function renderCombinedProduction(result,dates) {
+    const failed=units.some(unit=>result[unit.id].error);
+    const totals=dates.map(date=>units.reduce((sum,unit)=>sum+
+      (result[unit.id].rows.find(row=>row.data===date)?.posts||0),0));
+    const periodTotal=totals.reduce((sum,value)=>sum+value,0);
+    const headline=document.getElementById('combined-total');headline.replaceChildren();
+    headline.append(document.createTextNode(fmt(periodTotal,0)+' postes'));
+    const note=document.createElement('small');note.textContent=failed?'Total parcial: unidade sem dados':'Total das 4 unidades';headline.append(note);
+    const svg=document.getElementById('chart-combined');svg.replaceChildren();
+    const width=Math.max(740,dates.length*34+90),height=270,left=54,right=20,top=16,bottom=43;
+    svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.style.minWidth=width+'px';
+    svg.setAttribute('aria-label',`${failed?'Soma parcial':'Soma das quatro unidades'}: ${fmt(periodTotal,0)} postes no período`);
+    if(!dates.length){const empty=svgNode('text',{x:width/2,y:height/2,'text-anchor':'middle',fill:'#6d8193','font-size':15});empty.textContent='Sem produção apontada no período';svg.append(empty);return;}
+    const max=Math.max(1,...totals)*1.12,usable=width-left-right,barWidth=Math.max(12,Math.min(27,usable/dates.length-7));
+    for(let level=0;level<=4;level++){
+      const value=max*level/4,y=top+(1-value/max)*(height-top-bottom);
+      svg.append(svgNode('line',{x1:left,y1:y,x2:width-right,y2:y,stroke:'#e4ebf2'}));
+      const label=svgNode('text',{x:left-8,y:y+4,'text-anchor':'end',fill:'#778b9e','font-size':11});label.textContent=fmt(value,0);svg.append(label);
+    }
+    dates.forEach((date,index)=>{
+      const x=left+(index+0.5)*usable/dates.length;
+      const y=top+(1-totals[index]/max)*(height-top-bottom);
+      const bar=svgNode('rect',{x:x-barWidth/2,y,width:barWidth,height:height-bottom-y,rx:4,fill:'#174c77'});
+      const title=svgNode('title');title.textContent=`${date.slice(8,10)}/${date.slice(5,7)}: ${fmt(totals[index],0)} postes`;bar.append(title);svg.append(bar);
+      const label=svgNode('text',{x,y:height-14,'text-anchor':'middle',fill:'#778b9e','font-size':11});label.textContent=date.slice(8,10);svg.append(label);
+    });
+  }
   function renderChart(id,metric,result,dates) {
     const svg=document.getElementById(id);svg.replaceChildren();
     const width=Math.max(740,dates.length*28+90),height=280,left=55,right=22,top=18,bottom=42;
@@ -167,7 +212,8 @@
     const result=Object.fromEntries(units.map((unit,index)=>[unit.id,
       settled[index].status==='fulfilled'?{rows:settled[index].value}:{rows:[],error:settled[index].reason?.message || 'Falha de leitura'}]));
     const dates=[...new Set(units.flatMap(unit=>result[unit.id].rows.map(row=>row.data)))].sort();
-    renderSummary(result);renderChart('chart-weight','kg',result,dates);renderChart('chart-posts','pph',result,dates);renderTable(result,dates);
+    renderSummary(result);renderProductionTotals(result);renderCombinedProduction(result,dates);
+    renderChart('chart-weight','kg',result,dates);renderChart('chart-posts','pph',result,dates);renderTable(result,dates);
     const failed=units.filter(unit=>result[unit.id].error);
     if(failed.length){feedback.hidden=false;feedback.textContent='Não foi possível carregar '+failed.map(unit=>unit.name).join(', ')+'. Confira o acesso e atualize os dados.';}
     document.getElementById('updated').textContent='Atualizado às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});

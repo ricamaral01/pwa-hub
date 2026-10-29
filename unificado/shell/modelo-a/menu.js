@@ -5893,7 +5893,8 @@ const Dn = {
     ]),
     xe("ETIQUETAS", [
       ["etiquetas", "Padrão", "pcp/etiquetas/", "doc"],
-      ["etiquetasSc", "SC-Prod.", "pcp/etiquetas-sc/", "doc"],
+      ["etiquetasSc", "Setor 3", "pcp/etiquetas-sc/", "doc"],
+      ["etiquetasSetor4", "Setor 4", "pcp/etiquetas-setor4/", "doc"],
       ["etiquetasArmaduras", "Armaduras", "pcp/etiquetas-armaduras/", "doc"]
     ]),
     xe("ACOMPANHAMENTO", [
@@ -5934,7 +5935,6 @@ const Dn = {
       ["fechamentoDiario", "Fechamento diário", "relatorios/fechamento-diario/", "doc"]
     ]),
     xe("CAMPINAS · INDICADORES", [
-      ["indicadorGeralProducao", "Indicador geral · unidades", "producao/indicadores-gerais/", "map"],
       ["dashMontagem", "Dashboard Montagem", Se("MONTAGEM_INDICADORES"), "map"],
       ["dashDefeitos", "Dashboard Defeitos", Se("DASHBOARD_DEFEITOS"), "map"],
       ["produtividade", "Dashboard Concretagem Matriz", Se("PROD_ANALISE"), "map"],
@@ -5960,6 +5960,9 @@ const Dn = {
       ["norMensal", "Produção Noroeste", "producao/noroeste/?tab=mensal", "map"],
       ["norIndicadores", "Indicadores", "producao/noroeste/?tab=indicadores", "map"],
       ["norProdutos", "Produtos Campinas", "producao/noroeste/?tab=produtos", "database"]
+    ]),
+    xe("INDICADORES GERAIS", [
+      ["indicadorGeralProducao", "Indicador geral · 4 unidades", "producao/indicadores-gerais/", "map"]
     ])
   ] },
   { id: "qualidade", label: "Qualidade", color: Dn.qualidade, icon: "shield", sections: [

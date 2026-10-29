@@ -2,7 +2,7 @@ import re
 from datetime import date, datetime
 from typing import List
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
@@ -10,9 +10,11 @@ from app.core.database import get_db
 from app.core.security import require_roles
 from app.models.etiquetas_armaduras import EtiquetaArmaduraModelo, SaqueMandril
 from app.models.usuario import NivelAcesso
+from app.services.etiquetas_word import parse_word
 
 router = APIRouter(prefix='/api', tags=['etiquetas-armaduras'])
 _READ = (NivelAcesso.ADMIN, NivelAcesso.PCP, NivelAcesso.PRODUCAO, NivelAcesso.CONSULTA)
+_ADMIN = (NivelAcesso.ADMIN,)
 _MAP_ORIGIN = 'https://usina.concretrack.com.br'
 
 
@@ -95,3 +97,33 @@ def listar_modelos_armaduras(db: Session = Depends(get_db), _=Depends(require_ro
         'peso_kg': float(row.peso_kg) if row.peso_kg is not None else None,
         'peso_texto': row.peso_texto,
     } for row in rows]
+
+
+@router.get('/etiquetas-armaduras/fonte')
+def fonte_armaduras(db: Session = Depends(get_db), _=Depends(require_roles(*_READ))):
+    rows = db.query(EtiquetaArmaduraModelo).filter(EtiquetaArmaduraModelo.ativo.is_(True)).all()
+    versions = {row.source_sha256 for row in rows}
+    return {'sha256': next(iter(versions)) if len(versions) == 1 else None,
+            'modelos': len(rows), 'consistente': len(versions) == 1}
+
+
+@router.put('/etiquetas-armaduras/word')
+async def atualizar_word_armaduras(request: Request, db: Session = Depends(get_db),
+                                   _=Depends(require_roles(*_ADMIN))):
+    data = await request.body()
+    try:
+        sha, entries = parse_word(data)
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+    current = db.query(EtiquetaArmaduraModelo.source_sha256).filter(
+        EtiquetaArmaduraModelo.ativo.is_(True)).first()
+    if current and current[0] == sha:
+        return {'sha256': sha, 'modelos': len(entries), 'atualizado': False}
+    try:
+        db.query(EtiquetaArmaduraModelo).delete(synchronize_session=False)
+        db.add_all(EtiquetaArmaduraModelo(**entry) for entry in entries)
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return {'sha256': sha, 'modelos': len(entries), 'atualizado': True}

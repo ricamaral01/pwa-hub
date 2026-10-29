@@ -1,11 +1,12 @@
 let user;
 let programacaoDisponivel = [];
 const etiquetasSC = document.body.dataset.labelMode === 'sc';
+const etiquetasDT = document.body.dataset.labelMode === 'dt';
 
 document.addEventListener('DOMContentLoaded', () => {
   user = requireAuth();
   if (!user) return;
-  initSidebar(etiquetasSC ? 'etiquetas-sc' : 'etiquetas');
+  initSidebar(etiquetasSC ? 'etiquetas-sc' : etiquetasDT ? 'etiquetas-setor4' : 'etiquetas');
   document.getElementById('user-nome-top').textContent = user.nome || '';
   document.getElementById('user-nivel').textContent = user.nivel_acesso || '';
   const hoje = new Date();
@@ -31,6 +32,7 @@ function escapeHtml(value) {
 
 function inferCodigoForma(row) {
   if (etiquetasSC) return String(row.modelo_sc || '').trim().replace(/^SC(?=[\s-]|\d)[\s-]*/i, '').trim();
+  if (etiquetasDT) return String(row.modelo_dt || '').trim().replace(/^DT(?=[\s-]|\d)[\s-]*/i, '').trim();
   const setor = Number(row.setor_id) || Number(String(row.setor?.nome || '').match(/Setor\s+(\d+)/i)?.[1]);
   if (setor === 4) {
     const modelo = String(row.produto?.nome || row.produto?.nome_poste || '').trim().match(/^(\d+(?:[,.]\d+)?\s*[x×]\s*\d+)\s+DT$/i);
@@ -54,7 +56,7 @@ function aplicarEscalaTexto() {
   const fonteTipo = Number(document.getElementById('f-fonte-tipo').value || 29.7);
   document.querySelectorAll('.label-type > span').forEach(span => {
     span.style.fontSize = `${calcularFonteForma(span.textContent, fonteTipo)}mm`;
-    span.style.transform = etiquetasSC ? `scale(${largura}, ${altura})` : `scale(${largura}, ${altura}) rotate(-90deg)`;
+    span.style.transform = etiquetasSC || etiquetasDT ? `scale(${largura}, ${altura})` : `scale(${largura}, ${altura}) rotate(-90deg)`;
   });
 }
 
@@ -65,7 +67,7 @@ function calcularFonteForma(codigo, fontePadrao) {
   const pxPerMm = 96 / 25.4;
   context.font = `900 ${size * pxPerMm}px Arial`;
   const textWidth = context.measureText(texto).width;
-  const maxWidth = (etiquetasSC ? 89 : 36) * pxPerMm;
+  const maxWidth = (etiquetasSC || etiquetasDT ? 89 : 36) * pxPerMm;
   if (textWidth > maxWidth) size *= maxWidth / textWidth;
   return Number(size.toFixed(2));
 }
@@ -78,13 +80,16 @@ function escalaHorizontal(texto, fonteMm, larguraMm) {
 }
 
 async function buscarProgramacao(data, setor) {
-  if (etiquetasSC) {
+  if (etiquetasSC || etiquetasDT) {
+    const resource = etiquetasDT ? 'programacao-circular-s4' : 'programacao-circular-s3';
     const [schedule, production, saques] = await Promise.all([
-      API.get(`/api/programacao-circular-s3?data_inicio=${encodeURIComponent(data)}&dias=1`),
-      API.get(`/api/producao/circular-formas?data_inicio=${encodeURIComponent(data)}&data_fim=${encodeURIComponent(data)}`).catch(() => []),
-      API.get(`/api/saques-mandril?data=${encodeURIComponent(data)}`).catch(() => []),
+      API.get(`/api/${resource}?data_inicio=${encodeURIComponent(data)}&dias=1`),
+      etiquetasDT ? [] : API.get(`/api/producao/circular-formas?data_inicio=${encodeURIComponent(data)}&data_fim=${encodeURIComponent(data)}`).catch(() => []),
+      etiquetasDT ? [] : API.get(`/api/saques-mandril?data=${encodeURIComponent(data)}`).catch(() => []),
     ]);
-    const formKey = value => `SC${String(Number(String(value || '').toUpperCase().replace(/^SC0*/, ''))).padStart(2, '0')}`;
+    const formKey = etiquetasDT
+      ? value => String(value || '').trim().toUpperCase().replace(/\s+/g, '')
+      : value => `SC${String(Number(String(value || '').toUpperCase().replace(/^SC0*/, ''))).padStart(2, '0')}`;
     const byForm = new Map(schedule.map(row => [formKey(row.codigo_forma), row.modelo]));
     const productionByForm = new Map();
     for (const row of production) {
@@ -96,14 +101,15 @@ async function buscarProgramacao(data, setor) {
       const productionRow = productionByForm.get(form);
       const fromProduction = String(productionRow?.tipo_realizado || '').trim();
       const model = fromProduction && !/^SC$/i.test(fromProduction) ? fromProduction : (byForm.get(form) || productionRow?.tipo_programado || '');
-      const cleanModel = model.replace(/^SC(?=[\s-]|\d)[\s-]*/i, '').trim().replace(/×/g, 'X').toUpperCase();
+      const cleanModel = model.replace(etiquetasDT ? /^DT(?=[\s-]|\d)[\s-]*/i : /^SC(?=[\s-]|\d)[\s-]*/i, '').trim().replace(/×/g, 'X').toUpperCase();
       return {
         quantidade_programada: Math.max(1, Number(productionRow?.realizado || 0), Number(productionRow?.programado || 0)),
         codigo_forma: form,
         modelo_sc: cleanModel,
+        modelo_dt: cleanModel,
         produto: {nome: cleanModel},
-        setor_id: 3,
-        setor: {nome: 'Setor 3'},
+        setor_id: etiquetasDT ? 4 : 3,
+        setor: {nome: etiquetasDT ? 'Setor 4' : 'Setor 3'},
       };
     }).filter(row => row.modelo_sc);
     if (rows.length < forms.size) showToast(`${forms.size - rows.length} forma(s) sem modelo identificado.`, 'warning');
@@ -243,7 +249,7 @@ function gerarEtiquetasSelecionadas() {
               <label><input type="checkbox" class="form-check-input label-print-check" checked> Imprimir Cód. tipo</label>
               <span>${escapeHtml(tipo)} • ${i}/${qtd}</span>
             </div>
-            <div class="label-preview label-type"><span style="font-size:${fonteForma}mm;transform:${etiquetasSC ? `scale(${largura}, ${altura})` : `scale(${largura}, ${altura}) rotate(-90deg)`}">${escapeHtml(tipo)}</span></div>
+            <div class="label-preview label-type"><span style="font-size:${fonteForma}mm;transform:${etiquetasSC || etiquetasDT ? `scale(${largura}, ${altura})` : `scale(${largura}, ${altura}) rotate(-90deg)`}">${escapeHtml(tipo)}</span></div>
             <div class="label-meta">
               <span>${escapeHtml(row.setor?.nome || `Setor ${row.setor_id}`)}</span>
               <span>${escapeHtml(nome)}</span>

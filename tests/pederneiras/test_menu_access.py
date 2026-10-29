@@ -37,6 +37,15 @@ def test_master_screen_visibility():
         assert "norProdutos" in access.allowed_screens(user, None, {}, frozenset())
 
 
+def test_any_linked_planning_admin_can_open_all_screens():
+    user = {"id": "admin-novo", "perfil": "GESTOR", "nome": "Administrador"}
+    allowed = access.allowed_screens(user, "ADMIN", {"labDosagem": False}, frozenset())
+    assert "labDosagem" in allowed
+    assert "etiquetasSetor4" in allowed
+    assert "norProdutos" in allowed
+    assert access.screen_for_uri("/unificado/pcp/etiquetas-setor4/")["id"] == "etiquetasSetor4"
+
+
 def test_ribeirao_routes_and_opt_in():
     for suffix, expected in (("?tab=apontamento", "rbrApontamento"),
                              ("?tab=mao-de-obra", "rbrMaoDeObra"),

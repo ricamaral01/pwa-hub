@@ -42,7 +42,9 @@ const API = (() => {
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(err.detail || `Erro ${res.status}`);
+      const failure = new Error(err.detail || `Não foi possível concluir a operação no PCP (HTTP ${res.status}). Tente novamente; se persistir, avise o suporte.`);
+      failure.status = res.status;
+      throw failure;
     }
 
     if (res.status === 204) return null;
@@ -159,7 +161,7 @@ function initSidebar(activePage) {
   if (nav && !nav.querySelector('[data-page="mapa-producao"]')) {
     const mapaLink = document.createElement('a');
     mapaLink.className = 'nav-link';
-    mapaLink.href = 'https://usina.concretrack.com.br/mapa-concretagem/index.html';
+    mapaLink.href = '/unificado/mapa/operacao/';
     mapaLink.target = '_blank';
     mapaLink.rel = 'noopener noreferrer';
     mapaLink.dataset.page = 'mapa-producao';
@@ -258,9 +260,20 @@ function initSidebar(activePage) {
     etiquetasSC.href = '/unificado/pcp/etiquetas-sc/';
     etiquetasSC.dataset.page = 'etiquetas-sc';
     etiquetasSC.dataset.require = 'PCP';
-    etiquetasSC.innerHTML = '<i class="bi bi-printer-fill"></i> Etiquetas SC / Prod.';
+    etiquetasSC.innerHTML = '<i class="bi bi-printer-fill"></i> Etiquetas Setor 3';
     if (activePage === 'etiquetas-sc') etiquetasSC.classList.add('active');
     nav.appendChild(etiquetasSC);
+  }
+
+  if (nav && !nav.querySelector('[data-page="etiquetas-setor4"]')) {
+    const etiquetasDT = document.createElement('a');
+    etiquetasDT.className = 'nav-link';
+    etiquetasDT.href = '/unificado/pcp/etiquetas-setor4/';
+    etiquetasDT.dataset.page = 'etiquetas-setor4';
+    etiquetasDT.dataset.require = 'PCP';
+    etiquetasDT.innerHTML = '<i class="bi bi-printer-fill"></i> Etiquetas Setor 4';
+    if (activePage === 'etiquetas-setor4') etiquetasDT.classList.add('active');
+    nav.appendChild(etiquetasDT);
   }
 
   if (nav && !nav.querySelector('[data-page="etiquetas-armaduras"]')) {
@@ -352,7 +365,7 @@ function setupSidebarGroups(activePage) {
       id: 'etiquetas',
       label: 'Etiquetas',
       icon: 'bi-tags',
-      pages: ['etiquetas', 'etiquetas-sc', 'etiquetas-armaduras'],
+      pages: ['etiquetas', 'etiquetas-sc', 'etiquetas-setor4', 'etiquetas-armaduras'],
     },
     {
       id: 'acompanhamento',
@@ -432,6 +445,14 @@ function applyMenuVisibility(nivel) {
     el.style.display = 'none';
   });
 
+  if (Array.isArray(window.__unificadoAllowedScreens)) {
+    const allowed = new Set(window.__unificadoAllowedScreens);
+    document.querySelectorAll('#sidebar a.nav-link').forEach(link => {
+      const route = new URL(link.href, location.href).pathname.replace(/index\.html$/, '');
+      const screen = window.__unificadoPathScreens?.[route];
+      if (screen && !allowed.has(screen)) link.style.display = 'none';
+    });
+  }
   // Somente ADMIN vê seção de usuários
   if (nivel !== 'ADMIN') {
     document.querySelectorAll('[data-require="ADMIN"]').forEach(el => {
@@ -500,5 +521,8 @@ function fmtDate(d) {
   return `${dd}/${m}/${y}`;
 }
 function todayISO() {
-  return new Date().toISOString().split('T')[0];
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(new Date()).map(part => [part.type, part.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
 }

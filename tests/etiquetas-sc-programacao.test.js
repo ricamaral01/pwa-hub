@@ -8,10 +8,10 @@ const vm = require('node:vm');
 
 const source = fs.readFileSync(path.join(__dirname, '..', 'unificado/pcp/static/js/etiquetas.js'), 'utf8');
 
-function labelsFor({ schedule = [], production = [], saques = [] }) {
+function labelsFor({ schedule = [], production = [], saques = [], mode = 'sc' }) {
   const context = {
-    document: { body: { dataset: { labelMode: 'sc' } }, addEventListener() {} },
-    API: { get: async url => url.includes('programacao-circular-s3') ? schedule
+    document: { body: { dataset: { labelMode: mode } }, addEventListener() {} },
+    API: { get: async url => url.includes('programacao-circular-s' + (mode === 'dt' ? '4' : '3')) ? schedule
       : url.includes('circular-formas') ? production : saques },
     showToast() {},
     URLSearchParams,
@@ -45,4 +45,13 @@ test('etiquetas SC também aceitam programação anterior vinda da produção', 
   });
   assert.equal(rows.length, 1);
   assert.equal(rows[0].modelo_sc, '10X250');
+});
+
+test('etiquetas do setor 4 mostram apenas formas DT programadas no setor 4', async () => {
+  const rows = await labelsFor({mode: 'dt', schedule: [{codigo_forma: 'DT15', modelo: '14X1000'}],
+    production: [{forma: 'SC01', tipo_realizado: '9X200', realizado: 1}]});
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].codigo_forma, 'DT15');
+  assert.equal(rows[0].modelo_dt, '14X1000');
+  assert.equal(rows[0].setor_id, 4);
 });

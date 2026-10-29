@@ -101,8 +101,17 @@
   {
     "id": "etiquetasSc",
     "module": "planejamento",
-    "label": "SC-Prod.",
+    "label": "Setor 3",
     "path": "/unificado/pcp/etiquetas-sc/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "etiquetasSetor4",
+    "module": "planejamento",
+    "label": "Setor 4",
+    "path": "/unificado/pcp/etiquetas-setor4/",
     "query": "",
     "screen": null,
     "require": "PCP"

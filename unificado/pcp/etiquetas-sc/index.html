@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=0.6.33"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Etiquetas SC / Prod. — PCP Concrefer</title>
+  <title>Etiquetas Setor 3 – PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
   <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
@@ -45,7 +51,8 @@
       .label-preview{width:95mm!important;height:39.5mm!important;max-width:none!important;border:0;border-radius:0;margin:0;page-break-after:auto;break-after:auto}
     }
   </style>
-  <script src="/unificado/pcp/readonly-guard.js"></script>
+    <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=0.6.33">
 </head>
 <body data-label-mode="sc">
 
@@ -68,7 +75,7 @@
     <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
     <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
     <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
-    <a class="nav-link active" href="/unificado/pcp/etiquetas-sc/" data-page="etiquetas-sc" data-require="PCP"><i class="bi bi-printer-fill"></i> Etiquetas SC / Prod.</a>
+    <a class="nav-link active" href="/unificado/pcp/etiquetas-sc/" data-page="etiquetas-sc" data-require="PCP"><i class="bi bi-printer-fill"></i> Etiquetas Setor 3</a>
     <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
     <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
     <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
@@ -87,7 +94,7 @@
   <div class="topbar">
     <div class="d-flex align-items-center">
       <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
-      <span class="page-title">Etiquetas SC / Prod.</span>
+      <span class="page-title">Etiquetas Setor 3</span>
     </div>
     <div class="user-info">
       <span id="user-nome-top"></span>
@@ -99,7 +106,7 @@
     <div class="section-card mb-3 no-print">
       <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
         <div>
-          <div class="section-title mb-1">Impressão de Etiquetas SC / Prod.</div>
+          <div class="section-title mb-1">Impressão de Etiquetas Setor 3</div>
           <div class="text-muted" style="font-size:.84rem">Formato inicial 95 x 40 mm para Zebra / Argox. Lista as formas programadas no Setor 3 e as formas com Saque Mandril ou produção registrada. Gera uma etiqueta de data e outra com o modelo na horizontal.</div>
         </div>
         <button class="btn btn-primary-pcp btn-sm" onclick="imprimirEtiquetasMarcadas()">
@@ -183,7 +190,7 @@
 </div>
 
 <script src="/unificado/vendor/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
-<script src="/unificado/pcp/static/js/etiquetas.js?v=0.6.9-sc-programacao"></script>
+<script src="/unificado/pcp/static/js/app.js?v=20261029-etiquetas-1"></script>
+<script src="/unificado/pcp/static/js/etiquetas.js?v=20261029-setores-1"></script>
 </body>
 </html>

@@ -27,6 +27,8 @@ MAPA_ROLE_MODES = {
 
 
 def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
+    if planning_role == 'ADMIN':
+        return True
     if screen['id'] == 'labCartaTraco':
         return user['id'] in MASTER_USER_IDS or user['id'] in lab_users
     if screen['id'] == 'usinasCartaTraco':
@@ -70,7 +72,7 @@ def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
 
 
 def allowed_screens(user, planning_role, overrides, lab_users):
-    if user['id'] in MASTER_USER_IDS:
+    if user['id'] in MASTER_USER_IDS or planning_role == 'ADMIN':
         return [row['id'] for row in CATALOG]
     if user['perfil'] == 'CONVIDADO':
         return [row['id'] for row in CATALOG if row['id'] not in GUEST_FORBIDDEN_SCREENS
