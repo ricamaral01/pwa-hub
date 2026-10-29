@@ -132,7 +132,7 @@
           const route = MENU_ITEMS[item.id];
           grid.append(itemLink(item.label, route.url, () => {
             if (item.id === 'tvFormas') {
-              if (matchMedia('(display-mode: standalone)').matches || navigator.standalone === true ||
+              if (matchMedia('(display-mode: standalone)').matches || matchMedia('(max-width:767px)').matches || navigator.standalone === true ||
                   navigator.userAgentData?.mobile === true || /iPhone|iPod|Android.*Mobile/i.test(navigator.userAgent)) return false;
               window.open(route.url, '_blank', 'noopener');
               return;
