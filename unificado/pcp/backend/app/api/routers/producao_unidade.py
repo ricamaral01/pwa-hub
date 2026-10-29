@@ -119,17 +119,46 @@ def _audit(db: Session, unit: dict, entity: str, entity_id: int, field: str,
             "origin": origin})
 
 
+def _shared_catalog_readonly(unit: dict):
+    if unit["codigo"] == "noroeste":
+        raise HTTPException(403, "Noroeste usa o cadastro de produtos de Campinas; edite os produtos em Campinas")
+
+
+def _sync_campinas_products(db: Session):
+    """Create only the internal IDs needed by the unit-scoped production ledger.
+
+    Product names, codes, volume and weight are always read from Campinas.
+    Repeating this insert makes new Campinas products available on the next load.
+    """
+    db.execute(text("""
+      INSERT INTO producao.produto
+        (unidade_id,familia,descricao,cod_pro,volume_m3,ativo,campinas_produto_id)
+      SELECT 4,
+        CASE WHEN s.nome ~* '^(Caixa passagem|Placa Estai|Chápeu|Chapeu|Pedestal Caixa)'
+          THEN 'Acessórios' ELSE 'Postes' END,
+        s.nome,NULL,s.volume,true,s.id
+      FROM public.produtos s
+      WHERE true
+      ON CONFLICT (unidade_id,campinas_produto_id)
+        WHERE campinas_produto_id IS NOT NULL DO NOTHING
+    """))
+    db.commit()
+
+
 def _product_rows(db: Session, unit: dict):
     return [dict(row) for row in db.execute(text("""
-      SELECT p.id,p.familia,p.letra,p.descricao,p.cod_pro,p.cod_sma,p.volume_m3,
-             p.ativo,p.pendencia,ref.peso AS peso_unitario_kg
+      SELECT p.id,p.familia,p.letra,COALESCE(src.nome,p.descricao) AS descricao,
+             COALESCE(src.codigo,p.cod_pro) AS cod_pro,p.cod_sma,
+             COALESCE(src.volume,p.volume_m3) AS volume_m3,
+             p.ativo,p.pendencia,COALESCE(src.peso,ref.peso) AS peso_unitario_kg
       FROM producao.produto p
+      LEFT JOIN public.produtos src ON src.id=p.campinas_produto_id
       LEFT JOIN LATERAL (
         SELECT peso FROM public.produtos WHERE codigo=p.cod_pro AND peso IS NOT NULL
         ORDER BY id LIMIT 1
       ) ref ON true
-      WHERE p.unidade_id=:uid
-      ORDER BY (pendencia IS NULL),familia,descricao,id
+      WHERE p.unidade_id=:uid AND (p.campinas_produto_id IS NULL OR src.id IS NOT NULL)
+      ORDER BY (p.pendencia IS NULL),p.familia,COALESCE(src.nome,p.descricao),p.id
     """), {"uid": unit["id"]}).mappings()]
 
 
@@ -137,6 +166,8 @@ def _product_rows(db: Session, unit: dict):
 def products(unidade: str, db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
     unit = _unit(db, unidade)
     _authorize(db, unit, user)
+    if unit["codigo"] == "noroeste":
+        _sync_campinas_products(db)
     return {"unidade": unit, "produtos": _product_rows(db, unit)}
 
 
@@ -144,6 +175,7 @@ def products(unidade: str, db: Session = Depends(get_db), user: Usuario = Depend
 def product_template(unidade: str, db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
     unit = _unit(db, unidade)
     _authorize(db, unit, user)
+    _shared_catalog_readonly(unit)
     from openpyxl import Workbook
     from openpyxl.styles import Alignment, Font, PatternFill
 
@@ -172,6 +204,7 @@ async def import_products(unidade: str, arquivo: UploadFile = File(...), aplicar
                           db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
     unit = _unit(db, unidade)
     _authorize(db, unit, user, write=aplicar)
+    _shared_catalog_readonly(unit)
     try:
         rows = parse_catalog(arquivo.filename or "", await arquivo.read())
     except (ValueError, UnicodeError) as exc:
@@ -233,6 +266,7 @@ def create_product(unidade: str, payload: ProductInput,
                    db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
     unit = _unit(db, unidade)
     _authorize(db, unit, user, write=True)
+    _shared_catalog_readonly(unit)
     values = _product_values(payload)
     if values["cod_pro"] and db.execute(text("""
       SELECT 1 FROM producao.produto WHERE unidade_id=:uid AND cod_pro=:code
@@ -258,6 +292,7 @@ def update_product(unidade: str, produto_id: int, payload: ProductInput,
                    db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
     unit = _unit(db, unidade)
     _authorize(db, unit, user, write=True)
+    _shared_catalog_readonly(unit)
     values = _product_values(payload)
     try:
         old = db.execute(text("""
@@ -290,11 +325,13 @@ def _production(db: Session, unit: dict, day: date) -> dict:
       FROM producao.apontamento_dia WHERE unidade_id=:uid AND data=:day
     """), {"uid": unit["id"], "day": day}).mappings().first()
     rows = [dict(row) for row in db.execute(text("""
-      SELECT i.id,i.produto_id,i.quantidade,p.descricao,p.familia,p.volume_m3,
-             ref.peso AS peso_unitario_kg
+      SELECT i.id,i.produto_id,i.quantidade,COALESCE(src.nome,p.descricao) AS descricao,
+             p.familia,COALESCE(src.volume,p.volume_m3) AS volume_m3,
+             COALESCE(src.peso,ref.peso) AS peso_unitario_kg
       FROM producao.apontamento_item i
       JOIN producao.apontamento_dia d ON d.id=i.apontamento_dia_id
       JOIN producao.produto p ON p.id=i.produto_id AND p.unidade_id=d.unidade_id
+      LEFT JOIN public.produtos src ON src.id=p.campinas_produto_id
       LEFT JOIN LATERAL (
         SELECT peso FROM public.produtos WHERE codigo=p.cod_pro AND peso IS NOT NULL
         ORDER BY id LIMIT 1
@@ -359,7 +396,12 @@ def save_day(unidade: str, dia: date, payload: ApontamentoInput,
         raise HTTPException(422, "Produto repetido no apontamento")
     for item in payload.itens:
         validate_quantity(item.quantidade)
-        if not db.execute(text("SELECT 1 FROM producao.produto WHERE id=:id AND unidade_id=:uid AND ativo"),
+        if not db.execute(text("""
+            SELECT 1 FROM producao.produto p
+            LEFT JOIN public.produtos src ON src.id=p.campinas_produto_id
+            WHERE p.id=:id AND p.unidade_id=:uid AND p.ativo
+              AND (p.unidade_id<>4 OR src.id IS NOT NULL)
+        """),
                           {"id": item.produto_id, "uid": unit["id"]}).first():
             raise HTTPException(422, f"Produto {item.produto_id} não pertence à unidade ou está inativo")
     try:

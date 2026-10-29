@@ -74,7 +74,7 @@ const MENU_CONFIG = {
         { id: 'fechamentoDiario', label: 'Fechamento diário', path: '/unificado/relatorios/fechamento-diario/' }
       ] },
       { label: 'Campinas · Indicadores', items: [
-        { id: 'indicadorGeralProducao', mono: 'IG', label: 'Indicador geral · 3 unidades', path: '/unificado/producao/indicadores-gerais/', permissionId: 'produtividade' },
+        { id: 'indicadorGeralProducao', mono: 'IG', label: 'Indicador geral · 4 unidades', path: '/unificado/producao/indicadores-gerais/', permissionId: 'produtividade' },
         { id: 'dashMontagem', mono: 'DM', label: 'Dashboard Montagem', path: '/index.html', screen: 'MONTAGEM_INDICADORES' },
         { id: 'dashDefeitos', mono: 'DF', label: 'Dashboard Defeitos', path: '/index.html', screen: 'DASHBOARD_DEFEITOS' },
         { id: 'produtividade', mono: 'CO', label: 'Dashboard Concretagem Matriz', path: '/index.html', screen: 'PROD_ANALISE' },
@@ -93,6 +93,13 @@ const MENU_CONFIG = {
         { id: 'rbrMensal', mono: 'PM', label: 'Produção Ribeirão', path: 'mensal', ribeirao: true },
         { id: 'rbrIndicadores', mono: 'IN', label: 'Indicadores', path: 'indicadores', ribeirao: true },
         { id: 'rbrProdutos', mono: 'CP', label: 'Cadastro de produtos', path: 'produtos', ribeirao: true }
+      ] },
+      { label: 'Noroeste', items: [
+        { id: 'norApontamento', mono: 'AP', label: 'Apontamento do dia', path: 'apontamento', noroeste: true },
+        { id: 'norMaoDeObra', mono: 'MO', label: 'Mão de obra', path: 'mao-de-obra', noroeste: true },
+        { id: 'norMensal', mono: 'PM', label: 'Produção Noroeste', path: 'mensal', noroeste: true },
+        { id: 'norIndicadores', mono: 'IN', label: 'Indicadores', path: 'indicadores', noroeste: true },
+        { id: 'norProdutos', mono: 'CP', label: 'Produtos Campinas', path: 'produtos', noroeste: true }
       ] }
     ]
   },
@@ -234,6 +241,8 @@ const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([modu
       ? new URL(`producao/pederneiras/?tab=${encodeURIComponent(item.path)}`, UNIFICADO_BASE).href
       : item.ribeirao
       ? new URL(`producao/ribeirao/?tab=${encodeURIComponent(item.path)}`, UNIFICADO_BASE).href
+      : item.noroeste
+      ? new URL(`producao/noroeste/?tab=${encodeURIComponent(item.path)}`, UNIFICADO_BASE).href
       : item.id === 'tvFormas'
       ? new URL('tv/formas/', UNIFICADO_BASE).href
       : item.id === 'fechamentoDiario'

@@ -143,7 +143,7 @@
   }
   function locationFor(module,group,item) {
     if(module.id==='producao') {
-      const unit=['Pederneiras','Ribeirão'].includes(group.label)?group.label:'Campinas';
+      const unit=['Pederneiras','Ribeirão','Noroeste'].includes(group.label)?group.label:'Campinas';
       const groupName=unit==='Campinas'?group.label.replace(/^Campinas\s*[·-]\s*/i,''):'';
       return {module:module.label,unit,group:groupName,item:item.label};
     }
@@ -180,7 +180,7 @@
     if(!module)return;
     const current=getTree(module.id);
     module.groups.forEach(group=> {
-      if(module.id==='producao') current[`unit:${group.label==='Pederneiras'?'pederneiras':group.label==='Ribeirão'?'ribeirão':'campinas'}`]=open;
+      if(module.id==='producao') current[`unit:${group.label==='Pederneiras'?'pederneiras':group.label==='Ribeirão'?'ribeirão':group.label==='Noroeste'?'noroeste':'campinas'}`]=open;
       current[`group:${group.index}`]=open;
     });
     safeSet(keyFor(module.id),JSON.stringify(current));
@@ -241,13 +241,13 @@
     const count=groups.reduce((total,group)=>total+group.items.length,0);
     const toggleButton=button('nav-unit-toggle','',()=>toggle(module.id,id));
     toggleButton.setAttribute('aria-expanded',String(opened));
-    toggleButton.append(el('span','nav-unit-code',unit==='Campinas'?'CP':unit==='Pederneiras'?'PD':'RB'),
+    toggleButton.append(el('span','nav-unit-code',unit==='Campinas'?'CP':unit==='Pederneiras'?'PD':unit==='Noroeste'?'NO':'RB'),
       el('span','nav-unit-name',unit),el('span','nav-unit-count',`${count} telas${unit==='Campinas'?` · ${groups.length} grupos`:''}`),
       downChevron('nav-chevron'));
     section.append(toggleButton);
     if(opened) {
       const body=el('div','nav-unit-body');
-      if(unit==='Pederneiras'||unit==='Ribeirão')groups.forEach(group=>group.items.forEach(item=>body.append(itemLink({module,group,item}))));
+      if(unit==='Pederneiras'||unit==='Ribeirão'||unit==='Noroeste')groups.forEach(group=>group.items.forEach(item=>body.append(itemLink({module,group,item}))));
       else groups.forEach(group=>body.append(groupNode({...module,id:module.id},
         {...group,label:group.label.replace(/^Campinas\s*[·-]\s*/i,'')})));
       section.append(body);
@@ -280,9 +280,11 @@
       const campinas=module.groups.filter(group=>group.label?.startsWith('Campinas'));
       const pederneiras=module.groups.filter(group=>group.label==='Pederneiras');
       const ribeirao=module.groups.filter(group=>group.label==='Ribeirão');
+      const noroeste=module.groups.filter(group=>group.label==='Noroeste');
       if(campinas.length)tree.append(unitNode(module,'Campinas',campinas));
       if(pederneiras.length)tree.append(unitNode(module,'Pederneiras',pederneiras));
       if(ribeirao.length)tree.append(unitNode(module,'Ribeirão',ribeirao));
+      if(noroeste.length)tree.append(unitNode(module,'Noroeste',noroeste));
     } else module.groups.forEach(group=>tree.append(groupNode(module,group)));
   }
   function renderModules() {
@@ -466,7 +468,7 @@
       if(active) {
         state.module=active.module.id;
         const open=getTree(active.module.id);
-        if(active.module.id==='producao')open[`unit:${active.location.unit==='Pederneiras'?'pederneiras':active.location.unit==='Ribeirão'?'ribeirão':'campinas'}`]=true;
+        if(active.module.id==='producao')open[`unit:${active.location.unit==='Pederneiras'?'pederneiras':active.location.unit==='Ribeirão'?'ribeirão':active.location.unit==='Noroeste'?'noroeste':'campinas'}`]=true;
         open[`group:${active.group.index}`]=true;
         safeSet(keyFor(active.module.id),JSON.stringify(open));
         remember(active);

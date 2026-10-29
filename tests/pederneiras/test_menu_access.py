@@ -34,6 +34,7 @@ def test_master_screen_visibility():
         user = {"id": user_id, "perfil": "GERENCIA", "nome": user_id}
         assert "pdrProdutos" in access.allowed_screens(user, None, {}, frozenset())
         assert "rbrProdutos" in access.allowed_screens(user, None, {}, frozenset())
+        assert "norProdutos" in access.allowed_screens(user, None, {}, frozenset())
 
 
 def test_ribeirao_routes_and_opt_in():
@@ -48,3 +49,18 @@ def test_ribeirao_routes_and_opt_in():
     user = {"id": "ribeirao-operador", "perfil": "GESTOR", "nome": "Operador"}
     assert "rbrApontamento" not in access.allowed_screens(user, "PRODUCAO", {}, frozenset())
     assert "rbrApontamento" in access.allowed_screens(user, "PRODUCAO", {"rbrApontamento": True}, frozenset())
+
+
+def test_noroeste_routes_and_explicit_grant():
+    for suffix, expected in (("?tab=apontamento", "norApontamento"),
+                             ("?tab=mao-de-obra", "norMaoDeObra"),
+                             ("?tab=mensal", "norMensal"),
+                             ("?tab=indicadores", "norIndicadores"),
+                             ("?tab=produtos", "norProdutos"),
+                             ("app/", "norApontamento"),
+                             ("mao-de-obra/app/", "norMaoDeObra")):
+        assert access.screen_for_uri("/unificado/producao/noroeste/" + suffix)["id"] == expected
+    user = {"id": "noroeste-operador", "perfil": "GESTOR", "nome": "Operador"}
+    assert "norApontamento" not in access.allowed_screens(user, "PRODUCAO", {}, frozenset())
+    assert "norApontamento" in access.allowed_screens(user, "PRODUCAO", {"norApontamento": True}, frozenset())
+    assert "norApontamento" not in access.allowed_screens(user, None, {"norApontamento": True}, frozenset())

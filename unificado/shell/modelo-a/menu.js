@@ -5928,12 +5928,13 @@ const Dn = {
     xe("CAMPINAS · CONTROLE", [
       ["relatorioMapa", "Relatório Enc. Produção", Se("RELATORIO"), "doc"],
       ["historico", "Histórico", Se("HISTORICO"), "history"],
-      ["acmpConcretagem", "Acmp. Concretagem", Se("ACMP_CONCRETAGEM"), "sliders"],
+      ["acmpConcretagem", "Acmp. Concretagem", "relatorios/acmp-concretagem/", "sliders"],
       ["manutencao", "Manutenção Formas", Se("RELATORIO_MANUTENCAO"), "sliders"],
       ["tratativa", "Tratativa Defeitos", Se("TRATATIVA_DEFEITOS"), "alert"],
       ["fechamentoDiario", "Fechamento diário", "relatorios/fechamento-diario/", "doc"]
     ]),
     xe("CAMPINAS · INDICADORES", [
+      ["indicadorGeralProducao", "Indicador geral · unidades", "producao/indicadores-gerais/", "map"],
       ["dashMontagem", "Dashboard Montagem", Se("MONTAGEM_INDICADORES"), "map"],
       ["dashDefeitos", "Dashboard Defeitos", Se("DASHBOARD_DEFEITOS"), "map"],
       ["produtividade", "Dashboard Concretagem Matriz", Se("PROD_ANALISE"), "map"],
@@ -5952,6 +5953,13 @@ const Dn = {
       ["rbrMensal", "Produção Ribeirão", "producao/ribeirao/?tab=mensal", "map"],
       ["rbrIndicadores", "Indicadores", "producao/ribeirao/?tab=indicadores", "map"],
       ["rbrProdutos", "Cadastro de produtos", "producao/ribeirao/?tab=produtos", "database"]
+    ]),
+    xe("NOROESTE", [
+      ["norApontamento", "Apontamento do dia", "producao/noroeste/?tab=apontamento", "factory"],
+      ["norMaoDeObra", "Mão de obra", "producao/noroeste/?tab=mao-de-obra", "users"],
+      ["norMensal", "Produção Noroeste", "producao/noroeste/?tab=mensal", "map"],
+      ["norIndicadores", "Indicadores", "producao/noroeste/?tab=indicadores", "map"],
+      ["norProdutos", "Produtos Campinas", "producao/noroeste/?tab=produtos", "database"]
     ])
   ] },
   { id: "qualidade", label: "Qualidade", color: Dn.qualidade, icon: "shield", sections: [

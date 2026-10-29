@@ -82,11 +82,14 @@ PEDERNEIRAS_SCREENS = frozenset(row['id'] for row in SCREEN_CATALOG
                                if row['id'].startswith('pdr'))
 RIBEIRAO_SCREENS = frozenset(row['id'] for row in SCREEN_CATALOG
                              if row['id'].startswith('rbr'))
+NOROESTE_SCREENS = frozenset(row['id'] for row in SCREEN_CATALOG
+                            if row['id'].startswith('nor'))
 PRODUCTION_UNIT_SCREENS = {
     'pederneiras': PEDERNEIRAS_SCREENS,
     'ribeirao': RIBEIRAO_SCREENS,
+    'noroeste': NOROESTE_SCREENS,
 }
-UNIT_PRODUCTION_SCREENS = PEDERNEIRAS_SCREENS | RIBEIRAO_SCREENS
+UNIT_PRODUCTION_SCREENS = PEDERNEIRAS_SCREENS | RIBEIRAO_SCREENS | NOROESTE_SCREENS
 GUEST_ACTIONS = frozenset({'view', 'create', 'edit', 'delete', 'export', 'approve'})
 CHECKLISTS = json.loads((Path(__file__).parent / "checklists.json").read_text(encoding="utf-8"))
 ACTION_CATALOG = json.loads((Path(__file__).parent / "action_catalog.json").read_text(encoding="utf-8"))
@@ -769,7 +772,8 @@ def laboratorio_authorize():
         direct_path = urllib.parse.urlsplit(request.headers.get("X-Original-URI", "")).path
         cec_path = direct_path.startswith(('/unificado/laboratorio/cec/',
                                            '/unificado/laboratorio/cec-api/'))
-        unified_user = authenticated_user() if cec_path else None
+        carta_api_path = direct_path.startswith('/unificado/mapa/api/laboratorio/carta-traco/')
+        unified_user = authenticated_user() if cec_path or carta_api_path else None
         claim = ({'scope': 'session', 'id': unified_user['id'],
                   'updated_at': unified_user['updated_at'].isoformat()}
                  if unified_user else signer().loads(token, max_age=SESSION_SECONDS) if token else None)
@@ -981,6 +985,98 @@ def me():
     # Renew the tablet session while the app is being used. Keep the same
     # updated_at claim so a password change or deactivation still revokes it.
     return session_response(row)
+
+
+@app.route('/tratativas-defeitos', methods=['GET', 'POST'])
+def tratativas_defeitos():
+    user = authenticated_user()
+    if not user:
+        return jsonify(error='Sessão expirada.'), 401
+    allowed, _ = screen_access_state(user)
+    if (request.headers.get('X-Unificado-Screen') != 'TRATATIVA_DEFEITOS'
+            or 'tratativa' not in allowed
+            or not guest_action_allowed(user, 'tratativa', request.method, request.path)):
+        return jsonify(error='Você não tem acesso a esta tela.'), 403
+    if user['primeiro_acesso']:
+        return jsonify(error='Troque a senha antes de continuar.'), 403
+
+    if request.method == 'GET':
+        start = request.args.get('inicio', '')
+        end = request.args.get('fim', '')
+        if any(value and not re.fullmatch(r'\d{4}-\d{2}-\d{2}', value)
+               for value in (start, end)) or (start and end and start > end):
+            return jsonify(error='Período inválido.'), 400
+        try:
+            for value in (start, end):
+                if value:
+                    date.fromisoformat(value)
+        except ValueError:
+            return jsonify(error='Período inválido.'), 400
+        montage_where = []
+        inspection_where = []
+        params_montage = []
+        params_inspection = []
+        for field, value, operator in [('inicio', start, '>='), ('fim', end, '<=')]:
+            if value:
+                montage_where.append(f'm.data_fabricacao {operator} %s')
+                inspection_where.append(f'data_desforma {operator} %s')
+                params_montage.append(value)
+                params_inspection.append(value)
+        montage_where.insert(0, "m.finalizado_em IS NOT NULL AND (m.status_montagem IN "
+                             "('R', 'RR', 'REPROVADO', 'RETRABALHO') "
+                             "OR m.checklists::text LIKE %s)")
+        params_montage.insert(0, '%"nao"%')
+        montage_filter = ' WHERE ' + ' AND '.join(montage_where)
+        inspection_filter = ' WHERE ' + ' AND '.join(inspection_where) if inspection_where else ''
+        try:
+            with writer_connect() as conn, conn.cursor() as cur:
+                cur.execute('SELECT m.id, m.record_id, m.data_fabricacao, m.setor, m.forma_numero, m.modelo, '
+                            'm.status_montagem, m.motivo_recusa, m.etapa, m.finalizado_em, m.checklists, '
+                            'm.observacoes_montagem, m.updated_at, p.tipo_concreto, p.vibrado '
+                            'FROM public.montagem_poste m LEFT JOIN public.producao p '
+                            'ON p.id::text = m.record_id::text'
+                            + montage_filter + ' ORDER BY m.id LIMIT 10001', params_montage)
+                montagem = cur.fetchall()
+                cur.execute('SELECT id, setor, serie, data_desforma, tipo, forma_numero, '
+                            'observacoes, defeitos, atualizado_em FROM public.inspecao_defeitos'
+                            + inspection_filter + ' ORDER BY id LIMIT 10001', params_inspection)
+                inspecoes = cur.fetchall()
+                cur.execute('SELECT id, payload FROM public.tratativa_defeitos ORDER BY id LIMIT 10001')
+                tratativas = cur.fetchall()
+        except psycopg.Error:
+            app.logger.exception('Falha ao carregar tratativas de defeitos')
+            return jsonify(error='Falha ao consultar a fonte de dados.'), 503
+        if any(len(rows) > 10000 for rows in (montagem, inspecoes, tratativas)):
+            return jsonify(error='Há mais de 10.000 registros. Reduza o período da consulta.'), 413
+        for row in montagem:
+            if row['data_fabricacao']:
+                row['data_fabricacao'] = row['data_fabricacao'].isoformat()
+        for row in inspecoes:
+            if row['data_desforma']:
+                row['data_desforma'] = row['data_desforma'].isoformat()
+        return jsonify(montagem=montagem, inspecoes=inspecoes,
+                       tratativas=[row['payload'] for row in tratativas])
+
+    if request.headers.get('Origin') != 'https://concrefer.concretrack.com.br':
+        return jsonify(error='Origem da requisição inválida.'), 403
+    record = request.get_json(silent=True)
+    if (not isinstance(record, dict) or not isinstance(record.get('id'), str)
+            or not 1 <= len(record['id']) <= 300
+            or not isinstance(record.get('codigo_defeito'), str)
+            or record.get('status_tratativa') not in {'PENDENTE', 'EM_ANDAMENTO', 'CONCLUIDO'}
+            or len(json.dumps(record, ensure_ascii=False)) > 16000):
+        return jsonify(error='Registro de tratativa inválido.'), 400
+    try:
+        with writer_connect() as conn, conn.cursor() as cur:
+            cur.execute('INSERT INTO public.tratativa_defeitos (id, payload, atualizado_por) '
+                        'VALUES (%s, %s, %s) ON CONFLICT (id) DO UPDATE SET '
+                        'payload = EXCLUDED.payload, atualizado_em = now(), '
+                        'atualizado_por = EXCLUDED.atualizado_por',
+                        (record['id'], Jsonb(record), user['id']))
+    except psycopg.Error:
+        app.logger.exception('Falha ao salvar tratativa de defeito')
+        return jsonify(error='Falha ao salvar no banco de dados.'), 503
+    return jsonify(ok=True, record=record)
 
 
 @app.route("/rest/v1/<resource>", methods=["GET", "HEAD", "POST", "PATCH", "DELETE"])
@@ -3363,6 +3459,10 @@ register_usinas_reporting(app, connect, authenticated_user, screen_access_state)
 from usinas_cec import register as register_usinas_cec
 register_usinas_cec(app, authenticated_user, screen_access_state)
 
+
+from fechamento_producao import register as register_fechamento_producao
+register_fechamento_producao(app, authenticated_user, screen_access_state,
+                            writer_connect, pcp_connect)
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=13052)

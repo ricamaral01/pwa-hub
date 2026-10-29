@@ -59,6 +59,7 @@
     if (path === 'mapa/operacao/') return {url, module:'producao', path};
     if (path === 'producao/pederneiras/') return {url, module:'producao', path};
     if (path === 'producao/ribeirao/') return {url, module:'producao', path};
+    if (path === 'producao/noroeste/') return {url, module:'producao', path};
     if (path === 'producao/indicadores-gerais/') return {url, module:'producao', path};
     if (path === 'usinas/') return {url, module:'usinas', path};
     if (path === 'relatorios/fechamento-diario/' || path === 'relatorios/acmp-concretagem/') return {url, module:'producao', path};

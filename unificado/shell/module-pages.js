@@ -24,7 +24,7 @@
     manutencao:'Registre e acompanhe intervenções.',
     tratativa:'Analise fotos, causas e justificativas.',
     fechamentoDiario:'Veja o resumo das atividades do dia.',
-    indicadorGeralProducao:'Compare Campinas, Pederneiras e Ribeirão dia a dia.',
+    indicadorGeralProducao:'Compare Campinas, Pederneiras, Ribeirão e Noroeste dia a dia.',
     dashboard:'Visão dos indicadores do Planejamento.',
     labCartaTraco:'Cartas de traço, cadastro e MCC.'
   };
@@ -100,7 +100,7 @@
         }));
     const visibleGroups = groups.filter(group => group.items.length);
     const isProduction = moduleId === 'producao';
-    const unitFor = group => !isProduction ? '' : /^Pederneiras$/i.test(group.label) ? 'Pederneiras' : /^Ribeirão$/i.test(group.label) ? 'Ribeirão' : 'Campinas';
+    const unitFor = group => !isProduction ? '' : /^Pederneiras$/i.test(group.label) ? 'Pederneiras' : /^Ribeirão$/i.test(group.label) ? 'Ribeirão' : /^Noroeste$/i.test(group.label) ? 'Noroeste' : 'Campinas';
     const units = [...new Set(visibleGroups.map(unitFor))];
     const active = {unit: units[0], group: 0, query: ''};
     const selector = document.createElement('div'); selector.className = 'module-page-selector';

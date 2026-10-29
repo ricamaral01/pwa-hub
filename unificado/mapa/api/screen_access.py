@@ -57,7 +57,7 @@ def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
         if required == 'PRODUCAO':
             return planning_role != 'CONSULTA'
         return True
-    if screen['id'].startswith(('pdr', 'rbr')):
+    if screen['id'].startswith(('pdr', 'rbr', 'nor')):
         return bool(planning_role)
     mode = screen['screen']
     if mode in MAPA_ROLE_MODES.get(user['perfil'], set()):
@@ -80,7 +80,7 @@ def allowed_screens(user, planning_role, overrides, lab_users):
                      role_allows(user, row, planning_role, lab_users))]
     allowed = [row['id'] for row in CATALOG if role_allows(user, row, planning_role, lab_users)
             and overrides.get(row['id'],
-                              False if row['id'].startswith(('pdr', 'rbr')) else
+                              False if row['id'].startswith(('pdr', 'rbr', 'nor')) else
                               row['module'] not in {'laboratorio', 'qualidade', 'suprimentos'} and row['id'] != 'tvFormas'
                               or row['module'] == 'laboratorio' and user['id'] in DEFAULT_LAB_USERS
                               and not row['id'].startswith('cronoanalise.'))]
@@ -117,6 +117,8 @@ def screen_for_uri(original_uri, screen_header=''):
         return BY_ID.get('labUsinasRelatorios')
     if path.startswith('/unificado/laboratorio/slump/'):
         return BY_ID.get('labSlump')
+    if path.startswith('/unificado/relatorios/acmp-concretagem/'):
+        return BY_ID.get('acmpConcretagem')
     if path in {'/unificado/relatorios/fechamento-diario/',
                 '/unificado/relatorios/api/fechamento-diario'}:
         return BY_ID.get('fechamentoDiario')
@@ -152,6 +154,17 @@ def screen_for_uri(original_uri, screen_header=''):
             tab = query.get('tab', ['apontamento'])[0]
             return next((row for row in CATALOG
                          if row['id'].startswith('rbr')
+                         and parse_qs(row['query'].lstrip('?')).get('tab') == [tab]), None)
+        return None
+    if path.startswith('/unificado/producao/noroeste/'):
+        if path.startswith('/unificado/producao/noroeste/mao-de-obra/app/'):
+            return BY_ID.get('norMaoDeObra')
+        if path.startswith('/unificado/producao/noroeste/app/'):
+            return BY_ID.get('norApontamento')
+        if path == '/unificado/producao/noroeste/':
+            tab = query.get('tab', ['apontamento'])[0]
+            return next((row for row in CATALOG
+                         if row['id'].startswith('nor')
                          and parse_qs(row['query'].lstrip('?')).get('tab') == [tab]), None)
         return None
     if path.startswith('/unificado/pcp/') and not path.startswith('/unificado/pcp/api/'):

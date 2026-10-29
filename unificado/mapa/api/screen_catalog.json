@@ -391,6 +391,26 @@
     "path": "/unificado/producao/ribeirao/", "query": "?tab=produtos", "screen": null, "require": null
   },
   {
+    "id": "norApontamento", "module": "producao", "label": "Apontamento do dia",
+    "path": "/unificado/producao/noroeste/", "query": "?tab=apontamento", "screen": null, "require": null
+  },
+  {
+    "id": "norMaoDeObra", "module": "producao", "label": "Mão de obra",
+    "path": "/unificado/producao/noroeste/", "query": "?tab=mao-de-obra", "screen": null, "require": null
+  },
+  {
+    "id": "norMensal", "module": "producao", "label": "Produção Noroeste",
+    "path": "/unificado/producao/noroeste/", "query": "?tab=mensal", "screen": null, "require": null
+  },
+  {
+    "id": "norIndicadores", "module": "producao", "label": "Indicadores",
+    "path": "/unificado/producao/noroeste/", "query": "?tab=indicadores", "screen": null, "require": null
+  },
+  {
+    "id": "norProdutos", "module": "producao", "label": "Produtos Campinas",
+    "path": "/unificado/producao/noroeste/", "query": "?tab=produtos", "screen": null, "require": null
+  },
+  {
     "id": "fechamentoDiario",
     "module": "producao",
     "label": "Fechamento Diário",

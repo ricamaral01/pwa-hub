@@ -2,7 +2,8 @@
   const units = [
     {id:'campinas', name:'Campinas', color:'#ef8737'},
     {id:'pederneiras', name:'Pederneiras', color:'#238ac0'},
-    {id:'ribeirao', name:'Ribeirão', color:'#4aab78'}
+    {id:'ribeirao', name:'Ribeirão', color:'#4aab78'},
+    {id:'noroeste', name:'Noroeste', color:'#9163c7'}
   ];
   const monthInput = document.getElementById('month');
   const feedback = document.getElementById('feedback');
@@ -148,7 +149,7 @@
         }
       }tbody.append(tr);
     }
-    if(!dates.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=13;td.textContent='Nenhuma produção no período.';tr.append(td);tbody.append(tr);}
+    if(!dates.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=17;td.textContent='Nenhuma produção no período.';tr.append(td);tbody.append(tr);}
   }
   async function load(){
     const month=monthInput.value;if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(month))return;
@@ -159,7 +160,8 @@
     const requests=[
       get(`dashboard?data_inicio=${month}-01&data_fim=${endDate}`).then(campinas),
       get(`producao/pederneiras/mensal?mes=${month}`).then(other),
-      get(`producao/ribeirao/mensal?mes=${month}`).then(other)
+      get(`producao/ribeirao/mensal?mes=${month}`).then(other),
+      get(`producao/noroeste/mensal?mes=${month}`).then(other)
     ];
     const settled=await Promise.allSettled(requests);
     const result=Object.fromEntries(units.map((unit,index)=>[unit.id,
