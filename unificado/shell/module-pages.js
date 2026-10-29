@@ -39,7 +39,9 @@
   function itemLink(label, href, open, item) {
     const link = document.createElement('a');
     link.className = 'module-page-link';
-    link.href = item ? root + '?view=' + encodeURIComponent(new URL(href).pathname.slice(root.length) + new URL(href).search + new URL(href).hash) : href;
+    link.href = item && item.id !== 'tvFormas'
+      ? root + '?view=' + encodeURIComponent(new URL(href).pathname.slice(root.length) + new URL(href).search + new URL(href).hash)
+      : href;
     if (item) link.dataset.itemId = item.id;
     const code = document.createElement('span');
     code.className = 'module-page-code';
