@@ -8879,13 +8879,11 @@ function applyRoleVisibility() {
     group.classList.toggle("hidden", !group.querySelector(".hub-icon-btn:not(.hidden)"));
   });
 
-  const userNameVal = String(state.authUser?.name || "").trim().toLowerCase();
-  const correctionRole = String(state.authUser?.role || "").toUpperCase();
-  const isOdinAllowed = correctionRole === "GERENCIA" || correctionRole === "GESTOR"
-    || userNameVal.includes("ricardo") || userNameVal.includes("philippe");
+  const isOdinAllowed = ["user-ricardo", "alex", "philippe"].includes(String(state.authUser?.id || ""));
   if (el.btnCorrecaoConcretagem) {
     el.btnCorrecaoConcretagem.classList.toggle("hidden", !isOdinAllowed);
   }
+  el.kioskOdinToggleField?.classList.toggle("hidden", !isOdinAllowed);
 
   if (el.authUserBadge) {
     if (state.authUser) {
@@ -9848,10 +9846,13 @@ function bindEvents() {
 
   if (el.kioskOdinCheckbox) {
     el.kioskOdinCheckbox.addEventListener("change", () => {
+      if (el.kioskOdinCheckbox.checked && !["user-ricardo", "alex", "philippe"].includes(String(state.authUser?.id || ""))) {
+        el.kioskOdinCheckbox.checked = false;
+      }
       state.odinMode = el.kioskOdinCheckbox.checked;
       document.body.classList.toggle("odin-active", state.odinMode);
       if (el.btnCorrecaoConcretagem) {
-        el.btnCorrecaoConcretagem.textContent = state.odinMode ? "Encerrar correção" : "Refazer apontamento errado";
+        el.btnCorrecaoConcretagem.textContent = state.odinMode ? "Encerrar ODIN" : "Modo ODIN";
         el.btnCorrecaoConcretagem.classList.toggle("primary", state.odinMode);
       }
       if (state.odinMode) {
@@ -9873,15 +9874,6 @@ function bindEvents() {
         toggleField.classList.toggle("active", state.odinMode);
       }
       renderLiberacaoDual();
-    });
-  }
-
-  if (el.kioskOdinToggleField && el.kioskOdinCheckbox) {
-    el.kioskOdinToggleField.addEventListener("click", (e) => {
-      if (e.target !== el.kioskOdinCheckbox && !el.kioskOdinCheckbox.contains(e.target)) {
-        el.kioskOdinCheckbox.checked = !el.kioskOdinCheckbox.checked;
-        el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
-      }
     });
   }
 
@@ -10000,15 +9992,6 @@ function bindEvents() {
     window.print();
     document.body.classList.remove("print-relatorio-manutencao");
   });
-
-  if (el.kioskOdinToggleField && el.kioskOdinCheckbox) {
-    el.kioskOdinToggleField.addEventListener("click", (e) => {
-      if (e.target !== el.kioskOdinCheckbox && !el.kioskOdinCheckbox.contains(e.target)) {
-        el.kioskOdinCheckbox.checked = !el.kioskOdinCheckbox.checked;
-        el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
-      }
-    });
-  }
 
   // Controle de Tela Cheia no Quiosque
   if (el.btnKioskFullscreen) {
@@ -15187,124 +15170,6 @@ window.saveSequenciaS3 = async function() {
 // =========================================================
 async function cancelarOuDesprogramarOdin(forma, setor, card) {
   await cancelarConcretagemOdin(forma, setor, card);
-}
-
-async function cancelarConcretagemOdin(forma, setor) {
-  const role = String(state.authUser?.role || "").toUpperCase();
-  const name = String(state.authUser?.name || "").toLowerCase();
-  if (!(role === "GERENCIA" || role === "GESTOR" || name.includes("ricardo") || name.includes("philippe"))) {
-    showLibFeedback("Sem permissao para corrigir concretagens.", "error");
-    return;
-  }
-  if (!navigator.onLine || !hasApiConfigured()) {
-    showLibFeedback("Conecte-se a internet para corrigir a concretagem.", "error");
-    return;
-  }
-
-  const date = el.libData?.value || todayYmd();
-  const normalizedForma = normalizeUpper(forma);
-  const pendingCorrection = readDb().events.some((event) => event.pendingSync === true
-    && event.dataFabricacao === date && event.setor === setor
-    && normalizeUpper(event.formaNumero) === normalizedForma);
-  if (pendingCorrection) {
-    showLibFeedback("Ha um apontamento aguardando sincronizacao. Sincronize antes de corrigir.", "warn");
-    return;
-  }
-  const modal = document.getElementById("correcaoConcretagemModal");
-  const summary = document.getElementById("correcaoConcretagemResumo");
-  const select = document.getElementById("correcaoConcretagemTipo");
-  const save = document.getElementById("correcaoConcretagemSalvar");
-  const cancel = document.getElementById("correcaoConcretagemCancelar");
-  const close = document.getElementById("correcaoConcretagemFechar");
-  if (!modal || !summary || !select || !save || !cancel || !close) return;
-
-  const result = await supabaseClient.from("producao").select("*")
-    .eq("data_fabricacao", date).eq("setor", setor).eq("forma", normalizedForma);
-  if (result.error) {
-    showLibFeedback(`Falha ao consultar concretagem: ${result.error.message}`, "error");
-    return;
-  }
-  if (result.data.length !== 1) {
-    showLibFeedback(result.data.length ? "Ha registros duplicados. Solicite conferencia antes de corrigir." : "Nao ha concretagem nessa forma e data.", "warn");
-    return;
-  }
-
-  const current = result.data[0];
-  summary.textContent = `${date} | ${setor} | ${normalizedForma} | ${current.tipo_concreto || "Sem tipo"}`;
-  select.replaceChildren();
-  CONCRETO_TIPOS.forEach((tipo) => {
-    const option = document.createElement("option");
-    option.value = tipo;
-    option.textContent = tipo;
-    select.appendChild(option);
-  });
-  select.value = current.tipo_concreto || CONCRETO_TIPOS[0];
-  const dismiss = () => { modal.classList.remove("modal-visible"); };
-  close.onclick = dismiss;
-  modal.onclick = (event) => { if (event.target === modal) dismiss(); };
-
-  const refresh = async (removed, nextType) => {
-    const db = readDb();
-    const record = findRecordByKey(db, date, setor, normalizedForma);
-    if (record) {
-      if (removed) {
-        record.concretoTipo = "";
-        record.vibrado = null;
-        db.events = db.events.filter((event) => !(event.recordId === record.id
-          && event.etapa === "LIBERACAO" && event.status === "1"));
-        const liberacaoAnterior = db.events.find((event) => event.recordId === record.id
-          && event.etapa === "LIBERACAO" && event.status === "L");
-        record.liberacao = liberacaoAnterior ? {
-          status: "L",
-          colaborador: liberacaoAnterior.colaborador,
-          observacoes: liberacaoAnterior.observacoes || "",
-          fotos: [],
-          timestamp: liberacaoAnterior.timestamp,
-          origem: "LIBERACAO_FORMA"
-        } : null;
-      } else {
-        record.concretoTipo = nextType;
-        db.events.filter((event) => event.recordId === record.id).forEach((event) => { event.tipoConcreto = nextType; });
-      }
-      writeDb(db);
-    }
-    const clicked = getClickedFormsToday();
-    delete clicked.formas[setor + "||" + normalizedForma];
-    localStorage.setItem(CLICKED_FORMS_KEY, JSON.stringify(clicked));
-    dismiss();
-    await loadClickedFormsFromSupabase(date);
-    renderLiberacaoDual();
-    if (el.dashData?.value === date) await carregarDashboardConcretagem();
-  };
-
-  save.onclick = async () => {
-    const nextType = select.value;
-    if (nextType === current.tipo_concreto) { dismiss(); return; }
-    if (!confirm(`Alterar ${normalizedForma} de "${current.tipo_concreto}" para "${nextType}"?`)) return;
-    save.disabled = cancel.disabled = true;
-    try {
-      const response = await supabaseClient.from("producao").update({ tipo_concreto: nextType })
-        .eq("id", current.id).eq("tipo_concreto", current.tipo_concreto).select("id");
-      if (response.error || response.data?.length !== 1) throw new Error(response.error?.message || "O registro mudou; recarregue e tente novamente.");
-      await refresh(false, nextType);
-      showLibFeedback(`${normalizedForma}: tipo de concreto corrigido.`, "ok");
-    } catch (error) { showLibFeedback(error.message, "error"); }
-    finally { save.disabled = cancel.disabled = false; }
-  };
-
-  cancel.onclick = async () => {
-    if (!confirm(`Cancelar SOMENTE a concretagem de ${normalizedForma} em ${date}? A programacao e a liberacao serao mantidas.`)) return;
-    save.disabled = cancel.disabled = true;
-    try {
-      const response = await supabaseClient.from("producao").delete()
-        .eq("id", current.id).eq("tipo_concreto", current.tipo_concreto).select("id");
-      if (response.error || response.data?.length !== 1) throw new Error(response.error?.message || "O registro mudou; recarregue e tente novamente.");
-      await refresh(true);
-      showLibFeedback(`${normalizedForma}: concretagem cancelada; programacao e liberacao preservadas.`, "ok");
-    } catch (error) { showLibFeedback(error.message, "error"); }
-    finally { save.disabled = cancel.disabled = false; }
-  };
-  modal.classList.add("modal-visible");
 }
 
 // =========================================================

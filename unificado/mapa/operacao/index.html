@@ -483,7 +483,10 @@
                 <span class="kiosk-toggle-subtitle">Tocar nas formas para liberar (azul)</span>
               </div>
             </div>
-            <input type="checkbox" id="kioskOdinCheckbox" class="hidden" aria-hidden="true" tabindex="-1" />
+            <div class="kiosk-toggle-field hidden" id="kioskOdinToggleField">
+              <label class="kiosk-switch"><input type="checkbox" id="kioskOdinCheckbox" /><span class="kiosk-slider"></span></label>
+              <div class="kiosk-toggle-label"><span class="kiosk-toggle-title">Modo ODIN</span><span class="kiosk-toggle-subtitle">Desfazer ações da forma</span></div>
+            </div>
             <div class="kiosk-toggle-field hidden" id="kioskManutencaoToggleField">
               <label class="kiosk-switch">
                 <input type="checkbox" id="kioskManutencaoCheckbox" />
@@ -525,7 +528,7 @@
 
       <div class="section-title-row">
         <h2>Produção</h2>
-        <button class="btn hidden" id="btnCorrecaoConcretagem" type="button">Refazer apontamento errado</button>
+        <button class="btn hidden" id="btnCorrecaoConcretagem" type="button">Modo ODIN</button>
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
       </div>
 
@@ -1863,7 +1866,7 @@
   <script src="supabase.js"></script>
   <script src="modelos-formas.js?v=1.0.7"></script>
   <script src="montagem-taxa.js?v=20261023-montagem-defeitos-v8b"></script>
-  <script src="bridge.js?v=1.0.7"></script><script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script><script src="screen-context.js?v=1.0.7-photo1"></script><script src="app.js?v=20261029-formas-s3-s4-1"></script><script src="inspecao-defeitos.js?v=20261021f"></script><script src="mandril-report.js?v=1.0.7"></script><script src="users-unificado.js?v=20261024-user-units"></script><script src="unificado-bridge.js?v=20261027-programacao-v1"></script><script src="dashboard-defeitos-v5.js?v=1.0.7"></script>
+  <script src="bridge.js?v=1.0.7"></script><script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script><script src="screen-context.js?v=1.0.7-photo1"></script><script src="app.js?v=20261029-odin-1"></script><script src="odin-mode.js?v=20261029-1"></script><script src="inspecao-defeitos.js?v=20261021f"></script><script src="mandril-report.js?v=1.0.7"></script><script src="users-unificado.js?v=20261024-user-units"></script><script src="unificado-bridge.js?v=20261027-programacao-v1"></script><script src="dashboard-defeitos-v5.js?v=1.0.7"></script>
   <script src="dashboard-reference-layout.js?v=20261007c"></script><script src="dashboards-v6.js?v=1.0.38-hotfix1"></script><script src="dashboards-v7.js?v=20261024-dashboards-v7"></script>
 
 </body>

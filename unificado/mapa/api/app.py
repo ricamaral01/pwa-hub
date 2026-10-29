@@ -3498,5 +3498,8 @@ from fechamento_producao import register as register_fechamento_producao
 register_fechamento_producao(app, authenticated_user, screen_access_state,
                             writer_connect, pcp_connect)
 
+from odin import register as register_odin
+register_odin(app, authenticated_user, screen_access_state, writer_connect)
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=13052)
