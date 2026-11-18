@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+  <title>Cartas Traços • ConcreTrack</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root{--orange:#E07A3A;--gray:#343B43;--text:#1D2939;--muted:#667085;--line:#E4E7EC;--bg:#F5F7FA;--navy:#0D3B66;--blue:#1976D2;--green:#079455;--amber:#DC6803;--red:#D92D20}
+    *{box-sizing:border-box;font-family:"Gotham","Montserrat","Segoe UI",system-ui,sans-serif}
+    body{margin:0;background:var(--bg);color:var(--text)}
+    .app-topbar{background:var(--gray);color:#fff}.topbar-inner{display:flex;align-items:center;gap:12px;padding:12px 0}.topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:6px}.topbar-title{font-size:18px;font-weight:800}.topbar-title span{color:var(--orange)}.topbar-sub{font-size:10px;color:#C8CED6}.topbar-right{margin-left:auto;display:flex;gap:10px}.btn-top{height:36px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;text-decoration:none;padding:0 14px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px}.btn-top:hover{background:rgba(255,255,255,.12);color:#fff}.btn-logout{background:rgba(224,122,58,.25);cursor:pointer}.topbar-accent{height:3px;background:linear-gradient(90deg,var(--orange),var(--navy))}
+    main{padding:24px 0 32px}.header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}.header h1{font-size:28px;font-weight:900;margin:0}.header h1 span{color:var(--orange)}.header p{font-size:15px;color:var(--muted);margin:6px 0 0}.period{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:14px;font-weight:800;color:var(--navy);white-space:nowrap}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 1px 2px rgba(16,24,40,.04)}.filters{display:grid;grid-template-columns:160px 160px minmax(320px,1fr) auto auto;gap:12px;align-items:end;padding:16px;margin-bottom:14px}.field label{display:block;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.35px;color:var(--muted);margin-bottom:6px}.field input,.field select{width:100%;height:42px;border:1px solid #D0D5DD;border-radius:8px;padding:0 12px;background:#fff;color:var(--text);font-size:15px}.check{height:42px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;color:var(--muted);white-space:nowrap}.btn-main{height:42px;border:0;border-radius:8px;padding:0 16px;font-size:15px;font-weight:900;display:inline-flex;align-items:center;gap:8px;justify-content:center}.btn-main.primary{background:var(--navy);color:#fff}.btn-main.light{background:#F2F4F7;color:var(--text)}.btn-main.green{background:var(--green);color:#fff}
+    .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}.kpi{padding:16px}.kpi .label{font-size:12px;text-transform:uppercase;letter-spacing:.35px;color:var(--muted);font-weight:900}.kpi .value{font-size:27px;font-weight:900;color:var(--navy);line-height:1.1;margin-top:6px}.kpi .hint{font-size:13px;color:var(--muted);font-weight:700;margin-top:4px}
+    .table-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px;border-bottom:1px solid var(--line)}.table-head h2{font-size:18px;font-weight:900;margin:0}.actions{display:flex;gap:8px;flex-wrap:wrap}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:1080px}.table th{background:#F8FAFC;border-bottom:1px solid var(--line);color:#475467;font-size:12px;font-weight:900;letter-spacing:.35px;text-transform:uppercase;text-align:left;padding:13px 14px;white-space:nowrap}.table td{border-bottom:1px solid #EEF2F6;font-size:15px;padding:13px 14px;vertical-align:middle}.table tbody tr{cursor:pointer}.table tbody tr:hover,.table tbody tr.selected{background:#EEF6FF}.num{text-align:right}.name{font-size:16px;font-weight:900;color:var(--text)}.muted{font-size:13px;font-weight:700;color:var(--muted)}.money{font-weight:900;color:var(--navy)}.status{border-radius:999px;padding:5px 10px;font-size:12px;font-weight:900;display:inline-flex;gap:5px;align-items:center}.ok{background:#ECFDF3;color:var(--green)}.warn{background:#FFF6E5;color:var(--amber)}.empty{padding:40px;text-align:center;color:var(--muted);font-weight:800;font-size:15px}
+    .selected-card{margin-top:14px}.selected-head{display:flex;justify-content:space-between;gap:14px;padding:17px;border-bottom:1px solid var(--line)}.selected-head h3{font-size:21px;font-weight:900;margin:4px 0;color:var(--text)}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:900}.selected-body{padding:16px 17px}.summary-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:16px}.mini{background:#F8FAFC;border:1px solid #EEF2F6;border-radius:8px;padding:11px}.mini .m-label{font-size:12px;text-transform:uppercase;color:var(--muted);font-weight:900}.mini .m-value{font-size:18px;font-weight:900;color:var(--navy);margin-top:3px}.section-label{font-size:13px;text-transform:uppercase;letter-spacing:.35px;color:var(--muted);font-weight:900;margin:14px 0 10px}.composition{width:100%;border-collapse:collapse}.composition th{background:#F8FAFC;border:1px solid #E9EEF5;color:#475467;font-size:12px;font-weight:900;text-transform:uppercase;padding:11px 12px;text-align:left}.composition td{border:1px solid #EEF2F6;padding:11px 12px;font-size:15px}.composition .qty,.composition .cost{text-align:right}.source-note{color:var(--amber);font-size:12px;font-weight:800;margin-top:3px}.footer{padding:18px;text-align:center;font-size:13px;color:#98A2B3}.footer span{color:var(--orange);font-weight:900}
+    @media(max-width:1100px){.filters{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:repeat(2,1fr)}.summary-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:760px){.topbar-inner,.header,.selected-head{flex-wrap:wrap}.topbar-right{margin-left:0;width:100%;flex-wrap:wrap}.filters,.kpis,.summary-grid{grid-template-columns:1fr}.period{width:100%}.actions{width:100%}}@media print{.app-topbar,.filters,.actions,.footer{display:none!important}body{background:#fff}.panel{box-shadow:none}.table,.composition{min-width:0}.table-wrap{overflow:visible}}
+  </style>
+<script>
+    // Acesso direto volta à casca autenticada; no iframe preserva o layout original.
+    if (top === self) {
+      const params = new URLSearchParams({area:'relatorios'});
+      if ('cartas') params.set('app', 'cartas');
+      for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+      location.replace('/unificado/?view=' + encodeURIComponent('usinas/?' + params));
+    } else {
+      const syncShell = () => {
+        if (parent !== top || top.location.pathname !== '/unificado/') return;
+        const params = new URLSearchParams({area:'relatorios'});
+        if ('cartas') params.set('app', 'cartas');
+        for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+        const view = 'usinas/?' + params;
+        top.history.replaceState({view}, '', '/unificado/?view=' + encodeURIComponent(view));
+      };
+      addEventListener('DOMContentLoaded', syncShell);
+      const originalReplace = history.replaceState.bind(history);
+      history.replaceState = (...args) => { originalReplace(...args); syncShell(); };
+    }
+    function concretrackLogout() {
+      if (top.UnificadoAuth?.logout) top.UnificadoAuth.logout();
+      else top.location.assign('/unificado/login.html');
+    }
+    </script>
+</head>
+<body>
+  <div class="app-topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <img src="/unificado/usinas/relatorios/assets/PRINCIPAL@2x.png" alt="Logo" class="topbar-logo">
+        <div>
+          <div class="topbar-title"><i class="bi bi-journal-richtext me-2"></i>Cartas <span>Traços</span></div>
+          <div class="topbar-sub">Relatório Gerencial • ConcreTrack</div>
+        </div>
+        <div class="topbar-right">
+          <a class="btn-top" href="/unificado/usinas/relatorios/"><i class="bi bi-arrow-left"></i> Relatórios</a>
+          <a class="btn-top" href="/unificado/"><i class="bi bi-house"></i> Início</a>
+          <button class="btn-top btn-logout" onclick="concretrackLogout()"><i class="bi bi-box-arrow-right"></i> Sair</button>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-accent"></div>
+  </div>
+
+  <main class="container">
+    <div class="header">
+      <div>
+        <h1>Cartas Traços <span>Gerencial</span></h1>
+        <p>Composição em kg, custo por material, revisão, AC, resistências e uso no período.</p>
+      </div>
+      <div class="period" id="periodChip">Período</div>
+    </div>
+
+    <section class="panel filters">
+      <div class="field"><label>Data início</label><input type="date" id="fDataIni"></div>
+      <div class="field"><label>Data fim</label><input type="date" id="fDataFim"></div>
+      <div class="field"><label>Buscar carta traço</label><select id="fBusca"><option value="">Carregando cartas...</option></select></div>
+      <label class="check"><input type="checkbox" id="fAtivas" checked> Somente ativas</label>
+      <div class="d-flex gap-2">
+        <button class="btn-main primary" onclick="loadData()"><i class="bi bi-funnel"></i> Filtrar</button>
+        <button class="btn-main light" onclick="resetFilters()" title="Limpar filtros"><i class="bi bi-arrow-counterclockwise"></i></button>
+      </div>
+    </section>
+
+    <section class="kpis" id="summaryCards"></section>
+
+    <section class="panel">
+      <div class="table-head">
+        <h2>Cartas cadastradas</h2>
+        <div class="actions">
+          <button class="btn-main light" onclick="window.print()"><i class="bi bi-printer"></i> Imprimir</button>
+          <button class="btn-main green" onclick="exportCSV()"><i class="bi bi-filetype-csv"></i> CSV</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="table" id="tblCartas">
+          <thead>
+            <tr>
+              <th>Carta</th><th>Rev.</th><th>Data revisão</th><th>AC</th><th>Resistências</th><th class="num">Custo</th><th class="num">Usos</th><th class="num">Volume</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel selected-card" id="detailPanel">
+      <div class="selected-head">
+        <div>
+          <div class="eyebrow">Carta selecionada</div>
+          <h3>Selecione uma carta</h3>
+          <div class="muted">A composição e os custos serão exibidos abaixo.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">&copy; 2026 <span>ConcreTrack</span> • DAutomação</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const API = '/unificado/mapa/api/usina/reporting/relatorios/cartas-traco';
+    let lastData = null;
+
+    const brMoney = v => Number(v || 0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+    const brNum = (v,d=2) => v === null || v === undefined || v === '' ? '-' : Number(v || 0).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+    const brDate = v => v ? new Date(`${String(v).slice(0,10)}T00:00:00`).toLocaleDateString('pt-BR') : '-';
+    const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+
+    function setDefaultDates(){
+      const now = new Date();
+      const ini = new Date(now.getFullYear(), now.getMonth(), 1);
+      fDataIni.value = ini.toISOString().slice(0,10);
+      fDataFim.value = now.toISOString().slice(0,10);
+    }
+
+    function url(withCarta=true){
+      const p = new URLSearchParams({data_ini:fDataIni.value,data_fim:fDataFim.value,ativas:fAtivas.checked ? 'true' : 'false'});
+      if(withCarta && fBusca.value) p.set('q', fBusca.value);
+      return `${API}?${p}`;
+    }
+
+    async function loadCartaOptions(){
+      const selected = fBusca.value;
+      const res = await fetch(url(false));
+      if(!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      const cartas = data.cartas || [];
+      fBusca.innerHTML = '<option value="">Todas as cartas traços</option>' + cartas.map(c => {
+        const nome = c.nome_traco || c.nome;
+        return `<option value="${esc(nome)}">${esc(nome)}</option>`;
+      }).join('');
+      if(selected && cartas.some(c => (c.nome_traco || c.nome) === selected)) fBusca.value = selected;
+    }
+
+    async function loadData(){
+      document.querySelector('#tblCartas tbody').innerHTML = '<tr><td colspan="9" class="empty">Carregando cartas...</td></tr>';
+      try{
+        await loadCartaOptions();
+        const res = await fetch(url(true));
+        if(!res.ok) throw new Error(await res.text());
+        lastData = await res.json();
+        renderAll();
+      }catch(err){
+        document.querySelector('#tblCartas tbody').innerHTML = `<tr><td colspan="9" class="empty text-danger">${esc(err.message)}</td></tr>`;
+        renderEmptyDetail();
+      }
+    }
+
+    function renderAll(){
+      const r = lastData.resumo || {};
+      periodChip.textContent = `${brDate(lastData.filtros.data_ini)} a ${brDate(lastData.filtros.data_fim)}`;
+      summaryCards.innerHTML = `
+        <article class="panel kpi"><div class="label">Cartas</div><div class="value">${brNum(r.cartas,0)}</div><div class="hint">na consulta</div></article>
+        <article class="panel kpi"><div class="label">Custo somado</div><div class="value">${brMoney(r.custo_total)}</div><div class="hint">cartas listadas</div></article>
+        <article class="panel kpi"><div class="label">Usos no período</div><div class="value">${brNum(r.usos_periodo,0)}</div><div class="hint">massadas vinculadas</div></article>
+        <article class="panel kpi"><div class="label">Volume</div><div class="value">${brNum(r.volume_periodo,2)}</div><div class="hint">m³ produzidos</div></article>`;
+      renderTable(lastData.cartas || []);
+      const first = (lastData.cartas || [])[0];
+      first ? selectCarta(first.id) : renderEmptyDetail();
+    }
+
+    function resistenciaResumo(c){
+      const vals = ['r24h','r3','r7','r28'].map(k => c.resistencias?.[k] ?? c.resistencias?.ensaios?.[k]);
+      const labels = ['24h','3d','7d','28d'];
+      return vals.map((v,i)=>`${labels[i]} ${v == null ? '-' : brNum(v,1)}`).join(' • ');
+    }
+
+    function status(c){
+      if(c.sem_mapeamento) return '<span class="status warn"><i class="bi bi-link-45deg"></i> Mapear</span>';
+      if(c.sem_custo) return '<span class="status warn"><i class="bi bi-currency-dollar"></i> Sem custo</span>';
+      return '<span class="status ok"><i class="bi bi-check2-circle"></i> OK</span>';
+    }
+
+    function renderTable(cartas){
+      const body = document.querySelector('#tblCartas tbody');
+      if(!cartas.length){ body.innerHTML = '<tr><td colspan="9" class="empty">Nenhuma carta encontrada.</td></tr>'; return; }
+      body.innerHTML = cartas.map(c => `
+        <tr data-id="${c.id}" onclick="selectCarta(${c.id})">
+          <td><div class="name">${esc(c.nome_traco || c.nome)}</div><div class="muted">ID ${c.id}${c.ultima_revisao ? ' • última revisão' : ''}</div></td>
+          <td>${brNum(c.revisao_numero || 1,0)}</td>
+          <td>${brDate(c.revisado_em || c.created_at)}</td>
+          <td>${c.ac == null ? '-' : brNum(c.ac,3)}</td>
+          <td><div class="muted">${resistenciaResumo(c)}</div></td>
+          <td class="num money">${brMoney(c.custo_total)}</td>
+          <td class="num">${brNum(c.usos_periodo,0)}</td>
+          <td class="num">${brNum(c.volume_periodo,2)}</td>
+          <td>${status(c)}</td>
+        </tr>`).join('');
+    }
+
+    function selectCarta(id){
+      document.querySelectorAll('#tblCartas tbody tr').forEach(tr => tr.classList.toggle('selected', Number(tr.dataset.id) === id));
+      const carta = (lastData.cartas || []).find(c => c.id === id);
+      carta ? renderDetail(carta) : renderEmptyDetail();
+    }
+
+    function renderEmptyDetail(){
+      detailPanel.innerHTML = '<div class="selected-head"><div><div class="eyebrow">Carta selecionada</div><h3>Sem seleção</h3><div class="muted">Nenhuma carta para exibir.</div></div></div>';
+    }
+
+    function renderDetail(c){
+      const materiais = (c.materiais || []).map(m => {
+        const unidade = m.material_unidade_carta || 'kg';
+        const unitLabel = unidade === 'L' ? 'R$/L' : 'R$/kg';
+        return `
+          <tr>
+            <td><b>${esc(m.label)}</b><div class="muted">${esc(m.material_nome || 'Material não mapeado')}</div>${m.custo_por_categoria ? `<div class="source-note">Custo usado por categoria: ${esc(m.custo_material_nome || '')}</div>` : ''}</td>
+            <td class="qty">${brNum(m.quantidade,3)} ${esc(unidade)}</td>
+            <td class="cost">${brMoney(m.custo_unitario)} <span class="muted">${unitLabel}</span></td>
+            <td class="cost">${brMoney(m.custo_total)}</td>
+            <td>${brDate(m.ultima_compra_data)}</td>
+          </tr>`;
+      }).join('') || '<tr><td colspan="5" class="empty">Sem materiais informados.</td></tr>';
+
+      detailPanel.innerHTML = `
+        <div class="selected-head">
+          <div>
+            <div class="eyebrow">Carta selecionada</div>
+            <h3>${esc(c.nome_traco || c.nome)}</h3>
+            <div class="muted">Revisão ${brNum(c.revisao_numero || 1,0)} • ${brDate(c.revisado_em || c.created_at)}</div>
+          </div>
+          <div>${status(c)}</div>
+        </div>
+        <div class="selected-body">
+          <div class="summary-grid">
+            <div class="mini"><div class="m-label">Custo</div><div class="m-value">${brMoney(c.custo_total)}</div></div>
+            <div class="mini"><div class="m-label">Usos</div><div class="m-value">${brNum(c.usos_periodo,0)}</div></div>
+            <div class="mini"><div class="m-label">Volume</div><div class="m-value">${brNum(c.volume_periodo,2)}</div></div>
+            <div class="mini"><div class="m-label">AC</div><div class="m-value">${c.ac == null ? '-' : brNum(c.ac,3)}</div></div>
+            <div class="mini"><div class="m-label">R24h / R3</div><div class="m-value">${brNum(c.resistencias?.r24h ?? c.resistencias?.ensaios?.r24h,1)} / ${brNum(c.resistencias?.r3 ?? c.resistencias?.ensaios?.r3,1)}</div></div>
+            <div class="mini"><div class="m-label">R7 / R28</div><div class="m-value">${brNum(c.resistencias?.r7 ?? c.resistencias?.ensaios?.r7,1)} / ${brNum(c.resistencias?.r28 ?? c.resistencias?.ensaios?.r28,1)}</div></div>
+          </div>
+          <div class="section-label">Composição da carta em kg</div>
+          <div class="table-wrap">
+            <table class="composition">
+              <thead><tr><th>Material</th><th class="qty">Quantidade</th><th class="cost">Custo unitário</th><th class="cost">Custo total</th><th>Última compra</th></tr></thead>
+              <tbody>${materiais}</tbody>
+            </table>
+          </div>
+        </div>`;
+    }
+
+    function resetFilters(){ setDefaultDates(); fBusca.value=''; fAtivas.checked=true; loadData(); }
+
+    function exportCSV(){
+      if(!lastData?.cartas?.length) return;
+      const header = ['Carta','Revisao','Data revisao','AC','R24h','R3','R7','R28','Custo','Usos','Volume'];
+      const rows = lastData.cartas.map(c => [c.nome_traco || c.nome,c.revisao_numero || 1,brDate(c.revisado_em || c.created_at),c.ac ?? '',c.resistencias?.r24h ?? c.resistencias?.ensaios?.r24h ?? '',c.resistencias?.r3 ?? c.resistencias?.ensaios?.r3 ?? '',c.resistencias?.r7 ?? c.resistencias?.ensaios?.r7 ?? '',c.resistencias?.r28 ?? c.resistencias?.ensaios?.r28 ?? '',c.custo_total || 0,c.usos_periodo || 0,c.volume_periodo || 0]);
+      const csv = [header,...rows].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');
+      const blob = new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `cartas-traco-${new Date().toISOString().slice(0,10)}.csv`; a.click(); URL.revokeObjectURL(a.href);
+    }
+
+    fBusca.addEventListener('change', loadData);
+    setDefaultDates();
+    loadData();
+  </script>
+</body>
+</html>

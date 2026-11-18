@@ -1,0 +1,700 @@
+{
+  "base": "https://concrefer.concretrack.com.br:18446",
+  "pcp_session": 200,
+  "api_probes": [
+    {
+      "path": "postes-series/previsao?semana=2026-11-16",
+      "status": 403,
+      "body": "{\"error\":\"Você não tem acesso a esta tela\"}"
+    },
+    {
+      "path": "programacao-semanal?semana=2026-11-16&grupo=12",
+      "status": 403,
+      "body": "{\"error\":\"Você não tem acesso a esta tela\"}"
+    },
+    {
+      "path": "armaduras/programacao?semana=2026-11-16&grupo=12",
+      "status": 403,
+      "body": "{\"error\":\"Você não tem acesso a esta tela\"}"
+    }
+  ],
+  "screens": [
+    {
+      "screen": "inicio",
+      "view": "",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/"
+      ],
+      "text": [
+        "PL\nMÓDULO\nPlanejamento\nGrupos\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nPROGRAMAÇÃO\n5\nRELATÓRIOS DE PROGRAMAÇÃO\n3\nETIQUETAS\n3\nACOMPANHAMENTO\n5\nPRODUÇÃO E APOIO\n5\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nBem-vindo, Ricardo.\nquarta-feira, 18 de novembro de 2026 · Unificado Concrefer · seus módulos e operações em um só lugar\nMódulos\n\nEscolha onde deseja trabalhar.\n\n01 / MÓDULO\nPlanejamento\nProgramação, PCP e relatórios\n02 / MÓDULO\nProdução\nMapa, inspeção e montagem\n03 / MÓDULO\nQualidade\nNão conformidades e controle\n04 / MÓDULO\nLaboratório\nEnsaios e acompanhamento\n05 / MÓDULO\nUsinas\nOperação e acompanhamento das usinas\n06 / MÓDULO\nGED\nDocumentos e aprovações\n07 / MÓDULO\nSuprimentos\nSolicitações e almoxarifado geral\n08 / APLICAÇÃO\nPedeRH\nSolicitações e fluxos de RH\n09 / APLICAÇÃO\nFaleAqui\nSolicitações e atendimento\nSetores hoje\n\nProgramado no PCP e realizado no Mapa.\n\nCarregando dados…\nS01\nHoje\nSetor 1\nProgramado (PCP)\n—\nRealizado (Mapa)\n—\nProgramação\nProdução\nS02\nHoje\nSetor 2\nProgramado (PCP)\n—\nRealizado (Mapa)\n—\nProgramação\nProdução\nS03\nHoje\nSetor 3\nProgramado (PCP)\n—\nRealizado (Mapa)\n—\nProgramação\nProdução\nS04\nHoje\nSetor 4\nProgramado (PCP)\n—\nRealizado (Mapa)\n—\nProgramação\nProdução\nAcesso rápido\n\nAs rotinas mais usadas em um só lugar.\n\nPlanejamento\nProgramação\nRelatórios de Programação\nEtiquetas\nAcompanhamento Mensal\nFormas por Setor\nApontamento Mega\nProdução e montagem\nProdução / Liberação\nMandril Circular\nInspeção Setor 3 e 4\nMontagem Postes\nManutenção Formas\nIndicadores\nProgramado vs Realizado\nDashboard Montagem\nDashboard Defeitos\nDashboard Concretagem Matriz\nHistórico"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\inicio-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\inicio-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\inicio-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\inicio-390.png"
+      ]
+    },
+    {
+      "screen": "planejamento",
+      "view": "@planejamento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?module=planejamento",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?module=planejamento"
+      ],
+      "text": [
+        "PL\nMÓDULO\nPlanejamento\nGrupos\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nPROGRAMAÇÃO\n5\nRELATÓRIOS DE PROGRAMAÇÃO\n3\nETIQUETAS\n3\nACOMPANHAMENTO\n5\nPRODUÇÃO E APOIO\n5\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\n← Menu principal\n\nMÓDULO\n\nPlanejamento\n\nProgramação, PCP e relatórios\n\nACESSO RÁPIDO\nDashboard\nSetor 1 e 2\nSetor 1 e 2\nPadrão\nGeral\n2\nD\nDashboard\nAbrir tela e consultar os dados.\n↗\nPV\nProgramado vs Realizado\nAbrir tela e consultar os dados.\n↗\nProgramação\n5\nS1\nSetor 1 e 2\nAbrir tela e consultar os dados.\n↗\nS3\nSetor 3 e 4\nAbrir tela e consultar os dados.\n↗\nCS\nCircular Setor 3\nAbrir tela e consultar os dados.\n↗\nDS\nDT Setor 4\nAbrir tela e consultar os dados.\n↗\nPF\nProgramação Final\nAbrir tela e consultar os dados.\n↗\nRelatórios de Programação\n3\nS1\nSetor 1 e 2\nAbrir tela e consultar os dados.\n↗\nS3\nSetor 3\nAbrir tela e consultar os dados.\n↗\nS4\nSetor 4\nAbrir tela e consultar os dados.\n↗\nEtiquetas\n3\nP\nPadrão\nAbrir tela e consultar os dados.\n↗\nS3\nSetor 3\nAbrir tela e consultar os dados.\n↗\nA\nArmaduras\nAbrir tela e consultar os dados.\n↗\nAcompanhamento\n5\nPD\nPCP Diário\nAbrir tela e consultar os dados.\n↗\nAM\nAcompanhamento Mensal\nAbrir tela e consultar os dados.\n↗\nAM\nAcompanhamento Mensal Setor 3 e 4\nAbrir tela e consultar os dados.\n↗\nAM\nApontamento Mega\nAbrir tela e consultar os dados.\n↗\nFD\nFechamento Diário\nAbrir tela e consultar os dados.\n↗\nProdução e apoio\n5\nPP\nProdução PCP\nAbrir tela e consultar os dados.\n↗\nMD\nMão de Obra\nAbrir tela e consultar os dados.\n↗\nRD\nRateio de Mão de Obra\nAbrir tela e consultar os dados.\n↗\nFP\nFormas por Setor\nAbrir tela e consultar os dados.\n↗\nTP\nTeste Programação\nAbrir tela e consultar os dados.\n↗"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\planejamento-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\planejamento-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\planejamento-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\planejamento-390.png"
+      ]
+    },
+    {
+      "screen": "acesso-rapido",
+      "view": "@quick",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/"
+      ],
+      "text": [
+        "PL\nMÓDULO\nPlanejamento\nGrupos\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nPROGRAMAÇÃO\n5\nRELATÓRIOS DE PROGRAMAÇÃO\n3\nETIQUETAS\n3\nACOMPANHAMENTO\n5\nPRODUÇÃO E APOIO\n5\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nBem-vindo, Ricardo.\nquarta-feira, 18 de novembro de 2026 · Unificado Concrefer · seus módulos e operações em um só lugar\nMódulos\n\nEscolha onde deseja trabalhar.\n\n01 / MÓDULO\nPlanejamento\nProgramação, PCP e relatórios\n02 / MÓDULO\nProdução\nMapa, inspeção e montagem\n03 / MÓDULO\nQualidade\nNão conformidades e controle\n04 / MÓDULO\nLaboratório\nEnsaios e acompanhamento\n05 / MÓDULO\nUsinas\nOperação e acompanhamento das usinas\n06 / MÓDULO\nGED\nDocumentos e aprovações\n07 / MÓDULO\nSuprimentos\nSolicitações e almoxarifado geral\n08 / APLICAÇÃO\nPedeRH\nSolicitações e fluxos de RH\n09 / APLICAÇÃO\nFaleAqui\nSolicitações e atendimento\nSetores hoje\n\nProgramado no PCP e realizado no Mapa.\n\nDados de 18/11/2026\nS01\nHoje\nSetor 1\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS02\nHoje\nSetor 2\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS03\nHoje\nSetor 3\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS04\nHoje\nSetor 4\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nAcesso rápido\n\nAs rotinas mais usadas em um só lugar.\n\nPlanejamento\nProgramação\nRelatórios de Programação\nEtiquetas\nAcompanhamento Mensal\nFormas por Setor\nApontamento Mega\nProdução e montagem\nProdução / Liberação\nMandril Circular\nInspeção Setor 3 e 4\nMontagem Postes\nManutenção Formas\nIndicadores\nProgramado vs Realizado\nDashboard Montagem\nDashboard Defeitos\nDashboard Concretagem Matriz\nHistórico"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\acesso-rapido-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\acesso-rapido-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\acesso-rapido-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\acesso-rapido-390.png"
+      ]
+    },
+    {
+      "screen": "numeros-serie",
+      "view": "pcp/numeros-serie/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F"
+      ],
+      "text": [
+        "PL\nMÓDULO\nPlanejamento\nGrupos\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nPROGRAMAÇÃO\n5\nRELATÓRIOS DE PROGRAMAÇÃO\n3\nETIQUETAS\n3\nACOMPANHAMENTO\n5\nPRODUÇÃO E APOIO\n5\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nVocê não tem acesso a esta tela"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\numeros-serie-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\numeros-serie-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\numeros-serie-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\numeros-serie-390.png"
+      ]
+    },
+    {
+      "screen": "programacao-semana",
+      "view": "pcp/programacao-semanal/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F"
+      ],
+      "text": [
+        "PL\nMÓDULO\nPlanejamento\nGrupos\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nPROGRAMAÇÃO\n5\nRELATÓRIOS DE PROGRAMAÇÃO\n3\nETIQUETAS\n3\nACOMPANHAMENTO\n5\nPRODUÇÃO E APOIO\n5\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nVocê não tem acesso a esta tela"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\programacao-semana-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\programacao-semana-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\programacao-semana-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\programacao-semana-390.png"
+      ]
+    },
+    {
+      "screen": "armaduras",
+      "view": "pcp/armaduras/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F"
+      ],
+      "text": [
+        "PL\nMÓDULO\nPlanejamento\nGrupos\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nPROGRAMAÇÃO\n5\nRELATÓRIOS DE PROGRAMAÇÃO\n3\nETIQUETAS\n3\nACOMPANHAMENTO\n5\nPRODUÇÃO E APOIO\n5\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nVocê não tem acesso a esta tela"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\armaduras-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\armaduras-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\armaduras-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\armaduras-390.png"
+      ]
+    },
+    {
+      "screen": "etiquetas",
+      "view": "pcp/etiquetas-sc/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-sc%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-sc%2F",
+        "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/"
+      ],
+      "text": [
+        "PL\nMÓDULO\nPlanejamento\nGrupos\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nPROGRAMAÇÃO\n5\nRELATÓRIOS DE PROGRAMAÇÃO\n3\nETIQUETAS\n3\nPadrão\nSetor 3\nArmaduras\nACOMPANHAMENTO\n5\nPRODUÇÃO E APOIO\n5\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "IMPRESSÃO DE ETIQUETAS SETOR 3\nFormato inicial 95 x 40 mm para Zebra / Argox. Lista as formas programadas no Setor 3 e as formas com Saque Mandril ou produção registrada. Gera uma etiqueta de data e outra com o modelo na horizontal.\nImprimir etiquetas marcadas\nLargura do código (%)\nAltura do código (%)\nAjuste apenas o código da forma ou modelo. A data e a etiqueta de 95 x 40 mm permanecem iguais.\nData de produção\nSetor\nSetor 3\nFonte data\nFonte tipo\nCarregar\nPOSTES SC PROGRAMADOS\nSelecione as formas da programação ou da produção. Cada peça selecionada gera uma etiqueta de data e outra de modelo.\nSelecionar todos\nLimpar\nGerar selecionadas\nNenhuma programação com quantidade para esta data.\nItens: 0\nPostes: 0\nEtiquetas: 0\nPapel: 95 x 40 mm\nCódigo: 100% x 100%\nSelecione os postes, gere as etiquetas e depois marque quais deseja imprimir."
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\etiquetas-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\etiquetas-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\etiquetas-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\etiquetas-390.png"
+      ]
+    },
+    {
+      "screen": "suprimentos-painel",
+      "view": "suprimentos/painel/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+        "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/"
+      ],
+      "text": [
+        "MD\nMÓDULO\nSuprimentos\nGrupos\nExpandir tudo\nRecolher tudo\nSOLICITAÇÕES\n5\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCOMPRAS\n4\nADMINISTRAÇÃO\n1\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "CAMPINAS · SUPRIMENTOS\n\nPainel de suprimentos\n\nSua fila de trabalho e as solicitações da unidade.\n\n+\nNova solicitação\nAguardando sua aprovação\n2\n2 há mais de 24 h\nEm atendimento\n3\n1 urgentes / parou produção\nFila de trabalho\nVer todas →\nNº\tSOLICITANTE / SETOR\tITENS\tURGÊNCIA\tSITUAÇÃO\tIDADE\nSOL-00083\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t1 d\nSOL-00082\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R5C · material para agenda e prioridade\tParou produção\tEntregue\t1 d\nSOL-00081\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R5C · material para agenda e prioridade\tNormal\tEntregue\t1 d\nSOL-00080\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R5 · material para agenda e prioridade\tParou produção\tEntregue\t1 d\nSOL-00079\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R5 · material para agenda e prioridade\tNormal\tEntregue\t1 d\nSOL-00078\tTeste Suprimentos · COMPRADOR\nProdução Campinas · homologação\n\tDEMO R3 · material para agenda e prioridade\tUrgente\tEntregue\t1 d\nSOL-00077\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t1 d\nSOL-00076\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t1 d\nSOL-00075\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R3 · material para agenda e prioridade\tParou produção\tEm atendimento\t1 d\nSOL-00074\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R3 · material para agenda e prioridade\tNormal\tAprovada\t1 d\nSOL-00073\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t1 d\nSOL-00072\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t1 d\nSOL-00071\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t1 d\nSOL-00070\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t23 d\nSOL-00069\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t23 d\nSOL-00068\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t23 d\nSOL-00067\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t23 d\nSOL-00066\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t23 d\nSOL-00065\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t23 d\nSOL-00064\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tNormal\tConcluída\t23 d\nPedidos abertos\n3\n3 atrasados\nFornecedores\n2\nem qualificação · 0 documentos vencendo\nCustódias sem pedido\n0\n0 fora do prazo de regularização\nAlmoxarifado · abaixo do ponto de pedido\nVer saldos →\n\n1 material(is) precisam de atenção."
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-painel-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-painel-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-painel-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-painel-390.png"
+      ]
+    },
+    {
+      "screen": "suprimentos-solicitacoes",
+      "view": "suprimentos/solicitacoes/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+        "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/"
+      ],
+      "text": [
+        "MD\nMÓDULO\nSuprimentos\nGrupos\nExpandir tudo\nRecolher tudo\nSOLICITAÇÕES\n5\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCOMPRAS\n4\nADMINISTRAÇÃO\n1\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "CAMPINAS · SUPRIMENTOS\n\nSolicitações\n\nAcompanhe pedidos, alçadas e atendimento.\n\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (5)\nConcluídas (64)\nCanceladas / reprovadas (1)\nBuscar\nSetor / CC\nTodos\nProdução Campinas · homologação\nDEMO · treinamento Campinas\nUrgência\nTodas\nNORMAL\nURGENTE\nPAROU PRODUCAO\nOrigem\nTodas\nWeb\nPWA\n Só as que eu aprovo\nAplicar filtros\nSELECIONAR\n\tNº / ABERTA EM\tSOLICITANTE / SETOR\tITENS\tVALOR ESTIMADO\tURGÊNCIA\tPRECISA EM\tALÇADA\tORIGEM\n\tSOL-00083\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00082\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R5C · material para agenda e prioridade\tR$ 100,00\tParou produção\t—\tEntregue\tWeb\n\tSOL-00081\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R5C · material para agenda e prioridade\tR$ 100,00\tNormal\t—\tEntregue\tWeb\n\tSOL-00080\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R5 · material para agenda e prioridade\tR$ 100,00\tParou produção\t—\tEntregue\tWeb\n\tSOL-00079\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R5 · material para agenda e prioridade\tR$ 100,00\tNormal\t—\tEntregue\tWeb\n\tSOL-00078\n16/11/2026\n\tTeste Suprimentos · COMPRADOR\nProdução Campinas · homologação\n\tDEMO R3 · material para agenda e prioridade\tR$ 10,00\tUrgente\t—\tEntregue\tWeb\n\tSOL-00077\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00076\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00075\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R3 · material para agenda e prioridade\tR$ 100,00\tParou produção\t—\tEm atendimento\tWeb\n\tSOL-00074\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tDEMO R3 · material para agenda e prioridade\tR$ 100,00\tNormal\t—\tAprovada\tWeb\n\tSOL-00073\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00072\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00071\n16/11/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00070\n26/10/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00069\n26/10/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00068\n26/10/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00067\n26/10/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00066\n26/10/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00065\n26/10/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluída\tPWA\n\tSOL-00064\n26/10/2026\n\tTeste Suprimentos · SOLICITANTE\nProdução Campinas · homologação\n\tLuva de teste E7\tR$ 2.500,01\tNormal\t—\tConcluí"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-solicitacoes-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-solicitacoes-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-solicitacoes-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-solicitacoes-390.png"
+      ]
+    },
+    {
+      "screen": "suprimentos-nova",
+      "view": "suprimentos/nova/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+        "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/"
+      ],
+      "text": [
+        "MD\nMÓDULO\nSuprimentos\nGrupos\nExpandir tudo\nRecolher tudo\nSOLICITAÇÕES\n5\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCOMPRAS\n4\nADMINISTRAÇÃO\n1\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "← Solicitações\n\nCAMPINAS · SUPRIMENTOS\n\nNova solicitação\n\nEscolha os itens e informe quando precisa deles.\n\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\npar\nkg\nt\ng\nm\nm²\nm³\nL\nmL\ntb\ncx\nrl\npc\njg\nAdicionar\n+ Item que não acho na lista — descrever e fotografar\nNenhum item adicionado\nBusque um material ou descreva um item fora do catálogo.\nContinuar · 0 itens"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-nova-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-nova-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-nova-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-nova-390.png"
+      ]
+    },
+    {
+      "screen": "suprimentos-cotacoes",
+      "view": "suprimentos/cotacoes/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fcotacoes%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fcotacoes%2F",
+        "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/cotacoes/"
+      ],
+      "text": [
+        "MD\nMÓDULO\nSuprimentos\nGrupos\nExpandir tudo\nRecolher tudo\nSOLICITAÇÕES\n5\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCOMPRAS\n4\nCotações e pedidos\nRecebimento\nFornecedores\nIndicadores\nADMINISTRAÇÃO\n1\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "CAMPINAS · SUPRIMENTOS\n\nCotações e pedidos\n\nDa solicitação aprovada à entrega direta.\n\nFila para compra\nCotações\nPedidos\nItens aprovados para compra\nCriar cotação com selecionados\n\tSOLICITAÇÃO\tITEM\tQUANTIDADE\tCATEGORIA\tCC\nNenhum item na fila"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-cotacoes-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-cotacoes-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-cotacoes-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-cotacoes-390.png"
+      ]
+    },
+    {
+      "screen": "suprimentos-fornecedores",
+      "view": "suprimentos/fornecedores/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Ffornecedores%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Ffornecedores%2F",
+        "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/fornecedores/"
+      ],
+      "text": [
+        "MD\nMÓDULO\nSuprimentos\nGrupos\nExpandir tudo\nRecolher tudo\nSOLICITAÇÕES\n5\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCOMPRAS\n4\nCotações e pedidos\nRecebimento\nFornecedores\nIndicadores\nADMINISTRAÇÃO\n1\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "CAMPINAS · SUPRIMENTOS\n\nFornecedores\n\nQualificação, documentos, desempenho e compras.\n\nNovo fornecedor\nBuscar\nSituação\nTodas\nEM QUALIFICACAO\nHOMOLOGADO\nHOMOLOGADO CONDICIONAL\nREPROVADO\nSUSPENSO\nBLOQUEADO\nCategoria\nIQF mínimo\nDocumento vencendo em 30 dias\nFiltrar\nRAZÃO / FANTASIA\tCNPJ\tCATEGORIAS\tSITUAÇÃO\tIQF / TENDÊNCIA\tHOMOLOGAÇÃO\tÚLTIMA COMPRA\nDEMO-F1 Fornecedor 1\nDEMO F1 1\n\t45678900000040\tABRASIVO\tHOMOLOGADO\t96 CAINDO\t26/10/2027\t16/11/2026\nDEMO-F1 Fornecedor 2\nDEMO F1 2\n\t45678900000120\tABRASIVO\tHOMOLOGADO CONDICIONAL\t66 ESTAVEL\t25/11/2026\t—\nDEMO-F1 Fornecedor 3\nDEMO F1 3\n\t45678900000201\tABRASIVO\tSUSPENSO\t92 ESTAVEL\t—\t26/10/2026\nDEMO-F1 Fornecedor EPI (fora da categoria)\n\t48193601165517\tEPI\tEM QUALIFICACAO\t—\t—\t—\nDEMO-F6 Fornecedor em qualificação\nDEMO F6\n\t45678900000392\tABRASIVO\tEM QUALIFICACAO\t—\t—\t—\nDEMO-R3 Fornecedor 1\n\t76891234000057\tABRASIVO\tHOMOLOGADO\t92 ESTAVEL\t16/11/2027\t16/11/2026\nDEMO-R3 Fornecedor 2\n\t76891234000138\tABRASIVO\tHOMOLOGADO\t—\t16/11/2027\t—\nDEMO-R3 Fornecedor 3\n\t76891234000219\tABRASIVO\tHOMOLOGADO\t—\t16/11/2027\t—\nDEMO-R5 Fornecedor 1\n\t76891235000000\tABRASIVO\tHOMOLOGADO\t94 ESTAVEL\t16/11/2027\t16/11/2026\nDEMO-R5 Fornecedor 2\n\t76891235000182\tABRASIVO\tHOMOLOGADO\t—\t16/11/2027\t—\nDEMO-R5 Fornecedor 3\n\t76891235000263\tABRASIVO\tHOMOLOGADO\t—\t16/11/2027\t—"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-fornecedores-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-fornecedores-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-fornecedores-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-fornecedores-390.png"
+      ]
+    },
+    {
+      "screen": "suprimentos-almoxarifado",
+      "view": "suprimentos/almoxarifado/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Falmoxarifado%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Falmoxarifado%2F",
+        "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/almoxarifado/"
+      ],
+      "text": [
+        "MD\nMÓDULO\nSuprimentos\nGrupos\nExpandir tudo\nRecolher tudo\nSOLICITAÇÕES\n5\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCOMPRAS\n4\nCotações e pedidos\nRecebimento\nFornecedores\nIndicadores\nADMINISTRAÇÃO\n1\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "CAMPINAS · SUPRIMENTOS\n\nAlmoxarifado geral\n\nSaldos, reservas e entregas do estoque de Campinas.\n\nVoltar ao painel\nValor em estoque\nR$ 1.090,00\nMateriais ativos\n6\nAbaixo do ponto de pedido\n1\nReservas ativas\n1\nSaldos\nMovimentos\nConsumo por setor / CC\nSeparação e entregas\nFichas de EPI\nPonto de pedido\nSaldos por material\nRegistrar entrada\nInventários\nBuscar material\nCategoria\nTodas\nFERRAMENTA\nABRASIVO\nEPI\nExibição\nTodos\nSó abaixo do ponto de pedido\nCÓDIGO / MATERIAL\tCATEGORIA\tSALDO\tRESERVADO\tDISPONÍVEL\tPONTO PEDIDO\tCUSTO MÉDIO\nDEMO-F2-FER\nBroca aço rápido 10 mm\tFERRAMENTA\t3\t0\t3\t12\tR$ 32,50\nDEMO-R3-PRIORIDADE\nDEMO R3 · material para agenda e prioridade\tABRASIVO\t0\t0\t0\t0\tR$ 0,00\nDEMO-R5-PRIORIDADE\nDEMO R5 · material para agenda e prioridade\tABRASIVO\t0\t0\t0\t0\tR$ 0,00\nDEMO-R5C-PRIORIDADE\nDEMO R5C · material para agenda e prioridade\tABRASIVO\t0\t0\t0\t0\tR$ 0,00\nDEMO-F2-ABR\nDisco de corte 7 pol.\tABRASIVO\t38\t2\t36\t25\tR$ 14,90\nDEMO-F2-EPI\nLuva de proteção nitrílica\tEPI\t49\t0\t49\t30\tR$ 8,70"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-almoxarifado-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-almoxarifado-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-almoxarifado-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-almoxarifado-390.png"
+      ]
+    },
+    {
+      "screen": "suprimentos-inventario",
+      "view": "suprimentos/inventario/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Finventario%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Finventario%2F",
+        "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/inventario/"
+      ],
+      "text": [
+        "MD\nMÓDULO\nSuprimentos\nGrupos\nExpandir tudo\nRecolher tudo\nSOLICITAÇÕES\n5\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCOMPRAS\n4\nCotações e pedidos\nRecebimento\nFornecedores\nIndicadores\nADMINISTRAÇÃO\n1\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "CAMPINAS · SUPRIMENTOS\n\nInventários\n\nContagem cega, corte e ajuste com aprovação quando necessário.\n\nVoltar ao painel\nInventários abertos\n0\nAguardando aprovação\n0\nConcluídos\n1\nContagens\nAbrir inventário\nVer saldos\nABERTURA\tTIPO\tCORTE\tSITUAÇÃO\tAÇÃO\n26/10/2026, 00:36\tCICLICO\t26/10/2026, 00:36\tCONCLUIDO\t\nFicha cega"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-inventario-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-inventario-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-inventario-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\suprimentos-inventario-390.png"
+      ]
+    },
+    {
+      "screen": "laboratorio",
+      "view": "@laboratorio",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?module=laboratorio",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?module=laboratorio"
+      ],
+      "text": [
+        "LB\nMÓDULO\nLaboratório\nGrupos\nExpandir tudo\nRecolher tudo\nCORPOS DE PROVA\n3\nCONTROLE ESTATÍSTICO\n4\nDOSAGEM\n14\nCONCRETO FRESCO\n1\nUSINA DE CAMPINAS\n1\nCURA TÉRMICA\n3\nENSAIOS DE CONCRETO\n1\nPOSTES\n5\nCRONOANÁLISE\n7\nCARTA DE TRAÇO\n1\nADMINISTRAÇÃO\n1\nComo funciona\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\n← Menu principal\n\nMÓDULO\n\nLaboratório\n\nEnsaios e acompanhamento\n\nACESSO RÁPIDO\nEtiquetas QR\nVisão geral\nVisão geral\nRegistro de slump / flow\nCorpos de Prova\n3\nEQ\nEtiquetas QR\nAbrir tela e consultar os dados.\n↗\nLD\nLeitura de CP\nAbrir tela e consultar os dados.\n↗\nRD\nResultados dos corpos de prova\nAbrir tela e consultar os dados.\n↗\nControle estatístico\n4\nVG\nVisão geral\nAbrir tela e consultar os dados.\n↗\nRP\nRompimentos por mês\nAbrir tela e consultar os dados.\n↗\nAE\nAnálise estatística\nAbrir tela e consultar os dados.\n↗\nRC\nRelatório CEC\nAbrir tela e consultar os dados.\n↗\nDosagem\n14\nVG\nVisão geral\nAbrir tela e consultar os dados.\n↗\nE\nEmpacotamento\nAbrir tela e consultar os dados.\n↗\nV\nVolume\nAbrir tela e consultar os dados.\n↗\nCD\nComparação dos métodos\nAbrir tela e consultar os dados.\n↗\nT\nTraços\nAbrir tela e consultar os dados.\n↗\nM\nMateriais\nAbrir tela e consultar os dados.\n↗\nF\nFornecedores\nAbrir tela e consultar os dados.\n↗\nE\nEnsaios\nAbrir tela e consultar os dados.\n↗\nF\nFerramentas\nAbrir tela e consultar os dados.\n↗\nC\nCustos\nAbrir tela e consultar os dados.\n↗\nR\nReferência\nAbrir tela e consultar os dados.\n↗\nP\nProdução\nAbrir tela e consultar os dados.\n↗\nI\nImportação\nAbrir tela e consultar os dados.\n↗\nC\nConfigurações\nAbrir tela e consultar os dados.\n↗\nConcreto fresco\n1\nRD\nRegistro de slump / flow\nAbrir tela e consultar os dados.\n↗\nUsina de Campinas\n1\nRE\nRelatórios e custos\nAbrir tela e consultar os dados.\n↗\nCura térmica\n3\nM\nMonitoramento\nAbrir tela e consultar os dados.\n↗\nHD\nHistórico de medições\nAbrir tela e consultar os dados.\n↗\nD\nDispositivo\nAbrir tela e consultar os dados.\n↗\nEnsaios de concreto\n1\nA\nAbsorção\nAbrir tela e consultar os dados.\n↗\nPostes\n5\nCD\nCertificados de qualidade\nAbrir tela e consultar os dados.\n↗\nED\nEnsaio de postes\nAbrir tela e consultar os dados.\n↗\nHD\nHistórico de ensaios\nAbrir tela e consultar os dados.\n↗\nC\nCadastros\nAbrir tela e consultar os dados.\n↗\nC\nCritérios\nAbrir tela e consultar os dados.\n↗\nCronoanálise\n7\nI\nInício\nAbrir tela e consultar os dados.\n↗\nC\nColetar\nAbrir tela e consultar os dados.\n↗\nM\nMedições\nAbrir tela e consultar os dados.\n↗\nC\nCatálogo\nAbrir tela e consultar os dados.\n↗\nD\nDimensionar\nAbrir tela e consultar os dados.\n↗\nS\nSimular\nAbrir tela e consultar os dados.\n↗\nM\nMetodologia\nAbrir tela e consultar os dados.\n↗\nCarta de traço\n1\nCD\nCarta de traço e MCC\nAbrir tela e consultar os dados.\n↗\nAdministração\n1\nU\nUsuários\nAbrir tela e consultar os dados.\n↗\nAjuda\n1\nCF\nComo funciona\nAbrir tela e consultar os dados.\n↗"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\laboratorio-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\laboratorio-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\laboratorio-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\laboratorio-390.png"
+      ]
+    },
+    {
+      "screen": "laboratorio-cp",
+      "view": "laboratorio/novo/postes/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/"
+      ],
+      "text": [
+        "LB\nMÓDULO\nLaboratório\nGrupos\nExpandir tudo\nRecolher tudo\nCORPOS DE PROVA\n3\nCONTROLE ESTATÍSTICO\n4\nDOSAGEM\n14\nCONCRETO FRESCO\n1\nUSINA DE CAMPINAS\n1\nCURA TÉRMICA\n3\nENSAIOS DE CONCRETO\n1\nPOSTES\n5\nCRONOANÁLISE\n7\nCARTA DE TRAÇO\n1\nADMINISTRAÇÃO\n1\nComo funciona\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nBem-vindo.\n· Unificado Concrefer · seus módulos e operações em um só lugar\nMódulos\n\nEscolha onde deseja trabalhar.\n\n01 / MÓDULO\nPlanejamento\nProgramação, PCP e relatórios\n02 / MÓDULO\nProdução\nMapa, inspeção e montagem\n03 / MÓDULO\nQualidade\nNão conformidades e controle\n04 / MÓDULO\nLaboratório\nEnsaios e acompanhamento\n05 / MÓDULO\nUsinas\nOperação e acompanhamento das usinas\n06 / MÓDULO\nGED\nDocumentos e aprovações\n07 / MÓDULO\nSuprimentos\nSolicitações e almoxarifado geral\n08 / APLICAÇÃO\nPedeRH\nSolicitações e fluxos de RH\n09 / APLICAÇÃO\nFaleAqui\nSolicitações e atendimento\nSetores hoje\n\nProgramado no PCP e realizado no Mapa.\n\nDados de 18/11/2026\nS01\nHoje\nSetor 1\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS02\nHoje\nSetor 2\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS03\nHoje\nSetor 3\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS04\nHoje\nSetor 4\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nAcesso rápido\n\nAs rotinas mais usadas em um só lugar.\n\nPlanejamento\nProgramação\nRelatórios de Programação\nEtiquetas\nAcompanhamento Mensal\nFormas por Setor\nApontamento Mega\nProdução e montagem\nProdução / Liberação\nMandril Circular\nInspeção Setor 3 e 4\nMontagem Postes\nManutenção Formas\nIndicadores\nProgramado vs Realizado\nDashboard Montagem\nDashboard Defeitos\nDashboard Concretagem Matriz\nHistórico"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\laboratorio-cp-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\laboratorio-cp-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\laboratorio-cp-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\laboratorio-cp-390.png"
+      ]
+    },
+    {
+      "screen": "usinas",
+      "view": "usinas/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2F"
+      ],
+      "text": [
+        "Concrefer/Início\nSincronizado CConcreferSistema unificado \nBem-vindo. · Unificado Concrefer · seus módulos e operações em um só lugar\n\nPLATAFORMA CONCREFER\n\nBem-vindo ao Unificado.\n\nAcesse seus módulos e acompanhe as operações em um só lugar.\n\n↻ AtualizaçãoVerificando…\nMódulos\n\nEscolha onde deseja trabalhar.\n\nSetores hoje\n\nProgramado no PCP e realizado no Mapa.\n\nCarregando dados…\nAcesso rápido\n\nAs rotinas mais usadas em um só lugar.\n\nPrévia disponível só no computador"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        },
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\usinas-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\usinas-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\usinas-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\usinas-390.png"
+      ]
+    },
+    {
+      "screen": "carta-traco",
+      "view": "usinas/carta-traco.html",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/"
+      ],
+      "text": [
+        "LB\nMÓDULO\nLaboratório\nGrupos\nExpandir tudo\nRecolher tudo\nCORPOS DE PROVA\n3\nCONTROLE ESTATÍSTICO\n4\nDOSAGEM\n14\nCONCRETO FRESCO\n1\nUSINA DE CAMPINAS\n1\nCURA TÉRMICA\n3\nENSAIOS DE CONCRETO\n1\nPOSTES\n5\nCRONOANÁLISE\n7\nCARTA DE TRAÇO\n1\nADMINISTRAÇÃO\n1\nComo funciona\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nBem-vindo.\n· Unificado Concrefer · seus módulos e operações em um só lugar\nMódulos\n\nEscolha onde deseja trabalhar.\n\n01 / MÓDULO\nPlanejamento\nProgramação, PCP e relatórios\n02 / MÓDULO\nProdução\nMapa, inspeção e montagem\n03 / MÓDULO\nQualidade\nNão conformidades e controle\n04 / MÓDULO\nLaboratório\nEnsaios e acompanhamento\n05 / MÓDULO\nUsinas\nOperação e acompanhamento das usinas\n06 / MÓDULO\nGED\nDocumentos e aprovações\n07 / MÓDULO\nSuprimentos\nSolicitações e almoxarifado geral\n08 / APLICAÇÃO\nPedeRH\nSolicitações e fluxos de RH\n09 / APLICAÇÃO\nFaleAqui\nSolicitações e atendimento\nSetores hoje\n\nProgramado no PCP e realizado no Mapa.\n\nDados de 18/11/2026\nS01\nHoje\nSetor 1\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS02\nHoje\nSetor 2\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS03\nHoje\nSetor 3\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS04\nHoje\nSetor 4\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nAcesso rápido\n\nAs rotinas mais usadas em um só lugar.\n\nPlanejamento\nProgramação\nRelatórios de Programação\nEtiquetas\nAcompanhamento Mensal\nFormas por Setor\nApontamento Mega\nProdução e montagem\nProdução / Liberação\nMandril Circular\nInspeção Setor 3 e 4\nMontagem Postes\nManutenção Formas\nIndicadores\nProgramado vs Realizado\nDashboard Montagem\nDashboard Defeitos\nDashboard Concretagem Matriz\nHistórico"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\carta-traco-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\carta-traco-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\carta-traco-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\carta-traco-390.png"
+      ]
+    },
+    {
+      "screen": "qualidade",
+      "view": "qualidade/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2F",
+        "https://concrefer.concretrack.com.br:18446/unificado/qualidade/"
+      ],
+      "text": [
+        "QL\nMÓDULO\nQualidade\nGrupos\nExpandir tudo\nRecolher tudo\nNÃO CONFORMIDADES\n5\nPainel\nAbrir NC\nTarefas\nResultados de bancada\nCadastros\nCERTIFICADOS\n4\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "Carregando Qualidade…"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\qualidade-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\qualidade-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\qualidade-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\qualidade-390.png"
+      ]
+    },
+    {
+      "screen": "logistica",
+      "view": "logistica/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/"
+      ],
+      "text": [
+        "QL\nMÓDULO\nQualidade\nGrupos\nExpandir tudo\nRecolher tudo\nNÃO CONFORMIDADES\n5\nPainel\nAbrir NC\nTarefas\nResultados de bancada\nCadastros\nCERTIFICADOS\n4\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nBem-vindo.\n· Unificado Concrefer · seus módulos e operações em um só lugar\nMódulos\n\nEscolha onde deseja trabalhar.\n\n01 / MÓDULO\nPlanejamento\nProgramação, PCP e relatórios\n02 / MÓDULO\nProdução\nMapa, inspeção e montagem\n03 / MÓDULO\nQualidade\nNão conformidades e controle\n04 / MÓDULO\nLaboratório\nEnsaios e acompanhamento\n05 / MÓDULO\nUsinas\nOperação e acompanhamento das usinas\n06 / MÓDULO\nGED\nDocumentos e aprovações\n07 / MÓDULO\nSuprimentos\nSolicitações e almoxarifado geral\n08 / APLICAÇÃO\nPedeRH\nSolicitações e fluxos de RH\n09 / APLICAÇÃO\nFaleAqui\nSolicitações e atendimento\nSetores hoje\n\nProgramado no PCP e realizado no Mapa.\n\nDados de 18/11/2026\nS01\nHoje\nSetor 1\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS02\nHoje\nSetor 2\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS03\nHoje\nSetor 3\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS04\nHoje\nSetor 4\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nAcesso rápido\n\nAs rotinas mais usadas em um só lugar.\n\nPlanejamento\nProgramação\nRelatórios de Programação\nEtiquetas\nAcompanhamento Mensal\nFormas por Setor\nApontamento Mega\nProdução e montagem\nProdução / Liberação\nMandril Circular\nInspeção Setor 3 e 4\nMontagem Postes\nManutenção Formas\nIndicadores\nProgramado vs Realizado\nDashboard Montagem\nDashboard Defeitos\nDashboard Concretagem Matriz\nHistórico"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\logistica-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\logistica-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\logistica-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\logistica-390.png"
+      ]
+    },
+    {
+      "screen": "mapa",
+      "view": "mapa/operacao/?tela=LIBERACAO",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+        "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO"
+      ],
+      "text": [
+        "PR\nMÓDULO\nProdução\nUnidades\nExpandir tudo\nRecolher tudo\nCP\nCampinas\n20 telas · 5 grupos\nPRODUÇÃO\n6\nPL\nProdução / Liberação\nP1\nSetor 1\nP2\nSetor 2\nP3\nSetor 3\nP4\nSetor 4\nMC\nMandril Circular\nMONTAGEM\n3\nCONTROLE\n6\nINDICADORES\n4\nINDICADORES GERAIS\n1\nPD\nPederneiras\n5 telas\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "☰\nPlanejamento\nProdução\nIN\nInício\nProdução\nPL\nProdução / Liberação\nP1\nSetor 1\nP2\nSetor 2\nP3\nSetor 3\nP4\nSetor 4\nMC\nMandril Circular\nMontagem\nMI\nInspeção Setor 3 e 4\nMP\nMontagem Postes\nS3\nSequência Setor 3\nControle\nRE\nRelatório Enc. Produção\nHI\nHistórico\nCC\nAcmp. Concretagem\nMF\nManutenção Formas\nTD\nTratativa Defeitos\nIndicadores\nDM\nDashboard Montagem\nDF\nDashboard Defeitos\nPR\nDashboard Concretagem Matriz\nAdministração\nUS\nUsuários\nRelatar problema\nProdução\n/\nProdução / Liberação\nVerificando conexão com a planilha...\nR\nRicardo\nGerência\n↗\nProdução\nModo ODIN\nData de fabricação\nColaborador\nSelecione um operador\nJeferson\nElizeu\nMario\nLeonardo\nJose Carlos\nTiago\nRicardo\nLimpar formas (sessão local)\nRelatar problema"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        },
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/forma-layout?unidade_id=1&setor=4",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mapa-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mapa-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mapa-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mapa-390.png"
+      ]
+    },
+    {
+      "screen": "manutencao-usina",
+      "view": "manutencao-usina/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/"
+      ],
+      "text": [
+        "PR\nMÓDULO\nProdução\nUnidades\nExpandir tudo\nRecolher tudo\nCP\nCampinas\n20 telas · 5 grupos\nPRODUÇÃO\n6\nPL\nProdução / Liberação\nP1\nSetor 1\nP2\nSetor 2\nP3\nSetor 3\nP4\nSetor 4\nMC\nMandril Circular\nMONTAGEM\n3\nCONTROLE\n6\nINDICADORES\n4\nINDICADORES GERAIS\n1\nPD\nPederneiras\n5 telas\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nBem-vindo.\n· Unificado Concrefer · seus módulos e operações em um só lugar\nMódulos\n\nEscolha onde deseja trabalhar.\n\n01 / MÓDULO\nPlanejamento\nProgramação, PCP e relatórios\n02 / MÓDULO\nProdução\nMapa, inspeção e montagem\n03 / MÓDULO\nQualidade\nNão conformidades e controle\n04 / MÓDULO\nLaboratório\nEnsaios e acompanhamento\n05 / MÓDULO\nUsinas\nOperação e acompanhamento das usinas\n06 / MÓDULO\nGED\nDocumentos e aprovações\n07 / MÓDULO\nSuprimentos\nSolicitações e almoxarifado geral\n08 / APLICAÇÃO\nPedeRH\nSolicitações e fluxos de RH\n09 / APLICAÇÃO\nFaleAqui\nSolicitações e atendimento\nSetores hoje\n\nProgramado no PCP e realizado no Mapa.\n\nDados de 18/11/2026\nS01\nHoje\nSetor 1\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS02\nHoje\nSetor 2\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS03\nHoje\nSetor 3\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS04\nHoje\nSetor 4\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nAcesso rápido\n\nAs rotinas mais usadas em um só lugar.\n\nPlanejamento\nProgramação\nRelatórios de Programação\nEtiquetas\nAcompanhamento Mensal\nFormas por Setor\nApontamento Mega\nProdução e montagem\nProdução / Liberação\nMandril Circular\nInspeção Setor 3 e 4\nMontagem Postes\nManutenção Formas\nIndicadores\nProgramado vs Realizado\nDashboard Montagem\nDashboard Defeitos\nDashboard Concretagem Matriz\nHistórico"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\manutencao-usina-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\manutencao-usina-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\manutencao-usina-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\manutencao-usina-390.png"
+      ]
+    },
+    {
+      "screen": "relatorios",
+      "view": "relatorios/acmp-concretagem/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Facmp-concretagem%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Facmp-concretagem%2F",
+        "https://concrefer.concretrack.com.br:18446/unificado/relatorios/acmp-concretagem/"
+      ],
+      "text": [
+        "PR\nMÓDULO\nProdução\nUnidades\nExpandir tudo\nRecolher tudo\nCP\nCampinas\n20 telas · 5 grupos\nPRODUÇÃO\n6\nPL\nProdução / Liberação\nP1\nSetor 1\nP2\nSetor 2\nP3\nSetor 3\nP4\nSetor 4\nMC\nMandril Circular\nMONTAGEM\n3\nCONTROLE\n6\nRE\nRelatório Enc. Produção\nHI\nHistórico\nCC\nAcmp. Concretagem\nMF\nManutenção Formas\nTD\nTratativa Defeitos\nFechamento diário\nINDICADORES\n4\nINDICADORES GERAIS\n1\nPD\nPederneiras\n5 telas\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "Acmp. Concretagem\nProdução · Campinas\nVoltar\nAcompanhamento da concretagem\n\nConferência das formas na sequência física e contagem final da produção.\n\nData de produção\nSetor\nTodos os setores\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nAtualizar\nImprimir tabela\nFORMAS NO MAPA\n—\nPROGRAMADAS\n—\nLIBERADAS\n—\nCONCRETADAS\n—\nEFETIVO CONFIRMADO\n—\n\nEfetivo confirmado é a quantidade de formas com concretagem apontada que José Carlos da Silva ou um administrador conferiu e confirmou. É a contagem final e pode ser menor que o número de concretagens registradas.\n\nConferência indisponível: Unexpected token undefined<undefined, \"<!doctype \"... is not valid JSON. O efetivo final não foi calculado.\n\nA contagem final considera apenas as concretagens confirmadas por José Carlos da Silva ou um administrador. Cada confirmação registra o usuário que a realizou."
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        },
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/fechamento-producao?data=2026-11-18&setor=Todos",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\relatorios-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\relatorios-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\relatorios-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\relatorios-390.png"
+      ]
+    },
+    {
+      "screen": "producao",
+      "view": "producao/indicadores-gerais/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=producao%2Findicadores-gerais%2F",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/?view=producao%2Findicadores-gerais%2F",
+        "https://concrefer.concretrack.com.br:18446/unificado/producao/indicadores-gerais/"
+      ],
+      "text": [
+        "PR\nMÓDULO\nProdução\nUnidades\nExpandir tudo\nRecolher tudo\nCP\nCampinas\n20 telas · 5 grupos\nPRODUÇÃO\n6\nPL\nProdução / Liberação\nP1\nSetor 1\nP2\nSetor 2\nP3\nSetor 3\nP4\nSetor 4\nMC\nMandril Circular\nMONTAGEM\n3\nCONTROLE\n6\nRE\nRelatório Enc. Produção\nHI\nHistórico\nCC\nAcmp. Concretagem\nMF\nManutenção Formas\nTD\nTratativa Defeitos\nFechamento diário\nINDICADORES\n4\nINDICADORES GERAIS\n1\nIG\nIndicador geral · 4 unidades\nPD\nPederneiras\n5 telas\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair",
+        "PRODUÇÃO · 4 UNIDADES\nIndicador geral\n\nCompare a produtividade diária de Campinas, Pederneiras, Ribeirão e Noroeste.\n\n▦\nMês\nAtualizar dados\nAtualizado às 14:00\nNão foi possível carregar Pederneiras, Ribeirão, Noroeste. Confira o acesso e atualize os dados.\nCampinas\n—\nkg/homem\n—\npostes/homem\n\n0 postes · 0,00 homens apontados · 0 dia(s) com produção\n\nPederneiras\n\nDados indisponíveis: Falha 403\n\nRibeirão\n\nDados indisponíveis: Falha 403\n\nNoroeste\n\nDados indisponíveis: Falha 403\n\nPRODUÇÃO DO MÊS\nTotal produzido por unidade\n\nQuantidade de postes apontados em cada unidade no período.\n\npostes\nCampinas\n0\nPederneiras\nIndisponível\nRibeirão\nIndisponível\nNoroeste\nIndisponível\nSOMA DAS 4 UNIDADES\nProdução total dia a dia\n\nPostes apontados em Campinas, Pederneiras, Ribeirão e Noroeste.\n\n0 postes\nTotal parcial: unidade sem dados\nSem produção apontada no período\nCOMPARATIVO POR UNIDADE\nQuilos por homem\n\nAs quatro unidades no mesmo gráfico, dia a dia.\n\nkg/homem\n0\n0\n1\n1\n1\nSem dados para o período\nCampinas\nPederneiras\nRibeirão\nNoroeste\nCOMPARATIVO POR UNIDADE\nPostes por homem\n\nAs quatro unidades no mesmo gráfico, dia a dia.\n\npostes/homem\n0,0\n0,3\n0,6\n0,9\n1,2\nSem dados para o período\nCampinas\nPederneiras\nRibeirão\nNoroeste\nCAMPINAS\nQuilos por homem\n\nPeso produzido ÷ homens apontados no dia.\n\nkg/homem\n0\n0\n1\n1\n1\nSem dados para o período\nCAMPINAS\nPostes por homem\n\nPostes produzidos ÷ homens apontados no dia.\n\npostes/homem\n0,0\n0,3\n0,6\n0,9\n1,2\nSem dados para o período\nPEDERNEIRAS\nQuilos por homem\n\nPeso produzido ÷ homens apontados no dia.\n\nkg/homem\n\nDados indisponíveis: Falha 403\n\n0\n0\n1\n1\n1\nSem dados para o período\nPEDERNEIRAS\nPostes por homem\n\nPostes produzidos ÷ homens apontados no dia.\n\npostes/homem\n\nDados indisponíveis: Falha 403\n\n0,0\n0,3\n0,6\n0,9\n1,2\nSem dados para o período\nRIBEIRÃO\nQuilos por homem\n\nPeso produzido ÷ homens apontados no dia.\n\nkg/homem\n\nDados indisponíveis: Falha 403\n\n0\n0\n1\n1\n1\nSem dados para o período\nRIBEIRÃO\nPostes por homem\n\nPostes produzidos ÷ homens apontados no dia.\n\npostes/homem\n\nDados indisponíveis: Falha 403\n\n0,0\n0,3\n0,6\n0,9\n1,2\nSem dados para o período\nNOROESTE\nQuilos por homem\n\nPeso produzido ÷ homens apontados no dia.\n\nkg/homem\n\nDados indisponíveis: Falha 403\n\n0\n0\n1\n1\n1\nSem dados para o período\nNOROESTE\nPostes por homem\n\nPostes produzidos ÷ homens apontados no dia.\n\npostes/homem\n\nDados indisponíveis: Falha 403\n\n0,0\n0,3\n0,6\n0,9\n1,2\nSem dados para o período\nCONFERÊNCIA\nDados dia a dia\n\n“—” indica ausência de produção, equipe não apontada ou peso não cadastrado.\n\nData\tCampinas\tPederneiras\tRibeirão\tNoroeste\nPostes\tHomens\tkg/homem\tPostes/homem\tPostes\tHomens\tkg/homem\tPostes/homem\tPostes\tHomens\tkg/homem\tPostes/homem\tPostes\tHomens\tkg/homem\tPostes/homem\nNenhuma produção no período.\n\nCampinas: setores 1 e 2, conforme o Controle de Produção LT-PRO-04 do mês (postes e homens do relatório; peso pelo cadastro de produtos); sem relatório carregado, usa o painel PCP dos setores 1 e 2. Pederneiras, Ribeirão e Noroeste: apontamento diário e mão de obra das respectivas unidades. O resumo usa a soma dos pesos e postes dividida pela soma de pessoas dos dias com produção e equipe apontada."
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        },
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/api/producao/campinas/indicador-importado?mes=2026-11",
+          "status": 403
+        },
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/api/producao/pederneiras/mensal?mes=2026-11",
+          "status": 403
+        },
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/api/producao/ribeirao/mensal?mes=2026-11",
+          "status": 403
+        },
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/api/producao/noroeste/mensal?mes=2026-11",
+          "status": 403
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\producao-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\producao-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\producao-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\producao-390.png"
+      ]
+    },
+    {
+      "screen": "mobile-maodeobra",
+      "view": "m/maodeobra/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/"
+      ],
+      "text": [
+        "PR\nMÓDULO\nProdução\nUnidades\nExpandir tudo\nRecolher tudo\nCP\nCampinas\n20 telas · 5 grupos\nPRODUÇÃO\n6\nPL\nProdução / Liberação\nP1\nSetor 1\nP2\nSetor 2\nP3\nSetor 3\nP4\nSetor 4\nMC\nMandril Circular\nMONTAGEM\n3\nCONTROLE\n6\nRE\nRelatório Enc. Produção\nHI\nHistórico\nCC\nAcmp. Concretagem\nMF\nManutenção Formas\nTD\nTratativa Defeitos\nFechamento diário\nINDICADORES\n4\nINDICADORES GERAIS\n1\nIG\nIndicador geral · 4 unidades\nPD\nPederneiras\n5 telas\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nBem-vindo.\n· Unificado Concrefer · seus módulos e operações em um só lugar\nMódulos\n\nEscolha onde deseja trabalhar.\n\n01 / MÓDULO\nPlanejamento\nProgramação, PCP e relatórios\n02 / MÓDULO\nProdução\nMapa, inspeção e montagem\n03 / MÓDULO\nQualidade\nNão conformidades e controle\n04 / MÓDULO\nLaboratório\nEnsaios e acompanhamento\n05 / MÓDULO\nUsinas\nOperação e acompanhamento das usinas\n06 / MÓDULO\nGED\nDocumentos e aprovações\n07 / MÓDULO\nSuprimentos\nSolicitações e almoxarifado geral\n08 / APLICAÇÃO\nPedeRH\nSolicitações e fluxos de RH\n09 / APLICAÇÃO\nFaleAqui\nSolicitações e atendimento\nSetores hoje\n\nProgramado no PCP e realizado no Mapa.\n\nDados de 18/11/2026\nS01\nHoje\nSetor 1\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS02\nHoje\nSetor 2\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS03\nHoje\nSetor 3\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS04\nHoje\nSetor 4\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nAcesso rápido\n\nAs rotinas mais usadas em um só lugar.\n\nPlanejamento\nProgramação\nRelatórios de Programação\nEtiquetas\nAcompanhamento Mensal\nFormas por Setor\nApontamento Mega\nProdução e montagem\nProdução / Liberação\nMandril Circular\nInspeção Setor 3 e 4\nMontagem Postes\nManutenção Formas\nIndicadores\nProgramado vs Realizado\nDashboard Montagem\nDashboard Defeitos\nDashboard Concretagem Matriz\nHistórico"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mobile-maodeobra-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mobile-maodeobra-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mobile-maodeobra-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mobile-maodeobra-390.png"
+      ]
+    },
+    {
+      "screen": "mobile-inspecao",
+      "view": "m/inspecao/",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/"
+      ],
+      "text": [
+        "PR\nMÓDULO\nProdução\nUnidades\nExpandir tudo\nRecolher tudo\nCP\nCampinas\n20 telas · 5 grupos\nPRODUÇÃO\n6\nPL\nProdução / Liberação\nP1\nSetor 1\nP2\nSetor 2\nP3\nSetor 3\nP4\nSetor 4\nMC\nMandril Circular\nMONTAGEM\n3\nCONTROLE\n6\nRE\nRelatório Enc. Produção\nHI\nHistórico\nCC\nAcmp. Concretagem\nMF\nManutenção Formas\nTD\nTratativa Defeitos\nFechamento diário\nINDICADORES\n4\nINDICADORES GERAIS\n1\nIG\nIndicador geral · 4 unidades\nPD\nPederneiras\n5 telas\nAtualizar\nVersão 1.1.10\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nBem-vindo.\n· Unificado Concrefer · seus módulos e operações em um só lugar\nMódulos\n\nEscolha onde deseja trabalhar.\n\n01 / MÓDULO\nPlanejamento\nProgramação, PCP e relatórios\n02 / MÓDULO\nProdução\nMapa, inspeção e montagem\n03 / MÓDULO\nQualidade\nNão conformidades e controle\n04 / MÓDULO\nLaboratório\nEnsaios e acompanhamento\n05 / MÓDULO\nUsinas\nOperação e acompanhamento das usinas\n06 / MÓDULO\nGED\nDocumentos e aprovações\n07 / MÓDULO\nSuprimentos\nSolicitações e almoxarifado geral\n08 / APLICAÇÃO\nPedeRH\nSolicitações e fluxos de RH\n09 / APLICAÇÃO\nFaleAqui\nSolicitações e atendimento\nSetores hoje\n\nProgramado no PCP e realizado no Mapa.\n\nDados de 18/11/2026\nS01\nHoje\nSetor 1\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS02\nHoje\nSetor 2\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS03\nHoje\nSetor 3\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nS04\nHoje\nSetor 4\nProgramado (PCP)\n0\nRealizado (Mapa)\n0\nProgramação\nProdução\nAcesso rápido\n\nAs rotinas mais usadas em um só lugar.\n\nPlanejamento\nProgramação\nRelatórios de Programação\nEtiquetas\nAcompanhamento Mensal\nFormas por Setor\nApontamento Mega\nProdução e montagem\nProdução / Liberação\nMandril Circular\nInspeção Setor 3 e 4\nMontagem Postes\nManutenção Formas\nIndicadores\nProgramado vs Realizado\nDashboard Montagem\nDashboard Defeitos\nDashboard Concretagem Matriz\nHistórico"
+      ],
+      "errors": [],
+      "http_errors": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+          "status": 404
+        }
+      ],
+      "screenshots": [
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mobile-inspecao-1440.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mobile-inspecao-1024.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mobile-inspecao-820.png",
+        "docs\\revisao-visual-unificado\\homolog\\fase-0\\antes\\mobile-inspecao-390.png"
+      ]
+    }
+  ],
+  "blocked_origins": []
+}

@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Producao por Periodo - Relatorio Gerencial - ConcreTrack</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root{
+      --ct-orange:#E07A3A;--ct-gray:#343B43;--ct-gray-lt:#5A6270;
+      --ct-navy:#0D3B66;--ct-silver:#BFC5CC;--ct-bg:#F2F3F5;
+      --ct-green:#059669;--ct-red:#dc2626;--ct-yellow:#d97706;--ct-blue:#1976D2;
+    }
+    *{font-family:"Gotham","Montserrat","Segoe UI",system-ui,sans-serif;margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--ct-bg)}
+    .app-topbar{background:var(--ct-gray);color:#fff}
+    .topbar-inner{display:flex;align-items:center;padding:12px 0;gap:12px}
+    .topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:6px}
+    .topbar-title{font-size:18px;font-weight:700}
+    .topbar-title span{color:var(--ct-orange)}
+    .topbar-sub{font-size:10px;color:var(--ct-silver)}
+    .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+    .btn-back{border-radius:10px;height:36px;font-weight:600;font-size:12px;border:1px solid rgba(255,255,255,.18);color:#fff;background:rgba(255,255,255,.06);display:inline-flex;align-items:center;gap:6px;padding:0 14px;text-decoration:none;transition:background .2s;font-family:inherit}
+    .btn-back:hover{background:rgba(255,255,255,.12);color:#fff}
+    .btn-logout{border-radius:10px;border:1px solid rgba(255,255,255,.15);color:#fff;font-size:12px;padding:5px 14px;background:rgba(224,122,58,.25);font-weight:600;cursor:pointer;transition:background .2s;font-family:inherit}
+    .btn-logout:hover{background:rgba(224,122,58,.5)}
+    .topbar-accent{height:3px;background:linear-gradient(90deg,var(--ct-orange),var(--ct-navy))}
+    .page-header{padding:20px 0 12px}
+    .page-header h2{font-size:22px;font-weight:900;color:var(--ct-gray)}
+    .page-header h2 span{color:var(--ct-orange)}
+    /* Filter */
+    .filter-card{background:#fff;border-radius:14px;border:1px solid rgba(15,23,42,.06);padding:16px 20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+    .filter-row{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+    .fg{display:flex;flex-direction:column;gap:4px}
+    .fg label{font-size:11px;font-weight:700;color:var(--ct-gray-lt);text-transform:uppercase;letter-spacing:.4px}
+    .fg input,.fg select{border-radius:9px;border:1.5px solid #dde2e8;font-size:12px;height:36px;padding:0 10px;font-family:inherit;background:#fff;min-width:120px}
+    .fg input:focus,.fg select:focus{border-color:var(--ct-orange);outline:none}
+    .btn-go{background:var(--ct-orange);border:none;border-radius:9px;color:#fff;font-weight:700;font-size:12px;height:36px;padding:0 18px;cursor:pointer;font-family:inherit;transition:background .2s;display:inline-flex;align-items:center;gap:6px}
+    .btn-go:hover{background:#c96830}
+    .btn-print{background:var(--ct-navy);border:none;border-radius:9px;color:#fff;font-weight:700;font-size:12px;height:36px;padding:0 14px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+    /* Dashboard */
+    .dash{display:none}
+    .dash.show{display:block}
+    /* KPI row */
+    .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
+    .kpi{background:#fff;border-radius:12px;border:1px solid rgba(15,23,42,.06);padding:14px 16px;position:relative;overflow:hidden}
+    .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+    .kpi-navy::before{background:var(--ct-navy)}.kpi-orange::before{background:var(--ct-orange)}.kpi-red::before{background:var(--ct-red)}
+    .kpi-green::before{background:var(--ct-green)}.kpi-yellow::before{background:var(--ct-yellow)}.kpi-blue::before{background:var(--ct-blue)}
+    .kpi-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--ct-gray-lt);font-weight:700;margin-bottom:4px}
+    .kpi-val{font-size:24px;font-weight:900;color:var(--ct-navy);line-height:1.1}
+    .kpi-hint{font-size:11px;color:var(--ct-gray-lt);margin-top:4px}
+    .kpi-badge{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;color:#fff}
+    /* Cards */
+    .section-card{background:#fff;border-radius:14px;border:1px solid rgba(15,23,42,.06);box-shadow:0 2px 10px rgba(0,0,0,.04);overflow:hidden;margin-bottom:16px}
+    .sc-header{padding:12px 18px;border-bottom:1px solid #f0f4f8;display:flex;align-items:center;gap:8px}
+    .sc-header h3{font-size:13px;font-weight:800;color:var(--ct-gray);margin:0}
+    .sc-body{padding:16px 18px}
+    /* Grid 3 cols */
+    .g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:16px}
+    .g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;margin-bottom:16px}
+    /* Prod card */
+    .prod-card{border-radius:14px;border:1px solid rgba(15,23,42,.06);background:#fff;padding:16px;position:relative;overflow:hidden;border-left:5px solid var(--ct-navy)}
+    .prod-card.ok{border-left-color:var(--ct-green)}.prod-card.warn{border-left-color:var(--ct-yellow)}.prod-card.bad{border-left-color:var(--ct-red)}
+    /* Tables */
+    .tbl{width:100%;border-collapse:collapse;font-size:12px}
+    .tbl thead th{background:#f8fafc;font-weight:700;color:var(--ct-gray-lt);text-transform:uppercase;letter-spacing:.3px;padding:8px 12px;text-align:left;border-bottom:1px solid #e8ecf0}
+    .tbl tbody td{padding:8px 12px;border-bottom:1px solid #f4f6f8;color:var(--ct-gray);vertical-align:middle}
+    .tbl tbody tr:hover td{background:#fafbfc}
+    /* Badge */
+    .badge-ok{background:#d1fae5;color:#065f46;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700}
+    .badge-warn{background:#fef3c7;color:#92400e;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700}
+    .badge-bad{background:#fee2e2;color:#991b1b;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700}
+    /* Bar */
+    .bar-wrap{background:#f0f4f8;border-radius:20px;height:6px;overflow:hidden;min-width:60px;display:inline-block;width:100%}
+    .bar-fill{height:100%;border-radius:20px}
+    /* Info box */
+    .info-row{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px 16px;font-size:12px;color:#1e40af;margin-bottom:14px;display:flex;gap:8px;align-items:flex-start}
+    /* Heatmap */
+    .hm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;padding:14px}
+    .hm-cell{border-radius:10px;padding:10px;border:1px solid #e0e4ea;background:#fff}
+    .hm-hour{font-size:11px;font-weight:700;color:var(--ct-gray-lt)}
+    .hm-val{font-size:18px;font-weight:900;color:var(--ct-navy)}
+    .hm-sub{font-size:10px;color:var(--ct-gray-lt)}
+    .hm-ok{background:#f0fdf4;border-color:#86efac}.hm-warn{background:#fefce8;border-color:#fde047}.hm-bad{background:#fff1f2;border-color:#fca5a5}
+    /* Alert toast */
+    .alert-toast{position:fixed;bottom:20px;right:20px;background:var(--ct-green);color:#fff;border-radius:12px;padding:12px 18px;font-weight:700;font-size:13px;display:none;align-items:center;gap:8px;z-index:9999;box-shadow:0 4px 18px rgba(0,0,0,.15)}
+    .alert-toast.err{background:var(--ct-red)}.alert-toast.show{display:flex}
+    .loading{text-align:center;padding:40px;color:var(--ct-gray-lt);font-weight:600;font-size:14px}
+    .footer{text-align:center;padding:24px;font-size:11px;color:var(--ct-silver)}
+    .footer span{color:var(--ct-orange);font-weight:700}
+    @media print{.app-topbar,.filter-card,.btn-go,.btn-print,.footer,.alert-toast{display:none!important}.section-card{box-shadow:none;border:1px solid #ccc}}
+  </style>
+<script>
+    // Acesso direto volta à casca autenticada; no iframe preserva o layout original.
+    if (top === self) {
+      const params = new URLSearchParams({area:'relatorios'});
+      if ('producao') params.set('app', 'producao');
+      for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+      location.replace('/unificado/?view=' + encodeURIComponent('usinas/?' + params));
+    } else {
+      const syncShell = () => {
+        if (parent !== top || top.location.pathname !== '/unificado/') return;
+        const params = new URLSearchParams({area:'relatorios'});
+        if ('producao') params.set('app', 'producao');
+        for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+        const view = 'usinas/?' + params;
+        top.history.replaceState({view}, '', '/unificado/?view=' + encodeURIComponent(view));
+      };
+      addEventListener('DOMContentLoaded', syncShell);
+      const originalReplace = history.replaceState.bind(history);
+      history.replaceState = (...args) => { originalReplace(...args); syncShell(); };
+    }
+    function concretrackLogout() {
+      if (top.UnificadoAuth?.logout) top.UnificadoAuth.logout();
+      else top.location.assign('/unificado/login.html');
+    }
+    </script>
+</head>
+<body>
+<div class="app-topbar">
+  <div class="container">
+    <div class="topbar-inner">
+      <img src="/unificado/usinas/relatorios/assets/PRINCIPAL@2x.png" alt="" class="topbar-logo" onerror="this.style.display='none'">
+      <div>
+        <div class="topbar-title"><i class="bi bi-speedometer2 me-2"></i>Producao por <span>Periodo</span></div>
+        <div class="topbar-sub">Relatorio Gerencial &bull; ConcreTrack</div>
+      </div>
+      <div class="topbar-right">
+        <a class="btn-back" href="/unificado/usinas/relatorios/"><i class="bi bi-arrow-left"></i> Relatorios</a>
+        <button class="btn-logout" onclick="concretrackLogout()"><i class="bi bi-box-arrow-right me-1"></i>Sair</button>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-accent"></div>
+</div>
+
+<div class="container" style="padding-bottom:48px">
+  <div class="page-header">
+    <h2><i class="bi bi-speedometer2 me-2"></i>Producao por <span>Periodo</span></h2>
+    <p style="font-size:13px;color:var(--ct-gray-lt);margin-top:3px">Analise de ciclos, gaps, produtividade e tempo de batida das massadas</p>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filter-card">
+    <div class="filter-row">
+      <div class="fg"><label>Data Inicial</label><input type="date" id="fDini"></div>
+      <div class="fg"><label>Data Final</label><input type="date" id="fDfim"></div>
+      <div class="fg"><label>Produto</label>
+        <select id="fProduto">
+          <option value="">Todos</option>
+          <option value="POSTES">POSTES</option>
+          <option value="ESPECIAL">ESPECIAL</option>
+          <option value="OBRA">OBRA</option>
+        </select>
+      </div>
+      <div class="fg"><label>Meta diaria (m3)</label><input type="number" id="fMeta" value="64" min="10" max="200" style="width:90px"></div>
+      <button class="btn-go" onclick="gerar()"><i class="bi bi-play-fill"></i>Gerar Relatorio</button>
+      <button class="btn-print" onclick="window.print()"><i class="bi bi-printer"></i>Imprimir</button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" id="loadingMsg" style="display:none"><i class="bi bi-hourglass-split me-2"></i>Carregando dados...</div>
+
+  <!-- Dashboard (hidden until generated) -->
+  <div class="dash" id="dashboard">
+
+    <!-- ── LINHA 1: KPIs principais ── -->
+    <div class="kpi-row" id="kpiRow1"></div>
+
+    <!-- ── LINHA 2: Produtividade global / manha / tarde ── -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px" id="prodRow"></div>
+
+    <!-- ── Overview + Insights ── -->
+    <div class="g2">
+      <div class="section-card">
+        <div class="sc-header"><i class="bi bi-clipboard-data" style="color:var(--ct-navy)"></i><h3>Resumo do Periodo</h3></div>
+        <div class="sc-body" id="overviewBody"></div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header"><i class="bi bi-exclamation-triangle" style="color:var(--ct-orange)"></i><h3>Fatores de Queda de Ritmo</h3></div>
+        <div class="sc-body" id="insightsBody"></div>
+      </div>
+    </div>
+
+    <!-- ── Gaps e Horas Criticas ── -->
+    <div class="g2">
+      <div class="section-card">
+        <div class="sc-header"><i class="bi bi-clock-history" style="color:var(--ct-red)"></i><h3>Top 10 Gaps (12+ min)</h3></div>
+        <div class="sc-body">
+          <p style="font-size:11px;color:var(--ct-gray-lt);margin-bottom:8px">Estimativa: 75% da meta/h. Coluna = origem do gap.</p>
+          <ul style="list-style:disc;padding-left:1.2rem;font-size:12px;line-height:2" id="top10GapsList"></ul>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header"><i class="bi bi-bar-chart" style="color:var(--ct-navy)"></i><h3>Gaps por Hora do Dia</h3></div>
+        <div style="overflow-x:auto">
+          <table class="tbl">
+            <thead><tr><th>Hora</th><th>Qtd</th><th>Total (min)</th><th>Maior gap</th><th>~Perda m3</th></tr></thead>
+            <tbody id="tbGapsHora"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Uso dos Misturadores ── -->
+    <div class="section-card">
+      <div class="sc-header"><i class="bi bi-gear" style="color:var(--ct-navy)"></i><h3>Uso dos Misturadores</h3></div>
+      <div class="sc-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px" id="mistRow"></div>
+      </div>
+    </div>
+
+    <!-- ── Tempo de Batida ── -->
+    <div class="section-card">
+      <div class="sc-header"><i class="bi bi-stopwatch" style="color:#6d28d9"></i><h3>Tempo de Batida (hora_final - hora_inicio)</h3></div>
+      <div class="sc-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px" id="batidaStats"></div>
+        <p style="font-size:11px;color:var(--ct-gray-lt)">OK = ate 4 min &nbsp;|&nbsp; Aviso = 4-10 min &nbsp;|&nbsp; Critico = acima de 10 min. (+0.5 min de ajuste de abertura)</p>
+      </div>
+    </div>
+
+    <!-- ── Heatmap Atraso ── -->
+    <div class="section-card">
+      <div class="sc-header"><i class="bi bi-hourglass-split" style="color:var(--ct-red)"></i><h3>Atraso Hora a Hora (vs meta)</h3>
+        <span style="margin-left:auto;font-size:11px;color:var(--ct-gray-lt)" id="atrasoTotal"></span>
+      </div>
+      <div class="hm-grid" id="hmGrid"></div>
+    </div>
+
+    <!-- ── Charts ── -->
+    <div class="section-card">
+      <div class="sc-header"><i class="bi bi-graph-down" style="color:var(--ct-blue)"></i><h3>Ciclos entre Massadas (min)</h3></div>
+      <div style="padding:16px;height:300px"><canvas id="chartCiclos"></canvas></div>
+      <p style="padding:0 16px 14px;font-size:11px;color:var(--ct-gray-lt)">Verde = OK (&lt;=12 min) | Amarelo = Aviso (12-20) | Vermelho = Critico (&gt;20). Linhas pontilhadas: limites.</p>
+    </div>
+
+    <div class="section-card">
+      <div class="sc-header"><i class="bi bi-graph-up" style="color:var(--ct-green)"></i><h3>Produtividade Media a cada 15 min (m3/h)</h3></div>
+      <div style="padding:16px;height:260px"><canvas id="chartProd15"></canvas></div>
+    </div>
+
+    <div class="section-card">
+      <div class="sc-header"><i class="bi bi-stopwatch" style="color:#6d28d9"></i><h3>Tempo de Batida por Massada (min)</h3></div>
+      <div style="padding:16px;height:260px"><canvas id="chartBatida"></canvas></div>
+      <p style="padding:0 16px 14px;font-size:11px;color:var(--ct-gray-lt)">Verde = OK (&lt;=4 min) | Amarelo = Aviso (4-10) | Vermelho = Critico (&gt;10). +0.5 min ajuste.</p>
+    </div>
+
+    <div class="g2">
+      <div class="section-card">
+        <div class="sc-header"><i class="bi bi-pie-chart" style="color:var(--ct-navy)"></i><h3>Distribuicao dos Ciclos</h3></div>
+        <div style="padding:16px;height:240px"><canvas id="chartCiclosPie"></canvas></div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header"><i class="bi bi-columns-gap" style="color:var(--ct-orange)"></i><h3>Previsto vs Realizado por Hora</h3></div>
+        <div style="padding:16px;height:240px"><canvas id="chartPrevReal"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ── Tabela Atraso ── -->
+    <div class="section-card">
+      <div class="sc-header"><i class="bi bi-table" style="color:var(--ct-navy)"></i><h3>Tabela Atraso Hora a Hora</h3></div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead><tr><th>Hora</th><th>Previsto (m3)</th><th>Realizado (m3)</th><th>Atraso (m3)</th><th>Atraso (min)</th></tr></thead>
+          <tbody id="tbAtraso"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── Metricas de Constancia ── -->
+    <div class="section-card">
+      <div class="sc-header"><i class="bi bi-activity" style="color:var(--ct-green)"></i><h3>Metricas de Constancia de Ritmo</h3></div>
+      <div class="sc-body" id="constanciaBody"></div>
+    </div>
+
+    <!-- ── Legenda ── -->
+    <div class="section-card">
+      <div class="sc-header"><i class="bi bi-book" style="color:var(--ct-navy)"></i><h3>Legenda</h3></div>
+      <div class="sc-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;font-size:12px">
+          <div style="border-left:4px solid var(--ct-green);padding-left:10px"><strong>Ciclos OK (&lt;=12 min)</strong><br><span style="color:var(--ct-gray-lt)">Ritmo adequado de producao</span></div>
+          <div style="border-left:4px solid var(--ct-yellow);padding-left:10px"><strong>Gaps 12-20 min</strong><br><span style="color:var(--ct-gray-lt)">Ritmo lento, requer atencao</span></div>
+          <div style="border-left:4px solid var(--ct-red);padding-left:10px"><strong>Gaps &gt;20 min</strong><br><span style="color:var(--ct-gray-lt)">Parada significativa na producao</span></div>
+          <div style="border-left:4px solid var(--ct-orange);padding-left:10px"><strong>Manha</strong><br><span style="color:var(--ct-gray-lt)">Massadas antes das 12:00 (com pausa almoco 11-12h descontada)</span></div>
+          <div style="border-left:4px solid var(--ct-blue);padding-left:10px"><strong>Tarde</strong><br><span style="color:var(--ct-gray-lt)">Massadas a partir das 12:00</span></div>
+          <div style="border-left:4px solid #6d28d9;padding-left:10px"><strong>Tempo de Batida</strong><br><span style="color:var(--ct-gray-lt)">hora_final - hora_inicio + 0.5 min (ajuste comporta)</span></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /dashboard -->
+</div>
+
+<div class="footer">&copy; 2026 <span>ConcreTrack</span> &mdash; Producao por Periodo</div>
+<div class="alert-toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// ──────────────────────────────────────────────────────────────────
+// Helpers
+// ──────────────────────────────────────────────────────────────────
+const API = '/unificado/mapa/api/usina/reporting';
+const charts = {};
+
+function toast(msg, err) {
+  var t = document.getElementById('toast');
+  t.innerHTML = '<i class="bi bi-' + (err ? 'x-circle' : 'check-circle') + '"></i> ' + msg;
+  t.className = 'alert-toast' + (err ? ' err' : '') + ' show';
+  setTimeout(function(){ t.classList.remove('show'); }, 3500);
+}
+
+function n2(v, decimals) {
+  if (v === null || v === undefined || isNaN(v)) return 'N/A';
+  return Number(v).toLocaleString('pt-BR', { maximumFractionDigits: decimals !== undefined ? decimals : 1 });
+}
+
+function destroyChart(id) {
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+// Parse TIME string "HH:MM:SS" → minutes from midnight
+function timeToMin(s) {
+  if (!s) return null;
+  var parts = s.split(':').map(Number);
+  return parts[0] * 60 + parts[1] + (parts[2] || 0) / 60;
+}
+
+// Parse full datetime from date "YYYY-MM-DD" + time "HH:MM:SS"
+function parseDT(date, time) {
+  if (!date || !time) return null;
+  return new Date(date + 'T' + time);
+}
+
+// Minutes between two Date objects
+function diffMin(a, b) {
+  return (b - a) / 60000;
+}
+
+function classifyCycle(m) {
+  if (m <= 0 || m === null || m === undefined || isNaN(m)) return 'ignorar';
+  if (m <= 12) return 'ok';
+  if (m <= 20) return 'aviso';
+  return 'critico';
+}
+
+function classifyBatida(m) {
+  if (m === null || m === undefined || isNaN(m) || m <= 0) return 'ignorar';
+  if (m <= 4) return 'ok';
+  if (m <= 10) return 'aviso';
+  return 'critico';
+}
+
+// Default dates: current month
+(function() {
+  var hoje = new Date();
+  var ini = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().slice(0, 10);
+  document.getElementById('fDini').value = ini;
+  document.getElementById('fDfim').value = hoje.toISOString().slice(0, 10);
+})();
+
+// ──────────────────────────────────────────────────────────────────
+// Main: Gerar Relatorio
+// ──────────────────────────────────────────────────────────────────
+async function gerar() {
+  var dini = document.getElementById('fDini').value;
+  var dfim = document.getElementById('fDfim').value;
+  var prod = document.getElementById('fProduto').value;
+  var meta = parseFloat(document.getElementById('fMeta').value) || 64;
+
+  if (!dini || !dfim) { toast('Selecione as datas', true); return; }
+
+  document.getElementById('loadingMsg').style.display = '';
+  document.getElementById('dashboard').classList.remove('show');
+
+  var url = API + '/relatorios/producao-periodo?data_ini=' + dini + '&data_fim=' + dfim;
+  if (prod) url += '&produto=' + encodeURIComponent(prod);
+
+  try {
+    var resp = await fetch(url);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    var data = await resp.json();
+    if (!data.massadas || data.massadas.length === 0) {
+      toast('Nenhuma massada encontrada no periodo', true);
+      document.getElementById('loadingMsg').style.display = 'none';
+      return;
+    }
+    renderDashboard(data.massadas, meta);
+    document.getElementById('loadingMsg').style.display = 'none';
+    document.getElementById('dashboard').classList.add('show');
+    toast('Relatorio gerado: ' + data.massadas.length + ' massadas');
+  } catch (e) {
+    document.getElementById('loadingMsg').style.display = 'none';
+    toast('Erro: ' + e.message, true);
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Analytics
+// ──────────────────────────────────────────────────────────────────
+function calcular(massadas, meta) {
+  // Enrich: parse datetime using `hora` (discharge time) for cycle calculation
+  massadas = massadas.map(function(m) {
+    var dt = parseDT(m.data, m.hora);
+    return Object.assign({}, m, { dt: dt });
+  }).filter(function(m) { return m.dt !== null; });
+
+  // Sort by datetime
+  massadas.sort(function(a, b) { return a.dt - b.dt; });
+
+  // Calculate cycles
+  massadas.forEach(function(m, i) {
+    if (i === 0) { m.cycleMin = null; return; }
+    var cm = diffMin(massadas[i - 1].dt, m.dt);
+    // Lunch adjustment: if prev before noon and current after noon, deduct 60
+    var prevH = massadas[i - 1].dt.getHours();
+    var currH = m.dt.getHours();
+    if (prevH < 12 && currH >= 12) cm = Math.max(0, cm - 60);
+    m.cycleMin = cm;
+  });
+
+  // Calculate tempo de batida: hora_final - hora_inicio + 0.5
+  massadas.forEach(function(m) {
+    if (m.hora_inicio && m.hora_final) {
+      var dtI = parseDT(m.data, m.hora_inicio);
+      var dtF = parseDT(m.data, m.hora_final);
+      if (dtI && dtF) {
+        var diff = diffMin(dtI, dtF);
+        m.batidaMin = (diff > 0 && diff < 60) ? diff + 0.5 : null;
+      } else { m.batidaMin = null; }
+    } else { m.batidaMin = null; }
+  });
+
+  // Time window
+  var dtStart = massadas[0].dt;
+  var dtEnd = massadas[massadas.length - 1].dt;
+  var totalMin = diffMin(dtStart, dtEnd);
+
+  // Deduct lunch (11:00-12:00) if production spans that window
+  if (dtStart.getHours() < 12 && dtEnd.getHours() >= 11) totalMin -= 60;
+  totalMin = Math.max(0, totalMin);
+  var totalH = totalMin / 60;
+
+  // m3 total
+  var totalM3 = massadas.reduce(function(s, m) { return s + (parseFloat(m.qtd) || 0); }, 0);
+  var prodGlobal = totalH > 0 ? totalM3 / totalH : 0;
+
+  // Cycles series
+  var cycles = massadas.slice(1).map(function(m) { return m.cycleMin; }).filter(function(v) { return v !== null && v > 0; });
+  var totalCyclesMin = cycles.reduce(function(s, v) { return s + v; }, 0);
+
+  var tempoOkMin = cycles.filter(function(v) { return v <= 12; }).reduce(function(s, v) { return s + v; }, 0);
+  var tempo1220Min = cycles.filter(function(v) { return v > 12 && v <= 20; }).reduce(function(s, v) { return s + v; }, 0);
+  var tempo20Min = cycles.filter(function(v) { return v > 20; }).reduce(function(s, v) { return s + v; }, 0);
+
+  var pctOk = totalMin > 0 ? tempoOkMin / totalMin * 100 : 0;
+  var pct1220 = totalMin > 0 ? tempo1220Min / totalMin * 100 : 0;
+  var pct20 = totalMin > 0 ? tempo20Min / totalMin * 100 : 0;
+  var eficiencia = 100 - pct20;
+
+  var rateM3min = 0.9 / 3.5; // 75% meta approximated
+  var perdaEst = (tempo20Min / 60) * (meta * 0.75);
+
+  // Gaps detail
+  var gapsAll = [];
+  for (var i = 1; i < massadas.length; i++) {
+    var dur = massadas[i].cycleMin;
+    if (dur === null || dur <= 12) continue;
+    var iniGap = massadas[i - 1].dt;
+    var fimGap = massadas[i].dt;
+    var classe = dur > 20 ? 'critico' : 'aviso';
+    var estM3 = (dur / 60) * (meta * 0.75);
+    gapsAll.push({
+      dur: Math.round(dur * 10) / 10,
+      ini: iniGap,
+      fim: fimGap,
+      classe: classe,
+      estM3: estM3
+    });
+  }
+  var numGaps20 = gapsAll.filter(function(g) { return g.classe === 'critico'; }).length;
+  var top10 = gapsAll.slice().sort(function(a, b) { return b.dur - a.dur; }).slice(0, 10);
+
+  // Gaps por hora
+  var gapsByHour = {};
+  gapsAll.forEach(function(g) {
+    var h = g.ini.getHours().toString().padStart(2, '0') + ':00';
+    if (!gapsByHour[h]) gapsByHour[h] = { count: 0, total: 0, max: 0, est: 0 };
+    gapsByHour[h].count++;
+    gapsByHour[h].total += g.dur;
+    gapsByHour[h].max = Math.max(gapsByHour[h].max, g.dur);
+    gapsByHour[h].est += g.estM3;
+  });
+
+  // Manha / Tarde split
+  var manhaDf = massadas.filter(function(m) { return m.dt.getHours() < 12; });
+  var tardeDf = massadas.filter(function(m) { return m.dt.getHours() >= 12; });
+
+  function periodStats(df) {
+    if (df.length === 0) return { m3: 0, h: 0, prod: 0, medCycle: 0, medBatida: 0, avgCycle: 0, avgBatida: 0 };
+    var dt0 = df[0].dt, dtN = df[df.length - 1].dt;
+    var mins = Math.max(0, diffMin(dt0, dtN));
+    var h = mins / 60;
+    var m3 = df.reduce(function(s, m) { return s + (parseFloat(m.qtd) || 0); }, 0);
+    var cycs = df.slice(1).map(function(m) { return m.cycleMin; }).filter(function(v) { return v !== null && v > 0; });
+    var bats = df.map(function(m) { return m.batidaMin; }).filter(function(v) { return v !== null && v > 0; });
+    var med = function(arr) {
+      if (!arr.length) return 0;
+      var s = arr.slice().sort(function(a, b) { return a - b; });
+      var mid = Math.floor(s.length / 2);
+      return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
+    };
+    var avg = function(arr) { return arr.length ? arr.reduce(function(a, b) { return a + b; }, 0) / arr.length : 0; };
+    return { m3: m3, h: h, prod: h > 0 ? m3 / h : 0, medCycle: med(cycs), avgCycle: avg(cycs), medBatida: med(bats), avgBatida: avg(bats) };
+  }
+
+  var manha = periodStats(manhaDf);
+  var tarde = periodStats(tardeDf);
+
+  // Misturadores
+  var mistMap = {};
+  massadas.forEach(function(m) {
+    var k = (m.misturador || '').toString().trim() || 'N/I';
+    if (!mistMap[k]) mistMap[k] = { count: 0, m3: 0 };
+    mistMap[k].count++;
+    mistMap[k].m3 += parseFloat(m.qtd) || 0;
+  });
+
+  // Batida stats
+  var bats = massadas.map(function(m) { return m.batidaMin; }).filter(function(v) { return v !== null && v > 0; });
+  function stat(arr) {
+    if (!arr.length) return { avg: null, med: null, min: null, max: null, n: 0 };
+    var s = arr.slice().sort(function(a, b) { return a - b; });
+    var mid = Math.floor(s.length / 2);
+    return {
+      avg: arr.reduce(function(a, b) { return a + b; }, 0) / arr.length,
+      med: s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2,
+      min: s[0], max: s[s.length - 1], n: arr.length
+    };
+  }
+  var batStats = stat(bats);
+
+  // Produtividade 15 min
+  var slotMs = 15 * 60 * 1000;
+  var slotStart = new Date(dtStart);
+  slotStart.setSeconds(0, 0);
+  var rem = slotStart.getMinutes() % 15;
+  if (rem) slotStart.setMinutes(slotStart.getMinutes() - rem);
+  var prod15Labels = [], prod15Vals = [];
+  var cur = new Date(slotStart);
+  while (cur <= dtEnd) {
+    var next = new Date(cur.getTime() + slotMs);
+    var inSlot = massadas.filter(function(m) { return m.dt >= cur && m.dt < next; });
+    var m3Slot = inSlot.reduce(function(s, m) { return s + (parseFloat(m.qtd) || 0); }, 0);
+    prod15Labels.push(cur.getHours().toString().padStart(2,'0') + ':' + cur.getMinutes().toString().padStart(2,'0'));
+    prod15Vals.push(Math.round(m3Slot / 0.25 * 10) / 10); // m3/h = m3/(15/60)
+    cur = next;
+  }
+
+  // Atraso hora a hora
+  var metaMin = meta;
+  var slotHStart = new Date(dtStart); slotHStart.setMinutes(0, 0, 0);
+  var lunStart = new Date(dtStart); lunStart.setHours(11, 0, 0, 0);
+  var lunEnd = new Date(dtStart); lunEnd.setHours(12, 0, 0, 0);
+  var prodEnd = new Date(dtEnd);
+
+  function overlapMin(as, ae, bs, be) {
+    var start = Math.max(as, bs), end = Math.min(ae, be);
+    return end > start ? (end - start) / 60000 : 0;
+  }
+
+  var totalProdMin = Math.max(0, diffMin(dtStart, prodEnd) - overlapMin(dtStart, prodEnd, lunStart.getTime(), lunEnd.getTime()));
+  var rateM3per = totalProdMin > 0 ? meta / totalProdMin : 0;
+
+  var atrasoRows = [];
+  var cur2 = new Date(slotHStart);
+  while (cur2 < prodEnd) {
+    var next2 = new Date(cur2.getTime() + 3600000);
+    var actStart = Math.max(cur2.getTime(), dtStart.getTime());
+    var actEnd = Math.min(next2.getTime(), prodEnd.getTime());
+    if (actEnd <= actStart) { cur2 = next2; continue; }
+    var slotProdMin = Math.max(0, (actEnd - actStart) / 60000 - overlapMin(actStart, actEnd, lunStart.getTime(), lunEnd.getTime()));
+    if (slotProdMin < 1) { cur2 = next2; continue; }
+    var esperado = rateM3per * slotProdMin * 0.9;
+    var realizado = massadas.filter(function(m) { return m.dt.getTime() >= actStart && m.dt.getTime() < actEnd; })
+      .reduce(function(s, m) { return s + (parseFloat(m.qtd) || 0); }, 0);
+    var atrM3 = Math.max(0, esperado - realizado);
+    var atrMin = rateM3per > 0 ? atrM3 / rateM3per : 0;
+    atrasoRows.push({
+      hora: cur2.getHours().toString().padStart(2,'0') + ':00',
+      esperado: Math.round(esperado * 10) / 10,
+      realizado: Math.round(realizado * 10) / 10,
+      atrM3: Math.round(atrM3 * 10) / 10,
+      atrMin: Math.round(atrMin * 10) / 10
+    });
+    cur2 = next2;
+  }
+
+  // Cycle classification counts
+  var okCnt = cycles.filter(function(v) { return v <= 12; }).length;
+  var avCnt = cycles.filter(function(v) { return v > 12 && v <= 20; }).length;
+  var crCnt = cycles.filter(function(v) { return v > 20; }).length;
+  var cTotal = cycles.length;
+
+  // Constancia (CV%)
+  var p15valid = prod15Vals.filter(function(v) { return v > 0; });
+  var p15avg = p15valid.length ? p15valid.reduce(function(a, b) { return a + b; }, 0) / p15valid.length : 0;
+  var p15std = p15valid.length ? Math.sqrt(p15valid.reduce(function(s, v) { return s + Math.pow(v - p15avg, 2); }, 0) / p15valid.length) : 0;
+  var cv = p15avg > 0 ? p15std / p15avg * 100 : null;
+  var sorted15 = p15valid.slice().sort(function(a, b) { return a - b; });
+  var p10 = sorted15.length ? sorted15[Math.floor(sorted15.length * 0.10)] : null;
+  var p90 = sorted15.length ? sorted15[Math.floor(sorted15.length * 0.90)] : null;
+  var p50 = sorted15.length ? sorted15[Math.floor(sorted15.length * 0.50)] : null;
+  var bandLow = meta / totalH * 0.9, bandHigh = meta / totalH * 1.1;
+  var pctBand = p15valid.length ? p15valid.filter(function(v) { return v >= bandLow && v <= bandHigh; }).length / p15valid.length * 100 : null;
+  var pctAbove = p15valid.length ? p15valid.filter(function(v) { return v >= 9.5; }).length / p15valid.length * 100 : null;
+  var zeroSlots = prod15Vals.filter(function(v) { return v <= 0.01; }).length;
+
+  return {
+    massadas: massadas, dtStart: dtStart, dtEnd: dtEnd, totalMin: totalMin, totalH: totalH, totalM3: totalM3,
+    prodGlobal: prodGlobal, tempo20Min: tempo20Min, tempo1220Min: tempo1220Min, tempoOkMin: tempoOkMin,
+    pctOk: pctOk, pct1220: pct1220, pct20: pct20, eficiencia: eficiencia, perdaEst: perdaEst,
+    numGaps20: numGaps20, gapsAll: gapsAll, top10: top10, gapsByHour: gapsByHour,
+    manha: manha, tarde: tarde, mistMap: mistMap, batStats: batStats,
+    prod15Labels: prod15Labels, prod15Vals: prod15Vals, atrasoRows: atrasoRows,
+    okCnt: okCnt, avCnt: avCnt, crCnt: crCnt, cTotal: cTotal,
+    cycles: cycles, cv: cv, p10: p10, p90: p90, p50: p50, pctBand: pctBand, pctAbove: pctAbove, zeroSlots: zeroSlots
+  };
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Render
+// ──────────────────────────────────────────────────────────────────
+function prodStatus(val) {
+  if (val >= 9.5) return ['var(--ct-green)', 'ok', 'Dentro do Pace'];
+  if (val >= 8)   return ['var(--ct-yellow)', 'warn', 'Atencao'];
+  return ['var(--ct-red)', 'bad', 'Abaixo do Pace'];
+}
+
+function renderDashboard(massadasRaw, meta) {
+  var R = calcular(massadasRaw, meta);
+  var dtS = R.dtStart, dtE = R.dtEnd;
+  var startStr = dtS.getHours().toString().padStart(2,'0') + ':' + dtS.getMinutes().toString().padStart(2,'0');
+  var endStr   = dtE.getHours().toString().padStart(2,'0') + ':' + dtE.getMinutes().toString().padStart(2,'0');
+  var dateStr  = dtS.toLocaleDateString('pt-BR');
+
+  // ── KPI Row ──
+  document.getElementById('kpiRow1').innerHTML = [
+    ['kpi-navy', 'Inicio', startStr, dateStr],
+    ['kpi-navy', 'Final', endStr, dateStr],
+    ['kpi-orange', 'Producao Total', n2(R.totalM3, 1) + ' m3', R.massadas.length + ' massadas'],
+    ['kpi-red', 'Gaps Criticos', R.numGaps20,
+      n2(R.tempo20Min, 1) + ' min (' + n2(R.pct20, 1) + '%) ~' + n2(R.perdaEst, 1) + ' m3'],
+    ['kpi-blue', 'Horas Disponiveis', n2(R.totalH, 2) + ' h', 'Desc. almoco'],
+    ['kpi-green', 'Eficiencia', n2(R.eficiencia, 1) + '%', 'Sem gaps >20 min'],
+  ].map(function(k) {
+    return '<div class="kpi ' + k[0] + '">'
+      + '<div class="kpi-lbl">' + k[1] + '</div>'
+      + '<div class="kpi-val">' + k[2] + '</div>'
+      + '<div class="kpi-hint">' + k[3] + '</div></div>';
+  }).join('');
+
+  // ── Prod Cards ──
+  function prodCard(title, stats, tag) {
+    var s = prodStatus(stats.prod);
+    return '<div class="prod-card ' + s[1] + '">'
+      + '<div style="margin-bottom:6px;font-size:11px;font-weight:800;text-transform:uppercase;color:var(--ct-gray-lt)">' + title + ' <span style="color:var(--ct-gray-lt);font-weight:400">| ' + tag + '</span></div>'
+      + '<div style="font-size:26px;font-weight:900;color:var(--ct-navy)">' + n2(stats.prod, 1) + ' <span style="font-size:14px;font-weight:600;color:var(--ct-gray-lt)">m3/h</span></div>'
+      + '<div style="font-size:12px;color:var(--ct-gray-lt);margin-top:4px">' + n2(stats.m3, 1) + ' m3 em ' + n2(stats.h, 2) + ' h</div>'
+      + '<div style="font-size:11px;margin-top:8px;color:var(--ct-gray-lt)">Ciclo med: <b>' + n2(stats.medCycle, 1) + ' min</b> | Batida med: <b>' + n2(stats.medBatida, 1) + ' min</b></div>'
+      + '<div style="margin-top:10px;background:' + s[0] + ';color:#fff;padding:4px 10px;border-radius:6px;font-weight:700;font-size:11px;text-align:center">' + s[2] + ' &bull; Meta: ' + n2(meta / R.totalH, 1) + ' m3/h</div>'
+      + '</div>';
+  }
+  document.getElementById('prodRow').innerHTML =
+    prodCard('Global', { prod: R.prodGlobal, m3: R.totalM3, h: R.totalH, medCycle: (function() { var s = R.cycles.slice().sort(function(a,b){return a-b;}); return s.length ? s[Math.floor(s.length/2)] : 0; })(), medBatida: R.batStats.med || 0 }, 'Dia completo') +
+    prodCard('Manha', R.manha, 'ate 12:00') +
+    prodCard('Tarde', R.tarde, 'apos 12:00');
+
+  // ── Overview ──
+  var ovItems = [
+    'Producao: ' + n2(R.totalM3, 1) + ' m3 em ' + n2(R.totalH, 2) + ' h (media ' + n2(R.prodGlobal, 1) + ' m3/h).',
+    'Janela: ' + startStr + ' ate ' + endStr + '.',
+    'Manha: ' + n2(R.manha.prod, 1) + ' m3/h | Tarde: ' + n2(R.tarde.prod, 1) + ' m3/h.',
+    'Gaps criticos (>20 min): ' + R.numGaps20 + ' ocorrencias, ' + n2(R.tempo20Min, 1) + ' min (' + n2(R.pct20, 1) + '%).',
+    'Gaps moderados (12-20 min): ' + n2(R.tempo1220Min, 1) + ' min (' + n2(R.pct1220, 1) + '%).',
+    'Total massadas: ' + R.massadas.length + '.',
+  ];
+  document.getElementById('overviewBody').innerHTML = '<ul style="list-style:disc;padding-left:1.2rem;font-size:12px;line-height:2;color:var(--ct-gray-lt)">' + ovItems.map(function(i){ return '<li>' + i + '</li>'; }).join('') + '</ul>';
+
+  // ── Insights ──
+  var ins = [];
+  if (R.numGaps20 > 0 && R.pct20 >= 5) ins.push('Gaps criticos: ' + n2(R.tempo20Min, 1) + ' min (' + n2(R.pct20, 1) + '% do tempo).');
+  if (R.pct1220 >= 5) ins.push('Gaps 12-20 min: ' + n2(R.tempo1220Min, 1) + ' min.');
+  if (R.batStats.avg && R.batStats.avg > 4) ins.push('Tempo de batida medio ' + n2(R.batStats.avg, 1) + ' min, acima de 4 min.');
+  if (R.manha.prod > 0 && R.tarde.prod > 0 && R.tarde.prod < R.manha.prod * 0.85) ins.push('Queda de produtividade na tarde (' + n2(R.tarde.prod, 1) + ') vs manha (' + n2(R.manha.prod, 1) + ').');
+  if (R.manha.prod > 0 && R.tarde.prod > 0 && R.manha.prod < R.tarde.prod * 0.85) ins.push('Queda de produtividade na manha (' + n2(R.manha.prod, 1) + ') vs tarde (' + n2(R.tarde.prod, 1) + ').');
+  if (!ins.length) ins.push('Nenhum fator critico evidente; produtividade proxima da meta.');
+  document.getElementById('insightsBody').innerHTML = '<ul style="list-style:disc;padding-left:1.2rem;font-size:12px;line-height:2;color:var(--ct-gray-lt)">' + ins.map(function(i){ return '<li>' + i + '</li>'; }).join('') + '</ul>';
+
+  // ── Top 10 gaps ──
+  var totalEstGaps = R.gapsAll.reduce(function(s, g) { return s + g.estM3; }, 0);
+  document.getElementById('top10GapsList').innerHTML = R.top10.map(function(g) {
+    var badge = g.classe === 'critico' ? '<span class="badge-bad">Critico</span>' : '<span class="badge-warn">Aviso</span>';
+    return '<li><strong>' + g.dur + ' min</strong> &mdash; '
+      + g.ini.getHours().toString().padStart(2,'0') + ':' + g.ini.getMinutes().toString().padStart(2,'0')
+      + ' &rarr; '
+      + g.fim.getHours().toString().padStart(2,'0') + ':' + g.fim.getMinutes().toString().padStart(2,'0')
+      + ' ' + badge + ' <span style="color:var(--ct-red)">~' + n2(g.estM3, 1) + ' m3</span></li>';
+  }).join('') + '<li><strong>Total estimado:</strong> <span style="font-size:1.1em;font-weight:900;color:var(--ct-red)">~' + n2(totalEstGaps, 1) + ' m3</span> (' + n2(totalEstGaps / R.totalM3 * 100, 1) + '% da producao)</li>';
+
+  // ── Gaps por hora ──
+  var ghSorted = Object.entries(R.gapsByHour).sort(function(a, b) { return b[1].total - a[1].total; });
+  document.getElementById('tbGapsHora').innerHTML = ghSorted.length ?
+    ghSorted.map(function(e) {
+      return '<tr><td>' + e[0] + '</td><td>' + e[1].count + '</td><td>' + n2(e[1].total, 1) + '</td><td>' + n2(e[1].max, 1) + '</td><td>~' + n2(e[1].est, 1) + '</td></tr>';
+    }).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--ct-gray-lt)">Sem gaps significativos</td></tr>';
+
+  // ── Misturadores ──
+  document.getElementById('mistRow').innerHTML = Object.entries(R.mistMap).map(function(e) {
+    var pct = R.massadas.length ? e[1].count / R.massadas.length * 100 : 0;
+    return '<div style="background:#f8fafc;border-radius:10px;padding:12px;border:1px solid #e8ecf0">'
+      + '<div style="font-size:13px;font-weight:800;color:var(--ct-navy);margin-bottom:6px">Misturador: <span style="color:var(--ct-orange)">' + e[0] + '</span></div>'
+      + '<div style="font-size:12px;color:var(--ct-gray-lt)">Massadas: <strong>' + e[1].count + '</strong> (' + n2(pct, 1) + '%)</div>'
+      + '<div style="font-size:12px;color:var(--ct-gray-lt)">Volume: <strong>' + n2(e[1].m3, 1) + ' m3</strong></div>'
+      + '<div style="margin-top:8px"><div class="bar-wrap"><div class="bar-fill" style="width:' + n2(pct, 0) + '%;background:var(--ct-navy)"></div></div></div>'
+      + '</div>';
+  }).join('') || '<p style="color:var(--ct-gray-lt);font-size:12px">Coluna misturador sem dados</p>';
+
+  // ── Batida stats ──
+  var bs = R.batStats;
+  document.getElementById('batidaStats').innerHTML = [
+    ['Medio', n2(bs.avg, 1) + ' min', bs.n + ' massadas'],
+    ['Mediana', n2(bs.med, 1) + ' min', 'valor central'],
+    ['Mais rapido', n2(bs.min, 1) + ' min', 'melhor tempo'],
+    ['Mais lento', n2(bs.max, 1) + ' min', 'maior tempo'],
+  ].map(function(k) {
+    return '<div style="background:#f8fafc;border-radius:10px;padding:12px;text-align:center;border:1px solid #e8ecf0">'
+      + '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--ct-gray-lt);margin-bottom:4px">' + k[0] + '</div>'
+      + '<div style="font-size:22px;font-weight:900;color:var(--ct-navy)">' + k[1] + '</div>'
+      + '<div style="font-size:10px;color:var(--ct-gray-lt)">' + k[2] + '</div></div>';
+  }).join('');
+
+  // ── Heatmap atraso ──
+  var hmHtml = R.atrasoRows.map(function(r) {
+    var cls = r.atrMin <= 0.5 ? 'hm-ok' : r.atrMin <= 10 ? 'hm-warn' : 'hm-bad';
+    return '<div class="hm-cell ' + cls + '">'
+      + '<div class="hm-hour">' + r.hora + '</div>'
+      + '<div class="hm-val">' + n2(r.atrMin, 1) + ' min</div>'
+      + '<div class="hm-sub">Atraso: ' + n2(r.atrM3, 1) + ' m3<br>Prev: ' + n2(r.esperado, 1) + ' | Real: ' + n2(r.realizado, 1) + '</div></div>';
+  }).join('');
+  document.getElementById('hmGrid').innerHTML = hmHtml;
+  var totAtrM3 = R.atrasoRows.reduce(function(s, r) { return s + r.atrM3; }, 0);
+  var totAtrMin = R.atrasoRows.reduce(function(s, r) { return s + r.atrMin; }, 0);
+  document.getElementById('atrasoTotal').textContent = 'Total: ~' + n2(totAtrM3, 1) + ' m3 / ' + n2(totAtrMin, 1) + ' min';
+
+  // ── Tabela atraso ──
+  document.getElementById('tbAtraso').innerHTML = R.atrasoRows.map(function(r) {
+    return '<tr><td>' + r.hora + '</td><td>' + n2(r.esperado, 1) + '</td><td>' + n2(r.realizado, 1) + '</td>'
+      + '<td style="font-weight:800;color:var(--ct-red)">' + n2(r.atrM3, 1) + '</td>'
+      + '<td style="font-weight:700;color:var(--ct-orange)">' + n2(r.atrMin, 1) + '</td></tr>';
+  }).join('');
+
+  // ── Constancia ──
+  var constItens = [
+    ['Constancia CV%', n2(R.cv, 1) + '%', 'Quanto menor mais constante'],
+    ['% dentro da meta +-10%', n2(R.pctBand, 1) + '%', 'Ritmo proximo da meta'],
+    ['% acima do minimo (>=9.5)', n2(R.pctAbove, 1) + '%', 'Ritmo aceitavel'],
+    ['Mediana m3/h', n2(R.p50, 1), 'Medida robusta'],
+    ['P10 - P90 m3/h', n2(R.p10, 1) + ' - ' + n2(R.p90, 1), 'Faixa tipica'],
+    ['Janelas zeradas', R.zeroSlots !== null ? R.zeroSlots : 'N/A', 'Interrupcoes no ritmo'],
+  ];
+  document.getElementById('constanciaBody').innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">' +
+    constItens.map(function(k) {
+      return '<div style="border-left:3px solid var(--ct-navy);padding:8px 12px;background:#f8fafc;border-radius:0 8px 8px 0">'
+        + '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--ct-gray-lt)">' + k[0] + '</div>'
+        + '<div style="font-size:18px;font-weight:900;color:var(--ct-navy)">' + k[1] + '</div>'
+        + '<div style="font-size:10px;color:var(--ct-gray-lt)">' + k[2] + '</div></div>';
+    }).join('') + '</div>';
+
+  // ──────────────────────────────────────────────────────────────
+  // Charts
+  // ──────────────────────────────────────────────────────────────
+  var COR_OK = 'rgba(5,150,105,1)', COR_WARN = 'rgba(217,119,6,1)', COR_BAD = 'rgba(220,38,38,1)';
+
+  // Chart: Ciclos
+  destroyChart('ciclos');
+  var ciclosData = R.massadas.slice(1).map(function(m, i) {
+    return { x: (R.massadas[i].dt.getHours().toString().padStart(2,'0') + ':' + R.massadas[i].dt.getMinutes().toString().padStart(2,'0')), y: m.cycleMin };
+  });
+  var cicloColors = ciclosData.map(function(d) {
+    var c = classifyCycle(d.y);
+    return c === 'ok' ? COR_OK : c === 'aviso' ? COR_WARN : COR_BAD;
+  });
+  var nCiclos = ciclosData.length;
+  charts['ciclos'] = new Chart(document.getElementById('chartCiclos'), {
+    type: 'line',
+    data: {
+      labels: ciclosData.map(function(d) { return d.x; }),
+      datasets: [
+        { label: 'Ciclo (min)', data: ciclosData.map(function(d) { return d.y; }), borderColor: 'rgba(25,118,210,0.8)', backgroundColor: 'rgba(25,118,210,0.06)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: cicloColors, pointBorderColor: cicloColors },
+        { label: 'Critico 20m', data: Array(nCiclos).fill(20), borderColor: 'rgba(220,38,38,0.5)', borderDash: [6, 4], pointRadius: 0, borderWidth: 1.5 },
+        { label: 'Aviso 12m', data: Array(nCiclos).fill(12), borderColor: 'rgba(217,119,6,0.5)', borderDash: [6, 4], pointRadius: 0, borderWidth: 1.5 },
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  // Chart: Prod 15min
+  destroyChart('prod15');
+  charts['prod15'] = new Chart(document.getElementById('chartProd15'), {
+    type: 'line',
+    data: {
+      labels: R.prod15Labels,
+      datasets: [{ label: 'm3/h', data: R.prod15Vals, borderColor: 'rgba(5,150,105,0.9)', backgroundColor: 'rgba(5,150,105,0.10)', fill: true, tension: 0.3, pointRadius: 2, pointBackgroundColor: 'rgba(5,150,105,1)' }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'm3/h' } } } }
+  });
+
+  // Chart: Batida
+  destroyChart('batida');
+  var batMassadas = R.massadas.filter(function(m) { return m.batidaMin !== null && m.batidaMin > 0; });
+  var batLabels = batMassadas.map(function(m) { return m.dt.getHours().toString().padStart(2,'0') + ':' + m.dt.getMinutes().toString().padStart(2,'0'); });
+  var batVals = batMassadas.map(function(m) { return Math.round(m.batidaMin * 10) / 10; });
+  var batColors = batMassadas.map(function(m) { var c = classifyBatida(m.batidaMin); return c === 'ok' ? COR_OK : c === 'aviso' ? COR_WARN : COR_BAD; });
+  charts['batida'] = new Chart(document.getElementById('chartBatida'), {
+    type: 'line',
+    data: {
+      labels: batLabels,
+      datasets: [
+        { label: 'Batida (min)', data: batVals, borderColor: 'rgba(109,40,217,0.8)', backgroundColor: 'rgba(109,40,217,0.06)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: batColors, pointBorderColor: batColors },
+        { label: 'Critico 10m', data: Array(batVals.length).fill(10), borderColor: 'rgba(220,38,38,0.5)', borderDash: [6, 4], pointRadius: 0, borderWidth: 1.5 },
+        { label: 'Aviso 4m', data: Array(batVals.length).fill(4), borderColor: 'rgba(217,119,6,0.5)', borderDash: [6, 4], pointRadius: 0, borderWidth: 1.5 },
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  // Chart: Pie ciclos
+  destroyChart('ciclosPie');
+  var okPct = R.cTotal ? Math.round(R.okCnt / R.cTotal * 100) : 0;
+  var avPct = R.cTotal ? Math.round(R.avCnt / R.cTotal * 100) : 0;
+  var crPct = R.cTotal ? Math.round(R.crCnt / R.cTotal * 100) : 0;
+  charts['ciclosPie'] = new Chart(document.getElementById('chartCiclosPie'), {
+    type: 'bar',
+    data: {
+      labels: ['OK ' + okPct + '%', 'Aviso ' + avPct + '%', 'Critico ' + crPct + '%'],
+      datasets: [{ label: 'Ciclos', data: [R.okCnt, R.avCnt, R.crCnt], backgroundColor: [COR_OK, COR_WARN, COR_BAD] }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+
+  // Chart: Previsto vs Realizado
+  destroyChart('prevReal');
+  charts['prevReal'] = new Chart(document.getElementById('chartPrevReal'), {
+    type: 'bar',
+    data: {
+      labels: R.atrasoRows.map(function(r) { return r.hora; }),
+      datasets: [
+        { label: 'Previsto', data: R.atrasoRows.map(function(r) { return r.esperado; }), backgroundColor: 'rgba(13,59,102,0.85)' },
+        { label: 'Realizado', data: R.atrasoRows.map(function(r) { return r.realizado; }), backgroundColor: 'rgba(5,150,105,0.85)' },
+        { label: 'Atraso', data: R.atrasoRows.map(function(r) { return r.atrM3; }), backgroundColor: 'rgba(220,38,38,0.75)' },
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true } } }
+  });
+}
+</script>
+</body>
+</html>

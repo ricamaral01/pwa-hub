@@ -1,0 +1,49 @@
+.noro-native{min-height:100%;background:#f5f7f9;color:#10243a;font:15px/1.5 Geist,system-ui,sans-serif}
+.noro-header{display:flex;justify-content:space-between;align-items:end;gap:20px;padding:30px clamp(20px,4vw,56px);background:#123d4a;color:#fff}
+.noro-header small{display:block;color:#8de1df;font-weight:700;letter-spacing:.12em}
+.noro-header h1{margin:5px 0 0;font-size:clamp(26px,3vw,38px);line-height:1.1}
+.noro-origin{font-size:12px;color:#d3eeec}
+.noro-content{max-width:1500px;margin:auto;padding:28px clamp(20px,4vw,56px) 60px}
+.noro-status{display:flex;gap:15px;align-items:center;margin-bottom:18px;padding:12px 16px;background:#e6f4f2;border-left:4px solid #168e9a}
+.noro-status strong{color:#066f7b}
+.noro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:0 0 24px}
+.noro-card{display:flex;flex-direction:column;padding:18px;background:#fff;border:1px solid #d7e2e7;border-radius:8px;box-shadow:0 2px 8px #10243a0b}
+.noro-card-label{color:#576b79;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.noro-card-value{font-size:26px;line-height:1.2;margin-top:8px}
+.noro-card small{margin-top:4px;color:#576b79}
+.noro-section-title{font-size:20px;margin:28px 0 12px}
+.noro-table-wrap{overflow:auto;background:#fff;border:1px solid #d7e2e7;border-radius:8px}
+.noro-table-wrap table{border-collapse:collapse;width:100%;white-space:nowrap}
+.noro-table-wrap th,.noro-table-wrap td{padding:11px 13px;border-bottom:1px solid #e9eef1;text-align:left}
+.noro-table-wrap th{background:#e7f1f3;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.noro-table-wrap tr:last-child td{border-bottom:0}
+.noro-note{font-size:13px;color:#5c6d79}
+.noro-error{padding:14px;background:#ffe9e9;color:#8d1717;border-radius:6px}
+.noro-bars{padding:15px;background:#fff;border:1px solid #d7e2e7;border-radius:8px}
+.noro-bar-row{display:grid;grid-template-columns:40px 1fr 80px;gap:12px;align-items:center;margin:5px 0}
+.noro-bar-row strong{text-align:right;font-size:12px}
+.noro-bar-track{height:13px;background:#e8f1f3;border-radius:99px;overflow:hidden}
+.noro-bar-fill{height:100%;background:#168e9a;border-radius:99px}
+.noro-filters{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin-bottom:20px}
+.noro-filters label{display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:700;color:#3b5565}
+.noro-filters input{min-height:38px;padding:7px 10px;border:1px solid #b7cad3;border-radius:5px;background:#fff;font:inherit}
+.noro-filters button,.noro-button{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 14px;background:#168e9a;color:#fff;border:0;border-radius:5px;font:700 13px Geist,system-ui,sans-serif;text-decoration:none;cursor:pointer}
+.noro-filters button:hover,.noro-button:hover{background:#0d737d}
+.noro-link-button{padding:5px 8px;border:1px solid #168e9a;border-radius:4px;background:#fff;color:#096d78;cursor:pointer}
+.noro-dialog{width:min(440px,calc(100vw - 30px));padding:22px;border:1px solid #b7cad3;border-radius:9px;box-shadow:0 16px 60px #10243a44}
+.noro-dialog::backdrop{background:#10243a88}
+.noro-edit-form{display:grid;gap:12px}
+.noro-edit-form h2{margin:0;font-size:20px}
+.noro-edit-form label{display:grid;gap:4px;font-weight:600}
+.noro-edit-form input,.noro-edit-form select{padding:8px;border:1px solid #b7cad3;border-radius:5px;font:inherit}
+.noro-edit-controls{display:flex;justify-content:end;gap:10px}
+.noro-edit-controls button{padding:8px 12px;border:1px solid #168e9a;border-radius:5px;background:#168e9a;color:#fff;cursor:pointer}
+.noro-edit-controls button:first-child{background:#fff;color:#168e9a}
+.noro-cec-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:12px 0 24px;padding:20px;background:#fff;border:1px solid #d7e2e7;border-radius:8px}
+.noro-cec-field{display:grid;gap:4px;font-size:12px;font-weight:700;color:#3b5565}
+.noro-cec-field input,.noro-cec-field select{min-height:38px;padding:7px 10px;border:1px solid #b7cad3;border-radius:5px;background:#fff;font:inherit}
+.noro-cec-actions{display:flex;gap:9px;align-items:end;grid-column:1/-1}
+.noro-cec-actions button{min-height:38px;padding:8px 14px;border:0;border-radius:5px;background:#168e9a;color:#fff;font:700 13px Geist,system-ui,sans-serif;cursor:pointer}
+.noro-cec-actions button:disabled{opacity:.55;cursor:default}
+.noro-table-wrap td .noro-link-button{display:inline-block;margin:2px 3px 2px 0;font:700 12px Geist,system-ui,sans-serif;text-decoration:none}
+@media(max-width:720px){.noro-header{align-items:start;flex-direction:column}.noro-content{padding-top:18px}.noro-filters label{flex:1 1 45%}.noro-filters input{width:100%}}

@@ -1,0 +1,245 @@
+<title>Unificado, hoje e proposta</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap">
+<style>
+/* Layout: uma tela por seção, imagem grande com alternância Hoje/Proposta e lista do que muda ao lado. */
+:root{--bg:#f3f4f6;--surface:#fff;--ink:#0b1730;--ink-2:#556175;--line:#dde2ea;--accent:#e2702a;--now:#b42318;--new:#1d7a4a;
+  --f:"Geist",ui-sans-serif,system-ui,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1220;--surface:#141c2e;--ink:#e7ebf2;--ink-2:#a3adbf;--line:#273248;--accent:#f08a46;--now:#f2786b;--new:#5cc68d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0c1220;--surface:#141c2e;--ink:#e7ebf2;--ink-2:#a3adbf;--line:#273248;--accent:#f08a46;--now:#f2786b;--new:#5cc68d;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f);font-variant-numeric:tabular-nums;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:36px 72px}
+.wrap{max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:48px}
+h1,h2{margin:0;letter-spacing:-.015em;text-wrap:balance;line-height:1.2}
+h1{font-size:30px;font-weight:600}h2{font-size:21px;font-weight:600}
+p{margin:0;max-width:70ch}
+.muted{color:var(--ink-2)}
+code{font-size:.88em;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+header{display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line);padding-bottom:24px}
+nav.idx{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px}
+nav.idx a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+nav.idx a:hover{border-color:var(--accent)}
+.ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13.5px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg button{font:500 13px var(--f);border:0;background:transparent;color:var(--ink-2);padding:6px 12px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+section.scr{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start;scroll-margin-top:16px}
+.head{grid-column:1/-1;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.head .src{font-size:12.5px;color:var(--ink-2)}
+.shots{min-width:0;display:grid;gap:12px}
+.shots.side{grid-template-columns:1fr 1fr}
+figure{margin:0;min-width:0;display:flex;flex-direction:column;gap:6px}
+figure img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+figcaption{font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:7px}
+figcaption::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.now figcaption{color:var(--now)}.new figcaption{color:var(--new)}
+aside ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+aside li{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;display:grid;gap:2px}
+aside li b{font-weight:600}
+aside li span{color:var(--ink-2);font-size:13.5px}
+aside .k{font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:8px}
+.foot{font-size:13px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:6px}
+.mob-intro{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:32px;scroll-margin-top:16px}
+.mob-intro ul{margin:0;padding-left:18px;font-size:14px;color:var(--ink-2);display:flex;flex-direction:column;gap:4px;max-width:80ch}
+.mob-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(560px,1fr));gap:40px 32px}
+.mob{display:flex;flex-direction:column;gap:12px;min-width:0}
+.mob h3{margin:0;font-size:17px;font-weight:600}
+.phones{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.phones img{max-width:300px;border-radius:14px}
+.phones figure{align-items:flex-start}
+.mob ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:3px}
+.mob ul b{color:var(--ink);font-weight:600}
+@media (max-width:640px){.mob-grid{grid-template-columns:1fr}}
+@media (max-width:1000px){section.scr{grid-template-columns:1fr}.shots.side{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Unificado: telas de hoje e telas propostas</h1>
+  <p class="muted">Sete telas reais do sistema. "Hoje" são capturas tiradas do Unificado em produção e homologação. "Proposta" é a mesma tela redesenhada com um padrão único: uma fonte, azul-marinho e laranja da marca, sem gradientes, sem siglas e sem cartão dentro de cartão. Os números da proposta são de exemplo.</p>
+  <div class="ctrl"><span class="muted">Mostrar:</span>
+    <div class="seg" role="group" aria-label="Modo de comparação">
+      <button type="button" id="m-side" data-mode="side" aria-pressed="true">Lado a lado</button>
+      <button type="button" id="m-now" data-mode="now" aria-pressed="false">Só hoje</button>
+      <button type="button" id="m-new" data-mode="new" aria-pressed="false">Só proposta</button>
+    </div>
+    <span class="muted">Clique numa imagem para alternar entre hoje e proposta.</span>
+  </div>
+  <nav class="idx"><a href="#inicio">Início</a><a href="#acesso">Acesso rápido</a><a href="#series">Números de série</a><a href="#lab">Laboratório</a><a href="#sup">Suprimentos</a><a href="#traco">Carta de traço</a><a href="#login">Login</a><a href="#tablet"><b>Tablet</b></a><a href="#celular"><b>Celular</b></a></nav>
+</header>
+
+<section class="scr" id="inicio">
+  <div class="head"><h2>Início</h2><span class="src">Hoje: <code>docs/qualidade/home-cabecalho-compacto/depois-1366.png</code></span></div>
+  <div class="shots side"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/inicio.png" alt="Início atual com quatro cartões de gradiente azul, verde, vermelho e laranja"></figure>
+  <figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/inicio.png" alt="Início proposto com faixa de indicadores, tabela de setores e lista de módulos"></figure></div>
+  <aside><div class="k">O que muda</div><ol>
+    <li><b>Indicadores numa faixa só</b><span>Saem os 4 gradientes com bolha decorativa. O número vem em primeiro lugar, e a cor aparece só no desvio (−4 pp).</span></li>
+    <li><b>Setores como tabela</b><span>Programado, realizado, falta e aderência na mesma linha. O Setor 3, abaixo de 85%, fica vermelho sozinho.</span></li>
+    <li><b>Módulos em lista com ícone e descrição real</b><span>Substitui os ícones coloridos por módulo.</span></li>
+    <li><b>Sem "Bem-vindo, Francisco."</b><span>No lugar, data, unidade e horário dos dados.</span></li>
+  </ol></aside>
+</section>
+
+<section class="scr" id="acesso">
+  <div class="head"><h2>Meu acesso rápido</h2><span class="src">Hoje: <code>docs/acesso-rapido-osmar/validacao/publicado-computador.png</code></span></div>
+  <div class="shots side"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/acesso-rapido.png" alt="Acesso rápido atual com cartões grandes e siglas EC, E4, AR"></figure>
+  <figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/acesso-rapido.png" alt="Acesso rápido proposto em lista com último uso"></figure></div>
+  <aside><div class="k">O que muda</div><ol>
+    <li><b>Lista no lugar de 8 cartões grandes</b><span>Todas as telas cabem sem rolar.</span></li>
+    <li><b>Sem siglas EC, E4, AR, NS, PS, RP</b><span>Ícone de traço do mesmo conjunto em todas.</span></li>
+    <li><b>Último uso à direita</b><span>Mostra quais telas a pessoa realmente abre.</span></li>
+    <li><b>Sem "Olá, Osmar." e sem eyebrow</b><span>O título diz o que é a tela.</span></li>
+  </ol></aside>
+</section>
+
+<section class="scr" id="series">
+  <div class="head"><h2>Números de série dos postes</h2><span class="src">Hoje: <code>docs/planejamento/series-setor3/validacao/publicado-previsao.png</code></span></div>
+  <div class="shots side"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/numeros-serie.png" alt="Números de série atual com cabeçalho em cartão e caixa azul de rastreabilidade"></figure>
+  <figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/numeros-serie.png" alt="Números de série proposto com cabeçalho enxuto e tabela"></figure></div>
+  <aside><div class="k">O que muda</div><ol>
+    <li><b>Cabeçalho sem cartão, eyebrow e pílula</b><span>"PLANEJAMENTO · SETOR 3" vira trilha no topo.</span></li>
+    <li><b>Três blocos viram uma linha</b><span>Modelos, execuções e última leitura do Mapa ficam abaixo do título.</span></li>
+    <li><b>Ações à direita do título</b><span>No mesmo lugar em todas as telas. Botão principal no azul-marinho.</span></li>
+    <li><b>Caixa azul "Rastreabilidade" vira nota curta</b><span>Fica ao lado dos filtros, sem fundo colorido.</span></li>
+    <li><b>Dias mais limpos</b><span>Um ponto quando o dia está vazio, no lugar de "Programado: 0 —".</span></li>
+  </ol></aside>
+</section>
+
+<section class="scr" id="lab">
+  <div class="head"><h2>Laboratório</h2><span class="src">Hoje: <code>docs/porting/layout-modulos/depois-homolog-laboratorio-1440.png</code></span></div>
+  <div class="shots side"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/laboratorio.png" alt="Laboratório atual com faixa amarela e cartões com siglas"></figure>
+  <figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/laboratorio.png" alt="Laboratório proposto com três listas de telas"></figure></div>
+  <aside><div class="k">O que muda</div><ol>
+    <li><b>Sai a faixa amarela com círculo</b><span>O amarelo também sai do menu: o laboratório usa as mesmas cores do resto.</span></li>
+    <li><b>Descrição de verdade para cada tela</b><span>No lugar de "Abrir tela e consultar os dados." repetido em todos os cartões.</span></li>
+    <li><b>Sem siglas duplicadas</b><span>Hoje "VG" aparece duas vezes e "E" vale para Empacotamento e para Ensaios.</span></li>
+    <li><b>Logos do menu corrigidos</b><span>Hoje aparecem como imagem quebrada.</span></li>
+    <li><b>Pendência no menu</b><span>"Leitura de CP · 12" mostra o que precisa ser feito hoje.</span></li>
+  </ol></aside>
+</section>
+
+<section class="scr" id="sup">
+  <div class="head"><h2>Painel de suprimentos</h2><span class="src">Hoje: <code>docs/porting/suprimentos/capturas/layout-fix/depois/…painel-1440x900…png</code></span></div>
+  <div class="shots side"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/suprimentos.png" alt="Painel de suprimentos atual com fonte e verde próprios"></figure>
+  <figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/suprimentos.png" alt="Painel de suprimentos proposto com faixa de indicadores e fila"></figure></div>
+  <aside><div class="k">O que muda</div><ol>
+    <li><b>Mesma fonte e mesmas cores do resto</b><span>Saem o DM Sans/Manrope e o verde-petróleo. O botão "Nova solicitação" fica igual ao das outras telas.</span></li>
+    <li><b>Sem colunas de pílulas</b><span>"Normal" e "Concluída" deixam de ser pílulas verdes. Só o urgente ganha marca ("parou produção").</span></li>
+    <li><b>Situação com ponto colorido</b><span>Vermelho pede ação sua, laranja está andando, cinza está encerrado.</span></li>
+    <li><b>Uma superfície só</b><span>Hoje a tabela fica dentro de um cartão que está dentro de outro.</span></li>
+  </ol></aside>
+</section>
+
+<section class="scr" id="traco">
+  <div class="head"><h2>Nova carta de traço (Usinas)</h2><span class="src">Hoje: <code>docs/porting/usinas/telas/cartas-traco-desktop.png</code></span></div>
+  <div class="shots side"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/carta-traco.png" alt="Carta de traço atual com cabeçalho escuro próprio e botões de várias cores"></figure>
+  <figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/carta-traco.png" alt="Carta de traço proposta dentro do menu do Unificado"></figure></div>
+  <aside><div class="k">O que muda</div><ol>
+    <li><b>Entra na moldura do Unificado</b><span>Sai o cabeçalho escuro próprio, os 4 botões coloridos e o rodapé "© ConcreTrack — DAutomação".</span></li>
+    <li><b>Materiais em tabela vertical</b><span>Uma linha por material com unidade no campo. Os 10 campos espremidos numa linha ficam legíveis.</span></li>
+    <li><b>Fator a/c calculado à vista</b><span>Mostra a conta e o limite de norma, no lugar de "valor será calculado automaticamente".</span></li>
+    <li><b>Rótulos em caixa normal</b><span>Sem "CIMENTO", "FILLER" e "PÓ DE PEDRA" em maiúsculas.</span></li>
+  </ol></aside>
+</section>
+
+<section class="scr" id="login">
+  <div class="head"><h2>Login</h2><span class="src">Hoje: capturado de <code>/unificado/login.html</code> em 18/11/2026</span></div>
+  <div class="shots side"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/login.png" alt="Login atual com cartão branco centralizado e Bem-vindo de volta"></figure>
+  <figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/login.png" alt="Login proposto dividido em painel escuro e formulário"></figure></div>
+  <aside><div class="k">O que muda</div><ol>
+    <li><b>"Entrar" no lugar de "Bem-vindo de volta"</b><span>O título é a ação.</span></li>
+    <li><b>Botão no azul-marinho</b><span>Igual ao botão principal das telas internas. Hoje é laranja aqui e muda em cada módulo.</span></li>
+    <li><b>Saiu o cartão centralizado flutuando</b><span>O lado escuro diz o que o sistema cobre e lista as unidades.</span></li>
+    <li><b>Ajuda concreta</b><span>"Fale com o PCP da sua unidade", no lugar de "em um só acesso".</span></li>
+  </ol></aside>
+</section>
+
+<div class="mob-intro" id="tablet">
+  <h2>Tablet</h2>
+  <p class="muted">No tablet, o menu lateral fica recolhido num trilho de ícones, o mesmo comportamento de hoje. A diferença é que cada módulo ganha um ícone de traço, em vez de sigla colorida. O conteúdo usa a mesma faixa de números, as mesmas tabelas e os mesmos botões do computador.</p>
+  <p style="font-size:14px;border-left:3px solid var(--accent);padding-left:12px">Captura "hoje" de Programação da semana é da v1.0.105 (29/10), de Suprimentos é de 26/10 e de Planejamento é de 09/11. O conteúdo das telas é o atual, mas o menu pode ter mudado desde então. O login mantém o visual de hoje, como decidido.</p>
+</div>
+<div class="mob-grid" style="grid-template-columns:1fr">
+  <div class="mob"><h3>Página do módulo Planejamento · 1024 × 768, deitado</h3>
+    <div class="phones"><figure class="now"><figcaption>Hoje</figcaption><img style="max-width:100%;border-radius:8px" src="img/antes/t-planejamento.png" alt="Planejamento atual no tablet com faixa azul e cartões com siglas"></figure><figure class="new"><figcaption>Proposta</figcaption><img style="max-width:100%;border-radius:8px" src="img/depois/t-planejamento.png" alt="Planejamento proposto no tablet com listas em duas colunas"></figure></div>
+    <ul><li><b>Faixa azul com círculo sai.</b> A primeira tela já mostra 4 grupos e 13 telas, contra 7 cartões hoje.</li><li><b>Trilho com ícones de módulo.</b> Hoje ele tem logo quebrado e 6 ícones de calendário iguais seguidos, um para cada tela.</li><li><b>Descrição real em cada tela.</b> Some o "Abrir tela e consultar os dados." repetido.</li></ul></div>
+
+  <div class="mob"><h3>Programação da semana · 1024 × 768, deitado</h3>
+    <div class="phones"><figure class="now"><figcaption>Hoje</figcaption><img style="max-width:100%;border-radius:8px" src="img/antes/t-programacao.png" alt="Programação da semana atual no tablet"></figure><figure class="new"><figcaption>Proposta</figcaption><img style="max-width:100%;border-radius:8px" src="img/depois/t-programacao.png" alt="Programação da semana proposta no tablet"></figure></div>
+    <ul><li><b>A grade da semana aparece sem rolar.</b> Hoje a primeira tela inteira é cabeçalho, bloco da base Mega, controles e 8 indicadores, e a grade só começa abaixo da dobra.</li><li><b>Situação da base Mega em uma linha</b> abaixo do título, em vez de um bloco verde-água.</li><li><b>Controles numa barra só:</b> semana, setor, MOD e estoque mínimo.</li><li><b>8 indicadores viram 4.</b> "Bloqueios para publicar" fica vermelho quando impede a publicação.</li><li><b>Três botões de borda colorida</b> (Repetir, Copiar, Zerar) saem do meio da tela. "Copiar semana anterior" vai para o topo, e os outros para um menu.</li></ul></div>
+
+  <div class="mob"><h3>Painel de suprimentos · 820 × 1180, em pé</h3>
+    <div class="phones"><figure class="now"><figcaption>Hoje</figcaption><img style="max-width:100%;border-radius:8px" src="img/antes/t-suprimentos.png" alt="Painel de suprimentos atual no tablet em pé"></figure><figure class="new"><figcaption>Proposta</figcaption><img style="max-width:100%;border-radius:8px" src="img/depois/t-suprimentos.png" alt="Painel de suprimentos proposto no tablet em pé"></figure></div>
+    <ul><li><b>A tabela cabe na largura.</b> Hoje a coluna Idade fica cortada. Na proposta, solicitante e número vão para baixo do item, e a tabela tem 3 colunas.</li><li><b>Indicadores sem barra colorida no topo.</b> Viram uma faixa 2 × 2 com divisórias, e a segunda linha traz entregas e tempo médio.</li><li><b>Mesma fonte e mesmo botão do resto,</b> sem o verde-petróleo.</li></ul></div>
+</div>
+
+<div class="mob-intro" id="celular">
+  <h2>Celular</h2>
+  <p class="muted">O mesmo padrão em 390 px de largura. A navegação de baixo (Início, Telas, Recentes, Conta) é a da proposta. O que muda é o que fica em volta dela.</p>
+  <p style="font-size:14px;border-left:3px solid var(--accent);padding-left:12px"><b>Atenção:</b> as capturas "Hoje" de celular são de versões anteriores (1.0.58 a 1.2.9). A única exceção é o login, tirado do sistema publicado (v1.4.6). Na versão atual, o celular usa o menu lateral modelo A, e a barra de cima e a navegação de baixo destas capturas não são mais carregadas. Os dois problemas apontados abaixo (título "Início" e menu sobre o perfil) eram dessa navegação antiga.</p>
+  <ul>
+    <li><b>A barra de cima diz onde você está.</b> Hoje ela mostra "Unificado · Início" mesmo dentro de Números de série ou do Painel de suprimentos.</li>
+    <li><b>Tabelas largas viram listas.</b> No celular, nenhuma tela rola para o lado.</li>
+    <li><b>O botão principal fica no fim da tela,</b> perto do polegar, em vez de ser um bloco grande no topo.</li>
+    <li><b>A aba ativa da navegação de baixo ganha um traço laranja.</b> Os ícones são do mesmo conjunto do resto do sistema.</li>
+  </ul>
+</div>
+<div class="mob-grid">
+  <div class="mob"><h3>Meu acesso rápido</h3>
+    <div class="phones"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/m-acesso-rapido.png" alt="Acesso rápido atual no celular com cartões e siglas"></figure><figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/m-acesso-rapido.png" alt="Acesso rápido proposto em lista"></figure></div>
+    <ul><li>Hoje cabem 4 telas por tela de celular, em cartões com siglas e botão "Abrir". Na proposta cabem as 8 sem rolar.</li><li>Saem "MEU ACESSO RÁPIDO", "Olá, Osmar." e os dois botões soltos no topo.</li></ul></div>
+
+  <div class="mob"><h3>Números de série</h3>
+    <div class="phones"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/m-numeros-serie.png" alt="Números de série atual no celular"></figure><figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/m-numeros-serie.png" alt="Números de série proposto no celular com modelos em lista"></figure></div>
+    <ul><li>Hoje a primeira tela inteira é cabeçalho, abas quebradas em duas linhas, filtros e uma caixa azul. A tabela só aparece depois de rolar.</li><li>Na proposta, cada modelo vira um bloco com a próxima série e os 5 dias em quadradinhos.</li></ul></div>
+
+  <div class="mob"><h3>Painel de suprimentos</h3>
+    <div class="phones"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/m-suprimentos.png" alt="Painel de suprimentos atual no celular com tabela cortada"></figure><figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/m-suprimentos.png" alt="Painel de suprimentos proposto no celular"></figure></div>
+    <ul><li>Hoje a tabela da fila fica cortada à direita, e os dois indicadores ocupam meia tela.</li><li>Na proposta: indicadores lado a lado, fila em lista com o item em destaque e a situação à direita.</li></ul></div>
+
+  <div class="mob"><h3>Telas do módulo (Laboratório)</h3>
+    <div class="phones"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/m-laboratorio.png" alt="Menu de telas atual no celular com grupos fechados em caixa alta"></figure><figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/m-laboratorio.png" alt="Menu de telas proposto no celular"></figure></div>
+    <ul><li>Hoje os módulos aparecem em pílulas cortadas na lateral ("ução", "GED"), e os 7 grupos vêm fechados, em caixa alta.</li><li>Na proposta, o módulo é escolhido num seletor, os grupos mais usados já vêm abertos e os outros mostram quantas telas têm.</li></ul></div>
+
+  <div class="mob"><h3>Conta</h3>
+    <div class="phones"><figure class="now"><figcaption>Hoje</figcaption><img src="img/antes/m-conta.png" alt="Tela de conta atual com menu sobreposto ao nome"></figure><figure class="new"><figcaption>Proposta</figcaption><img src="img/depois/m-conta.png" alt="Tela de conta proposta em lista"></figure></div>
+    <ul><li>Hoje o menu "Como funciona / Relatar problema" abre por cima do perfil e esconde "GERENCIA". Isso é um bug visível na captura.</li><li>Na proposta, tudo vira uma lista simples, e "Sair da conta" fica separado e em vermelho.</li></ul></div>
+
+  <div class="mob"><h3>Login · mantido como está</h3>
+    <div class="phones"><figure class="now"><figcaption>Hoje e proposta</figcaption><img src="img/antes/m-login.png" alt="Login atual no celular, mantido"></figure></div>
+    <ul><li>Decisão: o login atual fica igual no celular e no tablet. A proposta de login vale só para o computador.</li></ul></div>
+</div>
+
+<div class="foot">
+  <span>As telas propostas são HTML estático em <code>docs/revisao-visual-unificado/telas/</code>, todas sobre um único <code>base.css</code>. Esse arquivo é o ponto de partida para o <code>shell/tokens.css</code>.</span>
+  <span>Dados das propostas são ilustrativos. Nenhum arquivo do sistema foi alterado.</span>
+</div>
+</div>
+
+<script>
+(function(){
+  var btns=document.querySelectorAll('.seg button');
+  function setMode(m){
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.mode===m));});
+    document.querySelectorAll('.shots').forEach(function(s){
+      s.classList.toggle('side',m==='side');
+      s.querySelector('.now').hidden=(m==='new');
+      s.querySelector('.new').hidden=(m==='now');
+    });
+    try{localStorage.setItem('cmp-mode',m);}catch(e){}
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){setMode(b.dataset.mode);});});
+  document.querySelectorAll('.shots').forEach(function(s){
+    s.addEventListener('click',function(e){
+      if(e.target.tagName!=='IMG'||s.classList.contains('side'))return;
+      var now=s.querySelector('.now'),nw=s.querySelector('.new');
+      var showNew=!now.hidden; now.hidden=showNew; nw.hidden=!showNew;
+    });
+  });
+  var saved=null;try{saved=localStorage.getItem('cmp-mode');}catch(e){}
+  if(saved==='now'||saved==='new')setMode(saved);
+})();
+</script>

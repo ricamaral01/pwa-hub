@@ -1,0 +1,36 @@
+body[data-modulo="suprimentos"] .sup-buy-card{min-width:0;margin-bottom:16px}
+body[data-modulo="suprimentos"] .sup-buy-filters{justify-content:flex-start}
+body[data-modulo="suprimentos"] .sup-buy-filters>.field{flex:1 1 180px;min-width:0}
+body[data-modulo="suprimentos"] .sup-inline{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#395266}
+body[data-modulo="suprimentos"] .sup-inline input{width:18px;height:18px}
+body[data-modulo="suprimentos"] .sup-buy-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:14px;align-items:end;min-width:0}
+body[data-modulo="suprimentos"] .sup-buy-form>.field{min-width:0}
+body[data-modulo="suprimentos"] .sup-buy-form .sup-span{grid-column:1/-1}
+body[data-modulo="suprimentos"] .sup-top{margin-top:22px}
+body[data-modulo="suprimentos"] .sup-detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,185px),1fr));gap:14px;min-width:0}
+body[data-modulo="suprimentos"] .sup-detail-grid>div{min-width:0;background:#f7fafb;border:1px solid #e6eff0;border-radius:10px;padding:12px}
+body[data-modulo="suprimentos"] .sup-detail-grid small,body[data-modulo="suprimentos"] .sup-detail-grid strong{display:block;overflow-wrap:anywhere}
+body[data-modulo="suprimentos"] .sup-detail-grid small{font-size:11px;color:#617284;margin-bottom:5px}
+body[data-modulo="suprimentos"] .sup-detail-grid strong{font-size:14px}
+body[data-modulo="suprimentos"] .sup-detail-grid .sup-big{font-size:25px}
+body[data-modulo="suprimentos"] .sup-history{display:grid;gap:8px}
+body[data-modulo="suprimentos"] .sup-history p{background:#f8fafb;border:1px solid #e6eff0;border-radius:9px;padding:10px 12px;margin:0;font-size:13px}
+body[data-modulo="suprimentos"] .sup-matrix{min-width:max(760px,100%);table-layout:fixed}
+body[data-modulo="suprimentos"] .sup-matrix th,body[data-modulo="suprimentos"] .sup-matrix td{min-width:190px;vertical-align:top}
+body[data-modulo="suprimentos"] .sup-matrix th:first-child,body[data-modulo="suprimentos"] .sup-matrix td:first-child{min-width:230px}
+body[data-modulo="suprimentos"] .sup-matrix small{display:block;margin-top:5px;white-space:normal}
+body[data-modulo="suprimentos"] .sup-low{color:#0b7662}
+body[data-modulo="suprimentos"] .sup-iqf-chart{position:relative;min-width:0;margin:22px 0 12px;padding:0 0 0 30px}
+body[data-modulo="suprimentos"] .sup-iqf-chart svg{display:block;width:100%;height:180px;overflow:visible}
+body[data-modulo="suprimentos"] .sup-iqf-chart line{stroke:#dce5e9;stroke-width:1}
+body[data-modulo="suprimentos"] .sup-iqf-chart polyline{fill:none;stroke:#0f766e;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+body[data-modulo="suprimentos"] .sup-chart-labels{position:absolute;left:0;top:18px;height:135px;display:flex;flex-direction:column;justify-content:space-between;color:#617284;font-size:11px}
+body[data-modulo="suprimentos"] .table-scroll,body[data-modulo="suprimentos"] .card{min-width:0}
+@media(max-width:767px){
+  body[data-modulo="suprimentos"] .sup-buy-card{padding:16px}
+  body[data-modulo="suprimentos"] .sup-buy-card .section-head{align-items:stretch;flex-direction:column}
+  body[data-modulo="suprimentos"] .sup-buy-card .section-head .btn{width:100%}
+  body[data-modulo="suprimentos"] .sup-buy-filters>.field{flex-basis:100%}
+  body[data-modulo="suprimentos"] .sup-buy-form{grid-template-columns:1fr}
+  body[data-modulo="suprimentos"] .sup-detail-grid{grid-template-columns:minmax(0,1fr)}
+}

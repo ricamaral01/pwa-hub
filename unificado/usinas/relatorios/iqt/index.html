@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Indicadores Usina - IQT · ConcreTrack</title>
+  <script>
+    if (top === self) {
+      const params = new URLSearchParams({area:'relatorios',app:'iqt'});
+      for (const [key,value] of new URLSearchParams(location.search)) params.set(key,value);
+      location.replace('/unificado/?view=' + encodeURIComponent('usinas/?' + params));
+    }
+  </script>
+  <style>
+    :root{font-family:Inter,"Segoe UI",system-ui,sans-serif;color:#0b2143;background:#f4f7fb}
+    *{box-sizing:border-box}body{margin:0}main{max-width:1320px;margin:auto;padding:28px clamp(16px,3vw,38px) 60px}
+    .eyebrow{text-transform:uppercase;letter-spacing:.12em;color:#aa5c00;font-size:.75rem;font-weight:800;margin:0 0 6px}
+    h1{font-size:clamp(1.5rem,3vw,2.25rem);margin:0 0 6px}p{color:#52637d;line-height:1.45}
+    .top{display:flex;justify-content:space-between;gap:20px;align-items:start}.back{color:#0e5090;text-decoration:none;font-weight:700;font-size:.9rem;padding:10px 0}
+    .filters{display:flex;flex-wrap:wrap;gap:12px;align-items:end;background:#fff;padding:20px;border:1px solid #dbe4ef;border-radius:14px;margin:24px 0 16px}
+    label{display:grid;gap:6px;font-weight:700;font-size:.84rem}input{font:inherit;padding:10px 12px;border:1px solid #b9c7d9;border-radius:8px;color:#0b2143;min-width:165px}
+    button{font:inherit;cursor:pointer;border:0;border-radius:8px;background:#1557a5;color:#fff;padding:11px 20px;font-weight:800}button:disabled{opacity:.55;cursor:wait}
+    .status{font-size:.85rem;color:#52637d;margin:0 0 15px;min-height:1.2em}.status.error{color:#bd2535}
+    .summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 20px}.summary article{background:#fff;border:1px solid #dbe4ef;border-radius:12px;padding:17px 20px}.summary span{font-size:.78rem;color:#52637d;font-weight:700}.summary strong{display:block;font-size:1.55rem;margin-top:4px}
+    .table-wrap{overflow-x:auto;background:#fff;border:1px solid #dbe4ef;border-radius:14px}table{border-collapse:collapse;width:100%;min-width:980px;font-size:.9rem}th,td{border-bottom:1px solid #e2e8f0;text-align:left;padding:15px 14px}thead{background:#f2f5f9}thead th{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#314464}tbody tr.child td:first-child{font-style:italic;color:#52637d;padding-left:33px}tbody tr.defect{background:#fff8f8}tfoot{background:#f6f9fc;font-weight:800}tfoot td{border-top:2px solid #cbd5e1;border-bottom:0}
+    .metric{display:flex;align-items:center;gap:14px}.metric strong{min-width:47px}.bar{height:9px;width:100px;background:#e2e8f0;border-radius:99px;overflow:hidden;flex:none}.bar i{display:block;height:100%;border-radius:99px;background:#2862df}.orange .bar i{background:#f59e0b}.red .bar i{background:#ef4444}.volume{font-weight:800;color:#079876}.orange .volume{color:#dc8100}.red .volume{color:#ed4141}
+    .pill{display:inline-block;border-radius:99px;background:#e9eef4;color:#314464;padding:7px 12px;font-size:.7rem;font-weight:800;white-space:nowrap}.pill.blue{background:#dceafd;color:#2862df}.pill.green{background:#d7f8e7;color:#008b61}.pill.red{background:#ffe2e2;color:#ed4141}
+    .note{font-size:.8rem;margin:16px 0 0}td:nth-child(4),td:nth-child(6){font-weight:800}
+    @media(max-width:700px){.top{display:block}.summary{grid-template-columns:1fr}.summary article{padding:12px 16px}.filters label{flex:1;min-width:140px}.filters input{width:100%;min-width:0}.filters button{width:100%}}
+    @media print{body{background:#fff}main{padding:0}.filters,.back,button{display:none}.table-wrap{border:0;overflow:visible}.summary article{break-inside:avoid}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="top"><div><p class="eyebrow">Relatórios gerenciais · Campinas</p><h1>Indicadores Usina - IQT</h1><p>Classificação dos concretos lançados no Mapa de Concretagem.</p></div><a class="back" href="/unificado/usinas/relatorios/">← Relatórios</a></div>
+  <form class="filters" id="filters"><label>Data inicial<input type="date" id="start" required></label><label>Data final<input type="date" id="end" required></label><button type="submit" id="submit">Visualizar período</button></form>
+  <p class="status" id="status" role="status">Preparando consulta…</p>
+  <section class="summary" aria-label="Resumo do período"><article><span>Total de lançamentos</span><strong id="total">—</strong></article><article><span>Concreto padrão</span><strong id="standard">—</strong></article><article><span>Volume estimado</span><strong id="volume">—</strong></article></section>
+  <div class="table-wrap"><table><thead><tr><th>Tipo de concreto</th><th>Classificação</th><th>Qtd. lançamentos</th><th>% do total</th><th>Volume estimado</th><th>Vol. % total</th><th>Status</th></tr></thead><tbody id="rows"></tbody><tfoot id="foot"></tfoot></table></div>
+  <p class="note" id="method"></p>
+</main>
+<script>
+  const $=id=>document.getElementById(id);
+  const number=new Intl.NumberFormat('pt-BR');
+  const decimal=new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const month=new Date().toLocaleDateString('en-CA').slice(0,7);
+  const params=new URLSearchParams(location.search);
+  const initialMonth=/^\d{4}-(0[1-9]|1[0-2])$/.test(params.get('mes')||'')?params.get('mes'):month;
+  $('start').value=params.get('data_ini')||`${initialMonth}-01`;
+  $('end').value=params.get('data_fim')||new Date(Number(initialMonth.slice(0,4)),Number(initialMonth.slice(5,7)),0).toLocaleDateString('en-CA');
+  function cell(text,tag='td'){const node=document.createElement(tag);node.textContent=text;return node}
+  function bar(value){const outer=document.createElement('span');outer.className='bar';const inner=document.createElement('i');inner.style.width=`${Math.max(0,Math.min(100,value))}%`;outer.append(inner);return outer}
+  function row(item,child=false,total=false){
+    const tr=document.createElement('tr');if(child)tr.classList.add('child');
+    if(item.status==='defeito')tr.classList.add('defect','red');else if(item.status==='normal'||item.status==='revisar')tr.classList.add('orange');
+    tr.append(cell((child?'↳ ':'')+item.tipo));
+    const classification=cell('');const badge=cell(item.classificacao,'span');badge.className='pill '+(item.status==='defeito'?'red':item.status==='conforme'?'blue':'');classification.append(badge);tr.append(classification);
+    const count=cell('');const countMetric=cell('','span');countMetric.className='metric';countMetric.append(cell(number.format(item.lancamentos),'strong'),bar(item.percentual));count.append(countMetric);tr.append(count);
+    tr.append(cell(`${decimal.format(item.percentual)}%`));const vol=cell(`${decimal.format(item.volume_m3)} m³`);vol.className='volume';tr.append(vol);
+    const share=cell('');const shareMetric=cell('','span');shareMetric.className='metric';shareMetric.append(cell(`${decimal.format(item.volume_percentual)}%`,'strong'),bar(item.volume_percentual));share.append(shareMetric);tr.append(share);
+    const status=cell('');const statusBadge=cell(item.status==='conforme'?'Conforme':item.status==='defeito'?'Defeito':item.status==='base'?'Base':item.status==='revisar'?'Revisar':'Normal','span');statusBadge.className='pill '+(item.status==='conforme'?'green':item.status==='defeito'?'red':'');status.append(statusBadge);tr.append(status);
+    return tr;
+  }
+  async function load(event){
+    event?.preventDefault();const start=$('start').value,end=$('end').value;
+    if(!start||!end||start>end){$('status').textContent='Informe um período válido.';$('status').className='status error';return}
+    $('submit').disabled=true;$('status').textContent='Consultando lançamentos…';$('status').className='status';
+    try{
+      const query=new URLSearchParams({data_ini:start,data_fim:end});
+      const response=await fetch('/unificado/mapa/api/usina/iqt?'+query,{credentials:'same-origin',cache:'no-store'});
+      const data=await response.json();if(!response.ok)throw new Error(data.error||`Falha ${response.status}`);
+      $('rows').replaceChildren(...data.linhas.map((item,index)=>row(item,index>1)));$('foot').replaceChildren(row(data.total,false,true));
+      $('total').textContent=number.format(data.total.lancamentos);$('standard').textContent=`${decimal.format(data.linhas[0].percentual)}%`;
+      $('volume').textContent=`${decimal.format(data.total.volume_m3)} m³`;
+      $('method').textContent=`Fonte: ${data.fonte}. ${data.criterio}. Volume estimado: ${decimal.format(data.volume_por_lancamento_m3)} m³ por lançamento.`;
+      $('status').textContent=`Período de ${start.split('-').reverse().join('/')} a ${end.split('-').reverse().join('/')}.`;
+      history.replaceState(null,'','?'+query);
+    }catch(error){$('status').textContent=error.message;$('status').className='status error'}finally{$('submit').disabled=false}
+  }
+  $('filters').addEventListener('submit',load);load();
+</script>
+</body>
+</html>

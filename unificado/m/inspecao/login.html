@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0F2C4C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Inspeção S3/4">
+  <title>Entrar · Inspeção S3/4</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="/unificado/shell/shell.css?v=1.0">
+  <link rel="stylesheet" href="/unificado/shell/password-visibility.css?v=2">
+  <script defer src="/unificado/shell/auth.js?v=20261021-inspecao1"></script>
+  <script defer src="/unificado/shell/password-visibility.js?v=2"></script>
+</head>
+<body>
+  <main class="login-layout">
+    <section class="login-card" aria-labelledby="login-title">
+      <div class="login-brand" aria-label="Concrefer e ConcreTrack">
+        <img class="login-logo-concrefer" src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer" width="190" height="50">
+        <span class="login-brand-divider" aria-hidden="true"></span>
+        <img class="login-logo-concretrack" src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack" width="76" height="76">
+      </div>
+      <h1 id="login-title">Inspeção Setor 3 e 4</h1>
+      <p>Entre com seu usuário e senha do Unificado.</p>
+      <form id="unificado-login-form">
+        <label class="login-field"><span>Usuário</span><input type="text" name="username" autocomplete="username" required></label>
+        <label class="login-field"><span>Senha</span><input type="password" name="password" autocomplete="current-password" required></label>
+        <button class="button button-primary login-submit" type="submit">Entrar</button>
+      </form>
+      <form id="first-access-form" hidden>
+        <label class="login-field"><span>Nova senha</span><input type="password" name="newPassword" autocomplete="new-password" minlength="6" required></label>
+        <label class="login-field"><span>Confirmar nova senha</span><input type="password" name="confirmPassword" autocomplete="new-password" minlength="6" required></label>
+        <button class="button button-primary login-submit" type="submit">Definir senha e entrar</button>
+      </form>
+      <p id="login-feedback" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+  <script>if (!new URLSearchParams(location.search).has('next')) history.replaceState(null,'','login.html?next=m%2Finspecao%2F');</script>
+</body>
+</html>

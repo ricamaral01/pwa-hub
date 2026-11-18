@@ -1,0 +1,8 @@
+html,body{height:100%;margin:0}
+#mdo-install.app{height:100dvh;min-height:0;padding:0}
+#mdo-install[hidden]{display:none!important}
+#mdo-install [hidden]{display:none!important}
+#mdo-install .install-icon{display:block;margin:0 auto 14px;border-radius:22px;box-shadow:0 8px 24px #0004}
+#mdo-install .install-bottom{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+#mdo-install .install-card .primary{margin-top:4px}
+#mdo-mobile .mdo-install-link{display:flex;align-items:center;justify-content:center;min-height:48px;margin:14px 0 2px;border:1px solid #c9d2dd;border-radius:12px;background:#fff;color:#0f2c4c;font-size:15px;font-weight:700;text-decoration:none}

@@ -1,0 +1,91 @@
+/* One dashboard system on desktop and phones. Existing data, IDs and exports stay intact. */
+#viewProdAnalise,#viewMontagemIndicadores,#viewDashboardDefeitos{
+  --dash-ink:#172b41;--dash-muted:#637589;--dash-line:#dce5ed;--dash-surface:#fff;
+  --dash-accent:#e8762a;--dash-soft:#f6f8fb;--dash-shadow:0 7px 24px rgba(16,39,65,.07);
+  color:var(--dash-ink);background:var(--dash-soft);max-width:1600px;margin-inline:auto
+}
+#viewProdAnalise .mi-topbar,#viewMontagemIndicadores .mi-topbar,#viewDashboardDefeitos .df-v4-topbar{
+  border-radius:18px;background:linear-gradient(115deg,#10283e,#21435c);color:#fff;
+  box-shadow:0 10px 28px rgba(13,37,58,.17)
+}
+#viewDashboardDefeitos .df-v4-title-row{padding:12px 2px 0}
+#viewDashboardDefeitos .df-v4-title-row h2{font-size:clamp(24px,3vw,34px)}
+.dash-v7-switch{display:flex;align-items:center;gap:5px;margin:0 0 16px;padding:5px;
+  width:max-content;max-width:100%;overflow:auto;background:#e7edf3;border-radius:13px;scrollbar-width:thin}
+.dash-v7-switch button{min-height:40px;white-space:nowrap;padding:8px 15px;border:0;border-radius:9px;
+  background:transparent;color:#42586c;font:700 13px Geist,system-ui,sans-serif;cursor:pointer}
+.dash-v7-switch button[aria-current="page"]{background:#fff;color:#a84d12;box-shadow:0 2px 7px rgba(16,39,65,.12)}
+.dash-v7-switch button:focus-visible{outline:3px solid #e8762a;outline-offset:2px}
+#viewProdAnalise .pa-filters-inline,#viewMontagemIndicadores .mi-fixed-filters-bar,
+#viewDashboardDefeitos .df-v4-filters{border:1px solid var(--dash-line);border-radius:16px;
+  background:#fff;box-shadow:var(--dash-shadow)}
+#viewMontagemIndicadores .dashboard-filter-panel,#viewDashboardDefeitos .dashboard-filter-panel{
+  display:flex;flex-wrap:wrap;align-items:end;gap:12px;padding:16px}
+#viewMontagemIndicadores .dashboard-filter-heading,#viewDashboardDefeitos .dashboard-filter-heading{width:100%;
+  display:flex;justify-content:space-between;align-items:center;color:var(--dash-ink)}
+#viewMontagemIndicadores .dashboard-filter-period,#viewDashboardDefeitos .dashboard-filter-period{display:flex;
+  flex:1 1 420px;flex-wrap:wrap;align-items:end;gap:9px}
+#viewMontagemIndicadores .dashboard-filter-group-label,#viewDashboardDefeitos .dashboard-filter-group-label{width:100%}
+#viewMontagemIndicadores .mi-filter-item,#viewDashboardDefeitos .mi-filter-item{min-width:0}
+#viewMontagemIndicadores .mi-filter-item label,#viewDashboardDefeitos .mi-filter-item label{display:block;margin-bottom:5px;
+  color:var(--dash-muted);font-size:12px;font-weight:700}
+#viewMontagemIndicadores .input-field,#viewDashboardDefeitos .input-field{
+  width:100%;min-height:40px;border:1px solid var(--dash-line);border-radius:9px;background:#fff;color:var(--dash-ink)}
+#viewMontagemIndicadores .dashboard-filter-presets,#viewDashboardDefeitos .dashboard-filter-presets{
+  display:flex;gap:4px;max-width:100%;overflow-x:auto;padding:3px;background:#edf2f6;border-radius:10px}
+#viewMontagemIndicadores .dashboard-filter-presets button,#viewDashboardDefeitos .dashboard-filter-presets button{
+  white-space:nowrap;min-height:34px;border:0;border-radius:7px;background:transparent;color:#435a70;font-weight:650}
+#viewMontagemIndicadores .dashboard-filter-presets button.active,#viewDashboardDefeitos .dashboard-filter-presets button.active{
+  background:#fff;color:#a84d12;box-shadow:0 1px 4px #172b4122}
+#viewMontagemIndicadores .mi-filter-actions,#viewDashboardDefeitos .mi-filter-actions{display:flex;gap:8px;align-items:end}
+#viewMontagemIndicadores .mi-filter-actions button,#viewDashboardDefeitos .mi-filter-actions button{min-height:40px!important;
+  border-radius:9px!important;padding:0 14px!important}
+#viewProdAnalise .pa-kpis-grid,#viewMontagemIndicadores .mi-kpis-grid,
+#viewDashboardDefeitos .df-v4-hero-grid,#viewDashboardDefeitos .df-new-cards{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px}
+#viewProdAnalise #paSecaoResumo .pa-kpis-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+body.mode-montagem-indicadores #viewMontagemIndicadores .mi-kpis-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+#viewProdAnalise .mi-kpi-card,#viewMontagemIndicadores .mi-kpi-card,
+#viewDashboardDefeitos .df-v4-mini-kpi,#viewDashboardDefeitos .df-new-card{
+  border-radius:14px;background:#fff;border:1px solid var(--dash-line);border-top:3px solid var(--dash-accent);
+  box-shadow:var(--dash-shadow);min-width:0}
+#viewProdAnalise .mi-kpi-recusados,#viewDashboardDefeitos .df-new-main{border-top-color:#bd454c;background:#fff8f7}
+#viewMontagemIndicadores .mi-kpi-taxa-logins{border-top-color:#18805a;background:#f4fbf7}
+#viewMontagemIndicadores .mi-timeline-card{border:1px solid #b8d9c9;background:#f8fcf9}
+#viewMontagemIndicadores .mi-timeline-card .mi-chart-title{color:#146344;font-size:17px}
+#viewProdAnalise .mi-chart-card,#viewMontagemIndicadores .mi-chart-card,
+#viewDashboardDefeitos .df-new-panel,#viewDashboardDefeitos .df-v4-panel{
+  min-width:0;border:1px solid var(--dash-line);border-radius:15px;background:#fff;box-shadow:var(--dash-shadow)}
+#viewProdAnalise .mi-chart-canvas-wrap,#viewMontagemIndicadores .mi-chart-canvas-wrap{min-width:0;min-height:280px}
+#viewProdAnalise .pa-table-responsive,#viewMontagemIndicadores .mi-table-responsive,
+#viewDashboardDefeitos .df-v4-table-wrap{max-width:100%;overflow-x:auto}
+@media(max-width:720px){
+  #viewProdAnalise,#viewMontagemIndicadores,#viewDashboardDefeitos{width:100%;padding:4px 0 22px;overflow-x:clip}
+  #viewProdAnalise .mi-topbar,#viewMontagemIndicadores .mi-topbar{padding:17px}
+  #viewDashboardDefeitos .df-v4-body{padding:12px}
+  #viewMontagemIndicadores .dashboard-filter-panel,#viewDashboardDefeitos .dashboard-filter-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:13px}
+  #viewMontagemIndicadores .dashboard-filter-heading,#viewDashboardDefeitos .dashboard-filter-heading,
+  #viewMontagemIndicadores .dashboard-filter-period,#viewDashboardDefeitos .dashboard-filter-period,
+  #viewMontagemIndicadores .dashboard-filter-presets,#viewDashboardDefeitos .dashboard-filter-presets,
+  #viewMontagemIndicadores .mi-filter-search,#viewDashboardDefeitos .mi-filter-search,
+  #viewMontagemIndicadores .mi-filter-actions,#viewDashboardDefeitos .mi-filter-actions{grid-column:1/-1}
+  #viewMontagemIndicadores .dashboard-filter-period,#viewDashboardDefeitos .dashboard-filter-period{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  #viewMontagemIndicadores .dashboard-filter-group-label,#viewDashboardDefeitos .dashboard-filter-group-label{grid-column:1/-1}
+  #viewMontagemIndicadores .dashboard-filter-quick,#viewDashboardDefeitos .dashboard-filter-quick{grid-column:1/-1}
+  #viewProdAnalise #paFiltrosDrawer.ref-inline-filters .mi-drawer-body{display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr));align-items:end}
+  #viewProdAnalise #paFiltrosDrawer.ref-inline-filters .dashboard-filter-period{grid-column:1/-1}
+  #viewProdAnalise #paFiltrosDrawer.ref-inline-filters .mi-drawer-footer{display:flex!important;flex-wrap:wrap}
+  #viewProdAnalise #paSecaoResumo .pa-kpis-grid,#viewMontagemIndicadores .mi-kpis-grid,
+  #viewDashboardDefeitos .df-v4-hero-grid,#viewDashboardDefeitos .df-new-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.mode-montagem-indicadores #viewMontagemIndicadores .mi-kpis-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #viewProdAnalise .mi-charts-row,#viewMontagemIndicadores .mi-charts-row,
+  #viewDashboardDefeitos .df-new-panels{grid-template-columns:minmax(0,1fr)}
+  #viewProdAnalise .mi-chart-card,#viewMontagemIndicadores .mi-chart-card{padding:13px}
+  #viewProdAnalise .pa-filters-inline .mi-drawer-footer button{min-height:40px}
+}
+@media(max-width:340px){
+  #viewProdAnalise #paSecaoResumo .pa-kpis-grid,#viewMontagemIndicadores .mi-kpis-grid,
+  #viewDashboardDefeitos .df-v4-hero-grid,#viewDashboardDefeitos .df-new-cards{grid-template-columns:minmax(0,1fr)}
+  body.mode-montagem-indicadores #viewMontagemIndicadores .mi-kpis-grid{grid-template-columns:minmax(0,1fr)}
+}

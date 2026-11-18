@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indicador geral · Produção</title><link rel="stylesheet" href="./style.css?v=20261118-pagina-1">
+<script defer src="./app.js?v=20261118-pagina-1"></script></head>
+<body><main class="dashboard">
+  <header class="hero"><div><span class="eyebrow">Produção · 4 unidades</span><h1>Indicador geral</h1><p>Compare a produtividade diária de Campinas, Pederneiras, Ribeirão e Noroeste.</p></div><span class="hero-mark" aria-hidden="true">▦</span></header>
+  <section class="toolbar" aria-label="Filtros"><label>Mês <input id="month" type="month"></label><button id="reload" type="button">Atualizar dados</button><span id="updated" role="status"></span></section>
+  <div id="feedback" class="feedback" role="alert" hidden></div>
+  <section class="summary" aria-label="Resumo do período" id="summary"></section>
+  <p class="indicator-link"><a class="page-link" href="/unificado/producao/campinas-unificado/" target="_top">Campinas Unificado · Indicadores dos setores 1 + 2 + 3 + 4 →</a></p>
+  <div class="chart-pair">
+  <section class="chart-card"><div class="section-heading"><div><span class="kicker">PRODUÇÃO DO MÊS</span><h2>Total produzido por unidade</h2><p>Quantidade de postes apontados em cada unidade no período.</p></div><span class="unit-label">postes</span></div><div id="chart-units" class="production-bars" role="img" aria-label="Gráfico do total produzido por unidade"></div></section>
+  <section class="chart-card"><div class="section-heading"><div><span class="kicker">SOMA DAS 4 UNIDADES</span><h2>Produção total dia a dia</h2><p>Postes apontados em Campinas, Pederneiras, Ribeirão e Noroeste.</p></div><strong id="combined-total" class="combined-total"></strong></div><div class="chart-scroll"><svg id="chart-combined" role="img" aria-label="Gráfico diário da soma de postes produzidos nas quatro unidades"></svg></div></section>
+  </div>
+  <div id="unit-charts" class="unit-charts" aria-label="Quilos e postes por homem dia a dia, por unidade"></div>
+  <section class="table-card"><div class="section-heading"><div><span class="kicker">CONFERÊNCIA</span><h2>Dados dia a dia</h2><p>“—” indica ausência de produção, equipe não apontada ou peso não cadastrado.</p></div></div><div class="table-scroll"><table class="daily-table" aria-label="Produção diária por unidade"><colgroup><col class="date-col"><col span="16"></colgroup><thead><tr><th rowspan="2" scope="col" class="date-heading">Data</th><th colspan="4" scope="colgroup" class="unit-heading campinas">Campinas</th><th colspan="4" scope="colgroup" class="unit-heading pederneiras">Pederneiras</th><th colspan="4" scope="colgroup" class="unit-heading ribeirao">Ribeirão</th><th colspan="4" scope="colgroup" class="unit-heading noroeste">Noroeste</th></tr><tr><th scope="col">Postes</th><th scope="col">Homens</th><th scope="col">kg/homem</th><th scope="col">Postes/<br>homem</th><th scope="col">Postes</th><th scope="col">Homens</th><th scope="col">kg/homem</th><th scope="col">Postes/<br>homem</th><th scope="col">Postes</th><th scope="col">Homens</th><th scope="col">kg/homem</th><th scope="col">Postes/<br>homem</th><th scope="col">Postes</th><th scope="col">Homens</th><th scope="col">kg/homem</th><th scope="col">Postes/<br>homem</th></tr></thead><tbody id="daily-rows"></tbody></table></div></section>
+  <section class="table-card calculation-card" aria-labelledby="calculation-title">
+    <div class="section-heading"><div><span class="kicker">METODOLOGIA</span><h2 id="calculation-title">Memória de cálculo</h2><p>Como são calculados os indicadores exibidos nesta página.</p></div></div>
+    <div class="formula-grid">
+      <article><h3>kg/homem no dia</h3><p class="formula">Peso produzido (kg) ÷ homens apontados</p><p>Peso produzido = soma de (quantidade de cada produto × peso unitário cadastrado em kg).</p></article>
+      <article><h3>Postes/homem no dia</h3><p class="formula">Postes produzidos ÷ homens apontados</p><p>Postes produzidos = soma das quantidades de postes do dia, sem itens da família que não representa postes.</p></article>
+    </div>
+    <h3>De onde vem a quantidade de homens?</h3>
+    <p><strong>Campinas — setores 1 e 2:</strong> os homens vêm sempre da tela <a href="/unificado/pcp/maodeobra/" target="_top">PCP · Mão de obra</a>, no grupo Setores 1 e 2: MOD + MOI apontadas na mesma data. A quantidade de homens do relatório importado não é utilizada. Sem equipe apontada, os indicadores do dia ficam indisponíveis.</p>
+    <p>Para Campinas, a quantidade de postes e o peso produzido vêm do Controle de Produção LT-PRO-04 importado; quando não há dias importados no mês, esses dois dados vêm do painel PCP dos setores 1 e 2.</p>
+    <p><strong>Pederneiras, Ribeirão e Noroeste:</strong> soma as quantidades de pessoas apontadas nas atividades da própria unidade no dia: MOD (mão de obra direta) + MOI (mão de obra indireta). Aceita os valores fracionados registrados, como 8,75.</p>
+    <h3>Resumo do mês e linha de média</h3>
+    <p><strong>kg/homem = soma dos pesos ÷ soma dos homens diários.</strong><br><strong>Postes/homem = soma dos postes ÷ soma dos homens diários.</strong></p>
+    <p>Considera os dias com produção. A soma dos homens representa pessoas-dia, não funcionários distintos; a média é a razão entre os totais do período, e não a média simples dos indicadores diários. Se algum dia com produção estiver sem equipe, os dois indicadores do resumo ficam indisponíveis; se faltar peso, apenas kg/homem fica indisponível.</p>
+    <p class="method">Sem equipe ou peso informado, o indicador correspondente aparece como “—”. kg/homem é exibido sem casas decimais; homens e postes/homem, com duas. O resumo utiliza os pesos e as quantidades de origem, antes do arredondamento da exibição.</p>
+  </section>
+</main></body></html>

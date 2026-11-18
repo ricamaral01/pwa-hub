@@ -1,0 +1,64 @@
+.section-confirmacao{margin:18px 0 22px}
+.confirm-loading{padding:24px;background:#f8fbfd;color:#506278;border:1px solid #d2deea;border-radius:9px;font-weight:700}
+.confirm-intro{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:12px 0}
+.confirm-intro p{font-size:12px;color:#506278;line-height:1.5;max-width:690px;margin:0}
+.confirm-intro label{display:grid;gap:4px;font-size:10px;font-weight:800;text-transform:uppercase;color:#506278;min-width:150px}
+.confirm-intro select{border:1px solid #c5d2e0;border-radius:7px;padding:8px;background:#fff;color:#12385a;font-weight:700}
+.confirm-summary{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.confirm-guidance{padding:12px 14px;border-radius:8px;font-size:12px;line-height:1.5;margin:12px 0}
+.confirm-guidance.ready{background:#e9f7ee;border:1px solid #9bd6b2;color:#126334}
+.confirm-guidance.restricted{background:#fff2e8;border:1px solid #f3c6a8;color:#9a3d19}
+.confirm-show-all{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#12385a;cursor:pointer}
+.confirm-show-all input{width:17px;height:17px}
+.confirm-empty{border:1px dashed #c5d2e0;border-radius:8px;padding:14px;color:#52697f;font-size:12px}
+.confirm-summary span{padding:8px 11px;background:#f2f6fa;border:1px solid #d2deea;border-radius:8px;font-size:11px;font-weight:700;color:#34455b}
+.confirm-summary b{font-size:17px;color:#12385a;margin-right:4px}
+.confirm-summary .is-final{background:#e9f7ee;border-color:#a7dabb;color:#126334}
+.confirm-summary .is-final b{color:#126334}
+.confirm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;align-items:start}
+.confirm-column{display:grid;gap:7px;min-width:0}
+.confirm-column-head{display:flex;justify-content:space-between;align-items:center;padding:10px 11px;background:#12385a;color:#fff;border-radius:7px;font-size:12px}
+.confirm-column-head span{font-size:10px;color:#cbe4f0}
+.confirm-form{border:1px solid #d2deea;border-left:4px solid #b6c6d5;border-radius:8px;padding:9px 10px;background:#fff;break-inside:avoid}
+.confirm-form:has(.confirm-done){border-left-color:#1a9c60;background:#f7fcf9}
+.confirm-form.outside{border-left-color:#d97706;background:#fffbf3}
+.confirm-form-top{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.confirm-form-top strong{font-size:14px;color:#12385a}
+.confirm-form-top span{font-size:10px;color:#66798c;flex:1}
+.confirm-form-top small{font-size:9px;color:#66798c}
+.confirm-form-status{display:flex;flex-wrap:wrap;gap:4px;margin:7px 0}
+.confirm-flag{display:inline-flex;padding:3px 6px;border-radius:5px;font-size:9px;font-weight:800}
+.confirm-flag.yes{background:#e7f5ed;color:#176640}.confirm-flag.no{background:#fff0e8;color:#a94620}
+.confirm-concrete{display:block;color:#506278;font-size:10px;margin-top:2px}
+.confirm-form-action{display:flex;justify-content:flex-end;margin-top:7px}
+.confirm-action,.confirm-done{padding:6px 9px;border-radius:6px;font-size:10px;font-weight:800}
+.confirm-action{background:#12385a;border:1px solid #12385a;color:#fff;cursor:pointer;padding:9px 12px;font-size:12px}
+.confirm-action:disabled{background:#edf1f5;border-color:#d2deea;color:#8391a0;cursor:not-allowed}
+.confirm-done{color:#14784a;background:#e5f4eb}
+.confirm-alert{padding:12px;background:#fff2e8;border:1px solid #f3c6a8;border-radius:8px;color:#9a3d19;font-size:12px;font-weight:700}
+@media(max-width:760px){.confirm-intro{display:block}.confirm-intro label{margin-top:10px}.section-confirmacao{overflow-x:auto}.confirm-grid{grid-template-columns:repeat(2,minmax(310px,1fr));min-width:640px}.confirm-column-head{position:static}}
+@media print{.confirm-action,.confirm-intro select{display:none!important}.confirm-grid{grid-template-columns:1fr 1fr;gap:8px}.confirm-form{padding:4px 6px}.confirm-form-status{margin:3px 0}.confirm-form-action:empty{display:none}}
+
+.confirm-form-action{gap:7px;flex-wrap:wrap;align-items:center}.confirm-reverse{background:#b4232f;border-color:#b4232f;color:white}.confirm-reverse:hover{background:#8f1721}.confirm-history{background:white;border:1px solid #c9d6e3;color:#405f7b;border-radius:6px;font-size:10px;padding:6px 9px;cursor:pointer}.confirm-dialog{width:min(560px,94vw);max-height:90dvh;border:1px solid #c8d5e2;border-radius:12px;padding:0;color:#17324e;box-shadow:0 20px 60px #0004}.confirm-dialog::backdrop{background:#102c4e88}.confirm-dialog header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #d4e0eb;gap:10px}.confirm-dialog h3{margin:0;font-size:18px}.confirm-dialog header button{background:white;border:0;font-size:24px;cursor:pointer}.confirm-dialog-body{padding:18px 20px;font-size:13px;line-height:1.5}.confirm-dialog label{display:grid;gap:6px;font-weight:700;margin:14px 0}.confirm-dialog select,.confirm-dialog textarea{width:100%;border:1px solid #b6c9dc;border-radius:7px;padding:10px;font:inherit;background:white}.confirm-dialog textarea{min-height:80px}.confirm-dialog-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:20px}.confirm-dialog-actions button{font-size:13px;min-height:42px;padding:9px 13px;border-radius:7px;cursor:pointer}.confirm-dialog [data-error]{color:#b4232f;font-weight:700}.confirm-history-event{display:grid;gap:4px;padding:13px 0;border-bottom:1px solid #d4e0eb}.confirm-history-event small{color:#52697f}
+@media(max-width:620px){.confirm-dialog{width:96vw}.confirm-dialog-actions button{flex:1}.confirm-action,.confirm-history{min-height:38px}}
+@media print{.confirm-history,.confirm-dialog{display:none!important}}
+
+.confirm-dialog{width:min(540px,calc(100vw - 32px));max-height:calc(100dvh - 32px);border:0;border-radius:16px;box-shadow:0 24px 80px #102c4e40;overflow:auto;font-family:inherit}
+.confirm-dialog::backdrop{background:#10253c99;backdrop-filter:blur(3px)}
+.confirm-dialog header{padding:20px 24px;background:#f2f7fb;border-bottom:1px solid #dce6ef;align-items:flex-start}
+.confirm-dialog-eyebrow{display:block;color:#5b7288;font-size:10px;font-weight:800;letter-spacing:1px;margin-bottom:7px}
+.confirm-dialog h3{color:#12385a;font-size:22px;line-height:1.25}
+.confirm-dialog header button{display:grid;place-items:center;flex-shrink:0;width:36px;height:36px;border:1px solid #d2deea;border-radius:9px;color:#52697f;font-size:25px;line-height:1}
+.confirm-dialog-body{padding:20px 24px 24px}
+.confirm-dialog-lead{margin:0 0 18px;color:#52697f;font-size:14px}
+.confirm-dialog-details{display:grid;grid-template-columns:1fr 1fr;gap:16px;background:#f7f9fc;border:1px solid #dce6ef;border-radius:10px;padding:18px;margin:0}
+.confirm-dialog-details div{min-width:0}.confirm-dialog-details dt{font-size:11px;color:#5b7288;margin-bottom:4px}.confirm-dialog-details dd{margin:0;font-size:15px;font-weight:800;overflow-wrap:anywhere}
+.confirm-dialog-info{padding:12px 14px;background:#eaf5f1;border-radius:8px;color:#236447;font-size:12px;margin:16px 0 0}
+.confirm-dialog-actions{padding-top:18px;margin-top:20px;border-top:1px solid #e3eaf2;gap:10px}
+.confirm-dialog-actions button{font-family:inherit;font-weight:800;min-height:44px;border:1px solid #c5d2e0;background:#fff;color:#34536d;padding:11px 18px;border-radius:9px}
+.confirm-dialog-actions .confirm-action{background:#12385a;border-color:#12385a;color:#fff}.confirm-dialog-actions .confirm-reverse{background:#b4232f;border-color:#b4232f}
+.confirm-dialog button:disabled{opacity:.6;cursor:wait}.confirm-dialog :focus-visible,.confirm-form :focus-visible{outline:3px solid #38a5df;outline-offset:3px}
+.confirm-dialog [data-error]:empty{display:none}.confirm-dialog [data-error]:not(:empty){padding:12px;border-radius:8px;background:#fff1f1;border:1px solid #f2c0c4;margin:16px 0 0}
+.confirm-notice{position:fixed;right:20px;bottom:20px;z-index:1000;max-width:calc(100vw - 40px);padding:14px 18px;border:1px solid #a7dabb;border-radius:10px;background:#e9f7ee;color:#126334;font-size:13px;font-weight:800;box-shadow:0 8px 28px #102c4e26;pointer-events:none}
+@media(max-width:620px){.confirm-dialog header,.confirm-dialog-body{padding:18px}.confirm-dialog h3{font-size:20px}.confirm-dialog-actions button{flex:1}.confirm-dialog-details{gap:14px;padding:14px}}
+@media print{.confirm-notice{display:none!important}}

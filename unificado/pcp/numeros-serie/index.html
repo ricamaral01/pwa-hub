@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Números de série dos postes - Setor 3</title>
+<script>if(top===self&&!['localhost','127.0.0.1'].includes(location.hostname))location.replace('/unificado/?view='+encodeURIComponent(location.pathname.slice('/unificado/'.length).replace(/index\.html$/,'')+location.search));</script>
+<script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+<script src="/unificado/pcp/unificado-screen-context.js?v=20261111-series1"></script>
+<script src="/unificado/pcp/unificado-bridge.js?v=20261111-series1"></script>
+<script src="/unificado/pcp/unificado-shell.js?v=20261111-series1"></script>
+<link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css">
+<link rel="stylesheet" href="/unificado/pcp/static/css/app.css">
+<link rel="stylesheet" href="/unificado/pcp/unificado-shell.css">
+<link rel="stylesheet" href="/unificado/pcp/armaduras/armaduras.css?v=20261111-1">
+<link rel="stylesheet" href="/unificado/pcp/numeros-serie/series.css?v=20261111-pdf1">
+</head><body>
+<div id="sidebar-overlay"></div><aside id="sidebar"><div class="sidebar-brand">PCP Concrefer</div><nav><a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard">Dashboard</a><a class="nav-link" href="/unificado/pcp/armaduras/" data-page="armaduras">Programação de armaduras</a><a class="nav-link" href="/unificado/pcp/numeros-serie/" data-page="numeros-serie">Números de série dos postes</a></nav><div class="sidebar-footer"><div id="user-nome"></div><button type="button" id="btn-logout">Sair</button></div></aside>
+<div id="main-content"><header class="topbar"><div><button id="sidebar-toggle" type="button" aria-label="Abrir menu">☰</button> Planejamento / Números de série</div><div><span id="user-nome-top"></span><span id="user-nivel"></span></div></header>
+<main class="ar-page">
+<section class="ar-heading"><div><p class="ar-eyebrow">PLANEJAMENTO · SETOR 3</p><h1>Números de série dos postes</h1><p>Sequência única por modelo e ano. Histórico confirmado e previsão da programação.</p></div><span class="ar-badge">Janeiro: contador 0 · primeiro poste 1</span></section>
+<nav class="ar-tabs" aria-label="Controle de séries"><button type="button" data-series-view="previsao" aria-pressed="true">Séries do dia e PDF</button><button type="button" data-series-view="producao" aria-pressed="false">Produção e rastreabilidade</button><button type="button" data-series-view="saldos" aria-pressed="false">Saldos anuais</button></nav>
+<div class="ar-filters"><label id="sr-week-label">Semana dos postes<input type="date" id="sr-week" required></label><label>Ano do registro<input type="number" id="sr-year" min="2026" max="2100"></label><button type="button" id="sr-refresh" class="ar-button">Atualizar consulta</button><button type="button" id="sr-sync" class="ar-button ar-primary">Sincronizar executado do Mapa</button></div>
+<p id="sr-status" role="status" aria-live="polite"></p><div id="sr-error" class="ar-notice" role="alert" hidden></div>
+<section class="ar-rule"><strong>Rastreabilidade</strong><span>Previsões não reservam números. Cada poste confirmado recebe uma série definitiva vinculada ao registro de produção, ao modelo e ao ano.</span></section>
+<section id="sr-previsao">
+  <section class="ar-panel sr-day-panel" aria-labelledby="sr-day-title">
+    <div class="sr-day-heading"><div><p class="ar-eyebrow">NÚMEROS PARA A PRODUÇÃO DO DIA</p><h2 id="sr-day-title">Selecione um dia</h2></div><span class="ar-badge">Setor 3</span></div>
+    <div id="sr-day-switch" class="sr-day-switch" aria-label="Dia de produção"></div>
+    <div id="sr-day-summary" class="sr-day-summary" aria-live="polite"></div>
+    <div class="sr-print-controls"><label>Período do PDF<select id="sr-pdf-scope"><option value="dia">Dia selecionado</option><option value="semana">Semana inteira</option></select></label><label>Conteúdo do PDF<select id="sr-pdf-mode"><option value="previsao">Confirmados e previstos</option><option value="confirmados">Somente confirmados</option></select></label><button type="button" id="sr-pdf" class="ar-button ar-primary" disabled>Gerar PDF para produção</button></div>
+    <p id="sr-pdf-hint" class="ar-muted">O PDF identifica as faixas previstas e as séries já confirmadas.</p>
+    <div id="sr-day-grid" class="ar-scroll"></div>
+    <p class="ar-muted sr-day-note">O PDF lista cada número individualmente. Para confirmar: abra Produção e rastreabilidade, sincronize o executado do Mapa, confira o modelo de cada poste e use Confirmar séries selecionadas. Resolva os dias anteriores primeiro. Números previstos podem mudar após a conferência da execução.</p>
+  </section>
+  <details class="ar-panel" id="sr-week-overview"><summary>Ver a semana inteira · segunda a sábado</summary><div id="sr-summary" class="ar-summary"></div><p class="ar-muted">Programado na origem · números confirmados em verde · previstos em azul. As previsões incluem a programação anterior ainda sem série confirmada.</p><div id="sr-grid" class="ar-scroll"></div></details>
+  <details class="ar-panel"><summary>Referência enviada: saldos até 08/11/2026 e semana de 09 a 14/11</summary><p class="ar-muted">Guardada separadamente da programação atual. A repetição de 3 no 10×2500 foi corrigida na projeção para manter a sequência 3, 4, 5 e 6.</p><div class="ar-scroll" id="sr-reference"></div></details>
+  <details class="ar-panel" id="sr-print-history"><summary>PDFs emitidos e reimpressões</summary><p class="ar-muted">Cada PDF preserva a numeração e a programação do momento da emissão.</p><div class="ar-scroll"><table class="ar-table"><thead><tr><th>Emissão / revisão</th><th>Período</th><th>Conteúdo</th><th>Emitido em</th><th>Responsável</th><th>Ação</th></tr></thead><tbody id="sr-pdf-history"></tbody></table></div></details>
+</section>
+<section id="sr-producao" hidden><div class="ar-panel"><h2>Execuções do Mapa a conferir</h2><p>Quando o Mapa informa apenas “SC”, confira o modelo sugerido pela programação da forma antes de confirmar a série. Confira os dias em ordem; os anteriores devem ser resolvidos primeiro.</p><div class="ar-filters"><button type="button" id="sr-select" class="ar-button">Selecionar sugestões do primeiro dia pendente</button><button type="button" id="sr-confirm" class="ar-button ar-primary">Confirmar séries selecionadas</button></div><div class="ar-scroll"><table class="ar-table sr-queue"><thead><tr><th>Selecionar</th><th>Produção</th><th>Forma</th><th>Modelo no Mapa</th><th>Modelo produzido / sugestão</th><th>Situação</th></tr></thead><tbody id="sr-queue"></tbody></table></div></div><div class="ar-panel"><h2>Registro definitivo de séries</h2><p class="ar-muted">A chave de rastreabilidade é ano + modelo + número. Números confirmados não são renumerados quando a programação muda.</p><div class="ar-scroll"><table class="ar-table"><thead><tr><th>Modelo</th><th>Código</th><th>Ano / série</th><th>Produção</th><th>Forma</th><th>Registro de origem</th><th>Responsável</th></tr></thead><tbody id="sr-records"></tbody></table></div><button type="button" id="sr-more" class="ar-button" hidden>Carregar mais registros</button></div></section>
+<section id="sr-saldos" hidden><div class="ar-panel"><h2>Saldo inicial do modelo no ano</h2><p>Os 16 saldos recebidos foram cadastrados em 2026 com corte até 08/11. Modelos sem saldo ficam pendentes. A partir de 2027, cada novo ano começa automaticamente em zero.</p><form id="sr-balance-form"><div class="ar-filters"><label>Modelo<select id="sr-model" required></select></label><label>Última série até o corte<input type="number" id="sr-balance" min="0" max="100000000" required></label><label>Data de corte (inclusive)<input type="date" id="sr-cutoff" required></label><label>Motivo<input id="sr-reason" minlength="5" maxlength="1000" required></label><button type="submit" id="sr-save-balance" class="ar-button ar-primary">Salvar saldo inicial</button></div></form><p id="sr-balance-hint" class="ar-muted"></p><div class="ar-scroll"><table class="ar-table"><thead><tr><th>Modelo</th><th>Código</th><th>Saldo inicial</th><th>Data de corte</th><th>Último confirmado</th><th>Próximo número</th><th>Situação</th></tr></thead><tbody id="sr-balances"></tbody></table></div></div></section>
+</main></div>
+<script src="/unificado/pcp/static/js/app.js"></script><script src="/unificado/pcp/numeros-serie/series.js?v=20261111-pdf1"></script>
+</body></html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel TV — Programação × Realizado</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: TV 16:9 em carrossel — tela 1 = visão geral (4 setores 2×2, 24 formas por linha); telas 2–5 = um setor por vez, com as formas agrupadas por tipo de poste (programado × realizado). Totais do dia fixos no topo, legenda no rodapé. Visual escuro fixo (chão de fábrica). */
+:root{
+  --bg:#0E1216;
+  --panel:#161C22;
+  --line:#2A333C;
+  --fg:#EEF1F3;
+  --muted:#93A0AC;
+  --prog:#F2B43C;      /* programada: contorno amarelo */
+  --real:#2FBF71;      /* concretada: verde preenchida */
+  --lib:#3D8BFF;       /* liberada: azul preenchida + ✓ */
+  --vol:#9FD8FF;
+  --free:#222A31;      /* sem programação */
+  --falta:#FF7A59;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Barlow","Segoe UI",Arial,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-variant-numeric:tabular-nums;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px;box-sizing:border-box}
+.app{display:grid;grid-template-rows:auto auto 1fr auto;gap:12px;min-height:100%;max-width:1900px;margin:0 auto}
+
+/* topo */
+.top{display:flex;flex-wrap:wrap;align-items:stretch;gap:14px}
+.brand{display:flex;flex-direction:column;justify-content:center;gap:2px;padding-right:10px;min-width:0}
+.brand h1{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(28px,2.6vw,52px);letter-spacing:.02em;line-height:1;text-transform:uppercase}
+.brand p{margin:0;color:var(--muted);font-size:clamp(14px,1vw,20px)}
+.clock{font-family:var(--display);font-weight:600;font-size:clamp(22px,1.8vw,36px);color:var(--fg)}
+.kpis{flex:1 1 760px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 16px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.kpi span{color:var(--muted);font-size:clamp(12px,.85vw,17px);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.kpi b{font-family:var(--display);font-weight:700;font-size:clamp(30px,3vw,62px);line-height:1}
+.kpi small{display:block;color:var(--muted);font-size:clamp(12px,.85vw,17px);margin-top:4px}
+.kpi.real b{color:var(--real)} .kpi.lib b{color:var(--lib)} .kpi.falta b{color:var(--falta)} .kpi.prog b{color:var(--prog)}
+
+/* navegação do carrossel */
+.nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{font:600 clamp(14px,1vw,20px)/1 var(--body);color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer;min-height:40px}
+.tab[aria-current="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tab:focus-visible,.pause:focus-visible{outline:3px solid var(--vol);outline-offset:2px}
+.timer{flex:1 1 200px;height:4px;background:var(--free);border-radius:2px;overflow:hidden;min-width:120px}
+.timer i{display:block;height:100%;width:0;background:var(--muted)}
+.pause{font:600 clamp(13px,.9vw,18px)/1 var(--body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer;min-height:40px}
+
+/* visão geral */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;min-height:0;align-content:start}
+.setor{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;display:grid;grid-template-rows:auto auto auto 1fr;gap:12px;min-width:0}
+.sh{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sh h2{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(26px,2.2vw,44px);line-height:1;text-transform:uppercase;letter-spacing:.02em}
+.sh small{display:block;color:var(--muted);font-family:var(--body);font-size:clamp(13px,.95vw,19px);font-weight:500;text-transform:none;letter-spacing:0;margin-top:4px}
+.pct{text-align:right}
+.pct b{font-family:var(--display);font-weight:700;font-size:clamp(40px,3.8vw,78px);line-height:.9;color:var(--real)}
+.pct span{display:block;color:var(--muted);font-size:clamp(12px,.85vw,17px);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.pct.alerta b{color:var(--falta)}
+.barwrap{display:grid;gap:6px}
+.bar,.tbar{border-radius:7px;background:var(--free);overflow:hidden;display:flex;width:100%}
+.bar{height:14px}.tbar{height:10px}
+.bar i,.tbar i{display:block;height:100%}
+.b-lib{background:var(--lib)} .b-real{background:var(--real)} .b-falta{background:repeating-linear-gradient(45deg,var(--falta) 0 6px,transparent 6px 12px);opacity:.75}
+.nums{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:clamp(14px,1vw,20px);color:var(--muted)}
+.nums b{color:var(--fg);font-weight:600}
+.nums .nf b{color:var(--falta)}
+.vol{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;font-size:clamp(14px,1vw,20px);color:var(--muted)}
+.vol .vbar{height:10px;border-radius:5px;background:var(--free);overflow:hidden}
+.vol .vbar i{display:block;height:100%;background:var(--vol)}
+.vol b{color:var(--fg);font-weight:600}
+
+/* quadradinhos */
+.formas{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:clamp(3px,.28vw,6px);align-content:start;container-type:inline-size}
+.f{aspect-ratio:1;max-width:100%;border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:600;font-size:clamp(9px,calc(100cqw / var(--cols) * .34),22px);position:relative;box-sizing:border-box}
+.f.livre{background:var(--free);color:#55606B}
+.f.prog{border:2.5px solid var(--prog);color:var(--prog);background:transparent}
+.f.real{background:var(--real);color:#062014}
+.f.lib{background:var(--lib);color:#FFFFFF}
+.f.lib::after{content:"";position:absolute;top:9%;right:9%;width:18%;height:9%;border-left:2px solid #FFFFFF;border-bottom:2px solid #FFFFFF;transform:rotate(-45deg)}
+
+/* tela de um setor: formas por tipo */
+.det{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 26px;display:grid;gap:12px;align-content:start;min-width:0}
+.det .sh h2{font-size:clamp(34px,3.2vw,64px)}
+.det .pct b{font-size:clamp(52px,5vw,100px)}
+.tipos{display:grid}
+.tipo{display:grid;grid-template-columns:minmax(150px,15%) minmax(0,1fr) minmax(230px,21%);gap:24px;align-items:center;padding:10px 0;border-top:1px solid var(--line);min-width:0}
+.tipo h3{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(24px,2vw,42px);line-height:1}
+.tipo h3 small{display:block;font-family:var(--body);font-weight:500;font-size:clamp(13px,.9vw,18px);color:var(--muted);margin-top:6px}
+.tipo .formas{--cols:24}
+.tres{display:grid;gap:8px;justify-items:end;text-align:right}
+.tres .big{font-family:var(--display);font-weight:700;font-size:clamp(30px,2.6vw,54px);line-height:1}
+.tres .big em{font-style:normal;color:var(--muted);font-weight:600;font-size:.6em}
+.tres .mini{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;color:var(--muted);font-size:clamp(13px,.9vw,18px)}
+.tres .mini b{color:var(--fg);font-weight:600}
+.tres .mini .nf b{color:var(--falta)}
+.livres{color:var(--muted);font-size:clamp(14px,1vw,20px)}
+.det.dense{gap:8px}
+.det.dense .tipo{padding:2px 0;min-height:64px}
+.det.dense .tipo h3{font-size:clamp(24px,1.55vw,32px)}
+.det.dense .tres{gap:2px}
+.det.dense .tres .big{font-size:clamp(30px,1.8vw,38px)}
+.det.dense .tres .mini{font-size:14px}
+.det.dense .tbar{height:7px}
+
+/* rodapé */
+.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;color:var(--muted);font-size:clamp(14px,1vw,20px)}
+.leg{display:flex;flex-wrap:wrap;gap:8px 26px;align-items:center}
+.leg span{display:inline-flex;align-items:center;gap:10px}
+.leg .f{width:clamp(20px,1.6vw,30px);aspect-ratio:1;font-size:0}
+.note{color:#6F7C88}
+
+@media (prefers-reduced-motion:no-preference){
+  .entra{animation:fade .45s ease-out}
+  @keyframes fade{from{opacity:.3}to{opacity:1}}
+  .f.prog{animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 3px rgba(242,180,60,.2)}}
+}
+@media (max-width:1100px){.grid{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tipo{grid-template-columns:minmax(0,1fr)}.tres{justify-items:start;text-align:left}.tres .mini{justify-content:flex-start}}
+@media (max-width:700px){.formas,.tipo .formas{--cols:12 !important}}
+@media (max-width:560px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.setor,.det{padding:14px}.vol{grid-template-columns:minmax(0,1fr)}}
+
+#tv-alert:not([hidden]){position:fixed;top:0;left:0;right:0;z-index:20;background:#822D23;color:#fff;
+  font:700 20px var(--body);padding:12px 24px;text-align:center;box-shadow:0 3px 18px #0009}
+.warning{color:var(--prog);font-size:14px;line-height:1.3;max-width:900px}
+.loading{display:grid;place-items:center;min-height:55vh;font:600 32px var(--display);color:var(--muted)}
+.f[title]{cursor:default}
+@media(max-width:1100px){.warning{font-size:13px}}
+</style>
+</head>
+<body>
+<div id="tv-alert" role="alert" hidden></div>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <h1>Programação × Realizado</h1>
+      <p>Concrefer · Campinas · <span id="data"></span> · <span class="clock" id="hora">--:--</span></p>
+    </div>
+    <div class="kpis" id="kpis"></div>
+  </header>
+
+  <nav class="nav" aria-label="Telas do painel">
+    <div class="tabs" id="tabs"></div>
+    <div class="timer" aria-hidden="true"><i id="timer"></i></div>
+    <button class="pause" id="pause" type="button">Pausar</button>
+  </nav>
+
+  <main id="view"><div class="loading">Carregando apontamento da produção…</div></main>
+
+  <footer class="foot">
+    <div class="leg">
+      <span><i class="f prog"></i>Programada (aguardando concretagem)</span>
+      <span><i class="f real"></i>Concretada (realizada)</span>
+      <span><i class="f lib"></i>Liberada para concretar</span>
+      <span><i class="f livre"></i>Sem programação</span>
+    </div>
+    <div class="warning" id="warnings"></div><div class="note">Atualização a cada 60 s · <span id="atualizado"></span></div>
+  </footer>
+</div>
+
+<script src="./tv.js" defer></script>
+</body>
+</html>

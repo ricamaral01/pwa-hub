@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <script>if(top===self && !['localhost','127.0.0.1'].includes(location.hostname)){location.replace('/unificado/?view='+encodeURIComponent(location.pathname.slice('/unificado/'.length).replace(/index\.html$/,'')+location.search))}</script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=0.6.39"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=0.6.39"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=0.6.39"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Programação da semana — PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css">
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7">
+  <link rel="stylesheet" href="/unificado/pcp/programacao-semanal/semana.css?v=2">
+  <style>
+    #main-content { width: calc(100% - 240px); min-width: 0; }
+    body.sidebar-force-hidden #main-content { width: 100%; }
+    .weekly-page { width: 100%; min-width: 0; }
+    .weekly-page .section-card, .weekly-page .mega-band,
+    .weekly-page .forecast-scroll, .weekly-page .sector-table-wrap { min-width: 0; max-width: 100%; }
+    .week-switcher { flex-wrap: nowrap; }
+    @media (max-width: 1050px) { .week-switcher strong { min-width: 190px; font-size: 12px; white-space: nowrap; } }
+    @media (max-width: 991px) { #main-content { width: 100%; } }
+    @media (max-width: 760px) { .week-switcher strong { flex: 1; min-width: 0; } }
+  </style>
+  <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=0.6.39">
+</head>
+<body>
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <div class="sidebar-brand"><div><span><i class="bi bi-bar-chart-steps me-2"></i>PCP Concrefer</span><small>Planejamento e Controle</small></div></div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link active" href="/unificado/pcp/programacao-semanal/" data-page="programacao-semanal"><i class="bi bi-calendar-week"></i> Semanal S1 e S2</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer"><div id="user-nome"></div><button class="btn btn-sm mt-1" id="btn-logout" type="button"><i class="bi bi-box-arrow-right me-1"></i>Sair</button></div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar"><div class="d-flex align-items-center"><button id="sidebar-toggle" class="mobile-only" type="button" aria-label="Abrir menu"><i class="bi bi-list"></i></button><span class="page-title">Planejamento · Programação</span></div><div class="user-info"><span id="user-nome-top"></span><span class="user-badge" id="user-nivel"></span></div></div>
+  <main class="content-area weekly-page" id="weekly-page">
+    <section class="weekly-hero section-card" aria-labelledby="weekly-title">
+      <div class="hero-copy"><p class="eyebrow">SETORES 1 E 2 · CAMPINAS</p><h1 id="weekly-title">Programação da semana</h1><p>Distribua a produção de segunda a sexta dentro da capacidade das formas.</p><div class="hero-meta"><span id="status-chip" class="status-chip">Carregando</span><span id="published-meta">Última publicada: —</span></div></div>
+      <div class="hero-controls"><div class="week-switcher"><button type="button" id="prev-week" aria-label="Semana anterior">‹</button><strong id="week-label">—</strong><button type="button" id="next-week" aria-label="Próxima semana">›</button></div><div class="hero-buttons"><button type="button" id="create-week" class="btn btn-outline-primary weekly-edit">Criar rascunho</button><button type="button" id="create-review" class="btn btn-outline-primary weekly-edit" hidden>Criar revisão</button><button type="button" id="save-draft" class="btn btn-outline-primary weekly-edit" hidden>Salvar rascunho</button><button type="button" id="publish-week" class="btn btn-primary-pcp weekly-edit" hidden>Publicar semana</button></div></div>
+    </section>
+
+    <section class="mega-band" aria-label="Base Mega"><div><span class="mega-icon"><i class="bi bi-file-earmark-spreadsheet"></i></span><div><strong>Base Mega</strong><span id="mega-meta">Carregando base…</span></div></div><p>Saldo = Estoque − Reserva − Carteira <span class="dot">·</span> 1 poste por forma por dia <span class="dot">·</span> seg a sex</p><div class="mega-import weekly-edit"><label class="visually-hidden" for="mega-date">Data da base Mega</label><input type="date" id="mega-date" aria-label="Data da base Mega"><input type="file" id="mega-file" accept=".xls,.xlsx,.csv" hidden><button type="button" id="reimport-mega" class="btn btn-outline-primary">Reimportar relatório Mega</button></div></section>
+
+    <section class="weekly-actions section-card" aria-label="Ações da programação"><span class="scope-label">Setores 1 e 2 · grade única</span><div class="stepper weekly-edit"><span>MOD padrão <small>dias abertos</small></span><button type="button" data-step="mod:-1" aria-label="Diminuir MOD padrão">−</button><strong id="mod-value">13</strong><button type="button" data-step="mod:1" aria-label="Aumentar MOD padrão">+</button></div><div class="stepper weekly-edit"><span>Estoque de segurança <small>dias</small></span><button type="button" data-step="safety:-1" aria-label="Diminuir dias de segurança">−</button><strong id="safety-value">5</strong><button type="button" data-step="safety:1" aria-label="Aumentar dias de segurança">+</button></div><div class="action-buttons weekly-edit"><button type="button" id="suggest" class="btn btn-primary-pcp">Sugerir pela carteira</button><button type="button" id="repeat-first" class="btn btn-outline-primary">Repetir 1º dia aberto</button><button type="button" id="copy-prior" class="btn btn-outline-primary">Copiar semana anterior</button><button type="button" id="clear-open" class="btn btn-outline-danger">Zerar dias abertos</button></div></section>
+
+    <section class="metric-grid" id="metric-grid" aria-label="Indicadores da semana"></section>
+
+    <section class="section-card forecast-card" aria-labelledby="forecast-title"><div class="section-heading"><div><p class="eyebrow">PREVISÃO DA SEMANA</p><h2 id="forecast-title">Indicadores previstos por MOD — Setores 1 e 2</h2></div><span class="hint">Ajuste a MOD em cada dia de produção</span></div><div class="forecast-scroll"><table class="forecast-table" id="forecast-table"><thead></thead><tbody></tbody></table></div></section>
+
+    <div id="sector-sections"></div>
+    <section class="legend section-card" aria-label="Legenda"><strong>Legenda</strong><span><i class="swatch scheduled"></i> Programada</span><span><i class="swatch exceeded"></i> Acima das formas</span><span><i class="swatch locked"></i> Apontado, somente leitura</span><span><i class="swatch stopped"></i> Sem produção</span><span><i class="swatch negative"></i> Saldo negativo</span></section>
+  </main>
+</div>
+
+<dialog id="publish-dialog" class="publish-dialog" aria-labelledby="publish-title"><div class="dialog-head"><div><p class="eyebrow">REVISÃO FINAL</p><h2 id="publish-title">Publicar versão</h2><p id="dialog-period"></p></div><button type="button" id="close-dialog" class="dialog-close" aria-label="Fechar">×</button></div><div class="dialog-body"><div id="dialog-cards" class="dialog-cards"></div><div id="dialog-checks" class="dialog-checks"></div><h3>O que muda em relação à versão anterior</h3><div class="dialog-table-wrap"><table class="dialog-table"><thead><tr><th>Setor</th><th>Poste</th><th>Dia</th><th>Antes</th><th>Agora</th><th>Dif.</th></tr></thead><tbody id="diff-body"></tbody></table></div><label class="dialog-label" for="publish-reason">Motivo da revisão <span id="reason-required"></span></label><textarea id="publish-reason" rows="2" placeholder="Descreva o motivo da mudança"></textarea><label class="notice-check"><input id="notify-production" type="checkbox"><span>Avisar responsáveis dos setores 1 e 2 dentro do Unificado</span></label><p class="notice-note">O painel da TV lê a programação oficial automaticamente. Com a opção marcada, um aviso aparece nas telas dos setores 1 e 2 até ser marcado como lido neste dispositivo.</p></div><div class="dialog-footer"><button type="button" id="back-to-grid" class="btn btn-outline-primary">Voltar à grade</button><button type="button" id="confirm-publish" class="btn btn-primary-pcp">Publicar versão</button></div></dialog>
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script src="/unificado/pcp/programacao-semanal/semana.js?v=2"></script>
+</body>
+</html>

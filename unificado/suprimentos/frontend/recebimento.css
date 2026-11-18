@@ -1,0 +1,23 @@
+body[data-modulo="suprimentos"] .sup-rec-card{min-width:0;margin-bottom:16px}
+body[data-modulo="suprimentos"] .sup-rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px;min-width:0}
+body[data-modulo="suprimentos"] .sup-rec-grid>*{min-width:0}
+body[data-modulo="suprimentos"] .sup-rec-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px;min-width:0}
+body[data-modulo="suprimentos"] .sup-rec-fields .field{min-width:0}
+body[data-modulo="suprimentos"] .sup-rec-fields input,body[data-modulo="suprimentos"] .sup-rec-fields select{width:100%;min-width:0;max-width:100%}
+body[data-modulo="suprimentos"] .sup-rec-fields .field{min-width:0;overflow-wrap:anywhere}
+body[data-modulo="suprimentos"] .sup-rec-fields input[type="checkbox"]{width:18px;min-height:18px;height:18px;padding:0}
+body[data-modulo="suprimentos"] .sup-rec-item{border:1px solid #dce9e8;border-radius:12px;padding:16px;margin:12px 0;min-width:0}
+body[data-modulo="suprimentos"] .sup-rec-item h3{margin:0 0 12px;font-size:16px;overflow-wrap:anywhere}
+body[data-modulo="suprimentos"] .sup-rec-steps{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+body[data-modulo="suprimentos"] .sup-rec-steps span{border:1px solid #dce9e8;background:#f4faf9;border-radius:999px;padding:7px 11px;font-size:12px}
+body[data-modulo="suprimentos"] .sup-rec-error{color:#ad302b}
+body[data-modulo="suprimentos"] .sup-rec-remote{background:#fff7e5;border:1px solid #efd18b;border-radius:10px;padding:12px;overflow-wrap:anywhere}
+body[data-modulo="suprimentos"] .sup-rec-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+body[data-modulo="suprimentos"] .sup-rec-actions .btn{min-height:42px}
+body[data-modulo="suprimentos"] .sup-rec-table{min-width:640px}
+body[data-modulo="suprimentos"] .sup-rec-table td,body[data-modulo="suprimentos"] .sup-rec-table th{white-space:nowrap}
+body[data-modulo="suprimentos"] #nf-file{display:block;width:100%;min-width:0;max-width:100%;margin-bottom:10px}
+body[data-modulo="suprimentos"] .sup-rec-dialog{width:min(620px,calc(100% - 24px));max-height:calc(100dvh - 32px);overflow:auto;border:1px solid #dce9e8;border-radius:16px;box-shadow:0 20px 60px #10273d33;padding:22px;color:#14233d}
+body[data-modulo="suprimentos"] .sup-rec-dialog::backdrop{background:#071b2f90}
+body[data-modulo="suprimentos"] .sup-rec-dialog textarea{min-height:100px;width:100%;border:1px solid #cbd9dc;border-radius:9px;padding:10px;font:inherit}
+@media(max-width:767px){body[data-modulo="suprimentos"] .sup-rec-card{padding:16px}body[data-modulo="suprimentos"] .sup-rec-actions .btn{flex:1 1 100%}body[data-modulo="suprimentos"] .sup-rec-fields{grid-template-columns:1fr}}

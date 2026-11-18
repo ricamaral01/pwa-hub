@@ -1,0 +1,64 @@
+/* Personalized start page: configuration and destinations are server-authorized. */
+(() => {
+  const content=document.querySelector('.main-panel > .content');
+  if(!content)return;
+  let profile=null,requestId=0;
+  const root='/unificado/';
+  const node=(tag,className,text)=>{const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el;};
+  function showPersonal(){if(!profile?.enabled)return;content.classList.add('uqa-personal');document.getElementById('uqa-home').hidden=false;window.UnificadoRouter.home();}
+  function ensureReturn(){
+    if(!profile?.enabled)return;
+    for(const [selector,className] of [['.nav-panel','uqa-return-desktop'],['.nav-mobile-top','uqa-return-mobile']]){
+      const target=document.querySelector(selector);if(!target||document.querySelector('.'+className))continue;
+      const button=node('button','uqa-return '+className,'Meu acesso rápido');button.type='button';button.onclick=showPersonal;
+      if(className==='uqa-return-mobile')target.after(button);else {const heading=target.querySelector('.nav-panel-head');if(heading)heading.after(button);else target.prepend(button);}
+    }
+    const homeLabel=document.querySelector('.nav-mobile-bottom [data-mode=inicio] .nav-bottom-label');
+    if(homeLabel&&homeLabel.textContent!=='Meu acesso')homeLabel.textContent='Meu acesso';
+  }
+  function clear(){profile=null;content.classList.remove('uqa-personal');document.getElementById('uqa-home')?.remove();document.querySelectorAll('.uqa-return').forEach(el=>el.remove());const label=document.querySelector('.nav-mobile-bottom [data-mode=inicio] .nav-bottom-label');if(label)label.textContent='Início';}
+  function render(data){
+    const wasHome=content.classList.contains('uqa-personal');profile=data;
+    const panel=node('section');panel.id='uqa-home';
+    const welcome=node('header','uqa-welcome'),copy=node('div');
+    copy.append(node('span','uqa-kicker','MEU ACESSO RÁPIDO'),node('h1','',`Olá, ${data.user.name.split(' ')[0]}.`),node('p','','As funções da sua rotina, em um só lugar.'));
+    const all=node('button','uqa-button','Ver início geral');all.type='button';all.onclick=()=>{content.classList.remove('uqa-personal');panel.hidden=true;window.UnificadoRouter.home();};
+    welcome.append(copy,all);panel.append(welcome);
+    for(const [module,title,code] of [['planejamento','Planejamento','PL'],['producao','Produção · Controle','PR']]){
+      const items=data.items.filter(row=>row.module===module);if(!items.length)continue;
+      const section=node('section');section.dataset.module=module;const heading=node('h2');heading.append(node('span','',code),document.createTextNode(title));const grid=node('div','uqa-grid');
+      for(const item of items){
+        const card=node('article','uqa-card');card.dataset.shortcut=item.id;card.append(node('span','uqa-code',item.code));
+        const text=node('div');text.append(node('strong','',item.label),node('small','',item.detail));card.append(text);
+        const links=node('div','uqa-links');
+        for(const dest of item.destinations){
+          const url=new URL(dest.path,location.origin+root);if(url.origin!==location.origin||!url.pathname.startsWith(root))continue;
+          const link=node('a','uqa-link',item.destinations.length===1?'Abrir':dest.label);link.href=url.href;link.dataset.screen=dest.screen;link.setAttribute('aria-label',dest.label);
+          link.addEventListener('click',event=>{if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;event.preventDefault();window.UnificadoRouter.open(url.href,dest.screen);});links.append(link);
+        }
+        card.append(links);grid.append(card);
+      }
+      section.append(heading,grid);panel.append(section);
+    }
+    if(!data.items.length){const empty=node('div','uqa-empty');empty.append(node('strong','','Nenhum atalho disponível'),node('p','','Solicite ao administrador a revisão das funções da sua conta.'));panel.append(empty);}
+    document.getElementById('uqa-home')?.remove();content.prepend(panel);
+    if(data.home||wasHome){content.classList.add('uqa-personal');panel.hidden=false;}else panel.hidden=true;
+    ensureReturn();
+  }
+  async function refresh(){
+    const id=++requestId;
+    try{
+      await window.UnificadoScreenAccess?.ready;
+      const response=await fetch(root+'mapa/api/unified/quick-access/me',{credentials:'same-origin',cache:'no-store'});
+      if(id!==requestId)return;
+      if(response.status===401){clear();return;}
+      if(!response.ok)throw new Error('quick access');
+      const data=await response.json();if(id!==requestId)return;
+      if(data.enabled)render(data);else clear();
+    }catch{if(id===requestId&&profile){const current=document.getElementById('uqa-home');if(current){current.replaceChildren(node('h1','','Meu acesso rápido'),node('p','','Não foi possível conferir os atalhos. Atualize a página para tentar novamente.'));}}}
+  }
+  document.addEventListener('click',event=>{if(profile?.enabled&&profile.home&&event.target.closest('.nav-brand,.nav-home,[data-mode=inicio]')){content.classList.add('uqa-personal');const panel=document.getElementById('uqa-home');if(panel)panel.hidden=false;}});
+  const observer=new MutationObserver(()=>ensureReturn());observer.observe(document.querySelector('.desktop-only')||document.body,{childList:true,subtree:true});
+  addEventListener('focus',refresh);addEventListener('pageshow',event=>{if(event.persisted)refresh();});
+  refresh();
+})();

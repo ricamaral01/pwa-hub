@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Mapa histórico — Concrefer</title>
+  <link rel="stylesheet" href="../shell/shell.css?v=0.6.7">
+  <link rel="stylesheet" href="historico.css?v=0.6.7">
+  <script defer src="historico.js?v=0.6.7"></script>
+</head>
+<body>
+  <div class="history-shell">
+    <aside class="history-sidebar">
+      <div class="history-brand"><img src="../assets/img/logo-concrefer.png" alt="Concrefer"><img src="../assets/img/logo-concretrack.png" alt="ConcreTrack"></div>
+      <p class="history-eyebrow">Sistema unificado</p>
+      <h1>Mapa histórico</h1>
+      <p>Dados migrados do Supabase para PostgreSQL.</p>
+      <nav aria-label="Conjuntos de dados" id="tables-nav"></nav>
+      <a class="history-back" href="../index.html">Voltar ao início</a>
+      <button id="logout" class="history-logout" type="button">Sair</button>
+    </aside>
+    <main class="history-main">
+      <header class="history-top">
+        <div><p class="history-eyebrow">CONCRETRACK / PRODUÇÃO</p><h2 id="table-title">Histórico</h2></div>
+        <div id="user-badge" class="history-user"></div>
+      </header>
+      <div class="history-note">Fotografia dos dados de produção de 02/10/2026. Consulta somente leitura; registros posteriores não estão sincronizados.</div>
+      <section class="history-cards" id="history-cards" aria-label="Resumo de registros"></section>
+      <section class="history-panel">
+        <div class="history-controls">
+          <label>Data inicial <input id="date-start" type="date"></label>
+          <label>Data final <input id="date-end" type="date"></label>
+          <label>Setor <select id="sector"><option value="">Todos</option><option>Setor 1</option><option>Setor 2</option><option>Setor 3</option><option>Setor 4</option></select></label>
+          <button id="apply" type="button">Aplicar filtros</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Carregando…</p>
+        <div class="history-table-wrap"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div>
+        <div class="history-pager"><button id="prev" type="button">Anterior</button><span id="page-label"></span><button id="next" type="button">Próxima</button></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

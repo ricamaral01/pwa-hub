@@ -1,0 +1,23 @@
+[data-modulo=suprimentos] .sup-r-card{min-width:0;margin-bottom:18px}
+[data-modulo=suprimentos] .sup-r-steps{display:flex;gap:8px;overflow-x:auto;margin:18px 0;padding-bottom:8px}
+[data-modulo=suprimentos] .sup-r-steps button{flex:1 0 130px;border:1px solid #c9d8e6;border-radius:10px;background:#fff;color:#193d59;padding:14px;font:inherit;cursor:pointer}
+[data-modulo=suprimentos] .sup-r-steps [aria-current]{background:#0f766e;color:white;border-color:#0f766e}
+[data-modulo=suprimentos] .sup-r-search{display:flex;align-items:end;gap:12px;flex-wrap:wrap}
+[data-modulo=suprimentos] .sup-r-search .field{flex:1 1 280px}
+[data-modulo=suprimentos] .sup-r-upload{margin:20px 0}
+[data-modulo=suprimentos] .sup-r-order{display:flex;align-items:center;gap:12px;border:1px solid #d8e4ea;border-radius:10px;padding:16px;margin-bottom:10px}
+[data-modulo=suprimentos] .sup-r-order input{width:22px;height:22px;flex:none}
+[data-modulo=suprimentos] .sup-r-order small,[data-modulo=suprimentos] .sup-r-count small{display:block;color:#64748b;margin-top:5px}
+[data-modulo=suprimentos] .sup-r-count{min-width:1100px}
+[data-modulo=suprimentos] .sup-r-count input{width:100px;min-height:44px;padding:8px;border:1px solid #bccbd7;border-radius:8px}
+[data-modulo=suprimentos] .sup-r-count td:first-child{min-width:160px}
+[data-modulo=suprimentos] .sup-r-associate,[data-modulo=suprimentos] .sup-r-allocation{display:flex;gap:12px;align-items:end;flex-wrap:wrap;border-top:1px solid #d8e4ea;padding:16px 0;margin-top:12px}
+[data-modulo=suprimentos] .sup-r-associate>.field,[data-modulo=suprimentos] .sup-r-allocation>.field{flex:1 1 180px;min-width:0}
+[data-modulo=suprimentos] .sup-r-associate>strong{flex:1 1 200px;overflow-wrap:anywhere}
+[data-modulo=suprimentos] .sup-r-camera{width:100%;max-width:480px}
+[data-modulo=suprimentos] .sup-r-card input[type=file]{max-width:100%;box-sizing:border-box}
+[data-modulo=suprimentos] .sup-r-card .btn{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+[data-modulo=suprimentos] .btn.danger{background:#b42318;color:white;border-color:#b42318}
+[data-modulo=suprimentos] .sup-r3-urgent{border-left:5px solid #b42318}
+[data-modulo=suprimentos] .sup-r3-agenda .section-head{flex-wrap:wrap;gap:8px}
+@media(max-width:600px){[data-modulo=suprimentos] .sup-r-search>.btn,[data-modulo=suprimentos] .sup-r-allocation>.btn{width:100%}[data-modulo=suprimentos] .sup-r-card{padding:16px}[data-modulo=suprimentos] .sup-r-steps button{flex-basis:115px}}

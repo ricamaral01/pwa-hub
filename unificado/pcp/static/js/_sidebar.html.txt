@@ -1,0 +1,11 @@
+<!-- ============================================================
+     PCP Concrefer — Sidebar parcial (incluso via JS innerHTML)
+     ============================================================ -->
+<!--
+  Este bloco é inserido dinamicamente nas páginas via initLayout().
+  Arquivo de referência para manutenção.
+
+  Nav items:
+  data-page  = chave ativa
+  data-require = nível mínimo de acesso (CONSULTA | PRODUCAO | PCP | ADMIN)
+-->

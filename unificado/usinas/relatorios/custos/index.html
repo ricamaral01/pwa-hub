@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Custos do Concreto • ConcreTrack</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    
+    <style>
+      :root {
+        --o: #e07a3a;
+        --n: #0d3b66;
+        --g: #343b43;
+        --bg: #f2f3f5;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        font-family: Montserrat, "Segoe UI", sans-serif;
+        color: var(--g);
+      }
+      header {
+        background: #343b43;
+        color: #fff;
+        border-bottom: 3px solid var(--o);
+      }
+      .top {
+        max-width: 1400px;
+        margin: auto;
+        padding: 14px 22px;
+        display: flex;
+        align-items: center;
+        gap: 13px;
+      }
+      .top img {
+        width: 42px;
+      }
+      .top h1 {
+        font-size: 18px;
+        margin: 0;
+        font-weight: 800;
+      }
+      .top a {
+        margin-left: auto;
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid #ffffff30;
+        padding: 8px 13px;
+        border-radius: 9px;
+      }
+      .wrap {
+        max-width: 1400px;
+        margin: auto;
+        padding: 24px;
+      }
+      .hero {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        margin-bottom: 18px;
+      }
+      .hero h2 {
+        font-weight: 800;
+        margin: 0;
+      }
+      .hero p {
+        color: #68717d;
+        margin: 5px 0 0;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      .cardx,
+      .panel {
+        background: #fff;
+        border: 1px solid #e7e9ed;
+        border-radius: 14px;
+        padding: 18px;
+        box-shadow: 0 3px 12px #00000008;
+      }
+      .cardx small {
+        color: #6b7280;
+        font-weight: 700;
+      }
+      .cardx strong {
+        display: block;
+        font-size: 24px;
+        color: var(--n);
+        margin-top: 8px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1.25fr 0.75fr;
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .panel h3 {
+        font-size: 16px;
+        font-weight: 800;
+      }
+      .table-wrap {
+        overflow: auto;
+        max-height: 520px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 11px 9px;
+        border-bottom: 1px solid #edf0f3;
+        font-size: 12px;
+        text-align: left;
+      }
+      th {
+        color: #64748b;
+        text-transform: uppercase;
+        font-size: 10px;
+        position: sticky;
+        top: 0;
+        background: #fff;
+      }
+      .money {
+        font-weight: 800;
+        color: var(--n);
+      }
+      .badge-src {
+        padding: 4px 7px;
+        border-radius: 20px;
+        background: #eef4fa;
+        color: var(--n);
+        font-size: 10px;
+      }
+      .btnx {
+        border: 0;
+        background: var(--o);
+        color: white;
+        border-radius: 8px;
+        padding: 7px 10px;
+        font-weight: 700;
+      }
+      .select {
+        padding: 9px;
+        border: 1px solid #d8dde4;
+        border-radius: 8px;
+        min-width: 240px;
+      }
+      .chart {
+        height: 320px;
+        position: relative;
+      }
+      .modalx {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: #0007;
+        align-items: center;
+        justify-content: center;
+        z-index: 9;
+      }
+      .modalx.on {
+        display: flex;
+      }
+      .dialog {
+        background: #fff;
+        padding: 22px;
+        border-radius: 14px;
+        width: min(460px, 92vw);
+      }
+      label {
+        display: block;
+        font-size: 11px;
+        font-weight: 800;
+        margin: 12px 0 5px;
+      }
+      .input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccd2da;
+        border-radius: 8px;
+      }
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 18px;
+      }
+      .muted {
+        color: #77808c;
+        font-size: 11px;
+      }
+      .warn {
+        color: #b45309;
+      }
+      .tabs {
+        display: flex;
+        gap: 8px;
+        margin: 18px 0;
+      }
+      .tabs button {
+        border: 1px solid #dce1e7;
+        background: #fff;
+        padding: 9px 13px;
+        border-radius: 9px;
+        font-weight: 700;
+      }
+      .tabs button.active {
+        background: var(--n);
+        color: #fff;
+      }
+      .view {
+        display: none;
+      }
+      .view.active {
+        display: block;
+      }
+      .summary-cards {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      .closing-section {
+        margin-top: 22px;
+        border-top: 1px solid #e4e8ed;
+        padding-top: 20px;
+      }
+      .closing-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .closing-toolbar h3 {
+        margin: 0;
+      }
+      .closing-paper {
+        background: linear-gradient(135deg, #fff 0%, #fff 72%, #f5f8fb 100%);
+        border: 1px solid #dde3ea;
+        border-radius: 14px;
+        width: 100%;
+        max-width: 1050px;
+        aspect-ratio: 4 / 3;
+        margin: 0 auto;
+        padding: 26px 30px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .closing-head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding-bottom: 14px;
+        border-bottom: 3px solid var(--o);
+      }
+      .closing-head img {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+      }
+      .closing-head h3 {
+        font-size: 21px;
+        margin: 2px 0 0;
+        color: var(--n);
+      }
+      .closing-label {
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.13em;
+        color: var(--o);
+      }
+      .closing-date {
+        margin-left: auto;
+        text-align: right;
+        font-size: 11px;
+        color: #6b7280;
+      }
+      .closing-title {
+        padding: 14px 0 4px;
+      }
+      .closing-title small {
+        color: #6b7280;
+        font-weight: 700;
+      }
+      .closing-title h2 {
+        font-size: 24px;
+        color: var(--n);
+        margin: 3px 0 0;
+        font-weight: 900;
+      }
+      .closing-kpis {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 12px;
+        margin: 8px 0 13px;
+      }
+      .closing-kpi {
+        background: #f5f8fb;
+        border-left: 4px solid var(--o);
+        border-radius: 8px;
+        padding: 9px 13px;
+      }
+      .closing-kpi small {
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: 800;
+        color: #667085;
+      }
+      .closing-kpi strong {
+        display: block;
+        font-size: 22px;
+        color: var(--n);
+        margin-top: 3px;
+      }
+      .closing-content {
+        display: grid;
+        grid-template-columns: 1.28fr 0.72fr;
+        gap: 14px;
+        flex: 1;
+        min-height: 0;
+        align-items: stretch;
+      }
+      .closing-chart {
+        height: 100%;
+        min-height: 0;
+        position: relative;
+        border: 1px solid #e7ebf0;
+        border-radius: 12px;
+        padding: 8px;
+        background: #fff;
+      }
+      .closing-content .table-wrap {
+        height: 100%;
+        max-height: none;
+        overflow: hidden;
+        border: 1px solid #e7ebf0;
+        border-radius: 12px;
+      }
+      .closing-content table {
+        table-layout: fixed;
+      }
+      .closing-content th,
+      .closing-content td {
+        padding: 7px 6px;
+        font-size: 10px;
+        line-height: 1.2;
+      }
+      .closing-content th {
+        font-size: 8px;
+      }
+      .closing-content th:nth-child(1) {
+        width: 30%;
+      }
+      .closing-content th:nth-child(2) {
+        width: 20%;
+      }
+      .closing-content th:nth-child(3) {
+        width: 18%;
+      }
+      .closing-content th:nth-child(4) {
+        width: 20%;
+      }
+      .closing-content th:nth-child(5) {
+        width: 12%;
+      }
+      .closing-content td:not(:first-child) {
+        white-space: nowrap;
+      }
+      .closing-note {
+        font-size: 10px;
+        color: #77808c;
+        margin: 8px 0 0;
+      }
+      .material-color-row td {
+        background: var(--material-soft-bg) !important;
+        border-bottom-color: #fff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .material-color-row td:first-child {
+        border-left: 5px solid var(--material-color);
+        font-weight: 800;
+      }
+      .slide-preview {
+        width: 100%;
+        max-width: 1024px;
+        aspect-ratio: 4 / 3;
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto;
+        background: #fff;
+        border: 1px solid #dde3ea;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px #00000012;
+      }
+      .slide-preview iframe {
+        position: absolute;
+        inset: 0;
+        width: 1024px;
+        height: 768px;
+        border: 0;
+        transform-origin: top left;
+        background: #fff;
+      }
+      @media (max-width: 900px) {
+        .cards,
+        .grid,
+        .summary-cards,
+        .closing-kpis,
+        .closing-content {
+          grid-template-columns: 1fr;
+        }
+        .wrap {
+          padding: 15px;
+        }
+        .closing-toolbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .closing-paper {
+          padding: 15px;
+          aspect-ratio: auto;
+          display: block;
+        }
+        .closing-date {
+          display: none;
+        }
+      }
+      @media print {
+        @page {
+          size: 10in 7.5in;
+          margin: 0;
+        }
+        html,
+        body {
+          background: #fff;
+          width: 10in;
+          height: 7.5in;
+          margin: 0;
+          padding: 0;
+        }
+        body * {
+          visibility: hidden !important;
+        }
+        .closing-paper,
+        .closing-paper * {
+          visibility: visible !important;
+        }
+        .closing-paper {
+          position: absolute;
+          inset: 0;
+          width: 10in;
+          height: 7.5in;
+          max-width: none;
+          aspect-ratio: auto;
+          border: 0;
+          border-radius: 0;
+          padding: 0.28in 0.32in;
+          background: #fff;
+          display: flex;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+        .closing-date {
+          display: block;
+        }
+        .closing-content {
+          grid-template-columns: 1.28fr 0.72fr;
+        }
+        .closing-chart {
+          height: 100%;
+        }
+        .closing-kpi {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    </style>
+  <script>
+    // Acesso direto volta à casca autenticada; no iframe preserva o layout original.
+    if (top === self) {
+      const params = new URLSearchParams({area:'relatorios'});
+      if ('custos') params.set('app', 'custos');
+      for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+      location.replace('/unificado/?view=' + encodeURIComponent('usinas/?' + params));
+    } else {
+      const syncShell = () => {
+        if (parent !== top || top.location.pathname !== '/unificado/') return;
+        const params = new URLSearchParams({area:'relatorios'});
+        if ('custos') params.set('app', 'custos');
+        for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+        const view = 'usinas/?' + params;
+        top.history.replaceState({view}, '', '/unificado/?view=' + encodeURIComponent(view));
+      };
+      addEventListener('DOMContentLoaded', syncShell);
+      const originalReplace = history.replaceState.bind(history);
+      history.replaceState = (...args) => { originalReplace(...args); syncShell(); };
+    }
+    function concretrackLogout() {
+      if (top.UnificadoAuth?.logout) top.UnificadoAuth.logout();
+      else top.location.assign('/unificado/login.html');
+    }
+    </script>
+</head>
+  <body>
+    <header>
+      <div class="top">
+        <img src="/unificado/usinas/relatorios/assets/PRINCIPAL@2x.png" />
+        <div>
+          <h1><i class="bi bi-cash-coin"></i> Custos do Concreto</h1>
+          <small>Controle gerencial e composição de custos</small>
+        </div>
+        <a href="/unificado/usinas/relatorios/"
+          ><i class="bi bi-arrow-left"></i> Relatórios</a
+        >
+      </div>
+    </header>
+    <main class="wrap">
+      <div class="hero">
+        <div>
+          <h2>Gestão de custos</h2>
+          <p>Veja exatamente o que compõe o custo e acompanhe sua evolução.</p>
+        </div>
+        <button class="btnx" onclick="loadAll()">
+          <i class="bi bi-arrow-clockwise"></i> Atualizar
+        </button>
+      </div>
+      <div class="cards">
+        <div class="cardx">
+          <small>Materiais contabilizados</small><strong id="kMat">—</strong>
+        </div>
+        <div class="cardx">
+          <small>Com custo definido</small><strong id="kOk">—</strong>
+        </div>
+        <div class="cardx">
+          <small>Sem custo</small><strong id="kSem">—</strong>
+        </div>
+        <div class="cardx">
+          <small>Cartas ativas</small><strong id="kCartas">—</strong>
+        </div>
+      </div>
+      <div class="tabs">
+        <button class="active" onclick="tab('materiais', this)">
+          Materiais e ajustes</button
+        ><button onclick="tab('cartas', this)">Cartas de traço</button
+        ><button onclick="tab('evolucao', this)">Evolução mensal</button
+        ><button
+          onclick="location.href = '/unificado/usinas/relatorios/custos/comparar/'"
+        >
+          Comparar traços
+        </button>
+      </div>
+      <section id="materiais" class="view active">
+        <div class="grid">
+          <div class="panel">
+            <h3>Custos contabilizados</h3>
+            <p class="muted">
+              Sólidos em R$/ton; líquidos e aditivos conforme a unidade
+              cadastrada.
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Material</th>
+                    <th>Categoria</th>
+                    <th>Un.</th>
+                    <th>Custo vigente</th>
+                    <th>Fonte/data</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="tbMat"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Participação dos materiais</h3>
+            <p class="muted">
+              Selecione uma carta na aba “Cartas” para ver sua composição.
+            </p>
+            <div class="chart"><canvas id="chartShare"></canvas></div>
+          </div>
+        </div>
+      </section>
+      <section id="cartas" class="view">
+        <div class="panel">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              gap: 12px;
+              flex-wrap: wrap;
+            "
+          >
+            <div>
+              <h3>Custo por carta de traço</h3>
+              <p class="muted">
+                Calculado com o custo vigente de cada material mapeado.
+              </p>
+            </div>
+            <select
+              id="selCarta"
+              class="select"
+              onchange="renderCarta()"
+            ></select>
+          </div>
+          <div id="cartaResumo" style="margin-top: 15px"></div>
+        </div>
+      </section>
+      <section id="evolucao" class="view">
+        <div class="panel">
+          <div style="display: flex; justify-content: space-between; gap: 12px">
+            <div>
+              <h3>Evolução dos custos</h3>
+              <p class="muted">
+                Últimos 12 meses, considerando notas fiscais e ajustes vigentes.
+              </p>
+            </div>
+            <select
+              id="selMaterial"
+              class="select"
+              onchange="renderEvolucao()"
+            ></select>
+          </div>
+          <div class="chart"><canvas id="chartEvolution"></canvas></div>
+        </div>
+        <div class="panel" style="margin-top: 16px">
+          <h3>Histórico de ajustes</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Vigência</th>
+                  <th>Material</th>
+                  <th>Valor</th>
+                  <th>Motivo</th>
+                  <th>Responsável</th>
+                </tr>
+              </thead>
+              <tbody id="tbHist"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div id="modal" class="modalx">
+      <div class="dialog">
+        <h3>Ajustar custo gerencial</h3>
+        <div id="modalMat" class="muted"></div>
+        <label>Novo custo unitário</label
+        ><input
+          id="fValor"
+          class="input"
+          type="number"
+          min="0"
+          step="0.0001"
+        /><label>Vigência</label
+        ><input id="fData" class="input" type="date" /><label
+          >Motivo do ajuste</label
+        ><textarea
+          id="fMotivo"
+          class="input"
+          rows="3"
+          placeholder="Ex.: cotação atualizada do fornecedor"
+        ></textarea>
+        <div class="actions">
+          <button class="btn btn-light" onclick="closeModal()">Cancelar</button
+          ><button class="btnx" onclick="saveAjuste()">Salvar ajuste</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      const API = "/unificado/mapa/api/usina/reporting";
+      let data = {},
+        cartas = [],
+        editId = null,
+        shareChart,
+        evoChart,
+        cartaChart,
+        slidePreviewObserver;
+      const money = (v) =>
+        Number(v || 0).toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 4,
+        });
+      const chartColors = [
+        "#0d3b66",
+        "#e07a3a",
+        "#1976d2",
+        "#10b981",
+        "#f59e0b",
+        "#8b5cf6",
+        "#ef4444",
+        "#64748b",
+      ];
+      const chartSoftColors = [
+        "#e7eef5",
+        "#faeee7",
+        "#e8f2fc",
+        "#e7f8f2",
+        "#fff5dc",
+        "#f1edfd",
+        "#fdebec",
+        "#eef1f4",
+      ];
+      const dateBR = (v) =>
+        v ? String(v).slice(0, 10).split("-").reverse().join("/") : "—";
+      const esc = (s) =>
+        String(s ?? "").replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      function tab(id, b) {
+        document
+          .querySelectorAll(".view")
+          .forEach((x) => x.classList.remove("active"));
+        document
+          .querySelectorAll(".tabs button")
+          .forEach((x) => x.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        b.classList.add("active");
+      }
+      async function loadAll() {
+        try {
+          let [a, b] = await Promise.all([
+            fetch(API + "/relatorios/custos?meses=12"),
+            fetch(API + "/relatorios/cartas-traco"),
+          ]);
+          if (!a.ok || !b.ok) throw Error("Falha ao consultar custos");
+          data = await a.json();
+          let cb = await b.json();
+          cartas = cb.cartas || [];
+          render();
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+      function render() {
+        let m = data.materiais || [];
+        kMat.textContent = m.length;
+        kOk.textContent = m.filter((x) => x.custo_vigente > 0).length;
+        kSem.textContent = m.filter((x) => !x.custo_vigente).length;
+        kCartas.textContent = cartas.length;
+        tbMat.innerHTML = m
+          .map(
+            (x) =>
+              `<tr><td><b>${esc(x.nome)}</b><div class="muted">${esc(x.codigo)}</div></td><td>${esc(x.categoria)}</td><td>${esc(x.unidade)}</td><td class="money ${x.custo_vigente ? "" : "warn"}">${x.custo_vigente ? money(x.custo_vigente) : "Não definido"}</td><td><span class="badge-src">${esc(x.fonte)}</span><div class="muted">${dateBR(x.ajuste_data || x.entrada_data)}</div></td><td><button class="btnx" onclick="window.open('https://dautomacao.com/concretrack/relatorios/custos/','_blank','noopener')" title="Ajustar no ERP de origem"><i class="bi bi-pencil"></i></button></td></tr>`,
+          )
+          .join("");
+        selCarta.innerHTML =
+          '<option value="">Selecione uma carta</option>' +
+          cartas
+            .map(
+              (x) =>
+                `<option value="${x.id}">${esc(x.nome_traco)} — ${money(x.custo_total)}</option>`,
+            )
+            .join("");
+        selMaterial.innerHTML = m
+          .map((x) => `<option value="${x.id}">${esc(x.nome)}</option>`)
+          .join("");
+        tbHist.innerHTML =
+          (data.ajustes || [])
+            .map(
+              (x) =>
+                `<tr><td>${dateBR(x.vigencia)}</td><td>${esc(x.material_nome)}</td><td class="money">${money(x.valor_unitario)}</td><td>${esc(x.motivo)}</td><td>${esc(x.responsavel || "—")}</td></tr>`,
+            )
+            .join("") || '<tr><td colspan="5">Nenhum ajuste manual.</td></tr>';
+        renderEvolucao();
+      }
+      function openModal(id) {
+        editId = id;
+        let x = data.materiais.find((y) => y.id === id);
+        modalMat.textContent = x.nome + " • " + x.unidade;
+        fValor.value = x.custo_vigente || "";
+        fData.value = new Date().toISOString().slice(0, 10);
+        fMotivo.value = "";
+        modal.classList.add("on");
+      }
+      function closeModal() {
+        modal.classList.remove("on");
+      }
+      async function saveAjuste() {
+        let body = {
+          material_id: editId,
+          valor_unitario: Number(fValor.value),
+          vigencia: fData.value,
+          motivo: fMotivo.value.trim(),
+        };
+        if (!body.motivo) return alert("Informe o motivo.");
+        let r = await fetch(API + "/relatorios/custos/ajustes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        if (!r.ok) {
+          let e = await r.json();
+          return alert(e.detail || "Erro ao salvar");
+        }
+        closeModal();
+        loadAll();
+      }
+      function renderCarta() {
+        let c = cartas.find((x) => String(x.id) === selCarta.value);
+        if (!c) {
+          cartaResumo.innerHTML = "";
+          return;
+        }
+        let mats = (c.materiais || []).filter((x) => x.quantidade);
+        const rows = mats
+          .map(
+            (x, index) =>
+              `<tr class="material-color-row" style="--material-color:${chartColors[index % chartColors.length]};--material-soft-bg:${chartSoftColors[index % chartSoftColors.length]}"><td>${esc(x.material_nome || x.label)}</td><td>${x.quantidade} ${esc(x.material_unidade_carta)}</td><td>${money(x.custo_unitario)}</td><td class="money">${money(x.custo_total)}</td><td>${c.custo_total ? ((x.custo_total / c.custo_total) * 100).toFixed(1) : 0}%</td></tr>`,
+          )
+          .join("");
+        const table = `<div class="table-wrap"><table><thead><tr><th>Material</th><th>Quantidade</th><th>Custo un.</th><th>Custo</th><th>%</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+        const hoje = new Date().toLocaleDateString("pt-BR");
+        cartaResumo.innerHTML = `<div class="cards summary-cards"><div class="cardx"><small>Custo da carta</small><strong>${money(c.custo_total)}</strong></div><div class="cardx"><small>Materiais</small><strong>${mats.length}</strong></div><div class="cardx"><small>Uso no período</small><strong>${c.usos_periodo || 0}</strong></div><div class="cardx"><small>Volume no período</small><strong>${Number(c.volume_periodo || 0).toLocaleString("pt-BR")} m³</strong></div></div><div class="grid">${table}<div class="chart"><canvas id="chartCarta"></canvas></div></div><div class="closing-section"><div class="closing-toolbar"><div><h3>Apresentação de fechamento</h3><p class="muted">Versão pronta para apresentar, sem quantidade de massadas e sem volume do período.</p></div><button class="btnx" type="button" onclick="imprimirFechamento()"><i class="bi bi-printer"></i> Imprimir / salvar em PDF</button></div><div class="closing-paper"><div class="closing-head"><img src="/unificado/usinas/relatorios/assets/PRINCIPAL@2x.png" alt="ConcreTrack"><div><div class="closing-label">APRESENTAÇÃO DE FECHAMENTO</div><h3>Custo da carta de traço</h3></div><div class="closing-date">Custos vigentes<br>${hoje}</div></div><div class="closing-title"><small>Carta selecionada</small><h2>${esc(c.nome_traco || c.nome || "Carta de traço")}</h2></div><div class="closing-kpis"><div class="closing-kpi"><small>Custo total da carta</small><strong>${money(c.custo_total)}</strong></div><div class="closing-kpi"><small>Materiais na composição</small><strong>${mats.length}</strong></div></div><div class="closing-content">${table}<div class="closing-chart"><canvas id="chartFechamento"></canvas></div></div><p class="closing-note">Valores calculados com os custos vigentes dos materiais mapeados.</p></div></div>`;
+        sessionStorage.setItem("concretrack_carta_selecionada", String(c.id));
+        const slideUrl = `/unificado/usinas/relatorios/custos/carta-slide/?carta_id=${encodeURIComponent(c.id)}&embed=1`;
+        const slidePreview = document.createElement("div");
+        slidePreview.className = "slide-preview";
+        slidePreview.innerHTML = `<iframe id="fechamentoFrame" src="${slideUrl}" title="Apresentação de fechamento em formato 4:3" scrolling="no"></iframe>`;
+        cartaResumo.querySelector(".closing-paper")?.replaceWith(slidePreview);
+        const ajustarEscalaSlide = () => {
+          const frame = document.getElementById("fechamentoFrame");
+          if (frame) frame.style.transform = `scale(${slidePreview.clientWidth / 1024})`;
+        };
+        requestAnimationFrame(ajustarEscalaSlide);
+        slidePreviewObserver?.disconnect();
+        slidePreviewObserver = new ResizeObserver(ajustarEscalaSlide);
+        slidePreviewObserver.observe(slidePreview);
+        const slideButton = document.createElement("button");
+        slideButton.className = "btnx";
+        slideButton.type = "button";
+        slideButton.innerHTML = '<i class="bi bi-easel"></i> Abrir slide 4:3';
+        slideButton.addEventListener("click", abrirSlideCarta);
+        cartaResumo.querySelector(".closing-toolbar")?.append(slideButton);
+        const chartConfig = (compact = false) => ({
+          type: "doughnut",
+          data: {
+            labels: mats.map((x) => x.material_nome || x.label),
+            datasets: [
+              {
+                data: mats.map((x) => x.custo_total),
+                backgroundColor: chartColors,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: compact ? "58%" : "50%",
+            devicePixelRatio: compact ? 2 : window.devicePixelRatio,
+            layout: { padding: compact ? 4 : 0 },
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  boxWidth: compact ? 10 : 14,
+                  boxHeight: compact ? 10 : 14,
+                  padding: compact ? 7 : 10,
+                  font: { size: compact ? 9 : 11 },
+                },
+              },
+            },
+          },
+        });
+        cartaChart?.destroy();
+        cartaChart = new Chart(
+          document.getElementById("chartCarta"),
+          chartConfig(),
+        );
+        renderShare(mats);
+      }
+      function imprimirFechamento() {
+        if (!selCarta.value) return alert("Selecione uma carta de traço.");
+        const frame = document.getElementById("fechamentoFrame");
+        if (!frame?.contentWindow) return abrirSlideCarta();
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+      }
+      function abrirSlideCarta() {
+        if (!selCarta.value) return alert("Selecione uma carta de traço.");
+        const url = `/unificado/usinas/relatorios/custos/carta-slide/?carta_id=${encodeURIComponent(selCarta.value)}`;
+        window.open(url, "_blank", "noopener");
+      }
+      function renderShare(m) {
+        shareChart?.destroy();
+        shareChart = new Chart(chartShare, {
+          type: "doughnut",
+          data: {
+            labels: m.map((x) => x.material_nome || x.label),
+            datasets: [
+              {
+                data: m.map((x) => x.custo_total),
+                backgroundColor: chartColors,
+              },
+            ],
+          },
+          options: { responsive: true, maintainAspectRatio: false },
+        });
+      }
+      function renderEvolucao() {
+        let id = Number(selMaterial.value),
+          rows = (data.historico || []).filter((x) => x.material_id === id);
+        evoChart?.destroy();
+        evoChart = new Chart(chartEvolution, {
+          type: "line",
+          data: {
+            labels: rows.map((x) => dateBR(x.mes).slice(3)),
+            datasets: [
+              {
+                label: "Custo unitário",
+                data: rows.map((x) => x.custo),
+                borderColor: "#e07a3a",
+                backgroundColor: "#e07a3a22",
+                fill: true,
+                tension: 0.3,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: false } },
+            plugins: { tooltip: { callbacks: { label: (x) => money(x.raw) } } },
+          },
+        });
+      }
+      loadAll();
+    </script>
+  </body>
+</html>

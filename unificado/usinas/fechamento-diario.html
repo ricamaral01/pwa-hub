@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fechamento diário · PCP x Produção</title>
+  <style>
+    :root{font-family:Inter,"Segoe UI",system-ui,sans-serif;color:#10233e;background:#f2f5f9}
+    *{box-sizing:border-box}
+    body{margin:0}
+    .toolbar{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 20px;background:#fff;border-bottom:1px solid #dbe4ee}
+    .toolbar h1{margin:0;font-size:1.2rem}.toolbar p{margin:5px 0 0;color:#53657b;font-size:.84rem}
+    .controls{display:flex;align-items:end;gap:9px;flex-wrap:wrap}
+    label{display:grid;gap:5px;color:#40566d;font-size:.75rem;font-weight:750}
+    select{height:38px;padding:7px 10px;border:1px solid #bdccda;border-radius:8px;font:inherit;color:#10233e;background:#fff}
+    button,.source-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:7px 13px;border:1px solid #0d3b66;border-radius:8px;background:#0d3b66;color:#fff;font:inherit;font-size:.82rem;font-weight:750;text-decoration:none;cursor:pointer}
+    .source-link{background:#fff;color:#0d3b66}
+    .source-link:hover,button:hover{filter:brightness(.92)}
+    #status{margin:0;padding:9px 20px;background:#eaf1f8;color:#40566d;font-size:.8rem}
+    iframe{display:block;width:100%;height:calc(100vh - 123px);min-height:720px;border:0;background:#ececec}
+    @media(max-width:650px){.toolbar{padding:14px}.controls{width:100%}.controls label{flex:1}select{width:100%}#status{padding:9px 14px}iframe{height:calc(100vh - 165px)}}
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div><h1>Fechamento diário · Ribeirão</h1><p>PCP x Produção + Qualidade · relatório gerado na origem</p></div>
+    <form id="filter" class="controls">
+      <label>Relatórios disponíveis<select id="date" name="data" required disabled><option>Carregando datas…</option></select></label>
+      <button type="submit">Abrir relatório</button>
+      <a id="source" class="source-link" target="_blank" rel="noopener noreferrer">Abrir em janela inteira</a>
+    </form>
+  </div>
+  <p id="status" role="status">Carregando relatório…</p>
+  <iframe id="report" title="Relatório PCP x Produção e Qualidade" referrerpolicy="no-referrer"></iframe>
+  <script>
+    const dateInput=document.getElementById('date');
+    const frame=document.getElementById('report');
+    const source=document.getElementById('source');
+    const status=document.getElementById('status');
+    const originalBase='https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/';
+    let available=[];
+    function openReport(value){
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(value||''))return;
+      const url=originalBase+`relatorio_pcp_producao_${value}.html`;
+      dateInput.value=value;
+      source.href=url;
+      status.textContent=`Relatório de ${value.split('-').reverse().join('/')} · fonte: PCP x Produção + Qualidade de Ribeirão`;
+      frame.src=url;
+      const current=new URL(location.href);
+      current.searchParams.set('data',value);
+      history.replaceState(null,'',current);
+    }
+    document.getElementById('filter').addEventListener('submit',event=>{
+      event.preventDefault();
+      if(available.includes(dateInput.value))openReport(dateInput.value);
+    });
+    const requested=new URLSearchParams(location.search).get('data');
+    openReport('2026-10-30');
+    (async()=>{
+      try{
+        const response=await fetch('/unificado/mapa/api/usina/reporting/pcp-producao/manifest',{credentials:'same-origin',cache:'no-store'});
+        if(!response.ok)throw new Error('Não foi possível consultar a lista de relatórios disponíveis.');
+        const payload=await response.json();
+        available=Array.isArray(payload.reports)?payload.reports.filter(value=>/^\d{4}-\d{2}-\d{2}$/.test(value)):[];
+        if(!available.length)throw new Error('Nenhum relatório PCP x Produção está disponível.');
+        dateInput.replaceChildren(...available.map(value=>{
+          const option=document.createElement('option');
+          option.value=value;
+          option.textContent=value.split('-').reverse().join('/');
+          return option;
+        }));
+        dateInput.disabled=false;
+        openReport(available.includes(requested)?requested:available[0]);
+      }catch(error){status.textContent=error.message;}
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Metodologia CronoTrack</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: referência técnica. Índice lateral fixo no desktop, empilhado no celular; cada modelo em blocos O quê · Por quê · Como · Memória de cálculo. Paleta ConcreTrack: azul-marinho, vermelho, amarelo. */
+:root{
+  --bg:#EDF1F6;--surface:#FFFFFF;--surface-2:#F5F7FA;--line:#DCE3EC;--fg:#101828;--muted:#5B6779;
+  --navy:#0E1B33;--navy-fg:#EDF1F6;--red:#C8102E;--red-ink:#A50D26;--amber:#F2B300;--amber-soft:#FFF4D1;--amber-ink:#5A4300;
+  --good:#1F7A44;--good-soft:#E3F4EA;
+  --f-ui:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;--f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1220;--surface:#121B2E;--surface-2:#18233A;--line:#26334F;--fg:#E8EDF5;--muted:#9DA9BC;
+  --navy:#070D19;--navy-fg:#E8EDF5;--red:#F0566C;--red-ink:#F27C8D;--amber:#F2B300;--amber-soft:#3A2E0A;--amber-ink:#F7D477;
+  --good:#6CC790;--good-soft:#173324;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1220;--surface:#121B2E;--surface-2:#18233A;--line:#26334F;--fg:#E8EDF5;--muted:#9DA9BC;
+  --navy:#070D19;--navy-fg:#E8EDF5;--red:#F0566C;--red-ink:#F27C8D;--amber:#F2B300;--amber-soft:#3A2E0A;--amber-ink:#F7D477;
+  --good:#6CC790;--good-soft:#173324;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--f-ui)}
+a{color:var(--red)}a:hover{color:var(--red-ink)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.hero{background:var(--navy);color:var(--navy-fg);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 36px}
+.hero-in,.wrap{max-width:1180px;margin:0 auto}
+.brand{font-weight:800;letter-spacing:.03em;font-size:15px}.brand b{color:var(--red)}
+.hero h1{font-size:clamp(30px,5vw,46px);line-height:1.08;margin:14px 0 10px;font-weight:800;text-wrap:balance}
+.hero p{max-width:70ch;margin:0;color:#C9D3E3;font-size:17px}
+.wrap{display:grid;grid-template-columns:250px minmax(0,1fr);gap:36px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 80px}
+@media (max-width:880px){.wrap{grid-template-columns:1fr}.toc{position:static!important;max-height:none!important}}
+.toc{position:sticky;top:20px;align-self:start;max-height:calc(100vh - 40px);overflow:auto;font-size:14px;display:flex;flex-direction:column;gap:2px}
+.toc .t{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800;margin:10px 0 4px}
+.toc a{color:var(--fg);text-decoration:none;padding:5px 10px;border-radius:8px;font-weight:600}
+.toc a:hover{background:var(--surface);color:var(--red)}
+main{min-width:0;display:flex;flex-direction:column;gap:22px}
+section{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 28px;scroll-margin-top:16px}
+@media (max-width:560px){section{padding:20px 16px}}
+h2{font-size:26px;line-height:1.2;margin:0 0 6px;font-weight:800;text-wrap:balance}
+h2 .n{font-family:var(--f-mono);color:var(--red);font-size:18px;margin-right:8px;font-weight:600}
+h3{font-size:17px;margin:20px 0 6px;font-weight:800}
+p{margin:8px 0;max-width:72ch}
+.lead{color:var(--muted);font-size:16.5px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:12px}
+.box{background:var(--surface-2);border-radius:12px;padding:14px 16px;min-width:0}
+.box b.k{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:4px}
+.f{font-family:var(--f-mono);background:var(--navy);color:#F7F9FC;border-radius:12px;padding:16px 18px;margin:12px 0;font-size:15px;line-height:1.7;overflow-x:auto;white-space:pre}
+.f .c{color:#8FA3C2}
+.calc{border:1.5px solid var(--amber);background:var(--amber-soft);color:var(--fg);border-radius:12px;padding:14px 16px;margin:12px 0}
+.calc .k{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--amber-ink)}
+.calc ol{margin:6px 0 0;padding-left:20px}
+.calc li{margin:3px 0}
+.num,.calc,code{font-variant-numeric:tabular-nums}
+code{font-family:var(--f-mono);font-size:.92em;background:var(--surface-2);padding:1px 6px;border-radius:6px}
+.scroll{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--surface-2);font-size:12.5px;color:var(--muted)}
+td.r,th.r{text-align:right;font-family:var(--f-mono)}
+ul{margin:8px 0;padding-left:22px;max-width:72ch}li{margin:3px 0}
+.tag{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 9px;border-radius:999px;background:var(--good-soft);color:var(--good);margin-left:6px;vertical-align:middle}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+body{margin:0}</style></head><body>
+
+
+
+<div class="wrap">
+<nav class="toc" aria-label="Índice">
+  <span class="t">Coleta</span>
+  <a href="#regras">1 · Regras do estudo</a>
+  <a href="#duracao">2 · Duração efetiva</a>
+  <span class="t">Estatística</span>
+  <a href="#amostra">3 · Média, desvio e CV</a>
+  <a href="#anormais">4 · Medições anormais</a>
+  <a href="#tamanho">5 · Tamanho de amostra</a>
+  <a href="#estratos">6 · Estratificação</a>
+  <span class="t">Engenharia de produção</span>
+  <a href="#padrao">7 · Ritmo, tolerâncias e tempo padrão</a>
+  <a href="#conteudo">8 · Conteúdo de trabalho</a>
+  <a href="#pessoas">9 · Takt e número de pessoas</a>
+  <a href="#velocidade">10 · Velocidade</a>
+  <span class="t">Simulação</span>
+  <a href="#lognormal">11 · Distribuição dos tempos</a>
+  <a href="#des">12 · Simulação de eventos discretos</a>
+  <a href="#fabrica">13 · Regras da fábrica no modelo</a>
+  <a href="#ocupacao">14 · Ocupação, filas e Lei de Little</a>
+  <a href="#replicacoes">15 · Replicações e intervalo de confiança</a>
+  <a href="#sequencia">16 · Sequência de concretagem</a>
+  <a href="#validacao">17 · Validação do modelo</a>
+</nav>
+
+<main>
+<section id="regras">
+  <h2><span class="n">1</span>Regras do estudo</h2>
+  <p class="lead">Um tempo só serve para calcular se todos o mediram do mesmo jeito, no mesmo método de trabalho.</p>
+  <ul>
+    <li><b>Ponto de leitura:</b> cada atividade tem um evento visível que liga e outro que desliga o cronômetro, escritos no catálogo ("espátula toca a forma", "ferramenta largada"). Nunca uma intenção.</li>
+    <li><b>Fim de uma atividade = início da seguinte</b> quando elas são seguidas. Assim nada fica sem medir e nada é medido duas vezes.</li>
+    <li><b>Uma operação, um código.</b> O catálogo foi revisado para que nenhuma operação apareça em duas etapas (por exemplo, tirar o poste da forma é só R02–R05, nunca P02).</li>
+    <li><b>Contexto obrigatório:</b> setor, forma, tipo de poste, número de pessoas e cronometrista são gravados no instante em que o cronômetro começa.</li>
+    <li><b>Pausa ≠ espera.</b> Pausa é uma interrupção alheia à atividade, com motivo. Espera que faz parte do processo (R01, R11, R12, C06, C07) é medida como atividade própria.</li>
+    <li><b>Nada se apaga.</b> Uma medição errada é invalidada com motivo, quem e quando. Ela sai dos cálculos e continua no banco (rastreabilidade ISO 9001).</li>
+    <li><b>Efeito Hawthorne:</b> as pessoas trabalham diferente quando observadas. Comunique a equipe antes e descarte os primeiros dias de cada setor se o ritmo estiver alterado.</li>
+  </ul>
+</section>
+
+<section id="duracao">
+  <h2><span class="n">2</span>Duração efetiva</h2>
+  <div class="grid2">
+    <div class="box"><b class="k">O que é</b>O tempo em que a atividade de fato aconteceu: do ponto de início ao de fim, sem as pausas.</div>
+    <div class="box"><b class="k">Por quê</b>Uma pausa por falta de material não é tempo da atividade. Se entrasse, o tempo padrão incluiria um problema que precisa ser corrigido, não pago.</div>
+  </div>
+  <div class="f">d = (t_fim − t_início) − Σ (fim_pausa_k − início_pausa_k)</div>
+  <div class="calc"><span class="k">Memória de cálculo</span><ol>
+    <li>Início 10:31:00, fim 10:32:44 → bruto = 104 s.</li>
+    <li>Uma pausa de 10:31:30 a 10:31:50 → 20 s.</li>
+    <li>d = 104 − 20 = <b>84 s = 1,40 min</b>. A pausa e o motivo ficam gravados à parte.</li>
+  </ol></div>
+  <p>O tempo vem do relógio do aparelho (horário de início e de fim), não da tela. Fechar o app ou apagar a tela não muda a medição.</p>
+</section>
+
+<section id="amostra">
+  <h2><span class="n">3</span>Média, desvio padrão e coeficiente de variação</h2>
+  <div class="grid2">
+    <div class="box"><b class="k">O que é</b>A média é o tempo típico; o desvio padrão mede o quanto as medições se espalham; o CV é o desvio em proporção da média.</div>
+    <div class="box"><b class="k">Por quê</b>A média alimenta o tempo padrão. O CV diz quantas medições faltam e se a atividade é estável: acima de 40% costuma indicar ponto de leitura vago ou tipos de poste misturados.</div>
+  </div>
+  <div class="f">média  x̄ = Σ xᵢ / n
+desvio s  = √( Σ (xᵢ − x̄)² / (n − 1) )   <span class="c">← n − 1: desvio amostral</span>
+CV       = s / x̄</div>
+  <div class="calc"><span class="k">Memória de cálculo · P08, 10 medições (min)</span><ol>
+    <li>Medições: 1,20 · 1,45 · 1,10 · 1,62 · 1,30 · 1,28 · 1,55 · 1,18 · 1,40 · 1,35</li>
+    <li>Soma = 13,43 → x̄ = 13,43 ÷ 10 = <b>1,343 min</b></li>
+    <li>Σ (xᵢ − x̄)² = 0,2462 → s = √(0,2462 ÷ 9) = <b>0,165 min</b></li>
+    <li>CV = 0,165 ÷ 1,343 = <b>12,3%</b></li>
+  </ol></div>
+</section>
+
+<section id="anormais">
+  <h2><span class="n">4</span>Medições anormais</h2>
+  <div class="grid2">
+    <div class="box"><b class="k">O que é</b>Medições muito distantes da média (fora de x̄ ± k·s, com k = 2 ou 3) são ignoradas no cálculo, mas continuam visíveis.</div>
+    <div class="box"><b class="k">Por quê</b>Um cronômetro esquecido ligado ou uma quebra de ferramenta distorce a média. A regra é automática e igual para todos, sem escolha caso a caso.</div>
+  </div>
+  <div class="f">válida se  |xᵢ − x̄| ≤ k · s        <span class="c">x̄ e s de todas as medições; só com n > 3</span></div>
+  <div class="calc"><span class="k">Memória de cálculo · P08, k = 2</span><ol>
+    <li>Faixa = 1,343 ± 2 × 0,165 = <b>1,012 a 1,674 min</b>.</li>
+    <li>Todas as 10 medições estão na faixa → nenhuma ignorada.</li>
+    <li>Uma medição de 3,10 min ficaria de fora e apareceria como "1 anormal".</li>
+  </ol></div>
+</section>
+
+<section id="tamanho">
+  <h2><span class="n">5</span>Tamanho de amostra</h2>
+  <div class="grid2">
+    <div class="box"><b class="k">O que é</b>Quantas medições são necessárias para que a média tenha o erro relativo pedido (e) com a confiança escolhida (z).</div>
+    <div class="box"><b class="k">Por quê</b>Medir pouco dá uma média que muda a cada dia; medir demais gasta cronometrista. Atividades estáveis precisam de poucas medições; as variáveis, de muitas.</div>
+  </div>
+  <div class="f">n' = ( z · s / (e · x̄) )² = ( z · CV / e )²
+z = 1,645 (90%) · 1,96 (95%) · 2,576 (99%)        <span class="c">mínimo de 10 medições</span></div>
+  <div class="calc"><span class="k">Memória de cálculo · P08, 95% e erro de 5%</span><ol>
+    <li>n' = (1,96 × 0,123 ÷ 0,05)² = 4,83² = <b>23,3 → 24 medições</b>.</li>
+    <li>Há 10 → o selo mostra "10/24" e a atividade continua na lista de coleta.</li>
+    <li>Com CV de 30%, seriam (1,96 × 0,30 ÷ 0,05)² ≈ 139 medições.</li>
+  </ol></div>
+</section>
+
+<section id="estratos">
+  <h2><span class="n">6</span>Estratificação</h2>
+  <p>Tempos de postes diferentes não devem ser misturados: um DT 12/600 leva mais armadura e mais concreto que um DT 11/300. Por isso cada medição grava o tipo de poste e o setor.</p>
+  <ul>
+    <li>Quando um estrato (tipo de poste ou setor) tem ao menos 3 medições, a simulação usa o tempo daquele estrato; senão usa o da atividade inteira.</li>
+    <li>Deslocamentos dependem da distância: a velocidade (seção 10) é medida e o tempo é recalculado para cada forma.</li>
+    <li>Para separar estratos com segurança, compare as médias com teste de Kruskal-Wallis (ou ANOVA) e só agrupe os que não diferirem.</li>
+  </ul>
+</section>
+
+<section id="padrao">
+  <h2><span class="n">7</span>Ritmo, tolerâncias e tempo padrão</h2>
+  <div class="grid2">
+    <div class="box"><b class="k">O que é</b>Tempo padrão (TP) é o tempo que um operador qualificado leva no método padrão, em ritmo sustentável, incluindo as pausas necessárias ao longo do dia.</div>
+    <div class="box"><b class="k">Por quê</b>O tempo observado vem de um operador específico num momento específico. O ritmo corrige para o operador normal; as tolerâncias somam o que nenhuma pessoa consegue evitar (água, banheiro, fadiga, pequenas esperas).</div>
+  </div>
+  <div class="f">TN = TO × R / 100               <span class="c">R = ritmo: 100% normal, 110% acima do normal</span>
+p  = pessoais + fadiga + esperas (fração)
+FT = 1 / (1 − p)                  <span class="c">tolerância sobre o tempo trabalhado</span>
+TP = TN × FT</div>
+  <div class="calc"><span class="k">Memória de cálculo · P08</span><ol>
+    <li>TO = 1,343 min; ritmo avaliado em 105%.</li>
+    <li>TN = 1,343 × 1,05 = <b>1,410 min</b>.</li>
+    <li>p = 5% + 5% + 3% = 13% → FT = 1 ÷ 0,87 = <b>1,149</b>.</li>
+    <li>TP = 1,410 × 1,149 = <b>1,621 min</b> por execução.</li>
+  </ol></div>
+  <p>Por que 1/(1−p) e não 1+p: a tolerância é uma fração do dia trabalhado. Se 13% do dia vai para tolerâncias, só 87% produz; para produzir 1,410 min de trabalho é preciso 1,410 ÷ 0,87 de dia.</p>
+</section>
+
+<section id="conteudo">
+  <h2><span class="n">8</span>Conteúdo de trabalho por forma</h2>
+  <div class="grid2">
+    <div class="box"><b class="k">O que é</b>A soma de homem-minuto que uma forma consome em todas as etapas.</div>
+    <div class="box"><b class="k">Por quê</b>É a carga que a demanda impõe às pessoas. Atividades de duas pessoas contam em dobro; as que acontecem por caçamba contam na proporção de caçambas por forma.</div>
+  </div>
+  <div class="f">HM = Σ TPⱼ × Pⱼ × fⱼ
+P = média de pessoas nas medições · f = vezes por forma
+f das operações por caçamba = caçambas ÷ formas = 129 ÷ 292 = 0,442</div>
+  <div class="calc"><span class="k">Memória de cálculo</span><ol>
+    <li>P08: TP 1,621 × 2 pessoas × 1 vez = <b>3,24 homem-min</b> por forma.</li>
+    <li>U02 (batida, por caçamba): TP 1,74 × 1 × 0,442 = <b>0,77 homem-min</b> por forma.</li>
+    <li>Esperas (C06, C07, R01, R11, R12) ficam fora: são perda, não trabalho.</li>
+    <li>Somando as atividades usadas: HM = 42,9 homem-min por forma (valor ilustrativo).</li>
+  </ol></div>
+</section>
+
+<section id="pessoas">
+  <h2><span class="n">9</span>Takt time e número de pessoas</h2>
+  <div class="grid2">
+    <div class="box"><b class="k">O que é</b>Takt é o ritmo que a demanda exige. O número de pessoas é a carga total dividida pelo tempo que cada pessoa tem.</div>
+    <div class="box"><b class="k">Por quê</b>Responde "quantas pessoas eu realmente preciso". A eficiência de balanceamento (η) reconhece que o trabalho nunca se divide perfeitamente entre pessoas.</div>
+  </div>
+  <div class="f">T_disp = expediente − intervalos programados
+takt   = T_disp / D
+N      = HM × D / (T_disp × η)     <span class="c">arredondado para cima</span>
+capacidade(Q pessoas) = Q × T_disp × η / HM</div>
+  <div class="calc"><span class="k">Memória de cálculo</span><ol>
+    <li>Expediente 06:30–16:18 = 588 min; intervalos 60 min → T_disp = <b>528 min</b>.</li>
+    <li>D = 292 formas/dia → takt = 528 ÷ 292 = <b>1,81 min/forma</b>.</li>
+    <li>N teórico = 42,9 × 292 ÷ 528 = <b>23,7</b>; com η = 90%: 23,7 ÷ 0,9 = <b>26,4 → 27 pessoas</b>.</li>
+    <li>Com 26 pessoas: 26 × 528 × 0,9 ÷ 42,9 = <b>288 formas/dia</b> (faltam 4).</li>
+  </ol></div>
+  <p>Limite do método: ele dimensiona pela média. Operadores presos a equipamento (usina, pontes) aparecem como ocupação, não como fração de pessoa, e picos e filas só aparecem na simulação.</p>
+</section>
+
+<section id="velocidade">
+  <h2><span class="n">10</span>Velocidade de pontes e carrinhos</h2>
+  <div class="f">v = Σ dᵢ / Σ tᵢ                 <span class="c">ponderada pelo tempo; separada carregada × vazia</span></div>
+  <div class="calc"><span class="k">Memória de cálculo · C02 (ponte carregada)</span><ol>
+    <li>Três viagens: 52 m em 1,8 min · 48 m em 1,5 min · 60 m em 2,1 min.</li>
+    <li>v = (52 + 48 + 60) ÷ (1,8 + 1,5 + 2,1) = 160 ÷ 5,4 = <b>29,6 m/min</b>.</li>
+    <li>A média simples das velocidades (28,9; 32,0; 28,6) daria 29,8 m/min e superestimaria viagens curtas.</li>
+  </ol></div>
+  <p>Por que medir velocidade e não só tempo: cada forma está a uma distância diferente (4 a 60 m; 3 a 100 m no setor 3). Com a velocidade, o modelo calcula o tempo de qualquer forma.</p>
+</section>
+
+<section id="lognormal">
+  <h2><span class="n">11</span>Distribuição dos tempos</h2>
+  <div class="grid2">
+    <div class="box"><b class="k">O que é</b>Na simulação, cada duração é sorteada de uma distribuição lognormal com a média e o CV medidos.</div>
+    <div class="box"><b class="k">Por quê</b>Tempos de trabalho nunca são negativos e têm cauda à direita (às vezes demora bem mais, nunca muito menos). A lognormal tem essas duas propriedades; a normal não.</div>
+  </div>
+  <div class="f">σ² = ln(1 + CV²)      μ = ln(m) − σ²/2
+X  = exp(μ + σ·Z),  Z ~ Normal(0, 1)   <span class="c">E[X] = m exatamente</span></div>
+  <div class="calc"><span class="k">Memória de cálculo · P08 com CV de 30%</span><ol>
+    <li>σ² = ln(1 + 0,09) = 0,0862 → σ = 0,294.</li>
+    <li>μ = ln(1,343) − 0,0431 = 0,250.</li>
+    <li>Sorteio com Z = 1,0 → X = e^(0,250 + 0,294) = <b>1,72 min</b>; com Z = −1,0 → 0,95 min.</li>
+  </ol></div>
+  <p>Com mais dados, ajuste outras candidatas (gama, Weibull) e escolha pelo teste de Anderson-Darling ou Kolmogorov-Smirnov e pelo gráfico Q-Q. Atividades com menos de 3 medições usam a estimativa do catálogo e ficam marcadas como estimativa.</p>
+</section>
+
+<section id="des">
+  <h2><span class="n">12</span>Simulação de eventos discretos</h2>
+  <p class="lead">Em vez de dividir médias, o modelo reproduz o dia: cada forma, batelada e poste anda pela fábrica e espera quando o recurso que precisa está ocupado.</p>
+  <div class="grid2">
+    <div class="box"><b class="k">Entidades</b>Forma (ciclo), viagem de caçamba, poste no corredor.</div>
+    <div class="box"><b class="k">Recursos</b>Usina, 2 carrinhos da monovia, 3 pontes por setor, desforma, lançador, acabador, duplas de montagem, dupla de carimbo e pinos, posições do corredor.</div>
+    <div class="box"><b class="k">Relógio</b>Avança de evento em evento (início e fim de cada tarefa), não de minuto em minuto. Um dia de 292 formas roda em frações de segundo.</div>
+    <div class="box"><b class="k">Por quê</b>Filas, bloqueios no trilho e horários de troca de função não aparecem numa conta de média. É a simulação que mostra que a montagem atrasa a concretagem, e não a usina.</div>
+  </div>
+</section>
+
+<section id="fabrica">
+  <h2><span class="n">13</span>Regras da fábrica no modelo</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Regra</th><th>Como entra no modelo</th></tr></thead>
+    <tbody>
+      <tr><td>Desforma 16 h após a concretagem</td><td>A forma só pode ser aberta quando agora ≥ concretagem + 16 h. A desforma começa às 06:30.</td></tr>
+      <tr><td>Desforma pela forma mais perto do carrinho</td><td>Fila de desforma e de retirada ordenada pela distância até a parada do carrinho.</td></tr>
+      <tr><td>Troca de função às 08:30</td><td>Ponte 1 passa de retirada a concretagem; ponte 2 de corredor a retirada; ponte 3 entra no corredor. A dupla da concretagem deixa a desforma; às 09:00 entra 1 colaborador de outro departamento.</td></tr>
+      <tr><td>Pontes no mesmo trilho</td><td>Cada tarefa de ponte reserva o trecho do trilho que percorre; outra ponte só entra num trecho livre.</td></tr>
+      <tr><td>Corredor no meio do setor</td><td>Capacidade de 25 postes; cheio, a ponte de retirada espera com o poste.</td></tr>
+      <tr><td>Monovia de trilho único</td><td>Ordem S4 · usina · S3 · S2 · S1. Carrinho 1 atende S1, S2, S3; carrinho 2 atende S2, S3, S4. Não se ultrapassam; o vazio cede passagem ao carregado.</td></tr>
+      <tr><td>Troca de caçamba no carrinho</td><td>A ponte deixa a vazia no lugar livre, troca o gancho e sobe a cheia; o carrinho fica parado até a ponte voltar.</td></tr>
+      <tr><td>Uma caçamba, várias formas</td><td>Caçamba de 0,9 m³: 3 formas nos setores 1, 2 e 4; no setor 3, 2 formas (1–20), 1 forma (21–40), 1,5 caçamba por forma (41–52).</td></tr>
+      <tr><td>Lançamento</td><td>2 min por forma (3 min no setor 3) até haver medição de C03.</td></tr>
+      <tr><td>Acabamento, carimbo e pinos</td><td>Acabador logo após o lançamento; carimbo pela dupla (11:00–21:00) com prioridade; pinos 4 h após a concretagem.</td></tr>
+      <tr><td>Concretagem segue a montagem</td><td>A usina concreta, na ordem da sequência escolhida, a primeira viagem cujas formas já estão montadas.</td></tr>
+      <tr><td>Hora extra</td><td>O trabalho em curso continua depois das 16:18 e é contado como hora extra.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="ocupacao">
+  <h2><span class="n">14</span>Ocupação, filas e Lei de Little</h2>
+  <div class="f">U = tempo ocupado / (capacidade × tempo de expediente)
+L = λ · W        <span class="c">itens na fila = taxa de chegada × tempo médio de espera</span></div>
+  <p><b>Por que 85%:</b> a espera cresce de forma explosiva perto de 100% de ocupação (numa fila simples, proporcional a U/(1−U)). Em 85%, U/(1−U) ≈ 5,7; em 95%, ≈ 19. Por isso um recurso acima de 85% é marcado como gargalo provável.</p>
+  <div class="calc"><span class="k">Memória de cálculo · Lei de Little na montagem do setor 1</span><ol>
+    <li>Chegam formas livres a λ = 80 formas em 6 h ≈ 0,22 forma/min.</li>
+    <li>Espera média por uma dupla W = 120 min.</li>
+    <li>L = 0,22 × 120 ≈ <b>27 formas paradas</b> esperando montagem, em média.</li>
+  </ol></div>
+</section>
+
+<section id="replicacoes">
+  <h2><span class="n">15</span>Replicações, intervalo de confiança e números aleatórios comuns</h2>
+  <div class="grid2">
+    <div class="box"><b class="k">O que é</b>A simulação roda várias vezes com sorteios diferentes; o resultado é a média com um intervalo de confiança.</div>
+    <div class="box"><b class="k">Por quê</b>Uma rodada só pode dar um dia de sorte. O intervalo diz o quanto o resultado é confiável; cenário e base com os mesmos sorteios isolam o efeito da mudança.</div>
+  </div>
+  <div class="f">IC 95% = ȳ ± t(0,975; R−1) · s_y / √R
+diferença significativa se o IC de (cenário − base), replicação a replicação, não inclui zero
+R necessário = ( t · s_y / h )²     <span class="c">h = meia-largura desejada</span></div>
+  <div class="calc"><span class="k">Memória de cálculo · fim da concretagem, 5 replicações (h decimal)</span><ol>
+    <li>17,48 · 17,52 · 17,40 · 17,61 · 17,45 → ȳ = 17,49 h; s = 0,079 h.</li>
+    <li>t(0,975; 4) = 2,776 → IC = 17,49 ± 2,776 × 0,079 ÷ √5 = 17,49 ± 0,10 h → <b>17:23 a 17:35</b>.</li>
+    <li>Para meia-largura de 3 min (0,05 h): R = (2,776 × 0,079 ÷ 0,05)² ≈ <b>20 replicações</b>.</li>
+  </ol></div>
+  <p>O primeiro dia simulado é descartado (aquecimento): ele começa com as formas num estado artificial.</p>
+</section>
+
+<section id="sequencia">
+  <h2><span class="n">16</span>Sequência de concretagem</h2>
+  <div class="grid2">
+    <div class="box"><b class="k">Regra de Johnson</b>Com dois estágios em série (usina → ponte), começar pelas viagens longas e terminar pelas curtas encurta a cauda do dia. A distância total, Σ 2·dᵢ, não depende da ordem.</div>
+    <div class="box"><b class="k">O que a fábrica mostrou</b>Com desforma e montagem avançando do carrinho para o fundo, concretar perto → longe segue a montagem e não disputa o trilho com a retirada. Alternar setores mantém as 4 pontes e as 4 equipes trabalhando ao mesmo tempo.</div>
+  </div>
+  <p><b>Critérios comparados:</b> formas concretadas no dia, hora de fim, hora extra, interferência entre pontes, espera do carimbo, pinos fora do horário e passagens da caçamba cheia sobre forma recém-concretada (risco de segurança e de qualidade). A recomendação é a de menor hora extra; se ela passa sobre forma fresca, o app avisa.</p>
+</section>
+
+<section id="validacao">
+  <h2><span class="n">17</span>Validação do modelo <span class="tag">antes de decidir</span></h2>
+  <ol>
+    <li><b>Verificação:</b> com tempos fixos (CV = 0), conferir à mão o ciclo de uma forma. Postes que entram = postes que saem + postes em processo.</li>
+    <li><b>Dados separados:</b> semanas usadas para medir tempos não são usadas para validar.</li>
+    <li><b>Comparação com o real:</b> anotar por alguns dias a hora real de fim da concretagem e da montagem. A base simulada deve ficar a ±5% (cerca de ±25 min no dia).</li>
+    <li><b>Validação de face:</b> encarregados olham a linha do tempo simulada e apontam o que não acontece na fábrica.</li>
+    <li><b>Sensibilidade:</b> variar ±20% os tempos ainda estimados; se a recomendação muda, medir esses tempos antes de decidir.</li>
+  </ol>
+</section>
+</main>
+</div>
+</body></html>
