@@ -1,0 +1,590 @@
+[
+  {
+    "view": "suprimentos/painel/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCompras\nAdministração\nAtualizar\nVers"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Painel de suprimentos\n\nSua fila de trabalho e as solicitações da unidade.\n\n+\nNova solicitação\nAguardando sua aprovação\n2\n2 há mais de 24 h\nEm atendimento\n3\n1 urgentes / parou produção\nFila de trabalho"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/painel/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nSolicitações\n›\nPainel"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Painel de suprimentos\n\nSua fila de trabalho e as solicitações da unidade.\n\n+\nNova solicitação\nAguardando sua aprovação\n2\n2 há mais de 24 h\nEm atendimento\n3\n1 urgentes / parou produção\nFila de trabalho"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/painel/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nSolicitações\n›\nPainel"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Painel de suprimentos\n\nSua fila de trabalho e as solicitações da unidade.\n\n+\nNova solicitação\nAguardando sua aprovação\n2\n2 há mais de 24 h\nEm atendimento\n3\n1 urgentes / parou produção\nFila de trabalho"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/painel/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nPainel\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Painel de suprimentos\n\nSua fila de trabalho e as solicitações da unidade.\n\n+\nNova solicitação\nAguardando sua aprovação\n2\n2 há mais de 24 h\nEm atendimento\n3\n1 urgentes / parou produção\nFila de trabalho"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/solicitacoes/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCompras\nAdministração\nAtualizar\nVers"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Solicitações\n\nAcompanhe pedidos, alçadas e atendimento.\n\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (5)\nConcluídas (65)\nCanceladas / reprovadas (1)\nBusc"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/solicitacoes/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nSolicitações\n›\nSolicitações"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Solicitações\n\nAcompanhe pedidos, alçadas e atendimento.\n\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (5)\nConcluídas (65)\nCanceladas / reprovadas (1)\nBusc"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/solicitacoes/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nSolicitações\n›\nSolicitações"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Solicitações\n\nAcompanhe pedidos, alçadas e atendimento.\n\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (5)\nConcluídas (65)\nCanceladas / reprovadas (1)\nBusc"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/solicitacoes/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Solicitações\n\nAcompanhe pedidos, alçadas e atendimento.\n\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (5)\nConcluídas (65)\nCanceladas / reprovadas (1)\nBusc"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/nova/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCompras\nAdministração\nAtualizar\nVers"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "← Solicitações\nNova solicitação\n\nEscolha os itens e informe quando precisa deles.\n\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\npar\nkg\nt\ng\nm\nm²\nm³\nL"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/nova/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nSolicitações\n›\nNova solicitação"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "← Solicitações\nNova solicitação\n\nEscolha os itens e informe quando precisa deles.\n\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\npar\nkg\nt\ng\nm\nm²\nm³\nL"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/nova/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nSolicitações\n›\nNova solicitação"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "← Solicitações\nNova solicitação\n\nEscolha os itens e informe quando precisa deles.\n\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\npar\nkg\nt\ng\nm\nm²\nm³\nL"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/nova/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nNova solicitação\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "← Solicitações\nNova solicitação\n\nEscolha os itens e informe quando precisa deles.\n\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\npar\nkg\nt\ng\nm\nm²\nm³\nL"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/cotacoes/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fcotacoes%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCompras\nCotações e pedidos\nRecebimen"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/cotacoes/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cotações e pedidos\n\nDa solicitação aprovada à entrega direta.\n\nFila para compra\nCotações\nPedidos\nItens aprovados para compra\nCriar cotação com selecionados\n\tSolicitação\tItem\tQuantidade\tCategoria\tCC\nNe"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/cotacoes/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fcotacoes%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nCompras\n›\nCotações e pedidos"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/cotacoes/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cotações e pedidos\n\nDa solicitação aprovada à entrega direta.\n\nFila para compra\nCotações\nPedidos\nItens aprovados para compra\nCriar cotação com selecionados\n\tSolicitação\tItem\tQuantidade\tCategoria\tCC\nNe"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/cotacoes/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fcotacoes%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nCompras\n›\nCotações e pedidos"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/cotacoes/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cotações e pedidos\n\nDa solicitação aprovada à entrega direta.\n\nFila para compra\nCotações\nPedidos\nItens aprovados para compra\nCriar cotação com selecionados\n\tSolicitação\tItem\tQuantidade\tCategoria\tCC\nNe"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/cotacoes/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fcotacoes%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCompras\nCotações e pedidos\nCotações e pedidos\nRecebimento\nFornecedores\nIndicadores\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/cotacoes/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cotações e pedidos\n\nDa solicitação aprovada à entrega direta.\n\nFila para compra\nCotações\nPedidos\nItens aprovados para compra\nCriar cotação com selecionados\nNenhum item na fila"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/fornecedores/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Ffornecedores%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCompras\nCotações e pedidos\nRecebimen"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/fornecedores/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Fornecedores\n\nQualificação, documentos, desempenho e compras.\n\nNovo fornecedor\nBuscar\nSituação\nTodas\nEM QUALIFICACAO\nHOMOLOGADO\nHOMOLOGADO CONDICIONAL\nREPROVADO\nSUSPENSO\nBLOQUEADO\nCategoria\nIQF mínimo"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/fornecedores/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Ffornecedores%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nCompras\n›\nFornecedores"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/fornecedores/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Fornecedores\n\nQualificação, documentos, desempenho e compras.\n\nNovo fornecedor\nBuscar\nSituação\nTodas\nEM QUALIFICACAO\nHOMOLOGADO\nHOMOLOGADO CONDICIONAL\nREPROVADO\nSUSPENSO\nBLOQUEADO\nCategoria\nIQF mínimo"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/fornecedores/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Ffornecedores%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nCompras\n›\nFornecedores"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/fornecedores/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Fornecedores\n\nQualificação, documentos, desempenho e compras.\n\nNovo fornecedor\nBuscar\nSituação\nTodas\nEM QUALIFICACAO\nHOMOLOGADO\nHOMOLOGADO CONDICIONAL\nREPROVADO\nSUSPENSO\nBLOQUEADO\nCategoria\nIQF mínimo"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/fornecedores/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Ffornecedores%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCompras\nFornecedores\nCotações e pedidos\nRecebimento\nFornecedores\nIndicadores\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/fornecedores/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Fornecedores\n\nQualificação, documentos, desempenho e compras.\n\nNovo fornecedor\nBuscar\nSituação\nTodas\nEM QUALIFICACAO\nHOMOLOGADO\nHOMOLOGADO CONDICIONAL\nREPROVADO\nSUSPENSO\nBLOQUEADO\nCategoria\nIQF mínimo"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/almoxarifado/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Falmoxarifado%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCompras\nCotações e pedidos\nRecebimen"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/almoxarifado/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Almoxarifado geral\n\nSaldos, reservas e entregas do estoque de Campinas.\n\nVoltar ao painel\nValor em estoque\nR$ 1.090,00\nMateriais ativos\n6\nAbaixo do ponto de pedido\n1\nReservas ativas\n1\nSaldos\nMovimento"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/almoxarifado/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Falmoxarifado%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nSolicitações\n›\nAlmoxarifado"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/almoxarifado/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Almoxarifado geral\n\nSaldos, reservas e entregas do estoque de Campinas.\n\nVoltar ao painel\nValor em estoque\nR$ 1.090,00\nMateriais ativos\n6\nAbaixo do ponto de pedido\n1\nReservas ativas\n1\nSaldos\nMovimento"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/almoxarifado/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Falmoxarifado%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nSolicitações\n›\nAlmoxarifado"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/almoxarifado/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Almoxarifado geral\n\nSaldos, reservas e entregas do estoque de Campinas.\n\nVoltar ao painel\nValor em estoque\nR$ 1.090,00\nMateriais ativos\n6\nAbaixo do ponto de pedido\n1\nReservas ativas\n1\nSaldos\nMovimento"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/almoxarifado/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Falmoxarifado%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nAlmoxarifado\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/almoxarifado/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Almoxarifado geral\n\nSaldos, reservas e entregas do estoque de Campinas.\n\nVoltar ao painel\nValor em estoque\nR$ 1.090,00\nMateriais ativos\n6\nAbaixo do ponto de pedido\n1\nReservas ativas\n1\nSaldos\nMovimento"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/inventario/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Finventario%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCompras\nCotações e pedidos\nRecebimen"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/inventario/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Inventários\n\nContagem cega, corte e ajuste com aprovação quando necessário.\n\nVoltar ao painel\nInventários abertos\n0\nAguardando aprovação\n0\nConcluídos\n1\nContagens\nAbrir inventário\nVer saldos\nAbertura\tT"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/inventario/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Finventario%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nSolicitações\n›\nInventário"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/inventario/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Inventários\n\nContagem cega, corte e ajuste com aprovação quando necessário.\n\nVoltar ao painel\nInventários abertos\n0\nAguardando aprovação\n0\nConcluídos\n1\nContagens\nAbrir inventário\nVer saldos\nAbertura\tT"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/inventario/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Finventario%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.9\nSuprimentos\n›\nSolicitações\n›\nInventário"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/inventario/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Inventários\n\nContagem cega, corte e ajuste com aprovação quando necessário.\n\nVoltar ao painel\nInventários abertos\n0\nAguardando aprovação\n0\nConcluídos\n1\nContagens\nAbrir inventário\nVer saldos\nAbertura\tT"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/inventario/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Finventario%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nInventário\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/inventario/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Inventários\n\nContagem cega, corte e ajuste com aprovação quando necessário.\n\nVoltar ao painel\nInventários abertos\n0\nAguardando aprovação\n0\nConcluídos\n1\nContagens\nAbrir inventário\nVer saldos\n26/10/2026"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  }
+]

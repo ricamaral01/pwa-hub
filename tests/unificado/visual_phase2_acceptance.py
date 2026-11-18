@@ -5,6 +5,8 @@ from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright,expect
 from visual_phase05_sessions import sessions
 ROOT=Path(__file__).resolve().parents[2];BASE='https://concrefer.concretrack.com.br:18446';OUT=ROOT/'docs/revisao-visual-unificado/homolog/fase-2'
+if '--out-phase' in sys.argv:OUT=ROOT/'docs/revisao-visual-unificado/homolog'/sys.argv[sys.argv.index('--out-phase')+1]
+OUT.mkdir(parents=True,exist_ok=True)
 identities=sessions();results=[]
 with sync_playwright() as p:
  browser=p.chromium.launch(channel='msedge',headless=True)
@@ -36,7 +38,7 @@ with sync_playwright() as p:
   if role in ('PRODUCAO','CONSULTA'):
    writes=page.evaluate("""async()=>{let out=[];for(const [path,method] of [['programacao-semana','POST'],['armaduras/calendario','PUT']]){const r=await fetch('/unificado/pcp/api/'+path,{method,headers:{Authorization:'Bearer '+localStorage.getItem('pcp_token'),'X-Unificado-Screen':path.startsWith('armaduras')?'armadurasProgramacao':'programacaoSemanal12','Content-Type':'application/json'},body:JSON.stringify(path.startsWith('armaduras')?{dias_semana:[0,1,2,3,4],confirmado:true,revisao:1}:{semana_inicio:'2030-01-21',origem:'vazia'})});out.push({path,status:r.status})}return out}""")
    assert all(x['status']==403 for x in writes),(role,writes)
-  if role=='ADMIN':
+  if role=='ADMIN' and '--no-preview' not in sys.argv:
    # Verify home values against the exact same live sources, never fixture numbers.
    values=page.evaluate("""async()=>{const day=new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());const headers={Authorization:'Bearer '+localStorage.getItem('pcp_token')};const p=await (await fetch('/unificado/pcp/api/dashboard?data_inicio='+day+'&data_fim='+day,{headers})).json();const m=await (await fetch('/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1?p_data_inicio='+day+'&p_data_fim='+day+'&p_scope=ALL')).json();return {pcp:p.por_setor,mapa:m.by_sector,rows:[...document.querySelectorAll('.sector-card')].map(e=>({sector:Number(e.dataset.sector),plan:e.querySelector('[data-stat=programado]').textContent,done:e.querySelector('[data-stat=realizado]').textContent}))}}""")
    for row in values['rows']:

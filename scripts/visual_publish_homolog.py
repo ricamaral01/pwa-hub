@@ -4,7 +4,7 @@ from datetime import datetime,timezone
 from pathlib import Path
 HOM=Path('/opt/concrefer-unificado/homolog-next');PROD=Path('/opt/concrefer-unificado/public/unificado')
 stage=Path(__file__).resolve().parent;assert stage.is_relative_to(HOM/'staging')
-phase=sys.argv[1];assert phase in ('fase-1','fase-2')
+phase=sys.argv[1];assert phase in tuple('fase-'+str(n) for n in range(1,8))
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def production():
  result={str(p.relative_to(PROD)):sha(p) for p in PROD.rglob('*') if p.is_file()}

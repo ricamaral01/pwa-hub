@@ -22,7 +22,7 @@ function dialog(title,detail,fields,submit='Salvar'){
   const content=fields.map(f=>`<label class="sup-dialog-field"><span>${esc(f.label)}</span>${f.options?`<select name="${esc(f.name)}" ${f.required?'required':''}>${f.options.map(o=>`<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('')}</select>`:`<input name="${esc(f.name)}" type="${esc(f.type||'text')}" value="${esc(f.value||'')}" ${f.min!==undefined?`min="${esc(f.min)}"`:''} ${f.step?`step="${esc(f.step)}"`:''} ${f.required?'required':''}>`}</label>`).join('');
   return supDialog({title,message:detail,content,submit}).then(form=>form?Object.fromEntries(form):null);
 }
-function frame(title,detail){return `<header class="page-head"><div><p class="eyebrow">CAMPINAS · SUPRIMENTOS</p><h1>${title}</h1><p>${detail}</p></div><div class="head-actions"><a class="btn" href="../painel/">Voltar ao painel</a></div></header>`}
+function frame(title,detail){return `<header class="page-head ph"><div><h1>${title}</h1><p>${detail}</p></div><div class="head-actions acts"><a class="btn" href="../painel/">Voltar ao painel</a></div></header>`}
 const empty=message=>`<div class="sup-stock-empty">${esc(message)}</div>`;
 const table=(headers,rows)=>`<div class="table-scroll"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
 async function refresh(){

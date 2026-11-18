@@ -26,7 +26,7 @@ const send=(p,b,m='POST')=>api(p,{method:m,body:JSON.stringify(b)});
 const has=r=>me?.papeis?.some(x=>x.papel===r||x.papel==='ADMIN');
 const canApprove=()=>me?.papeis?.some(x=>x.papel==='APROVADOR');
 const canApproveLevel=n=>me?.papeis?.some(x=>x.papel==='APROVADOR'&&Number(x.nivel)===Number(n));
-const head=(title,sub,actions='')=>`<header class="page-head"><div><p class="eyebrow">CAMPINAS · SUPRIMENTOS</p><h1>${esc(title)}</h1><p>${esc(sub)}</p></div><div class="head-actions">${actions}</div></header>`;
+const head=(title,sub,actions='')=>`<header class="page-head ph"><div><h1>${esc(title)}</h1><p>${esc(sub)}</p></div><div class="head-actions acts">${actions}</div></header>`;
 const card=x=>`<section class="card sup-buy-card">${x}</section>`;
 const btn=(label,id,kind='')=>`<button class="btn ${kind}" data-do="${id}">${label}</button>`;
 const link=(p,id)=>ROOT+p+'/?id='+encodeURIComponent(id);

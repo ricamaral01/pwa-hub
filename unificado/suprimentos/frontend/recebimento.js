@@ -6,7 +6,7 @@ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const date=x=>x?new Date(x).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'—';
 const role=x=>me?.papeis?.some(r=>r.papel===x||r.papel==='ADMIN');
 const card=x=>`<section class="card sup-rec-card">${x}</section>`;
-const head=(title,sub,actions='')=>`<header class="page-head"><div><p class="eyebrow">CAMPINAS · SUPRIMENTOS</p><h1>${esc(title)}</h1><p>${esc(sub)}</p></div><div class="head-actions">${actions}</div></header>`;
+const head=(title,sub,actions='')=>`<header class="page-head ph"><div><h1>${esc(title)}</h1><p>${esc(sub)}</p></div><div class="head-actions acts">${actions}</div></header>`;
 const btn=(label,action,kind='')=>`<button type="button" class="btn ${kind}" data-action="${esc(action)}">${esc(label)}</button>`;
 const badge=x=>`<span class="badge ${x==='CONFIRMADO'||x==='LIBERADO'?'ok':x==='ESTORNADO'||x==='REPROVADO'?'stopped':'wait'}">${esc(String(x||'—').replaceAll('_',' '))}</span>`;
 const field=(name,label,value='',type='text')=>`<label class="field"><span>${esc(label)}</span><input name="${esc(name)}" type="${type}" value="${esc(value??'')}" ${type==='number'?'min="0" step="0.0001"':''}></label>`;

@@ -20,7 +20,8 @@ def package(phase,base):
  for rel in sorted(set(changed)):
   p=Path(rel)
   if not rel.startswith('unificado/') or not (ROOT/p).is_file():continue
-  if any(x in p.parts for x in ['src','frontend','backend','service','sidebar-modelo-a','api']):continue
+  if any(x in p.parts for x in ['src','backend','service','sidebar-modelo-a','api','node_modules']):continue
+  if 'frontend' in p.parts and not rel.startswith('unificado/suprimentos/frontend/'):continue
   selected.append(rel[len('unificado/'):])
  manifest={r:hashlib.sha256((ROOT/'unificado'/r).read_bytes()).hexdigest() for r in selected}
  (out/'manifest.json').write_text(json.dumps(manifest,indent=2))
