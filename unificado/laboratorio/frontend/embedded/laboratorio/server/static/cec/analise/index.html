@@ -170,7 +170,7 @@ main{flex:1;padding:0 20px 60px;max-width:760px;width:100%;margin:0 auto;}
 
 }
 </style>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.11"></head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.13"></head>
 
 <body data-app-key="controle-estatistico">
 
@@ -238,7 +238,7 @@ main{flex:1;padding:0 20px 60px;max-width:760px;width:100%;margin:0 auto;}
   // Registrar SW próprio do módulo
   try{
     if ("serviceWorker" in navigator) {
-      const registration = await navigator.serviceWorker.register("./sw.js?v=1.4.11", { scope: "./", updateViaCache: "none" });
+      const registration = await navigator.serviceWorker.register("./sw.js?v=1.4.13", { scope: "./", updateViaCache: "none" });
       registration.update().catch(function(){});
     }
   }catch(e){}

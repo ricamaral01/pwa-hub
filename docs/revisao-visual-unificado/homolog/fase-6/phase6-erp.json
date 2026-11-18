@@ -1,0 +1,11 @@
+{
+  "database": "erp_visual_homolog_20261118",
+  "port": 14189,
+  "source": "published ERP source via SFTP",
+  "offline_snapshot": "2026-08-29",
+  "database_access": "dedicated SELECT-only role",
+  "network_access": "localhost only; Mapa/PCP homolog integration and local REST",
+  "external_credentials_copied": false,
+  "production_database_connections": 0,
+  "production_services_modified": false
+}

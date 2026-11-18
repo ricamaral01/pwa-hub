@@ -5710,7 +5710,6 @@ function tf({ ctx: p, go: N, search: d, setSearch: j }) {
       return y.length > 0 && /* @__PURE__ */ o.jsxs("section", { className: "lg-home-section", children: [
         /* @__PURE__ */ o.jsx("h2", { children: P }),
         /* @__PURE__ */ o.jsx("div", { className: "lg-tools", children: y.map(([z, T, F, w]) => /* @__PURE__ */ o.jsxs("button", { className: "lg-tool", onClick: () => N(z), children: [
-          /* @__PURE__ */ o.jsx("span", { className: "lg-tool-arrow", "aria-hidden": "true", children: "↗" }),
           /* @__PURE__ */ o.jsx("strong", { children: T }),
           /* @__PURE__ */ o.jsx("small", { children: F }),
           z === "premiacao" && /* @__PURE__ */ o.jsx("span", { className: "lg-badge", children: "Acesso restrito" })
@@ -6410,7 +6409,6 @@ function xf({ route: p }) {
   }, "Participação atualizada sem apagar as notas."), yo = /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
     /* @__PURE__ */ o.jsxs("div", { className: "lg-top", children: [
       /* @__PURE__ */ o.jsxs("div", { children: [
-        /* @__PURE__ */ o.jsx("p", { className: "lg-eyebrow", children: "LOGÍSTICA · CONCREFER" }),
         /* @__PURE__ */ o.jsx("h1", { children: ((xr = Xu.find((a) => a[0] === N)) == null ? void 0 : xr[1]) || "Logística" }),
         /* @__PURE__ */ o.jsx("p", { children: j ? j === "cadastros" ? "Cadastros compartilhados da Logística" : "Km/Evento · indicadores de segurança" : "Ferramentas e cadastros da Logística" })
       ] }),
@@ -7052,7 +7050,7 @@ function jf({ rows: p, onResume: N, onEdit: d }) {
       /* @__PURE__ */ o.jsx("th", { children: "Ações" })
     ] }) }),
     /* @__PURE__ */ o.jsx("tbody", { children: p.map((j, v) => /* @__PURE__ */ o.jsxs("tr", { children: [
-      /* @__PURE__ */ o.jsx("td", { children: j.posicao <= 3 ? ["🥇", "🥈", "🥉"][j.posicao - 1] : j.posicao }),
+      /* @__PURE__ */ o.jsx("td", { children: j.posicao }),
       /* @__PURE__ */ o.jsx("td", { children: /* @__PURE__ */ o.jsx("strong", { children: j.nome }) }),
       /* @__PURE__ */ o.jsx("td", { children: j.unidade }),
       /* @__PURE__ */ o.jsx("td", { children: ee(j.km, 1) }),

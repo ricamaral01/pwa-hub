@@ -1,0 +1,52 @@
+{
+  "origin": "https://concrefer.concretrack.com.br:18446",
+  "label": "HOMOLOG VISUAL F6 20261118T234022Z",
+  "nc_id": "5754510a-1f70-4f0f-9466-11f0a4392746",
+  "number": "RNC-2026-825490",
+  "status": "ANALISE_CAUSA",
+  "containment_persisted": true,
+  "trace": [
+    {
+      "method": "GET",
+      "path": "/contexto",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/catalogos?company=c9cf3407-2e8f-5cc4-a728-56e7c89c9996&unit=campinas",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/nc/rascunhos",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/nc/5754510a-1f70-4f0f-9466-11f0a4392746/registrar",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/nc/5754510a-1f70-4f0f-9466-11f0a4392746/triagem",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/nc/5754510a-1f70-4f0f-9466-11f0a4392746/contencoes",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/nc/5754510a-1f70-4f0f-9466-11f0a4392746/concluir-contencao",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/nc/5754510a-1f70-4f0f-9466-11f0a4392746",
+      "status": 200
+    }
+  ],
+  "external_sends": 0,
+  "permissions_changed": false
+}

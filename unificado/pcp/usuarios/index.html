@@ -14,22 +14,22 @@
 </style>
   <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.10"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.10"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.13"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.13"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.13"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Usuários — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.10" />
-  <link rel="stylesheet" href="/unificado/shell/password-visibility.css?v=1.4.10" />
-  <script defer src="/unificado/shell/password-visibility.js?v=1.4.10"></script>
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.13" />
+  <link rel="stylesheet" href="/unificado/shell/password-visibility.css?v=1.4.13" />
+  <script defer src="/unificado/shell/password-visibility.js?v=1.4.13"></script>
     <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
-  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.10">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
-<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.10">
-<script defer src="/unificado/shell/components.js?v=1.4.10"></script>
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.13">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13">
+<script defer src="/unificado/shell/components.js?v=1.4.13"></script>
 </head>
 <body>
 <div id="sidebar-overlay"></div>
@@ -113,7 +113,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.10"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.13"></script>
 <script>
 const user = requireAuth();
 if (!user) throw new Error('Sem sessão');
@@ -166,5 +166,5 @@ async function redefinirSenha(userId, nome) {
 
 loadUsers().catch(e => showToast(e.message, 'error'));
 </script>
-<link rel="stylesheet" href="/unificado/pcp/users-unificado-planning.css?v=1.4.10"><script src="/unificado/pcp/users-unificado-planning.js?v=1.4.10"></script></body>
+<link rel="stylesheet" href="/unificado/pcp/users-unificado-planning.css?v=1.4.13"><script src="/unificado/pcp/users-unificado-planning.js?v=1.4.13"></script></body>
 </html>

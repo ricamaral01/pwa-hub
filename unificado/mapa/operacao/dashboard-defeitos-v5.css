@@ -1,3 +1,5 @@
+@import url("/unificado/shell/tokens.css");
+@media print {
 /* Unified dashboard cards, monthly comparisons, and defect participation. */
 #miSecaoDefeitos .df-new-head{display:grid;gap:18px;margin-bottom:24px;color:#0b1730}
 #miSecaoDefeitos .df-new-cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
@@ -93,3 +95,116 @@
 #miSecaoDefeitos .df-comparison-track strong{position:relative;z-index:1;margin-left:auto;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.92);color:#173b65;font-size:13px;font-variant-numeric:tabular-nums}
 #miSecaoDefeitos .df-comparison-item .df-month-badge{margin:7px 0 0;padding:5px 9px;font-size:12px}
 @media(max-width:620px){#miSecaoDefeitos .df-comparison-heads,#miSecaoDefeitos .df-comparison-pair{gap:6px}#miSecaoDefeitos .df-comparison-item{padding:8px}#miSecaoDefeitos .df-comparison-heads>div{padding:8px}#miSecaoDefeitos .df-comparison-track strong{font-size:11px}}
+
+}
+@media screen {
+/* Unified dashboard cards, monthly comparisons, and defect participation. */
+#miSecaoDefeitos .df-new-head{display:grid;gap:18px;margin-bottom:24px;color:var(--c-navy);}
+#miSecaoDefeitos .df-new-cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;}
+#miSecaoDefeitos .df-new-card,#miSecaoDefeitos .df-new-secondary article,#miSecaoDefeitos .df-new-panel{background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--r);box-shadow:none;}
+#miSecaoDefeitos .df-new-card{min-height:210px;padding:18px;display:flex;flex-direction:column;gap:8px;}
+#miSecaoDefeitos .df-new-main{border-color:var(--c-orange);box-shadow:none;}
+#miSecaoDefeitos .df-new-card>span,#miSecaoDefeitos .df-new-secondary article>span{font-size:13px;font-weight:700;color:var(--c-ink-2);}
+#miSecaoDefeitos .df-new-card>strong{font:700 clamp(28px,2.2vw,40px)/1.05 Geist,var(--f-sans);letter-spacing:-.04em;}
+#miSecaoDefeitos .df-new-card>small,#miSecaoDefeitos .df-new-secondary small,#miSecaoDefeitos .df-new-panel>small{font-size:12px;line-height:1.4;color:var(--c-ink-2);}
+#miSecaoDefeitos .df-new-loss{display:flex;align-items:baseline;flex-wrap:wrap;gap:5px 8px;padding-top:8px;border-top:1px solid var(--c-line);font-size:12px;}
+#miSecaoDefeitos .df-new-loss strong{font-size:18px;color:var(--c-crit);}
+#miSecaoDefeitos .df-new-loss small{color:var(--c-ink-2);}
+#miSecaoDefeitos .df-new-head details{margin-top:auto;color:var(--c-ink-2);font-size:12px;}
+#miSecaoDefeitos .df-new-head summary{cursor:pointer;font-weight:700;color:var(--c-warn);}
+#miSecaoDefeitos .df-new-head details p{margin:6px 0 0;line-height:1.45;}
+#miSecaoDefeitos .df-new-secondary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+#miSecaoDefeitos .df-new-secondary article{padding:16px;display:grid;grid-template-columns:1fr auto;gap:4px 12px;}
+#miSecaoDefeitos .df-new-secondary article>strong{font-size:26px;grid-column:2;grid-row:1 / 3;}
+#miSecaoDefeitos .df-new-secondary article>small,#miSecaoDefeitos .df-new-secondary article>details{grid-column:1 / -1;}
+#miSecaoDefeitos .df-new-panels{display:grid;grid-template-columns:minmax(0,2fr) minmax(250px,1fr);gap:12px;}
+#miSecaoDefeitos .df-new-panel{padding:17px;min-width:0;}
+#miSecaoDefeitos .df-reported{border-color:var(--c-line);background:var(--c-surface);}
+#miSecaoDefeitos .df-reported>p{font-size:14px;color:var(--c-navy);}
+#miSecaoDefeitos .df-reported>p strong{font-size:26px;color:var(--c-warn);}
+#miSecaoDefeitos .df-reported-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:12px;}
+#miSecaoDefeitos .df-reported-details details{margin-top:0;}
+#miSecaoDefeitos .df-new-panel h3{margin:0 0 12px;font-size:16px;}
+#miSecaoDefeitos .df-new-panel p{margin:0 0 12px;color:var(--c-ink-2);font-size:12px;}
+#miSecaoDefeitos .df-new-table-scroll{overflow-x:auto;}
+#miSecaoDefeitos .df-new-panel table{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap;}
+#miSecaoDefeitos .df-new-panel th,#miSecaoDefeitos .df-new-panel td{padding:9px 8px;border-bottom:1px solid var(--c-line-2);text-align:right;}
+#miSecaoDefeitos .df-new-panel th:first-child,#miSecaoDefeitos .df-new-panel td:first-child{text-align:left;}
+#miSecaoDefeitos .df-new-panel th{background:var(--c-bg);font-weight:700;}
+#miSecaoDefeitos .df-new-panel tr.is-total{font-weight:700;background:var(--c-bg);}
+#miSecaoDefeitos .df-new-trend-row{display:grid;grid-template-columns:76px 1fr;gap:7px 10px;margin:12px 0;font-size:12px;}
+#miSecaoDefeitos .df-new-trend-row>strong{grid-row:1 / 3;}
+#miSecaoDefeitos .df-new-trend-bar{height:18px;background:var(--c-bg);border-radius:var(--r);position:relative;overflow:hidden;}
+#miSecaoDefeitos .df-new-trend-bar i{display:block;height:100%;border-radius:var(--r);background:var(--c-orange);}
+#miSecaoDefeitos .df-new-trend-bar.fpy i{background:var(--c-blue);}
+#miSecaoDefeitos .df-new-trend-bar em{position:absolute;inset:0 6px;font-style:normal;font-weight:700;line-height:18px;text-align:right;}
+#miSecaoDefeitos .df-new-note{margin:0;font-size:12px;color:var(--c-warn);}
+#miSecaoDefeitos .df-new-export{display:flex;justify-content:flex-end;}
+#miSecaoDefeitos .df-new-export button{background:var(--c-orange);color:var(--c-navy);border:0;border-radius:var(--r);padding:10px 15px;font-weight:700;cursor:pointer;}
+@media (max-width:1200px){#miSecaoDefeitos .df-new-cards{grid-template-columns:repeat(3,minmax(0,1fr));}
+#miSecaoDefeitos .df-new-panels{grid-template-columns:1fr;}
+}
+@media (max-width:700px){#miSecaoDefeitos .df-new-cards{grid-template-columns:repeat(2,minmax(0,1fr));}
+#miSecaoDefeitos .df-new-card{min-height:170px;padding:14px;}
+#miSecaoDefeitos .df-new-secondary{grid-template-columns:1fr;}
+}
+@media (max-width:700px){#miSecaoDefeitos .df-reported-details{grid-template-columns:1fr;}
+}
+@media (max-width:440px){#miSecaoDefeitos .df-new-cards{grid-template-columns:1fr;}
+}
+@media print{#miSecaoDefeitos .df-new-head details,#miSecaoDefeitos .df-new-export{display:none}#miSecaoDefeitos .df-new-cards{grid-template-columns:repeat(5,1fr)}#miSecaoDefeitos .df-new-card{break-inside:avoid}}
+#miSecaoDefeitos .df-month-comparison{display:block;margin-top:6px;padding:7px 9px;border-radius:var(--r);background:var(--c-line-2);color:var(--c-blue);font-size:12px;line-height:1.4;font-weight:600;}
+#miSecaoDefeitos .df-month-period{display:block;margin-top:5px;color:var(--c-ink-2);font-size:12px;}
+#miSecaoDefeitos .df-month-row{grid-column:1/-1;margin:-5px 0 4px 23px;color:var(--c-ink-2);font-size:12px;line-height:1.35;}
+#miSecaoDefeitos .df-month-zero{margin-top:9px;padding:8px 10px;border-radius:var(--r);background:var(--c-line-2);color:var(--c-ink-2);font-size:12px;line-height:1.4;}
+#miSecaoDefeitos .df-month-badge{display:inline-flex;align-self:flex-start;align-items:center;margin:5px 0;padding:8px 13px;border-radius:var(--r);font-size:15px;font-weight:850;line-height:1.2;white-space:normal;}
+#miSecaoDefeitos .df-month-badge.is-better{background:var(--c-line);color:var(--c-ok);}
+#miSecaoDefeitos .df-month-badge.is-worse{background:var(--c-line-2);color:var(--c-crit);}
+#miSecaoDefeitos .df-month-badge.is-neutral{background:var(--c-line-2);color:var(--c-ink-2);}
+#miSecaoDefeitos .df-defect-share-row .df-month-row-badge{grid-column:1/-1;margin:-2px 0 5px 23px;font-size:13px;padding:6px 11px;}
+#miSecaoDefeitos .df-defect-share-caption .df-month-badge{font-size:13px;padding:6px 11px;}
+#miSecaoDefeitos .df-annual-panel{background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--r);padding:20px;box-shadow:none;min-width:0;}
+#miSecaoDefeitos .df-annual-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;}
+#miSecaoDefeitos .df-annual-head h3{margin:0 0 4px;color:var(--c-navy);font-size:18px;}
+#miSecaoDefeitos .df-annual-head p{margin:0;color:var(--c-ink-2);font-size:13px;line-height:1.4;}
+#miSecaoDefeitos .df-annual-controls{display:flex;gap:6px;flex-wrap:wrap;}
+#miSecaoDefeitos .df-annual-controls button{border:1px solid var(--c-line);background:var(--c-bg);color:var(--c-blue);border-radius:var(--r);padding:7px 10px;cursor:pointer;font-size:12px;font-weight:700;}
+#miSecaoDefeitos .df-annual-controls button.is-active{background:var(--c-blue);border-color:var(--c-blue);color:var(--c-surface);}
+#miSecaoDefeitos .df-annual-panel svg{display:block;width:100%;height:auto;min-height:220px;margin-top:14px;}
+#miSecaoDefeitos .df-annual-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;color:var(--c-blue);font-size:12px;font-weight:700;}
+#miSecaoDefeitos .df-annual-legend span{display:inline-flex;align-items:center;gap:6px;}
+#miSecaoDefeitos .df-annual-legend i{width:23px;border-top:3px solid var(--c-ink-2);}
+#miSecaoDefeitos .df-annual-legend .df-legend-mean{border-color:var(--c-ink-3);border-top-style:dotted;}
+#miSecaoDefeitos .df-annual-legend .df-legend-target{border-color:var(--c-orange);border-top-style:dashed;}
+#miSecaoDefeitos .df-annual-values{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-top:2px;}
+#miSecaoDefeitos .df-annual-values span{font-size:11px;color:var(--c-blue);background:var(--c-bg);border-radius:var(--r);padding:6px;}
+#miSecaoDefeitos .df-annual-panel>small{display:block;margin-top:12px;color:var(--c-ink-2);font-size:11px;}
+@media (max-width:700px){#miSecaoDefeitos .df-annual-panel{padding:12px;}
+#miSecaoDefeitos .df-annual-values{grid-template-columns:repeat(3,minmax(0,1fr));}
+#miSecaoDefeitos .df-annual-panel svg{min-height:140px;}
+}
+/* Month comparison uses the full content width and grows with every defect type. */
+#miSecaoDefeitos .df-participation-layout{grid-template-columns:minmax(0,1fr);}
+#miSecaoDefeitos .df-comparison-chart{width:100%;max-width:none;overflow:visible;}
+#miSecaoDefeitos .df-comparison-heads,#miSecaoDefeitos .df-comparison-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+#miSecaoDefeitos .df-comparison-heads{margin-bottom:10px;}
+#miSecaoDefeitos .df-comparison-heads>div{display:flex;align-items:center;flex-wrap:wrap;gap:5px 12px;padding:10px 12px;border-radius:var(--r);background:var(--c-line-2);color:var(--c-blue);}
+#miSecaoDefeitos .df-comparison-heads strong{font-size:15px;}
+#miSecaoDefeitos .df-comparison-heads span:not(.df-month-badge){font-size:13px;font-weight:700;}
+#miSecaoDefeitos .df-comparison-heads .df-month-badge{margin:0 0 0 auto;font-size:13px;padding:6px 10px;}
+#miSecaoDefeitos .df-comparison-pair{margin-bottom:8px;}
+#miSecaoDefeitos .df-comparison-item{min-width:0;padding:10px 12px;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);}
+#miSecaoDefeitos .df-comparison-label{display:flex;align-items:center;gap:8px;min-width:0;margin-bottom:7px;color:var(--c-blue);font-size:13px;font-weight:750;}
+#miSecaoDefeitos .df-comparison-label i{width:11px;height:11px;flex:0 0 11px;border-radius:var(--r-sm);}
+#miSecaoDefeitos .df-comparison-label span{min-width:0;overflow-wrap:anywhere;}
+#miSecaoDefeitos .df-comparison-track{position:relative;display:flex;align-items:center;min-height:32px;overflow:hidden;border-radius:var(--r);background:var(--c-line-2);}
+#miSecaoDefeitos .df-comparison-fill{position:absolute;inset:0 auto 0 0;min-width:0;border-radius:var(--r);opacity:.9;}
+#miSecaoDefeitos .df-comparison-track strong{position:relative;z-index:1;margin-left:auto;padding:3px 8px;border-radius:var(--r);background:rgba(255,255,255,.92);color:var(--c-blue);font-size:13px;font-variant-numeric:tabular-nums;}
+#miSecaoDefeitos .df-comparison-item .df-month-badge{margin:7px 0 0;padding:5px 9px;font-size:12px;}
+@media (max-width:620px){#miSecaoDefeitos .df-comparison-heads,#miSecaoDefeitos .df-comparison-pair{gap:6px;}
+#miSecaoDefeitos .df-comparison-item{padding:8px;}
+#miSecaoDefeitos .df-comparison-heads>div{padding:8px;}
+#miSecaoDefeitos .df-comparison-track strong{font-size:11px;}
+}
+
+}

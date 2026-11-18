@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Acmp. Concretagem · Campinas</title>
   <meta http-equiv="Cache-Control" content="no-store">
-  <script src="/unificado/shell/auth.js?v=1.4.10"></script>
-  <link rel="stylesheet" href="./confirmacao.css?v=1.4.10">
-  <style>
+  <script src="/unificado/shell/auth.js?v=1.4.13"></script>
+  <link rel="stylesheet" href="./confirmacao.css?v=1.4.13">
+  <style>@media print {
+
     :root{font-family:Montserrat,"Segoe UI",Arial,sans-serif;color:#17324e;background:#eef3f7}
     *{box-sizing:border-box}
     body{margin:0}
@@ -60,9 +61,76 @@
       .print-summary h2{font-size:11pt;margin:0 0 2mm}
       .print-summary p,.print-footnote{font-size:7.5pt;line-height:1.4;margin:2mm 0 0}
     }
-  </style>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
-</head>
+  
+}
+@media screen {
+:root{color:var(--c-blue);background:var(--c-line-2);}
+*{box-sizing:border-box;}
+body{margin:0;}
+.topbar{background:var(--c-blue);color:white;border-bottom:4px solid var(--c-orange);}
+.topbar-inner,.page{max-width:1280px;margin:auto;padding:18px 24px;}
+.topbar-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;}
+.topbar strong{font-size:19px;}
+.topbar small{display:block;color:var(--c-line);margin-top:4px;}
+.back{color:white;border:1px solid var(--c-ink-3);border-radius:var(--r);padding:9px 12px;text-decoration:none;font-weight:700;}
+h1{font-size:25px;margin:0 0 6px;}
+h2{margin:0;}
+.subtitle{color:var(--c-ink-2);margin:0 0 20px;line-height:1.5;}
+.toolbar{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.toolbar label{display:grid;gap:5px;font-size:12px;font-weight:800;}
+.toolbar input,.toolbar select,.toolbar button{height:40px;border:1px solid var(--c-line);border-radius:var(--r);padding:0 12px;font:inherit;background:white;}
+.toolbar button{background:var(--c-blue);color:white;font-size:13px;font-weight:800;cursor:pointer;}
+.toolbar .print{background:white;color:var(--c-blue);}
+.toolbar button:disabled{opacity:.55;cursor:not-allowed;}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+.kpi{background:white;border:1px solid var(--c-line);border-radius:var(--r);padding:14px;}
+.kpi span{display:block;color:var(--c-ink-2);font-size:11px;font-weight:800;text-transform:none;min-height:30px;}
+.kpi strong{display:block;font-size:26px;margin-top:6px;color:var(--c-blue);}
+.kpi.final{background:var(--c-line-2);border-color:var(--c-ink-3);}
+.kpi.final strong{color:var(--c-ok);}
+.section-confirmacao{background:white;border:1px solid var(--c-line);border-radius:var(--r);padding:18px;margin:0;}
+.section-head{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:2px solid var(--c-blue);padding-bottom:8px;}
+.section-head h3{font-size:16px;text-transform:none;margin:0;}
+.section-head span{font-size:11px;color:var(--c-ink-2);font-weight:700;}
+.note{font-size:12px;color:var(--c-ink-2);line-height:1.5;margin-top:14px;}
+.definition{padding:11px 14px;margin:0 0 16px;background:var(--c-line-2);border:1px solid var(--c-ink-3);border-radius:var(--r);color:var(--c-ok);font-size:13px;line-height:1.5;}
+.confirm-sector-block{margin-top:20px;}
+.confirm-sector-block h4{margin:0;font-size:15px;color:var(--c-blue);}
+.confirm-explanation{font-size:12px;color:var(--c-ink-2);line-height:1.5;margin:14px 0 6px;}
+#print-report{display:none;}
+@media (max-width:850px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media (max-width:620px){.topbar-inner,.page{padding:14px;}
+.topbar strong{font-size:16px;}
+.kpis{grid-template-columns:repeat(2,minmax(0,1fr));}
+.kpi strong{font-size:22px;}
+.section-confirmacao{padding:12px;}
+}
+@page {size:A4 landscape;margin:9mm;}
+@media print{
+      :root,body{background:white;color:black;font-family:Arial,sans-serif}
+      .topbar,.screen-ui{display:none!important}
+      #print-report{display:block!important;font:8pt Arial,sans-serif}
+      .print-header h1{font-size:16pt;margin:0 0 3mm}.print-header p{margin:0 0 5mm}
+      #print-report table{width:100%;border-collapse:collapse;table-layout:fixed;margin:0 0 5mm}
+      #print-report th,#print-report td{border:1px solid #888;padding:2mm 1.5mm;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+      #print-report th{background:#e7edf3;font-weight:700}
+      #print-report thead{display:table-header-group}
+      #print-report tr{break-inside:avoid}
+      .print-forms th:nth-child(1){width:7%}.print-forms th:nth-child(2){width:8%}
+      .print-forms th:nth-child(3),.print-forms th:nth-child(8){width:12%}
+      .print-forms th:nth-child(4),.print-forms th:nth-child(5),.print-forms th:nth-child(7){width:9%}
+      .print-forms th:nth-child(6),.print-forms th:nth-child(10){width:13%}
+      .print-forms th:nth-child(9){width:8%}
+      .print-summary{break-inside:avoid;margin-top:6mm}
+      .print-summary h2{font-size:11pt;margin:0 0 2mm}
+      .print-summary p,.print-footnote{font-size:7.5pt;line-height:1.4;margin:2mm 0 0}
+    }
+
+}
+</style>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/remaining-visual.css?v=1.4.13"><script defer src="/unificado/shell/components.js?v=1.4.13"></script></head>
 <body>
   <header class="topbar"><div class="topbar-inner"><div><strong>Acmp. Concretagem</strong><small>Produção · Campinas</small></div><a class="back" href="/unificado/">Voltar</a></div></header>
   <main class="page screen-ui">
@@ -86,8 +154,8 @@
     <p class="note">A contagem final considera apenas as concretagens confirmadas por Osmar Siqueira, José Carlos da Silva ou um administrador autorizado. Cada confirmação registra o usuário que a realizou.</p>
   </main>
   <article id="print-report" aria-label="Formulário para impressão"></article>
-  <script src="./impressao.js?v=1.4.10"></script>
-  <script src="./confirmacao.js?v=1.4.10"></script>
+  <script src="./impressao.js?v=1.4.13"></script>
+  <script src="./confirmacao.js?v=1.4.13"></script>
   <script>
     const input = document.getElementById('dataRel');
     const now = new Date();

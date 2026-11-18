@@ -65,7 +65,7 @@
     if (path === 'producao/noroeste/') return {url, module:'producao', path};
     if (path === 'producao/indicadores-gerais/') return {url, module:'producao', path};
     if (path === 'producao/campinas-unificado/') return {url, module:'producao', path};
-    if (path === 'usinas/' || path === 'usinas/noroeste/') return {url, module:'usinas', path};
+    if (path === 'usinas/' || path === 'usinas/noroeste/' || path === 'usinas/carta-traco.html') return {url, module:'usinas', path};
     if (path === 'relatorios/fechamento-diario/' || path === 'relatorios/acmp-concretagem/') return {url, module:'producao', path};
     if (Object.values(MENU_ITEMS).some(item => item.module === 'laboratorio' &&
         new URL(item.url, location.origin).pathname.replace(/index\.html$/, '').replace(/\/$/, '') ===
@@ -87,6 +87,7 @@
     if (route.path === 'pcp/numeros-serie/') return 'postesNumerosSerie';
     if (route.path === 'pcp/armaduras/') return 'armadurasProgramacao';
     if (route.path === 'pcp/armaduras-relatorio/') return 'armadurasRelatorio';
+    if (route.path === 'usinas/carta-traco.html') return 'usinasCartaTraco';
     if (route.path === 'usinas/') {
       return 'usinasInicio';
     }
@@ -108,7 +109,11 @@
     if (route.module === 'suprimentos' && route.path === 'suprimentos/cotacoes/') return 'suprimentosCotacoes';
     if (route.module === 'suprimentos' && route.path === 'suprimentos/recebimento/') return 'suprimentosRecebimento';
     if (route.module === 'suprimentos' && route.path === 'suprimentos/analises/') return 'suprimentosIndicadores';
-    const found = Object.entries(MENU_ITEMS).find(([, item]) => item.url === route.url.href);
+    const found = Object.entries(MENU_ITEMS).find(([, item]) => {
+      const candidate = new URL(item.url, location.origin);
+      const path = value => value.replace(/index\.html$/, '').replace(/\/$/, '');
+      return path(candidate.pathname) === path(route.url.pathname) && candidate.search === route.url.search;
+    });
     if (found) return found[0];
     if (route.module === 'producao' && !route.url.search) return 'liberacao';
     if (route.module === 'laboratorio' && route.path === 'laboratorio/' && !route.url.search) return 'labMonitor';
@@ -280,7 +285,7 @@
         style = doc.createElement('link');
         style.id = 'unificado-embedded-style';
         style.rel = 'stylesheet';
-        style.href = root + 'shell/embedded.css?v=1.4.10';
+        style.href = root + 'shell/embedded.css?v=1.4.13';
         doc.head.append(style);
       }
       doc.addEventListener('click', event => {
@@ -304,7 +309,6 @@
   async function open(value, itemId, push = true) {
     const route = resolve(value);
     if (!route) return;
-    const standaloneUsinas = route.path === 'usinas/';
     const accessChecked = await window.UnificadoScreenAccess.ready;
     if (!accessChecked) {
       const message = document.createElement('p');
@@ -329,10 +333,6 @@
     if (route.module === 'laboratorio' && !hasLab) return;
     if (route.module === 'qualidade' && !hasMapa) return;
     if (route.module === 'suprimentos' && !hasMapa) return;
-    if (standaloneUsinas) {
-      location.assign(route.url.href);
-      return;
-    }
     if (armacao) localStorage.setItem('armacao.unidade', route.url.searchParams.get('unidade') || 'campinas');
     window.UnificadoModulePages?.hide();
     const ticket = ++pending;
@@ -369,7 +369,7 @@
     if (ticket !== pending) return;
     if (route.path === 'usinas/noroeste/') {
       try {
-        const native = await import(root + 'usinas/noroeste/noro-native.js?v=1.4.10');
+        const native = await import(root + 'usinas/noroeste/noro-native.js?v=1.4.13');
         if (ticket !== pending) return;
         let container = document.getElementById('noro-native-host');
         if (!container) {
@@ -400,7 +400,7 @@
         if (!mapaUser?.id) throw new Error('Identidade do Unificado indisponível');
         window.__DOSAGEM_NATIVE__ = true;
         window.__DOSAGEM_NATIVE_USER_ID__ = String(mapaUser.id);
-        const native = await import(root + 'laboratorio/dosagem/native/dosagem-native.js?v=1.4.10');
+        const native = await import(root + 'laboratorio/dosagem/native/dosagem-native.js?v=1.4.13');
         if (ticket !== pending) return;
         let container = document.getElementById('dosagem-native-host');
         if (!container) {
@@ -433,9 +433,9 @@
     }
     if(route.module==='logistica'){
       try{
-        const native=await import(root+'logistica/logistica-native.js?v=1.4.10');
+        const native=await import(root+'logistica/logistica-native.js?v=1.4.13');
         if(ticket!==pending)return;
-        if(!document.querySelector('link[data-logistica-style]')){const css=document.createElement('link');css.rel='stylesheet';css.href=root+'logistica/logistica-native.css?v=1.4.10';css.dataset.logisticaStyle='true';document.head.append(css);}
+        if(!document.querySelector('link[data-logistica-style]')){const css=document.createElement('link');css.rel='stylesheet';css.href=root+'logistica/logistica-native.css?v=1.4.13';css.dataset.logisticaStyle='true';document.head.append(css);}
         let container=document.getElementById('logistica-native-host');if(!container){container=document.createElement('div');container.id='logistica-native-host';host.append(container);}
         window.__logisticaNative=native;
         native.mountLogistica(container,{path:route.path,search:route.url.search,navigate:path=>open(root+path,null,true)});

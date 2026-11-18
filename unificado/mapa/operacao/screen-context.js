@@ -15,7 +15,9 @@
     const mode = typeof state !== 'undefined' && state?.mode ||
       new URLSearchParams(location.search).get('tela') || 'HUB';
     const headers = new Headers(options.headers || (input instanceof Request ? input.headers : undefined));
-    headers.set('X-Unificado-Screen', mode);
+    // Some requests load a sector before the main screen finishes initializing.
+    // Keep the caller's sector context; the server still checks its IAM grants.
+    if (!headers.has('X-Unificado-Screen')) headers.set('X-Unificado-Screen', mode);
     return originalFetch(input, {...options, headers});
   };
 })();
