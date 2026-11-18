@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <style>@media print {
+@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}
+}
+@media screen {
+@media screen{html{background:var(--c-navy);}
+}
+@media screen and (min-width:1025px){body{background:var(--c-navy)!important;}
+}
+
+}
+</style>
   <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.9"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.10"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Programação Final - PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.9" />
-  <style>
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.10" />
+  <style>@media print {
+
     .final-kpis {
       display: grid;
       grid-template-columns: repeat(5, minmax(170px, 1fr));
@@ -54,10 +65,29 @@
     @media (max-width: 575px) {
       .final-kpis { grid-template-columns: 1fr; }
     }
-  </style>
+  
+}
+@media screen {
+.final-kpis{display:grid;grid-template-columns:repeat(5, minmax(170px, 1fr));gap:12px;}
+.final-kpi{border:1px solid var(--pcp-border);border-radius:var(--r);background:var(--c-surface);padding:14px 16px;}
+.final-kpi-label{color:var(--pcp-muted);font-size:.72rem;font-weight:800;text-transform:none;letter-spacing:.6px;}
+.final-kpi-value{color:var(--pcp-primary);font-size:1.45rem;font-weight:800;line-height:1.1;margin-top:6px;}
+.final-kpi-volume{color:var(--pcp-muted);font-size:.82rem;font-weight:700;margin-top:2px;}
+.final-table{min-width:980px;}
+.final-table th,
+    .final-table td{vertical-align:middle;}
+@media (max-width: 1199px){.final-kpis{grid-template-columns:repeat(2, minmax(170px, 1fr));}
+}
+@media (max-width: 575px){.final-kpis{grid-template-columns:1fr;}
+}
+
+}
+</style>
     <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
-  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.9">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.9">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.10">
+<script defer src="/unificado/shell/components.js?v=1.4.10"></script>
 </head>
 <body>
 
@@ -162,7 +192,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.9"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.10"></script>
 <script>
 const user = requireAuth();
 if (user) {

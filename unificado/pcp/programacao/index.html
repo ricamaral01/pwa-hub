@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <style>@media print {
+@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}
+}
+@media screen {
+@media screen{html{background:var(--c-navy);}
+}
+@media screen and (min-width:1025px){body{background:var(--c-navy)!important;}
+}
+
+}
+</style>
   <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.9"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.10"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Programação Setor 3 e 4 — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.9" />
-  <style>
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.10" />
+  <style>@media print {
+
     .prog-formas-table {
       table-layout: fixed;
       min-width: 920px;
@@ -53,10 +64,31 @@
       height: 18px;
       cursor: pointer;
     }
-  </style>
+  
+}
+@media screen {
+.prog-formas-table{table-layout:fixed;min-width:920px;}
+.prog-formas-table th,
+    .prog-formas-table td{vertical-align:middle;white-space:nowrap;}
+.prog-formas-table .col-forma{width:120px;}
+.prog-formas-table .col-produto{width:360px;}
+.prog-formas-table .col-codigo{width:120px;}
+.prog-formas-table .col-vol{width:120px;text-align:right;}
+.prog-formas-table .col-qtd{width:120px;text-align:right;}
+.prog-formas-table .col-status{width:180px;}
+.prog-formas-table .forma-produto-select{min-width:300px;}
+.import-help{color:var(--c-ink-2);font-size:.78rem;line-height:1.35;}
+.prog-bulk-toolbar{display:flex;align-items:center;gap:10px;color:var(--c-ink-2);font-size:.78rem;font-weight:700;}
+.prog-select-cell{width:42px;text-align:center;vertical-align:middle;}
+.prog-select-check{width:18px;height:18px;cursor:pointer;}
+
+}
+</style>
     <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
-  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.9">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.9">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.10">
+<script defer src="/unificado/shell/components.js?v=1.4.10"></script>
 </head>
 <body>
 
@@ -336,7 +368,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.9"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.10"></script>
 <script>
 const user = requireAuth();
 if (user) {

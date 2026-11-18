@@ -1,29 +1,53 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <style>@media print {
+@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}
+}
+@media screen {
+@media screen{html{background:var(--c-navy);}
+}
+@media screen and (min-width:1025px){body{background:var(--c-navy)!important;}
+}
+
+}
+</style>
   <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.9"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.10"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rateio de MOI — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.9" />
-  <style>
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.10" />
+  <style>@media print {
+
     .rateio-table { margin-top: 1.5rem; }
     .rateio-table th { background: #f8f9fa; font-size: 0.85rem; }
     .rateio-input { font-size: 1rem; }
     .total-row { background: #e8f4f8; font-weight: 600; }
     .badge-ok { background: #10b981; }
     .badge-erro { background: #ef4444; }
-  </style>
+  
+}
+@media screen {
+.rateio-table{margin-top:1.5rem;}
+.rateio-table th{background:var(--c-bg);font-size:0.85rem;}
+.rateio-input{font-size:1rem;}
+.total-row{background:var(--c-line-2);font-weight:600;}
+.badge-ok{background:var(--c-ok);}
+.badge-erro{background:var(--c-orange);}
+
+}
+</style>
     <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
-  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.9">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.9">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.10">
+<script defer src="/unificado/shell/components.js?v=1.4.10"></script>
 </head>
 <body>
 
@@ -157,7 +181,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.9"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.10"></script>
 <script>
 const user = requireAuth();
 if (user) {

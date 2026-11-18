@@ -36,7 +36,7 @@ def rules(source):
  for r in tinycss2.parse_stylesheet(source,skip_whitespace=True,skip_comments=False):
   if r.type=='qualified-rule':
    selector=tinycss2.serialize(r.prelude).strip()
-   if '.eyebrow' in selector or '.accent-mark' in selector:continue
+   if 'eyebrow' in selector or 'accent-mark' in selector:continue
    out.append(selector+'{'+declarations(r.content,selector)+'}')
   elif r.type=='at-rule':
    pre=tinycss2.serialize(r.prelude).strip()
@@ -47,6 +47,14 @@ def rules(source):
    out.append('@'+r.at_keyword+' '+pre+'{'+body+'}')
   elif r.type=='comment':out.append(tinycss2.serialize([r]))
  return '\n'.join(out)+'\n'
+def screen_only(source):
+ """Keep authored print declarations and cascade exactly, including page rules."""
+ clean=[]
+ for r in tinycss2.parse_stylesheet(source,skip_whitespace=False,skip_comments=False):
+  if r.type=='at-rule' and r.lower_at_keyword in ('import','font-face'):continue
+  clean.append(tinycss2.serialize([r]))
+ original=''.join(clean)
+ return '@media print {\n'+original+'\n}\n@media screen {\n'+rules(original)+'\n}\n'
 if __name__=='__main__':
  for path in sys.argv[1:]:
   p=ROOT/path;p.write_text(rules(p.read_text(encoding='utf-8')),encoding='utf-8',newline='\n');print(path)

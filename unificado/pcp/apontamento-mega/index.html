@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <style>@media print {
+@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}
+}
+@media screen {
+@media screen{html{background:var(--c-navy);}
+}
+@media screen and (min-width:1025px){body{background:var(--c-navy)!important;}
+}
+
+}
+</style>
   <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.9"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.10"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Apontamento Mega - PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.9" />
-  <style>
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.10" />
+  <style>@media print {
+
     .mega-shell {
       border: 1px solid #dbe4ee;
       border-radius: 10px;
@@ -77,10 +88,30 @@
       font-weight: 800;
       color: #15416f;
     }
-  </style>
+  
+}
+@media screen {
+.mega-shell{border:1px solid var(--c-line);border-radius:var(--r);overflow:auto;max-height:66vh;background:var(--c-surface);box-shadow:none;}
+.mega-table{min-width:1040px;margin:0;table-layout:fixed;}
+.mega-table th{position:sticky;top:0;z-index:2;background:var(--c-bg);vertical-align:middle;}
+.mega-table td{vertical-align:middle;font-variant-numeric:tabular-nums;}
+.mega-table tbody tr:nth-child(even){background:var(--c-surface);}
+.mega-table tbody tr:hover{background:var(--c-bg);}
+.mega-table tbody tr.apontado{background:var(--c-bg);color:var(--c-ok);}
+.mega-table .col-produto{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.status-pill{display:inline-flex;align-items:center;gap:6px;border-radius:var(--r);padding:5px 10px;font-weight:800;font-size:.75rem;}
+.status-pill.ok{background:var(--c-line);color:var(--c-ok);}
+.status-pill.pending{background:var(--c-bg);color:var(--c-crit);}
+.check-btn{width:38px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--r);}
+.summary-chip{border:1px solid var(--c-line);border-radius:var(--r);padding:8px 12px;background:var(--c-bg);font-size:.82rem;font-weight:800;color:var(--c-blue);}
+
+}
+</style>
     <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
-  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.9">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.9">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.10">
+<script defer src="/unificado/shell/components.js?v=1.4.10"></script>
 </head>
 <body>
 
@@ -265,7 +296,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.9"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.10"></script>
 <script>
 const user = requireAuth();
 if (user) {

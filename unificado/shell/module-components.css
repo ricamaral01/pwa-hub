@@ -1,0 +1,38 @@
+@import url('/unificado/shell/tokens.css');
+@media screen {
+body {color:var(--c-ink);background:var(--c-bg);line-height:1.5}
+.legacy-print-title {display:none!important}
+h1 {font-size:24px;font-weight:600;letter-spacing:-.02em}
+h2 {font-size:16px;font-weight:600}
+.ar-page,.sem-page {padding:24px 32px}
+.ar-heading {padding:0;border:0;background:transparent;align-items:flex-end}
+.ar-heading h1 {font-size:24px;font-weight:600}
+.ar-heading p,.page-header p {font-size:13px;color:var(--c-ink-2)}
+.ar-panel,.card,.sem-panel {border:1px solid var(--c-line);border-radius:var(--r);box-shadow:none;background:var(--c-surface)}
+.ar-panel .ar-panel,.card .card {border:0;box-shadow:none}
+.ar-button,.btn {border-radius:var(--r);font-weight:500}
+.ar-primary,.btn-primary {background:var(--c-navy);border-color:var(--c-navy);color:var(--c-surface)}
+.ar-badge {background:transparent;color:var(--c-ink-2);border:0;border-radius:0;padding:0;font-size:12px;font-weight:400}
+.ar-tabs {gap:20px}
+.ar-tabs button {background:transparent;color:var(--c-ink-2);font-weight:400;border-radius:0}
+.ar-tabs button:is(.active,[aria-selected="true"],[aria-pressed="true"]) {background:transparent;color:var(--c-ink);border-bottom:2px solid var(--c-orange);font-weight:500}
+.ar-summary,.kpi-row {display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface)}
+.ar-summary>* {flex:1;min-width:140px;padding:12px 18px;border:0;border-right:1px solid var(--c-line);border-radius:0;background:transparent;box-shadow:none}
+.ar-table th,table th {color:var(--c-ink-2);background:var(--c-line-2);font-weight:500;text-transform:none;letter-spacing:0}
+.ar-table td,table td {font-variant-numeric:tabular-nums}
+/* Grouped/forecast tables retain their column relationships and local scroll. */
+.ar-scroll,.table-responsive,.table-container {max-width:100%;overflow:auto}
+}
+@media screen and (max-width:600px) {
+.ar-page,.sem-page {padding:16px}
+.ar-heading {align-items:start}
+.ar-heading h1 {font-size:22px}
+.ar-filters {align-items:stretch}
+table.responsive-records {display:block;width:100%;min-width:0}
+.responsive-records thead {display:none}
+.responsive-records tbody {display:block}
+.responsive-records tr {display:block;border-bottom:1px solid var(--c-line);padding:10px 14px}
+.responsive-records td {display:block;border:0;padding:5px 0;text-align:left;white-space:normal}
+.responsive-records td::before {content:attr(data-label);display:block;color:var(--c-ink-2);font-size:12px;margin-bottom:2px}
+.responsive-records td[colspan]::before {content:none}
+}

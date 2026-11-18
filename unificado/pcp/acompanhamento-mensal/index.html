@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <style>@media print {
+@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}
+}
+@media screen {
+@media screen{html{background:var(--c-navy);}
+}
+@media screen and (min-width:1025px){body{background:var(--c-navy)!important;}
+}
+
+}
+</style>
   <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.9"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.10"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Acompanhamento Mensal - PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.9" />
-  <style>
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.10" />
+  <style>@media print {
+
     .month-toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -123,10 +134,51 @@
     @media (max-width: 768px) {
       .month-table-shell { max-height: calc(100vh - 250px); }
     }
-  </style>
+  
+}
+@media screen {
+.month-toolbar{display:flex;flex-wrap:wrap;align-items:end;gap:12px;margin-bottom:14px;}
+.month-table-shell{overflow:auto;border:1px solid var(--c-navy);background:var(--c-surface);max-height:calc(100vh - 210px);}
+.month-table{border-collapse:collapse;table-layout:fixed;min-width:1420px;width:max-content;font-size:11px;color:var(--c-navy);}
+.month-table th,
+    .month-table td{border:1px solid var(--c-navy);height:22px;padding:2px 4px;line-height:1.05;text-align:center;vertical-align:middle;white-space:nowrap;}
+.month-table thead th{position:sticky;top:0;z-index:5;background:var(--c-line);font-weight:800;}
+.month-table thead tr:first-child th{top:0;height:36px;}
+.month-table thead tr:nth-child(2) th{top:36px;}
+.month-table .sticky-desc,
+    .month-table .sticky-setor,
+    .month-table .sticky-cod{position:sticky;z-index:4;}
+.month-table thead .sticky-desc,
+    .month-table thead .sticky-setor,
+    .month-table thead .sticky-cod{z-index:7;}
+.month-table .sticky-desc{left:0;width:250px;min-width:250px;text-align:left;}
+.month-table .sticky-setor{left:250px;width:60px;min-width:60px;}
+.month-table .sticky-cod{left:310px;width:58px;min-width:58px;box-shadow:none;}
+.month-table .day-col{width:39px;min-width:39px;}
+.month-table .total-col{width:68px;min-width:68px;font-weight:900;}
+.row-sector-34 .sticky-desc{background:var(--c-orange);}
+.row-sector-34 .sticky-setor{background:var(--c-orange);}
+.row-sector-34 .sticky-cod{background:var(--c-orange);}
+.row-sector-default .sticky-desc{background:var(--c-ok);}
+.row-sector-default .sticky-setor{background:var(--c-surface);}
+.row-sector-default .sticky-cod{background:var(--c-orange);}
+.qty-cell.has-value{background:var(--c-ok);font-weight:800;}
+.qty-cell.weekend-empty{background:var(--c-bg);}
+.total-row td{position:sticky;bottom:0;z-index:6;background:var(--c-line);font-weight:900;}
+.total-row .sticky-desc,
+    .total-row .sticky-setor,
+    .total-row .sticky-cod{z-index:8;background:var(--c-line);}
+.muted-small{color:var(--c-ink-2);font-size:.78rem;font-weight:700;}
+@media (max-width: 768px){.month-table-shell{max-height:calc(100vh - 250px);}
+}
+
+}
+</style>
     <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
-  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.9">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.9">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.10">
+<script defer src="/unificado/shell/components.js?v=1.4.10"></script>
 </head>
 <body data-page-key="acompanhamento-mensal" data-title="Acompanhamento Mensal" data-setor-34="false" data-setor-12="true">
 
@@ -203,7 +255,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.9"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.10"></script>
 <script>
 const user = requireAuth();
 const pageKey = document.body.dataset.pageKey;

@@ -6,9 +6,10 @@
   <title>Teste Programação — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.9" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.10" />
   <script src="/unificado/vendor/xlsx/xlsx.full.min.js"></script>
-  <style>
+  <style>@media print {
+
     .kpi-box { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px; text-align: center; }
     .kpi-label { font-size: 0.85rem; color: #6c757d; font-weight: 600; }
     .kpi-value { font-size: 1.8rem; font-weight: 700; color: #15416F; margin-top: 4px; }
@@ -20,9 +21,27 @@
     .plano-item-vazio { color: #cbd5e1; text-align: center; font-style: italic; }
     .table-small { font-size: 0.8rem; }
     .loading-spinner { text-align: center; padding: 20px; }
-  </style>
+  
+}
+@media screen {
+.kpi-box{background:var(--c-bg);border:1px solid var(--c-line);border-radius:var(--r);padding:12px;text-align:center;}
+.kpi-label{font-size:0.85rem;color:var(--c-ink-2);font-weight:600;}
+.kpi-value{font-size:1.8rem;font-weight:700;color:var(--c-blue);margin-top:4px;}
+.kpi-unit{font-size:0.75rem;color:var(--c-ink-2);}
+.badge-ok{background:var(--c-ok)!important;}
+.badge-warn{background:var(--c-orange)!important;}
+.badge-danger{background:var(--c-orange)!important;}
+.memo-section{background:var(--c-bg);border:1px solid var(--c-line);border-radius:var(--r);padding:12px;font-size:0.8rem;max-height:400px;overflow-y:auto;white-space:pre-wrap;word-wrap:break-word;}
+.plano-item-vazio{color:var(--c-line);text-align:center;font-style:italic;}
+.table-small{font-size:0.8rem;}
+.loading-spinner{text-align:center;padding:20px;}
+
+}
+</style>
   <script src="/unificado/pcp/readonly-guard.js"></script>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.9">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.10">
+<script defer src="/unificado/shell/components.js?v=1.4.10"></script>
 </head>
 <body>
 
@@ -235,7 +254,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.9"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.10"></script>
 <script>
 const user = requireAuth();
 if (user) {

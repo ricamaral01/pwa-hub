@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <style>@media print {
+@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}
+}
+@media screen {
+@media screen{html{background:var(--c-navy);}
+}
+@media screen and (min-width:1025px){body{background:var(--c-navy)!important;}
+}
+
+}
+</style>
   <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.9"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.10"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mão de Obra — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.9" />
-  <link rel="stylesheet" media="(max-width: 600px)" href="/unificado/pcp/static/css/maodeobra-mobile.css?v=1.4.9" />
-  <style>
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.10" />
+  <link rel="stylesheet" media="(max-width: 600px)" href="/unificado/pcp/static/css/maodeobra-mobile.css?v=1.4.10" />
+  <style>@media print {
+
     .modo-card {
       border: 1px solid rgba(21, 65, 111, .12);
       border-radius: 14px;
@@ -66,9 +77,40 @@
       text-align: center;
       padding: 22px;
     }
-  </style>
-  <script src="/unificado/pcp/readonly-guard.js"></script>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.9">
+  
+}
+@media screen {
+.modo-card{border:1px solid rgba(21, 65, 111, .12);border-radius:var(--r);padding:14px;background:var(--c-surface);height:100%;}
+.modo-hint{font-size:.78rem;color:var(--c-ink-2);margin-top:4px;}
+.mdo-table th{font-size:.78rem;text-transform:none;letter-spacing:.04em;color:var(--c-ink-2);white-space:nowrap;}
+.mdo-table td{vertical-align:middle;}
+.mdo-qtd{max-width:120px;min-height:44px;text-align:right;font-weight:700;}
+.mdo-grupo-opcoes{display:flex;gap:8px;flex-wrap:wrap;}
+.mdo-grupo-opcoes input{position:absolute;opacity:0;}
+.mdo-grupo-opcoes label{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:8px 18px;border:1px solid var(--c-line);border-radius:var(--r);cursor:pointer;font-weight:700;}
+.mdo-grupo-opcoes input:checked + label{background:var(--c-blue);color:var(--c-surface);border-color:var(--c-blue);}
+.mdo-grupo-opcoes input:focus-visible + label{outline:3px solid var(--c-orange);outline-offset:2px;}
+.mdo-secao td{background:var(--c-bg);color:var(--c-blue);font-weight:700;padding-top:12px;}
+.mdo-subtotal td{background:var(--c-bg);font-weight:700;}
+.mdo-total td{background:var(--c-line-2);font-size:1rem;font-weight:800;}
+.mdo-meta{display:block;font-size:.76rem;color:var(--c-ink-2);}
+.mdo-status{color:var(--c-ink-2);font-size:.82rem;}
+.mdo-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;}
+.mdo-actions button{min-height:44px;}
+.mdo-cadastro{border-top:1px solid var(--c-line);margin-top:18px;padding-top:14px;}
+.mdo-cadastro summary{color:var(--c-blue);font-weight:700;cursor:pointer;min-height:44px;display:flex;align-items:center;}
+.mdo-cadastro .form-control, .mdo-cadastro .form-select, .mdo-cadastro button{min-height:44px;}
+.mdo-cadastro-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--c-line);}
+.mdo-cadastro-item > span{min-width:0;overflow-wrap:anywhere;}
+.mdo-cadastro-item .btn{flex:0 0 auto;}
+.mdo-empty{color:var(--c-ink-3);text-align:center;padding:22px;}
+
+}
+</style>
+  
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.10">
+<script defer src="/unificado/shell/components.js?v=1.4.10"></script>
 </head>
 <body>
 
@@ -246,9 +288,9 @@
 
 <div id="toast-container"></div>
 <div id="mdo-mobile" aria-live="polite"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.9"></script>
-<script src="/unificado/pcp/static/js/maodeobra-core.js?v=1.4.9"></script>
-<script src="/unificado/pcp/static/js/maodeobra-grupos.js?v=1.4.9"></script>
-<script src="/unificado/pcp/static/js/maodeobra-mobile.js?v=1.4.9"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.10"></script>
+<script src="/unificado/pcp/static/js/maodeobra-core.js?v=1.4.10"></script>
+<script src="/unificado/pcp/static/js/maodeobra-grupos.js?v=1.4.10"></script>
+<script src="/unificado/pcp/static/js/maodeobra-mobile.js?v=1.4.10"></script>
 </body>
 </html>

@@ -86,6 +86,9 @@ for name,(src,venv,port,command,conf) in modules.items():
  dest=G/name;dest.mkdir(exist_ok=True)
  if name=='pcp':
   for folder in ['app','alembic']:shutil.copytree(src/folder,dest/folder,dirs_exist_ok=True,ignore=copy_ignore)
+  # These are versioned application catalogs, not operational data directories.
+  for catalog in (src/'app/data').glob('*.json'):
+   (dest/'app/data').mkdir(parents=True,exist_ok=True);shutil.copy2(catalog,dest/'app/data'/catalog.name)
   for filename in ['requirements.txt','alembic.ini']:
    if (src/filename).exists():shutil.copy2(src/filename,dest/filename)
  else:shutil.copytree(src,dest,dirs_exist_ok=True,ignore=copy_ignore)

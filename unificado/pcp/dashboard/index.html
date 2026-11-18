@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <style>@media print {
+@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}
+}
+@media screen {
+@media screen{html{background:var(--c-navy);}
+}
+@media screen and (min-width:1025px){body{background:var(--c-navy)!important;}
+}
+
+}
+</style>
   <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.9"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.9"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.10"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.10"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.9" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.10" />
   <script src="/unificado/vendor/chart.js/chart.umd.js"></script>
-  <style>
+  <style>@media print {
+
     .dash-shell { display: grid; gap: 16px; }
     .dash-shell > * { min-width: 0; }
     .dash-filter {
@@ -220,10 +231,78 @@
       .dash-filter input, .dash-filter button { width: 100% !important; }
       .chart-box { height: 280px; }
     }
-  </style>
+  
+}
+@media screen {
+.dash-shell{display:grid;gap:16px;}
+.dash-shell > *{min-width:0;}
+.dash-filter{display:flex;flex-wrap:wrap;align-items:end;gap:10px;}
+.grouped-card-grid{display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:14px;}
+.grouped-card{position:relative;overflow:hidden;border:1px solid var(--c-line);border-radius:var(--r);padding:18px;background:var(--c-surface);box-shadow:none;}
+.grouped-card::before{position:absolute;top:0;left:0;width:100%;height:4px;background:var(--c-surface);content:"";}
+.grouped-card-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.grouped-card-icon{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;flex:0 0 auto;border-radius:var(--r);background:var(--c-bg);color:var(--c-blue);font-size:1.05rem;}
+.grouped-card-title{color:var(--c-navy);font-size:.95rem;font-weight:800;letter-spacing:.02em;}
+.grouped-card-subtitle{margin-top:2px;color:var(--c-ink-2);font-size:.72rem;font-weight:700;}
+.grouped-indicators{display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:8px;}
+.grouped-indicator{min-width:0;min-height:92px;border:1px solid var(--c-line);border-radius:var(--r);padding:12px 10px;background:var(--c-bg);}
+.grouped-indicator small{display:block;color:var(--c-ink-2);font-size:.66rem;font-weight:800;line-height:1.2;text-transform:none;}
+.grouped-indicator strong{display:block;margin-top:12px;color:var(--c-navy);font-size:clamp(1.12rem, 1.7vw, 1.52rem);line-height:1;font-weight:800;font-variant-numeric:tabular-nums;}
+.grouped-indicator.achievement strong{color:var(--achievement-color);}
+.kg-homem-days{display:grid;gap:18px;}
+.kg-homem-date{margin:0 0 10px;color:var(--c-ink-2);font-size:.78rem;font-weight:800;text-transform:none;}
+.kg-homem-grid{display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:12px;}
+.kg-homem-card{min-width:0;padding:18px;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-bg);}
+.kg-homem-card:nth-child(2){border-top:3px solid var(--c-ink-3);}
+.kg-homem-card:nth-child(3){border-top:3px solid var(--c-orange);}
+.kg-homem-card:first-child{border-top:3px solid var(--c-blue);}
+.kg-homem-card h4{margin:0 0 12px;color:var(--c-ink-2);font-size:.78rem;font-weight:800;text-transform:none;}
+.kg-homem-value{display:block;color:var(--c-navy);font-size:clamp(1.65rem, 2.4vw, 2.3rem);line-height:1;font-weight:850;font-variant-numeric:tabular-nums;}
+.kg-homem-unit{margin:5px 0 14px;color:var(--c-ink-2);font-size:.75rem;font-weight:700;}
+.kg-homem-detail{display:block;color:var(--c-ink-2);font-size:.73rem;line-height:1.45;}
+.achievement-success{--achievement-bg:var(--c-bg);--achievement-border:var(--c-line);--achievement-color:var(--c-ok);}
+.achievement-warning{--achievement-bg:var(--c-bg);--achievement-border:var(--c-line);--achievement-color:var(--c-warn);}
+.achievement-danger{--achievement-bg:var(--c-bg);--achievement-border:var(--c-line);--achievement-color:var(--c-crit);}
+.grouped-indicator.achievement,
+    .badge-soft.achievement{border-color:var(--achievement-border);background:var(--achievement-bg);color:var(--achievement-color);}
+.progress-track{height:9px;border-radius:var(--r);background:var(--c-line);overflow:hidden;margin-top:12px;}
+.progress-fill{height:100%;border-radius:var(--r);background:var(--c-orange);}
+.progress-fill.achievement{background:var(--achievement-color);}
+.dashboard-grid{display:grid;grid-template-columns:minmax(0, 1.1fr) minmax(360px, .9fr);gap:14px;}
+.chart-box{height:330px;}
+.setor-list{display:grid;gap:12px;}
+.setor-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--c-line);}
+.setor-row:last-child{border-bottom:0;padding-bottom:0;}
+.setor-name{font-weight:800;color:var(--c-navy);}
+.setor-meta{color:var(--c-ink-2);font-size:.76rem;font-weight:700;}
+.andamento-table{min-width:980px;table-layout:fixed;}
+.andamento-table th, .andamento-table td{white-space:nowrap;vertical-align:middle;}
+.andamento-table .col-produto{width:280px;white-space:normal;}
+.andamento-table .num{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;}
+.badge-soft{display:inline-flex;justify-content:center;min-width:68px;padding:4px 8px;border-radius:var(--r);font-size:.74rem;font-weight:800;background:var(--c-bg);color:var(--c-blue);font-variant-numeric:tabular-nums;}
+.produto-sort-btn{display:inline-flex;align-items:center;gap:5px;border:0;background:transparent;color:inherit;font:inherit;font-weight:800;padding:0;}
+.produto-sort-btn:hover,
+    .produto-sort-btn.active{color:var(--c-blue);}
+.produto-sort-btn i{color:var(--c-ink-3);font-size:.76rem;}
+.produto-sort-btn.active i{color:var(--c-orange);}
+@media (max-width: 1180px){.grouped-card-grid{grid-template-columns:1fr;}
+.dashboard-grid{grid-template-columns:1fr;}
+}
+@media (max-width: 760px){.kg-homem-grid{grid-template-columns:1fr;}
+.grouped-indicators{grid-template-columns:1fr;}
+.grouped-indicator{min-height:78px;}
+.dash-filter > div{width:100%;}
+.dash-filter input, .dash-filter button{width:100%!important;}
+.chart-box{height:280px;}
+}
+
+}
+</style>
     <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
-  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.9">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.9">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.10">
+<script defer src="/unificado/shell/components.js?v=1.4.10"></script>
 </head>
 <body>
 <div id="sidebar-overlay"></div>
@@ -377,7 +456,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.9"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.10"></script>
 <script>
 const user = requireAuth();
 if (user) {

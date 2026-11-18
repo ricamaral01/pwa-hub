@@ -1,0 +1,32 @@
+[
+  {
+    "screen": "pcp-etiquetas-sc-1440",
+    "content_pixels_identical": true,
+    "content_box": [
+      256,
+      83,
+      1440,
+      900
+    ]
+  },
+  {
+    "screen": "pcp-numeros-serie-1440",
+    "content_pixels_identical": true,
+    "content_box": [
+      256,
+      83,
+      1440,
+      900
+    ]
+  },
+  {
+    "screen": "pcp-programacao-semanal-1440",
+    "content_pixels_identical": true,
+    "content_box": [
+      256,
+      83,
+      1440,
+      900
+    ]
+  }
+]

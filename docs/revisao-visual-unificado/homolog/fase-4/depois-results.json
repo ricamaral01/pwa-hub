@@ -1,0 +1,590 @@
+[
+  {
+    "view": "pcp/numeros-serie/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nRelatórios de Programação\nArmaduras\nNúmeros de série dos postes"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Números de série dos postes\n\nSequência única por modelo e ano. Histórico confirmado e previsão da programação.\n\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução e rastreabilidade\nSa"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/numeros-serie/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nArmaduras\n›\nNúmeros de série dos postes"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Números de série dos postes\n\nSequência única por modelo e ano. Histórico confirmado e previsão da programação.\n\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução e rastreabilidade\nSa"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/numeros-serie/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nArmaduras\n›\nNúmeros de série dos postes"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Números de série dos postes\n\nSequência única por modelo e ano. Histórico confirmado e previsão da programação.\n\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução e rastreabilidade\nSa"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/numeros-serie/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nArmaduras\nNúmeros de série dos postes\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Números de série dos postes\n\nSequência única por modelo e ano. Histórico confirmado e previsão da programação.\n\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução e rastreabilidade\nSa"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/programacao-semanal/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Set"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Programação da semana\n\nDistribua a produção de segunda a sexta dentro da capacidade das formas.\n\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nCriar rascunho\nBase Mega\nRelatório"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/programacao-semanal/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nProgramação\n›\nSemanal S1 e S2"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Programação da semana\n\nDistribua a produção de segunda a sexta dentro da capacidade das formas.\n\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nCriar rascunho\nBase Mega\nRelatório"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/programacao-semanal/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nProgramação\n›\nSemanal S1 e S2"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Programação da semana\n\nDistribua a produção de segunda a sexta dentro da capacidade das formas.\n\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nCriar rascunho\nBase Mega\nRelatório"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/programacao-semanal/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProgramação\nSemanal S1 e S2\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Setor 4\nProgramação Final\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Programação da semana\n\nDistribua a produção de segunda a sexta dentro da capacidade das formas.\n\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nCriar rascunho\nBase Mega\nRelatório"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/armaduras/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Set"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de sé"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/armaduras/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nArmaduras\n›\nProgramação semanal"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de sé"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/armaduras/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nArmaduras\n›\nProgramação semanal"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de sé"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/armaduras/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nArmaduras\nProgramação semanal\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de sé"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/armaduras-relatorio/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Set"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de sé"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/armaduras-relatorio/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nArmaduras\n›\nRelatório de produção"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de sé"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/armaduras-relatorio/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nArmaduras\n›\nRelatório de produção"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de sé"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/armaduras-relatorio/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nArmaduras\nRelatório de produção\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de sé"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/etiquetas-sc/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-sc%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Set"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Impressão de Etiquetas Setor 3\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 3 na data selecionada. Gera uma etiqueta de data e outra com o modelo na horizontal.\nImprimir e"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/etiquetas-sc/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-sc%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nEtiquetas\n›\nSetor 3"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Impressão de Etiquetas Setor 3\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 3 na data selecionada. Gera uma etiqueta de data e outra com o modelo na horizontal.\nImprimir e"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/etiquetas-sc/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-sc%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nEtiquetas\n›\nSetor 3"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Impressão de Etiquetas Setor 3\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 3 na data selecionada. Gera uma etiqueta de data e outra com o modelo na horizontal.\nImprimir e"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/etiquetas-sc/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-sc%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nEtiquetas\nSetor 3\nPadrão\nSetor 3\nSetor 4\nArmaduras\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Impressão de Etiquetas Setor 3\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 3 na data selecionada. Gera uma etiqueta de data e outra com o modelo na horizontal.\nImprimir e"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/relatorio-producao/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-producao%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Set"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-producao/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Data inicial\nDias para imprimir\nSetor\nSetores 1 e 2\nSetor 1\nSetor 2\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setores 1 e 2\n\tCódigo:\t"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/relatorio-producao/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-producao%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nRelatórios de Programação\n›\nSetor 1 e 2"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-producao/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Data inicial\nDias para imprimir\nSetor\nSetores 1 e 2\nSetor 1\nSetor 2\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setores 1 e 2\n\tCódigo:\t"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/relatorio-producao/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-producao%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nRelatórios de Programação\n›\nSetor 1 e 2"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-producao/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Data inicial\nDias para imprimir\nSetor\nSetores 1 e 2\nSetor 1\nSetor 2\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setores 1 e 2\n\tCódigo:\t"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/relatorio-producao/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-producao%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nRelatórios de Programação\nSetor 1 e 2\nSetor 1 e 2\nSetor 3\nSetor 4\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-producao/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Data inicial\nDias para imprimir\nSetor\nSetores 1 e 2\nSetor 1\nSetor 2\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setores 1 e 2\n\tCódigo:\t"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/maodeobra/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Set"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Registro em Tabela\nData\nGrupo\nS1 / S2\nS3 / S4\nMão de obra S1 / S2\nDireta e indireta no mesmo lançamento.\nAinda não lançado neste dia.\nAtividade\tTipo\tPessoas\nMão de obra direta\nProdução Setor 1 e 2\tMOD"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/maodeobra/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nProdução e apoio\n›\nMão de Obra"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Registro em Tabela\nData\nGrupo\nS1 / S2\nS3 / S4\nMão de obra S1 / S2\nDireta e indireta no mesmo lançamento.\nAinda não lançado neste dia.\nAtividade\tTipo\tPessoas\nMão de obra direta\nProdução Setor 1 e 2\tMOD"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/maodeobra/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.10\nPlanejamento\n›\nProdução e apoio\n›\nMão de Obra"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Registro em Tabela\nData\nGrupo\nS1 / S2\nS3 / S4\nMão de obra S1 / S2\nDireta e indireta no mesmo lançamento.\nAinda não lançado neste dia.\nAtividade\tTipo\tPessoas\nMão de obra direta\nProdução Setor 1 e 2\tMOD"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/maodeobra/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução e apoio\nMão de Obra\nProdução PCP\nMão de Obra\nRateio de Mão de Obra\nFormas por Setor\nTeste Programação\nInício\nTelas\nRecentes\nConta"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Registro em Tabela\nData\nGrupo\nS1 / S2\nS3 / S4\nMão de obra S1 / S2\nDireta e indireta no mesmo lançamento.\nAinda não lançado neste dia.\nMão de obra direta\nProdução Setor 1 e 2\nMOD\nSubtotal MOD\n0\nMão de "
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  }
+]
