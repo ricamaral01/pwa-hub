@@ -280,7 +280,7 @@
         style = doc.createElement('link');
         style.id = 'unificado-embedded-style';
         style.rel = 'stylesheet';
-        style.href = root + 'shell/embedded.css?v=20261030-armacao';
+        style.href = root + 'shell/embedded.css?v=1.4.7';
         doc.head.append(style);
       }
       doc.addEventListener('click', event => {
@@ -369,7 +369,7 @@
     if (ticket !== pending) return;
     if (route.path === 'usinas/noroeste/') {
       try {
-        const native = await import(root + 'usinas/noroeste/noro-native.js?v=20261030-11');
+        const native = await import(root + 'usinas/noroeste/noro-native.js?v=1.4.7');
         if (ticket !== pending) return;
         let container = document.getElementById('noro-native-host');
         if (!container) {
@@ -400,7 +400,7 @@
         if (!mapaUser?.id) throw new Error('Identidade do Unificado indisponível');
         window.__DOSAGEM_NATIVE__ = true;
         window.__DOSAGEM_NATIVE_USER_ID__ = String(mapaUser.id);
-        const native = await import(root + 'laboratorio/dosagem/native/dosagem-native.js?v=1.0.35');
+        const native = await import(root + 'laboratorio/dosagem/native/dosagem-native.js?v=1.4.7');
         if (ticket !== pending) return;
         let container = document.getElementById('dosagem-native-host');
         if (!container) {
@@ -433,9 +433,9 @@
     }
     if(route.module==='logistica'){
       try{
-        const native=await import(root+'logistica/logistica-native.js?v=1.4.4');
+        const native=await import(root+'logistica/logistica-native.js?v=1.4.7');
         if(ticket!==pending)return;
-        if(!document.querySelector('link[data-logistica-style]')){const css=document.createElement('link');css.rel='stylesheet';css.href=root+'logistica/logistica-native.css?v=1.4.4';css.dataset.logisticaStyle='true';document.head.append(css);}
+        if(!document.querySelector('link[data-logistica-style]')){const css=document.createElement('link');css.rel='stylesheet';css.href=root+'logistica/logistica-native.css?v=1.4.7';css.dataset.logisticaStyle='true';document.head.append(css);}
         let container=document.getElementById('logistica-native-host');if(!container){container=document.createElement('div');container.id='logistica-native-host';host.append(container);}
         window.__logisticaNative=native;
         native.mountLogistica(container,{path:route.path,search:route.url.search,navigate:path=>open(root+path,null,true)});

@@ -1,21 +1,21 @@
-const CACHE = 'concrefer-unificado-shell-v1.4.6';
+const CACHE = 'concrefer-unificado-shell-v1.4.7';
 const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const QUALITY_CACHE = 'concrefer-qualidade-static-v1.2.7';
 const ROOT = '/unificado/';
-const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.4.6',
-  ROOT + 'shell/shared-menu.css?v=1.4.6',
-  ROOT + 'shell/modelo-a/menu.css?v=1.4.6', ROOT + 'shell/modelo-a-host.css?v=1.4.6',
-  ROOT + 'shell/modelo-a/menu.js?v=1.4.6',
-  ROOT + 'shell/modelo-a-loader.js?v=1.4.6',
-  ROOT + 'shell/menu.config.js?v=1.4.6', ROOT + 'shell/auth.js?v=1.4.6',
-  ROOT + 'shell/shell.js?v=1.4.6', ROOT + 'shell/navigation.css?v=1.4.6',
-  ROOT + 'shell/navigation.js?v=1.4.6', ROOT + 'shell/router.js?v=1.4.6',
-  ROOT + 'shell/module-pages-mobile.js?v=1.4.6', ROOT + 'shell/module-pages.js?v=1.4.6',
-  ROOT + 'shell/module-pages-a.css?v=1.4.6', ROOT + 'shell/module-cards.css?v=1.4.6',
-  ROOT + 'shell/module-theme.js?v=1.4.6',
-  ROOT + 'shell/home-header-compact.css?v=1.4.6',
-  ROOT + 'shell/home-header-compact.js?v=1.4.6',
-  ROOT + 'shell/embedded.css?v=1.4.6'];
+const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.4.7',
+  ROOT + 'shell/shared-menu.css?v=1.4.7',
+  ROOT + 'shell/modelo-a/menu.css?v=1.4.7', ROOT + 'shell/modelo-a-host.css?v=1.4.7',
+  ROOT + 'shell/modelo-a/menu.js?v=1.4.7',
+  ROOT + 'shell/modelo-a-loader.js?v=1.4.7',
+  ROOT + 'shell/menu.config.js?v=1.4.7', ROOT + 'shell/auth.js?v=1.4.7',
+  ROOT + 'shell/shell.js?v=1.4.7', ROOT + 'shell/navigation.css?v=1.4.7',
+  ROOT + 'shell/navigation.js?v=1.4.7', ROOT + 'shell/router.js?v=1.4.7',
+  ROOT + 'shell/module-pages-mobile.js?v=1.4.7', ROOT + 'shell/module-pages.js?v=1.4.7',
+  ROOT + 'shell/module-pages-a.css?v=1.4.7', ROOT + 'shell/module-cards.css?v=1.4.7',
+  ROOT + 'shell/module-theme.js?v=1.4.7',
+  ROOT + 'shell/home-header-compact.css?v=1.4.7',
+  ROOT + 'shell/home-header-compact.js?v=1.4.7',
+  ROOT + 'shell/embedded.css?v=1.4.7'];
 self.addEventListener('message', event => {
   if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });

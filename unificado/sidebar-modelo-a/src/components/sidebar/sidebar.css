@@ -1,6 +1,4 @@
 /* Menu lateral — Modelo A. Escopo: classes .sb-*  (não afeta o PWA). */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
-
 .sb {
   --sb-bg: #0D1934;
   --sb-bg-deep: #081127;
@@ -26,7 +24,7 @@
   padding: 16px 14px;
   background: var(--sb-bg);
   color: var(--sb-text);
-  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-family: var(--f-sans);
   transition: width 0.18s ease;
 }
 .sb *, .sb *::before, .sb *::after { box-sizing: border-box; }
@@ -128,7 +126,7 @@
 .sb-user-name { color: #FFFFFF; font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sb-user-meta { color: var(--sb-muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sb-user-meta.sb-mono { font-size: 11px; }
-.sb-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+.sb-mono { font-family: var(--f-mono); }
 
 /* ---------- Modo recolhido (só ícones) ---------- */
 .sb.is-collapsed { width: 80px; padding: 16px 16px; align-items: center; gap: 12px; }
@@ -162,7 +160,7 @@
 
 /* Cores compartilhadas com a home e as páginas dos módulos. */
 .sb-switcher-btn { border-left: 5px solid var(--mod); padding-left: 8px; }
-.sb-mod-tile { color: var(--mod-ink); font: 800 12px 'IBM Plex Sans',sans-serif; letter-spacing:.02em; }
+.sb-mod-tile { color: var(--mod-ink); font: 800 12px var(--f-sans); letter-spacing:.02em; }
 .sb-menu-item { border-left:4px solid var(--item-mod); background:color-mix(in srgb,var(--item-mod) 10%,transparent); margin:3px 0; }
 .sb-menu-item:hover { background:color-mix(in srgb,var(--item-mod) 22%,transparent); }
 .sb-menu-item[aria-checked='true'] { background:var(--item-mod); color:var(--item-ink); }
