@@ -37,7 +37,7 @@
     link.dataset.search = `${label} ${description}`;
     const icon = document.createElement('span');
     icon.className = 'module-page-icon';
-    icon.textContent = label.split(/\s+/).slice(0, 2).map(part => part[0] || '').join('').toUpperCase();
+    icon.append(window.UnificadoIcons.node('documento'));
     const content = document.createElement('span');
     content.className = 'module-page-link-content';
     const name = document.createElement('span');
@@ -45,10 +45,10 @@
     name.textContent = label;
     const desc = document.createElement('span');
     desc.className = 'module-page-link-description';
-    desc.textContent = description || 'Abrir tela e consultar os dados.';
+    desc.textContent = description;
     const arrow = document.createElement('span');
     arrow.className = 'module-page-arrow';
-    arrow.textContent = '↗';
+    arrow.textContent = '';
     arrow.setAttribute('aria-hidden', 'true');
     content.append(name, desc);
     link.append(icon, content, arrow);
@@ -79,15 +79,12 @@
     });
     const heading = document.createElement('header');
     heading.className = 'module-page-heading';
-    const eyebrow = document.createElement('p');
-    eyebrow.className = 'module-page-eyebrow';
-    eyebrow.textContent = 'MÓDULO';
     const h1 = document.createElement('h1');
     h1.textContent = title;
     const description = document.createElement('p');
     description.className = 'module-page-description';
     description.textContent = descriptions[moduleId] || '';
-    heading.append(eyebrow, h1, description);
+    heading.append(h1, description);
     page.append(back, heading);
 
     let selectedUnit = '';

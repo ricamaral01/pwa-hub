@@ -4,16 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0B1730">
-  <link rel="manifest" href="manifest.webmanifest?v=1.4.7">
+  <link rel="manifest" href="manifest.webmanifest?v=1.4.8">
   <link rel="icon" href="data:,">
   <title>Entrar — Concrefer</title>
-  <link rel="stylesheet" href="shell/shell.css?v=1.4.7">
-  <link rel="stylesheet" href="shell/password-visibility.css?v=1.4.7">
-  <script defer src="shell/auth.js?v=1.4.7"></script>
-  <script defer src="shell/password-visibility.js?v=1.4.7"></script>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.7" media="(min-width:1025px)">
+  <link rel="stylesheet" href="shell/shell.css?v=1.4.8">
+  <link rel="stylesheet" href="shell/password-visibility.css?v=1.4.8">
+  <script defer src="shell/auth.js?v=1.4.8"></script>
+  <script defer src="shell/password-visibility.js?v=1.4.8"></script>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.8" media="(min-width:1025px)">
+<link rel="stylesheet" href="shell/login-desktop.css?v=1.4.8" media="(min-width:1025px)">
+<style>.login-desktop-story,.login-desktop-heading{display:none}</style>
 </head>
 <body>
+  <aside class="login-desktop-story" aria-label="Unificado Concrefer"><span class="login-story-brand"><img src="assets/img/logo-concrefer.png" alt="Concrefer"></span><div><h2>Planejamento, produção e qualidade das quatro fábricas</h2><p>Programação do PCP, apontamentos do Mapa, laboratório e suprimentos com um único usuário.</p></div><div class="login-story-units"><span>Campinas</span><span>Pederneiras</span><span>Ribeirão Preto</span><span>Noroeste</span></div></aside>
   <main class="login-layout">
     <section class="login-card" aria-labelledby="login-title">
       <div class="login-brand" aria-label="Concrefer e ConcreTrack">
@@ -21,7 +24,7 @@
         <span class="login-brand-divider" aria-hidden="true"></span>
         <img class="login-logo-concretrack" src="assets/img/logo-concretrack.png" alt="ConcreTrack" width="76" height="76">
       </div>
-      <h1 id="login-title">Bem-vindo de volta</h1>
+      <h1 id="login-title"><span class="login-current-heading">Bem-vindo de volta</span><span class="login-desktop-heading">Entrar</span></h1>
       <p>Entre com seu usuário e senha para acessar o sistema.</p>
       <form id="unificado-login-form">
         <label class="login-field"><span>Usuário</span><input type="text" name="username" autocomplete="username" required></label>

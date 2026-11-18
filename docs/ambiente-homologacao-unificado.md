@@ -1,5 +1,38 @@
 # Homologação do sistema unificado
 
+## Revisão visual em 18/11/2026 — fases 1 e 2
+
+A porta **18446** está na versão **1.4.8**, com a base compartilhada e a casca
+revistas. A execução parou ao concluir a fase 2 para revisão do usuário.
+As fases 3–7 não foram iniciadas e não houve publicação em produção.
+
+- Antes da fase 1, os endpoints publicados de acesso rápido e unidades de
+  Armação foram alinhados em etapa separada. Armação tem instância própria em
+  `homolog-next/armacao-api`, serviço `unificado-homolog-armacao.service`, porta
+  **13168**, bancos PCP/Mapa de homologação e armazenamento próprio.
+- Quatro migrações publicadas de Armação somente no PCP de homologação, DDL
+  de duas tabelas de acesso rápido e de `user_units` no Mapa de homologação.
+  Dumps prévios dos dois bancos em
+  `homolog-next/backups/visual-endpoints-20261118T175103Z`.
+  Não foram importadas configurações pessoais, atribuídas unidades ou semeadas
+  permissões. Relatório: [pré-fase 1](revisao-visual-unificado/homolog/pre-fase-1/RELATORIO.md).
+- Somente o vhost 18446 recebeu o encaminhamento para Armação. Houve backup,
+  `nginx -t` aprovado e recarga; o vhost de produção permaneceu inalterado.
+- Fase 1: **1.4.7**, tokens e Geist local, build React aprovado e gate 7/7.
+- Fase 2: **1.4.8**, Início/menu/listas de módulos/login desktop; 24 capturas
+  finais nas larguras 1440, 1024, 820 e 390, incluindo a prévia identificada
+  do componente de acesso rápido. Login estreito preservado.
+- Fases visuais publicadas por cópia de arquivos estáticos com backups,
+  conferência de hashes e retorno em caso de erro, sem reinício de APIs/bancos.
+- Gate final **7/7**, quatro perfis conferidos e reimpressões PDF idênticas.
+  Service worker atualizou 1.4.7 → 1.4.8 sem limpeza manual de cache.
+- Auditoria: 394 arquivos de produção e PIDs/vhost preservados; contas,
+  concessões e vínculos de identidade iguais aos backups.
+
+Relatório e roteiro: [fase 2](revisao-visual-unificado/homolog/fase-2/RELATORIO.md).
+Capturas antes/depois: [galeria](revisao-visual-unificado/homolog/fase-2/galeria.html).
+Os textos abaixo registram o histórico anterior desta montagem.
+
 ## Atualização funcional de 18/11/2026 — fase 0.5
 
 A casca e os arquivos necessários do Planejamento na porta **18446** foram

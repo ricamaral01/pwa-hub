@@ -4,6 +4,8 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def version(value):
  (ROOT/'unificado/VERSION').write_text(value+'\n')
+ p=ROOT/'unificado/shell/shell.js'
+ s=p.read_text(encoding='utf-8');s=re.sub(r"const APP_VERSION = '[^']+'", "const APP_VERSION = '"+value+"'",s);p.write_text(s,encoding='utf-8')
  for p in (ROOT/'unificado').rglob('*'):
   if not p.is_file() or any(x in p.parts for x in ['node_modules','src','backend','service','.venv']):continue
   if p.suffix=='.html' or p.relative_to(ROOT/'unificado').as_posix() in ['shell/router.js','shell/modelo-a-loader.js','sw.js']:

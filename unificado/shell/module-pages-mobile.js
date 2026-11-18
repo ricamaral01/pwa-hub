@@ -42,15 +42,15 @@
     if (item) link.dataset.itemId = item.id;
     const code = document.createElement('span');
     code.className = 'module-page-code';
-    code.textContent = item?.mono || label.split(/\s+/).slice(0, 2).map(word => word[0]).join('').toUpperCase();
+    code.append(window.UnificadoIcons.node('documento'));
     const name = document.createElement('span');
     name.textContent = label;
     const detail = document.createElement('small');
-    detail.textContent = itemDescriptions[item?.id] || 'Abrir tela e consultar os dados.';
+    detail.textContent = itemDescriptions[item?.id] || '';
     name.append(detail);
     const arrow = document.createElement('span');
     arrow.className = 'module-page-arrow';
-    arrow.textContent = '↗';
+    arrow.textContent = '';
     arrow.setAttribute('aria-hidden', 'true');
     link.append(code, name, arrow);
     link.addEventListener('click', event => {
@@ -78,15 +78,12 @@
     });
     const heading = document.createElement('header');
     heading.className = 'module-page-heading';
-    const eyebrow = document.createElement('p');
-    eyebrow.className = 'module-page-eyebrow';
-    eyebrow.textContent = 'MÓDULO';
     const h1 = document.createElement('h1');
     h1.textContent = title;
     const description = document.createElement('p');
     description.className = 'module-page-description';
     description.textContent = descriptions[moduleId] || '';
-    heading.append(eyebrow, h1, description);
+    heading.append(h1, description);
     page.append(back, heading);
 
     const groups = moduleId === 'ged'

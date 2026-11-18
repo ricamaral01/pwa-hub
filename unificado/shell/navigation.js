@@ -99,14 +99,14 @@
   root.insertBefore(nav,root.firstChild);
 
   const mobileTop = el('header','nav-mobile-top');
-  const mobileMenu = button('nav-mobile-icon','☰',() => openMobile('telas'));
-  mobileMenu.setAttribute('aria-label','Abrir telas');
+  const mobileMenu = button('nav-mobile-icon','',() => openMobile('telas'));
+  mobileMenu.setAttribute('aria-label','Abrir telas');mobileMenu.append(window.UnificadoIcons.node('menu'));
   const mobileHeading=el('div','nav-mobile-heading');
   const mobileContext=el('small','nav-mobile-context','Unificado');
   const mobileTitle=el('strong','nav-mobile-title','Início');
   mobileHeading.append(mobileContext,mobileTitle);
-  const mobileSearch=button('nav-mobile-search','⌕',() => {openMobile('telas'); search.focus();});
-  mobileSearch.setAttribute('aria-label','Buscar tela');
+  const mobileSearch=button('nav-mobile-search','',() => {openMobile('telas'); search.focus();});
+  mobileSearch.setAttribute('aria-label','Buscar tela');mobileSearch.append(window.UnificadoIcons.node('busca'));
   mobileTop.append(mobileMenu,mobileHeading,mobileSearch);
   const banner=button('nav-mobile-update','',() => host.update()); banner.hidden=true;
   const quick=el('div','nav-quick');
@@ -121,7 +121,7 @@
       openMobile(mode);
     });
     action.dataset.mode=mode;
-    action.append(el('span','nav-bottom-icon',icon),el('span','nav-bottom-label',label));
+    action.append(window.UnificadoIcons.node(mode==='telas'?'menu':mode,'nav-bottom-icon'),el('span','nav-bottom-label',label));
     bottom.append(action);
   }
   document.body.append(bottom);
@@ -232,7 +232,7 @@
     const a=el('a','nav-item',entry.item.label);
     a.href=hrefOf(entry.item);
     a.dataset.itemId=entry.item.id;
-    if(entry.item.mono) a.prepend(el('span','nav-item-code',entry.item.mono));
+    a.prepend(window.UnificadoIcons.node('documento','nav-item-code'));
     const active=activeEntry()?.item.id===entry.item.id;
     if(active){a.classList.add('is-active');a.setAttribute('aria-current','page');}
     a.addEventListener('click',event=>{
@@ -325,9 +325,9 @@
     const modules=visibleModules();
     const selectedModule=modules.find(module=>module.id===state.module);
     applyModuleTheme(nav, state.module);
-    moduleSwitcher.replaceChildren(el('span','nav-switcher-code',moduleCodes[state.module]||'MD'));
+    moduleSwitcher.replaceChildren(window.UnificadoIcons.node(state.module,'nav-switcher-code'));
     const switcherLabel=el('span','nav-switcher-label');
-    switcherLabel.append(el('small','','MÓDULO'),el('strong','',selectedModule?.label||'Telas'));
+    switcherLabel.append(el('strong','',selectedModule?.label||'Telas'));
     moduleSwitcher.append(switcherLabel,downChevron('nav-switcher-chevron'));
     const railToggle=button('nav-rail-menu','',()=>{
       if(matchMedia('(min-width:1280px)').matches)setDesktopCollapsed(!state.desktopCollapsed);
@@ -353,14 +353,14 @@
         render();
       });
       applyModuleTheme(chip, module.id);
-      chip.prepend(el('span','nav-module-badge',moduleCodes[module.id]||'MD'));
+      chip.prepend(window.UnificadoIcons.node(module.id,'nav-module-badge'));
       moduleArea.append(chip);
       const railButton=button('nav-rail-item'+(selected?' is-active':''),'',()=>{
         state.module=module.id;setTabletOpen(true);render();
       });
       railButton.setAttribute('aria-label',module.label);
       applyModuleTheme(railButton, module.id);
-      railButton.append(el('span','nav-rail-code',moduleCodes[module.id]||module.label.slice(0,2).toUpperCase()),
+      railButton.append(window.UnificadoIcons.node(module.id,'nav-rail-code'),
         el('span','nav-rail-label',module.label));
       rail.append(railButton);
     }
@@ -430,8 +430,9 @@
   }
   function renderContext() {
     const active=activeEntry();
-    mobileContext.textContent=active ? [active.location.unit,active.location.group].filter(Boolean).join(' · ') || active.module.label : 'Unificado';
-    mobileTitle.textContent=active?.item.label||'Início';
+    const landingTitle=main.querySelector('.module-page:not([hidden]) h1,.content.uqa-personal #uqa-home:not([hidden]) h1')?.textContent;
+    mobileContext.textContent=active ? [active.location.unit,active.location.group].filter(Boolean).join(' · ') || active.module.label : landingTitle ? 'Concrefer' : 'Unificado';
+    mobileTitle.textContent=active?.item.label||landingTitle||'Início';
     const breadcrumb=document.querySelector('.breadcrumb');
     if(active&&breadcrumb) {
       breadcrumb.replaceChildren();

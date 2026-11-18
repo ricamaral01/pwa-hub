@@ -5,6 +5,7 @@
   let profile=null,requestId=0;
   const root='/unificado/';
   const node=(tag,className,text)=>{const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el;};
+  function syncHeading(){if(!content.classList.contains('uqa-personal'))return;const title=document.querySelector('.nav-mobile-title');if(title)title.textContent='Meu acesso rápido';const crumb=document.querySelector('.breadcrumb > :last-child');if(crumb)crumb.textContent='Meu acesso rápido';}
   function showPersonal(){if(!profile?.enabled)return;content.classList.add('uqa-personal');document.getElementById('uqa-home').hidden=false;window.UnificadoRouter.home();}
   function ensureReturn(){
     if(!profile?.enabled)return;
@@ -21,14 +22,14 @@
     const wasHome=content.classList.contains('uqa-personal');profile=data;
     const panel=node('section');panel.id='uqa-home';
     const welcome=node('header','uqa-welcome'),copy=node('div');
-    copy.append(node('span','uqa-kicker','MEU ACESSO RÁPIDO'),node('h1','',`Olá, ${data.user.name.split(' ')[0]}.`),node('p','','As funções da sua rotina, em um só lugar.'));
+    copy.append(node('h1','','Meu acesso rápido'),node('p','',data.user.name+' · Telas disponíveis para seu perfil.'));
     const all=node('button','uqa-button','Ver início geral');all.type='button';all.onclick=()=>{content.classList.remove('uqa-personal');panel.hidden=true;window.UnificadoRouter.home();};
     welcome.append(copy,all);panel.append(welcome);
     for(const [module,title,code] of [['planejamento','Planejamento','PL'],['producao','Produção · Controle','PR']]){
       const items=data.items.filter(row=>row.module===module);if(!items.length)continue;
-      const section=node('section');section.dataset.module=module;const heading=node('h2');heading.append(node('span','',code),document.createTextNode(title));const grid=node('div','uqa-grid');
+      const section=node('section');section.dataset.module=module;const heading=node('h2');heading.append(document.createTextNode(title));const grid=node('div','uqa-grid');
       for(const item of items){
-        const card=node('article','uqa-card');card.dataset.shortcut=item.id;card.append(node('span','uqa-code',item.code));
+        const card=node('article','uqa-card');card.dataset.shortcut=item.id;card.append(window.UnificadoIcons.node(module,'uqa-icon'));
         const text=node('div');text.append(node('strong','',item.label),node('small','',item.detail));card.append(text);
         const links=node('div','uqa-links');
         for(const dest of item.destinations){
@@ -43,7 +44,7 @@
     if(!data.items.length){const empty=node('div','uqa-empty');empty.append(node('strong','','Nenhum atalho disponível'),node('p','','Solicite ao administrador a revisão das funções da sua conta.'));panel.append(empty);}
     document.getElementById('uqa-home')?.remove();content.prepend(panel);
     if(data.home||wasHome){content.classList.add('uqa-personal');panel.hidden=false;}else panel.hidden=true;
-    ensureReturn();
+    ensureReturn();syncHeading();
   }
   async function refresh(){
     const id=++requestId;

@@ -11,7 +11,7 @@
   function load() {
     if (started || !document.body.classList.contains('unificado-model-a')) return;
     started = true;
-    import('./modelo-a/menu.js?v=1.4.7').catch(showFallback);
+    import('./modelo-a/menu.js?v=1.4.8').catch(showFallback);
     setTimeout(() => {
       if (!document.querySelector('#sidebar-model-a .sb')) showFallback();
     }, 8000);

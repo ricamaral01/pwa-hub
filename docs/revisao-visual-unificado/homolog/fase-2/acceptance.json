@@ -1,0 +1,135 @@
+[
+  {
+    "role": "ADMIN",
+    "modules": [
+      "planejamento",
+      "producao",
+      "qualidade",
+      "usinas",
+      "laboratorio",
+      "suprimentos",
+      "ged"
+    ],
+    "allowed_items": 150,
+    "navigation_links_checked": 28,
+    "unauthorized_links": [],
+    "search": "ok",
+    "read": [
+      {
+        "screen": "postesNumerosSerie",
+        "status": 200
+      },
+      {
+        "screen": "programacaoSemanal12",
+        "status": 200
+      },
+      {
+        "screen": "armadurasProgramacao",
+        "status": 200
+      }
+    ],
+    "write_denials": [],
+    "js_errors": []
+  },
+  {
+    "role": "CONSULTA",
+    "modules": [
+      "planejamento",
+      "producao",
+      "qualidade",
+      "ged"
+    ],
+    "allowed_items": 12,
+    "navigation_links_checked": 6,
+    "unauthorized_links": [],
+    "search": "ok",
+    "read": [
+      {
+        "screen": "postesNumerosSerie",
+        "status": 200
+      },
+      {
+        "screen": "programacaoSemanal12",
+        "status": 200
+      },
+      {
+        "screen": "armadurasProgramacao",
+        "status": 200
+      }
+    ],
+    "write_denials": [
+      {
+        "path": "programacao-semana",
+        "status": 403
+      },
+      {
+        "path": "armaduras/calendario",
+        "status": 403
+      }
+    ],
+    "js_errors": []
+  },
+  {
+    "role": "PCP",
+    "modules": [
+      "planejamento",
+      "producao",
+      "qualidade"
+    ],
+    "allowed_items": 49,
+    "navigation_links_checked": 27,
+    "unauthorized_links": [],
+    "search": "ok",
+    "read": [
+      {
+        "screen": "postesNumerosSerie",
+        "status": 200
+      },
+      {
+        "screen": "programacaoSemanal12",
+        "status": 200
+      },
+      {
+        "screen": "armadurasProgramacao",
+        "status": 200
+      }
+    ],
+    "write_denials": [],
+    "js_errors": []
+  },
+  {
+    "role": "PRODUCAO",
+    "modules": [
+      "planejamento"
+    ],
+    "allowed_items": 12,
+    "navigation_links_checked": 12,
+    "unauthorized_links": [],
+    "search": "ok",
+    "read": [
+      {
+        "screen": "postesNumerosSerie",
+        "status": 200
+      },
+      {
+        "screen": "programacaoSemanal12",
+        "status": 200
+      },
+      {
+        "screen": "armadurasProgramacao",
+        "status": 200
+      }
+    ],
+    "write_denials": [
+      {
+        "path": "programacao-semana",
+        "status": 403
+      },
+      {
+        "path": "armaduras/calendario",
+        "status": 403
+      }
+    ],
+    "js_errors": []
+  }
+]

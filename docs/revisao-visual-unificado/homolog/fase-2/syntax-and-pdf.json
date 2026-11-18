@@ -1,0 +1,17 @@
+{
+  "js_checked": 12,
+  "pdf_checks": [
+    {
+      "pdf": "armaduras-teste.pdf",
+      "identical_to_phase05": true,
+      "sha256": "ca0edad847101200d514c5a21ae672a040a26cec4ef2c274f2787f1509ec04a2"
+    },
+    {
+      "pdf": "series-teste.pdf",
+      "identical_to_phase05": true,
+      "sha256": "ef926a9189209e6010b713efdf4c5fb898ab160ef6a33f7df560ad0896fef452"
+    }
+  ],
+  "react_build": "tsc and vite passed",
+  "python_scripts_compile": 6
+}

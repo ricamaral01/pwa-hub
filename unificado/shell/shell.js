@@ -273,7 +273,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.4.6';
+const APP_VERSION = '1.4.8';
 let platformUpdateAvailable = false;
 let platformUpdateState = 'checking';
 let platformLatestVersion = APP_VERSION;
@@ -775,10 +775,10 @@ function shortcutLink(id, label) {
 function renderSectors() {
   const target = document.getElementById('sector-cards');
   [1, 2, 3, 4].forEach((sector) => {
-    const card = document.createElement('article');
+    const card = document.createElement('tr');
     card.className = 'sector-card';
     card.dataset.sector = String(sector);
-    card.innerHTML = `<div class="sector-top"><span class="sector-number">S0${sector}</span><span class="capacity">Hoje</span></div><h3>Setor ${sector}</h3><div class="sector-stats"><div><span class="stat-label">Programado (PCP)</span><span class="stat-value" data-stat="programado">—</span></div><div><span class="stat-label">Realizado (Mapa)</span><span class="stat-value" data-stat="realizado">—</span></div></div><div class="progress-track" aria-label="Dados em carregamento"></div><div class="sector-actions"></div>`;
+    card.innerHTML = `<td data-label="Setor"><strong>Setor ${sector}</strong></td><td class="r" data-label="Programado"><span data-stat="programado">—</span></td><td class="r" data-label="Realizado"><span data-stat="realizado">—</span></td><td class="r" data-label="Falta"><span data-stat="falta">—</span></td><td data-label="Aderência"><div class="sector-ratio"><div class="progress-track"><i></i></div><span data-stat="aderencia">—</span></div></td><td class="sector-actions" data-label="Ações"></td>`;
     const actions = card.querySelector('.sector-actions');
     const plan = MENU_ITEMS[sector <= 2 ? 'programacao12' : 'programacao34'];
     const production = MENU_ITEMS[`setor${sector}`];
@@ -926,11 +926,11 @@ function renderOpeningModules() {
       card.style.setProperty('--module-ink', theme.ink);
     }
   });
-  target.querySelectorAll('.opening-module').forEach((card, index) => {
-    const kind = card.dataset.module === 'pederh' || card.dataset.module === 'faleaqui'
-      ? 'APLICAÇÃO' : 'MÓDULO';
-    card.querySelector('.opening-module-number').textContent =
-      `${String(index + 1).padStart(2, '0')} / ${kind}`;
+  target.querySelectorAll('.opening-module').forEach(card => {
+    card.querySelector('.opening-module-number')?.remove();
+    card.querySelector('.opening-app-icon')?.remove();
+    card.querySelectorAll(':scope > svg').forEach(icon=>icon.remove());
+    card.prepend(window.UnificadoIcons.node(card.dataset.module,'opening-module-icon'));
   });
   document.querySelector('.opening-modules').hidden = !target.children.length;
 }
@@ -952,7 +952,7 @@ function selectModuleMenu(moduleId, push = true) {
 const today = new Date();
 const dateISO = new Intl.DateTimeFormat('sv-SE', {timeZone:'America/Sao_Paulo',
   year:'numeric', month:'2-digit', day:'2-digit'}).format(today);
-document.getElementById('today').textContent = new Intl.DateTimeFormat('pt-BR', {
+document.getElementById('opening-compact-date').textContent = new Intl.DateTimeFormat('pt-BR', {
   timeZone:'America/Sao_Paulo', weekday:'long', day:'numeric', month:'long', year:'numeric'
 }).format(today);
 const displayUser = hasPcp ? pcpUser : mapaUser;
@@ -1077,12 +1077,20 @@ async function loadSectorData() {
     card.querySelector('[data-stat="realizado"]').textContent = produced == null ? '—' :
       Number(produced).toLocaleString('pt-BR');
     const ratio = Number(programmed) > 0 ? Math.min(100, 100 * Number(produced || 0) / Number(programmed)) : 0;
-    card.querySelector('.progress-track').style.background =
-      `linear-gradient(90deg, #E8762A ${ratio}%, #F1F3F6 ${ratio}%)`;
+    const known = programmed != null && produced != null;
+    card.querySelector('[data-stat="falta"]').textContent = known ? Math.max(0,Number(programmed)-Number(produced)).toLocaleString('pt-BR') : '—';
+    card.querySelector('[data-stat="aderencia"]').textContent = known && Number(programmed)>0 ? Math.round(100*Number(produced)/Number(programmed))+'%' : '—';
+    card.querySelector('.progress-track i').style.width = ratio+'%';
     card.querySelector('.progress-track').setAttribute('aria-label',
       programmed == null || produced == null ? 'Um módulo sem acesso ou sem resposta' :
       `${Math.round(ratio)}% do programado`);
   }
+  const programmedRows = pcpData?.por_setor?.filter(row=>[1,2,3,4].includes(Number(row.setor_id)));
+  const totalPlan = pcpData ? (programmedRows || []).reduce((sum,row)=>sum+Number(row.qtd_programada || 0),0) : null;
+  const totalDone = mapaData ? [1,2,3,4].reduce((sum,id)=>sum+Number(mapaData.by_sector?.['S'+id] || 0),0) : null;
+  const summary={programado:totalPlan,realizado:totalDone,aderencia:totalPlan>0&&totalDone!=null?Math.round(totalDone/totalPlan*100)+'%':null,
+    falta:totalPlan!=null&&totalDone!=null?[1,2,3,4].reduce((sum,id)=>sum+Math.max(0,Number(programmedRows?.find(row=>Number(row.setor_id)===id)?.qtd_programada || 0)-Number(mapaData.by_sector?.['S'+id] || 0)),0):null};
+  for(const [key,value] of Object.entries(summary)){const el=document.querySelector('[data-total="'+key+'"]');if(el)el.textContent=value==null?'—':typeof value==='number'?value.toLocaleString('pt-BR'):value;}
   const note = document.querySelector('.sample-note');
   note.textContent = `Dados de ${dateISO.split('-').reverse().join('/')}` +
     (pcpResult.status === 'rejected' || mapaResult.status === 'rejected' ?

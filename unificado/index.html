@@ -4,32 +4,34 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0B1730">
-  <link rel="manifest" href="manifest.webmanifest?v=1.4.7">
+  <link rel="manifest" href="manifest.webmanifest?v=1.4.8">
   <link rel="icon" href="data:,">
   <title>Concrefer — Sistema unificado</title>
   <script>if(new URLSearchParams(location.search).has('view'))document.documentElement.classList.add('unificado-routing')</script>
-  <link rel="stylesheet" href="shell/shell.css?v=1.4.7">
-  <link rel="stylesheet" href="shell/module-pages-a.css?v=1.4.7">
-  <link rel="stylesheet" href="shell/module-cards.css?v=1.4.7">
-  <link rel="stylesheet" href="shell/shared-menu.css?v=1.4.7">
-  <link rel="stylesheet" href="shell/modelo-a/menu.css?v=1.4.7">
-  <link rel="stylesheet" href="shell/modelo-a-host.css?v=1.4.7">
-  <link rel="stylesheet" href="shell/home-header-compact.css?v=1.4.7">
-  <link rel="stylesheet" href="shell/navigation.css?v=1.4.7">
+  <link rel="stylesheet" href="shell/shell.css?v=1.4.8">
+  <link rel="stylesheet" href="shell/module-pages-a.css?v=1.4.8">
+  <link rel="stylesheet" href="shell/module-cards.css?v=1.4.8">
+  <link rel="stylesheet" href="shell/shared-menu.css?v=1.4.8">
+  <link rel="stylesheet" href="shell/modelo-a/menu.css?v=1.4.8">
+  <link rel="stylesheet" href="shell/modelo-a-host.css?v=1.4.8">
+  <link rel="stylesheet" href="shell/home-header-compact.css?v=1.4.8">
+  <link rel="stylesheet" href="shell/navigation.css?v=1.4.8">
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css">
-  <script defer src="shell/module-theme.js?v=1.4.7"></script>
-  <script defer src="shell/menu.config.js?v=1.4.7"></script>
-  <script defer src="shell/auth.js?v=1.4.7"></script>
-  <script defer src="shell/shell.js?v=1.4.7"></script>
-  <script defer src="shell/home-header-compact.js?v=1.4.7"></script>
-  <script defer src="shell/router.js?v=1.4.7"></script>
-  <script defer src="shell/module-pages-mobile.js?v=1.4.7"></script>
-  <script defer src="shell/module-pages.js?v=1.4.7"></script>
-  <script defer src="shell/modelo-a-loader.js?v=1.4.7"></script>
-  <script defer src="shell/navigation.js?v=1.4.7"></script>
-<link rel="stylesheet" href="shell/quick-access.css?v=1.4.7">
-<script defer src="shell/quick-access.js?v=1.4.7"></script>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.7">
+  <script defer src="shell/icons.js?v=1.4.8"></script>
+  <script defer src="shell/module-theme.js?v=1.4.8"></script>
+  <script defer src="shell/menu.config.js?v=1.4.8"></script>
+  <script defer src="shell/auth.js?v=1.4.8"></script>
+  <script defer src="shell/shell.js?v=1.4.8"></script>
+  <script defer src="shell/home-header-compact.js?v=1.4.8"></script>
+  <script defer src="shell/router.js?v=1.4.8"></script>
+  <script defer src="shell/module-pages-mobile.js?v=1.4.8"></script>
+  <script defer src="shell/module-pages.js?v=1.4.8"></script>
+  <script defer src="shell/modelo-a-loader.js?v=1.4.8"></script>
+  <script defer src="shell/navigation.js?v=1.4.8"></script>
+<link rel="stylesheet" href="shell/quick-access.css?v=1.4.8">
+<script defer src="shell/quick-access.js?v=1.4.8"></script>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.8">
+<link rel="stylesheet" href="shell/visual-shell.css?v=1.4.8">
 </head>
 <body>
   <div class="desktop-only">
@@ -45,37 +47,26 @@
         </div>
       </header>
       <div class="content">
-        <div class="welcome opening-hero">
-          <div class="opening-compact" aria-label="Boas-vindas">
-            <img class="opening-compact-logo" src="assets/img/logo-concrefer.png" alt="Concrefer">
-            <span class="opening-compact-divider" aria-hidden="true"></span>
-            <div class="opening-compact-copy">
-              <span class="opening-compact-title">Bem-vindo<span class="accent-mark">.</span></span>
-              <span class="opening-compact-subtitle"><span id="opening-compact-date"></span> · Unificado Concrefer<span class="opening-compact-extra"> · seus módulos e operações em um só lugar</span></span>
-            </div>
-          </div>
-          <div class="opening-identity">
-            <img class="opening-logo" src="assets/img/logo-concrefer.png" alt="Concrefer">
-            <p class="eyebrow">PLATAFORMA CONCREFER</p>
-            <h1>Bem-vindo ao Unificado<span class="accent-mark">.</span></h1>
-            <p class="opening-description">Acesse seus módulos e acompanhe as operações em um só lugar.</p>
-            <p id="today" class="date"></p>
-          </div>
-          <button id="platform-update" class="opening-update" type="button" disabled aria-labelledby="platform-update-title platform-update-status">
+        <header class="ph home-heading"><div><h1>Início</h1><p class="sub"><span id="opening-compact-date"></span> · Campinas · PCP e Mapa</p></div>          <button id="platform-update" class="opening-update" type="button" disabled aria-labelledby="platform-update-title platform-update-status">
             <span class="opening-update-icon" aria-hidden="true">↻</span>
             <span class="opening-update-copy"><strong id="platform-update-title">Atualização</strong><span id="platform-update-status" role="status">Verificando…</span></span>
             <span class="opening-update-compact-label" aria-hidden="true"></span>
-          </button>
-        </div>
+          </button></header>
+        <section class="strip home-strip" aria-label="Resumo dos setores de Campinas">
+          <div><span class="l">Programado hoje</span><strong class="v" data-total="programado">—</strong><span class="d">PCP · setores 1 a 4</span></div>
+          <div><span class="l">Realizado</span><strong class="v" data-total="realizado">—</strong><span class="d">Lançamentos do Mapa</span></div>
+          <div><span class="l">Aderência</span><strong class="v" data-total="aderencia">—</strong><span class="d">Realizado ÷ programado</span></div>
+          <div><span class="l">Falta produzir</span><strong class="v" data-total="falta">—</strong><span class="d">Saldo dos setores</span></div>
+        </section>
         <section class="opening-modules" aria-labelledby="opening-modules-title">
           <div class="section-heading"><div><h2 id="opening-modules-title">Módulos</h2><p>Escolha onde deseja trabalhar.</p></div></div>
           <div id="opening-module-grid" class="opening-module-grid"></div>
         </section>
         <section aria-labelledby="sectors-title">
           <div class="section-heading"><div><h2 id="sectors-title">Setores hoje</h2><p>Programado no PCP e realizado no Mapa.</p></div><span class="sample-note">Carregando dados…</span></div>
-          <div id="sector-cards" class="sector-grid"></div>
+          <div class="sector-table-wrap"><table class="t sector-table"><thead><tr><th>Setor</th><th class="r">Programado</th><th class="r">Realizado</th><th class="r">Falta</th><th>Aderência</th><th>Ações</th></tr></thead><tbody id="sector-cards"></tbody></table></div>
         </section>
-        <section class="shortcuts-section" aria-labelledby="shortcuts-title"><div class="section-heading"><div><h2 id="shortcuts-title">Acesso rápido</h2><p>As rotinas mais usadas em um só lugar.</p></div></div><div id="shortcut-grid" class="shortcut-grid"></div></section>
+        <section class="shortcuts-section" aria-labelledby="shortcuts-title"><div class="section-heading"><div><h2 id="shortcuts-title">Acesso rápido</h2><p>Telas disponíveis para seu perfil.</p></div></div><div id="shortcut-grid" class="shortcut-grid"></div></section>
       </div>
       <div id="module-host" class="module-host" hidden aria-label="Tela do sistema unificado"></div>
     </main>

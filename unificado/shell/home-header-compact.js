@@ -8,15 +8,6 @@
   const loginName = firstFilled([mapaSession.username, mapaSession.usuario, mapaSession.login,
     pcpSession.username, pcpSession.usuario, pcpSession.login, mapaSession.id, pcpSession.id]);
   const firstName = (displayName || loginName).split(/\s+/)[0];
-  const title = document.querySelector('.opening-compact-title');
-  if (title) {
-    title.textContent = firstName ? `Bem-vindo, ${firstName}` : 'Bem-vindo';
-    const period = document.createElement('span');
-    period.className = 'accent-mark';
-    period.textContent = '.';
-    title.append(period);
-  }
-
   const date = document.getElementById('opening-compact-date');
   if (date) date.textContent = new Intl.DateTimeFormat('pt-BR', {
     timeZone:'America/Sao_Paulo', weekday:'long', day:'numeric', month:'long', year:'numeric'

@@ -1,0 +1,19 @@
+/* Loaded only at >=1025px. Narrow login keeps the existing DOM and styles. */
+@media(min-width:1025px){
+ body{display:grid;grid-template-columns:minmax(0,1fr) 520px;background:var(--c-surface);color:var(--c-ink);min-height:100dvh;padding:0!important}
+ .test-environment-bar{grid-column:1/-1;position:relative!important;min-height:31px}
+ .login-desktop-story{display:flex!important;flex-direction:column;justify-content:space-between;gap:40px;min-height:calc(100dvh - 31px);padding:48px 56px;background:var(--c-navy);color:var(--c-ink-3)}
+ .login-story-brand{align-self:flex-start;padding:10px 14px;background:var(--c-surface);border-radius:var(--r-sm)}.login-story-brand img{display:block;height:30px}
+ .login-desktop-story h2{font-size:30px;font-weight:600;letter-spacing:-.02em;color:var(--c-surface);line-height:1.2;margin:0 0 12px;max-width:520px}
+ .login-desktop-story p{font-size:15px;line-height:1.5;max-width:480px;margin:0;color:var(--c-line)}
+ .login-story-units{display:flex;flex-wrap:wrap;gap:14px 24px;color:var(--c-surface);font-size:13px;font-weight:500}
+ .login-layout{display:flex;align-items:center;justify-content:center;width:auto;min-height:calc(100dvh - 31px);padding:32px;background:var(--c-surface)}
+ .login-card{width:340px;max-width:100%;margin:0;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none}
+ .login-brand{display:none}.login-current-heading{display:none}.login-desktop-heading{display:inline!important}
+ .login-card h1{font-size:24px;font-weight:600;letter-spacing:-.02em;margin:0 0 8px}.login-card>p{color:var(--c-ink-2);font-size:13px;margin-bottom:24px}
+ .login-field{margin:0 0 16px}.login-field>span{font-size:13px;font-weight:500;color:var(--c-ink);text-transform:none;letter-spacing:0}
+ .login-field input{height:40px;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);color:var(--c-ink);box-shadow:none}
+ .login-field input:focus{border-color:var(--c-blue);outline:2px solid var(--c-line-2)}
+ .login-submit{height:40px;width:100%;background:var(--c-navy);border:1px solid var(--c-navy);border-radius:var(--r);color:var(--c-surface);box-shadow:none;transform:none;font-size:14px;font-weight:500}
+ .login-note{font-size:12px;color:var(--c-ink-2);margin-top:20px}
+}

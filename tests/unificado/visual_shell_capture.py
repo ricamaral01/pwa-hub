@@ -5,9 +5,10 @@ from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright,expect
 from homolog_session import test_cookie_for
 ROOT=Path(__file__).resolve().parents[2];BASE='https://concrefer.concretrack.com.br:18446'
-args=argparse.ArgumentParser();args.add_argument('phase');args.add_argument('moment');a=args.parse_args()
+args=argparse.ArgumentParser();args.add_argument('phase');args.add_argument('moment');args.add_argument('--widths',nargs='+',type=int);a=args.parse_args()
 OUT=ROOT/f'docs/revisao-visual-unificado/homolog/{a.phase}/{a.moment}';OUT.mkdir(parents=True,exist_ok=True)
 sizes=[(1440,900),(1024,768),(820,1180),(390,844)];results=[];errors=[];bad=[];external=[]
+if a.widths:sizes=[s for s in sizes if s[0] in a.widths]
 with sync_playwright() as p:
  browser=p.chromium.launch(channel='msedge',headless=True)
  context=browser.new_context(service_workers='block')
@@ -43,6 +44,10 @@ with sync_playwright() as p:
   metrics=lp.locator('.login-card').evaluate('(e)=>{const s=getComputedStyle(e),r=e.getBoundingClientRect();return {font:s.fontFamily,width:r.width,height:r.height,x:r.x,y:r.y,background:s.backgroundColor}}')
   results.append({'screen':'login','width':width,'metrics':metrics});ctx.close()
  browser.close()
+if a.widths and (OUT.parent/(a.moment+'-results.json')).exists():
+ old=json.loads((OUT.parent/(a.moment+'-results.json')).read_text(encoding='utf-8'))
+ keys={(r['screen'],r['width']) for r in results}
+ results=[r for r in old['results'] if (r['screen'],r['width']) not in keys]+results
 data={'base':BASE,'results':results,'js_errors':errors,'http_errors':bad,'external_attempts':sorted(set(external))}
 (OUT.parent/(a.moment+'-results.json')).write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8');print(json.dumps({'captures':len(results),'errors':errors,'http_errors':len(bad),'external':len(set(external))}))
 assert not errors,errors

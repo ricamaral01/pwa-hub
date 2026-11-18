@@ -121,9 +121,8 @@ export function Sidebar(p: SidebarProps) {
           data-tip={'Módulo: ' + mod.label}
           onClick={() => { setTip(null); setSwitcherOpen((v) => !v); }}
         >
-          <span className="sb-mod-tile">{themes[mod.id]?.sigla || mod.label.slice(0,2).toUpperCase()}</span>
+          <span className="sb-mod-tile"><Icon name={mod.icon} /></span>
           <span className="sb-switcher-text">
-            <span className="sb-eyebrow">MÓDULO</span>
             <span className="sb-switcher-name">{mod.label}</span>
           </span>
           <span className="sb-switcher-chev"><Icon name="updown" /></span>
@@ -140,7 +139,7 @@ export function Sidebar(p: SidebarProps) {
                 style={{'--item-mod':m.color,'--item-ink':themes[m.id]?.ink || '#0F1B2D'} as CSSProperties}
                 onClick={() => { setSwitcherOpen(false); p.onSelectModule(m.id); }}
               >
-                <span className="sb-menu-sigla">{themes[m.id]?.sigla || m.label.slice(0,2).toUpperCase()}</span>
+                <span className="sb-menu-sigla"><Icon name={m.icon} /></span>
                 {m.label}
                 {m.id === mod.id && <span className="sb-menu-check"><Icon name="check" size={16} /></span>}
               </button>
