@@ -1,5 +1,59 @@
 # Homologação do sistema unificado
 
+## Atualização funcional de 18/11/2026 — fase 0.5
+
+A casca e os arquivos necessários do Planejamento na porta **18446** foram
+sincronizados com os arquivos efetivamente publicados da versão **1.4.6**,
+sem iniciar a revisão visual. O PCP de homologação passou a fornecer as APIs
+de Números de série do Setor 3, Programação da semana S1/S2 e Programação de
+armaduras/relatórios.
+
+- Código PCP: `/opt/concrefer-unificado/homolog-next/pcp-api`, serviço
+  `unificado-homolog-pcp.service`, porta **13154**.
+- Catálogo de telas: `screen_access.py` e `screen_catalog.json` publicados,
+  em `homolog-next/mapa-api`, serviço `unificado-homolog-mapa.service`, porta
+  **13152**. O `app.py`, cookies e configurações isoladas foram preservados.
+- Banco alterado: **somente** `pcp_unificado_homolog_20261016`. Foram aplicadas
+  as 19 revisões publicadas de `20261023_01` até **`20261111_04`**.
+- Banco Mapa: `mapa_unificado_homolog_20261016`, sem migração nesta etapa.
+- Backups verificados de ambos os bancos e dos arquivos substituídos:
+  `/opt/concrefer-unificado/homolog-next/backups/padrao-visual-fase-0.5-20261118T171811Z`.
+  Há também o backup da primeira tentativa em `...-20261118T171548Z`.
+- Bibliotecas adicionadas somente ao Python de homologação, nas versões
+  publicadas: Alembic 1.14.1, Mako 1.4.3, MarkupSafe 3.0.4, ReportLab 4.4.4,
+  Pillow 12.3.0, openpyxl 3.1.5 e et_xmlfile 2.0.0.
+- Nenhuma configuração Nginx foi alterada ou recarregada. Somente os dois
+  serviços de homologação acima foram parados/iniciados.
+- Perfis de usuários, 667 concessões de telas, 21 concessões de ações e
+  17 vínculos de identidade foram comparados com os dumps e preservados.
+- Os testes só usam a origem **18446**. O endpoint legado de leitura do Mapa
+  continua local em **13153**; os DSNs conferidos apontam aos bancos de
+  homologação. Não houve conexão a banco de produção ou integração externa
+  de escrita. Os hashes e PIDs dos serviços de produção não mudaram.
+
+Foram validadas as três telas nos perfis ADMIN/gerência, PCP, produção e
+consulta, com recusa das escritas não permitidas. A semana **07/01/2030** foi
+criada como dado de teste, salva, validada e publicada com um poste. Foram
+emitidos PDFs de armaduras e séries; as reimpressões devolveram bytes
+idênticos. Não houve atribuição de número definitivo a produção real.
+
+O gate continua sendo:
+
+```powershell
+$env:UNIFICADO_BASE_URL='https://concrefer.concretrack.com.br:18446'
+$env:PCP_ANON_EXPECTED='401'
+python tests/unificado/modelo_a_gate.py
+```
+
+Resultado: **7/7**. O 401 anônimo é o comportamento já existente da camada
+de proteção da homologação, não uma flexibilização do gate.
+
+Relatório, migrações, inventário, capturas e limites restantes:
+[`docs/revisao-visual-unificado/homolog/fase-0.5/RELATORIO.md`](revisao-visual-unificado/homolog/fase-0.5/RELATORIO.md).
+As fases visuais 1–7 aguardam o ok do usuário. Os parágrafos históricos abaixo
+descrevem a montagem anterior; não indicam que toda a homologação já esteja
+equiparada à produção em todos os módulos.
+
 ## Endereços
 
 - Homologação: `https://concrefer.concretrack.com.br:18446/unificado/`

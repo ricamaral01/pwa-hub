@@ -1,0 +1,152 @@
+[
+  {
+    "role": "ADMIN",
+    "paired_mapa_account": true,
+    "read": [
+      {
+        "name": "series",
+        "status": 200,
+        "detail": null
+      },
+      {
+        "name": "semana",
+        "status": 200,
+        "detail": null
+      },
+      {
+        "name": "armaduras",
+        "status": 200,
+        "detail": null
+      }
+    ],
+    "write_denials": [],
+    "opened": [
+      "pcp/numeros-serie/",
+      "pcp/programacao-semanal/",
+      "pcp/armaduras/"
+    ],
+    "errors": []
+  },
+  {
+    "role": "PCP",
+    "paired_mapa_account": true,
+    "read": [
+      {
+        "name": "series",
+        "status": 200,
+        "detail": null
+      },
+      {
+        "name": "semana",
+        "status": 200,
+        "detail": null
+      },
+      {
+        "name": "armaduras",
+        "status": 200,
+        "detail": null
+      }
+    ],
+    "positive_write_checks": [
+      {
+        "operation": "create",
+        "status": 201,
+        "week_id": 2,
+        "test_week": "2030-01-14"
+      },
+      {
+        "operation": "save",
+        "status": 200
+      }
+    ],
+    "write_denials": [],
+    "opened": [
+      "pcp/numeros-serie/",
+      "pcp/programacao-semanal/",
+      "pcp/armaduras/"
+    ],
+    "errors": []
+  },
+  {
+    "role": "PRODUCAO",
+    "paired_mapa_account": false,
+    "read": [
+      {
+        "name": "series",
+        "status": 200,
+        "detail": null
+      },
+      {
+        "name": "semana",
+        "status": 200,
+        "detail": null
+      },
+      {
+        "name": "armaduras",
+        "status": 200,
+        "detail": null
+      }
+    ],
+    "write_denials": [
+      {
+        "path": "programacao-semana",
+        "status": 403
+      },
+      {
+        "path": "armaduras/calendario",
+        "status": 403
+      },
+      {
+        "path": "postes-series/saldos",
+        "status": 403
+      }
+    ],
+    "opened": [
+      "pcp/numeros-serie/",
+      "pcp/programacao-semanal/",
+      "pcp/armaduras/"
+    ],
+    "errors": []
+  },
+  {
+    "role": "CONSULTA",
+    "paired_mapa_account": true,
+    "read": [
+      {
+        "name": "series",
+        "status": 200,
+        "detail": null
+      },
+      {
+        "name": "semana",
+        "status": 200,
+        "detail": null
+      },
+      {
+        "name": "armaduras",
+        "status": 200,
+        "detail": null
+      }
+    ],
+    "write_denials": [
+      {
+        "path": "programacao-semana",
+        "status": 403
+      },
+      {
+        "path": "armaduras/calendario",
+        "status": 403
+      },
+      {
+        "path": "postes-series/saldos",
+        "status": 403
+      }
+    ],
+    "opened": [
+      "pcp/numeros-serie/",
+      "pcp/programacao-semanal/",
+      "pcp/armaduras/"
+    ],
+    "errors": []
+  }
+]

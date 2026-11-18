@@ -1,0 +1,41 @@
+{
+  "role": "CONSULTA",
+  "paired_mapa_account": true,
+  "read": [
+    {
+      "name": "series",
+      "status": 200,
+      "detail": null
+    },
+    {
+      "name": "semana",
+      "status": 200,
+      "detail": null
+    },
+    {
+      "name": "armaduras",
+      "status": 200,
+      "detail": null
+    }
+  ],
+  "write_denials": [
+    {
+      "path": "programacao-semana",
+      "status": 403
+    },
+    {
+      "path": "armaduras/calendario",
+      "status": 403
+    },
+    {
+      "path": "postes-series/saldos",
+      "status": 403
+    }
+  ],
+  "opened": [
+    "pcp/numeros-serie/",
+    "pcp/programacao-semanal/",
+    "pcp/armaduras/"
+  ],
+  "errors": []
+}

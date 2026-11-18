@@ -1,0 +1,58 @@
+[
+  {
+    "file": "pcp.env",
+    "key": "DATABASE_URL",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "database": "pcp_unificado_homolog_20261016"
+  },
+  {
+    "file": "pcp.env",
+    "key": "SUPABASE_URL",
+    "host": "127.0.0.1",
+    "port": 13153,
+    "path": ""
+  },
+  {
+    "file": "mapa-auth.env",
+    "key": "MAPA_AUTH_DATABASE_URL",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "database": "mapa_unificado_homolog_20261016"
+  },
+  {
+    "file": "mapa-auth.env",
+    "key": "MAPA_REALTIME_AUTH_URL",
+    "host": "127.0.0.1",
+    "port": 13152,
+    "path": "/me"
+  },
+  {
+    "file": "mapa-auth.env",
+    "key": "MAPA_REALTIME_ORIGIN",
+    "host": "concrefer.concretrack.com.br",
+    "port": 18446,
+    "path": ""
+  },
+  {
+    "file": "mapa-writer.env",
+    "key": "MAPA_WRITER_DATABASE_URL",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "database": "mapa_unificado_homolog_20261016"
+  },
+  {
+    "file": "mapa-unified.env",
+    "key": "UNIFICADO_PCP_DATABASE_URL",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "database": "pcp_unificado_homolog_20261016"
+  },
+  {
+    "file": "suprimentos-gateway.env",
+    "key": "SUPRIMENTOS_INTERNAL_URL",
+    "host": "127.0.0.1",
+    "port": 13167,
+    "path": ""
+  }
+]

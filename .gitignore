@@ -34,3 +34,5 @@ imports/historico/relatorios/*
 !imports/historico/relatorios/.gitkeep
 imports/historico/exemplos/*
 imports/historico/manifesto-arquivos-esperados.json
+
+__pycache__/

@@ -1,0 +1,78 @@
+[
+  {
+    "file": "20261023_01_producao_unidade_expand.py",
+    "sha256": "c925b181f57ac77cb9526d8961c0dc71abfe23d5d5714389450f3d89976c2a2e"
+  },
+  {
+    "file": "20261023_02_producao_acesso.py",
+    "sha256": "2dd604d1b1953f350067bab0fcf1556ab33c0678252eb73f3d25c4a05bfdfcd8"
+  },
+  {
+    "file": "20261023_03_maodeobra_grupo_unidade.py",
+    "sha256": "60c89762ed061f5975a9938ae8a462cc12fd4ba46c01fa9a51ee95dd6e9e1d22"
+  },
+  {
+    "file": "20261024_01_producao_operador.py",
+    "sha256": "d39c05bf381867d7ef619a78fcdc04abe5dd476258b6dc598cd210dc46ff2004"
+  },
+  {
+    "file": "20261027_04_ribeirao_unidade.py",
+    "sha256": "16651ae4c0235a70a7c3496fe75afbc3ce62979f6bc70462361e961eb9138f15"
+  },
+  {
+    "file": "20261029_01_noroeste_unidade.py",
+    "sha256": "043578cc181911150bd2563a5ccbe8bb79d7aa2057f5a5be58a470aa8b025874"
+  },
+  {
+    "file": "20261029_02_dt15_setor4.py",
+    "sha256": "8c381e9e1c53a8d4201f6c8a0aeccdd639a6f72ad4f4af4be882c7a08e965a24"
+  },
+  {
+    "file": "20261029_03_etiquetas_armaduras_fontes.py",
+    "sha256": "1c84aefab8c5035fbec53a367d57e1af3da7c37b0e84a8e09cd4d0217c351529"
+  },
+  {
+    "file": "20261029_04_programacao_alex_reserva.py",
+    "sha256": "611512a04d08a6ebad92c1aa034376116a147bb9b7424dfae446b0941575cc81"
+  },
+  {
+    "file": "20261029_05_programacao_semanal_expand.py",
+    "sha256": "21995fda80a9571320ce1e99a5f7741b99720b3ce10183ccef465c0593aaa403"
+  },
+  {
+    "file": "20261029_06_programacoes_s12_unicas.py",
+    "sha256": "9697b8e2473c4e01a2db340ee260a1b53ed50ab13bb208f03606bbeda3662b8b"
+  },
+  {
+    "file": "20261029_07_massa_concreto_2300.py",
+    "sha256": "682e733ac2e656009cd674dccaaf6daa9b90f853850db13952e9579906bba509"
+  },
+  {
+    "file": "20261103_01_indicador_importado.py",
+    "sha256": "e5257dcdecf6cae2be12922fc7c5b553c82d774e0763ea47fbfeca0d867fe64b"
+  },
+  {
+    "file": "20261105_01_dt15_setor3.py",
+    "sha256": "fb5a75031663668206ed345c140ee226b2bb04b44e57f94d2983ba45255d59ca"
+  },
+  {
+    "file": "20261105_02_forma_layout_dt.py",
+    "sha256": "5decfc42570005056e5e2e4391c02bb4f011b3c65583784c3ea5bc32348db938"
+  },
+  {
+    "file": "20261111_01_armaduras_planejamento.py",
+    "sha256": "7c2c79bf15d4e0a8a6e64821a2f679d2a39be69f2da80f4106a98c600bf9ce81"
+  },
+  {
+    "file": "20261111_02_armaduras_codigo_10x2500.py",
+    "sha256": "8502696cea8e28706133adc1fee0050b97cba016b78b372aa76b5d82a3917c3b"
+  },
+  {
+    "file": "20261111_03_series_setor3.py",
+    "sha256": "f1bb22889891085dd1ebf9a3a18de037ab8342f6095e1c37b341213a7f444344"
+  },
+  {
+    "file": "20261111_04_series_emissoes_pdf.py",
+    "sha256": "86935e21742103779c98f8455acca94c639a9745b5cbddebbb2107d1d6b5528e"
+  }
+]

@@ -1,0 +1,2635 @@
+[
+  {
+    "name": "series",
+    "status": 200,
+    "data": {
+      "inicio": "2026-11-09",
+      "fim": "2026-11-14",
+      "dias": [
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14"
+      ],
+      "linhas": [
+        {
+          "modelo_id": 174,
+          "produto_id": 149,
+          "descricao": "10,5X1000",
+          "codigo": "690",
+          "ano": 2026,
+          "saldo_inicial": 2,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 2,
+          "proximo_confirmado": 3,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 1,
+              "inicio": 3,
+              "fim": 3
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 1,
+              "inicio": 4,
+              "fim": 4
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 73,
+          "produto_id": 241,
+          "descricao": "10X2500",
+          "codigo": "15298",
+          "ano": 2026,
+          "saldo_inicial": 2,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 2,
+          "proximo_confirmado": 3,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 1,
+              "inicio": 3,
+              "fim": 3
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 1,
+              "inicio": 4,
+              "fim": 4
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 1,
+              "inicio": 5,
+              "fim": 5
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 1,
+              "inicio": 6,
+              "fim": 6
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 12,
+          "produto_id": 146,
+          "descricao": "11X1000",
+          "codigo": "802",
+          "ano": 2026,
+          "saldo_inicial": 313,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 313,
+          "proximo_confirmado": 314,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 5,
+              "inicio": 314,
+              "fim": 318
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 5,
+              "inicio": 319,
+              "fim": 323
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 6,
+              "inicio": 324,
+              "fim": 329
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 137,
+          "produto_id": 196,
+          "descricao": "11X400",
+          "codigo": "808",
+          "ano": 2026,
+          "saldo_inicial": 333,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 333,
+          "proximo_confirmado": 334,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 10,
+              "inicio": 334,
+              "fim": 343
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 169,
+          "produto_id": 181,
+          "descricao": "11X600",
+          "codigo": "809",
+          "ano": 2026,
+          "saldo_inicial": 390,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 390,
+          "proximo_confirmado": 391,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 3,
+              "inicio": 391,
+              "fim": 393
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 3,
+              "inicio": 394,
+              "fim": 396
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 3,
+              "inicio": 397,
+              "fim": 399
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 3,
+              "inicio": 400,
+              "fim": 402
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 3,
+              "inicio": 403,
+              "fim": 405
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 119,
+          "produto_id": 143,
+          "descricao": "12X1000",
+          "codigo": "811",
+          "ano": 2026,
+          "saldo_inicial": 686,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 686,
+          "proximo_confirmado": 687,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 1,
+              "inicio": 687,
+              "fim": 687
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 1,
+              "inicio": 688,
+              "fim": 688
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 1,
+              "inicio": 689,
+              "fim": 689
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 7,
+              "inicio": 690,
+              "fim": 696
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 7,
+              "inicio": 697,
+              "fim": 703
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 140,
+          "produto_id": 215,
+          "descricao": "12X200",
+          "codigo": "814",
+          "ano": 2026,
+          "saldo_inicial": 48,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 48,
+          "proximo_confirmado": 49,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 1,
+              "inicio": 49,
+              "fim": 49
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 1,
+              "inicio": 50,
+              "fim": 50
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 1,
+              "inicio": 51,
+              "fim": 51
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 1,
+              "inicio": 52,
+              "fim": 52
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 1,
+              "inicio": 53,
+              "fim": 53
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 57,
+          "produto_id": 192,
+          "descricao": "12X400",
+          "codigo": "816",
+          "ano": 2026,
+          "saldo_inicial": 981,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 981,
+          "proximo_confirmado": 982,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 10,
+              "inicio": 982,
+              "fim": 991
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 10,
+              "inicio": 992,
+              "fim": 1001
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 38,
+          "produto_id": 178,
+          "descricao": "12X600",
+          "codigo": "817",
+          "ano": 2026,
+          "saldo_inicial": 1005,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 1005,
+          "proximo_confirmado": 1006,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 9,
+              "inicio": 1006,
+              "fim": 1014
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 10,
+              "inicio": 1015,
+              "fim": 1024
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 27,
+          "produto_id": 189,
+          "descricao": "13X400",
+          "codigo": "822",
+          "ano": 2026,
+          "saldo_inicial": 0,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 0,
+          "proximo_confirmado": 1,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 1,
+              "inicio": 1,
+              "fim": 1
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 35,
+          "produto_id": 134,
+          "descricao": "18X1000",
+          "codigo": "844",
+          "ano": 2026,
+          "saldo_inicial": 3,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 3,
+          "proximo_confirmado": 4,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 1,
+              "inicio": 4,
+              "fim": 4
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 81,
+          "produto_id": 133,
+          "descricao": "19X1000",
+          "codigo": "847",
+          "ano": 2026,
+          "saldo_inicial": 27,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 27,
+          "proximo_confirmado": 28,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 1,
+              "inicio": 28,
+              "fim": 28
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 1,
+              "inicio": 29,
+              "fim": 29
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 1,
+              "inicio": 30,
+              "fim": 30
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 157,
+          "produto_id": 99,
+          "descricao": "19X2000",
+          "codigo": "13389",
+          "ano": 2026,
+          "saldo_inicial": 0,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 0,
+          "proximo_confirmado": 1,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 1,
+              "inicio": 1,
+              "fim": 1
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 1,
+              "inicio": 2,
+              "fim": 2
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 1,
+              "inicio": 3,
+              "fim": 3
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 126,
+          "produto_id": 220,
+          "descricao": "9X200",
+          "codigo": "678",
+          "ano": 2026,
+          "saldo_inicial": 1934,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 1934,
+          "proximo_confirmado": 1935,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 21,
+              "inicio": 1935,
+              "fim": 1955
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 21,
+              "inicio": 1956,
+              "fim": 1976
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 21,
+              "inicio": 1977,
+              "fim": 1997
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 8,
+              "inicio": 1998,
+              "fim": 2005
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 8,
+              "inicio": 2006,
+              "fim": 2013
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 156,
+          "produto_id": 200,
+          "descricao": "9X400",
+          "codigo": "680",
+          "ano": 2026,
+          "saldo_inicial": 959,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 959,
+          "proximo_confirmado": 960,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 2,
+              "inicio": 960,
+              "fim": 961
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 2,
+              "inicio": 962,
+              "fim": 963
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 2,
+              "inicio": 964,
+              "fim": 965
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 15,
+              "inicio": 966,
+              "fim": 980
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 15,
+              "inicio": 981,
+              "fim": 995
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        },
+        {
+          "modelo_id": 102,
+          "produto_id": 186,
+          "descricao": "9X600",
+          "codigo": "681",
+          "ano": 2026,
+          "saldo_inicial": 180,
+          "data_base": "2026-11-08",
+          "ultimo_confirmado": 180,
+          "proximo_confirmado": 181,
+          "pendencia_saldo": false,
+          "dias": {
+            "2026-11-09": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-10": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-11": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-12": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-13": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            },
+            "2026-11-14": {
+              "programado": 0,
+              "confirmados": [],
+              "previsao": [],
+              "quantidade_prevista": 0,
+              "quantidade_confirmada": 0
+            }
+          },
+          "referencia_recebida": [
+            {
+              "data": "2026-11-09",
+              "quantidade": 3,
+              "inicio": 181,
+              "fim": 183
+            },
+            {
+              "data": "2026-11-10",
+              "quantidade": 3,
+              "inicio": 184,
+              "fim": 186
+            },
+            {
+              "data": "2026-11-11",
+              "quantidade": 3,
+              "inicio": 187,
+              "fim": 189
+            },
+            {
+              "data": "2026-11-12",
+              "quantidade": 3,
+              "inicio": 190,
+              "fim": 192
+            },
+            {
+              "data": "2026-11-13",
+              "quantidade": 3,
+              "inicio": 193,
+              "fim": 195
+            },
+            {
+              "data": "2026-11-14",
+              "quantidade": 0,
+              "inicio": null,
+              "fim": null
+            }
+          ],
+          "diverge_referencia": true
+        }
+      ],
+      "execucoes_pendentes": 0,
+      "divergencias_execucao": 0,
+      "ultima_sincronizacao": null,
+      "aviso": "Previsões não reservam números. Execuções sem modelo confirmado permanecem pendentes. Numeração reinicia por modelo e ano; primeiro número é 1."
+    }
+  },
+  {
+    "name": "semana",
+    "status": 200,
+    "data": {
+      "semana": null,
+      "dias": [
+        {
+          "data": "2026-11-09",
+          "produz": true,
+          "mod_prevista": 13,
+          "travado": false,
+          "travado_em": null
+        },
+        {
+          "data": "2026-11-10",
+          "produz": true,
+          "mod_prevista": 13,
+          "travado": false,
+          "travado_em": null
+        },
+        {
+          "data": "2026-11-11",
+          "produz": true,
+          "mod_prevista": 13,
+          "travado": false,
+          "travado_em": null
+        },
+        {
+          "data": "2026-11-12",
+          "produz": true,
+          "mod_prevista": 13,
+          "travado": false,
+          "travado_em": null
+        },
+        {
+          "data": "2026-11-13",
+          "produz": true,
+          "mod_prevista": 13,
+          "travado": false,
+          "travado_em": null
+        }
+      ],
+      "setores": [
+        {
+          "id": 1,
+          "formas_total": 93,
+          "produtos": [
+            {
+              "id": 2,
+              "setor_id": 1,
+              "codigo": "941",
+              "nome": "2 CX VL",
+              "grupo_formas": null,
+              "formas": 5,
+              "vol_unit": 0.245,
+              "peso_unit_kg": 606,
+              "peso_estimado": false,
+              "estoque": 59,
+              "reserva": 0,
+              "carteira": 5,
+              "saldo": 54,
+              "prod_diaria_mega": 2
+            },
+            {
+              "id": 13,
+              "setor_id": 1,
+              "codigo": "946",
+              "nome": "3 CX VR",
+              "grupo_formas": null,
+              "formas": 2,
+              "vol_unit": 0.393,
+              "peso_unit_kg": 972,
+              "peso_estimado": false,
+              "estoque": 9,
+              "reserva": 0,
+              "carteira": 1,
+              "saldo": 8,
+              "prod_diaria_mega": 1
+            },
+            {
+              "id": 14,
+              "setor_id": 1,
+              "codigo": "945",
+              "nome": "3 CX VL",
+              "grupo_formas": null,
+              "formas": 2,
+              "vol_unit": 0.375,
+              "peso_unit_kg": 929,
+              "peso_estimado": false,
+              "estoque": 10,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 10,
+              "prod_diaria_mega": 2
+            },
+            {
+              "id": 11,
+              "setor_id": 1,
+              "codigo": "948",
+              "nome": "4 CX VR",
+              "grupo_formas": null,
+              "formas": 2,
+              "vol_unit": 0.446,
+              "peso_unit_kg": 1103,
+              "peso_estimado": false,
+              "estoque": 6,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 6,
+              "prod_diaria_mega": 0
+            },
+            {
+              "id": 12,
+              "setor_id": 1,
+              "codigo": "947",
+              "nome": "4 CX VL",
+              "grupo_formas": null,
+              "formas": 1,
+              "vol_unit": 0.445,
+              "peso_unit_kg": 1102,
+              "peso_estimado": false,
+              "estoque": 10,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 10,
+              "prod_diaria_mega": 0
+            },
+            {
+              "id": 29,
+              "setor_id": 1,
+              "codigo": "931",
+              "nome": "ECON 1 CX VR",
+              "grupo_formas": null,
+              "formas": 6,
+              "vol_unit": 0.135,
+              "peso_unit_kg": 333,
+              "peso_estimado": false,
+              "estoque": 73,
+              "reserva": 0,
+              "carteira": 4,
+              "saldo": 69,
+              "prod_diaria_mega": 6
+            },
+            {
+              "id": 30,
+              "setor_id": 1,
+              "codigo": "930",
+              "nome": "ECON 1 CX VL",
+              "grupo_formas": null,
+              "formas": 0,
+              "vol_unit": 0.125,
+              "peso_unit_kg": 309,
+              "peso_estimado": false,
+              "estoque": 6,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 6,
+              "prod_diaria_mega": 0
+            },
+            {
+              "id": 31,
+              "setor_id": 1,
+              "codigo": "932",
+              "nome": "ECON 2 CX VR",
+              "grupo_formas": null,
+              "formas": 5,
+              "vol_unit": 0.146,
+              "peso_unit_kg": 361,
+              "peso_estimado": false,
+              "estoque": 15,
+              "reserva": 0,
+              "carteira": 1,
+              "saldo": 14,
+              "prod_diaria_mega": 3
+            },
+            {
+              "id": 32,
+              "setor_id": 1,
+              "codigo": "933",
+              "nome": "ECON 3 CX VR",
+              "grupo_formas": null,
+              "formas": 2,
+              "vol_unit": 0.228,
+              "peso_unit_kg": 563,
+              "peso_estimado": false,
+              "estoque": 13,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 13,
+              "prod_diaria_mega": 0
+            },
+            {
+              "id": 21,
+              "setor_id": 1,
+              "codigo": "949",
+              "nome": "SUB 100",
+              "grupo_formas": null,
+              "formas": 5,
+              "vol_unit": 0.158,
+              "peso_unit_kg": 391,
+              "peso_estimado": false,
+              "estoque": 21,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 21,
+              "prod_diaria_mega": 1
+            },
+            {
+              "id": 23,
+              "setor_id": 1,
+              "codigo": "5017",
+              "nome": "SUB 200 TC",
+              "grupo_formas": null,
+              "formas": 2,
+              "vol_unit": 0.279,
+              "peso_unit_kg": 691,
+              "peso_estimado": false,
+              "estoque": 12,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 12,
+              "prod_diaria_mega": 2
+            },
+            {
+              "id": 22,
+              "setor_id": 1,
+              "codigo": "4848",
+              "nome": "SUB 100 ELEKTRO",
+              "grupo_formas": null,
+              "formas": 2,
+              "vol_unit": 0.135,
+              "peso_unit_kg": 335,
+              "peso_estimado": false,
+              "estoque": 36,
+              "reserva": 0,
+              "carteira": 1,
+              "saldo": 35,
+              "prod_diaria_mega": 2
+            },
+            {
+              "id": 8,
+              "setor_id": 1,
+              "codigo": "4031",
+              "nome": "ELEKTRO 1 CX VR",
+              "grupo_formas": null,
+              "formas": 27,
+              "vol_unit": 0.226,
+              "peso_unit_kg": 559,
+              "peso_estimado": false,
+              "estoque": 113,
+              "reserva": 0,
+              "carteira": 82,
+              "saldo": 31,
+              "prod_diaria_mega": 30
+            },
+            {
+              "id": 9,
+              "setor_id": 1,
+              "codigo": "4764",
+              "nome": "ELEKTRO 1 CX VL",
+              "grupo_formas": null,
+              "formas": 4,
+              "vol_unit": 0.224,
+              "peso_unit_kg": 555,
+              "peso_estimado": false,
+              "estoque": 12,
+              "reserva": 0,
+              "carteira": 9,
+              "saldo": 3,
+              "prod_diaria_mega": 4
+            },
+            {
+              "id": 6,
+              "setor_id": 1,
+              "codigo": "4032",
+              "nome": "ELEKTRO 2 CX VR",
+              "grupo_formas": null,
+              "formas": 8,
+              "vol_unit": 0.246,
+              "peso_unit_kg": 609,
+              "peso_estimado": false,
+              "estoque": 82,
+              "reserva": 0,
+              "carteira": 38,
+              "saldo": 44,
+              "prod_diaria_mega": 3
+            },
+            {
+              "id": 7,
+              "setor_id": 1,
+              "codigo": "4765",
+              "nome": "ELEKTRO 2 CX VL",
+              "grupo_formas": null,
+              "formas": 3,
+              "vol_unit": 0.245,
+              "peso_unit_kg": 605,
+              "peso_estimado": false,
+              "estoque": 36,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 36,
+              "prod_diaria_mega": 3
+            },
+            {
+              "id": 10,
+              "setor_id": 1,
+              "codigo": "4929",
+              "nome": "ELEKTRO 3 CX VL",
+              "grupo_formas": null,
+              "formas": 1,
+              "vol_unit": 0.364,
+              "peso_unit_kg": 900,
+              "peso_estimado": false,
+              "estoque": 0,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 0,
+              "prod_diaria_mega": 0
+            },
+            {
+              "id": 5,
+              "setor_id": 1,
+              "codigo": "957",
+              "nome": "EDP 1 CX VL",
+              "grupo_formas": null,
+              "formas": 15,
+              "vol_unit": 0.218,
+              "peso_unit_kg": 539,
+              "peso_estimado": false,
+              "estoque": 90,
+              "reserva": 0,
+              "carteira": 69,
+              "saldo": 21,
+              "prod_diaria_mega": 12
+            },
+            {
+              "id": 18,
+              "setor_id": 1,
+              "codigo": "939",
+              "nome": "7,5X600 BARR VR",
+              "grupo_formas": null,
+              "formas": 1,
+              "vol_unit": 0.331,
+              "peso_unit_kg": 820,
+              "peso_estimado": false,
+              "estoque": 8,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 8,
+              "prod_diaria_mega": 1
+            },
+            {
+              "id": 17,
+              "setor_id": 1,
+              "codigo": "936",
+              "nome": "7,5X600 BARR VL",
+              "grupo_formas": null,
+              "formas": 0,
+              "vol_unit": 0.332,
+              "peso_unit_kg": 821,
+              "peso_estimado": false,
+              "estoque": 3,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 3,
+              "prod_diaria_mega": 0
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "formas_total": 86,
+          "produtos": [
+            {
+              "id": 3,
+              "setor_id": 2,
+              "codigo": "938",
+              "nome": "1 CX VR",
+              "grupo_formas": null,
+              "formas": 47,
+              "vol_unit": 0.226,
+              "peso_unit_kg": 559,
+              "peso_estimado": false,
+              "estoque": 282,
+              "reserva": 0,
+              "carteira": 73,
+              "saldo": 209,
+              "prod_diaria_mega": 50
+            },
+            {
+              "id": 4,
+              "setor_id": 2,
+              "codigo": "935",
+              "nome": "1 CX VL",
+              "grupo_formas": null,
+              "formas": 12,
+              "vol_unit": 0.223,
+              "peso_unit_kg": 551,
+              "peso_estimado": false,
+              "estoque": 24,
+              "reserva": 0,
+              "carteira": 80,
+              "saldo": -56,
+              "prod_diaria_mega": 12
+            },
+            {
+              "id": 1,
+              "setor_id": 2,
+              "codigo": "943",
+              "nome": "2 CX VR",
+              "grupo_formas": null,
+              "formas": 12,
+              "vol_unit": 0.24,
+              "peso_unit_kg": 595,
+              "peso_estimado": false,
+              "estoque": 168,
+              "reserva": 0,
+              "carteira": 12,
+              "saldo": 156,
+              "prod_diaria_mega": 12
+            },
+            {
+              "id": 15,
+              "setor_id": 2,
+              "codigo": "944",
+              "nome": "2 CX VR - 300 DAN",
+              "grupo_formas": null,
+              "formas": 1,
+              "vol_unit": 0.239,
+              "peso_unit_kg": 593,
+              "peso_estimado": false,
+              "estoque": 5,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 5,
+              "prod_diaria_mega": 0
+            },
+            {
+              "id": 16,
+              "setor_id": 2,
+              "codigo": "942",
+              "nome": "2 CX VL - 300 DAN",
+              "grupo_formas": null,
+              "formas": 1,
+              "vol_unit": 0.234,
+              "peso_unit_kg": 579,
+              "peso_estimado": false,
+              "estoque": 10,
+              "reserva": 0,
+              "carteira": 2,
+              "saldo": 8,
+              "prod_diaria_mega": 1
+            },
+            {
+              "id": 25,
+              "setor_id": 2,
+              "codigo": "934",
+              "nome": "POSTE CAIXA LENTE 1 CX VL",
+              "grupo_formas": null,
+              "formas": 6,
+              "vol_unit": 0.416,
+              "peso_unit_kg": 1029,
+              "peso_estimado": false,
+              "estoque": 31,
+              "reserva": 0,
+              "carteira": 0,
+              "saldo": 31,
+              "prod_diaria_mega": 1
+            },
+            {
+              "id": 20,
+              "setor_id": 2,
+              "codigo": "940",
+              "nome": "7,5X600 TC VR",
+              "grupo_formas": null,
+              "formas": 4,
+              "vol_unit": 0.459,
+              "peso_unit_kg": 1135,
+              "peso_estimado": false,
+              "estoque": 18,
+              "reserva": 0,
+              "carteira": 2,
+              "saldo": 16,
+              "prod_diaria_mega": 1
+            },
+            {
+              "id": 19,
+              "setor_id": 2,
+              "codigo": "937",
+              "nome": "7,5X600 TC VL",
+              "grupo_formas": null,
+              "formas": 2,
+              "vol_unit": 0.446,
+              "peso_unit_kg": 1104,
+              "peso_estimado": false,
+              "estoque": 11,
+              "reserva": 0,
+              "carteira": 5,
+              "saldo": 6,
+              "prod_diaria_mega": 2
+            },
+            {
+              "id": 24,
+              "setor_id": 2,
+              "codigo": "13570",
+              "nome": "Poste Totem",
+              "grupo_formas": null,
+              "formas": 1,
+              "vol_unit": 0.347,
+              "peso_unit_kg": 860,
+              "peso_estimado": false,
+              "estoque": 6,
+              "reserva": 0,
+              "carteira": 1,
+              "saldo": 5,
+              "prod_diaria_mega": 0
+            }
+          ]
+        }
+      ],
+      "itens": [],
+      "mega_base": {
+        "data": "2026-10-15",
+        "itens_lidos": 244,
+        "arquivo": null
+      },
+      "publicada_atual": null,
+      "indicadores": {
+        "dias": [
+          {
+            "data": "2026-11-09",
+            "postes": 0,
+            "volume_m3": 0,
+            "peso_kg": 0,
+            "mod_prevista": 13,
+            "postes_por_homem": 0,
+            "kg_por_homem": 0,
+            "ocupacao_formas": 0
+          },
+          {
+            "data": "2026-11-10",
+            "postes": 0,
+            "volume_m3": 0,
+            "peso_kg": 0,
+            "mod_prevista": 13,
+            "postes_por_homem": 0,
+            "kg_por_homem": 0,
+            "ocupacao_formas": 0
+          },
+          {
+            "data": "2026-11-11",
+            "postes": 0,
+            "volume_m3": 0,
+            "peso_kg": 0,
+            "mod_prevista": 13,
+            "postes_por_homem": 0,
+            "kg_por_homem": 0,
+            "ocupacao_formas": 0
+          },
+          {
+            "data": "2026-11-12",
+            "postes": 0,
+            "volume_m3": 0,
+            "peso_kg": 0,
+            "mod_prevista": 13,
+            "postes_por_homem": 0,
+            "kg_por_homem": 0,
+            "ocupacao_formas": 0
+          },
+          {
+            "data": "2026-11-13",
+            "postes": 0,
+            "volume_m3": 0,
+            "peso_kg": 0,
+            "mod_prevista": 13,
+            "postes_por_homem": 0,
+            "kg_por_homem": 0,
+            "ocupacao_formas": 0
+          }
+        ],
+        "semana": {
+          "postes": 0,
+          "volume_m3": 0,
+          "peso_kg": 0,
+          "mod_prevista": 65,
+          "postes_por_homem": 0,
+          "kg_por_homem": 0,
+          "ocupacao_formas": 0,
+          "pico_m3": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "armaduras",
+    "status": 200,
+    "data": {
+      "unidade": "Campinas",
+      "grupo": "12",
+      "inicio": "2026-11-09",
+      "fim": "2026-11-14",
+      "data_armadura": null,
+      "dias": [
+        {
+          "poste": "2026-11-09",
+          "armadura": "2026-11-06"
+        },
+        {
+          "poste": "2026-11-10",
+          "armadura": "2026-11-09"
+        },
+        {
+          "poste": "2026-11-11",
+          "armadura": "2026-11-10"
+        },
+        {
+          "poste": "2026-11-12",
+          "armadura": "2026-11-11"
+        },
+        {
+          "poste": "2026-11-13",
+          "armadura": "2026-11-12"
+        },
+        {
+          "poste": "2026-11-14",
+          "armadura": "2026-11-13"
+        }
+      ],
+      "linhas": [],
+      "totais": {
+        "2026-11-09": 0,
+        "2026-11-10": 0,
+        "2026-11-11": 0,
+        "2026-11-12": 0,
+        "2026-11-13": 0,
+        "2026-11-14": 0
+      },
+      "total": 0,
+      "totais_armadura": {
+        "2026-11-06": 0,
+        "2026-11-09": 0,
+        "2026-11-10": 0,
+        "2026-11-11": 0,
+        "2026-11-12": 0,
+        "2026-11-13": 0
+      },
+      "revisoes_origem": [],
+      "pendencias": [
+        "Existe semana de postes sem programação publicada para os setores 1 e 2"
+      ],
+      "fonte": "Semana publicada S1/S2",
+      "calendario": {
+        "unidade_id": 1,
+        "dias_semana": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "confirmado": true,
+        "revisao": 1,
+        "atualizado_por": null,
+        "atualizado_em": "2026-11-18T17:18:19.406549+00:00",
+        "excecoes": [
+          {
+            "data": "2025-01-01",
+            "trabalha": false,
+            "motivo": "Confraternização Universal"
+          },
+          {
+            "data": "2025-04-18",
+            "trabalha": false,
+            "motivo": "Paixão de Cristo - Campinas"
+          },
+          {
+            "data": "2025-04-21",
+            "trabalha": false,
+            "motivo": "Tiradentes"
+          },
+          {
+            "data": "2025-05-01",
+            "trabalha": false,
+            "motivo": "Dia do Trabalho"
+          },
+          {
+            "data": "2025-06-19",
+            "trabalha": false,
+            "motivo": "Corpus Christi - Campinas"
+          },
+          {
+            "data": "2025-07-09",
+            "trabalha": false,
+            "motivo": "Revolução Constitucionalista - SP"
+          },
+          {
+            "data": "2025-08-12",
+            "trabalha": false,
+            "motivo": "Dia do Evangélico - Campinas"
+          },
+          {
+            "data": "2025-09-07",
+            "trabalha": false,
+            "motivo": "Independência do Brasil"
+          },
+          {
+            "data": "2025-10-12",
+            "trabalha": false,
+            "motivo": "Nossa Senhora Aparecida"
+          },
+          {
+            "data": "2025-11-02",
+            "trabalha": false,
+            "motivo": "Finados"
+          },
+          {
+            "data": "2025-11-15",
+            "trabalha": false,
+            "motivo": "Proclamação da República"
+          },
+          {
+            "data": "2025-11-20",
+            "trabalha": false,
+            "motivo": "Consciência Negra"
+          },
+          {
+            "data": "2025-12-08",
+            "trabalha": false,
+            "motivo": "Nossa Senhora da Conceição - Campinas"
+          },
+          {
+            "data": "2025-12-25",
+            "trabalha": false,
+            "motivo": "Natal"
+          },
+          {
+            "data": "2026-01-01",
+            "trabalha": false,
+            "motivo": "Confraternização Universal"
+          },
+          {
+            "data": "2026-04-03",
+            "trabalha": false,
+            "motivo": "Paixão de Cristo - Campinas"
+          },
+          {
+            "data": "2026-04-21",
+            "trabalha": false,
+            "motivo": "Tiradentes"
+          },
+          {
+            "data": "2026-05-01",
+            "trabalha": false,
+            "motivo": "Dia do Trabalho"
+          },
+          {
+            "data": "2026-06-04",
+            "trabalha": false,
+            "motivo": "Corpus Christi - Campinas"
+          },
+          {
+            "data": "2026-07-09",
+            "trabalha": false,
+            "motivo": "Revolução Constitucionalista - SP"
+          },
+          {
+            "data": "2026-08-12",
+            "trabalha": false,
+            "motivo": "Dia do Evangélico - Campinas"
+          },
+          {
+            "data": "2026-09-07",
+            "trabalha": false,
+            "motivo": "Independência do Brasil"
+          },
+          {
+            "data": "2026-10-12",
+            "trabalha": false,
+            "motivo": "Nossa Senhora Aparecida"
+          },
+          {
+            "data": "2026-11-02",
+            "trabalha": false,
+            "motivo": "Finados"
+          },
+          {
+            "data": "2026-11-15",
+            "trabalha": false,
+            "motivo": "Proclamação da República"
+          },
+          {
+            "data": "2026-11-20",
+            "trabalha": false,
+            "motivo": "Consciência Negra"
+          },
+          {
+            "data": "2026-12-08",
+            "trabalha": false,
+            "motivo": "Nossa Senhora da Conceição - Campinas"
+          },
+          {
+            "data": "2026-12-25",
+            "trabalha": false,
+            "motivo": "Natal"
+          },
+          {
+            "data": "2027-01-01",
+            "trabalha": false,
+            "motivo": "Confraternização Universal"
+          },
+          {
+            "data": "2027-03-26",
+            "trabalha": false,
+            "motivo": "Paixão de Cristo - Campinas"
+          },
+          {
+            "data": "2027-04-21",
+            "trabalha": false,
+            "motivo": "Tiradentes"
+          },
+          {
+            "data": "2027-05-01",
+            "trabalha": false,
+            "motivo": "Dia do Trabalho"
+          },
+          {
+            "data": "2027-05-27",
+            "trabalha": false,
+            "motivo": "Corpus Christi - Campinas"
+          },
+          {
+            "data": "2027-07-09",
+            "trabalha": false,
+            "motivo": "Revolução Constitucionalista - SP"
+          },
+          {
+            "data": "2027-08-12",
+            "trabalha": false,
+            "motivo": "Dia do Evangélico - Campinas"
+          },
+          {
+            "data": "2027-09-07",
+            "trabalha": false,
+            "motivo": "Independência do Brasil"
+          },
+          {
+            "data": "2027-10-12",
+            "trabalha": false,
+            "motivo": "Nossa Senhora Aparecida"
+          },
+          {
+            "data": "2027-11-02",
+            "trabalha": false,
+            "motivo": "Finados"
+          },
+          {
+            "data": "2027-11-15",
+            "trabalha": false,
+            "motivo": "Proclamação da República"
+          },
+          {
+            "data": "2027-11-20",
+            "trabalha": false,
+            "motivo": "Consciência Negra"
+          },
+          {
+            "data": "2027-12-08",
+            "trabalha": false,
+            "motivo": "Nossa Senhora da Conceição - Campinas"
+          },
+          {
+            "data": "2027-12-25",
+            "trabalha": false,
+            "motivo": "Natal"
+          },
+          {
+            "data": "2028-01-01",
+            "trabalha": false,
+            "motivo": "Confraternização Universal"
+          },
+          {
+            "data": "2028-04-14",
+            "trabalha": false,
+            "motivo": "Paixão de Cristo - Campinas"
+          },
+          {
+            "data": "2028-04-21",
+            "trabalha": false,
+            "motivo": "Tiradentes"
+          },
+          {
+            "data": "2028-05-01",
+            "trabalha": false,
+            "motivo": "Dia do Trabalho"
+          },
+          {
+            "data": "2028-06-15",
+            "trabalha": false,
+            "motivo": "Corpus Christi - Campinas"
+          },
+          {
+            "data": "2028-07-09",
+            "trabalha": false,
+            "motivo": "Revolução Constitucionalista - SP"
+          },
+          {
+            "data": "2028-08-12",
+            "trabalha": false,
+            "motivo": "Dia do Evangélico - Campinas"
+          },
+          {
+            "data": "2028-09-07",
+            "trabalha": false,
+            "motivo": "Independência do Brasil"
+          },
+          {
+            "data": "2028-10-12",
+            "trabalha": false,
+            "motivo": "Nossa Senhora Aparecida"
+          },
+          {
+            "data": "2028-11-02",
+            "trabalha": false,
+            "motivo": "Finados"
+          },
+          {
+            "data": "2028-11-15",
+            "trabalha": false,
+            "motivo": "Proclamação da República"
+          },
+          {
+            "data": "2028-11-20",
+            "trabalha": false,
+            "motivo": "Consciência Negra"
+          },
+          {
+            "data": "2028-12-08",
+            "trabalha": false,
+            "motivo": "Nossa Senhora da Conceição - Campinas"
+          },
+          {
+            "data": "2028-12-25",
+            "trabalha": false,
+            "motivo": "Natal"
+          },
+          {
+            "data": "2029-01-01",
+            "trabalha": false,
+            "motivo": "Confraternização Universal"
+          },
+          {
+            "data": "2029-03-30",
+            "trabalha": false,
+            "motivo": "Paixão de Cristo - Campinas"
+          },
+          {
+            "data": "2029-04-21",
+            "trabalha": false,
+            "motivo": "Tiradentes"
+          },
+          {
+            "data": "2029-05-01",
+            "trabalha": false,
+            "motivo": "Dia do Trabalho"
+          },
+          {
+            "data": "2029-05-31",
+            "trabalha": false,
+            "motivo": "Corpus Christi - Campinas"
+          },
+          {
+            "data": "2029-07-09",
+            "trabalha": false,
+            "motivo": "Revolução Constitucionalista - SP"
+          },
+          {
+            "data": "2029-08-12",
+            "trabalha": false,
+            "motivo": "Dia do Evangélico - Campinas"
+          },
+          {
+            "data": "2029-09-07",
+            "trabalha": false,
+            "motivo": "Independência do Brasil"
+          },
+          {
+            "data": "2029-10-12",
+            "trabalha": false,
+            "motivo": "Nossa Senhora Aparecida"
+          },
+          {
+            "data": "2029-11-02",
+            "trabalha": false,
+            "motivo": "Finados"
+          },
+          {
+            "data": "2029-11-15",
+            "trabalha": false,
+            "motivo": "Proclamação da República"
+          },
+          {
+            "data": "2029-11-20",
+            "trabalha": false,
+            "motivo": "Consciência Negra"
+          },
+          {
+            "data": "2029-12-08",
+            "trabalha": false,
+            "motivo": "Nossa Senhora da Conceição - Campinas"
+          },
+          {
+            "data": "2029-12-25",
+            "trabalha": false,
+            "motivo": "Natal"
+          },
+          {
+            "data": "2030-01-01",
+            "trabalha": false,
+            "motivo": "Confraternização Universal"
+          },
+          {
+            "data": "2030-04-19",
+            "trabalha": false,
+            "motivo": "Paixão de Cristo - Campinas"
+          },
+          {
+            "data": "2030-04-21",
+            "trabalha": false,
+            "motivo": "Tiradentes"
+          },
+          {
+            "data": "2030-05-01",
+            "trabalha": false,
+            "motivo": "Dia do Trabalho"
+          },
+          {
+            "data": "2030-06-20",
+            "trabalha": false,
+            "motivo": "Corpus Christi - Campinas"
+          },
+          {
+            "data": "2030-07-09",
+            "trabalha": false,
+            "motivo": "Revolução Constitucionalista - SP"
+          },
+          {
+            "data": "2030-08-12",
+            "trabalha": false,
+            "motivo": "Dia do Evangélico - Campinas"
+          },
+          {
+            "data": "2030-09-07",
+            "trabalha": false,
+            "motivo": "Independência do Brasil"
+          },
+          {
+            "data": "2030-10-12",
+            "trabalha": false,
+            "motivo": "Nossa Senhora Aparecida"
+          },
+          {
+            "data": "2030-11-02",
+            "trabalha": false,
+            "motivo": "Finados"
+          },
+          {
+            "data": "2030-11-15",
+            "trabalha": false,
+            "motivo": "Proclamação da República"
+          },
+          {
+            "data": "2030-11-20",
+            "trabalha": false,
+            "motivo": "Consciência Negra"
+          },
+          {
+            "data": "2030-12-08",
+            "trabalha": false,
+            "motivo": "Nossa Senhora da Conceição - Campinas"
+          },
+          {
+            "data": "2030-12-25",
+            "trabalha": false,
+            "motivo": "Natal"
+          }
+        ]
+      },
+      "programacoes_publicadas": [],
+      "assinatura": "3bfca87b01d511973d8fa39393af0d07f017bca8f89c293f6073c34c319fa322"
+    }
+  }
+]

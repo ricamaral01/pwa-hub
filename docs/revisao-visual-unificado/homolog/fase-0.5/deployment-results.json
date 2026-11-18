@@ -1,0 +1,14 @@
+{
+  "status": "ok",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/padrao-visual-fase-0.5-20261118T171811Z",
+  "source_shell_version": "1.4.6",
+  "revision": "20261111_04",
+  "files": 205,
+  "databases": {
+    "pcp": "pcp_unificado_homolog_20261016",
+    "mapa": "mapa_unificado_homolog_20261016"
+  },
+  "nginx_changed": false,
+  "production_unchanged": true,
+  "phase1_started": false
+}
