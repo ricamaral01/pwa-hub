@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <title>Custo da carta de traço</title>
 
-<style>
+<style>@media print {
+
   /* ============================================================
      DASHBOARD: Custo da carta de traço
      Formato: slide 4:3 · 1024 x 768 · SEM SCROLL
@@ -297,6 +298,69 @@
     border-top: 1px solid var(--linha);
     padding-top: 6px;
   }
+
+}
+@media screen {
+/* ============================================================
+     DASHBOARD: Custo da carta de traço
+     Formato: slide 4:3 · 1024 x 768 · SEM SCROLL
+     Stack: HTML/CSS/JS puros
+     ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--azul-primario:var(--c-blue);--laranja-accent:var(--c-orange);--texto-forte:var(--c-blue);--texto-medio:var(--c-blue);--texto-fraco:var(--c-ink-2);--texto-mudo:var(--c-ink-3);--bg-suave:var(--c-bg);--bg-cabecalho-tabela:var(--c-bg);--linha:var(--c-line);--linha-forte:var(--c-line);/* Cores dos materiais — DEVEM bater com o donut */--cor-cimento:var(--c-blue);--cor-areia-m:var(--c-orange);--cor-areia-f:var(--c-ink-3);--cor-brita:var(--c-ok);--cor-aditivo:var(--c-orange);--cor-agua:var(--c-ink-3);}
+body{background:var(--c-line);padding:24px;display:flex;justify-content:center;color:var(--texto-medio);}
+/* ---------- SLIDE ---------- */
+.slide{width:1024px;height:768px;background:var(--c-surface);box-shadow:none;display:grid;grid-template-rows:56px 72px 92px 1fr 28px;padding:24px 32px;gap:14px;}
+/* ---------- HEADER ---------- */
+.header{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:16px;border-bottom:3px solid var(--laranja-accent);padding-bottom:10px;}
+.logo{width:44px;height:44px;background:var(--azul-primario);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--c-surface);font-weight:800;font-size:20px;}
+.header-title .kicker{font-size:10px;letter-spacing:2px;color:var(--laranja-accent);font-weight:700;text-transform:none;}
+.header-title h1{font-size:20px;color:var(--azul-primario);font-weight:700;margin-top:2px;}
+.header-meta{text-align:right;font-size:11px;color:var(--texto-fraco);line-height:1.4;}
+.header-meta strong{color:var(--azul-primario);}
+/* ---------- CARTA SELECIONADA ---------- */
+.carta-block{display:flex;flex-direction:column;justify-content:center;padding-left:4px;}
+.carta-label{font-size:11px;color:var(--texto-fraco);letter-spacing:0.5px;text-transform:none;margin-bottom:4px;}
+.carta-nome{font-size:26px;font-weight:800;color:var(--azul-primario);letter-spacing:-0.3px;}
+/* ---------- KPI STRIP (4 cards compactos) ---------- */
+.kpi-strip{display:grid;grid-template-columns:repeat(4, 1fr);gap:12px;}
+.kpi{background:var(--bg-suave);border-left:3px solid var(--azul-primario);padding:12px 16px;border-radius:var(--r-sm);display:flex;flex-direction:column;justify-content:center;}
+.kpi.accent{border-left-color:var(--laranja-accent);}
+.kpi-label{font-size:9px;letter-spacing:1.2px;color:var(--texto-fraco);text-transform:none;font-weight:600;margin-bottom:4px;}
+.kpi-value{font-size:22px;font-weight:800;color:var(--azul-primario);line-height:1;font-variant-numeric:tabular-nums;}
+.kpi-sub{font-size:10px;color:var(--texto-mudo);margin-top:3px;}
+/* ---------- MAIN: tabela + donut lado a lado ---------- */
+.main{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;min-height:0;}
+/* Tabela */
+.tabela-wrapper{background:var(--c-surface);border:1px solid var(--linha);border-radius:var(--r-sm);overflow:hidden;display:flex;flex-direction:column;}
+.tabela-header{background:var(--azul-primario);color:var(--c-surface);padding:8px 12px;font-size:10px;letter-spacing:1.2px;text-transform:none;font-weight:600;}
+table{width:100%;border-collapse:collapse;font-size:12px;flex:1;}
+thead th{background:var(--bg-cabecalho-tabela);padding:8px 10px;text-align:left;font-size:9px;letter-spacing:1px;color:var(--c-ink-2);text-transform:none;font-weight:700;border-bottom:1px solid var(--linha-forte);}
+thead th.num{text-align:right;}
+tbody td{padding:10px;border-bottom:1px solid var(--bg-cabecalho-tabela);color:var(--texto-medio);}
+tbody td.num{text-align:right;font-variant-numeric:tabular-nums;}
+tbody td.material{font-weight:600;color:var(--azul-primario);border-left:3px solid transparent;padding-left:12px;}
+tbody tr.total{background:var(--bg-suave);font-weight:700;}
+tbody tr.total td{border-top:2px solid var(--azul-primario);color:var(--azul-primario);}
+/* Painel do donut */
+.donut-wrapper{background:var(--bg-suave);border-radius:var(--r-sm);border:1px solid var(--linha);padding:16px;display:flex;flex-direction:column;}
+.donut-title{font-size:10px;letter-spacing:1.2px;text-transform:none;color:var(--texto-fraco);font-weight:700;margin-bottom:8px;}
+.donut-body{display:grid;grid-template-columns:1fr 130px;gap:12px;flex:1;align-items:center;}
+.donut-svg{width:100%;height:auto;max-height:240px;}
+.legend{display:flex;flex-direction:column;gap:7px;font-size:10.5px;}
+.legend-item{display:grid;grid-template-columns:10px 1fr auto;gap:6px;align-items:center;}
+.legend-swatch{width:10px;height:10px;border-radius:var(--r-sm);}
+.legend-name{color:var(--texto-medio);}
+.legend-pct{color:var(--texto-fraco);font-weight:600;font-variant-numeric:tabular-nums;}
+/* Grupos (aglomerante / agregados / aditivo) */
+.grupos{display:grid;grid-template-columns:repeat(3, 1fr);gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--linha);}
+.grupo{text-align:center;padding:4px;}
+.grupo-label{font-size:8.5px;color:var(--texto-fraco);text-transform:none;letter-spacing:0.5px;}
+.grupo-value{font-size:14px;font-weight:700;color:var(--azul-primario);margin-top:2px;}
+/* ---------- FOOTER ---------- */
+.footer{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;color:var(--texto-mudo);border-top:1px solid var(--linha);padding-top:6px;}
+
+}
 </style>
 <script>
     // Acesso direto volta à casca autenticada; no iframe preserva o layout original.
@@ -323,8 +387,8 @@
       else top.location.assign('/unificado/login.html');
     }
     </script>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
-</head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.11">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.11"><script defer src="/unificado/shell/components.js?v=1.4.11"></script></head>
 <body>
 
 <div class="slide" id="slide">

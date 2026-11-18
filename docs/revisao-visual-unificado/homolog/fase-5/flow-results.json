@@ -1,0 +1,43 @@
+{
+  "origin": "https://concrefer.concretrack.com.br:18446",
+  "label": "HOMOLOG VISUAL F5 20261118T231218Z",
+  "cp_reading": {
+    "id": "71841c69-9a1e-4218-92b9-1e82f9d77394",
+    "series": "HOM-F5-71841c69",
+    "mpa": 32.5,
+    "persisted": true
+  },
+  "draft_carta": {
+    "id": 12,
+    "revision": 1,
+    "status": "Rascunho"
+  },
+  "trace": [
+    {
+      "method": "POST",
+      "path": "/unificado/laboratorio/cec-api/qrcp",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/unificado/laboratorio/cec-api/qrcp?limit=200",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/unificado/mapa/api/laboratorio/carta-traco/materiais",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/unificado/mapa/api/laboratorio/carta-traco/cartas",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/unificado/mapa/api/laboratorio/carta-traco/cartas/12",
+      "status": 200
+    }
+  ],
+  "production_calls": 0
+}

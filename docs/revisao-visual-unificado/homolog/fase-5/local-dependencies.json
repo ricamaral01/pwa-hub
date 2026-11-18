@@ -1,0 +1,62 @@
+[
+  {
+    "source": "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css",
+    "local": "/unificado/vendor/bootstrap-icons/bootstrap-icons.css",
+    "sha256": "4bf247ce809919c28f9f1cff068fa5cb9bb0484633f6dc432c2b8e98c1e78dbc",
+    "dependency_version_changed": false
+  },
+  {
+    "source": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css",
+    "local": "/unificado/vendor/bootstrap/bootstrap.min.css",
+    "sha256": "b0a21045f42b8884ae43d97fe386f5cc77d09e21972611a89d5b41d8b952b88b",
+    "dependency_version_changed": false
+  },
+  {
+    "source": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
+    "local": "/unificado/vendor/bootstrap/bootstrap.bundle.min.js",
+    "sha256": "eb37e4d8bf11df00a045b673a64122ed4602d9b73a7d81888057cd7aac8e5a74",
+    "dependency_version_changed": false
+  },
+  {
+    "source": "https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js",
+    "local": "/unificado/vendor/published/chart.umd.min-db43a3a48e.js",
+    "sha256": "0e2326c6868072bec1592760c6729043caeea2960a2b46cee6a2192aac6abff0",
+    "dependency_version_changed": false
+  },
+  {
+    "source": "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js",
+    "local": "/unificado/vendor/published/chart.umd.min-bd19dbbb83.js",
+    "sha256": "206b6e8bb00fc7bba2c7ee80ca41db3e9e05ba7be0aa35abeba9cfd5357f5d0e",
+    "dependency_version_changed": false
+  },
+  {
+    "source": "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js",
+    "local": "/unificado/vendor/published/html2canvas.min-3e8c1b841f.js",
+    "sha256": "e87e550794322e574a1fda0c1549a3c70dae5a93d9113417a429016838eab8cb",
+    "dependency_version_changed": false
+  },
+  {
+    "source": "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js",
+    "local": "/unificado/vendor/published/html2pdf.bundle.min-651b119678.js",
+    "sha256": "85e6ee9ce246e3ae4424313f7e46a5ed860a28d757811de8dc9c43f306049d65",
+    "dependency_version_changed": false
+  },
+  {
+    "source": "https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js",
+    "local": "/unificado/vendor/published/jspdf.umd.min-a15ba80217.js",
+    "sha256": "98ccf17aa10c20bb1301762618fcc9b6ab3a4e7f26b6071d64d0b41154df3875",
+    "dependency_version_changed": false
+  },
+  {
+    "source": "https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js",
+    "local": "/unificado/vendor/published/jspdf.plugin.autotable.min-d480718589.js",
+    "sha256": "27a9c3b61843c6312b87f142d40fe77c0f0f054c9f3cdeccc4bfd5f3322859c8",
+    "dependency_version_changed": false
+  },
+  {
+    "source": "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
+    "local": "/unificado/vendor/published/jspdf.umd.min-19e7da8fed.js",
+    "sha256": "98ccf17aa10c20bb1301762618fcc9b6ab3a4e7f26b6071d64d0b41154df3875",
+    "dependency_version_changed": false
+  }
+]

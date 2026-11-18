@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1730">
+  <title>Laboratório · Carta traço e MCC</title>
+  <script>if(top===self)location.replace('/unificado/?view=laboratorio/carta-traco/');</script>
+  <link rel="stylesheet" href="./carta-traco.css?v=1.4.11">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.11"><script defer src="/unificado/shell/components.js?v=1.4.11"></script></head>
+<body>
+  <main class="ct-app">
+    <header class="ct-head">
+      <div><h1>Carta traço e MCC</h1><p class="ct-sub">Composição, revisões e custos de materiais por unidade.</p></div>
+      <div class="ct-head-actions"><a href="./manual/manual-carta-traco.html" target="_blank" rel="noopener">Manual</a><a href="./manual/manual-carta-traco.pdf" download>Baixar PDF</a></div>
+    </header>
+    <div class="ct-banner" role="status"><span id="ct-sync">Atualiza??o pendente</span></div>
+    <p id="ct-error" class="ct-error" role="alert" hidden></p>
+
+    <section id="view-home" class="ct-view">
+      <div class="ct-view-head"><div><h2>O que você quer fazer?</h2><p>Escolha uma função para abrir a tela de trabalho.</p></div></div>
+      <nav class="ct-home-grid" aria-label="Funções da Carta Traço">
+        <button type="button" class="ct-home-card" data-view="editor"><span class="ct-home-icon">✎</span><strong>Cadastro</strong><small>Criar uma carta ou preparar uma nova revisão.</small><span class="ct-home-action">Abrir cadastro →</span></button>
+        <button type="button" class="ct-home-card" data-view="consulta"><span class="ct-home-icon">⌕</span><strong>Consulta</strong><small>Ver cartas, revisões, composição e histórico.</small><span class="ct-home-action">Abrir consulta →</span></button>
+        <button type="button" class="ct-home-card" data-view="custos"><span class="ct-home-icon">R$</span><strong>Materiais</strong><small>Conferir fornecedores e preços vigentes.</small><span class="ct-home-action">Abrir materiais →</span></button>
+        <button type="button" class="ct-home-card" data-view="mcc"><span class="ct-home-icon">▥</span><strong>Resumo MCC</strong><small>Comparar cartas e entender o custo por material.</small><span class="ct-home-action">Abrir MCC →</span></button>
+        <button type="button" class="ct-home-card" data-view="visao"><span class="ct-home-icon">◉</span><strong>Indicadores</strong><small>Ver pendências, revisões e evolução dos custos.</small><span class="ct-home-action">Abrir indicadores →</span></button>
+        <button type="button" class="ct-home-card" data-view="conferencia"><span class="ct-home-icon">⇄</span><strong>Conferência ERP</strong><small>Comparar a carta com a receita usada na usina.</small><span class="ct-home-action">Abrir conferência →</span></button>
+      </nav>
+    </section>
+    <div id="ct-backbar" class="ct-backbar" hidden><button id="ct-back-home" type="button">← Voltar às funções</button><span id="ct-current-screen"></span></div>
+
+    <section id="view-visao" class="ct-view" hidden>
+      <div class="ct-view-head"><div><h2>Visão geral</h2><p>Prioridades de cadastro e variação recente do custo.</p></div><button class="ct-secondary" type="button" id="ct-refresh">Atualizar</button></div>
+      <div class="ct-kpis">
+        <article><span>Cartas ativas por unidade</span><strong id="kpi-cartas">—</strong><small id="kpi-cartas-detail">Aguardando carga</small></article>
+        <article><span>MCC médio</span><strong id="kpi-mcc">—</strong><small>Cartas com custo apurado</small></article>
+        <article><span>Itens sem custo</span><strong id="kpi-sem-custo">—</strong><small>Exigem preço vigente</small></article>
+        <article><span>Último reajuste</span><strong id="kpi-reajuste">—</strong><small id="kpi-reajuste-detail">Sem histórico</small></article>
+      </div>
+      <div class="ct-grid two"><article class="ct-panel"><div class="ct-panel-head"><h3>Pendências</h3><span>Itens sem custo · fechamento · custo antigo</span></div><div id="overview-pendencias" class="ct-list"></div></article><article class="ct-panel"><div class="ct-panel-head"><h3>Revisões recentes</h3><span>Δ MCC ante a revisão anterior</span></div><div id="overview-revisoes" class="ct-list"></div></article></div>
+      <article class="ct-panel ct-chart-panel"><div class="ct-panel-head"><h3>MCC das cartas ativas</h3><span>Comparação em R$/m³ · clique para abrir a carta</span></div><div id="overview-chart" class="ct-compare-chart"></div></article>
+      <article class="ct-panel" style="margin-top:17px"><div class="ct-panel-head"><h3>Conferência com o ERP</h3><span id="conferencia-kpi">Carregando</span></div><p>Compare a composição oficial com a receita que o CLP usa.</p><button class="ct-secondary" id="ct-open-conferencia" type="button">Abrir conferência</button></article>
+    </section>
+
+    <section id="view-editor" class="ct-view" hidden>
+      <div class="ct-view-head"><div><h2 id="ed-title">Cadastro de Carta Traço</h2><p id="ed-subtitle">Informe os dados, monte a composição e confira o MCC antes de salvar.</p></div><div><button class="ct-secondary" id="ed-reset" type="button">Limpar formulário</button> <button class="ct-primary ct-write" id="ed-save" type="button" hidden>Salvar carta</button></div></div>
+      <div class="ct-grid editor"><div class="ct-stack">
+        <article class="ct-panel"><div class="ct-panel-head"><h3>Cabeçalho</h3><span>Revisão automática após o corte</span></div><div class="ct-form-grid">
+          <label>Nome da carta<input id="ed-nome" maxlength="120" placeholder="Ex.: Concreto FCK 25" required></label>
+          <label>Código do traço<input id="ed-codigo" maxlength="40" placeholder="Ex.: 1.1.1"></label>
+          <label>Receita no ERP (busca)<input id="ed-receita-search" type="search" placeholder="Busque pelo nome ou ID"></label>
+          <label class="wide">Receita ativa<select id="ed-receita"><option value="">Sem receita vinculada</option></select></label>
+          <label>Unidade<select id="ed-unidade" disabled></select></label>
+          <label>Revisão<input id="ed-revisao" value="—" readonly></label>
+          <label>Vigência<input id="ed-vigencia" type="date"></label>
+          <label>Status<select id="ed-status"><option value="Ativa">Ativa</option><option value="Rascunho">Rascunho</option></select></label>
+          <label>Tipo de frete<select id="ed-frete"><option value="">Não informado</option><option value="CIF">CIF</option><option value="FOB">FOB</option></select></label>
+          <label class="wide">Observação<textarea id="ed-observacao" rows="2"></textarea></label>
+        </div></article>
+        <article class="ct-panel"><div class="ct-panel-head"><h3>Composição</h3><span>Material, fornecedor, kg/m³ e preço</span></div><div class="ct-scroll"><table><thead><tr><th>Material</th><th>Fornecedor</th><th>kg/m³</th><th>M.E.</th><th>Volume L</th><th>R$/kg</th><th>R$/m³</th><th></th></tr></thead><tbody id="ed-itens"></tbody></table></div><button id="ed-add-item" class="ct-secondary ct-add-item" type="button">+ Adicionar material</button><p id="ed-changes" class="ct-muted">Adicione os materiais da carta. A prévia de MCC usa os preços vigentes.</p></article>
+      </div><aside class="ct-stack"><article class="ct-panel ct-highlight"><span>MCC estimado</span><strong id="ed-mcc">—</strong><small id="ed-delta">Prévia antes de salvar</small><div id="ed-bars" class="ct-cost-bars"></div></article><article class="ct-panel"><div class="ct-panel-head"><h3>Indicadores</h3><span>Fechamento ±10 L (provisório)</span></div><dl id="ed-indicadores" class="ct-indicators"></dl><p id="ed-warning" class="ct-warning" hidden></p></article></aside></div>
+    </section>
+
+    <section id="view-consulta" class="ct-view" hidden>
+      <div class="ct-view-head"><div><h2>Consulta e revisões</h2><p>Histórico, composição e comparação da carta.</p></div><div><button class="ct-secondary" type="button" onclick="window.print()">Imprimir</button> <button class="ct-primary ct-write" id="ct-new-revision" type="button" hidden>Nova revisão</button></div></div>
+      <div class="ct-filters"><label>Buscar<input id="q-cartas" type="search" placeholder="Nome da carta"></label><label>Unidade<select id="f-unidade"></select></label><label>Status<select id="f-status"><option value="todas">Todos</option><option value="Ativa">Ativa</option><option value="Inativa">Inativa</option><option value="Rascunho">Rascunho</option></select></label><label>Classe<input id="f-classe" type="search" placeholder="Classe / código"></label></div>
+      <div class="ct-grid consulta"><article class="ct-panel"><div class="ct-scroll"><table><thead><tr><th>Carta</th><th>Rev.</th><th>Vigência</th><th>a/c</th><th>MCC</th><th>Δ</th><th>Status</th><th></th></tr></thead><tbody id="cartas-body"></tbody></table></div></article><aside id="carta-detail" class="ct-panel ct-detail"><h3>Detalhe da carta</h3><p class="ct-muted">Selecione uma carta para ver indicadores, composição, alterações e revisões.</p></aside></div>
+    </section>
+
+    <section id="view-custos" class="ct-view" hidden>
+      <div class="ct-view-head"><div><h2>Materiais e custos</h2><p>Preços vigentes, histórico e catálogo da Carta Traço.</p></div><button class="ct-primary ct-write" id="ct-new-cost" type="button" hidden>Novo custo</button></div>
+      <div class="ct-subtabs"><button data-cost-view="vigentes" aria-selected="true">Custos vigentes</button><button data-cost-view="historico">Histórico</button><button data-cost-view="catalogo">Catálogo</button></div>
+      <article class="ct-panel"><div id="custos-content" class="ct-scroll"></div></article>
+      <article class="ct-panel ct-write" id="ct-cost-form" hidden>
+        <div class="ct-panel-head"><h3>Novo custo</h3><span>Confira o impacto antes de salvar</span></div>
+        <div class="ct-form-grid">
+          <label>Material<select id="cost-material"></select></label>
+          <label>Fornecedor<select id="cost-supplier"></select></label>
+          <label>Unidade<select id="cost-unit"></select></label>
+          <label>Unidade de preço<select id="cost-measure"><option value="kg">kg</option><option value="t">tonelada</option><option value="L">litro</option><option value="m3">m³</option><option value="saco">saco</option></select></label>
+          <label>Valor bruto (R$)<input id="cost-value" type="number" min="0" step="0.0001"></label>
+          <label>ICMS (%)<input id="cost-icms" type="number" min="0" max="100" step="0.01" value="0"></label>
+          <label>Frete (R$)<input id="cost-freight" type="number" min="0" step="0.0001" value="0"></label>
+          <label>ICMS do frete (%)<input id="cost-freight-icms" type="number" min="0" max="100" step="0.01" value="0"></label>
+          <label>Vigência<input id="cost-date" type="date"></label>
+          <label>Tipo de frete<select id="cost-freight-type"><option value="">Não informado</option><option value="CIF">CIF</option><option value="FOB">FOB</option></select></label>
+          <label class="wide">Produto do fornecedor<input id="cost-product" maxlength="200"></label>
+        </div>
+        <p id="cost-impact" class="ct-muted" role="status">Informe o custo para ver o impacto no MCC.</p>
+        <button class="ct-secondary" id="cost-preview" type="button">Ver impacto no MCC</button>
+        <button class="ct-primary" id="cost-save" type="button">Salvar custo</button>
+      </article>
+      <details class="ct-panel ct-write" id="ct-cost-batch" hidden><summary>Importar lote de custos</summary>
+        <p class="ct-muted">Uma linha por custo: Material;Fornecedor;Unidade;Unidade de preço;Valor;ICMS %;Frete;ICMS frete %;Vigência (AAAA-MM-DD).</p>
+        <textarea id="cost-batch-text" rows="5" style="width:100%"></textarea>
+        <button class="ct-primary" id="cost-batch-save" type="button">Importar lote</button>
+      </details>
+      <article class="ct-panel"><div class="ct-panel-head"><h3>Mapeamento ERP</h3><span>Posições, grupos e vigência; decisões provisórias identificadas</span></div><div id="ct-mapping-list" class="ct-scroll"></div></article>
+      <article class="ct-panel ct-write" id="ct-mapping-form" hidden><div class="ct-panel-head"><h3>Nova vigência de mapeamento</h3><span>O histórico anterior é preservado</span></div>
+        <div class="ct-form-grid">
+          <label>Unidade<select id="map-unit"></select></label><label>Posição<select id="map-position"></select></label>
+          <label>Material<select id="map-material"></select></label><label>Grupo de comparação<input id="map-group" placeholder="material:ID ou grupo técnico"></label>
+          <label>Rótulo<input id="map-label" required></label><label>Unidade da receita<select id="map-measure"><option value="kg">kg</option><option value="L">L</option></select></label>
+          <label>Massa específica (kg/L)<input id="map-density" type="number" min="0" step="0.0001"></label><label>Vigente desde<input id="map-date" type="date"></label>
+          <label>Origem da decisão<select id="map-origin"><option value="provisorio">Provisório</option><option value="aprovado">Aprovado</option></select></label>
+          <label class="wide">Observação<input id="map-note"></label>
+        </div><button class="ct-primary" id="map-save" type="button">Salvar nova vigência</button></article>
+    </section>
+
+    <section id="view-mcc" class="ct-view" hidden>
+      <div class="ct-view-head"><div><h2>Resumo MCC</h2><p>Matriz de custo por carta e unidade, com referência de preços.</p></div><div><button id="export-csv" class="ct-secondary" type="button">Exportar CSV</button> <button class="ct-secondary" type="button" onclick="window.print()">Imprimir / PDF</button></div></div>
+      <article class="ct-panel ct-chart-panel"><div class="ct-panel-head"><h3>Comparação de MCC</h3><span>R$/m³ por carta ativa · menor e maior custo visíveis</span></div><div id="mcc-compare-chart" class="ct-compare-chart"></div></article>
+      <article class="ct-panel"><p id="mcc-data" class="ct-muted">Data de referência: hoje</p><div class="ct-scroll" id="mcc-matrix"></div></article><article class="ct-panel"><div class="ct-panel-head"><h3>Composição por unidade</h3><span>Carta selecionada</span></div><div id="mcc-composition" class="ct-cost-bars"></div></article>
+    </section>
+    <section id="view-conferencia" class="ct-view" hidden>
+      <div class="ct-view-head"><div><h2>Conferência ERP</h2><p>Leitura do ERP. Para corrigir a dosagem, altere a receita no ERP ou crie nova revisão da carta.</p></div><button class="ct-secondary" id="conferencia-refresh" type="button">Atualizar</button></div>
+      <p id="conferencia-updated" class="ct-muted">Aguardando espelho</p>
+      <div class="ct-filters"><label>Unidade<select id="conf-unit"><option value="">Todas</option><option value="1">Campinas</option><option value="2">Pederneiras</option></select></label><label>Situação<select id="conf-status"><option value="">Todas</option><option value="divergente">Divergente</option><option value="ok">Confere</option><option value="sem_receita">Sem receita</option></select></label></div>
+      <article class="ct-panel"><div id="conferencia-content" class="ct-scroll"></div></article>
+      <div class="ct-grid two" style="margin-top:17px"><article class="ct-panel"><h3>Cartas e receitas sem vínculo</h3><div id="conferencia-alertas" class="ct-list"></div></article><article class="ct-panel"><h3>Massadas sem receita ativa</h3><div id="conferencia-massadas" class="ct-list"></div></article></div>
+    </section>
+  </main>
+  <script src="./carta-traco.js?v=1.4.11" defer></script>
+</body>
+</html>

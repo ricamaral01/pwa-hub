@@ -11,10 +11,11 @@
       location.replace('/unificado/?view=' + encodeURIComponent('usinas/?' + params));
     }
   </script>
-  <style>
+  <style>@media print {
+
     :root{font-family:Inter,"Segoe UI",system-ui,sans-serif;color:#0b2143;background:#f4f7fb}
     *{box-sizing:border-box}body{margin:0}main{max-width:1320px;margin:auto;padding:28px clamp(16px,3vw,38px) 60px}
-    .eyebrow{text-transform:uppercase;letter-spacing:.12em;color:#aa5c00;font-size:.75rem;font-weight:800;margin:0 0 6px}
+    .section-context{text-transform:uppercase;letter-spacing:.12em;color:#aa5c00;font-size:.75rem;font-weight:800;margin:0 0 6px}
     h1{font-size:clamp(1.5rem,3vw,2.25rem);margin:0 0 6px}p{color:#52637d;line-height:1.45}
     .top{display:flex;justify-content:space-between;gap:20px;align-items:start}.back{color:#0e5090;text-decoration:none;font-weight:700;font-size:.9rem;padding:10px 0}
     .filters{display:flex;flex-wrap:wrap;gap:12px;align-items:end;background:#fff;padding:20px;border:1px solid #dbe4ef;border-radius:14px;margin:24px 0 16px}
@@ -28,12 +29,69 @@
     .note{font-size:.8rem;margin:16px 0 0}td:nth-child(4),td:nth-child(6){font-weight:800}
     @media(max-width:700px){.top{display:block}.summary{grid-template-columns:1fr}.summary article{padding:12px 16px}.filters label{flex:1;min-width:140px}.filters input{width:100%;min-width:0}.filters button{width:100%}}
     @media print{body{background:#fff}main{padding:0}.filters,.back,button{display:none}.table-wrap{border:0;overflow:visible}.summary article{break-inside:avoid}}
-  </style>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
-</head>
+  
+}
+@media screen {
+:root{color:var(--c-navy);background:var(--c-bg);}
+*{box-sizing:border-box;}
+body{margin:0;}
+main{max-width:1320px;margin:auto;padding:28px clamp(16px,3vw,38px) 60px;}
+.section-context{text-transform:none;letter-spacing:.12em;color:var(--c-warn);font-size:.75rem;font-weight:800;margin:0 0 6px;}
+h1{font-size:clamp(1.5rem,3vw,2.25rem);margin:0 0 6px;}
+p{color:var(--c-ink-2);line-height:1.45;}
+.top{display:flex;justify-content:space-between;gap:20px;align-items:start;}
+.back{color:var(--c-blue);text-decoration:none;font-weight:700;font-size:.9rem;padding:10px 0;}
+.filters{display:flex;flex-wrap:wrap;gap:12px;align-items:end;background:var(--c-surface);padding:20px;border:1px solid var(--c-line);border-radius:var(--r);margin:24px 0 16px;}
+label{display:grid;gap:6px;font-weight:700;font-size:.84rem;}
+input{font:inherit;padding:10px 12px;border:1px solid var(--c-line);border-radius:var(--r);color:var(--c-navy);min-width:165px;}
+button{font:inherit;cursor:pointer;border:0;border-radius:var(--r);background:var(--c-blue);color:var(--c-surface);padding:11px 20px;font-weight:800;}
+button:disabled{opacity:.55;cursor:wait;}
+.status{font-size:.85rem;color:var(--c-ink-2);margin:0 0 15px;min-height:1.2em;}
+.status.error{color:var(--c-crit);}
+.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 20px;}
+.summary article{background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--r);padding:17px 20px;}
+.summary span{font-size:.78rem;color:var(--c-ink-2);font-weight:700;}
+.summary strong{display:block;font-size:1.55rem;margin-top:4px;}
+.table-wrap{overflow-x:auto;background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--r);}
+table{border-collapse:collapse;width:100%;min-width:980px;font-size:.9rem;}
+th,td{border-bottom:1px solid var(--c-line);text-align:left;padding:15px 14px;}
+thead{background:var(--c-bg);}
+thead th{font-size:.68rem;letter-spacing:.08em;text-transform:none;color:var(--c-blue);}
+tbody tr.child td:first-child{font-style:italic;color:var(--c-ink-2);padding-left:33px;}
+tbody tr.defect{background:var(--c-surface);}
+tfoot{background:var(--c-bg);font-weight:800;}
+tfoot td{border-top:2px solid var(--c-line);border-bottom:0;}
+.metric{display:flex;align-items:center;gap:14px;}
+.metric strong{min-width:47px;}
+.bar{height:9px;width:100px;background:var(--c-line);border-radius:var(--r);overflow:hidden;flex:none;}
+.bar i{display:block;height:100%;border-radius:var(--r);background:var(--c-ink-2);}
+.orange .bar i{background:var(--c-orange);}
+.red .bar i{background:var(--c-orange);}
+.volume{font-weight:800;color:var(--c-ok);}
+.orange .volume{color:var(--c-orange);}
+.red .volume{color:var(--c-orange);}
+.pill{display:inline-block;border-radius:var(--r);background:var(--c-line-2);color:var(--c-blue);padding:7px 12px;font-size:.7rem;font-weight:800;white-space:nowrap;}
+.pill.blue{background:var(--c-line);color:var(--c-ink-2);}
+.pill.green{background:var(--c-line);color:var(--c-ok);}
+.pill.red{background:var(--c-line-2);color:var(--c-orange);}
+.note{font-size:.8rem;margin:16px 0 0;}
+td:nth-child(4),td:nth-child(6){font-weight:800;}
+@media (max-width:700px){.top{display:block;}
+.summary{grid-template-columns:1fr;}
+.summary article{padding:12px 16px;}
+.filters label{flex:1;min-width:140px;}
+.filters input{width:100%;min-width:0;}
+.filters button{width:100%;}
+}
+@media print{body{background:#fff}main{padding:0}.filters,.back,button{display:none}.table-wrap{border:0;overflow:visible}.summary article{break-inside:avoid}}
+
+}
+</style>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.11">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.11"><script defer src="/unificado/shell/components.js?v=1.4.11"></script></head>
 <body>
 <main>
-  <div class="top"><div><p class="eyebrow">Relatórios gerenciais · Campinas</p><h1>Indicadores Usina - IQT</h1><p>Classificação dos concretos lançados no Mapa de Concretagem.</p></div><a class="back" href="/unificado/usinas/relatorios/">← Relatórios</a></div>
+  <div class="top"><div><p class="section-context">Relatórios gerenciais · Campinas</p><h1>Indicadores Usina - IQT</h1><p>Classificação dos concretos lançados no Mapa de Concretagem.</p></div><a class="back" href="/unificado/usinas/relatorios/">← Relatórios</a></div>
   <form class="filters" id="filters"><label>Data inicial<input type="date" id="start" required></label><label>Data final<input type="date" id="end" required></label><button type="submit" id="submit">Visualizar período</button></form>
   <p class="status" id="status" role="status">Preparando consulta…</p>
   <section class="summary" aria-label="Resumo do período"><article><span>Total de lançamentos</span><strong id="total">—</strong></article><article><span>Concreto padrão</span><strong id="standard">—</strong></article><article><span>Volume estimado</span><strong id="volume">—</strong></article></section>

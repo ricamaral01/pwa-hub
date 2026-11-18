@@ -1,9 +1,10 @@
+import {visualHead} from './visual-head';
 import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 import {resolve} from 'node:path';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(),visualHead()],
   base: '/unificado/laboratorio/cronoanalise/',
   build: {
     outDir: '../service/server/static/cronoanalise', emptyOutDir: true,

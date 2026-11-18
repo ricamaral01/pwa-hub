@@ -40,6 +40,7 @@ def rules(source):
    out.append(selector+'{'+declarations(r.content,selector)+'}')
   elif r.type=='at-rule':
    pre=tinycss2.serialize(r.prelude).strip()
+   if r.lower_at_keyword=='font-face':continue
    if r.lower_at_keyword=='import' and 'fonts.google' in pre:continue
    if r.content is None:out.append(tinycss2.serialize([r]));continue
    if r.lower_at_keyword=='media' and re.search(r'\bprint\b',pre):out.append(tinycss2.serialize([r]));continue

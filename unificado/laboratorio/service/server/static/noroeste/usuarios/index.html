@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Usuários do Laboratório Noroeste</title><link rel="stylesheet" href="./users.css"></head>
+<body><main><header><a href="/unificado/?module=laboratorio&unit=noroeste">← Laboratório Noroeste</a>
+<h1>Usuários da Noroeste</h1><p>Cadastros e acessos desta unidade.</p></header>
+<section aria-labelledby="new-title"><h2 id="new-title">Novo usuário</h2>
+<form id="create-form"><label>Login<input name="login" required pattern="[a-z][a-z0-9_.-]{2,39}" autocomplete="off"></label>
+<label>Nome<input name="name" required maxlength="120"></label>
+<label>Senha inicial<input name="password" type="password" required minlength="6" maxlength="128" autocomplete="new-password"></label>
+<label>Perfil<select name="role"><option value="MONTADOR">Operacional</option><option value="GESTOR">Gestor</option><option value="GERENCIA">Gerência</option><option value="APONTADOR">Apontador</option></select></label>
+<label>Alçada<select name="alcada"><option value="operacao">Operação</option><option value="gestao">Gestão</option></select></label>
+<button type="submit">Cadastrar</button></form></section>
+<section aria-labelledby="list-title"><h2 id="list-title">Contas da Noroeste</h2><p id="message" role="status" aria-live="polite"></p>
+<div id="users" class="users"></div></section></main><script src="./users.js" defer></script></body></html>

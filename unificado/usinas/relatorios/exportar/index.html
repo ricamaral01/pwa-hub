@@ -4,14 +4,15 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Exportar Massadas • ConcreTrack</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- jsPDF + autoTable for client-side PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <link href="/unificado/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   
-  <style>
+  <!-- jsPDF + autoTable for client-side PDF -->
+  <script src="/unificado/vendor/published/jspdf.umd.min-19e7da8fed.js"></script>
+  <script src="/unificado/vendor/published/jspdf.plugin.autotable.min-d480718589.js"></script>
+  
+  <style>@media print {
+
     :root {
       --ct-orange:#E07A3A; --ct-gray:#343B43; --ct-gray-lt:#5A6270;
       --ct-blue:#1976D2; --ct-navy:#0D3B66; --ct-silver:#BFC5CC; --ct-bg:#F2F3F5;
@@ -143,7 +144,67 @@
     .app-footer { text-align:center; padding:20px; font-size:11px; color:var(--ct-silver); }
     .app-footer span { color:var(--ct-orange); font-weight:600; }
     @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-  </style>
+  
+}
+@media screen {
+:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-blue:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--ct-bg);}
+/* TOPBAR */
+.app-topbar{background:var(--ct-gray);color:var(--c-surface);}
+.topbar-inner{display:flex;align-items:center;padding:12px 0;gap:12px;}
+.topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:var(--r);}
+.topbar-title{font-size:18px;font-weight:700;}
+.topbar-title span{color:var(--ct-orange);}
+.topbar-sub{font-size:10px;color:var(--ct-silver);}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.btn-back{border-radius:var(--r);height:36px;font-weight:600;font-size:12px;border:1px solid rgba(255,255,255,.18);color:var(--c-surface);background:rgba(255,255,255,.06);display:inline-flex;align-items:center;gap:6px;padding:0 14px;text-decoration:none;transition:background .2s;}
+.btn-back:hover{background:rgba(255,255,255,.12);color:var(--c-surface);}
+.btn-logout{border-radius:var(--r);border:1px solid rgba(255,255,255,.15);color:var(--c-surface);font-size:12px;padding:5px 14px;background:rgba(224,122,58,.25);font-weight:600;cursor:pointer;transition:background .2s;}
+.btn-logout:hover{background:rgba(224,122,58,.5);}
+.topbar-accent{height:3px;background:var(--c-surface);}
+/* FILTER BAR */
+.filter-bar{background:var(--c-surface);border-radius:var(--r);padding:20px 24px;border:1px solid rgba(15,23,42,.06);box-shadow:none;display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.filter-group{display:flex;flex-direction:column;gap:4px;}
+.filter-group label{font-size:11px;font-weight:700;text-transform:none;letter-spacing:.5px;color:var(--ct-gray-lt);}
+.filter-group input{border-radius:var(--r);border:1.5px solid var(--c-line);font-size:13px;height:40px;padding:0 12px;transition:border-color .2s;width:160px;}
+.filter-group input:focus{border-color:var(--ct-orange);outline:none;box-shadow:none;}
+.btn-filter{border:none;border-radius:var(--r);height:40px;background:var(--c-surface);color:var(--c-surface);font-size:13px;font-weight:700;cursor:pointer;padding:0 20px;display:inline-flex;align-items:center;gap:6px;transition:transform .15s, box-shadow .15s;}
+.btn-filter:hover{transform:none;box-shadow:none;}
+/* EXPORT BUTTONS */
+.export-bar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center;}
+.btn-export{border:none;border-radius:var(--r);height:44px;font-size:14px;font-weight:700;cursor:pointer;padding:0 24px;display:inline-flex;align-items:center;gap:8px;transition:transform .15s, box-shadow .15s;color:var(--c-surface);}
+.btn-export:hover{transform:none;}
+.btn-pdf{background:var(--c-surface);box-shadow:none;}
+.btn-pdf:hover{box-shadow:none;}
+.btn-xlsx{background:var(--c-surface);box-shadow:none;}
+.btn-xlsx:hover{box-shadow:none;}
+.record-count{font-size:13px;color:var(--ct-gray-lt);font-weight:600;margin-left:auto;}
+/* STATS ROW */
+.stats-row{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.stat-card{background:var(--c-surface);border-radius:var(--r);padding:14px 20px;color:var(--c-surface);min-width:150px;flex:1;}
+.stat-card .sn{font-size:22px;font-weight:800;}
+.stat-card .sl{font-size:10px;text-transform:none;letter-spacing:.5px;color:var(--ct-silver);}
+/* TABLE */
+.table-wrap{background:var(--c-surface);border-radius:var(--r);padding:4px;border:1px solid rgba(15,23,42,.06);box-shadow:none;overflow-x:auto;}
+.data-table{width:100%;border-collapse:collapse;min-width:1200px;}
+.data-table thead th{font-size:10px;font-weight:700;text-transform:none;letter-spacing:.4px;color:var(--c-surface);padding:10px 8px;background:var(--ct-gray);white-space:nowrap;position:sticky;top:0;z-index:2;}
+.data-table thead th:first-child{border-radius:var(--r);}
+.data-table thead th:last-child{border-radius:var(--r);}
+.data-table tbody td{padding:8px;font-size:12px;color:var(--ct-gray);border-bottom:1px solid var(--c-bg);white-space:nowrap;text-align:center;}
+.data-table tbody tr:hover{background:rgba(224,122,58,.04);}
+.data-table tbody tr:nth-child(even){background:rgba(0,0,0,.015);}
+.empty-msg{text-align:center;padding:60px 20px;color:var(--ct-silver);font-size:14px;}
+.empty-msg i{font-size:40px;display:block;margin-bottom:12px;color:var(--c-line);}
+.spinner{text-align:center;padding:40px;color:var(--ct-silver);}
+.app-footer{text-align:center;padding:20px;font-size:11px;color:var(--ct-silver);}
+.app-footer span{color:var(--ct-orange);font-weight:600;}
+@keyframes spin{from{transform:rotate(0);}
+to{transform:rotate(360deg);}
+}
+
+}
+</style>
 <script>
     // Acesso direto volta à casca autenticada; no iframe preserva o layout original.
     if (top === self) {
@@ -169,8 +230,8 @@
       else top.location.assign('/unificado/login.html');
     }
     </script>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
-</head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.11">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.11"><script defer src="/unificado/shell/components.js?v=1.4.11"></script></head>
 <body>
 
   <!-- TOPBAR -->
@@ -465,6 +526,6 @@
     document.getElementById("dataIni").value = today;
     document.getElementById("dataFim").value = today;
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/unificado/vendor/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
 </html>

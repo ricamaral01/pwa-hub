@@ -1,0 +1,770 @@
+[
+  {
+    "view": "laboratorio/novo/postes",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fnovo%2Fpostes",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nLaboratório\nExpandir tudo\nRecolher tudo\nCampinas\nNoroeste\nAtualizar\nVersão 1.4.11\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nLaboratório\n›\nCampinas\n›\nPos",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Ensaio de postes\nNBR 8451-1 · -2 · -3 · -4FL-PRO-22 · Rev. 00\n\nIdentifique a amostra, inspecione, registre as leituras e revise o resultado.\n\nAmostra — · novo\n1\nIdentificação\nPENDENTE\n2\nInspeção\nPENDE",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/novo/postes",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fnovo%2Fpostes",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nLaboratório\n›\nCampinas\n›\nPostes\n›\nEnsaio de postes",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Ensaio de postes\nNBR 8451-1 · -2 · -3 · -4FL-PRO-22 · Rev. 00\n\nIdentifique a amostra, inspecione, registre as leituras e revise o resultado.\n\nAmostra — · novo\n1\nIdentificação\nPENDENTE\n2\nInspeção\nPENDE",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/novo/postes",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fnovo%2Fpostes",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nLaboratório\n›\nCampinas\n›\nPostes\n›\nEnsaio de postes",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Ensaio de postes\nNBR 8451-1 · -2 · -3 · -4FL-PRO-22 · Rev. 00\n\nIdentifique a amostra, inspecione, registre as leituras e revise o resultado.\n\nAmostra — · novo\n1\nIdentificação\nPENDENTE\n2\nInspeção\nPENDE",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/novo/postes",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fnovo%2Fpostes",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Postes\nEnsaio de postes\nCertificados de qualidade\nEnsaio de postes\nHistórico de ensaios\nCadastros\nCritérios\nInício\nTelas\nRecentes\nConta",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Ensaio de postes\nNBR 8451-1 · -2 · -3 · -4FL-PRO-22 · Rev. 00\n\nIdentifique a amostra, inspecione, registre as leituras e revise o resultado.\n\nAmostra — · novo\n1\nIdentificação\nPENDENTE\n2\nInspeção\nPENDE",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/novo/postes?tab=historico",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fnovo%2Fpostes%3Ftab%3Dhistorico",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nExpandir tudo\nRecolher tudo\nTarefas\nManutenção Usina\nNão conformidades\nCertificados\nEmitir certificado de qualidade\nHistórico de certificado",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=historico",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Histórico\nNBR 8451-1 · -2 · -3 · -4FL-PRO-22 · Rev. 00\nHistórico de ensaios\nExportar planilha completa\nDe\nAté\nTipo\nResultado\nTodos\nAPROVADO\nREPROVADO\nEM ANDAMENTO\nAm.\tPoste\tFace\tEnsaio\tFlecha nominal\t",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/novo/postes?tab=historico",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fnovo%2Fpostes%3Ftab%3Dhistorico",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nQualidade\n›\nCertificados\n›\nCertificados de ensaios",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=historico",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Histórico\nNBR 8451-1 · -2 · -3 · -4FL-PRO-22 · Rev. 00\nHistórico de ensaios\nExportar planilha completa\nDe\nAté\nTipo\nResultado\nTodos\nAPROVADO\nREPROVADO\nEM ANDAMENTO\nAm.\tPoste\tFace\tEnsaio\tFlecha nominal\t",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/novo/postes?tab=historico",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fnovo%2Fpostes%3Ftab%3Dhistorico",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nQualidade\n›\nCertificados\n›\nCertificados de ensaios",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=historico",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Histórico\nNBR 8451-1 · -2 · -3 · -4FL-PRO-22 · Rev. 00\nHistórico de ensaios\nExportar planilha completa\nDe\nAté\nTipo\nResultado\nTodos\nAPROVADO\nREPROVADO\nEM ANDAMENTO\nAm.\tPoste\tFace\tEnsaio\tFlecha nominal\t",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/novo/postes?tab=historico",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fnovo%2Fpostes%3Ftab%3Dhistorico",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCertificados\nCertificados de ensaios\nEmitir certificado de qualidade\nHistórico de certificados\nCadastros de certificados\nCertificados de ensaios\nIníci",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=historico",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Histórico\nNBR 8451-1 · -2 · -3 · -4FL-PRO-22 · Rev. 00\nHistórico de ensaios\nExportar planilha completa\nDe\nAté\nTipo\nResultado\nTodos\nAPROVADO\nREPROVADO\nEM ANDAMENTO\nAm.\tPoste\tFace\tEnsaio\tFlecha nominal\t",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/slump",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fslump",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nLaboratório\nExpandir tudo\nRecolher tudo\nCampinas\nNoroeste\nAtualizar\nVersão 1.4.11\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nLaboratório\n›\nCampinas\n›\nCon",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/slump",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "← Laboratório\nLABORATÓRIO / CONCRETO FRESCO\nRegistro de slump e flow\n\nInforme a massada e a medida realizada.\n\nConsultar Flow e emitir relatório → Registrar umidade da areia →\n01\n01\nNovo registro\nNúme",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/slump",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fslump",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nLaboratório\n›\nCampinas\n›\nConcreto fresco\n›\nRegistro de slump / flow",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/slump",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "← Laboratório\nLABORATÓRIO / CONCRETO FRESCO\nRegistro de slump e flow\n\nInforme a massada e a medida realizada.\n\nConsultar Flow e emitir relatório → Registrar umidade da areia →\n01\n01\nNovo registro\nNúme",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/slump",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fslump",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nLaboratório\n›\nCampinas\n›\nConcreto fresco\n›\nRegistro de slump / flow",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/slump",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "← Laboratório\nLABORATÓRIO / CONCRETO FRESCO\nRegistro de slump e flow\n\nInforme a massada e a medida realizada.\n\nConsultar Flow e emitir relatório → Registrar umidade da areia →\n01\n01\nNovo registro\nNúme",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/slump",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fslump",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Concreto fresco\nRegistro de slump / flow\nRegistro de slump / flow\nInício\nTelas\nRecentes\nConta",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/slump",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "← Laboratório\nLABORATÓRIO / CONCRETO FRESCO\nRegistro de slump e flow\n\nInforme a massada e a medida realizada.\n\nConsultar Flow e emitir relatório → Registrar umidade da areia →\n01\n01\nNovo registro\nNúme",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/cec/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcec%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nLaboratório\nExpandir tudo\nRecolher tudo\nCampinas\nNoroeste\nAtualizar\nVersão 1.4.11\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nLaboratório\n›\nCampinas\n›\nCon",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Controle Estatístico\nConcreTrack • DAutomação\nVoltar\nSair\nCEC — Controle Estatístico do Concreto\n\nLeituras de resistência, relatórios estatísticos e análise de conformidade.\n\nRompimentos por mês\n\nDias",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/cec/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcec%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nLaboratório\n›\nCampinas\n›\nControle estatístico\n›\nVisão geral",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Controle Estatístico\nConcreTrack • DAutomação\nVoltar\nSair\nCEC — Controle Estatístico do Concreto\n\nLeituras de resistência, relatórios estatísticos e análise de conformidade.\n\nRompimentos por mês\n\nDias",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/cec/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcec%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nLaboratório\n›\nCampinas\n›\nControle estatístico\n›\nVisão geral",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Controle Estatístico\nConcreTrack • DAutomação\nVoltar\nSair\nCEC — Controle Estatístico do Concreto\n\nLeituras de resistência, relatórios estatísticos e análise de conformidade.\n\nRompimentos por mês\n\nDias",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/cec/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcec%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Controle estatístico\nVisão geral\nVisão geral\nRompimentos por mês\nAnálise estatística\nRelatório CEC\nInício\nTelas\nRecentes\nConta",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Controle Estatístico\nConcreTrack • DAutomação\nVoltar\nSair\nCEC — Controle Estatístico do Concreto\n\nLeituras de resistência, relatórios estatísticos e análise de conformidade.\n\nRompimentos por mês\n\nDias",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/cronoanalise/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcronoanalise%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nLaboratório\nExpandir tudo\nRecolher tudo\nCampinas\nNoroeste\nAtualizar\nVersão 1.4.11\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nLaboratório\n/\nInício",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cronoanálise\n\nMedição, dimensionamento e simulação da produção de postes\n\nSincronizado · 0\nMedições válidas\n0\nregistros para análise\nAmostra suficiente\n0 / 40\natividades prontas\nCronômetros ativos\n0\nn",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/cronoanalise/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcronoanalise%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nLaboratório\n/\nInício",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cronoanálise\n\nMedição, dimensionamento e simulação da produção de postes\n\nSincronizado · 0\nMedições válidas\n0\nregistros para análise\nAmostra suficiente\n0 / 40\natividades prontas\nCronômetros ativos\n0\nn",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/cronoanalise/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcronoanalise%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nLaboratório\n/\nInício",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cronoanálise\n\nMedição, dimensionamento e simulação da produção de postes\n\nSincronizado · 0\nMedições válidas\n0\nregistros para análise\nAmostra suficiente\n0 / 40\natividades prontas\nCronômetros ativos\n0\nn",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/cronoanalise/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcronoanalise%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nUnificado\nInício\nInício\nTelas\nRecentes\nConta",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cronoanálise\n\nMedição, dimensionamento e simulação da produção de postes\n\nSincronizado · 0\nMedições válidas\n0\nregistros para análise\nAmostra suficiente\n0 / 40\natividades prontas\nCronômetros ativos\n0\nn",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "usinas/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nUsinas\nExpandir tudo\nRecolher tudo\nGeral\nCartas de traço\nControle estatístico\nRelatórios gerenciais\nControle de estoque\nNoroeste\nAtualizar\nVersão 1.4.",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cartas de traço\n\nReceitas e revisões da usina de Campinas, atualizadas a partir do cadastro oficial.\n\nSomente leitura\nCartas e revisões\n302\nAtivas\n13\nÚltima atualização\n18/11/2026, 17:44:21\nControle e",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "usinas/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nUsinas\n›\nGeral\n›\nCartas de traço",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cartas de traço\n\nReceitas e revisões da usina de Campinas, atualizadas a partir do cadastro oficial.\n\nSomente leitura\nCartas e revisões\n302\nAtivas\n13\nÚltima atualização\n18/11/2026, 17:44:21\nControle e",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "usinas/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nUsinas\n›\nGeral\n›\nCartas de traço",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cartas de traço\n\nReceitas e revisões da usina de Campinas, atualizadas a partir do cadastro oficial.\n\nSomente leitura\nCartas e revisões\n302\nAtivas\n13\nÚltima atualização\n18/11/2026, 17:44:21\nControle e",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "usinas/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nGeral\nCartas de traço\nCartas de traço\nControle estatístico\nRelatórios gerenciais\nControle de estoque\nInício\nTelas\nRecentes\nConta",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Cartas de traço\n\nReceitas e revisões da usina de Campinas, atualizadas a partir do cadastro oficial.\n\nSomente leitura\nCartas e revisões\n302\nAtivas\n13\nÚltima atualização\n18/11/2026, 17:44:21\nControle e",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "usinas/noroeste/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2Fnoroeste%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nUsinas\nExpandir tudo\nRecolher tudo\nGeral\nCartas de traço\nControle estatístico\nRelatórios gerenciais\nControle de estoque\nNoroeste\nPainel\nMassadas\nCarta",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "usinas/noroeste/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2Fnoroeste%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nUsinas\n›\nNoroeste\n›\nPainel\nUSINAS / NOROESTE\nPainel\nDados do supervisório Noroeste\nSEM DADOS\nNenhuma massada registrada\nRealizado\n0 m³\nProgram",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "usinas/noroeste/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2Fnoroeste%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nUsinas\n›\nNoroeste\n›\nPainel\nUSINAS / NOROESTE\nPainel\nDados do supervisório Noroeste\nSEM DADOS\nNenhuma massada registrada\nRealizado\n0 m³\nProgram",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "usinas/noroeste/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2Fnoroeste%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nNoroeste\nPainel\nPainel\nMassadas\nCartas de traço\nRelatórios\nControle estatístico\nCadastros\nEstoque\nCustos\nUSINAS / NOROESTE\nPainel\nDados do supervisóri",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/carta-traco/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcarta-traco%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nLaboratório\nExpandir tudo\nRecolher tudo\nCampinas\nNoroeste\nAtualizar\nVersão 1.4.11\nAjuda\nUsuários\nR\nRicardo Do Amaral\nSair\nLaboratório\n›\nCampinas\n›\nCar",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/carta-traco/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Carta traço e MCC\n\nComposição, revisões e custos de materiais por unidade.\n\nManual\nBaixar PDF\nFonte oficial: PostgreSQL · 30 itens de origem · 11 custos\nO que você quer fazer?\n\nEscolha uma função para",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/carta-traco/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcarta-traco%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nLaboratório\n›\nCampinas\n›\nCarta de traço\n›\nCarta de traço e MCC",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/carta-traco/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Carta traço e MCC\n\nComposição, revisões e custos de materiais por unidade.\n\nManual\nBaixar PDF\nFonte oficial: PostgreSQL · 30 itens de origem · 11 custos\nO que você quer fazer?\n\nEscolha uma função para",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/carta-traco/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcarta-traco%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nLaboratório\n›\nCampinas\n›\nCarta de traço\n›\nCarta de traço e MCC",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/carta-traco/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Carta traço e MCC\n\nComposição, revisões e custos de materiais por unidade.\n\nManual\nBaixar PDF\nFonte oficial: PostgreSQL · 30 itens de origem · 11 custos\nO que você quer fazer?\n\nEscolha uma função para",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "laboratorio/carta-traco/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcarta-traco%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Carta de traço\nCarta de traço e MCC\nCarta de traço e MCC\nInício\nTelas\nRecentes\nConta",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/carta-traco/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Carta traço e MCC\n\nComposição, revisões e custos de materiais por unidade.\n\nManual\nBaixar PDF\nFonte oficial: PostgreSQL · 30 itens de origem · 11 custos\nO que você quer fazer?\n\nEscolha uma função para",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  }
+]

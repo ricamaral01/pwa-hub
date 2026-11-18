@@ -24,13 +24,14 @@
       location.replace('/unificado/usinas/' + page + (params.size ? '?' + params : ''));
     }
   </script>
-  <style>
+  <style>@media print {
+
     :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#10233e;background:#f2f5f9}
     *{box-sizing:border-box}
     [hidden]{display:none!important}
     body{margin:0;min-height:100vh;padding:clamp(18px,3vw,40px)}
     main{max-width:1220px;margin:0 auto}
-    .eyebrow{margin:0 0 8px;color:#087f8c;font-size:.76rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+    .section-context{margin:0 0 8px;color:#087f8c;font-size:.76rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
     h1{margin:0;font-size:clamp(2rem,4.2vw,3.5rem);line-height:1.05;letter-spacing:-.045em}
     .intro{max-width:740px;margin:13px 0 24px;color:#53657b;line-height:1.5}
     .state{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:#e8f3f3;color:#086773;font-size:.8rem;font-weight:800}
@@ -88,16 +89,96 @@
     .carta-meta{margin:-8px 0 18px;color:#607187;font-size:.85rem}
     .carta-indicadores{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:16px 0}
     .carta-indicadores .detail-item:first-child{background:#eaf1f8}
-    @media print{body{padding:0;background:#fff}body main>h1,body main>.eyebrow,body main>.intro,body main>.state,body main>.summary,body main>.legacy-grid,body main>.legacy-note,body main>.panel:not(.detail){display:none!important}.detail{border:0;box-shadow:none;margin:0;padding:0}.detail-actions,.print-extra,#revisoes,.detail-subtitle,#observacao{display:none!important}.detail-head{border-bottom:2px solid #087f8c;padding-bottom:10px}.detail-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.detail-item{break-inside:avoid;border-color:#cbd5e1}.carta-indicadores{grid-template-columns:repeat(5,minmax(0,1fr))}}
+    @media print{body{padding:0;background:#fff}body main>h1,body main>.section-context,body main>.intro,body main>.state,body main>.summary,body main>.legacy-grid,body main>.legacy-note,body main>.panel:not(.detail){display:none!important}.detail{border:0;box-shadow:none;margin:0;padding:0}.detail-actions,.print-extra,#revisoes,.detail-subtitle,#observacao{display:none!important}.detail-head{border-bottom:2px solid #087f8c;padding-bottom:10px}.detail-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.detail-item{break-inside:avoid;border-color:#cbd5e1}.carta-indicadores{grid-template-columns:repeat(5,minmax(0,1fr))}}
     @media(max-width:700px){.summary{grid-template-columns:1fr 1fr}.metric:last-child{grid-column:1/-1}.toolbar{display:grid;align-items:stretch}.search input{width:100%}}
     @media(max-width:850px){.legacy-grid{grid-template-columns:1fr}}
     @media(max-width:700px){.carta-indicadores{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  </style>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.10">
-</head>
+  
+}
+@media screen {
+:root{color:var(--c-navy);background:var(--c-bg);}
+*{box-sizing:border-box;}
+[hidden]{display:none!important;}
+body{margin:0;min-height:100vh;padding:clamp(18px,3vw,40px);}
+main{max-width:1220px;margin:0 auto;}
+.section-context{margin:0 0 8px;color:var(--c-ok);font-size:.76rem;font-weight:800;letter-spacing:.15em;text-transform:none;}
+h1{margin:0;font-size:clamp(2rem,4.2vw,3.5rem);line-height:1.05;letter-spacing:-.045em;}
+.intro{max-width:740px;margin:13px 0 24px;color:var(--c-ink-2);line-height:1.5;}
+.state{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:var(--r);background:var(--c-line-2);color:var(--c-blue);font-size:.8rem;font-weight:800;}
+.state::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;}
+.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0;}
+.legacy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0;}
+.legacy-card{display:flex;flex-direction:column;gap:10px;padding:20px 22px;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);color:inherit;text-decoration:none;box-shadow:none;}
+.legacy-card:hover,.legacy-card:focus-visible{border-color:var(--c-ok);outline:none;box-shadow:none;}
+.legacy-card strong{font-size:1.05rem;}
+.legacy-card span{color:var(--c-ink-2);font-size:.85rem;line-height:1.45;}
+.legacy-card small{margin-top:auto;color:var(--c-blue);font-weight:800;}
+.legacy-note{color:var(--c-ink-2);font-size:.84rem;line-height:1.5;}
+.legacy-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;padding:20px 24px 24px;}
+.legacy-links a{padding:13px 15px;border:1px solid var(--c-line);border-radius:var(--r);color:var(--c-blue);font-weight:750;text-decoration:none;}
+.legacy-links a:hover,.legacy-links a:focus-visible{background:var(--c-line-2);border-color:var(--c-ok);}
+.metric,.panel{border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);box-shadow:none;}
+.metric{padding:20px 22px;}
+.metric span{display:block;color:var(--c-ink-2);font-size:.82rem;font-weight:700;}
+.metric strong{display:block;margin-top:7px;font-size:1.75rem;letter-spacing:-.04em;}
+.panel{overflow:hidden;}
+.toolbar{display:flex;justify-content:space-between;align-items:end;gap:20px;padding:22px 24px;border-bottom:1px solid var(--c-line-2);}
+h2{margin:0;font-size:1.35rem;letter-spacing:-.025em;}
+.sub{margin:5px 0 0;color:var(--c-ink-2);font-size:.88rem;}
+.search{display:grid;gap:6px;color:var(--c-ink-2);font-size:.76rem;font-weight:800;}
+.search input{width:min(310px,100%);padding:11px 13px;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);color:var(--c-navy);font:inherit;font-size:.92rem;font-weight:500;}
+.search input:focus{outline:3px solid var(--c-line);border-color:var(--c-ok);}
+.notice{margin:0;padding:12px 24px;background:var(--c-surface);color:var(--c-ink-2);font-size:.85rem;}
+.notice.error{background:var(--c-bg);color:var(--c-warn);}
+.scroll{overflow:auto;}
+table{width:100%;border-collapse:collapse;min-width:830px;}
+th,td{padding:13px 18px;border-top:1px solid var(--c-line-2);text-align:left;white-space:nowrap;}
+th{color:var(--c-ink-2);font-size:.72rem;text-transform:none;letter-spacing:.07em;background:var(--c-bg);}
+td{font-size:.88rem;}
+td:first-child{font-weight:750;}
+.pill{display:inline-flex;padding:5px 9px;border-radius:var(--r);background:var(--c-line-2);color:var(--c-ok);font-size:.74rem;font-weight:800;}
+.pill.off{background:var(--c-line-2);color:var(--c-ink-2);}
+.empty{padding:32px 24px;color:var(--c-ink-2);text-align:center;}
+button{font:inherit;cursor:pointer;}
+.open,.action{border:1px solid var(--c-line);border-radius:var(--r);padding:7px 10px;background:var(--c-surface);color:var(--c-blue);font-weight:750;}
+.open:hover,.action:hover{background:var(--c-line-2);}
+.detail{margin-top:20px;padding:24px;}
+.detail[hidden]{display:none;}
+.detail-head{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:18px;}
+.detail-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:10px;}
+.detail-item{padding:12px 14px;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);}
+.detail-item span{display:block;color:var(--c-ink-2);font-size:.72rem;font-weight:700;}
+.detail-item strong{display:block;margin-top:4px;font-size:.96rem;overflow-wrap:anywhere;}
+.revision-link{width:100%;text-align:left;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);padding:12px 14px;color:var(--c-navy);}
+.revision-link:hover,.revision-link:focus-visible{background:var(--c-line-2);border-color:var(--c-ok);}
+.revision-link[aria-current="true"]{border-color:var(--c-ok);background:var(--c-line-2);}
+.revision-link span,.revision-link strong{display:block;}
+.revision-link span{color:var(--c-ink-2);font-size:.72rem;font-weight:700;}
+.revision-link strong{margin-top:4px;font-size:.96rem;}
+.detail-subtitle{margin:23px 0 10px;font-size:1rem;}
+.detail-note{white-space:pre-wrap;color:var(--c-ink-2);line-height:1.5;}
+.carta-meta{margin:-8px 0 18px;color:var(--c-ink-2);font-size:.85rem;}
+.carta-indicadores{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:16px 0;}
+.carta-indicadores .detail-item:first-child{background:var(--c-line-2);}
+@media print{body{padding:0;background:#fff}body main>h1,body main>.section-context,body main>.intro,body main>.state,body main>.summary,body main>.legacy-grid,body main>.legacy-note,body main>.panel:not(.detail){display:none!important}.detail{border:0;box-shadow:none;margin:0;padding:0}.detail-actions,.print-extra,#revisoes,.detail-subtitle,#observacao{display:none!important}.detail-head{border-bottom:2px solid #087f8c;padding-bottom:10px}.detail-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.detail-item{break-inside:avoid;border-color:#cbd5e1}.carta-indicadores{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media (max-width:700px){.summary{grid-template-columns:1fr 1fr;}
+.metric:last-child{grid-column:1/-1;}
+.toolbar{display:grid;align-items:stretch;}
+.search input{width:100%;}
+}
+@media (max-width:850px){.legacy-grid{grid-template-columns:1fr;}
+}
+@media (max-width:700px){.carta-indicadores{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+
+}
+</style>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.11">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.11"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.11"><script defer src="/unificado/shell/components.js?v=1.4.11"></script></head>
 <body>
   <main>
-    <p class="eyebrow">Usinas / Campinas</p>
+    <p class="section-context">Usinas / Campinas</p>
     <h1 id="titulo">Cartas de traço</h1>
     <p id="intro" class="intro">Receitas e revisões da usina de Campinas, atualizadas a partir do cadastro oficial.</p>
     <span id="estado" class="state">Somente leitura</span>
@@ -128,7 +209,7 @@
       <p id="vazio" class="empty" hidden>Nenhuma receita encontrada.</p>
     </section>
     <section id="detalhe" class="panel detail" aria-labelledby="detalhe-titulo" hidden>
-      <div class="detail-head"><div><p class="eyebrow">Carta de traço · somente leitura</p><h2 id="detalhe-titulo">Detalhes</h2></div>
+      <div class="detail-head"><div><p class="section-context">Carta de traço · somente leitura</p><h2 id="detalhe-titulo">Detalhes</h2></div>
         <div class="detail-actions"><button id="imprimir" class="action" type="button">Imprimir</button><button id="fechar" class="action" type="button">Fechar</button></div>
       </div>
       <p id="detalhe-meta" class="carta-meta"></p>
@@ -152,7 +233,7 @@
       $('titulo').textContent = area.title;
       $('intro').textContent = 'Telas operacionais de Campinas integradas ao Unificado.';
       if(new URLSearchParams(location.search).get('app')==='fechamento-diario'){
-        document.querySelector('main>.eyebrow').textContent='Usinas / Ribeirão';
+        document.querySelector('main>.section-context').textContent='Usinas / Ribeirão';
         $('intro').textContent='PCP x Produção + Qualidade de Ribeirão.';
       }
       $('estado').textContent = 'Consulta nativa';
@@ -267,10 +348,10 @@
     $('imprimir').addEventListener('click',()=>window.print());
     if(!area){load(); setInterval(load, 60000)}
   </script>
-  <link rel="stylesheet" href="./native-areas.css?v=1.4.10">
-  <link rel="stylesheet" href="./cec-native.css?v=1.4.10">
-  <script src="./native-areas.js?v=1.4.10"></script>
+  <link rel="stylesheet" href="./native-areas.css?v=1.4.11">
+  <link rel="stylesheet" href="./cec-native.css?v=1.4.11">
+  <script src="./native-areas.js?v=1.4.11"></script>
   <script src="./assets/html5-qrcode-2.3.8.min.js"></script>
-  <script src="./cec-native.js?v=1.4.10"></script>
+  <script src="./cec-native.js?v=1.4.11"></script>
 </body>
 </html>

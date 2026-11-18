@@ -30,7 +30,7 @@ export default function AbsorptionHistory(){
  const printUrl='/api/absorcao/historico/relatorio'+(params.size?'?'+params.toString():'');
  const invalidPeriod=Boolean(de&&ate&&de>ate);
  return <section className="panel absorption-history" aria-labelledby="abs-history-title">
-  <div className="panelHead"><div><div className="eyebrow">Resultados históricos informados</div><h2 id="abs-history-title">Absorção por imersão</h2></div>
+  <div className="panelHead"><div><h2 id="abs-history-title">Absorção por imersão</h2></div>
    <a className="btn" href={invalidPeriod?'#abs-history-title':printUrl} target={invalidPeriod?undefined:'_blank'} rel="noopener" aria-disabled={invalidPeriod||loading||Boolean(error)} onClick={event=>{if(invalidPeriod||loading||error)event.preventDefault()}}>Versão para impressão ↗</a></div>
   <p className="note">Registros de 2024 a 2026. Os percentuais e as médias foram transcritos dos dados fornecidos; não há pesagens originais para recalcular estes ensaios.</p>
   <div className="abs-history-filters"><label className="field"><span>Produção de</span><input className="input" type="date" value={de} onChange={event=>setDe(event.target.value)}/></label>

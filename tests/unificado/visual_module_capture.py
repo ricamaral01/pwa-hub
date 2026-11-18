@@ -5,9 +5,11 @@ from urllib.parse import quote,urlsplit
 from playwright.sync_api import sync_playwright
 from homolog_session import test_cookie_for
 ROOT=Path(__file__).resolve().parents[2];BASE='https://concrefer.concretrack.com.br:18446'
-parser=argparse.ArgumentParser();parser.add_argument('phase');parser.add_argument('views',nargs='+');parser.add_argument('--media',default='screen',choices=['screen','print']);parser.add_argument('--moment',default='depois');a=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('phase');parser.add_argument('views',nargs='+');parser.add_argument('--media',default='screen',choices=['screen','print']);parser.add_argument('--moment',default='depois');parser.add_argument('--merge',action='store_true');a=parser.parse_args()
 OUT=ROOT/'docs/revisao-visual-unificado/homolog'/a.phase/a.moment;OUT.mkdir(parents=True,exist_ok=True)
 results=[]
+existing=OUT.parent/(a.moment+'-results.json')
+if a.merge and existing.exists():results=[r for r in json.loads(existing.read_text(encoding='utf-8')) if r['view'] not in a.views]
 with sync_playwright() as p:
  browser=p.chromium.launch(channel='msedge',headless=True)
  ctx=browser.new_context(service_workers='block')

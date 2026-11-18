@@ -124,7 +124,7 @@ export function Collect({activities, stats, setQueue, notify, onActive}: {
   const active = activities.filter(item => item.ativo && item.processo === context.processo);
   return <div className="cr-collect">
     <section className="cr-card cr-context">
-      <div className="cr-card-head"><div><p className="cr-eyebrow">COLETA DE TEMPOS</p><h2>Contexto da medição</h2></div><span className="cr-muted">Preencha uma vez para os próximos cronômetros</span></div>
+      <div className="cr-card-head"><div><h2>Contexto da medição</h2></div><span className="cr-muted">Preencha uma vez para os próximos cronômetros</span></div>
       <div className="cr-pills">{(Object.keys(stages) as Process[]).map(stage => <button key={stage}
         className={context.processo === stage ? 'selected' : ''}
         onClick={() => setContext({...context, processo: stage})}>{stages[stage]}</button>)}</div>
@@ -148,7 +148,7 @@ export function Collect({activities, stats, setQueue, notify, onActive}: {
           </article>;
         })}</div> : <p className="cr-empty">Nenhuma atividade ativa nesta etapa.</p>}
       </section>
-      <section className="cr-card cr-running"><div className="cr-card-head"><div><p className="cr-eyebrow">TEMPO REAL</p><h2>Em andamento</h2></div><span className="cr-count">{timers.length}</span></div>
+      <section className="cr-card cr-running"><div className="cr-card-head"><div><h2>Em andamento</h2></div><span className="cr-count">{timers.length}</span></div>
         {timers.length ? timers.map(timer => <article key={timer.id} className="cr-timer">
           <div className="cr-timer-title"><span className="cr-code">{timer.atividade_codigo}</span><strong>{timer.atividade_nome}</strong></div>
           <div className="cr-clock" aria-label="Tempo efetivo">{formatted(elapsed(timer, now))}</div>

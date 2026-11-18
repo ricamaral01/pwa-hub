@@ -1,0 +1,31 @@
+@import url('/unificado/shell/tokens.css');
+@media screen {
+:root,:root[data-theme],:root[data-preview-theme] {--bg:var(--c-bg);--surface:var(--c-surface);--raised:var(--c-surface);--inset:var(--c-bg);--line:var(--c-line);--line-2:var(--c-line-2);--fg:var(--c-ink);--muted:var(--c-ink-2);--faint:var(--c-ink-3);--accent:var(--c-navy);--accent-ink:var(--c-surface);--accent-soft:var(--c-line-2);--accent-2:var(--c-orange);--teal:var(--c-blue);--ok:var(--c-ok);--bad:var(--c-crit);--warn:var(--c-warn);--sh-raised:none;--sh-inset:none}
+.preview-shell,:root[data-preview-theme] .preview-shell {--pv-panel:var(--c-bg);--pv-card:var(--c-surface);--pv-field:var(--c-bg);--pv-text:var(--c-ink);--pv-muted:var(--c-ink-2);--pv-line:var(--c-line);--pv-action:var(--c-navy);--pv-action-text:var(--c-surface);--pv-ok:var(--c-ok);--pv-warn:var(--c-warn);--pv-bad:var(--c-crit);--pv-na:var(--c-ink-3);--pv-shadow:none;display:block;background:var(--c-bg);padding:0;min-height:100vh}
+.preview-content {padding:24px 32px;min-width:0;background:var(--c-bg)}
+.ph {margin-bottom:20px;display:flex;justify-content:space-between;align-items:end;gap:16px}
+.ph h1 {font-size:24px;font-weight:600;letter-spacing:-.02em;margin:0 0 4px}
+.ph .sub {font-size:12px;color:var(--c-ink-2)}
+.pv-page-heading h1 {display:none}
+.pv-page-heading {margin-bottom:16px}
+.panel,.card,.stage,.pv-mechanical-nav,.pv-abs-link {box-shadow:none;border-radius:var(--r);background:var(--c-surface)}
+.preview-chip,.chip,.pill {border-radius:0;border:0;background:transparent;font-size:12px;font-weight:400;color:var(--c-ink-2)}
+.preview-chip+.preview-chip {margin-left:12px}
+.pv-phases button.active {background:var(--c-surface);color:var(--c-ink);box-shadow:inset 0 -2px var(--c-orange);border-color:var(--c-line)}
+.preview-shell .btn.primary,.btn.primary {background:var(--c-navy);border-color:var(--c-navy);color:var(--c-surface)}
+.pv-mechanical-nav {border:1px solid var(--c-line)}
+.pv-result-side .panel {border:1px solid var(--c-line)}
+html.unificado-embedded :is(.preview-sidebar,.preview-top,.preview-bottom-nav,.preview-embedded-toolbar,.sidebar,.topbar) {display:none!important}
+html.unificado-embedded :is(.preview-shell,.app) {display:block!important;padding-bottom:0!important}
+html.unificado-embedded .preview-main {margin:0!important;width:100%!important}
+.tableWrap,.table-wrap {max-width:100%;overflow:auto}
+}
+@media screen and (max-width:800px) {
+.preview-content {padding:16px}
+.pv-mechanical,.pv-result-grid {grid-template-columns:minmax(0,1fr)}
+.pv-mechanical-nav {display:flex;flex-wrap:wrap;gap:8px}
+.pv-mechanical-nav>strong {flex-basis:100%}
+.preview-shell .params {grid-template-columns:repeat(2,minmax(0,1fr))}
+.preview-shell .pv-progress {position:static}
+.ph h1 {font-size:22px}
+}

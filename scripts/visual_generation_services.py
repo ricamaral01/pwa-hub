@@ -58,7 +58,7 @@ arm={'ARMACAO_DATABASE_URL':sa(base_sql),'ARMACAO_IAM_DATABASE_URL':sa(map_sql),
 report={'USINAS_REPORTING_DATABASE_URL':map_sql,'MAPA_USINA_INTEGRATION_KEY':mapa.get('MAPA_USINA_INTEGRATION_KEY',''),'USINAS_REPORTING_SUPABASE_KEY':''}
 cq={**lab,'CQ_DATA_DIR':str(G/'cq/data'),'CQ_HOMOLOG_BASE':'https://concrefer.concretrack.com.br:18446','CQ_VERIFY_BASE':'https://concrefer.concretrack.com.br:18446/v/','CQ_CP_NEW_URL':'https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes/','CQ_ALLOWED_ORIGIN':'https://concrefer.concretrack.com.br:18446','CQ_LOGO_PATH':str(H/'public/unificado/assets/img/logo-concrefer.png')}
 carta=combined([Path('/etc/concrefer/carta-traco-staging.env'),Path('/etc/concrefer/carta-traco-gateway.env'),Path('/etc/concrefer/carta-traco-pede.env')]);carta=settings(carta)
-carta['CARTA_TRACO_DATABASE_URL']=dsn(map_sql,DB['carta'])
+carta['CARTA_TRACO_DATABASE_URL']=dsn(mapa['MAPA_WRITER_DATABASE_URL'],DB['carta'])
 hub=env(E/'hub.env')
 if 'CARTA_TRACO_PEDE_DATABASE_URL' in carta:
  assert 'PEDERNEIRAS_DATABASE_URL' in hub

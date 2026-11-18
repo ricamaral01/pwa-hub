@@ -1,0 +1,41 @@
+@import url('/unificado/shell/tokens.css');
+@media screen {
+body {margin:0;padding:24px 32px;background:var(--c-bg);color:var(--c-ink)}
+main,.ct-app {max-width:1400px;margin:0 auto;min-width:0}
+h1,.ct-head h1 {font-size:24px;font-weight:600;letter-spacing:-.02em;line-height:1.25}
+.ct-head {background:transparent;border:0;box-shadow:none;border-radius:0;padding:0;margin-bottom:16px;align-items:end}
+.ct-head-actions {color:var(--c-ink-2)}
+.ct-banner {background:transparent;border:0;padding:0;margin:0 0 20px;font-size:12px;color:var(--c-ink-2)}
+.ct-home-grid,.legacy-grid {display:flex;flex-direction:column;gap:0;border:1px solid var(--c-line);border-radius:var(--r);overflow:hidden}
+.ct-home-card,.legacy-card {display:grid;grid-template-columns:28px minmax(0,1fr);gap:3px 12px;text-align:left;padding:14px 18px;border:0;border-bottom:1px solid var(--c-line);border-radius:0;box-shadow:none;background:var(--c-surface);color:var(--c-ink);transform:none}
+.ct-home-card:last-child,.legacy-card:last-child {border-bottom:0}
+.ct-home-card strong,.legacy-card strong {font-size:14px;font-weight:500}
+.ct-home-card small,.legacy-card span {grid-column:2;font-size:12px;color:var(--c-ink-2)}
+.ct-home-icon {grid-row:span 2;color:var(--c-blue);background:transparent;box-shadow:none;font-size:18px;align-self:center}
+.ct-home-action,.legacy-card small {display:none}
+.ct-home-card:hover,.legacy-card:hover {background:var(--c-line-2);box-shadow:none;transform:none}
+.ct-panel,.panel,.metric {border:1px solid var(--c-line);border-radius:var(--r);box-shadow:none;background:var(--c-surface)}
+.ct-panel .ct-panel,.panel .panel {border:0;box-shadow:none}
+.summary {gap:0;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);overflow:hidden}
+.summary .metric {border:0;border-right:1px solid var(--c-line);border-radius:0;background:transparent}
+.summary .metric:last-child {border:0}
+.section-context,.title-decoration {display:none}
+.ct-view-head h2 {font-size:17px;font-weight:600}
+.ct-view-head {gap:12px;flex-wrap:wrap}
+.ct-app button,.ct-app input,.ct-app select {border-radius:var(--r)}
+.ct-primary,.ct-app button.primary {background:var(--c-navy);border-color:var(--c-navy);color:var(--c-surface)}
+.ct-home-card {background:var(--c-surface)!important;color:var(--c-ink)!important;min-height:0;align-items:center}
+.ct-home-card strong {grid-column:2;grid-row:1;margin:0}
+.ct-home-card small {margin:0;flex:initial}
+.ct-home-card .ct-home-icon {grid-column:1;grid-row:1 / span 2;width:28px;height:28px;border-radius:0}
+.ct-home-card .ct-home-icon {background:transparent!important;color:var(--c-blue)!important}
+.ct-app th {font-weight:500;text-transform:none;letter-spacing:0;background:var(--c-line-2);color:var(--c-ink-2)}
+}
+@media screen and (max-width:800px) {
+body {padding:16px}
+.ct-head {align-items:start;gap:12px;flex-wrap:wrap}
+.ct-grid,.ct-grid.two,.ct-grid.editor {grid-template-columns:minmax(0,1fr)}
+.ct-form-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+.ct-filters {flex-wrap:wrap;min-width:0}
+.ct-head-actions {flex-wrap:wrap}
+}

@@ -1,5 +1,5 @@
 const API = '/unificado/mapa/api/usinas/noro';
-const STYLE = '/unificado/usinas/noroeste/noro-native.css?v=20261030-5';
+const STYLE = '/unificado/usinas/noroeste/noro-native.css?v=1.4.11';
 const label = {painel:'Painel',massadas:'Massadas',cartas:'Cartas de traço',relatorios:'Relatórios',cec:'Controle estatístico',cadastros:'Cadastros',estoque:'Estoque',custos:'Custos'};
 const today = () => new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo'}).format(new Date());
 const number = (value, digits=1) => Number(value || 0).toLocaleString('pt-BR',{maximumFractionDigits:digits});
@@ -324,7 +324,7 @@ export async function mountNoro(container,area) {
   }
   container.replaceChildren();container.className='noro-native';
   const header=el('header',null,'noro-header');
-  const title=el('div');title.append(el('small','USINAS / NOROESTE'),el('h1',label[area]));
+  const title=el('div');title.append(el('h1',label[area]));
   header.append(title,el('span','Dados do supervisório Noroeste','noro-origin'));
   const content=el('main',null,'noro-content');container.append(header,content);
   if(area==='painel') {

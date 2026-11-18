@@ -1,0 +1,19 @@
+{
+  "name": "CEC Concrefer",
+  "short_name": "CEC Concrefer",
+  "description": "Resultados e análise estatística de corpos de prova — Laboratório Concrefer",
+  "start_url": "/unificado/laboratorio/cec/analise/",
+  "scope": "/unificado/laboratorio/cec/analise/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f0f4f8",
+  "theme_color": "#1a3a5c",
+  "icons": [
+    {
+      "src": "/unificado/laboratorio/cec/assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+[
+  {
+    "view": "usinas/carta-traco.html",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2Fcarta-traco.html",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nUsinas\nExpandir tudo\nRecolher tudo\nGeral\nCartas de traço\nControle estatístico\nRelatórios gerenciais\nControle de estoque\nNoroeste\nAtualizar\nVersão 1.4.",
+        "access_denied": true,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "usinas/carta-traco.html",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2Fcarta-traco.html",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nConcrefer\n/\nSem acesso\nVocê não tem acesso a esta tela",
+        "access_denied": true,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "usinas/carta-traco.html",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2Fcarta-traco.html",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.11\nConcrefer\n/\nSem acesso\nVocê não tem acesso a esta tela",
+        "access_denied": true,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "usinas/carta-traco.html",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=usinas%2Fcarta-traco.html",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nUnificado\nInício\nVocê não tem acesso a esta tela\nInício\nTelas\nRecentes\nConta",
+        "access_denied": true,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  }
+]
