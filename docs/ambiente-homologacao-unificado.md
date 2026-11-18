@@ -1,5 +1,47 @@
 # Homologação do sistema unificado
 
+## Continuação autorizada — paridade e fases 3–7
+
+O usuário autorizou em 18/11/2026 a conclusão das fases restantes e a paridade
+dos módulos/funções publicados, exclusivamente no ambiente de teste.
+Plano antes das alterações: [alinhamento completo](revisao-visual-unificado/homolog/alinhamento-completo/PLANO.md).
+Os bancos `mapa_ref_homolog_20261118`, `pcp_ref_homolog_20261118` e
+`qualidade_ref_homolog_20261118` são referências descartáveis de **estrutura**
+obtida de dumps locais já existentes. Não recebem conexões da aplicação nem
+dados de contas. Não permitem FDW ou mapeamentos para fontes de produção.
+Os bancos `mapa_validacao_homolog_20261118`, `pcp_validacao_homolog_20261118`
+e `qualidade_validacao_homolog_20261118` recebem cópias privadas dos próprios
+bancos de homologação para ensaiar as migrações antes de aplicá-las à 18446.
+
+**Isolamento adicional identificado durante o ensaio:** o serviço publicado
+`carta-traco-staging.service` (3088), usado pelo vhost de produção, lê
+`mapa_unificado_homolog_20261016`. Esse banco antigo não receberá o alinhamento
+completo nem alterações no estoque. Produção não será reconfigurada.
+As novas cópias exclusivas da revisão são:
+
+- `mapa_visual_homolog_20261118`
+- `pcp_visual_homolog_20261118`
+- `qualidade_visual_homolog_20261118`
+- `laboratorio_visual_homolog_20261118`
+- `suprimentos_visual_homolog_20261118`
+- `carta_traco_visual_homolog_20261118`
+- `cec_campinas_visual_homolog_20261118`
+- `cec_noroeste_visual_homolog_20261118`
+
+São criadas dos dumps dos próprios bancos de teste verificados, preservando
+contas e concessões. As migrações de paridade serão aplicadas a essas cópias.
+O estoque antigo de Carta Traço permanece na cópia própria da Carta Traço;
+na cópia do Mapa, seu esquema antigo é arquivado por renomeação para permitir
+criar o esquema publicado de Noroeste sem conversão destrutiva de dados.
+CEC Campinas usa o dump offline já existente de 09/11/2026 como referência
+de estrutura/dados; CEC Noroeste recebe a mesma estrutura publicada sem copiar
+leituras de Campinas. Os serviços e workers de sincronização de produção não
+são executados. Dados de Noroeste podem ser carregados somente de fontes de
+homologação documentadas ou por operações de teste identificadas.
+Suprimentos de teste usa `suprimentos_homolog_20261025`, conforme configuração
+do serviço existente. Os demais bancos de aplicação documentados continuam
+sendo os únicos destinos autorizados de migrações de aplicação.
+
 ## Revisão visual em 18/11/2026 — fases 1 e 2
 
 A porta **18446** está na versão **1.4.8**, com a base compartilhada e a casca

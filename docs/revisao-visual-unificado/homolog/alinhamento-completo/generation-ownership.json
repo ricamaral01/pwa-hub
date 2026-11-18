@@ -1,0 +1,50 @@
+[
+  {
+    "database": "mapa_visual_homolog_20261118",
+    "owner_from_old_homolog": "postgres",
+    "technical_owner_statements": 173,
+    "per_database_role_settings": 0,
+    "global_role_changes": false,
+    "production_database_connections": 0
+  },
+  {
+    "database": "pcp_visual_homolog_20261118",
+    "owner_from_old_homolog": "pcp_unificado_app",
+    "technical_owner_statements": 111,
+    "per_database_role_settings": 0,
+    "global_role_changes": false,
+    "production_database_connections": 0
+  },
+  {
+    "database": "qualidade_visual_homolog_20261118",
+    "owner_from_old_homolog": "postgres",
+    "technical_owner_statements": 50,
+    "per_database_role_settings": 0,
+    "global_role_changes": false,
+    "production_database_connections": 0
+  },
+  {
+    "database": "laboratorio_visual_homolog_20261118",
+    "owner_from_old_homolog": "postgres",
+    "technical_owner_statements": 0,
+    "per_database_role_settings": 0,
+    "global_role_changes": false,
+    "production_database_connections": 0
+  },
+  {
+    "database": "suprimentos_visual_homolog_20261118",
+    "owner_from_old_homolog": "concrefer_suprimentos_homolog",
+    "technical_owner_statements": 0,
+    "per_database_role_settings": 0,
+    "global_role_changes": false,
+    "production_database_connections": 0
+  },
+  {
+    "database": "carta_traco_visual_homolog_20261118",
+    "owner_from_old_homolog": "postgres",
+    "technical_owner_statements": 0,
+    "per_database_role_settings": 0,
+    "global_role_changes": false,
+    "production_database_connections": 0
+  }
+]

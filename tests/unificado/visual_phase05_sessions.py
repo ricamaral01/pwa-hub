@@ -14,8 +14,8 @@ def env(path):
   if len(p)==1 and '=' in p[0]:k,v=p[0].split('=',1);out[k]=v
  return out
 root=Path('/etc/concrefer-unificado/homolog')
-pcp=env(root/'pcp.env');mapa=env(root/'mapa-auth.env')
-for dsn,name in [(pcp['DATABASE_URL'],'pcp_unificado_homolog_20261016'),(mapa['MAPA_AUTH_DATABASE_URL'],'mapa_unificado_homolog_20261016')]:
+pcp=env(root/'visual-pcp.env');mapa=env(root/'visual-mapa.env')
+for dsn,name in [(pcp['DATABASE_URL'],'pcp_visual_homolog_20261118'),(mapa['MAPA_AUTH_DATABASE_URL'],'mapa_visual_homolog_20261118')]:
  u=urlsplit(dsn);assert u.hostname in ('127.0.0.1','localhost') and u.path=='/'+name
 with psycopg.connect(pcp['DATABASE_URL'],row_factory=psycopg.rows.dict_row) as db:
  db.execute('SET TRANSACTION READ ONLY')
@@ -54,7 +54,7 @@ print(json.dumps(out,default=str))
 '''
 
 def sessions():
-    r=subprocess.run(['ssh','vps-concrefer','/opt/concrefer-unificado/homolog-next/mapa-api/.venv/bin/python','-'],input=REMOTE,text=True,capture_output=True,check=True)
+    r=subprocess.run(['ssh','vps-concrefer','/opt/concrefer-unificado/homolog-next/visual-full/mapa/.venv/bin/python','-'],input=REMOTE,text=True,capture_output=True,check=True)
     return json.loads(r.stdout)
 
 if __name__=='__main__':

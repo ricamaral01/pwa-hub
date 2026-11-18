@@ -1,0 +1,46 @@
+[
+  {
+    "reference_database": "mapa_ref_homolog_20261118",
+    "offline_source": "/var/backups/concrefer-unificado/20261118T200240Z/mapa_unificado_teste.dump",
+    "sha256": "e19bc8e013c297b765f130957833a16e938493c018fe8c0e8822b24162da69a7",
+    "statements": 397,
+    "foreign_tables_materialized_empty": [
+      "noro_sup.ct_usuarios_auditoria",
+      "noro_sup.tbl_agregados",
+      "noro_sup.tbl_config_traco_campo",
+      "noro_sup.tbl_controle_estatistico",
+      "noro_sup.tbl_est_config_massada",
+      "noro_sup.tbl_est_custos_ajustes",
+      "noro_sup.tbl_est_materiais",
+      "noro_sup.tbl_est_movimentos",
+      "noro_sup.tbl_est_silos",
+      "noro_sup.tbl_leiturasetor",
+      "noro_sup.tbl_massadas",
+      "noro_sup.tbl_pcpsetor",
+      "noro_sup.tbl_produtos",
+      "noro_sup.tbl_qrcp",
+      "noro_sup.tbl_receitas",
+      "noro_sup.tbl_tracos"
+    ],
+    "excluded_fdw_server_and_mappings": 247,
+    "production_database_connections": 0
+  },
+  {
+    "reference_database": "pcp_ref_homolog_20261118",
+    "offline_source": "/var/backups/concrefer-unificado/20261118T200240Z/pcp_unificado_teste.dump",
+    "sha256": "6dcb747c7d8d48e479e1b566f266700fb3cb5e2d79bd97d77db26b6512db637d",
+    "statements": 550,
+    "foreign_tables_materialized_empty": [],
+    "excluded_fdw_server_and_mappings": 0,
+    "production_database_connections": 0
+  },
+  {
+    "reference_database": "qualidade_ref_homolog_20261118",
+    "offline_source": "/var/backups/concrefer-ged-qualidade/20261118T053935Z/qualidade.dump",
+    "sha256": "251a9d104bcb7fb5ac6bfd03b896b8260e64460a1293593cae10262259350a86",
+    "statements": 256,
+    "foreign_tables_materialized_empty": [],
+    "excluded_fdw_server_and_mappings": 0,
+    "production_database_connections": 0
+  }
+]

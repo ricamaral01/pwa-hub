@@ -1,0 +1,20 @@
+[
+  {
+    "module": "cec-campinas",
+    "service": "unificado-visual-homolog-cec-campinas.service",
+    "port": 14186,
+    "database": "cec_campinas_visual_homolog_20261118",
+    "source_code": "/opt/concrefer-unificado/cec-campinas",
+    "production_processes_modified": false,
+    "synchronization_workers_started": false
+  },
+  {
+    "module": "cec-noroeste",
+    "service": "unificado-visual-homolog-cec-noroeste.service",
+    "port": 14185,
+    "database": "cec_noroeste_visual_homolog_20261118",
+    "source_code": "/opt/concrefer-unificado/cec-noroeste",
+    "production_processes_modified": false,
+    "synchronization_workers_started": false
+  }
+]

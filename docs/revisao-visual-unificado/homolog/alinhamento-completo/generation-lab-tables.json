@@ -1,0 +1,14 @@
+{
+  "database": "laboratorio_visual_homolog_20261118",
+  "restored_tables": [
+    "ensaio_postes.slump_registro",
+    "ensaio_postes.flow_planilha_registro",
+    "ensaio_postes.umidade_areia_registro"
+  ],
+  "offline_source": "/opt/concrefer-unificado/backups/before-1.2.0-20261109T224452Z/concretrack_postes.dump",
+  "source_sha256": "0a97f1dd8990e6c3be8fc747f8995c712ee19e97b1839d2e9f029d5b93013f51",
+  "before_dump": "/opt/concrefer-unificado/homolog-next/backups/paridade-completa-20261118T204523Z/laboratorio_visual_homolog_20261118-before-lab-tables.dump",
+  "before_sha256": "fdfd9561e236d93bbd11aaac8f3761a393667ebec41f182e6ad07c600ea5a55a",
+  "production_connections": 0,
+  "old_homolog_tables_untouched": true
+}

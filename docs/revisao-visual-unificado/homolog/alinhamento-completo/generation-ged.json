@@ -1,0 +1,10 @@
+{
+  "frontend": "visual-homolog-ged-frontend",
+  "port": 14170,
+  "frontend_published_image_identical": "sha256:6ffbcd60b74a6d0f0b043e13a9a7e5600c0a792bf66402753f033b10b67ba4fb",
+  "backend_published_image_identical": "sha256:0837094055d4861d1e1ba8ca3d079c26217ed99c0e465f548c638000fc7ec859",
+  "backend_reused_test_only": "ged_homolog_backend",
+  "database": "ged_concrefer_homolog",
+  "database_migrations": 0,
+  "production_containers_modified": false
+}

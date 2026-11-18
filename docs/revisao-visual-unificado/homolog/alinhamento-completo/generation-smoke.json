@@ -1,0 +1,126 @@
+[
+  {
+    "module": "mapa",
+    "path": "/me",
+    "status": 200,
+    "error": null
+  },
+  {
+    "module": "mapa",
+    "path": "/unified/screen-access/me",
+    "status": 200,
+    "error": null
+  },
+  {
+    "module": "mapa",
+    "path": "/unified/quick-access/me",
+    "status": 200,
+    "error": null
+  },
+  {
+    "module": "mapa",
+    "path": "/unified/users/catalog",
+    "status": 200,
+    "error": null
+  },
+  {
+    "module": "mapa",
+    "path": "/unified/pcp-session",
+    "status": 200
+  },
+  {
+    "module": "pcp",
+    "path": "/api/setores",
+    "status": 200,
+    "error": null
+  },
+  {
+    "module": "pcp",
+    "path": "/api/programacao-semanal?semana=2030-01-07",
+    "status": 200,
+    "error": null
+  },
+  {
+    "module": "pcp",
+    "path": "/api/postes-series/previsao?semana=2030-01-07",
+    "status": 200,
+    "error": null
+  },
+  {
+    "module": "laboratorio",
+    "openapi_status": 404,
+    "route_count": 0,
+    "sample_routes": []
+  },
+  {
+    "module": "cq",
+    "openapi_status": 404,
+    "route_count": 0,
+    "sample_routes": []
+  },
+  {
+    "module": "qualidade",
+    "openapi_status": 200,
+    "route_count": 69,
+    "sample_routes": [
+      "/api/health",
+      "/api/contexto",
+      "/api/catalogos"
+    ]
+  },
+  {
+    "module": "suprimentos",
+    "openapi_status": 200,
+    "route_count": 131,
+    "sample_routes": [
+      "/api/suprimentos/health",
+      "/api/suprimentos/pwa/catalogo"
+    ]
+  },
+  {
+    "module": "logistica",
+    "openapi_status": 404,
+    "route_count": 0,
+    "sample_routes": []
+  },
+  {
+    "module": "dosagem",
+    "openapi_status": 403,
+    "route_count": 0,
+    "sample_routes": []
+  },
+  {
+    "module": "armacao",
+    "openapi_status": 200,
+    "route_count": 37,
+    "sample_routes": [
+      "/api/armacao/unidades",
+      "/health"
+    ]
+  },
+  {
+    "module": "reporting",
+    "openapi_status": 404,
+    "route_count": 0,
+    "sample_routes": []
+  },
+  {
+    "module": "carta",
+    "openapi_status": 200,
+    "route_count": 21,
+    "sample_routes": [
+      "/api/laboratorio/carta-traco/status",
+      "/api/laboratorio/carta-traco/permissoes",
+      "/api/laboratorio/carta-traco/unidades",
+      "/api/laboratorio/carta-traco/materiais",
+      "/api/laboratorio/carta-traco/fornecedores",
+      "/api/laboratorio/carta-traco/cartas",
+      "/api/laboratorio/carta-traco/cartas/{carta_id}",
+      "/api/laboratorio/carta-traco/cartas/{carta_id}/comparar/{outra_id}",
+      "/api/laboratorio/carta-traco/cartas/calcular",
+      "/api/laboratorio/carta-traco/cartas/{carta_id}/inativar",
+      "/api/laboratorio/carta-traco/custos",
+      "/api/laboratorio/carta-traco/custos/lote"
+    ]
+  }
+]

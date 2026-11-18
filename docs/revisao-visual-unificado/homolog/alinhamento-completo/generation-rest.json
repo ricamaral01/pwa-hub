@@ -1,0 +1,27 @@
+{
+  "containers": [
+    {
+      "source_homolog_container": "mapa-homolog-postgrest-reader",
+      "container": "visual-homolog-postgrest-reader",
+      "loopback_port": 14151,
+      "database": "mapa_visual_homolog_20261118",
+      "published_containers_modified": false
+    },
+    {
+      "source_homolog_container": "mapa-homolog-postgrest-writer",
+      "container": "visual-homolog-postgrest-writer",
+      "loopback_port": 14158,
+      "database": "mapa_visual_homolog_20261118",
+      "published_containers_modified": false
+    },
+    {
+      "source_homolog_container": "mapa-homolog-photo",
+      "container": "visual-homolog-photo",
+      "loopback_port": 14159,
+      "database": null,
+      "published_containers_modified": false
+    }
+  ],
+  "internal_proxy": "/etc/nginx/conf.d/mapa-visual-homolog-internal.conf",
+  "source_proxy_unchanged": "/etc/nginx/conf.d/pcp-homolog-postgrest-local.conf"
+}

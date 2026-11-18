@@ -1,0 +1,56 @@
+[
+  {
+    "database": "mapa_visual_homolog_20261118",
+    "imported_new_operational_tables": [
+      "estoque.config_massada",
+      "estoque.custo_ajuste",
+      "estoque.material",
+      "estoque.movimento",
+      "estoque.noro_movimento_local",
+      "estoque.silo",
+      "lab.cp_leitura",
+      "usinas.agregado",
+      "usinas.auditoria_legado_noro",
+      "usinas.carta_traco",
+      "usinas.carta_traco_campo",
+      "usinas.leitura_setor",
+      "usinas.massada_anotacao",
+      "usinas.sync_estado"
+    ],
+    "business_auth_tables_imported": false,
+    "source": "existing offline backup",
+    "original_databases_modified": false
+  },
+  {
+    "database": "pcp_visual_homolog_20261118",
+    "imported_new_operational_tables": [
+      "logistica.ajudante",
+      "logistica.auditoria",
+      "logistica.configuracao_unidade",
+      "logistica.estatistica_mensal",
+      "logistica.exclusao_nominal",
+      "logistica.fechamento_mes",
+      "logistica.grupo_cobli_pendente",
+      "logistica.grupo_cobli_unidade",
+      "logistica.importacao",
+      "logistica.mes_unidade",
+      "logistica.meta_trimestral",
+      "logistica.meta_trimestre_estado",
+      "logistica.migracao_lote",
+      "logistica.motorista",
+      "logistica.parametro_premiacao",
+      "logistica.premiacao",
+      "public.alembic_version_logistica"
+    ],
+    "business_auth_tables_imported": false,
+    "source": "existing offline backup",
+    "original_databases_modified": false
+  },
+  {
+    "database": "qualidade_visual_homolog_20261118",
+    "imported_new_operational_tables": [],
+    "business_auth_tables_imported": false,
+    "source": "existing offline backup",
+    "original_databases_modified": false
+  }
+]

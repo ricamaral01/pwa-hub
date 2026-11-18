@@ -1,0 +1,20 @@
+{
+  "test_url": "https://concrefer.concretrack.com.br:18446/unificado/",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/routing-visual-20261118T214216Z",
+  "dedicated_snippets": [
+    "/etc/nginx/snippets/visual-full-laboratorio-unificado-homolog.conf",
+    "/etc/nginx/snippets/visual-full-ged-unificado-homolog.conf",
+    "/etc/nginx/snippets/visual-full-qualidade-unificado-homolog.conf",
+    "/etc/nginx/snippets/visual-full-unificado-screen-access-homolog.conf",
+    "/etc/nginx/snippets/visual-full-suprimentos-unificado-homolog.conf",
+    "/etc/nginx/snippets/visual-full-usinas-unificado-homolog.conf",
+    "/etc/nginx/snippets/visual-full-painel-tv-homolog.conf",
+    "/etc/nginx/snippets/visual-full-armacao-unificado-homolog.conf",
+    "/etc/nginx/snippets/visual-full-laboratorio-dosagem-native.conf",
+    "/etc/nginx/snippets/visual-full-carta-traco-cut.conf",
+    "/etc/nginx/snippets/visual-full-logistica-unificado.conf"
+  ],
+  "production_vhost_sha256": "76d8c60cbd62e3804bb0aac3b8a72de8de64260234867db48d8255e8b8e0a23b",
+  "production_vhost_unchanged": true,
+  "production_services_restarted": false
+}

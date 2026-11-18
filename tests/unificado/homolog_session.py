@@ -14,7 +14,7 @@ import psycopg
 from itsdangerous import URLSafeTimedSerializer
 
 values = {}
-for line in Path('/etc/concrefer-unificado/homolog/mapa-auth.env').read_text().splitlines():
+for line in Path('/etc/concrefer-unificado/homolog/visual-mapa.env').read_text().splitlines():
     if '=' in line and not line.startswith('#'):
         key, value = line.split('=', 1)
         values[key] = value.strip().strip('"').strip("'")
@@ -37,7 +37,7 @@ print(json.dumps({'ricardo': signed(ricardo), 'unlinked': signed(unlinked)}))
 def test_cookies():
     result = subprocess.run(
         ['ssh', 'vps-staging',
-         '/opt/concrefer-unificado/homolog-next/mapa-api/.venv/bin/python', '-'],
+         '/opt/concrefer-unificado/homolog-next/visual-full/mapa/.venv/bin/python', '-'],
         input=REMOTE_SCRIPT, text=True, capture_output=True, check=True,
     )
     return json.loads(result.stdout)
@@ -57,7 +57,7 @@ def test_cookie_for(user_id: str) -> str:
     )
     result = subprocess.run(
         ['ssh', 'vps-staging',
-         '/opt/concrefer-unificado/homolog-next/mapa-api/.venv/bin/python', '-'],
+         '/opt/concrefer-unificado/homolog-next/visual-full/mapa/.venv/bin/python', '-'],
         input=script, text=True, capture_output=True, check=True,
     )
     return result.stdout.strip()
