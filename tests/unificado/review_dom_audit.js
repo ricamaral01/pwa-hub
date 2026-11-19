@@ -2,7 +2,12 @@
  const styles=new WeakMap();
  const visible=el=>{const r=el.getBoundingClientRect();if(!r.width||!r.height)return false;const s=getComputedStyle(el);styles.set(el,s);return s.display!=='none'&&s.visibility!=='hidden'};
  if(document.querySelector('.login-layout')&&matchMedia('(max-width:1024px)').matches)return {issues:[],preserved_exception:'frozen narrow login; pixel comparison separately'};
- const nodes=[...document.querySelectorAll('body *')].filter(visible);
+ const shadowRoots=[];
+ const collect=root=>[...root.querySelectorAll('*')].flatMap(el=>{
+  if(!el.shadowRoot)return [el];
+  shadowRoots.push(el.shadowRoot);return [el,...collect(el.shadowRoot)];
+ });
+ const nodes=collect(document.body).filter(visible);
  const issues=[];const add=(type,el,detail)=>issues.push({type,selector:el.tagName.toLowerCase()+(el.id?'#'+el.id:'.'+[...el.classList].slice(0,2).join('.')),text:el.textContent.trim().slice(0,90),detail});
  for(const el of nodes){
   const s=styles.get(el)||getComputedStyle(el),text=el.textContent.trim();
@@ -86,7 +91,7 @@
  for(const el of nodes.filter(el=>el.matches('h2,h3,.section-title'))){const icon=el.querySelector('svg,i')||el.previousElementSibling?.querySelector('svg');if(icon&&visible(icon)){const parent=icon.parentElement,s=getComputedStyle(parent);if(parent!==el&&visible(parent)&&s.backgroundColor!=='rgba(0, 0, 0, 0)'&&parent.getBoundingClientRect().width<=64)add('decorative_title_icon',el,parent.className);}}
  if(innerWidth<=600){const records=nodes.filter(el=>(location.pathname.endsWith('metodologia-conteudo.html')&&el.matches('p'))||el.matches('tbody tr,.cec-kpi strong,.sup-ana-stat strong,.noro-card-value,.lg-status-grid strong,.sr-day-summary strong,.sup-compact-list>*,.overview-unit-row,[data-review-record],.module-page-link,.activity-card,.metric-value,.stat-value,.kpi-value,.kpi strong,.overview-stat strong,.kg-homem-value,.grouped-indicator strong,.mi-kpi-val,.summary-grid strong,.abs-fields,.area-card,.metric strong,.cr-dimension .cr-form,.kpi-val,.kpi .value,.lg-kpis strong,.kpis strong,.cr-kpi strong,.native-card strong,.sup-rec-item,.ar-summary strong,.s4-layout-editor,.forma-card,.sensor .value,.stat strong,.native-tab,.card.grid2,.card.grid3'));const first=records.sort((a,b)=>a.getBoundingClientRect().top-b.getBoundingClientRect().top)[0];if(first&&first.getBoundingClientRect().top>=844)add('mobile_data_below_fold',first,first.getBoundingClientRect().top);}
  if(innerWidth<768&&new URLSearchParams(location.search).has('view')&&mobileTitle==='Início')issues.push({type:'mobile_title',detail:mobileTitle});
- return {issues,images:nodes.filter(n=>n.tagName==='IMG').length,body_font:getComputedStyle(document.body).fontFamily,mobile_title:mobileTitle,
+ return {issues,shadow_roots:shadowRoots.length,images:nodes.filter(n=>n.tagName==='IMG').length,body_font:getComputedStyle(document.body).fontFamily,mobile_title:mobileTitle,
   criteria:{typed_icons:{visible_paths:[...new Set(nodes.filter(el=>el.matches('.module-page-icon path,.nav-item-code path,.uqa-icon path')).map(el=>el.getAttribute('d')))]},filler:{forbidden_phrases_found:issues.filter(i=>i.type==='filler').length},descriptions:{over_limit:issues.filter(i=>i.type==='description_length').length},tabs:{duplicate_labels:labels.length-new Set(labels).size},sentence_case:{uppercase_css:issues.filter(i=>i.type==='uppercase_css').length},density:{module_row_heights:nodes.filter(el=>el.matches('.module-page-link')).map(el=>Math.round(el.getBoundingClientRect().height))},surfaces:{nested_cards:issues.filter(i=>i.type==='nested_card').length},states:{normal_pills:issues.filter(i=>i.type==='normal_pill').length},redundancies:{open_buttons:issues.filter(i=>i.type==='redundant_open_button').length}},
   review_items:[...document.querySelectorAll('.module-page-link,.nav-item,.uqa-card')].filter(visible).slice(0,100).map(el=>({text:el.textContent.trim().slice(0,100),icon:el.querySelector('svg path')?.getAttribute('d'),height:Math.round(el.getBoundingClientRect().height)}))};
 }

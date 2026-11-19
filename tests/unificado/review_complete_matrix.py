@@ -267,6 +267,8 @@ async def main():
                             text = await frame.locator('body').inner_text()
                             record['last_stage']='DOM audit '+str(width)+' '+frame.url
                             audit_source=(ROOT/'tests/unificado/review_dom_audit.js').read_text(encoding='utf-8')
+                            if row['id'].startswith('labDosagem'):
+                                record['shadow_dom_scopes']=await frame.evaluate("[...document.querySelectorAll('*')].filter(e=>e.shadowRoot).map(e=>({host:e.tagName,id:e.id,titles:[...e.shadowRoot.querySelectorAll('h1')].map(h=>h.textContent),filters:[...e.shadowRoot.querySelectorAll('form,.ct-filter-bar')].map(f=>f.className)}))")
                             frames.append({'url':frame.url,'audit_sha256':hashlib.sha256(audit_source.encode()).hexdigest(), 'overflow':await frame.evaluate('document.documentElement.scrollWidth>innerWidth+1'),
                                 'access_denied':any(v in text for v in ['Você não tem acesso a esta tela','Acesso não permitido']) or (row['id']!='shell-login' and await frame.locator('.login-layout').count()>0),
                                 'blank':len(text.strip())<10, 'text':text[:180], 'audit':await asyncio.wait_for(frame.evaluate(audit_source),timeout=60)})

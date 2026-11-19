@@ -18,6 +18,11 @@ with sync_playwright() as pw:
     types={issue['type'] for issue in result['issues']}
     expected={'interface_text','button_palette','clipped_table_heading','proper_name_case','duplicate_title','nested_surface','mobile_data_below_fold','menu_alignment','decorative_title_icon'}
     assert expected<=types,(expected-types,result)
+    page.set_content('<strong class="nav-mobile-title">Materiais</strong><div id="native-host"></div>')
+    page.evaluate("()=>{const root=document.querySelector('#native-host').attachShadow({mode:'open'});root.innerHTML='<h1>Materiais</h1><button style=\"background:rgb(249,115,22)\">Buscar</button>'}")
+    shadow_result=page.evaluate((R/'tests/unificado/review_dom_audit.js').read_text(encoding='utf-8'))
+    assert shadow_result['shadow_roots']==1
+    assert {'duplicate_title','button_palette'}<={issue['type'] for issue in shadow_result['issues']}
     page.set_content('<style>*{font-family:Geist}table{margin-top:900px}</style><input type="date" value="2026-11-19"><table><tbody><tr><td>Real record</td></tr></tbody></table>')
     assert any(i['type']=='mobile_data_below_fold' for i in page.evaluate((R/'tests/unificado/review_dom_audit.js').read_text(encoding='utf-8'))['issues'])
     page.evaluate("()=>{const value=document.createElement('strong');value.className='noro-card-value';value.textContent='57';document.body.prepend(value)}")
@@ -86,7 +91,25 @@ with sync_playwright() as pw:
         test_page.locator('summary').click();test_page.locator('#native-filter').fill('')
         assert test_page.locator('summary').inner_text()==('Filtrar (1)' if 'mapa/operacao/' in path else 'Filtrar')
         native.close()
+    shadow_context=browser.new_context(viewport={'width':390,'height':844})
+    shadow_context.route('**/*',lambda route:route.fulfill(body='<strong class="nav-mobile-title">Materiais</strong><div id="shadow-host"></div>',content_type='text/html'))
+    shadow_context.route('**/review-complete.css*',lambda route:route.fulfill(path=str(R/'unificado/shell/review-complete.css')))
+    shadow_page=shadow_context.new_page();shadow_page.goto('http://127.0.0.1:8999/unificado/?view=laboratorio%2Fdosagem%2F')
+    shadow_page.evaluate("()=>{const root=document.querySelector('#shadow-host').attachShadow({mode:'open'});root.innerHTML='<h1>Materiais</h1><div class=\"ct-card\"><label>Buscar<input id=\"shadow-input\"></label><button id=\"shadow-search\">Buscar</button></div>';window.savedShadowInput=root.querySelector('input');window.savedShadowParent=savedShadowInput.parentElement;window.shadowSearches=0;root.querySelector('#shadow-search').onclick=()=>window.shadowSearches++}")
+    shadow_page.add_script_tag(content=(R/'unificado/shell/components.js').read_text(encoding='utf-8'))
+    shadow_page.locator('.review-shadow-filter-toggle').wait_for()
+    assert not shadow_page.locator('#shadow-host h1').is_visible()
+    assert not shadow_page.locator('#shadow-input').is_visible()
+    shadow_page.locator('.review-shadow-filter-toggle').click()
+    shadow_page.locator('#shadow-input').fill('Material')
+    assert shadow_page.locator('.review-shadow-filter-toggle').inner_text()=='Filtrar (1)'
+    shadow_page.locator('#shadow-search').click();assert shadow_page.evaluate('window.shadowSearches')==1
+    assert shadow_page.evaluate("window.savedShadowInput===document.querySelector('#shadow-host').shadowRoot.querySelector('input')&&window.savedShadowParent===window.savedShadowInput.parentElement")
+    shadow_page.emulate_media(media='print')
+    assert not shadow_page.locator('.review-shadow-filter-toggle').is_visible()
+    assert shadow_page.locator('#shadow-host h1').is_visible()
+    shadow_context.close()
     browser.close()
-out={'audit_regressions_detected':sorted(expected),'filter_input_nodes_preserved':True,'filter_button_handler_preserved':True,'active_count_updates':True,'desktop_filters_open':True,'dynamic_text_prints_latest_original_value':True,'first_data_separates_filter_defaults_from_actual_values':True}
+out={'audit_regressions_detected':sorted(expected),'shadow_dom_audit_and_presentation':True,'shadow_filter_input_parent_and_handler_preserved':True,'filter_input_nodes_preserved':True,'filter_button_handler_preserved':True,'active_count_updates':True,'desktop_filters_open':True,'dynamic_text_prints_latest_original_value':True,'first_data_separates_filter_defaults_from_actual_values':True}
 (O/'dom-tests.json').write_text(json.dumps(out,indent=2))
 print(json.dumps(out))

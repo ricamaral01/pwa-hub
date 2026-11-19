@@ -7,6 +7,19 @@
     "message": "Não foi possível carregar a lista de relatórios. Tente novamente.",
     "retry_visible": true,
     "external_gets": [],
-    "normal_navigation_proven": false
+    "responses": [
+      {
+        "path": "/unificado/mapa/api/usina/reporting/pcp-producao/manifest",
+        "status": 503
+      }
+    ],
+    "normal_navigation_proven": false,
+    "origin_read_outside_isolated_service": {
+      "url": "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-30.html",
+      "method": "GET",
+      "status": 200,
+      "bytes": 132675,
+      "files_saved": 0
+    }
   }
 ]

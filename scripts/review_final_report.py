@@ -15,6 +15,8 @@ for role in ['GERENCIA','LABORATORIO','PCP','PRODUCAO','QUALIDADE','SUPRIMENTOS'
         expected_hash=definitions[row['screen']].get('query','')
         if expected_hash.startswith('#') and not row.get('native_route_proof'):
             row.update(ok=False,native_route_unverified=expected_hash)
+        if row['screen'].startswith('labDosagem') and not any(frame.get('audit',{}).get('shadow_roots') for layout in row.get('layout',[]) for frame in layout['frames']):
+            row.update(ok=False,shadow_dom_unverified=True)
         if row['screen']!='shell-login':
             redirects=[frame['url'] for layout in row.get('layout',[]) for frame in layout['frames'] if '/unificado/login.html' in frame['url']]
             if redirects:row.update(ok=False,unexpected_central_login_redirects=redirects)

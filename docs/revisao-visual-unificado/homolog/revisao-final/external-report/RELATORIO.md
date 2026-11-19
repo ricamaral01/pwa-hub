@@ -25,6 +25,11 @@ Nenhum endpoint, formato, regra, permissão ou constante de servidor foi alterad
   mensagem legível e ação para tentar novamente; capturas 1440 e 390 anexadas.
 - Consulta GET ao relatório público de 30/10/2026: HTTP 200, 132675 bytes.
   O conteúdo não foi salvo como cópia local.
+- Esse HTML referencia uma folha de ícones em
+  `https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css`.
+  Ela está fora do prefixo autorizado e continua bloqueada/reprovando na matriz.
+  Não foi criada exceção adicional nem baixada essa folha. A referência foi
+  identificada pela leitura do HTML permitido.
 - Na 18446, tanto `manifest` quanto `report/2026-10-30` retornaram HTTP 503,
   com mensagens públicas de indisponibilidade. Não houve abertura real nem
   troca de data comprovada nessa instância.
