@@ -12,15 +12,15 @@
 </style>
   <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.20"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.20"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.20"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.25"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.25"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.25"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.20" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.25" />
   <script src="/unificado/vendor/chart.js/chart.umd.js"></script>
   <style>@media print {
 
@@ -229,7 +229,7 @@
       .dash-filter input, .dash-filter button { width: 100% !important; }
       .chart-box { height: 280px; }
     }
-  
+
 }
 @media screen{.dash-shell{display:grid;gap:16px;}
 .dash-shell > *{min-width:0;}
@@ -295,11 +295,11 @@
 }
 </style>
     <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
-  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.20">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20">
-<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20">
-<script defer src="/unificado/shell/components.js?v=1.4.20"></script>
-</head>
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.25">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.25">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.25">
+<script defer src="/unificado/shell/components.js?v=1.4.25"></script>
+<link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.25" media="screen"></head>
 <body>
 <div id="sidebar-overlay"></div>
 
@@ -452,7 +452,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.20"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.25"></script>
 <script>
 const user = requireAuth();
 if (user) {
@@ -471,9 +471,10 @@ function fmtKg(v) {
   return `${parseFloat(v || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} kg`;
 }
 function pct(v) {
-  return `${parseFloat(v || 0).toFixed(1)}%`;
+  return v==null?'—':`${Number(v).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})}%`;
 }
 function achievementTone(v) {
+  if(v==null)return '';
   const value = parseFloat(v || 0);
   if (value >= 90) return 'achievement-success';
   if (value >= 70) return 'achievement-warning';
@@ -562,7 +563,7 @@ function renderGroupedCards(data) {
       indicators: [
         { label: 'Programado', value: fmtM3(data.total_programado_m3) },
         { label: 'Realizado', value: fmtM3(data.total_realizado_m3) },
-        { label: 'Atingimento', value: pct(data.eficiencia_geral_pct), rawValue: data.eficiencia_geral_pct, achievement: true },
+        { label: 'Atingimento', value: pct(Number(data.total_programado_m3)>0?data.eficiencia_geral_pct:null), rawValue: Number(data.total_programado_m3)>0?data.eficiencia_geral_pct:null, achievement: true },
       ],
     },
     {
@@ -572,7 +573,7 @@ function renderGroupedCards(data) {
       indicators: [
         { label: 'Postes programados', value: fmtN(grupo12.qtd_programada) },
         { label: 'Postes realizados', value: fmtN(grupo12.qtd_realizada) },
-        { label: 'Atingimento', value: pct(grupo12.eficiencia_pct), rawValue: grupo12.eficiencia_pct, achievement: true },
+        { label: 'Atingimento', value: pct(Number(grupo12.qtd_programada)>0?grupo12.eficiencia_pct:null), rawValue: Number(grupo12.qtd_programada)>0?grupo12.eficiencia_pct:null, achievement: true },
       ],
     },
     {
@@ -582,7 +583,7 @@ function renderGroupedCards(data) {
       indicators: [
         { label: 'Postes programados', value: fmtN(grupo34.qtd_programada) },
         { label: 'Postes realizados', value: fmtN(grupo34.qtd_realizada) },
-        { label: 'Atingimento', value: pct(grupo34.eficiencia_pct), rawValue: grupo34.eficiencia_pct, achievement: true },
+        { label: 'Atingimento', value: pct(Number(grupo34.qtd_programada)>0?grupo34.eficiencia_pct:null), rawValue: Number(grupo34.qtd_programada)>0?grupo34.eficiencia_pct:null, achievement: true },
       ],
     },
   ];

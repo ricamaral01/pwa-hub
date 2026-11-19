@@ -1,0 +1,19 @@
+{
+  "version": "1.4.25",
+  "baseline": "published 1.4.6",
+  "excluded": "bottom 28px version footer",
+  "checks": [
+    {
+      "width": 1024,
+      "identical_except_version_footer": true
+    },
+    {
+      "width": 820,
+      "identical_except_version_footer": true
+    },
+    {
+      "width": 390,
+      "identical_except_version_footer": true
+    }
+  ]
+}

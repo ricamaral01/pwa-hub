@@ -1,0 +1,83 @@
+{
+  "release_version": "1.4.25",
+  "status": "visual_checks_passed_integration_decision_pending",
+  "catalog_entries": 139,
+  "inventory_entries": 182,
+  "inventory_screen_ids": 181,
+  "profiles": [
+    {
+      "profile": "CONSULTA",
+      "cases": 15,
+      "allowed": 15,
+      "negative": 0,
+      "viewports": 60,
+      "unexpected_failures": 0,
+      "style_issues": 0
+    },
+    {
+      "profile": "GERENCIA",
+      "cases": 182,
+      "allowed": 162,
+      "negative": 20,
+      "viewports": 728,
+      "unexpected_failures": 0,
+      "style_issues": 0
+    },
+    {
+      "profile": "LABORATORIO",
+      "cases": 138,
+      "allowed": 127,
+      "negative": 11,
+      "viewports": 552,
+      "unexpected_failures": 0,
+      "style_issues": 0
+    },
+    {
+      "profile": "PCP",
+      "cases": 56,
+      "allowed": 56,
+      "negative": 0,
+      "viewports": 224,
+      "unexpected_failures": 0,
+      "style_issues": 0
+    },
+    {
+      "profile": "PRODUCAO",
+      "cases": 19,
+      "allowed": 19,
+      "negative": 0,
+      "viewports": 76,
+      "unexpected_failures": 0,
+      "style_issues": 0
+    },
+    {
+      "profile": "QUALIDADE",
+      "cases": 17,
+      "allowed": 17,
+      "negative": 0,
+      "viewports": 68,
+      "unexpected_failures": 0,
+      "style_issues": 0
+    },
+    {
+      "profile": "SUPRIMENTOS",
+      "cases": 9,
+      "allowed": 9,
+      "negative": 0,
+      "viewports": 36,
+      "unexpected_failures": 0,
+      "style_issues": 0
+    }
+  ],
+  "total_cases": 436,
+  "allowed_cases": 405,
+  "negative_cases": 31,
+  "viewports": 1744,
+  "frames_audited": 3052,
+  "unexpected_loading_or_layout_failures": 0,
+  "open_visual_issues": 0,
+  "capture_versions": {
+    "1.4.25": 436
+  },
+  "integration_pending": "LABORATORIO: central catalog includes Supplies; native authority /api/suprimentos/me returns 403. No permissions or APIs changed."
+}

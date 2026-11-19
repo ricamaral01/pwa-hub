@@ -179,8 +179,7 @@
   }
   function activeEntry() {
     const view=new URLSearchParams(location.search).get('view');
-    if(!view) return null;
-    return allItems().find(entry=>viewOf(entry.item)===view) || null;
+    return window.UnificadoPresentation.resolveEntry(allItems(),view,window.UnificadoActiveItem,viewOf);
   }
   function getTree(moduleId) {
     if(!state.tree[moduleId]) {
@@ -232,7 +231,7 @@
     const a=el('a','nav-item',entry.item.label);
     a.href=hrefOf(entry.item);
     a.dataset.itemId=entry.item.id;
-    a.prepend(window.UnificadoIcons.node('documento','nav-item-code'));
+    a.prepend(window.UnificadoIcons.node(window.UnificadoIcons.forScreen(entry.item),'nav-item-code'));
     const active=activeEntry()?.item.id===entry.item.id;
     if(active){a.classList.add('is-active');a.setAttribute('aria-current','page');}
     a.addEventListener('click',event=>{
@@ -389,7 +388,7 @@
       button('nav-logout','Sair',()=>host.logout()));
     footer.append(person);
   }
-  function footerLinks() {
+  function footerLinks(inline=false) {
     const links=el('div','nav-footer-links');
     const add=(parent,label,href)=>{
       const link=el('a','nav-footer-link',label);
@@ -403,7 +402,10 @@
       helpItems.push(['Como funciona',hrefOf(MENU_ITEMS.labHelp)]);
     if(state.snapshot.footerItemIds.includes('reportProblem'))
       helpItems.push(['Relatar problema','/unificado/testar/#relatar']);
-    if(helpItems.length){
+    if(inline){
+      links.classList.add('nav-account-links');
+      helpItems.forEach(([label,href])=>add(links,label,href));
+    } else if(helpItems.length){
       const help=button('nav-help-toggle','',()=>{state.helpOpen=!state.helpOpen;render();});
       help.setAttribute('aria-expanded',String(state.helpOpen));
       help.append(strokeIcon('nav-footer-icon','M12 17h.01 M9.1 9a3 3 0 1 1 5.8 1c-.7 1-2.9 1.4-2.9 3'),el('span','','Ajuda'));
@@ -432,7 +434,9 @@
     const active=activeEntry();
     const landingTitle=main.querySelector('.module-page:not([hidden]) h1,.content.uqa-personal #uqa-home:not([hidden]) h1')?.textContent;
     mobileContext.textContent=active ? [active.location.unit,active.location.group].filter(Boolean).join(' · ') || active.module.label : landingTitle ? 'Concrefer' : 'Unificado';
-    mobileTitle.textContent=active?.item.label||landingTitle||'Início';
+    const trail=document.querySelector('.breadcrumb > :last-child')?.textContent;
+    const screenTitle=active?.item.label==='Início'?[active.location.group||active.module.label,active.item.label].join(' · '):active?.item.label;
+    mobileTitle.textContent=screenTitle||landingTitle||(new URLSearchParams(location.search).has('view') ? trail||document.title : 'Início');
     const breadcrumb=document.querySelector('.breadcrumb');
     if(active&&breadcrumb) {
       breadcrumb.replaceChildren();
@@ -473,7 +477,7 @@
       el('p','nav-account-role',state.snapshot.user.role||''));
     tree.append(updateControl());
     if(state.snapshot.updateFailures>=2)tree.append(button('nav-update-reset','Recarregar e limpar cache',()=>host.clearUpdateCache()));
-    tree.append(footerLinks());
+    tree.append(footerLinks(true));
     tree.append(button('nav-account-exit','Sair da conta',()=>host.logout()));
   }
   function setTabletOpen(open) {

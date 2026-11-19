@@ -1,0 +1,39 @@
+
+> concretrack-qualidade@0.1.0 test:ui
+> playwright test
+
+
+Running 13 tests using 2 workers
+
+  ok  2 tests\tasks-ui.spec.ts:4:1 › computador: lista abre sem painel automático; selecionar e fechar preserva a lista (4.9s)
+  ok  3 tests\tasks-ui.spec.ts:20:1 › tablet: filtros acessíveis e detalhe aberto por escolha do usuário (2.7s)
+  ok  1 tests\tasks-fluid.spec.ts:3:1 › busca: digitar não recarrega contadores e só a resposta mais recente prevalece (10.8s)
+  ok  4 tests\tasks-ui.spec.ts:33:1 › celular: lista direta, detalhe, volta e visões (3.2s)
+  ok  5 tests\tasks-fluid.spec.ts:31:1 › detalhe: clicar rapidamente em outra tarefa não abre uma resposta antiga (3.8s)
+  ok  7 tests\tasks-fluid.spec.ts:46:1 › atualização mantém lista visível e metadados lentos não bloqueiam a lista (3.4s)
+  ok  8 tests\tasks-fluid.spec.ts:58:1 › filtros, concluídas e limpar são explícitos em telas estreitas (2.5s)
+  ok  9 tests\tasks-fluid.spec.ts:70:1 › nova lista usa formulário, mantém foco e fecha por Escape (3.1s)
+  ok 10 tests\tasks-fluid.spec.ts:80:1 › paginação expõe registros além da primeira página sem duplicar (4.7s)
+  ok 11 tests\tasks-fluid.spec.ts:97:1 › falha ao comentar preserva o texto e mostra erro persistente (3.9s)
+  x   6 tests\tasks-ui.spec.ts:46:1 › acessibilidade: nenhuma violação grave na lista móvel, computador e formulário (20.5s)
+  ok 12 tests\tasks-ui.spec.ts:64:1 › celular: concluir sem conexão entra na fila e sincroniza ao reconectar (3.2s)
+  ok 13 tests\tasks-ui.spec.ts:89:1 › computador: lista consultada volta do IndexedDB sem rede (2.7s)
+
+
+  1) tests\tasks-ui.spec.ts:46:1 › acessibilidade: nenhuma violação grave na lista móvel, computador e formulário 
+
+    Test timeout of 20000ms exceeded.
+
+    Error Context: test-results\tasks-ui-acessibilidade-ne-8850a-vel-computador-e-formulário\error-context.md
+
+  1 failed
+    tests\tasks-ui.spec.ts:46:1 › acessibilidade: nenhuma violação grave na lista móvel, computador e formulário 
+  12 passed (1.4m)
+[WebServer] (node:36372) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:22504) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27660) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42044) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

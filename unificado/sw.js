@@ -1,21 +1,21 @@
-const CACHE = 'concrefer-unificado-shell-v1.4.20';
+const CACHE = 'concrefer-unificado-shell-v1.4.25';
 const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const QUALITY_CACHE = 'concrefer-qualidade-static-v1.2.7';
 const ROOT = '/unificado/';
-const CORE = [ROOT + 'shell/tokens.css?v=1.4.20', ROOT + 'shell/visual-shell.css?v=1.4.20', ROOT + 'shell/icons.js?v=1.4.20',ROOT+'shell/quick-access.js?v=1.4.20',ROOT+'shell/quick-access.css?v=1.4.20',ROOT+'shell/fonts/Geist-Regular.woff2',ROOT+'shell/fonts/Geist-Medium.woff2',ROOT+'shell/fonts/Geist-SemiBold.woff2',ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.4.20',
-  ROOT + 'shell/shared-menu.css?v=1.4.20',
-  ROOT + 'shell/modelo-a/menu.css?v=1.4.20', ROOT + 'shell/modelo-a-host.css?v=1.4.20',
-  ROOT + 'shell/modelo-a/menu.js?v=1.4.20',
-  ROOT + 'shell/modelo-a-loader.js?v=1.4.20',
-  ROOT + 'shell/menu.config.js?v=1.4.20', ROOT + 'shell/auth.js?v=1.4.20',
-  ROOT + 'shell/shell.js?v=1.4.20', ROOT + 'shell/navigation.css?v=1.4.20',
-  ROOT + 'shell/navigation.js?v=1.4.20', ROOT + 'shell/router.js?v=1.4.20',
-  ROOT + 'shell/module-pages-mobile.js?v=1.4.20', ROOT + 'shell/module-pages.js?v=1.4.20',
-  ROOT + 'shell/module-pages-a.css?v=1.4.20', ROOT + 'shell/module-cards.css?v=1.4.20',
-  ROOT + 'shell/module-theme.js?v=1.4.20',
-  ROOT + 'shell/home-header-compact.css?v=1.4.20',
-  ROOT + 'shell/home-header-compact.js?v=1.4.20',
-  ROOT + 'shell/embedded.css?v=1.4.20'];
+const CORE = [ROOT+'shell/review-complete.css?v=1.4.25',ROOT+'shell/components.js?v=1.4.25',ROOT + 'shell/tokens.css?v=1.4.25', ROOT + 'shell/visual-shell.css?v=1.4.25', ROOT + 'shell/icons.js?v=1.4.25',ROOT+'shell/quick-access.js?v=1.4.25',ROOT+'shell/quick-access.css?v=1.4.25',ROOT+'shell/fonts/Geist-Regular.woff2',ROOT+'shell/fonts/Geist-Medium.woff2',ROOT+'shell/fonts/Geist-SemiBold.woff2',ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.4.25',
+  ROOT + 'shell/shared-menu.css?v=1.4.25',
+  ROOT + 'shell/modelo-a/menu.css?v=1.4.25', ROOT + 'shell/modelo-a-host.css?v=1.4.25',
+  ROOT + 'shell/modelo-a/menu.js?v=1.4.25',
+  ROOT + 'shell/modelo-a-loader.js?v=1.4.25',
+  ROOT + 'shell/menu.config.js?v=1.4.25', ROOT + 'shell/auth.js?v=1.4.25',
+  ROOT + 'shell/shell.js?v=1.4.25', ROOT + 'shell/navigation.css?v=1.4.25',
+  ROOT + 'shell/navigation.js?v=1.4.25', ROOT + 'shell/router.js?v=1.4.25',
+  ROOT + 'shell/module-pages-mobile.js?v=1.4.25', ROOT + 'shell/module-pages.js?v=1.4.25',
+  ROOT + 'shell/module-pages-a.css?v=1.4.25', ROOT + 'shell/module-cards.css?v=1.4.25',
+  ROOT + 'shell/module-theme.js?v=1.4.25',
+  ROOT + 'shell/home-header-compact.css?v=1.4.25',
+  ROOT + 'shell/home-header-compact.js?v=1.4.25',
+  ROOT + 'shell/embedded.css?v=1.4.25'];
 self.addEventListener('message', event => {
   if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
@@ -96,6 +96,12 @@ self.addEventListener('fetch', event => {
           await cache.match(ROOT + 'qualidade/') || Response.error();
       }
     }));
+    return;
+  }
+  // Generated GED CSS previously imported Inter. Revalidate its immutable URL
+  // after a shell upgrade; authentication/API requests stay outside this rule.
+  if(url.pathname.startsWith(ROOT+'ged/') && url.pathname.endsWith('.css')){
+    event.respondWith(fetch(event.request,{cache:'no-store'}));
     return;
   }
   if (!url.pathname.startsWith(ROOT + 'shell/')) return;

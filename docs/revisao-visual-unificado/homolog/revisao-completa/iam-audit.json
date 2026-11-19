@@ -1,0 +1,37 @@
+{
+  "status": "ok",
+  "checks": [
+    {
+      "database": "mapa_visual_homolog_20261118",
+      "table": "public.usuarios",
+      "rows": 64,
+      "unchanged": true
+    },
+    {
+      "database": "mapa_visual_homolog_20261118",
+      "table": "unificado_auth.user_screen_permissions",
+      "rows": 667,
+      "unchanged": true
+    },
+    {
+      "database": "mapa_visual_homolog_20261118",
+      "table": "unificado_auth.user_action_permissions",
+      "rows": 21,
+      "unchanged": true
+    },
+    {
+      "database": "mapa_visual_homolog_20261118",
+      "table": "unificado_auth.identity_links",
+      "rows": 17,
+      "unchanged": true
+    },
+    {
+      "database": "pcp_visual_homolog_20261118",
+      "table": "public.usuarios",
+      "rows": 24,
+      "unchanged": true
+    }
+  ],
+  "production_database_connections": 0,
+  "permission_writes": 0
+}

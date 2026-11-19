@@ -1,0 +1,27 @@
+
+> concretrack-ensaio-postes@1.0.0 build:novo
+> tsc -b && vite build --config vite.novo.config.ts
+
+vite v6.4.3 building for production...
+transforming...
+✓ 37 modules transformed.
+rendering chunks...
+computing gzip size...
+../service/server/static/novo/postes/absorcao.html                            1.44 kB │ gzip:  0.48 kB
+../service/server/static/novo/postes/novo.html                                1.56 kB │ gzip:  0.50 kB
+../service/server/static/novo/postes/assets/AbsorptionHistory-DpAlj5PN.css   45.42 kB │ gzip:  8.76 kB
+../service/server/static/novo/postes/assets/absorcao-C8qq_oRc.js              9.62 kB │ gzip:  3.36 kB
+../service/server/static/novo/postes/assets/novo-1KSm-RTS.js                114.06 kB │ gzip: 30.06 kB
+../service/server/static/novo/postes/assets/AbsorptionHistory-kgUGt9tp.js   147.33 kB │ gzip: 47.62 kB
+✓ built in 1.58s
+<script src="/unificado/laboratorio/novo/postes/assets/absorcao-historico.js?v=1.4.25"> in "/absorcao.html" can't be bundled without type="module" attribute
+<script src="/unificado/laboratorio/laboratorio-bridge.js"> in "/absorcao.html" can't be bundled without type="module" attribute
+<script src="/unificado/shell/password-visibility.js?v=1.4.25"> in "/novo.html" can't be bundled without type="module" attribute
+<script src="/unificado/laboratorio/novo/postes/assets/absorcao-historico.js?v=1.4.25"> in "/novo.html" can't be bundled without type="module" attribute
+<script src="/unificado/laboratorio/laboratorio-bridge.js"> in "/novo.html" can't be bundled without type="module" attribute
+
+/unificado/laboratorio/laboratorio-embedded.css doesn't exist at build time, it will remain unchanged to be resolved at runtime
+
+/unificado/laboratorio/novo/postes/assets/absorcao-historico.css?v=1.4.25 doesn't exist at build time, it will remain unchanged to be resolved at runtime
+
+/unificado/shell/password-visibility.css?v=1.4.25 doesn't exist at build time, it will remain unchanged to be resolved at runtime

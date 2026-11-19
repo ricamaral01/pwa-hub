@@ -1,0 +1,17 @@
+
+> concretrack-ensaio-postes@1.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 C:/Users/Admin/Documents/pwa-hub-padrao-visual/unificado/laboratorio/frontend
+
+ ✓ src/domain/regras.test.ts (1 test) 3ms
+ ✓ src/domain/catalog-dimensions.test.ts (3 tests) 4ms
+ ✓ src/domain/presentation.test.ts (3 tests) 4ms
+ ✓ src/cronoanalise/engine.test.ts (20 tests) 704ms
+
+ Test Files  4 passed (4)
+      Tests  27 passed (27)
+   Start at  00:30:23
+   Duration  2.00s (transform 249ms, setup 0ms, collect 410ms, tests 715ms, environment 1ms, prepare 1.11s)
+

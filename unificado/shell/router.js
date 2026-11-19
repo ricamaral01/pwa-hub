@@ -19,6 +19,7 @@
   const gedRoutes = new Set(['dashboard', 'documents', 'approvals', 'tasks', 'calibrations']);
 
   function updateModelAPath(view = '') {
+    window.UnificadoActiveItem = activeItem || null;
     window.UnificadoSidebarActivePath = root + (view ? '?view=' + encodeURIComponent(view) : '');
     dispatchEvent(new Event('unificado-sidebar-model-a-update'));
   }
@@ -145,6 +146,9 @@
       : 'Você não tem acesso a esta tela';
     if (ged) document.querySelector('.breadcrumb strong').textContent = 'GED';
     document.querySelector('.breadcrumb span:last-child').textContent = 'Sem acesso';
+    activeItem = null;
+    window.UnificadoActiveItem = null;
+    dispatchEvent(new Event('unificado-sidebar-model-a-update'));
   }
 
   function gedTimeout(path, push) {
@@ -280,12 +284,13 @@
         return;
       }
       doc.documentElement.classList.add('unificado-embedded');
+      enhanceDocument(doc);
       let style = doc.getElementById('unificado-embedded-style');
       if (!style) {
         style = doc.createElement('link');
         style.id = 'unificado-embedded-style';
         style.rel = 'stylesheet';
-        style.href = root + 'shell/embedded.css?v=1.4.20';
+        style.href = root + 'shell/embedded.css?v=1.4.25';
         doc.head.append(style);
       }
       doc.addEventListener('click', event => {
@@ -304,6 +309,18 @@
       if (style.sheet) reveal();
       else { style.addEventListener('load', reveal, {once:true}); style.addEventListener('error', reveal, {once:true}); }
     });
+  }
+
+  function enhanceDocument(doc, ged = false) {
+    if (ged) doc.documentElement.classList.add('review-ged');
+    for (const name of ['tokens','review-complete']) {
+      if (doc.querySelector('link[data-unificado-review="'+name+'"]')) continue;
+      const link=doc.createElement('link');link.rel='stylesheet';link.media='screen';
+      link.dataset.unificadoReview=name;link.href=root+'shell/'+name+'.css?v=1.4.25';doc.head.append(link);
+    }
+    if (!doc.querySelector('script[src*="shell/components.js"]')) {
+      const script=doc.createElement('script');script.src=root+'shell/components.js?v=1.4.25';doc.head.append(script);
+    }
   }
 
   async function open(value, itemId, push = true) {
@@ -369,7 +386,7 @@
     if (ticket !== pending) return;
     if (route.path === 'usinas/noroeste/') {
       try {
-        const native = await import(root + 'usinas/noroeste/noro-native.js?v=1.4.20');
+        const native = await import(root + 'usinas/noroeste/noro-native.js?v=1.4.25');
         if (ticket !== pending) return;
         let container = document.getElementById('noro-native-host');
         if (!container) {
@@ -400,7 +417,7 @@
         if (!mapaUser?.id) throw new Error('Identidade do Unificado indisponível');
         window.__DOSAGEM_NATIVE__ = true;
         window.__DOSAGEM_NATIVE_USER_ID__ = String(mapaUser.id);
-        const native = await import(root + 'laboratorio/dosagem/native/dosagem-native.js?v=1.4.20');
+        const native = await import(root + 'laboratorio/dosagem/native/dosagem-native.js?v=1.4.25');
         if (ticket !== pending) return;
         let container = document.getElementById('dosagem-native-host');
         if (!container) {
@@ -433,9 +450,9 @@
     }
     if(route.module==='logistica'){
       try{
-        const native=await import(root+'logistica/logistica-native.js?v=1.4.20');
+        const native=await import(root+'logistica/logistica-native.js?v=1.4.25');
         if(ticket!==pending)return;
-        if(!document.querySelector('link[data-logistica-style]')){const css=document.createElement('link');css.rel='stylesheet';css.href=root+'logistica/logistica-native.css?v=1.4.20';css.dataset.logisticaStyle='true';document.head.append(css);}
+        if(!document.querySelector('link[data-logistica-style]')){const css=document.createElement('link');css.rel='stylesheet';css.href=root+'logistica/logistica-native.css?v=1.4.25';css.dataset.logisticaStyle='true';document.head.append(css);}
         let container=document.getElementById('logistica-native-host');if(!container){container=document.createElement('div');container.id='logistica-native-host';host.append(container);}
         window.__logisticaNative=native;
         native.mountLogistica(container,{path:route.path,search:route.url.search,navigate:path=>open(root+path,null,true)});
@@ -572,6 +589,7 @@
     }
     const frame = document.createElement('iframe');
     frame.title = 'GED — Documentos e calibrações';
+    frame.addEventListener('load',()=>{try{if(frame.contentDocument)enhanceDocument(frame.contentDocument,true);}catch{ /* Same-origin embedded document only. */ }});
     frame.allow = 'camera; fullscreen';
     const record = {frame, ready:false, path};
     record.reveal = reveal;

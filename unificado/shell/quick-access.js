@@ -22,19 +22,18 @@
     const wasHome=content.classList.contains('uqa-personal');profile=data;
     const panel=node('section');panel.id='uqa-home';
     const welcome=node('header','uqa-welcome'),copy=node('div');
-    copy.append(node('h1','','Meu acesso rápido'),node('p','',data.user.name+' · Telas disponíveis para seu perfil.'));
-    const all=node('button','uqa-button','Ver início geral');all.type='button';all.onclick=()=>{content.classList.remove('uqa-personal');panel.hidden=true;window.UnificadoRouter.home();};
-    welcome.append(copy,all);panel.append(welcome);
+    copy.append(node('h1','','Meu acesso rápido'),node('p','',data.user.name));
+    welcome.append(copy);panel.append(welcome);
     for(const [module,title,code] of [['planejamento','Planejamento','PL'],['producao','Produção · Controle','PR']]){
       const items=data.items.filter(row=>row.module===module);if(!items.length)continue;
       const section=node('section');section.dataset.module=module;const heading=node('h2');heading.append(document.createTextNode(title));const grid=node('div','uqa-grid');
       for(const item of items){
-        const card=node('article','uqa-card');card.dataset.shortcut=item.id;card.append(window.UnificadoIcons.node(module,'uqa-icon'));
-        const text=node('div');text.append(node('strong','',item.label),node('small','',item.detail));card.append(text);
+        const card=node('article','uqa-card');card.dataset.shortcut=item.id;card.append(window.UnificadoIcons.node(window.UnificadoIcons.forScreen({id:item.destinations[0]?.screen,label:item.label}),'uqa-icon'));
+        const text=node('div');text.append(node('strong','',item.label),node('small','',item.detail));if(item.destinations.length>1)card.append(text);
         const links=node('div','uqa-links');
         for(const dest of item.destinations){
           const url=new URL(dest.path,location.origin+root);if(url.origin!==location.origin||!url.pathname.startsWith(root))continue;
-          const link=node('a','uqa-link',item.destinations.length===1?'Abrir':dest.label);link.href=url.href;link.dataset.screen=dest.screen;link.setAttribute('aria-label',dest.label);
+          const link=node('a','uqa-link',item.destinations.length===1?item.label:dest.label);link.href=url.href;link.dataset.screen=dest.screen;link.setAttribute('aria-label',dest.label);
           link.addEventListener('click',event=>{if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;event.preventDefault();window.UnificadoRouter.open(url.href,dest.screen);});links.append(link);
         }
         card.append(links);grid.append(card);

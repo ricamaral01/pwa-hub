@@ -5,26 +5,7 @@
   const home = document.querySelector('.main-panel > .content');
   if (!home) return;
 
-  const descriptions = {
-    planejamento: 'Programação, PCP e relatórios',
-    producao: 'Mapa, inspeção e montagem',
-    qualidade: 'Não conformidades e controle',
-    laboratorio: 'Ensaios e acompanhamento',
-    usinas: 'Operação e acompanhamento das usinas',
-    ged: 'Documentos e aprovações',
-  };
   const gedItems = window.UnificadoGedMenu.map(item => [item.label, item.route]);
-  const itemDescriptions = {
-    relatorioMapa:'Conferência diária do encarregado.',
-    historico:'Consulte registros dos dias anteriores.',
-    acmpConcretagem:'Conferência e confirmação das formas.',
-    manutencao:'Registre e acompanhe intervenções.',
-    tratativa:'Analise fotos, causas e justificativas.',
-    fechamentoDiario:'Veja o resumo das atividades do dia.',
-    indicadorGeralProducao:'Compare Campinas, Pederneiras, Ribeirão e Noroeste dia a dia.',
-    dashboard:'Visão dos indicadores do Planejamento.',
-    labCartaTraco:'Cartas de traço, cadastro e MCC.'
-  };
   const page = document.createElement('section');
   page.className = 'module-page module-page-a';
   page.hidden = true;
@@ -42,11 +23,11 @@
     if (item) link.dataset.itemId = item.id;
     const code = document.createElement('span');
     code.className = 'module-page-code';
-    code.append(window.UnificadoIcons.node('documento'));
-    const name = document.createElement('span');
-    name.textContent = label;
-    const detail = document.createElement('small');
-    detail.textContent = itemDescriptions[item?.id] || '';
+    code.append(window.UnificadoIcons.node(window.UnificadoIcons.forScreen(item || {label})));
+    const name = document.createElement('span');name.className='module-page-link-content';
+    const title=document.createElement('span');title.className='module-page-link-title';title.textContent=label;name.append(title);
+    const detail = document.createElement('small');detail.className='module-page-link-description';
+    detail.textContent = window.UnificadoPresentation.descriptions[item?.id] || '';
     name.append(detail);
     const arrow = document.createElement('span');
     arrow.className = 'module-page-arrow';
@@ -62,33 +43,27 @@
   }
 
   function show(moduleId, push = true) {
+    if(moduleId==='ged'&&!window.UnificadoSidebarModelA?.snapshot().allowedModuleIds.includes('ged')){window.UnificadoRouter?.home();return;}
     const config = MENU_CONFIG[moduleId];
     if (!config && moduleId !== 'ged') return;
     const title = config?.label || 'GED';
     page.replaceChildren();
     page.dataset.module = moduleId;
 
-    const back = document.createElement('a');
-    back.className = 'module-page-back';
-    back.href = root;
-    back.textContent = '← Menu principal';
-    back.addEventListener('click', event => {
-      event.preventDefault();
-      window.UnificadoSidebarModelA?.navigate(root);
-    });
     const heading = document.createElement('header');
     heading.className = 'module-page-heading';
     const h1 = document.createElement('h1');
     h1.textContent = title;
     const description = document.createElement('p');
     description.className = 'module-page-description';
-    description.textContent = descriptions[moduleId] || '';
+    description.textContent = String(config?.groups.flatMap(g=>g.items).filter(i=>canUse(MENU_ITEMS[i.id])).length || 0)+' telas';
     heading.append(h1, description);
-    page.append(back, heading);
+    page.append(heading);
 
     const groups = moduleId === 'ged'
       ? [{label: 'Gestão documental', items: gedItems.map(([label, route]) => ({label, route}))}]
       : config.groups.map(group => ({
+          unitName: group.unitName || (moduleId === 'laboratorio' ? (group.unitCode === 'noroeste' ? 'Noroeste' : 'Campinas') : ''),
           label: group.label || (group.items.some(item => item.id === 'labHelp') ? 'Ajuda' : 'Geral'),
           items: group.items.filter(item => canUse(MENU_ITEMS[item.id])),
         }));
@@ -96,7 +71,11 @@
     const isProduction = moduleId === 'producao';
     const unitFor = group => group.unitName || (!isProduction ? '' : /^Pederneiras$/i.test(group.label) ? 'Pederneiras' : /^Ribeirão$/i.test(group.label) ? 'Ribeirão' : /^Noroeste$/i.test(group.label) ? 'Noroeste' : /^Indicadores gerais$/i.test(group.label) ? 'Indicadores gerais' : 'Campinas');
     const units = [...new Set(visibleGroups.map(unitFor))];
-    const active = {unit: units[0], group: 0, query: ''};
+    const unitKey=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    const requestedUnit=new URLSearchParams(location.search).get('unit');
+    const initialUnit=units.find(unit=>unitKey(unit)===unitKey(requestedUnit));
+    const active = {unit: initialUnit||units[0], group: 0, query: ''};
+    const hasUnits=(isProduction||moduleId==='laboratorio')&&units.length>1;
     const selector = document.createElement('div'); selector.className = 'module-page-selector';
     const unitTabs = document.createElement('div'); unitTabs.className = 'module-page-units';
     const search = document.createElement('input'); search.className = 'module-page-search';
@@ -146,21 +125,22 @@
     }
     function render() {
       unitTabs.replaceChildren(); categories.replaceChildren(); content.replaceChildren(); quick.replaceChildren();
-      unitTabs.hidden = !isProduction;
-      if (isProduction) for (const unit of units) {
+      unitTabs.hidden = !hasUnits;
+      if (hasUnits) for (const unit of units) {
         const button = document.createElement('button'); button.type = 'button';
         button.className = 'module-page-unit' + (unit === active.unit ? ' active' : '');
         button.textContent = unit;
         button.setAttribute('aria-pressed', String(unit === active.unit));
-        button.addEventListener('click', () => {active.unit = unit; active.group = 0; active.query = ''; search.value = ''; render();});
+        button.addEventListener('click', () => {active.unit = unit; active.group = 0; active.query = ''; search.value = '';history.replaceState({module:moduleId,unit:unitKey(unit)},'',root+'?module='+encodeURIComponent(moduleId)+'&unit='+encodeURIComponent(unitKey(unit)));render();});
         unitTabs.append(button);
       }
       const current = visibleGroups.filter(group => unitFor(group) === active.unit);
+      description.textContent=current.reduce((sum,group)=>sum+group.items.length,0)+' telas'+(active.unit?' \u00b7 '+active.unit:'');
       current.forEach((group, index) => {
         const button = document.createElement('button'); button.type = 'button';
         button.className = 'module-page-category' + (index === active.group && !active.query ? ' active' : '');
         button.textContent = (group.label || 'Geral').replace(/^Campinas\s*[·-]\s*/i, '');
-        const count = document.createElement('span'); count.textContent = group.items.length; button.append(count);
+        const count = document.createElement('span');count.className='module-page-count'; count.textContent = group.items.length; button.append(count);
         button.addEventListener('click', () => {active.group = index; active.query = ''; search.value = ''; render();});
         categories.append(button);
       });
@@ -172,15 +152,15 @@
         }
         if (!content.children.length) content.textContent = 'Nenhuma tela encontrada.';
       } else if (current[active.group]) content.append(buildGroup(current[active.group], current[active.group].items));
-      const top = document.createElement('h3'); top.textContent = 'Acesso rápido'; quick.append(top);
+
       for (const group of current.slice(0, 4)) {
         const item = group.items[0];
         if (!item) continue;
         const link = document.createElement('a'); link.className = 'module-page-quick-link';
         link.href = item.armacao ? item.url : moduleId === 'ged' ? root + 'ged/' + item.route :
           root + '?view=' + encodeURIComponent(new URL(MENU_ITEMS[item.id].url).pathname.slice(root.length) + new URL(MENU_ITEMS[item.id].url).search);
-        const title = document.createElement('strong'); title.textContent = item.label;
-        const detail = document.createElement('small'); detail.textContent = (group.label || 'Geral').replace(/^Campinas\s*[·-]\s*/i, '');
+        const title = document.createElement('strong'); title.textContent = window.UnificadoPresentation.shortcutLabel(group.label,item.label);
+        const detail = document.createElement('small');detail.className='module-page-link-description'; detail.textContent = (group.label || 'Geral').replace(/^Campinas\s*[·-]\s*/i, '');
         link.append(title, detail);
         link.addEventListener('click', event => {
           if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;

@@ -1,0 +1,16 @@
+[
+  {
+    "database": "mapa_unificado_homolog_20261016",
+    "backup": "/opt/concrefer-unificado/homolog-next/backups/revisao-setores-20261119T015619Z/mapa_unificado_homolog_20261016.dump",
+    "sha256": "0a55f594847471ed430c857b65e969c669d6e1f657d2c845b7b55a34a1ca6f47",
+    "result": "BEGIN\nUPDATE 5\nUPDATE 5\nCOMMIT\n",
+    "only_tagged_test_records": true
+  },
+  {
+    "database": "mapa_visual_homolog_20261118",
+    "backup": "/opt/concrefer-unificado/homolog-next/backups/revisao-setores-20261119T015619Z/mapa_visual_homolog_20261118.dump",
+    "sha256": "9050e3ed1b287dc71ed760a14d7d74141a144b6891457e7e204ae972b59767b0",
+    "result": "BEGIN\nUPDATE 5\nUPDATE 5\nCOMMIT\n",
+    "only_tagged_test_records": true
+  }
+]

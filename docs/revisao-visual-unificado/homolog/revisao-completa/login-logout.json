@@ -1,0 +1,11 @@
+{
+  "version": "1.4.25",
+  "origin": "https://concrefer.concretrack.com.br:18446",
+  "account": "Ricardo",
+  "real_password_login": true,
+  "password_saved": false,
+  "logout_visible_button": true,
+  "session_after_logout": 401,
+  "local_tokens_cleared": true,
+  "js_errors": []
+}

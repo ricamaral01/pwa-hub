@@ -88,7 +88,7 @@ const accessReady = hasMapa ? fetch('/unificado/mapa/api/unified/screen-access/m
   const result = await response.json();
   grantedScreens = new Set(result.screens || []);
   previewModules = result.preview_modules === true;
-  hasGedAccess = hasMapa && (result.ged_access === true || previewModules || gedAuthorizedIds.has(mapaUser.id));
+  hasGedAccess = hasMapa && (result.ged_access === true || gedAuthorizedIds.has(mapaUser.id));
   suprimentosFlags = result.suprimentos_flags || {};
   hasLab = hasLab && moduleHasScreens('laboratorio');
   if (!canAccessModule(currentModule))
@@ -273,7 +273,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.4.20';
+const APP_VERSION = '1.4.25';
 let platformUpdateAvailable = false;
 let platformUpdateState = 'checking';
 let platformLatestVersion = APP_VERSION;
@@ -861,7 +861,7 @@ function renderOpeningModules() {
     link.href = new URL(module.id === 'logistica' ? '?view=' + encodeURIComponent('logistica/') : '?module=' + encodeURIComponent(module.id), UNIFICADO_BASE).href;
     link.innerHTML = `<span class="opening-module-copy"><span class="opening-module-number">${String(index + 1).padStart(2, '0')} / MÓDULO</span><span><strong class="opening-module-title"></strong><small></small></span></span>${ICONS.arrow}`;
     link.querySelector('.opening-module-title').textContent = MENU_CONFIG[module.id].label;
-    link.querySelector('small').textContent = module.description;
+    link.querySelector('small').textContent = '';
     link.addEventListener('click', event => {
       if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
       if (module.id === 'logistica' && window.UnificadoRouter?.open) {

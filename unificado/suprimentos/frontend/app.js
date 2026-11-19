@@ -3,6 +3,7 @@ const ROOT = '/unificado/suprimentos/';
 const API = '/api/suprimentos';
 const view = location.pathname.split('/').filter(Boolean).pop() || 'painel';
 const app = document.getElementById('app');
+app.dataset.view=view;
 const state = {me:null, rows:[], counts:{}, countsAt:0, tab:'Todas', selected:new Set(), filters:{}, page:1,
   catalog:[], measures:[], centers:[], draftItems:[], draftPhotos:[], draftStep:1,
   resource:'materiais', resourceRows:[], edit:null};
@@ -30,7 +31,7 @@ const path = (page,id='') => ROOT + page + '/' + (id ? `?id=${encodeURIComponent
 const badge = (value, type='status') => {
   const labels={EM_APROVACAO:'Em aprovação',EM_ATENDIMENTO:'Em atendimento',APROVADA:'Aprovada',ENTREGUE:'Entregue',CONCLUIDA:'Concluída',DEVOLVIDA:'Devolvida',REPROVADA:'Reprovada',CANCELADA:'Cancelada',RASCUNHO:'Rascunho',PAROU_PRODUCAO:'Parou produção',URGENTE:'Urgente',NORMAL:'Normal',PENDENTE:'Pendente',SEPARADO:'Separado'};
   const tone=type==='urgencia' ? value==='PAROU_PRODUCAO'?'stopped':value==='URGENTE'?'urgent':'ok' : ['APROVADA','ENTREGUE','CONCLUIDA'].includes(value)?'ok':value==='EM_APROVACAO'?'wait':value==='DEVOLVIDA'?'return':value==='REPROVADA'?'stopped':'';
-  return `<span class="badge ${tone}">${esc(labels[value]||value)}</span>`;
+  return `<span class="${['NORMAL','CONCLUIDA'].includes(value)?'review-plain-state':'badge '+tone}">${esc(labels[value]||value)}</span>`;
 };
 const loading = () => {app.innerHTML='<div class="loading-state"><span class="spinner" aria-hidden="true"></span>Carregando Suprimentos…</div>';};
 const empty = (title,detail='') => `<div class="empty-state"><strong>${esc(title)}</strong><span>${esc(detail)}</span></div>`;
@@ -68,10 +69,10 @@ async function loadPanel(){
   const late=mine.filter(row=>new Date(row.criado_em).getTime()<Date.now()-86400000).length;
   const active=state.rows.filter(row=>row.status==='EM_ATENDIMENTO');
   const urgent=active.filter(row=>row.urgencia!=='NORMAL').length;
-  app.innerHTML=header('Painel de suprimentos','Sua fila de trabalho e as solicitações da unidade.',
+  app.innerHTML=header('Painel de suprimentos','',
     `<a class="btn primary" href="${path('nova')}"><span class="icon-plus">+</span> Nova solicitação</a>`) +
-    `<div class="kpi-grid"><section class="card kpi"><span class="label">Aguardando sua aprovação</span><span class="value">${mine.length}</span><small>${late} há mais de 24 h</small></section>
-    <section class="card kpi alert"><span class="label">Em atendimento</span><span class="value">${active.length}</span><small>${urgent} urgentes / parou produção</small></section></div>
+    `<div class="kpi-grid strip"><section class="card kpi"><span class="label">Aguardando sua aprovação</span><span class="value">${mine.length}</span><small>${late===0?'Nenhuma':late} há mais de 24 h</small></section>
+    <section class="card kpi alert"><span class="label">Em atendimento</span><span class="value">${active.length}</span><small>${urgent} ${urgent===1?'urgente':'urgentes'} · parou produção</small></section></div>
     <section class="card"><div class="section-head"><h2>Fila de trabalho</h2><a href="${path('solicitacoes')}">Ver todas →</a></div>${tableRows(state.rows.slice(0,20),true)}</section>`;
   if(state.me?.flags?.S3A&&(hasRole('COMPRADOR')||hasRole('QUALIDADE')||canAdmin())){
     try{const s=await api('/compras/resumo');app.insertAdjacentHTML('beforeend',`<div class="kpi-grid sup-purchase-kpis">
@@ -90,7 +91,8 @@ async function loadPanel(){
 }
 function tableRows(rows,panel=false){
   if(!rows.length)return empty('Nenhuma solicitação nesta fila','As novas solicitações aparecerão aqui.');
-  return `<div class="table-scroll"><table><thead><tr><th>Nº</th><th>Solicitante / setor</th><th>Itens</th><th>Urgência</th><th>Situação</th><th>Idade</th></tr></thead><tbody>${rows.map(row=>`<tr class="${['CONCLUIDA','CANCELADA','REPROVADA'].includes(row.status)?'dim':''}"><td><a class="link-row" href="${path('solicitacao',row.id)}">${esc(row.numero)}</a></td><td>${esc(row.solicitante_nome)}<small class="cell-muted">${esc(centerName(row.cc_id))}</small></td><td>${esc(row.resumo||'Ver itens')}</td><td>${badge(row.urgencia,'urgencia')}</td><td>${badge(row.status)}${row.nivel_atual?`<small class="cell-muted">Nível ${row.nivel_atual} de ${row.niveis_total}</small>`:''}</td><td class="nowrap">${age(row.criado_em)}</td></tr>`).join('')}</tbody></table></div>`;
+  const compact = `<div class="sup-compact-list">${rows.map(row=>`<a class="sup-compact-row" href="${path('solicitacao',row.id)}"><strong>${esc(row.resumo||'Ver itens')}</strong><small class="sup-compact-meta">${esc(row.numero)} &middot; ${esc(row.solicitante_nome)}</small><span class="sup-compact-state">${badge(row.status)}<br><small>${age(row.criado_em)}</small></span></a>`).join('')}</div>`;
+  return compact + `<div class="table-scroll"><table class="sup-request-list"><thead><tr><th>Nº</th><th>Solicitante / setor</th><th>Itens</th><th>Urgência</th><th>Situação</th><th>Idade</th></tr></thead><tbody>${rows.map(row=>`<tr class="${['CONCLUIDA','CANCELADA','REPROVADA'].includes(row.status)?'dim':''}"><td><a class="link-row" href="${path('solicitacao',row.id)}">${esc(row.numero)}</a></td><td>${esc(row.solicitante_nome)}<small class="cell-muted">${esc(centerName(row.cc_id))}</small></td><td>${esc(row.resumo||'Ver itens')}</td><td>${badge(row.urgencia,'urgencia')}</td><td>${badge(row.status)}${row.nivel_atual?`<small class="cell-muted">Nível ${row.nivel_atual} de ${row.niveis_total}</small>`:''}</td><td class="nowrap">${age(row.criado_em)}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function centerName(id){return state.centers.find(x=>x.id===id)?.nome||'Centro de custo';}
 

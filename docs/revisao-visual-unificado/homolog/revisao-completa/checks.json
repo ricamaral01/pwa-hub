@@ -1,0 +1,46 @@
+{
+  "version": "1.4.25",
+  "checks": [
+    {
+      "check": "visual-guard",
+      "command": "C:\\Python314\\python.exe tests/unificado/visual_style_guard.py",
+      "exit_code": 0
+    },
+    {
+      "check": "visual-guard-tests",
+      "command": "C:\\Python314\\python.exe tests/unificado/test_visual_style_guard.py",
+      "exit_code": 0
+    },
+    {
+      "check": "frontend-regressions",
+      "command": "node --test tests/unificado/review_complete.test.cjs",
+      "exit_code": 0
+    },
+    {
+      "check": "sector-context",
+      "command": "node tests/unificado/screen_context.test.cjs",
+      "exit_code": 0
+    },
+    {
+      "check": "syntax",
+      "command": "C:\\Python314\\python.exe tests/unificado/visual_syntax_check.py --base HEAD --output docs/revisao-visual-unificado/homolog/revisao-completa/syntax-checks.json",
+      "exit_code": 0,
+      "checked_blocks": 116
+    },
+    {
+      "check": "gate",
+      "command": "C:\\Python314\\python.exe tests/unificado/modelo_a_gate.py",
+      "exit_code": 0
+    },
+    {
+      "check": "laboratorio-tests",
+      "command": "npm.cmd test",
+      "exit_code": 0
+    },
+    {
+      "check": "qualidade-ui-a11y",
+      "command": "npm.cmd run test:ui -- --workers=1 --timeout=60000",
+      "exit_code": 0
+    }
+  ]
+}

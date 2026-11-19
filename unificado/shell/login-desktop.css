@@ -17,3 +17,5 @@
  .login-submit{height:40px;width:100%;background:var(--c-navy);border:1px solid var(--c-navy);border-radius:var(--r);color:var(--c-surface);box-shadow:none;transform:none;font-size:14px;font-weight:500}
  .login-note{font-size:12px;color:var(--c-ink-2);margin-top:20px}
 }
+
+@media screen and (min-width:1025px){.login-desktop-story>div:not(.login-story-units),.login-card>p:not(#login-feedback),.login-note{display:none!important}.login-story-units{margin-top:auto}}

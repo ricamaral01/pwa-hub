@@ -1,0 +1,20 @@
+
+> concretrack-ensaio-postes@1.0.0 build
+> tsc -b && vite build
+
+vite v6.4.3 building for production...
+transforming...
+✓ 30 modules transformed.
+rendering chunks...
+computing gzip size...
+../service/server/static/postes/index.html                   1.33 kB │ gzip:  0.46 kB
+../service/server/static/postes/assets/index-pdkh_yNf.css   29.68 kB │ gzip:  6.18 kB
+../service/server/static/postes/assets/index-67Zoh3iH.js   211.79 kB │ gzip: 64.93 kB
+✓ built in 1.03s
+<script src="/unificado/shell/password-visibility.js?v=1.4.25"> in "/index.html" can't be bundled without type="module" attribute
+<script src="/unificado/laboratorio/postes/assets/absorcao-historico.js?v=1.4.25"> in "/index.html" can't be bundled without type="module" attribute
+<script src="/unificado/laboratorio/laboratorio-bridge.js"> in "/index.html" can't be bundled without type="module" attribute
+
+/unificado/shell/password-visibility.css?v=1.4.25 doesn't exist at build time, it will remain unchanged to be resolved at runtime
+
+/unificado/laboratorio/postes/assets/absorcao-historico.css?v=1.4.25 doesn't exist at build time, it will remain unchanged to be resolved at runtime

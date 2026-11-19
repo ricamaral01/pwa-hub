@@ -1,0 +1,10 @@
+{
+  "status": "ok",
+  "rows": 436,
+  "gerencia": 182,
+  "gerencia_ged": 6,
+  "negative_cases": 31,
+  "combined_filters": true,
+  "search": true,
+  "js_errors": []
+}

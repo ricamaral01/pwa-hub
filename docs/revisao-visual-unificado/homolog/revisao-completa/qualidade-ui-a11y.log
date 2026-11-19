@@ -1,0 +1,26 @@
+
+> concretrack-qualidade@0.1.0 test:ui
+> playwright test --workers=1 --timeout=60000
+
+
+Running 13 tests using 1 worker
+
+  ok  1 tests\tasks-fluid.spec.ts:3:1 › busca: digitar não recarrega contadores e só a resposta mais recente prevalece (3.2s)
+  ok  2 tests\tasks-fluid.spec.ts:31:1 › detalhe: clicar rapidamente em outra tarefa não abre uma resposta antiga (1.8s)
+  ok  3 tests\tasks-fluid.spec.ts:46:1 › atualização mantém lista visível e metadados lentos não bloqueiam a lista (1.7s)
+  ok  4 tests\tasks-fluid.spec.ts:58:1 › filtros, concluídas e limpar são explícitos em telas estreitas (868ms)
+  ok  5 tests\tasks-fluid.spec.ts:70:1 › nova lista usa formulário, mantém foco e fecha por Escape (1.1s)
+  ok  6 tests\tasks-fluid.spec.ts:80:1 › paginação expõe registros além da primeira página sem duplicar (841ms)
+  ok  7 tests\tasks-fluid.spec.ts:97:1 › falha ao comentar preserva o texto e mostra erro persistente (1.1s)
+  ok  8 tests\tasks-ui.spec.ts:4:1 › computador: lista abre sem painel automático; selecionar e fechar preserva a lista (834ms)
+  ok  9 tests\tasks-ui.spec.ts:20:1 › tablet: filtros acessíveis e detalhe aberto por escolha do usuário (727ms)
+  ok 10 tests\tasks-ui.spec.ts:33:1 › celular: lista direta, detalhe, volta e visões (868ms)
+  ok 11 tests\tasks-ui.spec.ts:46:1 › acessibilidade: nenhuma violação grave na lista móvel, computador e formulário (4.3s)
+  ok 12 tests\tasks-ui.spec.ts:64:1 › celular: concluir sem conexão entra na fila e sincroniza ao reconectar (1.1s)
+  ok 13 tests\tasks-ui.spec.ts:89:1 › computador: lista consultada volta do IndexedDB sem rede (806ms)
+
+  13 passed (26.6s)
+[WebServer] (node:36704) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:36624) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

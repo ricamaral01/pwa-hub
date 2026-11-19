@@ -5,15 +5,6 @@
   const home = document.querySelector('.main-panel > .content');
   if (!home) return;
 
-  const descriptions = {
-    planejamento: 'Programação, PCP e relatórios',
-    producao: 'Mapa, inspeção e montagem',
-    qualidade: 'Não conformidades e controle',
-    laboratorio: 'Ensaios e acompanhamento',
-    usinas: 'Operação e acompanhamento das usinas',
-    ged: 'Documentos e aprovações',
-    suprimentos: 'Solicitações e almoxarifado geral',
-  };
   const gedItems = window.UnificadoGedMenu.map(item => [item.label, item.route]);
   const page = document.createElement('section');
   page.className = 'module-page';
@@ -30,14 +21,14 @@
     return root + '?view=' + encodeURIComponent(view) + url.hash;
   }
 
-  function itemLink(label, href, open, description = '') {
+  function itemLink(label, href, open, description = '', item = null) {
     const link = document.createElement('a');
     link.className = 'module-page-link';
     link.href = href;
     link.dataset.search = `${label} ${description}`;
     const icon = document.createElement('span');
     icon.className = 'module-page-icon';
-    icon.append(window.UnificadoIcons.node('documento'));
+    icon.append(window.UnificadoIcons.node(window.UnificadoIcons.forScreen(item || {label})));
     const content = document.createElement('span');
     content.className = 'module-page-link-content';
     const name = document.createElement('span');
@@ -45,7 +36,7 @@
     name.textContent = label;
     const desc = document.createElement('span');
     desc.className = 'module-page-link-description';
-    desc.textContent = description;
+    desc.textContent = window.UnificadoPresentation.descriptions[item?.id] || description;
     const arrow = document.createElement('span');
     arrow.className = 'module-page-arrow';
     arrow.textContent = '';
@@ -61,6 +52,7 @@
   }
 
   function show(moduleId, push = true) {
+    if(moduleId==='ged'&&!window.UnificadoSidebarModelA?.snapshot().allowedModuleIds.includes('ged')){window.UnificadoRouter?.home();return;}
     const config = MENU_CONFIG[moduleId];
     if (!config && moduleId !== 'ged') return;
     const title = config?.label || 'GED';
@@ -69,23 +61,15 @@
     const palette = window.UnificadoModuleTheme?.theme[moduleId];
     if (palette) for (const [key, value] of Object.entries(window.UnificadoModuleTheme.vars(palette))) page.style.setProperty(key, value);
 
-    const back = document.createElement('a');
-    back.className = 'module-page-back';
-    back.href = root;
-    back.textContent = '← Menu principal';
-    back.addEventListener('click', event => {
-      event.preventDefault();
-      window.UnificadoSidebarModelA?.navigate(root);
-    });
     const heading = document.createElement('header');
     heading.className = 'module-page-heading';
     const h1 = document.createElement('h1');
     h1.textContent = title;
     const description = document.createElement('p');
     description.className = 'module-page-description';
-    description.textContent = descriptions[moduleId] || '';
+    description.textContent = String(config?.groups.flatMap(g=>g.items).filter(i=>canUse(MENU_ITEMS[i.id])).length || 0)+' telas';
     heading.append(h1, description);
-    page.append(back, heading);
+    page.append(heading);
 
     let selectedUnit = '';
     if (moduleId === 'laboratorio') {
@@ -120,6 +104,7 @@
           label: group.label || (group.items.some(item => item.id === 'labHelp') ? 'Ajuda' : 'Geral'),
           items: group.items.filter(item => canUse(MENU_ITEMS[item.id])),
         }));
+    description.textContent=groups.reduce((sum,group)=>sum+group.items.length,0)+' telas'+(selectedUnit?' \u00b7 '+(selectedUnit==='noroeste'?'Noroeste':'Campinas'):'');
     const toolbar = document.createElement('div');
     toolbar.className = 'module-page-toolbar';
     const quick = document.createElement('nav');
@@ -127,14 +112,15 @@
     quick.setAttribute('aria-label', 'Acesso rápido');
     const quickTitle = document.createElement('span');
     quickTitle.textContent = 'Acesso rápido';
-    quick.append(quickTitle);
+
     const quickItems = groups.filter(group => group.items.length).slice(0, 4).map(group => group.items[0]);
     for (const item of quickItems) {
       const route = moduleId === 'ged' ? `${root}ged/${item.route}` : MENU_ITEMS[item.id]?.url;
       if (!route) continue;
       const chip = document.createElement('a');
       chip.href = shellHref(route);
-      chip.textContent = item.label;
+      const group=groups.find(g=>g.items.includes(item));
+      chip.textContent = window.UnificadoPresentation.shortcutLabel(group?.label,item.label);
       chip.addEventListener('click', event => {
         if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
         event.preventDefault();
@@ -207,7 +193,7 @@
             }
             if (!window.UnificadoRouter?.open) return false;
             window.UnificadoRouter.open(route.url, item.id);
-          });
+          }, '', item);
           if (opensCertificateTab) {
             link.target = '_blank';
             link.rel = 'noopener noreferrer';

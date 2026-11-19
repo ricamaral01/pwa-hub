@@ -5,9 +5,9 @@ from datetime import datetime,timezone
 H=Path('/opt/concrefer-unificado/homolog-next');G=H/'visual-full';S=Path(__file__).resolve().parent
 assert S.is_relative_to(H/'staging')
 phase=sys.argv[1] if len(sys.argv)>1 else 'fase-5'
-assert phase in ('fase-5','fase-7')
+assert phase in ('fase-5','fase-7','revisao-completa')
 manifest=json.loads((S/'service-manifest.json').read_text());release=S/'service-release';release.mkdir(exist_ok=True)
-prefixes=['laboratorio/server/static/','carta-static/','dosagem-static/']
+prefixes=['laboratorio/server/static/','carta-static/','dosagem-static/','mapa/testar-index.html']
 with tarfile.open(S/'service-static.tgz') as a:
  for m in a.getmembers():
   assert m.isfile() and any(m.name.startswith(p) for p in prefixes) and '..' not in Path(m.name).parts

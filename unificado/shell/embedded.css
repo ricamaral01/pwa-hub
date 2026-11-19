@@ -1,4 +1,4 @@
-@import url("/unificado/shell/tokens.css?v=1.4.7");
+@import url("/unificado/shell/tokens.css?v=1.4.25");
 /* A module inside the persistent shell keeps its working UI and hides only its duplicate chrome. */
 html.unificado-embedded, html.unificado-embedded body{background:var(--c-bg)!important;}
 html.unificado-embedded body .unificado-sidebar,

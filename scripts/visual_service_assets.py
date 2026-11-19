@@ -1,7 +1,7 @@
 """Package generated Lab frontend and authored embedded assets, no API code."""
 import hashlib,json,sys,tarfile
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1];phase=sys.argv[1];assert phase in ('fase-5','fase-7')
+ROOT=Path(__file__).resolve().parents[1];phase=sys.argv[1];assert phase in ('fase-5','fase-7','revisao-completa')
 out=ROOT/'docs/revisao-visual-unificado/homolog'/phase;out.mkdir(parents=True,exist_ok=True)
 sources={}
 base=ROOT/'unificado/laboratorio/service/server/static'
@@ -12,6 +12,7 @@ for folder in ['postes','novo/postes','cronoanalise']:
 embedded=ROOT/'unificado/laboratorio/frontend/embedded'
 for p in embedded.rglob('*'):
  if p.is_file():sources[p.relative_to(embedded).as_posix()]=p
+sources['mapa/testar-index.html']=ROOT/'unificado/testar/index.html'
 manifest={r:hashlib.sha256(p.read_bytes()).hexdigest() for r,p in sorted(sources.items())}
 (out/'service-manifest.json').write_text(json.dumps(manifest,indent=2))
 with tarfile.open(out/'service-static.tgz','w:gz') as a:

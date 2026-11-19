@@ -44,7 +44,7 @@ for role in ['ADMIN','PCP','PRODUCAO','CONSULTA']:
  if not candidates:
   available=[u for u in users if u['nivel_acesso']==role]
   if available:
-   user=available[0];out[role]={'user':user,'mapa':None,'cookie':None,'token':token(user)}
+   user=available[0];out[role]={'user':user,'mapa':None,'cookie':None,'test_cookie':signer.dumps({'scope':'pcp_test_session','id':user['id']}),'token':token(user)}
   else:out[role]={'unavailable':True,'existing_api_users':0}
   continue
  user,m=candidates[0]
