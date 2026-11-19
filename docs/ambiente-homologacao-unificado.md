@@ -1,5 +1,41 @@
 # Homologação do sistema unificado
 
+## Estado final da revisão visual — 18/11/2026
+
+A porta **18446** recebeu a versão **1.4.20**, com as fases 1–7 concluídas.
+A entrega, o checklist, os arquivos alterados, as evidências e o roteiro do teste
+definitivo estão no [relatório final](revisao-visual-unificado/homolog/fase-7/RELATORIO.md).
+A [galeria](revisao-visual-unificado/homolog/fase-7/galeria.html) reúne as capturas.
+Os registros anteriores desta página são históricos e não descrevem a versão final.
+
+Dependências finais isoladas, além dos bancos já listados abaixo:
+
+- `erp_visual_homolog_20261118`: somente tabelas de backup offline do ERP;
+  papel exclusivo de leitura e serviço `unificado-visual-homolog-erp.service`,
+  porta local **14189**. Os dois Fechamentos Diários usam essa cópia.
+- `dosagem_visual_homolog_20261118`: restore do dump offline nativo de
+  22/10/2026, com dump do banco vazio antes. Serviço de Dosagem continua em
+  **14169**, com papel técnico próprio e sem conexão ao banco de produção.
+- Monitor térmico: `unificado-visual-homolog-monitor.service`, **14190**,
+  snapshot de arquivos em `homolog-next/visual-full/monitor/data`, sem banco SQL,
+  sem ingestão de dispositivos publicada e sem chamadas ao serviço de produção.
+- CEC Noroeste: as tabelas analíticas vazias da cópia de teste foram alinhadas
+  às chaves de número de série utilizadas no código publicado; dump anterior em
+  `homolog-next/backups/paridade-completa-20261118T204523Z/cec_noroeste_visual_homolog_20261118-before-serial-keys.dump`.
+
+As regras dos Fechamentos Diários foram adicionadas somente ao snippet
+`visual-full-unificado-screen-access-homolog.conf`, com backup, `nginx -t` e
+recarga. O vhost de produção e seus arquivos permanecem iguais aos inventariados.
+O login estreito foi preservado em folha exclusiva, carregada apenas até 1024px
+e congelada por hash no teste da fase 7. O gate final é **7/7**.
+
+Os dados desta geração são snapshots e dados de teste identificados; não há
+sincronização contínua com produção. Não foram habilitados envios externos ou
+workers de produção. A auditoria compara os perfis/concessões com os dumps
+iniciais e os arquivos/processos de produção com o inventário anterior.
+
+A publicação em produção continua dependendo de **aval escrito separado**.
+
 ## Continuação autorizada — paridade e fases 3–7
 
 O usuário autorizou em 18/11/2026 a conclusão das fases restantes e a paridade

@@ -104,7 +104,7 @@ function unificadoUnavailableOrLogin(skipRecovery = false) {
       notice.id = 'unificado-module-unavailable';
       notice.setAttribute('role','status');
       notice.style.cssText = 'position:fixed;inset:0;z-index:1000000;display:grid;place-items:center;background:#0B1730;color:white;font:600 22px system-ui;text-align:center;padding:24px';
-      notice.innerHTML = '<div>Planejamento indispon\u00edvel para esta conta.<br><a style="color:#E8762A;font-size:16px" href="/unificado/">Voltar ao In\u00edcio</a></div>';
+      notice.innerHTML = '<div>Planejamento indispon\u00edvel para esta conta.<br><a data-visual-print="ad773b9c4efe" style="color:var(--c-orange);font-size:16px;" href="/unificado/">Voltar ao In\u00edcio</a></div>';
       document.body.append(notice);
     }).catch(() => {});
 }

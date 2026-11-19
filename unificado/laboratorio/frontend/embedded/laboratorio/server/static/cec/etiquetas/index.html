@@ -152,8 +152,7 @@
     .empty-state i{font-size:40px;display:block;margin-bottom:8px}
   
 }
-@media screen {
-:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-blue:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);--ct-green:var(--c-ok);--ct-red:var(--c-crit);--ct-yellow:var(--c-orange);}
+@media screen{:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-blue:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);--ct-green:var(--c-ok);--ct-red:var(--c-crit);--ct-yellow:var(--c-orange);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--ct-bg);color:var(--ct-gray);}
 .mono{}
@@ -233,10 +232,9 @@ body{background:var(--ct-bg);color:var(--ct-gray);}
 .count-badge{display:inline-flex;align-items:center;justify-content:center;background:var(--ct-orange);color:var(--c-surface);border-radius:var(--r);min-width:24px;height:24px;font-size:12px;font-weight:800;padding:0 8px;}
 .empty-state{text-align:center;padding:40px 20px;color:var(--ct-silver);}
 .empty-state i{font-size:40px;display:block;margin-bottom:8px;}
-
 }
 </style>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.13"></head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.20"></head>
 <body>
 
 <!-- ═══ TOPBAR ═══ -->
@@ -299,12 +297,12 @@ body{background:var(--ct-bg);color:var(--ct-gray);}
       </div>
 
       <!-- ── Configuração Idades (inline) ── -->
-      <div style="border-top:1px solid #eef1f5;padding-top:14px;margin-top:14px">
+      <div data-visual-print="ec429e61cf2f" style="border-top:1px solid var(--c-line-2);padding-top:14px;margin-top:14px;">
         <div class="row g-3 align-items-end">
           <div class="col-12 col-md-6">
             <label style="font-size:11px;font-weight:700;color:var(--ct-gray-lt);text-transform:uppercase;letter-spacing:.3px"><i class="bi bi-gear-fill me-1" style="color:var(--ct-orange)"></i>Idades (dias)</label>
             <div class="d-flex gap-2 mt-1">
-              <input type="number" id="inputIdade" min="1" max="365" placeholder="Ex: 7" style="border:1px solid #d1d5db;border-radius:8px;padding:7px 12px;font-size:13px;width:90px;font-family:inherit">
+              <input type="number" id="inputIdade" min="1" max="365" placeholder="Ex: 7" data-visual-print="a716ea180895" style="border:1px solid var(--c-line);border-radius:var(--r);padding:7px 12px;font-size:13px;width:90px;">
               <button class="btn-ct btn-ct-navy" onclick="addIdade()" style="padding:7px 14px"><i class="bi bi-plus-lg"></i> Adicionar</button>
             </div>
             <div class="idade-chips mt-2" id="idadeChips"></div>

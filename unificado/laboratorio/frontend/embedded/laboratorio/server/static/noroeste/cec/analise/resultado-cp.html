@@ -11,7 +11,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <script src="./api-client.js?v=1.4.13"></script>
+  <script src="./api-client.js?v=1.4.20"></script>
   <style>@media print {
 
     /* ══ LIGHT THEME BASE ══ */
@@ -98,8 +98,7 @@
     }
   
 }
-@media screen {
-/* ══ LIGHT THEME BASE ══ */
+@media screen{/* ══ LIGHT THEME BASE ══ */
 :root{--primary:var(--c-blue);--primary-light:var(--c-blue);--accent:var(--c-orange);--card-bg:rgba(0,0,0,0.04);--card-border:rgba(0,0,0,0.10);--text:var(--c-navy);--muted:var(--c-ink-2);--radius:var(--r);--shadow:0 8px 28px rgba(0,0,0,0.12);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--c-surface);color:var(--text);min-height:100vh;display:flex;flex-direction:column;padding-bottom:60px;}
@@ -118,7 +117,7 @@ body{background:var(--c-surface);color:var(--text);min-height:100vh;display:flex
 .hero h1{font-size:1.45rem;font-weight:900;margin-bottom:6px;}
 .hero h1 span{color:var(--accent);}
 .hero p{font-size:.85rem;color:var(--muted);line-height:1.5;}
-.accent-line{width:60px;height:3px;background:var(--accent);border-radius:var(--r-sm);margin:14px auto 0;}
+.accent-line{width:60px;height:3px;background:var(--accent);border-radius:var(--r);margin:14px auto 0;}
 /* ── LAYOUT ── */
 .cp-wrap{max-width:none;padding:16px 20px;}
 /* ── PRINT BUTTON ── */
@@ -167,10 +166,9 @@ tbody td.lft{text-align:left;}
       .tbl-wrap { overflow: visible; border: none; }
       td, th { color: #000 !important; border-color: #999 !important; background: #fff !important; }
     }
-
 }
 </style>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.13"></head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.20"></head>
 <body>
 <!-- TOP BAR -->
 <div class="topbar">
@@ -182,13 +180,13 @@ tbody td.lft{text-align:left;}
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
-    <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+    <button class="btn-print" onclick="window.print()"> Imprimir</button>
     <a class="btn-back" href="./index.html">← Voltar</a>
   </div>
 </div>
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-icon">🧱</div>
+  <div class="hero-icon"></div>
   <h1>Resultado Corpos de <span>Prova</span></h1>
   <p>Resistência à compressão — MPa por corpo de prova</p>
   <div class="accent-line"></div>
@@ -196,7 +194,7 @@ tbody td.lft{text-align:left;}
 <div class="cp-wrap">
 
   <!-- Progress Indicator -->
-  <div id="renderProgress" style="display:none; text-align:center; padding:12px; background:rgba(245,158,11,.1); border-radius:8px; margin-bottom:14px; color:#f59e0b; font-size:.85rem; font-weight:600; animation:pulse 1.5s infinite;">
+  <div id="renderProgress" data-visual-print="cfb7309d8cfe" style="display:none;text-align:center;padding:12px;background:rgba(245,158,11,.1);border-radius:var(--r);margin-bottom:14px;color:var(--c-orange);font-size:.85rem;font-weight:600;animation:pulse 1.5s infinite;">
     ⏳ Carregando...
   </div>
   <style>@media print {
@@ -207,11 +205,9 @@ tbody td.lft{text-align:left;}
     }
   
 }
-@media screen {
-@keyframes pulse{0%, 100%{opacity:.7;}
+@media screen{@keyframes pulse{0%, 100%{opacity:.7;}
 50%{opacity:1;}
 }
-
 }
 </style>
 
@@ -356,10 +352,10 @@ function statusBadge(mpa1,mpa2,age){
   var vals=[mpa1,mpa2].map(function(v){return r1(v);}).filter(function(v){return v!==null;});
   if(!vals.length)return'<span class="age-badge age-x">PEND</span>';
   if(vals.some(function(v){return v<meta.min;}))
-    return'<span class="age-badge" style="background:rgba(239,68,68,.1);color:#dc2626;border:1px solid #ef4444;">NOK</span>';
+    return'<span class="age-badge" data-visual-print="27ade025a8c0" style="background:rgba(239,68,68,.1);color:var(--c-crit);border:1px solid var(--c-orange);">NOK</span>';
   if(vals.some(function(v){return v>meta.max;}))
-    return'<span class="age-badge" style="background:rgba(245,158,11,.1);color:#b45309;border:1px solid #f59e0b;">AMP</span>';
-  return'<span class="age-badge" style="background:rgba(16,185,129,.1);color:#059669;border:1px solid #10b981;">OK</span>';
+    return'<span class="age-badge" data-visual-print="f54b55e0648b" style="background:rgba(245,158,11,.1);color:var(--c-warn);border:1px solid var(--c-orange);">AMP</span>';
+  return'<span class="age-badge" data-visual-print="49dedd9adf7d" style="background:rgba(16,185,129,.1);color:var(--c-ok);border:1px solid var(--c-ok);">OK</span>';
 }
 
 function groupRows(rawRows){
@@ -492,7 +488,7 @@ function renderFromRows(rows){
 }
 
 function showStaleCacheWarning(err){
-  _dataStatusHtml='<span style="color:#b45309;font-weight:700;">Modo offline - exibindo dados armazenados localmente.</span>'
+  _dataStatusHtml='<span data-visual-print="42589bb0bae1" style="color:var(--c-warn);font-weight:700;">Modo offline - exibindo dados armazenados localmente.</span>'
     +' <code>'+(err&&err.message?err.message:String(err||''))+'</code>';
   renderTable();
 }
@@ -551,7 +547,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 (async function(){
-  try{ if('serviceWorker' in navigator){ var registration=await navigator.serviceWorker.register('./sw.js?v=1.4.13',{scope:'./',updateViaCache:'none'}); registration.update().catch(function(){}); } }catch(e){}
+  try{ if('serviceWorker' in navigator){ var registration=await navigator.serviceWorker.register('./sw.js?v=1.4.20',{scope:'./',updateViaCache:'none'}); registration.update().catch(function(){}); } }catch(e){}
 
   // SW version badge and force update
   function initSWVersionBadge() {

@@ -96,8 +96,7 @@
     @media print{.app-topbar,.filter-card,.btn-go,.btn-print,.footer,.alert-toast{display:none!important}.section-card{box-shadow:none;border:1px solid #ccc}}
   
 }
-@media screen {
-:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);--ct-green:var(--c-ok);--ct-red:var(--c-crit);--ct-yellow:var(--c-orange);--ct-blue:var(--c-ink-2);}
+@media screen{:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);--ct-green:var(--c-ok);--ct-red:var(--c-crit);--ct-yellow:var(--c-orange);--ct-blue:var(--c-ink-2);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--ct-bg);}
 .app-topbar{background:var(--ct-gray);color:var(--c-surface);}
@@ -186,7 +185,6 @@ body{background:var(--ct-bg);}
 .footer{text-align:center;padding:24px;font-size:11px;color:var(--ct-silver);}
 .footer span{color:var(--ct-orange);font-weight:700;}
 @media print{.app-topbar,.filter-card,.btn-go,.btn-print,.footer,.alert-toast{display:none!important}.section-card{box-shadow:none;border:1px solid #ccc}}
-
 }
 </style>
 <script>
@@ -214,8 +212,8 @@ body{background:var(--ct-bg);}
       else top.location.assign('/unificado/login.html');
     }
     </script>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.13"><script defer src="/unificado/shell/components.js?v=1.4.13"></script></head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.20"><script defer src="/unificado/shell/components.js?v=1.4.20"></script></head>
 <body>
 <div class="app-topbar">
   <div class="container">
@@ -313,7 +311,7 @@ body{background:var(--ct-bg);}
 
     <!-- ── Tempo de Batida ── -->
     <div class="section-card">
-      <div class="sc-header"><i class="bi bi-stopwatch" style="color:#6d28d9"></i><h3>Tempo de Batida (hora_final - hora_inicio)</h3></div>
+      <div class="sc-header"><i class="bi bi-stopwatch" data-visual-print="bfbe6f21a7c7" style="color:var(--c-ink-2);"></i><h3>Tempo de Batida (hora_final - hora_inicio)</h3></div>
       <div class="sc-body">
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px" id="batidaStats"></div>
         <p style="font-size:11px;color:var(--ct-gray-lt)">OK = ate 4 min &nbsp;|&nbsp; Aviso = 4-10 min &nbsp;|&nbsp; Critico = acima de 10 min. (+0.5 min de ajuste de abertura)</p>
@@ -341,7 +339,7 @@ body{background:var(--ct-bg);}
     </div>
 
     <div class="section-card">
-      <div class="sc-header"><i class="bi bi-stopwatch" style="color:#6d28d9"></i><h3>Tempo de Batida por Massada (min)</h3></div>
+      <div class="sc-header"><i class="bi bi-stopwatch" data-visual-print="bfbe6f21a7c7" style="color:var(--c-ink-2);"></i><h3>Tempo de Batida por Massada (min)</h3></div>
       <div style="padding:16px;height:260px"><canvas id="chartBatida"></canvas></div>
       <p style="padding:0 16px 14px;font-size:11px;color:var(--ct-gray-lt)">Verde = OK (&lt;=4 min) | Amarelo = Aviso (4-10) | Vermelho = Critico (&gt;10). +0.5 min ajuste.</p>
     </div>
@@ -384,7 +382,7 @@ body{background:var(--ct-bg);}
           <div style="border-left:4px solid var(--ct-red);padding-left:10px"><strong>Gaps &gt;20 min</strong><br><span style="color:var(--ct-gray-lt)">Parada significativa na producao</span></div>
           <div style="border-left:4px solid var(--ct-orange);padding-left:10px"><strong>Manha</strong><br><span style="color:var(--ct-gray-lt)">Massadas antes das 12:00 (com pausa almoco 11-12h descontada)</span></div>
           <div style="border-left:4px solid var(--ct-blue);padding-left:10px"><strong>Tarde</strong><br><span style="color:var(--ct-gray-lt)">Massadas a partir das 12:00</span></div>
-          <div style="border-left:4px solid #6d28d9;padding-left:10px"><strong>Tempo de Batida</strong><br><span style="color:var(--ct-gray-lt)">hora_final - hora_inicio + 0.5 min (ajuste comporta)</span></div>
+          <div data-visual-print="97e748ea9728" style="border-left:4px solid var(--c-ink-2);padding-left:10px;"><strong>Tempo de Batida</strong><br><span style="color:var(--ct-gray-lt)">hora_final - hora_inicio + 0.5 min (ajuste comporta)</span></div>
         </div>
       </div>
     </div>
@@ -818,7 +816,7 @@ function renderDashboard(massadasRaw, meta) {
   // ── Misturadores ──
   document.getElementById('mistRow').innerHTML = Object.entries(R.mistMap).map(function(e) {
     var pct = R.massadas.length ? e[1].count / R.massadas.length * 100 : 0;
-    return '<div style="background:#f8fafc;border-radius:10px;padding:12px;border:1px solid #e8ecf0">'
+    return '<div data-visual-print="3920054c309d" style="background:var(--c-bg);border-radius:var(--r);padding:12px;border:1px solid var(--c-line-2);">'
       + '<div style="font-size:13px;font-weight:800;color:var(--ct-navy);margin-bottom:6px">Misturador: <span style="color:var(--ct-orange)">' + e[0] + '</span></div>'
       + '<div style="font-size:12px;color:var(--ct-gray-lt)">Massadas: <strong>' + e[1].count + '</strong> (' + n2(pct, 1) + '%)</div>'
       + '<div style="font-size:12px;color:var(--ct-gray-lt)">Volume: <strong>' + n2(e[1].m3, 1) + ' m3</strong></div>'
@@ -834,7 +832,7 @@ function renderDashboard(massadasRaw, meta) {
     ['Mais rapido', n2(bs.min, 1) + ' min', 'melhor tempo'],
     ['Mais lento', n2(bs.max, 1) + ' min', 'maior tempo'],
   ].map(function(k) {
-    return '<div style="background:#f8fafc;border-radius:10px;padding:12px;text-align:center;border:1px solid #e8ecf0">'
+    return '<div data-visual-print="22eb39afd9dc" style="background:var(--c-bg);border-radius:var(--r);padding:12px;text-align:center;border:1px solid var(--c-line-2);">'
       + '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--ct-gray-lt);margin-bottom:4px">' + k[0] + '</div>'
       + '<div style="font-size:22px;font-weight:900;color:var(--ct-navy)">' + k[1] + '</div>'
       + '<div style="font-size:10px;color:var(--ct-gray-lt)">' + k[2] + '</div></div>';
@@ -871,7 +869,7 @@ function renderDashboard(massadasRaw, meta) {
   ];
   document.getElementById('constanciaBody').innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">' +
     constItens.map(function(k) {
-      return '<div style="border-left:3px solid var(--ct-navy);padding:8px 12px;background:#f8fafc;border-radius:0 8px 8px 0">'
+      return '<div data-visual-print="7906451daf62" style="border-left:3px solid var(--ct-navy);padding:8px 12px;background:var(--c-bg);border-radius:var(--r);">'
         + '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--ct-gray-lt)">' + k[0] + '</div>'
         + '<div style="font-size:18px;font-weight:900;color:var(--ct-navy)">' + k[1] + '</div>'
         + '<div style="font-size:10px;color:var(--ct-gray-lt)">' + k[2] + '</div></div>';

@@ -221,7 +221,7 @@
     }
     page.append(empty);
 
-    if (moduleId === 'producao') {
+    if (moduleId === 'producao' && (typeof hasMapa === 'undefined' || hasMapa)) {
       fetch('/unificado/armacao/api/armacao/unidades', {credentials:'same-origin',cache:'no-store'})
         .then(response => response.ok ? response.json() : [])
         .then(units => {

@@ -53,6 +53,9 @@ for name in ('api/settings.py', 'api/routers/relatorios.py'):
     target = G / name
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(S / 'erp-source' / name, target)
+    if name.endswith('relatorios.py'):
+        # Keep the published unavailable-source fallback without outbound calls.
+        target.write_text(target.read_text().replace('https://docs.google.com', 'http://127.0.0.1:14153'))
 (G / 'api/__init__.py').touch()
 (G / 'api/routers/__init__.py').touch()
 (G / 'entry.py').write_text('from fastapi import FastAPI\nfrom api.routers.relatorios import router\napp=FastAPI()\napp.include_router(router,prefix="/api")\n')

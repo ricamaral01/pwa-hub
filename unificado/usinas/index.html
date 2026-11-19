@@ -174,11 +174,11 @@ button{font:inherit;cursor:pointer;}
 
 }
 </style>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.13"><script defer src="/unificado/shell/components.js?v=1.4.13"></script></head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.20"><script defer src="/unificado/shell/components.js?v=1.4.20"></script></head>
 <body>
   <main>
-    <p class="section-context">Usinas / Campinas</p>
+    <p class="section-context legacy-print-title">Usinas / Campinas</p>
     <h1 id="titulo">Cartas de traço</h1>
     <p id="intro" class="intro">Receitas e revisões da usina de Campinas, atualizadas a partir do cadastro oficial.</p>
     <span id="estado" class="state">Somente leitura</span>
@@ -209,7 +209,7 @@ button{font:inherit;cursor:pointer;}
       <p id="vazio" class="empty" hidden>Nenhuma receita encontrada.</p>
     </section>
     <section id="detalhe" class="panel detail" aria-labelledby="detalhe-titulo" hidden>
-      <div class="detail-head"><div><p class="section-context">Carta de traço · somente leitura</p><h2 id="detalhe-titulo">Detalhes</h2></div>
+      <div class="detail-head"><div><p class="section-context legacy-print-title">Carta de traço · somente leitura</p><h2 id="detalhe-titulo">Detalhes</h2></div>
         <div class="detail-actions"><button id="imprimir" class="action" type="button">Imprimir</button><button id="fechar" class="action" type="button">Fechar</button></div>
       </div>
       <p id="detalhe-meta" class="carta-meta"></p>
@@ -348,10 +348,10 @@ button{font:inherit;cursor:pointer;}
     $('imprimir').addEventListener('click',()=>window.print());
     if(!area){load(); setInterval(load, 60000)}
   </script>
-  <link rel="stylesheet" href="./native-areas.css?v=1.4.13">
-  <link rel="stylesheet" href="./cec-native.css?v=1.4.13">
-  <script src="./native-areas.js?v=1.4.13"></script>
+  <link rel="stylesheet" href="./native-areas.css?v=1.4.20">
+  <link rel="stylesheet" href="./cec-native.css?v=1.4.20">
+  <script src="./native-areas.js?v=1.4.20"></script>
   <script src="./assets/html5-qrcode-2.3.8.min.js"></script>
-  <script src="./cec-native.js?v=1.4.13"></script>
+  <script src="./cec-native.js?v=1.4.20"></script>
 </body>
 </html>

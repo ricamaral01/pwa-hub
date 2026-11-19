@@ -1,17 +1,19 @@
 """Publish only allowlisted public static files of the isolated Lab generation."""
-import hashlib,json,os,shutil,subprocess,tarfile
+import hashlib,json,os,shutil,subprocess,tarfile,sys
 from pathlib import Path
 from datetime import datetime,timezone
 H=Path('/opt/concrefer-unificado/homolog-next');G=H/'visual-full';S=Path(__file__).resolve().parent
 assert S.is_relative_to(H/'staging')
+phase=sys.argv[1] if len(sys.argv)>1 else 'fase-5'
+assert phase in ('fase-5','fase-7')
 manifest=json.loads((S/'service-manifest.json').read_text());release=S/'service-release';release.mkdir(exist_ok=True)
-prefixes=['laboratorio/server/static/','carta-static/']
+prefixes=['laboratorio/server/static/','carta-static/','dosagem-static/']
 with tarfile.open(S/'service-static.tgz') as a:
  for m in a.getmembers():
   assert m.isfile() and any(m.name.startswith(p) for p in prefixes) and '..' not in Path(m.name).parts
  a.extractall(release,filter='data')
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
-backup=H/'backups'/('visual-service-fase-5-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'));backup.mkdir(mode=0o700)
+backup=H/'backups'/('visual-service-'+phase+'-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'));backup.mkdir(mode=0o700)
 old={}
 for r,h in manifest.items():
  assert any(r.startswith(p) for p in prefixes) and (G/r).resolve().is_relative_to(G)
@@ -34,5 +36,5 @@ except Exception:
   if existed:shutil.copy2(backup/r,G/r)
   else:(G/r).unlink(missing_ok=True)
  raise
-result={'phase':'fase-5','static_files':len(manifest),'backup':str(backup),'production_untouched':True,'services_restarted':False,'api_code_changed':False}
+result={'phase':phase,'static_files':len(manifest),'backup':str(backup),'production_untouched':True,'services_restarted':False,'api_code_changed':False}
 (S/'service-deploy-results.json').write_text(json.dumps(result,indent=2));print(json.dumps(result))

@@ -209,8 +209,7 @@
     }
   
 }
-@media screen {
-:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-blue:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);--ct-green:var(--c-ok);--ct-red:var(--c-crit);}
+@media screen{:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-blue:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);--ct-green:var(--c-ok);--ct-red:var(--c-crit);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--ct-bg);color:var(--ct-gray);min-height:100vh;display:flex;flex-direction:column;}
 .mono{}
@@ -329,10 +328,9 @@ to{opacity:1;transform:none;}
 .mpa-input{font-size:28px!important;padding:16px 18px!important;border-radius:var(--r)!important;}
 .mpa-unit{font-size:20px!important;}
 }
-
 }
 </style>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.13"></head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.20"></head>
 <body>
 
 <!-- ═══ TOPBAR ═══ -->
@@ -427,7 +425,7 @@ to{opacity:1;transform:none;}
       </label>
       <div style="display:flex;align-items:center;gap:10px">
         <input type="number" id="inputMPa" class="mpa-input" step="0.1" min="0" max="200" placeholder="Ex: 32.5"
-               style="flex:1;padding:12px 14px;border:2px solid var(--ct-silver);border-radius:10px;font-size:20px;font-weight:900;color:var(--ct-navy);font-family:inherit;text-align:center;background:#fff"
+               data-visual-print="0089a2f80320" style="flex:1;padding:12px 14px;border:2px solid var(--ct-silver);border-radius:var(--r);font-size:20px;font-weight:900;color:var(--ct-navy);text-align:center;background:var(--c-surface);"
                inputmode="decimal">
         <span class="mpa-unit" style="font-size:16px;font-weight:800;color:var(--ct-gray-lt)">MPa</span>
       </div>

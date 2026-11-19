@@ -1921,24 +1921,24 @@ function getMontagemMotivoOptions() {
 
 // Mapa de icones por codigo de defeito
 const DEFEITO_ICONES = {
-  A: "\uD83D\uDD73\uFE0F",   // 🕳️  — Falha de Preenchimento / Armação Aparente (vazio/buraco)
-  B: "\uD83D\uDEB1",         // 🚱  — Tubulação Entupida (sem fluxo)
-  C: "\uD83E\uDEB7",         // 🫧  — Bolhas em Excesso / Fora do Padrão
-  D: "\uD83D\uDCE6",         // 📦  — Problema na Caixa do Relógio/Disjuntor
-  E: "\uD83D\uDD29",         // 🔩  — Furação Obstruída (pinos)
-  F: "\uD83C\uDFF7\uFE0F",   // 🏷️  — Carimbo de Identificação
-  G: "\uD83E\uDEB6",         // 🪶  — Fissuras superficiais
-  H: "\uD83E\uDEB7",         // 🫧  — Bolhas nas Caixas
-  I: "\u26A1",               // ⚡  — Trincas em toda extensão
-  J: "\uD83D\uDCA5",         // 💥  — Pequenas Avarias
-  K: "\uD83C\uDFA8",         // 🎨  — Manchas Excessivas
-  L: "\uD83D\uDD27",         // 🔧  — Buchas de Fixação
-  M: "\uD83D\uDD10",         // 🔐  — Parafuso Lacre da Caixa do Medidor
-  O: "\uD83E\uDEA8",         // 🪨  — Concreto Segregado / Homogeneidade
-  P: "\uD83D\uDEA8",         // 🚨  — Grandes Avarias (emergência)
-  Q: "\u2702\uFE0F",         // ✂️  — Rebarbas
-  R: "\uD83E\uDDF1",         // 🧱  — Acabamento Face Exposta
-  S: "\uD83D\uDCD0",         // 📐  — Acabamento Abas
+  A: "",   //   — Falha de Preenchimento / Armação Aparente (vazio/buraco)
+  B: "",         //   — Tubulação Entupida (sem fluxo)
+  C: "",         //   — Bolhas em Excesso / Fora do Padrão
+  D: "",         //   — Problema na Caixa do Relógio/Disjuntor
+  E: "",         //   — Furação Obstruída (pinos)
+  F: "",   //   — Carimbo de Identificação
+  G: "",         //   — Fissuras superficiais
+  H: "",         //   — Bolhas nas Caixas
+  I: "",               // ⚡  — Trincas em toda extensão
+  J: "",         //   — Pequenas Avarias
+  K: "",         //   — Manchas Excessivas
+  L: "",         //   — Buchas de Fixação
+  M: "",         //   — Parafuso Lacre da Caixa do Medidor
+  O: "",         //   — Concreto Segregado / Homogeneidade
+  P: "",         //   — Grandes Avarias (emergência)
+  Q: "",         //   — Rebarbas
+  R: "",         //   — Acabamento Face Exposta
+  S: "",         //   — Acabamento Abas
 };
 
 function getMotivoRecusaLabel(value) {
@@ -1947,7 +1947,7 @@ function getMotivoRecusaLabel(value) {
   const labels = parts.map((part) => {
     const cod = part.trim().toUpperCase();
     const found = CHECKLIST_INSPECAO_CODIGOS.find((item) => item.codigo === cod);
-    const icone = DEFEITO_ICONES[cod] || "\uD83D\uDD39";
+    const icone = DEFEITO_ICONES[cod] || "";
     return found ? `${icone} ${found.codigo} \u2014 ${found.descricao}` : `${icone} ${part}`;
   });
   return labels.join("  |  ");
@@ -2344,7 +2344,7 @@ function createFormaCard(item, setor) {
   const manutencaoRec = isFormaEmManutencao(setor, item.forma);
   if (manutencaoRec) {
     card.classList.add("is-manutencao");
-    card.title = `🛠️ PARADA / MANUTENÇÃO\nMotivo: ${manutencaoRec.motivo_parada}\nArrumar: ${manutencaoRec.acao_necessaria}`;
+    card.title = ` PARADA / MANUTENÇÃO\nMotivo: ${manutencaoRec.motivo_parada}\nArrumar: ${manutencaoRec.acao_necessaria}`;
   }
 
   // Destacar se estiver programada
@@ -2364,10 +2364,10 @@ function createFormaCard(item, setor) {
     if (manutencaoRec) {
       if (typeof msgbox !== "undefined") {
         msgbox.alert(
-          `🛠️ FORMA EM MANUTENÇÃO!\n\nA forma ${item.forma} (${setor}) está INATIVA para manutenção e não pode ser programada nem liberada.\n\n• Motivo: ${manutencaoRec.motivo_parada}\n• Serviço: ${manutencaoRec.acao_necessaria}\n• Parada em: ${manutencaoRec.parada_em} por ${manutencaoRec.parada_por}`
+          ` FORMA EM MANUTENÇÃO!\n\nA forma ${item.forma} (${setor}) está INATIVA para manutenção e não pode ser programada nem liberada.\n\n• Motivo: ${manutencaoRec.motivo_parada}\n• Serviço: ${manutencaoRec.acao_necessaria}\n• Parada em: ${manutencaoRec.parada_em} por ${manutencaoRec.parada_por}`
         );
       } else {
-        alert(`🛠️ FORMA EM MANUTENÇÃO!\nForma ${item.forma} está inativa.\nMotivo: ${manutencaoRec.motivo_parada}`);
+        alert(` FORMA EM MANUTENÇÃO!\nForma ${item.forma} está inativa.\nMotivo: ${manutencaoRec.motivo_parada}`);
       }
       return;
     }
@@ -2526,7 +2526,7 @@ function createS4TableRow(item, setor) {
   const manutencaoRec = isFormaEmManutencao(setor, item.forma);
   if (manutencaoRec) {
     tdForma.classList.add("is-manutencao");
-    tdForma.title = `🛠️ PARADA / MANUTENÇÃO\nMotivo: ${manutencaoRec.motivo_parada}\nArrumar: ${manutencaoRec.acao_necessaria}`;
+    tdForma.title = ` PARADA / MANUTENÇÃO\nMotivo: ${manutencaoRec.motivo_parada}\nArrumar: ${manutencaoRec.acao_necessaria}`;
   }
 
   const refreshRow = () => {
@@ -2559,10 +2559,10 @@ function createS4TableRow(item, setor) {
     if (manutencaoRec) {
       if (typeof msgbox !== "undefined") {
         msgbox.alert(
-          `🛠️ FORMA EM MANUTENÇÃO!\n\nA forma ${item.forma} (${setor}) está INATIVA para manutenção e não pode ser programada nem liberada.\n\n• Motivo: ${manutencaoRec.motivo_parada}\n• Serviço: ${manutencaoRec.acao_necessaria}\n• Parada em: ${manutencaoRec.parada_em} por ${manutencaoRec.parada_por}`
+          ` FORMA EM MANUTENÇÃO!\n\nA forma ${item.forma} (${setor}) está INATIVA para manutenção e não pode ser programada nem liberada.\n\n• Motivo: ${manutencaoRec.motivo_parada}\n• Serviço: ${manutencaoRec.acao_necessaria}\n• Parada em: ${manutencaoRec.parada_em} por ${manutencaoRec.parada_por}`
         );
       } else {
-        alert(`🛠️ FORMA EM MANUTENÇÃO!\nForma ${item.forma} está inativa.\nMotivo: ${manutencaoRec.motivo_parada}`);
+        alert(` FORMA EM MANUTENÇÃO!\nForma ${item.forma} está inativa.\nMotivo: ${manutencaoRec.motivo_parada}`);
       }
       return;
     }
@@ -3035,36 +3035,36 @@ function renderizarRelatorioManutencao() {
   atualizarIndicadoresManutencaoHub();
 
   if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 20px; color:#64748b;">Nenhuma forma em manutenção registrada até o momento.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" data-visual-print="dae45f31d97e" style="text-align:center;padding:20px;color:var(--c-ink-2);">Nenhuma forma em manutenção registrada até o momento.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = list.map(item => {
     const isParada = item.status === "PARADA";
     const statusBadge = isParada
-      ? `<span style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">🛠️ PARADA</span>`
-      : `<span style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✅ LIBERADA</span>`;
+      ? `<span data-visual-print="29a6bdfd703e" style="background:var(--c-line-2);color:var(--c-warn);border:1px solid var(--c-orange);padding:4px 10px;border-radius:var(--r);font-weight:800;font-size:0.75rem;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:4px;"> PARADA</span>`
+      : `<span data-visual-print="4323c10286a7" style="background:var(--c-line);color:var(--c-ok);border:1px solid var(--c-ok);padding:4px 10px;border-radius:var(--r);font-weight:800;font-size:0.75rem;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:4px;">✓ LIBERADA</span>`;
 
     const tempoInfo = calcularDiasParada(item.parada_em, item.liberada_em, item.status);
     const tempoBadge = isParada
-      ? `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 10px; border-radius:12px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">⏱️ ${tempoInfo.label}</span>`
-      : `<span style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; padding:4px 10px; border-radius:12px; font-weight:700; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✔️ ${tempoInfo.label}</span>`;
+      ? `<span data-visual-print="b0db054702d1" style="background:var(--c-line-2);color:var(--c-crit);border:1px solid var(--c-orange);padding:4px 10px;border-radius:var(--r);font-weight:800;font-size:0.75rem;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:4px;">⏱ ${tempoInfo.label}</span>`
+      : `<span data-visual-print="22ef116f2982" style="background:var(--c-bg);color:var(--c-blue);border:1px solid var(--c-line);padding:4px 10px;border-radius:var(--r);font-weight:700;font-size:0.75rem;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:4px;"> ${tempoInfo.label}</span>`;
 
     const acaoBtn = isParada
-      ? `<button type="button" class="btn btn-sm btn-liberar-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="background:#10b981; color:#fff; border:none; padding:6px 12px; font-size:0.78rem; font-weight:800; border-radius:6px; cursor:pointer; box-shadow:0 2px 4px rgba(16,185,129,0.25); white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">🔓 Liberar</button>`
-      : `<button type="button" class="btn btn-sm btn-ver-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="background:#e2e8f0; color:#334155; border:none; padding:6px 12px; font-size:0.78rem; font-weight:700; border-radius:6px; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">🔍 Histórico</button>`;
+      ? `<button type="button" class="btn btn-sm btn-liberar-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" data-visual-print="9d68586654cc" style="background:var(--c-ok);color:var(--c-surface);border:none;padding:6px 12px;font-size:0.78rem;font-weight:800;border-radius:var(--r);cursor:pointer;box-shadow:none;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;"> Liberar</button>`
+      : `<button type="button" class="btn btn-sm btn-ver-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" data-visual-print="f020bfbd0f87" style="background:var(--c-line);color:var(--c-blue);border:none;padding:6px 12px;font-size:0.78rem;font-weight:700;border-radius:var(--r);cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;"> Histórico</button>`;
 
     return `
       <tr class="rm-tabela-row ${isParada ? 'rm-row-parada' : 'rm-row-liberada'}" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="cursor:pointer;" title="Clique para ${isParada ? 'liberar esta forma' : 'ver histórico'}">
-        <td style="text-align:center; font-weight:700; color:#475569;">${escapeHtml(item.setor || "-")}</td>
-        <td style="text-align:center; font-weight:900; color:#0f172a; font-size:0.92rem;">${escapeHtml(item.forma_numero || "-")}</td>
+        <td data-visual-print="274ead937818" style="text-align:center;font-weight:700;color:var(--c-ink-2);">${escapeHtml(item.setor || "-")}</td>
+        <td data-visual-print="93fb8e5f9675" style="text-align:center;font-weight:900;color:var(--c-navy);font-size:0.92rem;">${escapeHtml(item.forma_numero || "-")}</td>
         <td style="text-align:center; vertical-align:middle;">${statusBadge}</td>
         <td style="text-align:center; vertical-align:middle;">${tempoBadge}</td>
-        <td style="font-size:0.85rem; color:#1e293b;">${escapeHtml(item.motivo_parada || "-")}</td>
-        <td style="font-size:0.85rem; color:#1e293b;">${escapeHtml(item.acao_necessaria || "-")}</td>
-        <td style="font-size:0.8rem; color:#475569; line-height:1.3;">${escapeHtml(item.parada_em || "-")}<br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.parada_por || "-")}</small></td>
-        <td style="font-size:0.8rem; color:#475569; line-height:1.3;">${item.liberada_em ? `${escapeHtml(item.liberada_em)}<br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.liberada_por || "-")}</small>` : "-"}</td>
-        <td style="font-size:0.85rem; color:#1e293b;">${escapeHtml(item.obs_liberacao || "-")}</td>
+        <td data-visual-print="e3084c57472f" style="font-size:0.85rem;color:var(--c-navy);">${escapeHtml(item.motivo_parada || "-")}</td>
+        <td data-visual-print="e3084c57472f" style="font-size:0.85rem;color:var(--c-navy);">${escapeHtml(item.acao_necessaria || "-")}</td>
+        <td data-visual-print="8bd18dba4416" style="font-size:0.8rem;color:var(--c-ink-2);line-height:1.3;">${escapeHtml(item.parada_em || "-")}<br><small data-visual-print="bc143bb9068c" style="color:var(--c-ink-2);font-weight:600;">por ${escapeHtml(item.parada_por || "-")}</small></td>
+        <td data-visual-print="8bd18dba4416" style="font-size:0.8rem;color:var(--c-ink-2);line-height:1.3;">${item.liberada_em ? `${escapeHtml(item.liberada_em)}<br><small data-visual-print="bc143bb9068c" style="color:var(--c-ink-2);font-weight:600;">por ${escapeHtml(item.liberada_por || "-")}</small>` : "-"}</td>
+        <td data-visual-print="e3084c57472f" style="font-size:0.85rem;color:var(--c-navy);">${escapeHtml(item.obs_liberacao || "-")}</td>
         <td style="text-align:center; vertical-align:middle;">${acaoBtn}</td>
       </tr>
     `;
@@ -3145,7 +3145,7 @@ async function carregarRelatorioTratativaDefeitos() {
   } catch (error) {
     if (requestId !== tratativaCarregamento) return;
     tratativaFonte = null;
-    if (tbody) tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:24px;color:#991b1b">${escapeHtml(error.message || "Falha ao carregar ocorrências.")}</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="10" data-visual-print="bf911734bb71" style="text-align:center;padding:24px;color:var(--c-crit);">${escapeHtml(error.message || "Falha ao carregar ocorrências.")}</td></tr>`;
     setSyncStatus("error", "Tratativa de defeitos: falha ao consultar o servidor.");
   }
 }
@@ -3390,7 +3390,7 @@ function renderizarRelatorioTratativaDefeitos() {
   if (kCrit) kCrit.textContent = criticos;
 
   if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:24px; color:#64748b;">Nenhuma ocorrência de defeito encontrada para os filtros selecionados.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" data-visual-print="60000301cea1" style="text-align:center;padding:24px;color:var(--c-ink-2);">Nenhuma ocorrência de defeito encontrada para os filtros selecionados.</td></tr>`;
     return;
   }
 
@@ -3400,33 +3400,33 @@ function renderizarRelatorioTratativaDefeitos() {
       : "Ocorrência manual";
     const isCritico = /^CR/i.test(String(item.classificacao || ""));
     const gravBadge = isCritico
-      ? `<span class="td-badge td-badge-critico" style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">🔴 CRÍTICO</span>`
-      : `<span class="td-badge td-badge-nao-critico" style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; padding:4px 8px; border-radius:6px; font-weight:700; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">🟡 NÃO CRÍTICO</span>`;
+      ? `<span class="td-badge td-badge-critico" data-visual-print="28dd1f86dcce" style="background:var(--c-line-2);color:var(--c-crit);border:1px solid var(--c-orange);padding:4px 8px;border-radius:var(--r);font-weight:800;font-size:0.72rem;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:3px;max-width:100%;box-sizing:border-box;">● CRÍTICO</span>`
+      : `<span class="td-badge td-badge-nao-critico" data-visual-print="312eedaf602d" style="background:var(--c-line-2);color:var(--c-warn);border:1px solid var(--c-orange);padding:4px 8px;border-radius:var(--r);font-weight:700;font-size:0.72rem;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:3px;max-width:100%;box-sizing:border-box;"> NÃO CRÍTICO</span>`;
 
     let statusBadge = "";
     if (item.status_tratativa === "CONCLUIDO") {
-      statusBadge = `<span class="td-badge td-badge-concluido" style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">✅ CONCLUÍDO</span>`;
+      statusBadge = `<span class="td-badge td-badge-concluido" data-visual-print="7a588071192a" style="background:var(--c-line);color:var(--c-ok);border:1px solid var(--c-ok);padding:4px 8px;border-radius:var(--r);font-weight:800;font-size:0.72rem;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:3px;max-width:100%;box-sizing:border-box;">✓ CONCLUÍDO</span>`;
     } else if (item.status_tratativa === "EM_ANDAMENTO") {
-      statusBadge = `<span class="td-badge td-badge-andamento" style="background:#dbeafe; color:#1e40af; border:1px solid #3b82f6; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">🔄 EM ANDAMENTO</span>`;
+      statusBadge = `<span class="td-badge td-badge-andamento" data-visual-print="dfa31b79224c" style="background:var(--c-line);color:var(--c-blue);border:1px solid var(--c-ink-3);padding:4px 8px;border-radius:var(--r);font-weight:800;font-size:0.72rem;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:3px;max-width:100%;box-sizing:border-box;"> EM ANDAMENTO</span>`;
     } else {
-      statusBadge = `<span class="td-badge td-badge-pendente" style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">⏳ PENDENTE</span>`;
+      statusBadge = `<span class="td-badge td-badge-pendente" data-visual-print="28dd1f86dcce" style="background:var(--c-line-2);color:var(--c-crit);border:1px solid var(--c-orange);padding:4px 8px;border-radius:var(--r);font-weight:800;font-size:0.72rem;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:3px;max-width:100%;box-sizing:border-box;">⏳ PENDENTE</span>`;
     }
 
     return `
       <tr class="td-tabela-row" data-id="${escapeHtml(item.id)}" style="cursor:pointer;" title="Clique para registrar tratativa / direcionamento">
-        <td style="text-align:center; font-weight:600; font-size:0.8rem; color:#475569;">${escapeHtml(item.data_fabricacao || "-")}</td>
-        <td style="text-align:center; font-weight:700; color:#334155;">${escapeHtml(item.setor || "-")}</td>
-        <td style="text-align:center; font-weight:900; color:#0f172a; font-size:0.92rem;">${escapeHtml(item.forma_numero || "-")}</td>
-        <td style="text-align:center;"><span style="background:#f1f5f9; border:1px solid #cbd5e1; padding:2px 8px; border-radius:4px; font-weight:900; font-size:0.82rem; color:#0f172a;">${escapeHtml(item.codigo_defeito)}</span><br><small style="font-weight:600; color:#475569;">${escapeHtml(item.nome_defeito || item.descricao_defeito)}</small><br><small style="color:#64748b;">${origem}</small>${item.tipo_concreto ? `<br><small>Concreto: ${escapeHtml(item.tipo_concreto)} · Vibrado: ${item.vibrado === true ? "Sim" : item.vibrado === false ? "Não" : "Não informado"}</small>` : ""}</td>
+        <td data-visual-print="a7f62adb0136" style="text-align:center;font-weight:600;font-size:0.8rem;color:var(--c-ink-2);">${escapeHtml(item.data_fabricacao || "-")}</td>
+        <td data-visual-print="db728496ad52" style="text-align:center;font-weight:700;color:var(--c-blue);">${escapeHtml(item.setor || "-")}</td>
+        <td data-visual-print="93fb8e5f9675" style="text-align:center;font-weight:900;color:var(--c-navy);font-size:0.92rem;">${escapeHtml(item.forma_numero || "-")}</td>
+        <td style="text-align:center;"><span data-visual-print="25303a99d324" style="background:var(--c-bg);border:1px solid var(--c-line);padding:2px 8px;border-radius:var(--r-sm);font-weight:900;font-size:0.82rem;color:var(--c-navy);">${escapeHtml(item.codigo_defeito)}</span><br><small data-visual-print="7ffaa642b56a" style="font-weight:600;color:var(--c-ink-2);">${escapeHtml(item.nome_defeito || item.descricao_defeito)}</small><br><small data-visual-print="998aa3df4604" style="color:var(--c-ink-2);">${origem}</small>${item.tipo_concreto ? `<br><small>Concreto: ${escapeHtml(item.tipo_concreto)} · Vibrado: ${item.vibrado === true ? "Sim" : item.vibrado === false ? "Não" : "Não informado"}</small>` : ""}</td>
         <td style="text-align:center; vertical-align:middle;">${gravBadge}</td>
-        <td style="font-weight:800; color:#1e3a8a;">👤 ${escapeHtml(item.responsavel_designado || "-")}</td>
-        <td style="font-size:0.82rem; color:#334155;">${escapeHtml(item.acao_recomendada || "-")}</td>
-        <td style="font-size:0.84rem; color:#0f172a;">
-          ${item.acao_realizada ? `<strong>${escapeHtml(item.acao_realizada)}</strong><br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.executado_por || 'Técnico')} em ${escapeHtml(item.tratado_em || '')}</small>` : '<em style="color:#94a3b8;">Aguardando direcionamento...</em>'}
+        <td data-visual-print="a03c59c6a461" style="font-weight:800;color:var(--c-blue);"> ${escapeHtml(item.responsavel_designado || "-")}</td>
+        <td data-visual-print="4e341b0dbc6a" style="font-size:0.82rem;color:var(--c-blue);">${escapeHtml(item.acao_recomendada || "-")}</td>
+        <td data-visual-print="d313a0cfba8a" style="font-size:0.84rem;color:var(--c-navy);">
+          ${item.acao_realizada ? `<strong>${escapeHtml(item.acao_realizada)}</strong><br><small data-visual-print="bc143bb9068c" style="color:var(--c-ink-2);font-weight:600;">por ${escapeHtml(item.executado_por || 'Técnico')} em ${escapeHtml(item.tratado_em || '')}</small>` : '<em data-visual-print="9fbb568a76a2" style="color:var(--c-ink-3);">Aguardando direcionamento...</em>'}
         </td>
         <td style="text-align:center; vertical-align:middle;">${statusBadge}</td>
         <td style="text-align:center; vertical-align:middle;">
-          <button type="button" class="btn btn-sm btn-tratar-defeito" data-id="${escapeHtml(item.id)}" style="background:#2563eb; color:#fff; border:none; padding:6px 12px; font-size:0.78rem; font-weight:800; border-radius:6px; cursor:pointer; box-shadow:0 2px 4px rgba(37,99,235,0.25); white-space:nowrap;">⚙️ Tratar</button>
+          <button type="button" class="btn btn-sm btn-tratar-defeito" data-id="${escapeHtml(item.id)}" data-visual-print="3467a0042194" style="background:var(--c-ink-2);color:var(--c-surface);border:none;padding:6px 12px;font-size:0.78rem;font-weight:800;border-radius:var(--r);cursor:pointer;box-shadow:none;white-space:nowrap;"> Tratar</button>
         </td>
       </tr>
     `;
@@ -3453,7 +3453,7 @@ function openModalTratativaDefeito(item) {
     infoEl.innerHTML = `
       <div><strong>Defeito:</strong> Código ${escapeHtml(item.codigo_defeito)} - ${escapeHtml(item.descricao_defeito)}</div>
       <div style="margin-top:2px;"><strong>Gravidade:</strong> ${escapeHtml(item.classificacao)}</div>
-      <div style="margin-top:2px;"><strong>Responsável Designado:</strong> <span style="color:#1e3a8a; font-weight:800;">👤 ${escapeHtml(item.responsavel_designado || "-")}</span></div>
+      <div style="margin-top:2px;"><strong>Responsável Designado:</strong> <span data-visual-print="d7d86efe753d" style="color:var(--c-blue);font-weight:800;"> ${escapeHtml(item.responsavel_designado || "-")}</span></div>
       <div style="margin-top:2px;"><strong>Recomendação Técnica:</strong> ${escapeHtml(item.acao_recomendada || "-")}</div>
       <div style="margin-top:2px;"><strong>Tipo de concreto:</strong> ${escapeHtml(item.tipo_concreto || "Não informado")}</div>
       <div style="margin-top:2px;"><strong>Vibrado:</strong> ${item.vibrado === true ? "Sim" : item.vibrado === false ? "Não" : "Não informado"}</div>
@@ -3533,12 +3533,12 @@ async function carregarFotosTratativaDefeito(item) {
       } catch { return; }
       const card = document.createElement("button");
       card.type = "button";
-      card.style.cssText = "border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:6px;cursor:pointer;text-align:left;width:150px";
+      card.style.cssText = "border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);padding:6px;cursor:pointer;text-align:left;width:150px;";
       const image = document.createElement("img");
       image.src = src;
       image.alt = foto.label;
       image.loading = "lazy";
-      image.style.cssText = "width:100%;height:105px;object-fit:cover;border-radius:5px";
+      image.style.cssText = "width:100%;height:105px;object-fit:cover;border-radius:var(--r);";
       const caption = document.createElement("small");
       caption.textContent = foto.label;
       card.append(image, caption);
@@ -4194,19 +4194,19 @@ function updateSectorCounters() {
   const c4 = document.getElementById("libCounterSetor4");
 
   if (c1) {
-    c1.innerHTML = `<span style="color:#fef08a">P: ${s1P}</span> | <span style="color:#93c5fd">L: ${s1L}</span> | <span style="color:#86efac">C: ${s1C}</span> <span style="opacity:0.75">/ ${s1All.length}</span>`;
+    c1.innerHTML = `<span data-visual-print="e5bdd3caac1e" style="color:var(--c-line);">P: ${s1P}</span> | <span data-visual-print="5a76780f3d69" style="color:var(--c-line);">L: ${s1L}</span> | <span data-visual-print="e10ff3402272" style="color:var(--c-ink-3);">C: ${s1C}</span> <span style="opacity:0.75">/ ${s1All.length}</span>`;
     c1.classList.toggle("counter-done", s1C === s1All.length && s1All.length > 0);
   }
   if (c2) {
-    c2.innerHTML = `<span style="color:#fef08a">P: ${s2P}</span> | <span style="color:#93c5fd">L: ${s2L}</span> | <span style="color:#86efac">C: ${s2C}</span> <span style="opacity:0.75">/ ${s2All.length}</span>`;
+    c2.innerHTML = `<span data-visual-print="e5bdd3caac1e" style="color:var(--c-line);">P: ${s2P}</span> | <span data-visual-print="5a76780f3d69" style="color:var(--c-line);">L: ${s2L}</span> | <span data-visual-print="e10ff3402272" style="color:var(--c-ink-3);">C: ${s2C}</span> <span style="opacity:0.75">/ ${s2All.length}</span>`;
     c2.classList.toggle("counter-done", s2C === s2All.length && s2All.length > 0);
   }
   if (c3) {
-    c3.innerHTML = `<span style="color:#fef08a">P: ${s3P}</span> | <span style="color:#93c5fd">L: ${s3L}</span> | <span style="color:#86efac">C: ${s3C}</span> <span style="opacity:0.75">/ ${s3All.length}</span>`;
+    c3.innerHTML = `<span data-visual-print="e5bdd3caac1e" style="color:var(--c-line);">P: ${s3P}</span> | <span data-visual-print="5a76780f3d69" style="color:var(--c-line);">L: ${s3L}</span> | <span data-visual-print="e10ff3402272" style="color:var(--c-ink-3);">C: ${s3C}</span> <span style="opacity:0.75">/ ${s3All.length}</span>`;
     c3.classList.toggle("counter-done", s3C === s3All.length && s3All.length > 0);
   }
   if (c4) {
-    c4.innerHTML = `<span style="color:#fef08a">P: ${s4P}</span> | <span style="color:#93c5fd">L: ${s4L}</span> | <span style="color:#86efac">C: ${s4C}</span> <span style="opacity:0.75">/ ${s4All.length}</span>`;
+    c4.innerHTML = `<span data-visual-print="e5bdd3caac1e" style="color:var(--c-line);">P: ${s4P}</span> | <span data-visual-print="5a76780f3d69" style="color:var(--c-line);">L: ${s4L}</span> | <span data-visual-print="e10ff3402272" style="color:var(--c-ink-3);">C: ${s4C}</span> <span style="opacity:0.75">/ ${s4All.length}</span>`;
     c4.classList.toggle("counter-done", s4C === s4All.length && s4All.length > 0);
   }
 
@@ -4786,20 +4786,20 @@ function showInspecaoModal(counts, syncStatus) {
   const total = (counts.A || 0) + (counts.R || 0) + (counts.RR || 0);
 
   if (syncStatus === "ok") {
-    icon.textContent = "✅";
+    icon.textContent = "✓";
     subtitle.textContent = "Sincronizado com a planilha com sucesso.";
   } else if (syncStatus === "warn") {
-    icon.textContent = "📲";
+    icon.textContent = "Abrir";
     subtitle.textContent = "Salvo localmente. Configure a API para sincronizar com a planilha.";
   } else {
-    icon.textContent = "⚠️";
+    icon.textContent = "";
     subtitle.textContent = "Salvo localmente, mas falhou atualização na planilha.";
   }
 
   const rows = [
-    { label: "✅ Aprovados (Liberados)", count: counts.A || 0, cls: "stat-ok" },
-    { label: "🔧 Retrabalhados", count: counts.RR || 0, cls: "stat-rr" },
-    { label: "❌ Rejeitados", count: counts.R || 0, cls: "stat-r" }
+    { label: "✓ Aprovados (Liberados)", count: counts.A || 0, cls: "stat-ok" },
+    { label: " Retrabalhados", count: counts.RR || 0, cls: "stat-rr" },
+    { label: "× Rejeitados", count: counts.R || 0, cls: "stat-r" }
   ];
 
   stats.innerHTML = rows.map((row) =>
@@ -4901,11 +4901,11 @@ async function renderInspecaoLiberados() {
     let acaoContent = "";
     if (isFinalizado) {
       if (status === "A") {
-        acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" style="background-color: #10b981; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Aprovado (Ver Checklist)</button>`;
+        acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" data-visual-print="cd129ef7ee48" style="background-color:var(--c-ok);color:white;border:none;font-weight:bold;width:100%;height:38px;border-radius:var(--r);cursor:pointer;">Aprovado (Ver Checklist)</button>`;
       } else if (status === "RR") {
-        acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Aprovado e Retrabalhado · Fotos</button>`;
+        acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" data-visual-print="480a94bd618c" style="background-color:var(--c-orange);color:white;border:none;font-weight:bold;width:100%;height:38px;border-radius:var(--r);">Aprovado e Retrabalhado · Fotos</button>`;
       } else {
-        acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Fotos e 2ª inspeção</button>`;
+        acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" data-visual-print="acd0fbc07f2f" style="background-color:var(--c-orange);color:white;border:none;font-weight:bold;width:100%;height:38px;border-radius:var(--r);cursor:pointer;">Fotos e 2ª inspeção</button>`;
       }
     } else {
       acaoContent = `<button type="button" class="btn ins-open-btn primary" style="width: 100%; height: 38px; border-radius: 6px;">Inspecionar</button>`;
@@ -4916,21 +4916,21 @@ async function renderInspecaoLiberados() {
     if (isFinalizado) {
       const insCodigo = record.inspecao?.codigo || "";
       if (status === "A") {
-        statusDefeitoHtml = `<span style="color:#16a34a;font-weight:700;font-size:.85rem">\u2705 Aprovado</span>`;
+        statusDefeitoHtml = `<span data-visual-print="e83c6a65af52" style="color:var(--c-ok);font-weight:700;font-size:.85rem;">✓ Aprovado</span>`;
       } else if (status === "RR") {
         const iconeDefeito = DEFEITO_ICONES[insCodigo.toUpperCase()] || "\u26a0\ufe0f";
         const descDefeito = insCodigo ? getMotivoRecusaLabel(insCodigo) : "Retrabalho";
-        statusDefeitoHtml = `<span style="color:#d97706;font-weight:700;font-size:.82rem">${iconeDefeito} Aprovado e Retrabalhado</span> <span style="font-size:.78rem;color:#78350f">${descDefeito}</span>`;
+        statusDefeitoHtml = `<span data-visual-print="76bcb7420fe0" style="color:var(--c-orange);font-weight:700;font-size:.82rem;">${iconeDefeito} Aprovado e Retrabalhado</span> <span data-visual-print="a0a326241d09" style="font-size:.78rem;color:var(--c-warn);">${descDefeito}</span>`;
       } else if (status === "R") {
-        const iconeDefeito = DEFEITO_ICONES[insCodigo.toUpperCase()] || "\u274c";
+        const iconeDefeito = DEFEITO_ICONES[insCodigo.toUpperCase()] || "×";
         const descDefeito = insCodigo ? getMotivoRecusaLabel(insCodigo) : "Reprovado";
         const segregado = record.inspecao?.raw?.checklists?.__segunda_inspecao?.resultado === "SEGREGADO";
-        statusDefeitoHtml = `<span style="color:#dc2626;font-weight:700;font-size:.82rem">${iconeDefeito} ${segregado ? "Perda do poste" : "Reprovado · 2ª inspeção pendente"}</span><br><span style="font-size:.78rem;color:#7f1d1d">${descDefeito}</span>`;
+        statusDefeitoHtml = `<span data-visual-print="a2cbd607e3d8" style="color:var(--c-crit);font-weight:700;font-size:.82rem;">${iconeDefeito} ${segregado ? "Perda do poste" : "Reprovado · 2ª inspeção pendente"}</span><br><span data-visual-print="0b440914f336" style="font-size:.78rem;color:var(--c-crit);">${descDefeito}</span>`;
       } else {
-        statusDefeitoHtml = `<span style="color:#6b7280;font-size:.82rem">${status || "—"}</span>`;
+        statusDefeitoHtml = `<span data-visual-print="f846b07683fd" style="color:var(--c-ink-2);font-size:.82rem;">${status || "—"}</span>`;
       }
     } else {
-      statusDefeitoHtml = `<span style="color:#94a3b8;font-size:.82rem">Pendente</span>`;
+      statusDefeitoHtml = `<span data-visual-print="dfb55fd140ad" style="color:var(--c-ink-3);font-size:.82rem;">Pendente</span>`;
     }
 
     tr.innerHTML = `
@@ -5131,7 +5131,7 @@ function renderMontagemChecklistSections() {
       let itemHtml = `
         <div class="mp-checklist-item">
           <span class="mp-checklist-item-text">
-            ${item.critico ? '<span class="critico-dot" style="color: #ef4444;">🔴</span>' : ''}
+            ${item.critico ? '<span class="critico-dot" data-visual-print="cdd1b94371e6" style="color:var(--c-orange);">●</span>' : ''}
             ${item.texto}
           </span>
           <div class="mp-yn-group">
@@ -5148,12 +5148,12 @@ function renderMontagemChecklistSections() {
       if (selected === "nao") {
         let actionsHtml = `<div class="mp-reprovado-actions">`;
         if (item.critico) {
-          actionsHtml += `<div class="mp-segregar-badge">🚨 Falha crítica: segunda inspeção</div>`;
+          actionsHtml += `<div class="mp-segregar-badge"> Falha crítica: segunda inspeção</div>`;
         }
         if (!isFinalizado) {
           actionsHtml += `
             <label class="mp-photo-upload-label">
-              📸 Tirar Foto da Falha
+               Tirar Foto da Falha
               <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" class="mp-item-photo-input"
                      data-mp-section="${section.id}" data-mp-item="${item.id}" ${disableItem ? "disabled" : ""} />
             </label>
@@ -5351,7 +5351,7 @@ function showMontagemResumoModal(poste, options = {}) {
     <div><strong>Forma:</strong> ${escapeHtml(poste.formaNumero || "-")}</div>
     <div><strong>Dt. Produção:</strong> ${fmtDate(poste.dataFabricacao || "") || "-"}</div>
     <div><strong>Dt. Montagem:</strong> ${dtMontagem}</div>
-    <div><strong>Tempo de Inspeção:</strong> <span style="color:#e8762a; font-weight:700;">${tempoGasto}</span></div>
+    <div><strong>Tempo de Inspeção:</strong> <span data-visual-print="1470f4bef851" style="color:var(--c-orange);font-weight:700;">${tempoGasto}</span></div>
     <div><strong>Status:</strong> ${statusLabel}</div>
     <div><strong>Motivo da recusa:</strong> ${motivo}</div>
     <div><strong>Observações:</strong> ${escapeHtml(poste.observacoesMontagem || "-")}</div>
@@ -5402,7 +5402,7 @@ function renderMontagemPosteDetalhe() {
     <div><strong>Data Produção:</strong> ${fmtDate(poste.dataFabricacao || "") || "-"}</div>
     <div><strong>Início inspeção/montagem:</strong> ${formatDateTime(poste.inicioInspecaoMontagem || "")}</div>
     <div><strong>Finalizado em:</strong> ${poste.finalizadoEm ? formatDateTime(poste.finalizadoEm) : "-"}</div>
-    <div><strong>Tempo de Inspeção:</strong> <span style="color:#e8762a; font-weight:700;">${tempoGasto}</span></div>
+    <div><strong>Tempo de Inspeção:</strong> <span data-visual-print="1470f4bef851" style="color:var(--c-orange);font-weight:700;">${tempoGasto}</span></div>
   `;
 
   renderMontagemChecklistSections();
@@ -5769,11 +5769,11 @@ async function renderMontagemPostesLiberados() {
     let acaoContent = "";
     if (isFinalizado) {
       if (status === "A") {
-        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #10b981; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Aprovado (Ver Checklist)</button>`;
+        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" data-visual-print="cd129ef7ee48" style="background-color:var(--c-ok);color:white;border:none;font-weight:bold;width:100%;height:38px;border-radius:var(--r);cursor:pointer;">Aprovado (Ver Checklist)</button>`;
       } else if (status === "RR") {
-        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Aprovado e Retrabalhado · Fotos</button>`;
+        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" data-visual-print="480a94bd618c" style="background-color:var(--c-orange);color:white;border:none;font-weight:bold;width:100%;height:38px;border-radius:var(--r);">Aprovado e Retrabalhado · Fotos</button>`;
       } else {
-        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Fotos e 2ª inspeção</button>`;
+        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" data-visual-print="acd0fbc07f2f" style="background-color:var(--c-orange);color:white;border:none;font-weight:bold;width:100%;height:38px;border-radius:var(--r);cursor:pointer;">Fotos e 2ª inspeção</button>`;
       }
     } else {
       const extraClass = record.status === 'INSPECIONADO' ? 'mp-open-btn--inspecionado' : '';
@@ -5932,7 +5932,7 @@ function renderInspecaoPosteDetalhe() {
     <div><strong>Data Produção:</strong> ${fmtDate(poste.dataFabricacao || "") || "-"}</div>
     <div><strong>Início inspeção:</strong> ${formatDateTime(poste.inicioInspecaoMontagem || "")}</div>
     <div><strong>Finalizado em:</strong> ${poste.finalizadoEm ? formatDateTime(poste.finalizadoEm) : "-"}</div>
-    <div><strong>Tempo de Inspeção:</strong> <span style="color:#e8762a; font-weight:700;">${tempoGasto}</span></div>
+    <div><strong>Tempo de Inspeção:</strong> <span data-visual-print="1470f4bef851" style="color:var(--c-orange);font-weight:700;">${tempoGasto}</span></div>
   `;
 
   renderInspecaoChecklistSections();
@@ -6006,12 +6006,12 @@ function renderInspecaoChecklistSections() {
       if (selected === "nao") {
         let actionsHtml = `<div class="mp-reprovado-actions">`;
         if (item.critico) {
-          actionsHtml += `<div class="mp-segregar-badge">🚨 Falha crítica: segunda inspeção</div>`;
+          actionsHtml += `<div class="mp-segregar-badge"> Falha crítica: segunda inspeção</div>`;
         }
         if (!isFinalizado) {
           actionsHtml += `
             <label class="mp-photo-upload-label">
-              📸 Tirar Foto da Falha
+               Tirar Foto da Falha
               <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" class="ins-item-photo-input"
                      data-ins-section="${section.id}" data-ins-item="${item.id}" ${disableItem ? "disabled" : ""} />
             </label>
@@ -6429,7 +6429,7 @@ function renderDashboardCharts() {
   if (tbodyResumo) {
     const listResumo = Object.values(resumoMontagem).sort((a, b) => b.qtd - a.qtd);
     if (listResumo.length === 0) {
-      tbodyResumo.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#64748b;">Nenhum poste montado nesta data.</td></tr>`;
+      tbodyResumo.innerHTML = `<tr><td colspan="3" data-visual-print="35c7163d3ca6" style="text-align:center;color:var(--c-ink-2);">Nenhum poste montado nesta data.</td></tr>`;
     } else {
       tbodyResumo.innerHTML = listResumo.map(item => {
         const dFmt = item.data_fabricacao !== "N/A" ? item.data_fabricacao.split("-").reverse().join("/") : "N/A";
@@ -6437,7 +6437,7 @@ function renderDashboardCharts() {
           <tr>
             <td style="font-weight: 600;">${item.modelo}</td>
             <td style="text-align: center;">${dFmt}</td>
-            <td style="text-align: center; color: #4f46e5; font-weight: 600;">${item.qtd}</td>
+            <td data-visual-print="7c04d5e5e36e" style="text-align:center;color:var(--c-ink-2);font-weight:600;">${item.qtd}</td>
           </tr>
         `;
       }).join("");
@@ -6623,8 +6623,8 @@ function renderDashboardCharts() {
   <span class="ins-dash-hist-date">${fmt}</span>
   <div class="ins-dash-hist-bar-track"><div class="ins-dash-hist-bar" style="width:${pct}%"></div></div>
   <span class="ins-dash-hist-count">${prod}</span>
-  <span style="color:#059669;font-weight:600;font-size:.78rem;min-width:50px">✔ ${ins}</span>
-  <span style="color:#dc2626;font-weight:600;font-size:.78rem;min-width:46px">✘ ${rj}</span>
+  <span data-visual-print="72bee7c4825f" style="color:var(--c-ok);font-weight:600;font-size:.78rem;min-width:50px;">✔ ${ins}</span>
+  <span data-visual-print="8049041101ae" style="color:var(--c-crit);font-weight:600;font-size:.78rem;min-width:46px;">✘ ${rj}</span>
 </div>`;
   }).join("");
 }
@@ -6779,7 +6779,7 @@ function renderDashboardStats() {
   <span class="ins-dash-hist-date">${fmt}</span>
   <div class="ins-dash-hist-bar-track"><div class="ins-dash-hist-bar" style="width:${pct}%"></div></div>
   <span class="ins-dash-hist-count">${row.total}</span>
-  <span style="color:#991b1b;font-size:0.78rem;min-width:46px">❌ ${rj}</span>
+  <span data-visual-print="f9e6bc4d25ee" style="color:var(--c-crit);font-size:0.78rem;min-width:46px;">× ${rj}</span>
 </div>`;
   }).join("");
 }
@@ -7747,21 +7747,21 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
           <section class="rel-section">
             <h4>Indicadores por Setor</h4>
             <div class="rel-sector-kpis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 16px;">
-              <div style="border-left: 4px solid #2563eb; background: #eff6ff; padding: 10px; border-radius: 6px;">
-                <span style="font-size: 0.75rem; color: #1e40af; font-weight: bold; display: block;">Setor 1</span>
-                <strong style="font-size: 1.25rem; color: #1e3a8a; display: block; margin-top: 4px;">${setoresCounts["Setor 1"]} formas</strong>
+              <div data-visual-print="7c2ac85804ac" style="border-left:4px solid var(--c-ink-2);background:var(--c-bg);padding:10px;border-radius:var(--r);">
+                <span data-visual-print="5effb1e2d017" style="font-size:0.75rem;color:var(--c-blue);font-weight:bold;display:block;">Setor 1</span>
+                <strong data-visual-print="94f351bf3b11" style="font-size:1.25rem;color:var(--c-blue);display:block;margin-top:4px;">${setoresCounts["Setor 1"]} formas</strong>
               </div>
-              <div style="border-left: 4px solid #10b981; background: #ecfdf5; padding: 10px; border-radius: 6px;">
-                <span style="font-size: 0.75rem; color: #065f46; font-weight: bold; display: block;">Setor 2</span>
-                <strong style="font-size: 1.25rem; color: #064e3b; display: block; margin-top: 4px;">${setoresCounts["Setor 2"]} formas</strong>
+              <div data-visual-print="820158287983" style="border-left:4px solid var(--c-ok);background:var(--c-bg);padding:10px;border-radius:var(--r);">
+                <span data-visual-print="dd0b0b539d21" style="font-size:0.75rem;color:var(--c-ok);font-weight:bold;display:block;">Setor 2</span>
+                <strong data-visual-print="2a1f4d7a40a6" style="font-size:1.25rem;color:var(--c-ok);display:block;margin-top:4px;">${setoresCounts["Setor 2"]} formas</strong>
               </div>
-              <div style="border-left: 4px solid #8b5cf6; background: #f5f3ff; padding: 10px; border-radius: 6px;">
-                <span style="font-size: 0.75rem; color: #5b21b6; font-weight: bold; display: block;">Setor 3</span>
-                <strong style="font-size: 1.25rem; color: #4c1d95; display: block; margin-top: 4px;">${setoresCounts["Setor 3"]} formas</strong>
+              <div data-visual-print="08fff49a4897" style="border-left:4px solid var(--c-ink-3);background:var(--c-bg);padding:10px;border-radius:var(--r);">
+                <span data-visual-print="7fffd6192c4c" style="font-size:0.75rem;color:var(--c-ink-2);font-weight:bold;display:block;">Setor 3</span>
+                <strong data-visual-print="456f1ff1c741" style="font-size:1.25rem;color:var(--c-blue);display:block;margin-top:4px;">${setoresCounts["Setor 3"]} formas</strong>
               </div>
-              <div style="border-left: 4px solid #f97316; background: #fff7ed; padding: 10px; border-radius: 6px;">
-                <span style="font-size: 0.75rem; color: #9a3412; font-weight: bold; display: block;">Setor 4</span>
-                <strong style="font-size: 1.25rem; color: #7c2d12; display: block; margin-top: 4px;">${setoresCounts["Setor 4"]} formas</strong>
+              <div data-visual-print="71a748db21bb" style="border-left:4px solid var(--c-orange);background:var(--c-bg);padding:10px;border-radius:var(--r);">
+                <span data-visual-print="d765296d2a9e" style="font-size:0.75rem;color:var(--c-crit);font-weight:bold;display:block;">Setor 4</span>
+                <strong data-visual-print="9d826efd9246" style="font-size:1.25rem;color:var(--c-crit);display:block;margin-top:4px;">${setoresCounts["Setor 4"]} formas</strong>
               </div>
             </div>
           </section>
@@ -8333,11 +8333,11 @@ async function sincronizarSaquesMandrilLocais(data, saquesBanco) {
 }
 
 function renderAcaoSaqueMandril(forma, timestamp) {
-  if (!timestamp) return `<button onclick="window.registrarSaque('${forma}')" style="padding: 6px 12px; font-size: 0.8rem; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 6px rgba(232, 118, 42, 0.2);" onmouseover="this.style.background='var(--accent-dark)'" onmouseout="this.style.background='var(--accent)'">Sacar Mandril</button>`;
+  if (!timestamp) return `<button onclick="window.registrarSaque('${forma}')" style="padding: 6px 12px; font-size: 0.8rem; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 6px rgba(232, 118, 42, 0.2);" onmouseover="this.style.background="var(--accent-dark)"" onmouseout="this.style.background="var(--accent)"">Sacar Mandril</button>`;
   const hora = new Date(timestamp).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
   return `<div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-    <span style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; border: 1px solid #bbf7d0;">Saque: ${hora}</span>
-    <button onclick="window.limparSaque('${forma}')" style="background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1.1rem; padding: 0;" title="Limpar Saque">❌</button>
+    <span data-visual-print="8fded34d4505" style="color:var(--c-ok);font-weight:bold;background:var(--c-line);padding:4px 10px;border-radius:var(--r);font-size:0.85rem;border:1px solid var(--c-line);">Saque: ${hora}</span>
+    <button onclick="window.limparSaque('${forma}')" style="background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1.1rem; padding: 0;" title="Limpar Saque">×</button>
   </div>`;
 }
 
@@ -8534,7 +8534,7 @@ async function carregarMandrilCircular() {
         <td data-label="Modelo Produzido" style="padding: 12px 16px;">${renderMandrilModeloSelect(forma, modeloSelecionado, Boolean(concretedRow), concretedRow?.id || "", Boolean(savedEntry?.pendingSync || (modeloPersistido && !modeloDoRegistro)), Boolean(savedIso))}</td>
         <td data-label="Tipo de Concreto" style="padding: 12px 16px;">${escapeHtml(tipoConcreto)}</td>
         <td data-label="Concretado às" style="padding: 12px 16px;">${horaConcretado}</td>
-        <td data-label="Saque previsto (+3h)" style="padding: 12px 16px; color: #b45309; font-weight: bold;">${previsaoSaque}</td>
+        <td data-label="Saque previsto (+3h)" data-visual-print="9b7e652033aa" style="padding:12px 16px;color:var(--c-warn);font-weight:bold;">${previsaoSaque}</td>
         <td data-label="Ação / Saque Realizado" data-mc-saque-forma="${forma}" data-mc-concretado="${concretedRow ? "1" : "0"}" style="padding: 12px 16px; text-align: center;">${actionHtml}</td>
       </tr>
     `;
@@ -8846,16 +8846,16 @@ function setUgFeedback(message, isOk) {
 
 async function renderUsuarios() {
   if (!el.ugListaBody) return;
-  el.ugListaBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748b;">Carregando usuários...</td></tr>';
+  el.ugListaBody.innerHTML = '<tr><td colspan="5" data-visual-print="ca0d0825971e" style="text-align:center;color:var(--c-ink-2);">Carregando usuários...</td></tr>';
   const result = await listUsersFromApi({ silent: true });
   if (!result.ok) {
-    el.ugListaBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#991b1b;">Falha ao carregar usuários da planilha.</td></tr>';
+    el.ugListaBody.innerHTML = '<tr><td colspan="5" data-visual-print="2e35e3306087" style="text-align:center;color:var(--c-crit);">Falha ao carregar usuários da planilha.</td></tr>';
     return;
   }
 
   const users = result.users;
   if (users.length === 0) {
-    el.ugListaBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748b;">Nenhum usuário cadastrado.</td></tr>';
+    el.ugListaBody.innerHTML = '<tr><td colspan="5" data-visual-print="ca0d0825971e" style="text-align:center;color:var(--c-ink-2);">Nenhum usuário cadastrado.</td></tr>';
     return;
   }
   el.ugListaBody.innerHTML = users.map((u) => `
@@ -10197,19 +10197,19 @@ function bindEvents() {
         document.documentElement.requestFullscreen().catch(err => {
           console.error(`Erro ao ativar Tela Cheia: ${err.message}`);
         });
-        el.btnKioskFullscreen.textContent = "📺 Sair Tela Cheia";
+        el.btnKioskFullscreen.textContent = " Sair Tela Cheia";
       } else {
         document.exitFullscreen().catch(() => {});
-        el.btnKioskFullscreen.textContent = "🖥️ Tela Cheia";
+        el.btnKioskFullscreen.textContent = " Tela Cheia";
       }
     });
   }
   document.addEventListener("fullscreenchange", () => {
     if (el.btnKioskFullscreen) {
       if (document.fullscreenElement) {
-        el.btnKioskFullscreen.textContent = "📺 Sair Tela Cheia";
+        el.btnKioskFullscreen.textContent = " Sair Tela Cheia";
       } else {
-        el.btnKioskFullscreen.textContent = "🖥️ Tela Cheia";
+        el.btnKioskFullscreen.textContent = " Tela Cheia";
       }
     }
   });
@@ -11213,26 +11213,26 @@ function renderizarAlertasOperacionais(metricas, meta) {
   if (metricas.cicloMedio > meta) {
     alerts.push({
       type: "warning",
-      text: `⚠️ Ciclo Médio (${Math.round(metricas.cicloMedio)} min) está acima do ciclo meta configurado (${meta} min).`
+      text: ` Ciclo Médio (${Math.round(metricas.cicloMedio)} min) está acima do ciclo meta configurado (${meta} min).`
     });
   }
   if (metricas.eficienciaOperacional > 0 && metricas.eficienciaOperacional < 80) {
     alerts.push({
       type: "danger",
-      text: `⚠️ Eficiência Operacional (${Math.round(metricas.eficienciaOperacional)}%) está abaixo da meta aceitável de 80%.`
+      text: ` Eficiência Operacional (${Math.round(metricas.eficienciaOperacional)}%) está abaixo da meta aceitável de 80%.`
     });
   }
   const vermelhasHoje = metricas.paradasList.filter(p => p.classificacao === "VERMELHO" && p.data === todayYmd()).length;
   if (vermelhasHoje >= 3) {
     alerts.push({
       type: "danger",
-      text: `🚨 Alerta crítico: Mais de 3 paradas vermelhas (>30 min) identificadas na data de hoje.`
+      text: ` Alerta crítico: Mais de 3 paradas vermelhas (>30 min) identificadas na data de hoje.`
     });
   }
   if (metricas.tempoPerdidoTotal > 60) {
     alerts.push({
       type: "warning",
-      text: `⚠️ Tempo Perdido Acumulado (${Math.round(metricas.tempoPerdidoTotal)} min) excede o limite aceitável de 60 minutos.`
+      text: ` Tempo Perdido Acumulado (${Math.round(metricas.tempoPerdidoTotal)} min) excede o limite aceitável de 60 minutos.`
     });
   }
 
@@ -11253,7 +11253,7 @@ function renderizarTabelaParadas(list) {
   const tbody = document.getElementById("paTbodyParadas");
   if (!tbody) return;
   if (list.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#64748b;">Nenhuma parada registrada.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" data-visual-print="35c7163d3ca6" style="text-align:center;color:var(--c-ink-2);">Nenhuma parada registrada.</td></tr>';
     return;
   }
   tbody.innerHTML = list.slice(0, 10).map(p => {
@@ -11275,7 +11275,7 @@ function renderizarTabelaDadosConcretagem(filteredRows) {
   const tbody = document.getElementById("paDadosTbody");
   if (!tbody) return;
   if (!filteredRows || filteredRows.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b;">Nenhum dado encontrado no período.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" data-visual-print="35c7163d3ca6" style="text-align:center;color:var(--c-ink-2);">Nenhum dado encontrado no período.</td></tr>';
     return;
   }
 
@@ -12897,10 +12897,10 @@ function renderizarApresentacaoDefeitos() {
       </div>
     </div>
     <div class="df-slide-kpi-grid">
-      <article class="df-slide-kpi" style="--df-kpi-color:#2563eb"><span>Ocorrencias de NC</span><strong>${numero(dados.totalErros)}</strong><small>Total registrado no checklist</small></article>
-      <article class="df-slide-kpi" style="--df-kpi-color:#7c3aed"><span>Postes avaliados</span><strong>${numero(dados.postes)}</strong><small>Inspecoes validas no periodo</small></article>
-      <article class="df-slide-kpi" style="--df-kpi-color:#dc2626"><span>Postes reprovados</span><strong>${numero(dados.postesReprovados)}</strong><small>${formatPct(dados.taxaPostesReprovados)} sobre a producao</small></article>
-      <article class="df-slide-kpi" style="--df-kpi-color:#d97706"><span>Retrabalho</span><strong>${numero(dados.retrabalho)}</strong><small>${formatPct(dados.taxaRetrabalho)} dos postes avaliados</small></article>
+      <article class="df-slide-kpi" data-visual-print="2d58793bd3ca" style="--df-kpi-color:var(--c-ink-2);"><span>Ocorrencias de NC</span><strong>${numero(dados.totalErros)}</strong><small>Total registrado no checklist</small></article>
+      <article class="df-slide-kpi" data-visual-print="37c901c9cb29" style="--df-kpi-color:var(--c-ink-3);"><span>Postes avaliados</span><strong>${numero(dados.postes)}</strong><small>Inspecoes validas no periodo</small></article>
+      <article class="df-slide-kpi" data-visual-print="a6e9973aea6d" style="--df-kpi-color:var(--c-crit);"><span>Postes reprovados</span><strong>${numero(dados.postesReprovados)}</strong><small>${formatPct(dados.taxaPostesReprovados)} sobre a producao</small></article>
+      <article class="df-slide-kpi" data-visual-print="37f4ebc36cde" style="--df-kpi-color:var(--c-orange);"><span>Retrabalho</span><strong>${numero(dados.retrabalho)}</strong><small>${formatPct(dados.taxaRetrabalho)} dos postes avaliados</small></article>
     </div>
     <div class="df-slide-insight"><strong>Leitura executiva</strong><span>${insightPrincipal}</span></div>
   `, "df-slide-overview");
@@ -13690,11 +13690,11 @@ function aplicarFiltrosEExibirMontagem() {
       elTempoModelo.innerHTML = `
         <div style="display: flex; flex-direction: column; gap: 8px;">
           ${listModelos.map(item => `
-            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #f1f5f9; font-size: 0.85rem;">
-              <span style="font-weight: 600; color: #1e293b;">${item.key}</span>
+            <div data-visual-print="a77f0a96207d" style="display:flex;justify-content:space-between;align-items:center;background:var(--c-bg);padding:8px 12px;border-radius:var(--r);border:1px solid var(--c-bg);font-size:0.85rem;">
+              <span data-visual-print="93a01a9d61fe" style="font-weight:600;color:var(--c-navy);">${item.key}</span>
               <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 0.75rem; color: #64748b;">(${item.count} itens)</span>
-                <span style="font-weight: bold; color: #2563eb; background: #eff6ff; padding: 2px 8px; border-radius: 6px;">${formatarDuracao(item.avg)}</span>
+                <span data-visual-print="cb5b5466d69a" style="font-size:0.75rem;color:var(--c-ink-2);">(${item.count} itens)</span>
+                <span data-visual-print="55fbe0135f04" style="font-weight:bold;color:var(--c-ink-2);background:var(--c-bg);padding:2px 8px;border-radius:var(--r);">${formatarDuracao(item.avg)}</span>
               </div>
             </div>
           `).join("")}
@@ -13716,11 +13716,11 @@ function aplicarFiltrosEExibirMontagem() {
       elTempoMontador.innerHTML = `
         <div style="display: flex; flex-direction: column; gap: 8px;">
           ${listMontadores.map(item => `
-            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #f1f5f9; font-size: 0.85rem;">
-              <span style="font-weight: 600; color: #1e293b;">${item.key}</span>
+            <div data-visual-print="a77f0a96207d" style="display:flex;justify-content:space-between;align-items:center;background:var(--c-bg);padding:8px 12px;border-radius:var(--r);border:1px solid var(--c-bg);font-size:0.85rem;">
+              <span data-visual-print="93a01a9d61fe" style="font-weight:600;color:var(--c-navy);">${item.key}</span>
               <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 0.75rem; color: #64748b;">(${item.count} itens)</span>
-                <span style="font-weight: bold; color: #10b981; background: #ecfdf5; padding: 2px 8px; border-radius: 6px;">${formatarDuracao(item.avg)}</span>
+                <span data-visual-print="cb5b5466d69a" style="font-size:0.75rem;color:var(--c-ink-2);">(${item.count} itens)</span>
+                <span data-visual-print="1a7b70b29b99" style="font-weight:bold;color:var(--c-ok);background:var(--c-bg);padding:2px 8px;border-radius:var(--r);">${formatarDuracao(item.avg)}</span>
               </div>
             </div>
           `).join("")}
@@ -13795,11 +13795,11 @@ function aplicarFiltrosEExibirMontagem() {
       return `
         <div>
           <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
-            <span style="font-weight: 600; color: #475569;">${s}</span>
-            <span style="color: #64748b;">Produzidos: <strong>${prod}</strong> | Montados: <strong>${mont}</strong> <span style="font-weight: bold; color: #10b981; margin-left: 8px;">${pct}%</span></span>
+            <span data-visual-print="f1ee70a69375" style="font-weight:600;color:var(--c-ink-2);">${s}</span>
+            <span data-visual-print="52ffd4ac77f5" style="color:var(--c-ink-2);">Produzidos: <strong>${prod}</strong> | Montados: <strong>${mont}</strong> <span data-visual-print="a76fad1b7211" style="font-weight:bold;color:var(--c-ok);margin-left:8px;">${pct}%</span></span>
           </div>
-          <div style="background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden;">
-            <div style="background: #10b981; width: ${Math.min(pct, 100)}%; height: 100%; transition: width 0.5s ease-in-out;"></div>
+          <div data-visual-print="5c16de0c12bc" style="background:var(--c-line);height:8px;border-radius:var(--r-sm);overflow:hidden;">
+            <div data-visual-print="ac8bd312aa72" style="background:var(--c-ok);height:100%;transition:width 0.5s ease-in-out;"></div>
           </div>
         </div>
       `;
@@ -14318,9 +14318,9 @@ function renderizarTabelaMontagemPaginada() {
   document.getElementById("miPaginacaoTotal").textContent = totalRegistros;
 
   if (totalRegistros === 0) {
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" data-visual-print="d8a6f4e8acd6" style="text-align:center;color:var(--c-ink-2);padding:25px;">Nenhum registro encontrado para os filtros selecionados.</td></tr>';
     const cardsContainer = document.getElementById("miCardsContainer");
-    if (cardsContainer) cardsContainer.innerHTML = '<div style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</div>';
+    if (cardsContainer) cardsContainer.innerHTML = '<div data-visual-print="d8a6f4e8acd6" style="text-align:center;color:var(--c-ink-2);padding:25px;">Nenhum registro encontrado para os filtros selecionados.</div>';
     document.getElementById("miPaginacaoDe").textContent = "0";
     document.getElementById("miPaginacaoA").textContent = "0";
     document.getElementById("miPaginacaoBotoes").innerHTML = "";
@@ -14380,13 +14380,13 @@ function renderizarTabelaMontagemPaginada() {
     const durMs = row.finalizado_em && row.inicio_inspecao_montagem ? (new Date(row.finalizado_em) - new Date(row.inicio_inspecao_montagem)) : null;
     const tempoText = formatarDuracao(durMs);
 
-    let statusHtml = '<span style="color: #64748b; font-weight: bold;">Em Andamento</span>';
+    let statusHtml = '<span data-visual-print="d346b5f71fb8" style="color:var(--c-ink-2);font-weight:bold;">Em Andamento</span>';
     if (row.status_montagem === "A") {
-      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado</span>`;
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" data-visual-print="ccc60c1c8285" style="color:var(--c-ok);font-weight:bold;background:var(--c-line);padding:4px 8px;border-radius:var(--r);font-size:0.8rem;cursor:pointer;text-decoration:underline;">Aprovado</span>`;
     } else if (row.status_montagem === "RR") {
-      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado e Retrabalhado</span>`;
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" data-visual-print="6cbe829f0e61" style="color:var(--c-orange);font-weight:bold;background:var(--c-line-2);padding:4px 8px;border-radius:var(--r);font-size:0.8rem;cursor:pointer;text-decoration:underline;">Aprovado e Retrabalhado</span>`;
     } else if (row.status_montagem === "R") {
-      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" data-visual-print="5cbe74869750" style="color:var(--c-crit);font-weight:bold;background:var(--c-line-2);padding:4px 8px;border-radius:var(--r);font-size:0.8rem;cursor:pointer;text-decoration:underline;">Reprovado</span>`;
     }
 
     const rejeitados = obterItensRejeitadosLinha(row);
@@ -14394,27 +14394,27 @@ function renderizarTabelaMontagemPaginada() {
     if (rejeitados.length > 0) {
       rejeitadosHtml = `
         <div style="display: inline-flex; align-items: center; gap: 8px; justify-content: center; text-align: left;">
-          <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #ff3b30; box-shadow: 0 0 8px #ff3b30, 0 0 15px #ff3b30; flex-shrink: 0;" title="Possui itens rejeitados"></span>
-          <span style="font-size: 0.78rem; color: #dc2626; background: #fee2e2; padding: 2px 6px; border-radius: 4px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${rejeitados.join(', ')}">${rejeitados.join(', ')}</span>
+          <span data-visual-print="20bbd063b2fd" style="display:inline-block;width:10px;height:10px;border-radius:50%;background-color:var(--c-orange);box-shadow:none;flex-shrink:0;" title="Possui itens rejeitados"></span>
+          <span data-visual-print="335717d31425" style="font-size:0.78rem;color:var(--c-crit);background:var(--c-line-2);padding:2px 6px;border-radius:var(--r-sm);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${rejeitados.join(', ')}">${rejeitados.join(', ')}</span>
         </div>
       `;
     } else {
       rejeitadosHtml = `
         <div style="display: inline-flex; align-items: center; gap: 8px; justify-content: center;">
-          <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #4cd964; box-shadow: 0 0 8px #4cd964, 0 0 15px #4cd964; flex-shrink: 0;" title="Todos os itens aprovados"></span>
-          <span style="font-size: 0.78rem; color: #64748b;">Tudo OK</span>
+          <span data-visual-print="64ecd559eded" style="display:inline-block;width:10px;height:10px;border-radius:50%;background-color:var(--c-ok);box-shadow:none;flex-shrink:0;" title="Todos os itens aprovados"></span>
+          <span data-visual-print="1989786dc062" style="font-size:0.78rem;color:var(--c-ink-2);">Tudo OK</span>
         </div>
       `;
     }
 
     return `
-      <tr style="border-bottom: 1px solid #f1f5f9;">
+      <tr data-visual-print="049a05aa5533" style="border-bottom:1px solid var(--c-bg);">
         <td style="padding: 10px; text-align: center; max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${dataFab}</td>
         <td style="padding: 10px; text-align: center;">${row.setor || ""}</td>
         <td style="padding: 10px; text-align: center; max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><strong>${row.forma_numero || ""}</strong></td>
         <td style="padding: 10px; text-align: center;">${row.modelo || ""}</td>
-        <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${inicio}</td>
-        <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${fim}</td>
+        <td data-visual-print="6c77ef02d775" style="padding:10px;text-align:center;font-size:0.8rem;color:var(--c-ink-2);">${inicio}</td>
+        <td data-visual-print="6c77ef02d775" style="padding:10px;text-align:center;font-size:0.8rem;color:var(--c-ink-2);">${fim}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.85rem; font-weight: 600;">${tempoText}</td>
         <td style="padding: 10px; text-align: center;">${statusHtml}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.85rem;">${row.montador_nome || ""}</td>
@@ -14441,13 +14441,13 @@ function renderizarTabelaMontagemPaginada() {
       const durMs = row.finalizado_em && row.inicio_inspecao_montagem ? (new Date(row.finalizado_em) - new Date(row.inicio_inspecao_montagem)) : null;
       const tempoText = formatarDuracao(durMs);
 
-      let statusHtml = '<span style="color: #64748b; font-weight: bold;">Em Andamento</span>';
+      let statusHtml = '<span data-visual-print="d346b5f71fb8" style="color:var(--c-ink-2);font-weight:bold;">Em Andamento</span>';
       if (row.status_montagem === "A") {
-        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado</span>`;
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" data-visual-print="ccc60c1c8285" style="color:var(--c-ok);font-weight:bold;background:var(--c-line);padding:4px 8px;border-radius:var(--r);font-size:0.8rem;cursor:pointer;text-decoration:underline;">Aprovado</span>`;
       } else if (row.status_montagem === "RR") {
-        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado e Retrabalhado</span>`;
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" data-visual-print="6cbe829f0e61" style="color:var(--c-orange);font-weight:bold;background:var(--c-line-2);padding:4px 8px;border-radius:var(--r);font-size:0.8rem;cursor:pointer;text-decoration:underline;">Aprovado e Retrabalhado</span>`;
       } else if (row.status_montagem === "R") {
-        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" data-visual-print="5cbe74869750" style="color:var(--c-crit);font-weight:bold;background:var(--c-line-2);padding:4px 8px;border-radius:var(--r);font-size:0.8rem;cursor:pointer;text-decoration:underline;">Reprovado</span>`;
       }
 
       const rejeitados = obterItensRejeitadosLinha(row);
@@ -14455,15 +14455,15 @@ function renderizarTabelaMontagemPaginada() {
       if (rejeitados.length > 0) {
         rejeitadosHtml = `
           <div style="display: inline-flex; align-items: center; gap: 8px; text-align: left; vertical-align: middle;">
-            <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #ff3b30; box-shadow: 0 0 8px #ff3b30, 0 0 15px #ff3b30; flex-shrink: 0;" title="Possui itens rejeitados"></span>
-            <span style="font-size: 0.78rem; color: #dc2626; background: #fee2e2; padding: 2px 6px; border-radius: 4px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${rejeitados.join(', ')}">${rejeitados.join(', ')}</span>
+            <span data-visual-print="20bbd063b2fd" style="display:inline-block;width:10px;height:10px;border-radius:50%;background-color:var(--c-orange);box-shadow:none;flex-shrink:0;" title="Possui itens rejeitados"></span>
+            <span data-visual-print="335717d31425" style="font-size:0.78rem;color:var(--c-crit);background:var(--c-line-2);padding:2px 6px;border-radius:var(--r-sm);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${rejeitados.join(', ')}">${rejeitados.join(', ')}</span>
           </div>
         `;
       } else {
         rejeitadosHtml = `
           <div style="display: inline-flex; align-items: center; gap: 8px; vertical-align: middle;">
-            <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #4cd964; box-shadow: 0 0 8px #4cd964, 0 0 15px #4cd964; flex-shrink: 0;" title="Todos os itens aprovados"></span>
-            <span style="font-size: 0.78rem; color: #64748b;">Tudo OK</span>
+            <span data-visual-print="64ecd559eded" style="display:inline-block;width:10px;height:10px;border-radius:50%;background-color:var(--c-ok);box-shadow:none;flex-shrink:0;" title="Todos os itens aprovados"></span>
+            <span data-visual-print="1989786dc062" style="font-size:0.78rem;color:var(--c-ink-2);">Tudo OK</span>
           </div>
         `;
       }
@@ -14471,7 +14471,7 @@ function renderizarTabelaMontagemPaginada() {
       return `
         <div class="mi-mobile-card">
           <div class="mi-mobile-card-header">
-            <div><strong>Forma ${row.forma_numero || ""}</strong> (${row.setor || ""}) - <span style="color:#64748b; font-weight:600;">${row.modelo || ""}</span></div>
+            <div><strong>Forma ${row.forma_numero || ""}</strong> (${row.setor || ""}) - <span data-visual-print="bc143bb9068c" style="color:var(--c-ink-2);font-weight:600;">${row.modelo || ""}</span></div>
             <div>${statusHtml}</div>
           </div>
           <div class="mi-mobile-card-body">
@@ -14492,7 +14492,7 @@ function renderizarTabelaMontagemPaginada() {
     if (elIcon) {
       if (miOrdenacaoColuna === c) {
         elIcon.textContent = miOrdenacaoAsc ? " ▲" : " ▼";
-        elIcon.style.color = "#2563eb";
+        elIcon.style.color = "var(--c-ink-2)";
       } else {
         elIcon.textContent = "";
       }
@@ -14815,11 +14815,11 @@ window.abrirVisualizacaoChecklist = async function(idOrRow) {
   const geo = checklists.geolocation;
   if (geo) {
     if (geo.error) {
-      geoText = `<span style="color: #ef4444; font-weight: 500;">Indisponível (${geo.error})</span>`;
+      geoText = `<span data-visual-print="55a1ddb51f47" style="color:var(--c-orange);font-weight:500;">Indisponível (${geo.error})</span>`;
     } else if (geo.latitude !== undefined && geo.longitude !== undefined) {
       const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${geo.latitude},${geo.longitude}`;
       const accuracyStr = geo.accuracy ? ` (±${geo.accuracy.toFixed(1)}m)` : "";
-      geoText = `<a href="${mapsUrl}" target="_blank" style="color: #2563eb; text-decoration: underline; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">📍 Ver no Mapa (Lat: ${geo.latitude.toFixed(6)}, Lng: ${geo.longitude.toFixed(6)})${accuracyStr}</a>`;
+      geoText = `<a href="${mapsUrl}" target="_blank" data-visual-print="c56a160edea3" style="color:var(--c-ink-2);text-decoration:underline;font-weight:700;display:inline-flex;align-items:center;gap:4px;"> Ver no Mapa (Lat: ${geo.latitude.toFixed(6)}, Lng: ${geo.longitude.toFixed(6)})${accuracyStr}</a>`;
     }
   }
   document.getElementById("vcMetaGeolocalizacao").innerHTML = geoText;
@@ -14885,7 +14885,7 @@ window.abrirVisualizacaoChecklist = async function(idOrRow) {
     const secDiv = document.createElement("div");
     secDiv.style.marginBottom = "20px";
     secDiv.innerHTML = `
-      <div style="font-weight: bold; background: #e2e8f0; padding: 6px 10px; border-radius: 6px; margin-bottom: 8px; color: #1e293b;">
+      <div data-visual-print="b8dbf4c0e87e" style="font-weight:bold;background:var(--c-line);padding:6px 10px;border-radius:var(--r);margin-bottom:8px;color:var(--c-navy);">
         ${section.titulo}
       </div>
     `;
@@ -14899,20 +14899,20 @@ window.abrirVisualizacaoChecklist = async function(idOrRow) {
       const resp = checklists[section.id]?.[item.id] || "";
       const photoBase64 = checklists[section.id]?.[item.id + "_photo"] || "";
 
-      let badge = '<span style="color: #64748b; font-weight: bold; background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">N/A</span>';
+      let badge = '<span data-visual-print="dc66206352a6" style="color:var(--c-ink-2);font-weight:bold;background:var(--c-line);padding:2px 6px;border-radius:var(--r-sm);font-size:0.75rem;">N/A</span>';
       if (resp === "sim") {
-        badge = '<span style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">Aprovado</span>';
+        badge = '<span data-visual-print="b9c51af1ae53" style="color:var(--c-ok);font-weight:bold;background:var(--c-line);padding:2px 6px;border-radius:var(--r-sm);font-size:0.75rem;">Aprovado</span>';
       } else if (resp === "nao") {
-        badge = '<span style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">Reprovado</span>';
+        badge = '<span data-visual-print="f8173f00c953" style="color:var(--c-crit);font-weight:bold;background:var(--c-line-2);padding:2px 6px;border-radius:var(--r-sm);font-size:0.75rem;">Reprovado</span>';
       }
 
       let imgHtml = "";
       if (photoBase64) {
         imgHtml = `
           <div style="margin-top: 8px; display: flex; align-items: center; gap: 10px;">
-            <img src="${photoBase64}" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="abrirFotoVisualizacao('${photoBase64}')" title="Clique para ampliar" />
-            <a href="${photoBase64}" download="foto_falha_${item.id || 'falha'}.png" class="btn" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
-              📥 Baixar Foto
+            <img src="${photoBase64}" data-visual-print="35e3dd02e712" style="max-width:150px;max-height:150px;border-radius:var(--r);border:1px solid var(--c-line);cursor:pointer;" onclick="abrirFotoVisualizacao('${photoBase64}')" title="Clique para ampliar" />
+            <a href="${photoBase64}" download="foto_falha_${item.id || 'falha'}.png" class="btn" data-visual-print="c97e7c9f627d" style="padding:6px 12px;font-size:0.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px;background:var(--c-ink-2);color:white;border:none;border-radius:var(--r);cursor:pointer;font-weight:bold;">
+               Baixar Foto
             </a>
           </div>
         `;
@@ -14922,13 +14922,13 @@ window.abrirVisualizacaoChecklist = async function(idOrRow) {
       itemDiv.style.display = "flex";
       itemDiv.style.flexDirection = "column";
       itemDiv.style.padding = "8px";
-      itemDiv.style.background = "#f8fafc";
+      itemDiv.style.background = "var(--c-bg)";
       itemDiv.style.borderRadius = "8px";
       itemDiv.style.border = "1px solid #f1f5f9";
       itemDiv.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-weight: 500; font-size: 0.85rem;">
-            ${item.critico ? '<span style="color: #ef4444; margin-right: 4px;">🔴</span>' : ''}
+            ${item.critico ? '<span data-visual-print="d41855f5c646" style="color:var(--c-orange);margin-right:4px;">●</span>' : ''}
             ${item.texto}
           </span>
           ${badge}
@@ -15029,19 +15029,19 @@ window.abrirVisualizacaoChecklist = async function(idOrRow) {
         globalDiv.style.marginTop = "20px";
         globalDiv.style.marginBottom = "20px";
         globalDiv.innerHTML = `
-          <div style="font-weight: bold; background: #fee2e2; padding: 6px 10px; border-radius: 6px; margin-bottom: 8px; color: #dc2626;">
+          <div data-visual-print="e75870a7f29d" style="font-weight:bold;background:var(--c-line-2);padding:6px 10px;border-radius:var(--r);margin-bottom:8px;color:var(--c-crit);">
             Fotos da Inspeção / Recusa (VPS Storage)
           </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;">
             ${resData.data.map((photo, index) => `
-              <div style="display: flex; flex-direction: column; gap: 8px; padding: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; align-items: center;" id="photo-card-${photo.id}">
+              <div data-visual-print="229d879aa57d" style="display:flex;flex-direction:column;gap:8px;padding:8px;background:var(--c-bg);border:1px solid var(--c-line);border-radius:var(--r);align-items:center;" id="photo-card-${photo.id}">
                 <img src="${photo.url}" style="max-width: 100%; max-height: 150px; border-radius: 6px; cursor: pointer; object-fit: cover;" onclick="abrirFotoVisualizacao('${photo.url}')" title="Clique para ampliar" />
                 <div style="display: flex; gap: 6px; width: 100%;">
-                  <a href="${photo.url}?download=1" download="${photo.arquivo_nome}" class="btn" style="padding: 6px 10px; font-size: 0.75rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; justify-content: center; box-sizing: border-box;">
-                    📥 Baixar
+                  <a href="${photo.url}?download=1" download="${photo.arquivo_nome}" class="btn" data-visual-print="d7a93c0b5228" style="padding:6px 10px;font-size:0.75rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px;background:var(--c-ink-2);color:white;border:none;border-radius:var(--r);cursor:pointer;font-weight:bold;flex:1;justify-content:center;box-sizing:border-box;">
+                     Baixar
                   </a>
-                  <button onclick="excluirFotoVps('${photo.id}')" class="btn" style="padding: 6px 10px; font-size: 0.75rem; background: #dc2626; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
-                    🗑️ Excluir
+                  <button onclick="excluirFotoVps('${photo.id}')" class="btn" data-visual-print="f674b7b01160" style="padding:6px 10px;font-size:0.75rem;background:var(--c-crit);color:white;border:none;border-radius:var(--r);cursor:pointer;font-weight:bold;flex:1;display:inline-flex;align-items:center;justify-content:center;gap:4px;">
+                     Excluir
                   </button>
                 </div>
               </div>

@@ -553,7 +553,7 @@
     else if(state.mobileOpen)closeMobile();
   });
   window.UnificadoScreenAccess?.ready?.then(render);
-  fetch('/unificado/armacao/api/armacao/unidades',{credentials:'same-origin',cache:'no-store'})
+  if (typeof hasMapa === 'undefined' || hasMapa) fetch('/unificado/armacao/api/armacao/unidades',{credentials:'same-origin',cache:'no-store'})
     .then(response=>response.ok?response.json():[])
     .then(units=>{state.armacaoUnits=units.filter(unit=>unit.enabled);state.route='';render();})
     .catch(()=>{});

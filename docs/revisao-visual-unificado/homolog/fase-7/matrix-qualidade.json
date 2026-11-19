@@ -1,0 +1,625 @@
+[
+  {
+    "profile": "QUALIDADE",
+    "screen": "fechamentoDiario",
+    "path": "/unificado/relatorios/fechamento-diario/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nControle\nFechamento diário\nAtualizar\nVersão 1.4.18\nAjuda\nI\nIlson Ifanger\nSair\nProduç"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nFechamento diário"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nFechamento diário"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Controle\nFechamento diário\nFechamento diário\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "QUALIDADE",
+    "screen": "manutencaoUsina",
+    "path": "/unificado/manutencao-usina/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nExpandir tudo\nRecolher tudo\nManutenção Usina\nNão conformidades\nPainel\nAbrir NC\nResultados de bancada\nCadastros\nAtualizar"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nManutenção Usina"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nManutenção Usina"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nManutenção Usina\nManutenção Usina\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "QUALIDADE",
+    "screen": "qualidadeAbertura",
+    "path": "/unificado/qualidade/abrir",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fabrir",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nExpandir tudo\nRecolher tudo\nManutenção Usina\nNão conformidades\nPainel\nAbrir NC\nResultados de bancada\nCadastros\nAtualizar"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/abrir",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← RNCs\nNova RNC\nNúmero sorteado ao registrar · Ilson Ifanger\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nAbertura completa\nAbertura rápida\n1 · O que aconteceu?\nTítulo\nOrigem\nSel"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fabrir",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nNão conformidades\n›\nAbrir NC"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/abrir",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← RNCs\nNova RNC\nNúmero sorteado ao registrar · Ilson Ifanger\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nAbertura completa\nAbertura rápida\n1 · O que aconteceu?\nTítulo\nOrigem\nSel"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fabrir",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nNão conformidades\n›\nAbrir NC"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/abrir",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← RNCs\nNova RNC\nNúmero sorteado ao registrar · Ilson Ifanger\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nAbertura completa\nAbertura rápida\n1 · O que aconteceu?\nTítulo\nOrigem\nSel"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fabrir",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nNão conformidades\nAbrir NC\nPainel\nAbrir NC\nResultados de bancada\nCadastros\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/abrir",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← RNCs\nNova RNC\nNúmero sorteado ao registrar · Ilson Ifanger\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nAbertura completa\nAbertura rápida\n1 · O que aconteceu?\nTítulo\nOrigem\nSel"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "QUALIDADE",
+    "screen": "qualidadePainel",
+    "path": "/unificado/qualidade/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nExpandir tudo\nRecolher tudo\nManutenção Usina\nNão conformidades\nPainel\nAbrir NC\nResultados de bancada\nCadastros\nAtualizar"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · ISO 9001 · 8.7 e 10.2\nRNCs · Não conformidades\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\n+ Abrir RNC\nAbertas\n6\nEm atraso\n3\nAguardando eficácia\n0\nReincidentes · 12 "
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nNão conformidades\n›\nPainel"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · ISO 9001 · 8.7 e 10.2\nRNCs · Não conformidades\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\n+ Abrir RNC\nAbertas\n6\nEm atraso\n3\nAguardando eficácia\n0\nReincidentes · 12 "
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nNão conformidades\n›\nPainel"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · ISO 9001 · 8.7 e 10.2\nRNCs · Não conformidades\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\n+ Abrir RNC\nAbertas\n6\nEm atraso\n3\nAguardando eficácia\n0\nReincidentes · 12 "
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nNão conformidades\nPainel\nPainel\nAbrir NC\nResultados de bancada\nCadastros\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · ISO 9001 · 8.7 e 10.2\nRNCs · Não conformidades\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\n+ Abrir RNC\nAbertas\n6\nEm atraso\n3\nAguardando eficácia\n0\nReincidentes · 12 "
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "QUALIDADE",
+    "screen": "qualidadeCadastros",
+    "path": "/unificado/qualidade/cadastros",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fcadastros",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nExpandir tudo\nRecolher tudo\nManutenção Usina\nNão conformidades\nPainel\nAbrir NC\nResultados de bancada\nCadastros\nAtualizar"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/cadastros",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · Configurações\nCadastros da Qualidade\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nOrigem\nTipo\nÁrea\nLocal\nAtividade\nDisposição\nGravidade\nContatos\nOrigem\n\nItens disponí"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fcadastros",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nNão conformidades\n›\nCadastros"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/cadastros",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · Configurações\nCadastros da Qualidade\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nOrigem\nTipo\nÁrea\nLocal\nAtividade\nDisposição\nGravidade\nContatos\nOrigem\n\nItens disponí"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fcadastros",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nNão conformidades\n›\nCadastros"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/cadastros",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · Configurações\nCadastros da Qualidade\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nOrigem\nTipo\nÁrea\nLocal\nAtividade\nDisposição\nGravidade\nContatos\nOrigem\n\nItens disponí"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fcadastros",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nNão conformidades\nCadastros\nPainel\nAbrir NC\nResultados de bancada\nCadastros\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/cadastros",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · Configurações\nCadastros da Qualidade\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nOrigem\nTipo\nÁrea\nLocal\nAtividade\nDisposição\nGravidade\nContatos\nOrigem\n\nItens disponí"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "QUALIDADE",
+    "screen": "qualidadeTratativa",
+    "path": "/unificado/qualidade/nc/5754510a-1f70-4f0f-9466-11f0a4392746",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fnc%2F5754510a-1f70-4f0f-9466-11f0a4392746",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nExpandir tudo\nRecolher tudo\nManutenção Usina\nNão conformidades\nPainel\nAbrir NC\nResultados de bancada\nCadastros\nAtualizar"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/nc/5754510a-1f70-4f0f-9466-11f0a4392746",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← RNCs\nRNC-2026-825490 · campinas\nHOMOLOG VISUAL F6 20261118T234022Z\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nRNC - Eletrônico\n1\nRegistrada\n2\nContenção\n3\nAnálise de causa\n4\nP"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fnc%2F5754510a-1f70-4f0f-9466-11f0a4392746",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n/\nNc"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/nc/5754510a-1f70-4f0f-9466-11f0a4392746",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← RNCs\nRNC-2026-825490 · campinas\nHOMOLOG VISUAL F6 20261118T234022Z\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nRNC - Eletrônico\n1\nRegistrada\n2\nContenção\n3\nAnálise de causa\n4\nP"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fnc%2F5754510a-1f70-4f0f-9466-11f0a4392746",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n/\nNc"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/nc/5754510a-1f70-4f0f-9466-11f0a4392746",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← RNCs\nRNC-2026-825490 · campinas\nHOMOLOG VISUAL F6 20261118T234022Z\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nRNC - Eletrônico\n1\nRegistrada\n2\nContenção\n3\nAnálise de causa\n4\nP"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fnc%2F5754510a-1f70-4f0f-9466-11f0a4392746",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nUnificado\nInício\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/nc/5754510a-1f70-4f0f-9466-11f0a4392746",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← RNCs\nRNC-2026-825490 · campinas\nHOMOLOG VISUAL F6 20261118T234022Z\nUnidade\nCampinas\nNoroeste\nPederneiras\nRibeirão\nRNC - Eletrônico\n1\nRegistrada\n2\nContenção\n3\nAnálise de causa\n4\nP"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "QUALIDADE",
+    "screen": "qualidadeResultadosBancada",
+    "path": "/unificado/qualidade/resultados-bancada",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fresultados-bancada",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nExpandir tudo\nRecolher tudo\nManutenção Usina\nNão conformidades\nPainel\nAbrir NC\nResultados de bancada\nCadastros\nAtualizar"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/resultados-bancada",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · laboratório\nResultados de bancada · postes\n\nEnsaios concluídos e certificados emitidos a partir dos dados salvos no Laboratório.\n\nVoltar à Qualidade\n\nUnexpected token '"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fresultados-bancada",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nNão conformidades\n›\nResultados de bancada"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/resultados-bancada",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · laboratório\nResultados de bancada · postes\n\nEnsaios concluídos e certificados emitidos a partir dos dados salvos no Laboratório.\n\nVoltar à Qualidade\n\nUnexpected token '"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fresultados-bancada",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nNão conformidades\n›\nResultados de bancada"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/resultados-bancada",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · laboratório\nResultados de bancada · postes\n\nEnsaios concluídos e certificados emitidos a partir dos dados salvos no Laboratório.\n\nVoltar à Qualidade\n\nUnexpected token '"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=qualidade%2Fresultados-bancada",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nNão conformidades\nResultados de bancada\nPainel\nAbrir NC\nResultados de bancada\nCadastros\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/resultados-bancada",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Qualidade · laboratório\nResultados de bancada · postes\n\nEnsaios concluídos e certificados emitidos a partir dos dados salvos no Laboratório.\n\nVoltar à Qualidade\n\nUnexpected token '"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  }
+]

@@ -50,6 +50,7 @@
     const id=++requestId;
     try{
       await window.UnificadoScreenAccess?.ready;
+      if (typeof hasMapa !== 'undefined' && !hasMapa) {clear();return;}
       const response=await fetch(root+'mapa/api/unified/quick-access/me',{credentials:'same-origin',cache:'no-store'});
       if(id!==requestId)return;
       if(response.status===401){clear();return;}

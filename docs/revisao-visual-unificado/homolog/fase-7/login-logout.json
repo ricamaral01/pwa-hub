@@ -1,0 +1,22 @@
+{
+  "origin": "https://concrefer.concretrack.com.br:18446",
+  "username": "Ricardo",
+  "password_saved": false,
+  "login": "actual form and server authentication",
+  "login_success": true,
+  "logout": "visible Sair button",
+  "logout_success": true,
+  "session_after_logout": 401,
+  "local_tokens_cleared": true,
+  "events": [
+    {
+      "path": "/unificado/mapa/api/unified/login",
+      "status": 200
+    },
+    {
+      "path": "/unificado/mapa/api/logout",
+      "status": 200
+    }
+  ],
+  "js_errors": []
+}

@@ -92,7 +92,7 @@
     !state.day.confirmado && state.day.salvo_em && !changed());
   function heading(title='Mão de Obra', eyebrow='Planejamento', back='launch', history=true) {
     const backAction = back === 'exit' ? 'data-exit' : `data-screen="${back}"`;
-    return `<div class="heading"><div class="heading-left"><button class="icon-button" type="button" ${backAction} aria-label="Voltar">‹</button><div class="heading-text"><span class="eyebrow">${eyebrow}</span><strong class="heading-title">${title}</strong></div></div>${history ? '<button class="icon-button" type="button" data-screen="history" aria-label="Histórico">◷</button>' : ''}</div>`;
+    return `<div class="heading"><div class="heading-left"><button class="icon-button" type="button" ${backAction} aria-label="Voltar">‹</button><div class="heading-text"><strong class="heading-title">${title}</strong></div></div>${history ? '<button class="icon-button" type="button" data-screen="history" aria-label="Histórico">◷</button>' : ''}</div>`;
   }
   function cards(type) {
     return state.activities.filter(item => item.tipo === type).map(item => {

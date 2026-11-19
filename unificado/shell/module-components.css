@@ -22,6 +22,9 @@ h2 {font-size:16px;font-weight:600}
 .ar-table td,table td {font-variant-numeric:tabular-nums}
 /* Grouped/forecast tables retain their column relationships and local scroll. */
 .ar-scroll,.table-responsive,.table-container {max-width:100%;overflow:auto}
+.dashboard-grid>*,.dashboard-grid .chart-box {min-width:0;max-width:100%}
+.dashboard-grid canvas {max-width:100%}
+.section-card canvas {max-width:100%}
 }
 @media screen and (max-width:600px) {
 .ar-page,.sem-page {padding:16px}

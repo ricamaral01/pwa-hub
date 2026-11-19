@@ -12,7 +12,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <script src="/unificado/laboratorio/cec/assets/vendor/chart.umd.min.js"></script>
-  <script src="./api-client.js?v=1.4.13"></script>
+  <script src="./api-client.js?v=1.4.20"></script>
   <style>@media print {
 
     /* ══ LIGHT THEME BASE ══ */
@@ -172,8 +172,7 @@
     .chart-close-btn.visible { display: flex; }
   
 }
-@media screen {
-/* ══ LIGHT THEME BASE ══ */
+@media screen{/* ══ LIGHT THEME BASE ══ */
 :root{--primary:var(--c-blue);--primary-light:var(--c-blue);--accent:var(--c-orange);--card-bg:rgba(0,0,0,0.04);--card-border:rgba(0,0,0,0.10);--text:var(--c-navy);--muted:var(--c-ink-2);--radius:var(--r);--shadow:0 8px 28px rgba(0,0,0,0.12);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--c-surface);color:var(--text);min-height:100vh;display:flex;flex-direction:column;padding-bottom:60px;}
@@ -192,7 +191,7 @@ body{background:var(--c-surface);color:var(--text);min-height:100vh;display:flex
 .hero h1{font-size:1.45rem;font-weight:900;margin-bottom:6px;}
 .hero h1 span{color:var(--accent);}
 .hero p{font-size:.85rem;color:var(--muted);line-height:1.5;}
-.accent-line{width:60px;height:3px;background:var(--accent);border-radius:var(--r-sm);margin:14px auto 0;}
+.accent-line{width:60px;height:3px;background:var(--accent);border-radius:var(--r);margin:14px auto 0;}
 /* ── LAYOUT ── */
 .rpt-wrap{max-width:none;padding:16px 20px;}
 /* ── PRINT BUTTON ── */
@@ -279,10 +278,9 @@ tbody td.lft{text-align:left;}
 .chart-box.chart-expanded canvas{max-height:none!important;flex:1!important;width:100%!important;}
 .chart-close-btn{display:none;position:fixed;top:12px;right:12px;z-index:10000;background:var(--primary);color:var(--c-surface);border:none;border-radius:50%;width:40px;height:40px;font-size:1.1rem;cursor:pointer;align-items:center;justify-content:center;box-shadow:none;}
 .chart-close-btn.visible{display:flex;}
-
 }
 </style>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.13"></head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.20"></head>
 <body>
 <!-- CHART EXPAND CLOSE BUTTON -->
 <button class="chart-close-btn" id="chartCloseBtn" aria-label="Fechar gráfico">&#x2715;</button>
@@ -296,13 +294,13 @@ tbody td.lft{text-align:left;}
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
-    <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+    <button class="btn-print" onclick="window.print()"> Imprimir</button>
     <a class="btn-back" href="./index.html">← Voltar</a>
   </div>
 </div>
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-icon">📊</div>
+  <div class="hero-icon"></div>
   <h1>Relatório Controle <span>Estatístico</span></h1>
   <p>Análise estatística de resistência à compressão (MPa) por idade</p>
   <div class="accent-line"></div>
@@ -320,11 +318,9 @@ tbody td.lft{text-align:left;}
     }
   
 }
-@media screen {
-@keyframes pulse{0%,100%{opacity:.7;}
+@media screen{@keyframes pulse{0%,100%{opacity:.7;}
 50%{opacity:1;}
 }
-
 }
 </style>
 
@@ -657,7 +653,7 @@ function renderKPIs(groups){
     html+='<div class="kpi-card kpi-neu"><div class="kpi-label">Amostras</div><div class="kpi-val">'+k.n+'</div><div class="kpi-sub">moldagens analisadas</div></div>';
     html+='<div class="kpi-card '+meanCls+'"><div class="kpi-label">M&#233;dia MPa</div><div class="kpi-val">'+(k.mean!==null?k.mean:'--')+'</div><div class="kpi-sub">faixa: '+(k.meta?k.meta.min+' &ndash; '+k.meta.max:'--')+' MPa</div></div>';
     html+='<div class="kpi-card kpi-neu"><div class="kpi-label">Sd estimado</div><div class="kpi-val">'+(k.stddev!==null?k.stddev:'--')+'</div><div class="kpi-sub">desvio padr&#227;o (MPa)</div></div>';
-    html+='<div class="kpi-card kpi-neu"><div class="kpi-label">fck,est</div><div class="kpi-val" style="color:#7c3aed;">'+(k.fckEst!==null?k.fckEst:'--')+'</div><div class="kpi-sub">MPa (&#956; &minus; 1,65&sigma;)</div></div>';
+    html+='<div class="kpi-card kpi-neu"><div class="kpi-label">fck,est</div><div class="kpi-val" data-visual-print="a3659ce6378d" style="color:var(--c-ink-3);">'+(k.fckEst!==null?k.fckEst:'--')+'</div><div class="kpi-sub">MPa (&#956; &minus; 1,65&sigma;)</div></div>';
     html+='</div>';
   });
   document.getElementById('kpiSection').innerHTML=html;
@@ -1107,7 +1103,7 @@ function renderFromRows(rows){
 function showStaleCacheWarning(err){
   var footer=document.getElementById('rptFooter');
   if(!footer) return;
-  footer.innerHTML='<span style="color:#b45309;font-weight:700;">Modo offline - exibindo dados armazenados localmente.</span>'
+  footer.innerHTML='<span data-visual-print="42589bb0bae1" style="color:var(--c-warn);font-weight:700;">Modo offline - exibindo dados armazenados localmente.</span>'
     +' <code>'+(err&&err.message?err.message:String(err||''))+'</code>';
 }
 
@@ -1151,7 +1147,7 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 (async function(){
-  try{ if('serviceWorker' in navigator){ var registration=await navigator.serviceWorker.register('./sw.js?v=1.4.13',{scope:'./',updateViaCache:'none'}); registration.update().catch(function(){}); } }catch(e){}
+  try{ if('serviceWorker' in navigator){ var registration=await navigator.serviceWorker.register('./sw.js?v=1.4.20',{scope:'./',updateViaCache:'none'}); registration.update().catch(function(){}); } }catch(e){}
 
   // SW version badge and force update
   function initSWVersionBadge() {

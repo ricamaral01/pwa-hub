@@ -102,7 +102,7 @@ function ganttMarkup(rows){
 function closeModal(){if(state.dialog?.saving)return;closePhotoViewer();state.dialog?.photoController?.abort();modalCleanup?.();modalCleanup=null;$('modal-host').replaceChildren();state.dialog=null;previousFocus?.focus()}
 function showModal(title,html){
   closeModal();previousFocus=document.activeElement;
-  $('modal-host').innerHTML=`<div class="modal-backdrop"><section class="modal" role="dialog" aria-modal="true" aria-label="${escape(title)}"><header class="modal-head"><div><p class="eyebrow">MANUTENÇÃO USINA</p><h2>${escape(title)}</h2></div><button class="modal-close" aria-label="Fechar">×</button></header>${html}</section></div>`;
+  $('modal-host').innerHTML=`<div class="modal-backdrop"><section class="modal" role="dialog" aria-modal="true" aria-label="${escape(title)}"><header class="modal-head"><div><h2>${escape(title)}</h2></div><button class="modal-close" aria-label="Fechar">×</button></header>${html}</section></div>`;
   const dialog=$('modal-host').querySelector('.modal'),oldOverflow=document.body.style.overflow;document.body.style.overflow='hidden';
   const controls=()=>[...dialog.querySelectorAll('button,input,textarea,select,a[href]')].filter(el=>!el.disabled&&el.getClientRects().length);
   const key=event=>{if(photoViewerOpen())return;if(event.key==='Escape'){event.preventDefault();closeModal()}if(event.key==='Tab'){const items=controls(),first=items[0],last=items.at(-1);if(!dialog.contains(document.activeElement)){event.preventDefault();first?.focus()}else if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus()}}};

@@ -133,8 +133,8 @@ main{padding:24px 0 32px;}
       else top.location.assign('/unificado/login.html');
     }
     </script>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.13"><script defer src="/unificado/shell/components.js?v=1.4.13"></script></head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.20"><script defer src="/unificado/shell/components.js?v=1.4.20"></script></head>
 <body>
   <div class="app-topbar">
     <div class="container">
@@ -199,7 +199,7 @@ main{padding:24px 0 32px;}
     <section class="panel selected-card" id="detailPanel">
       <div class="selected-head">
         <div>
-          <div class="section-context">Carta selecionada</div>
+          <div class="section-context legacy-print-title">Carta selecionada</div>
           <h3>Selecione uma carta</h3>
           <div class="muted">A composição e os custos serão exibidos abaixo.</div>
         </div>
@@ -308,7 +308,7 @@ main{padding:24px 0 32px;}
     }
 
     function renderEmptyDetail(){
-      detailPanel.innerHTML = '<div class="selected-head"><div><div class="section-context">Carta selecionada</div><h3>Sem seleção</h3><div class="muted">Nenhuma carta para exibir.</div></div></div>';
+      detailPanel.innerHTML = '<div class="selected-head"><div><div class="section-context legacy-print-title">Carta selecionada</div><h3>Sem seleção</h3><div class="muted">Nenhuma carta para exibir.</div></div></div>';
     }
 
     function renderDetail(c){
@@ -328,7 +328,7 @@ main{padding:24px 0 32px;}
       detailPanel.innerHTML = `
         <div class="selected-head">
           <div>
-            <div class="section-context">Carta selecionada</div>
+            <div class="section-context legacy-print-title">Carta selecionada</div>
             <h3>${esc(c.nome_traco || c.nome)}</h3>
             <div class="muted">Revisão ${brNum(c.revisao_numero || 1,0)} • ${brDate(c.revisado_em || c.created_at)}</div>
           </div>

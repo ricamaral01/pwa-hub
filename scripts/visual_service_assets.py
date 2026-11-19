@@ -1,7 +1,7 @@
 """Package generated Lab frontend and authored embedded assets, no API code."""
 import hashlib,json,sys,tarfile
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1];phase=sys.argv[1];assert phase=='fase-5'
+ROOT=Path(__file__).resolve().parents[1];phase=sys.argv[1];assert phase in ('fase-5','fase-7')
 out=ROOT/'docs/revisao-visual-unificado/homolog'/phase;out.mkdir(parents=True,exist_ok=True)
 sources={}
 base=ROOT/'unificado/laboratorio/service/server/static'

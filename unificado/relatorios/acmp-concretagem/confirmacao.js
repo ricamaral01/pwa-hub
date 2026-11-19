@@ -141,7 +141,7 @@
     document.querySelector('.confirm-dialog')?.remove();
     const node=document.createElement('dialog');node.className='confirm-dialog';
     node.setAttribute('aria-labelledby','confirm-dialog-title');
-    node.innerHTML=`<form><header><div><span class="confirm-dialog-eyebrow">ACOMPANHAMENTO DA CONCRETAGEM</span><h3 id="confirm-dialog-title">${esc(title)}</h3></div><button type="button" data-close aria-label="Fechar">×</button></header><div class="confirm-dialog-body">${body}<p data-error role="alert"></p></div></form>`;
+    node.innerHTML=`<form><header><div><h3 id="confirm-dialog-title">${esc(title)}</h3></div><button type="button" data-close aria-label="Fechar">×</button></header><div class="confirm-dialog-body">${body}<p data-error role="alert"></p></div></form>`;
     const opener=document.activeElement,card=opener?.closest('.confirm-form');
     document.body.append(node);const close=()=>{if(!mutating){node.close();node.remove();(opener?.isConnected?opener:card?.isConnected?card:null)?.focus({preventScroll:true});}};
     node.dismiss=close;

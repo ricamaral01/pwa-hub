@@ -212,7 +212,7 @@
       history.pushState({module: moduleId}, '', root + '?module=' + encodeURIComponent(moduleId));
     }
 
-    if (moduleId === 'producao') fetch('/unificado/armacao/api/armacao/unidades',
+    if (moduleId === 'producao' && (typeof hasMapa === 'undefined' || hasMapa)) fetch('/unificado/armacao/api/armacao/unidades',
       {credentials:'same-origin',cache:'no-store'})
       .then(response => response.ok ? response.json() : [])
       .then(available => {

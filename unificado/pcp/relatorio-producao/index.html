@@ -4,25 +4,23 @@
   <style>@media print {
 @media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}
 }
-@media screen {
-@media screen{html{background:var(--c-navy);}
+@media screen{@media screen{html{background:var(--c-navy);}
 }
 @media screen and (min-width:1025px){body{background:var(--c-navy)!important;}
 }
-
 }
 </style>
   <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.13"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.13"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.13"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.20"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.20"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.20"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Relatório de Produção - Setores 1 e 2 - PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.13" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.20" />
   <style>@media print {
 
     .report-controls { display:flex; flex-wrap:wrap; align-items:end; gap:12px; }
@@ -65,8 +63,7 @@
     }
   
 }
-@media screen {
-.report-controls{display:flex;flex-wrap:wrap;align-items:end;gap:12px;}
+@media screen{.report-controls{display:flex;flex-wrap:wrap;align-items:end;gap:12px;}
 .report-controls label{display:block;font-size:.8rem;font-weight:700;margin-bottom:3px;}
 .report-controls .form-control, .report-controls .form-select{min-width:145px;}
 .report-note{font-size:.8rem;color:var(--c-ink-2);margin-top:10px;}
@@ -104,19 +101,18 @@
       .report-meta th, .report-meta td, .report-grid th, .report-grid td { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
       .report-grid tr { break-inside:avoid; }
     }
-
 }
 </style>
     <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
-  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.13">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13">
-<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13">
-<script defer src="/unificado/shell/components.js?v=1.4.13"></script>
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.20">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20">
+<script defer src="/unificado/shell/components.js?v=1.4.20"></script>
 </head>
 <body>
 <div id="sidebar-overlay"></div>
 <aside id="sidebar">
-  <div class="sidebar-brand"><div><span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span><small>Planejamento e Controle</small></div></div>
+  <div class="sidebar-brand"><div><span><i class="bi bi-bar-chart-steps me-2" data-visual-print="a2b9161cfe6a" style="color:var(--c-orange);"></i>PCP Concrefer</span><small>Planejamento e Controle</small></div></div>
   <nav>
     <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
     <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
@@ -151,7 +147,7 @@
   </div>
 </div>
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.13"></script>
-<script src="/unificado/pcp/static/js/relatorio-producao.js?v=1.4.13"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.20"></script>
+<script src="/unificado/pcp/static/js/relatorio-producao.js?v=1.4.20"></script>
 </body>
 </html>

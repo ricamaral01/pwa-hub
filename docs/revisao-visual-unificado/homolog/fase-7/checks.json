@@ -1,0 +1,51 @@
+{
+  "version": "1.4.20",
+  "checks": [
+    {
+      "check": "gate",
+      "command": "python tests/unificado/modelo_a_gate.py",
+      "exit_code": 0
+    },
+    {
+      "check": "visual_guard",
+      "command": "python tests/unificado/visual_style_guard.py",
+      "exit_code": 0
+    },
+    {
+      "check": "guard_tests",
+      "command": "python tests/unificado/test_visual_style_guard.py",
+      "exit_code": 0
+    },
+    {
+      "check": "sector_context",
+      "command": "node tests/unificado/screen_context.test.cjs",
+      "exit_code": 0
+    },
+    {
+      "check": "syntax",
+      "command": "python tests/unificado/visual_syntax_check.py --base HEAD",
+      "exit_code": 0
+    },
+    {
+      "check": "laboratorio_frontend_vitest",
+      "status": "passed",
+      "tests": 24,
+      "command": "npm test"
+    },
+    {
+      "check": "qualidade_tasks_ui_a11y",
+      "status": "passed",
+      "tests": 13,
+      "command": "npm run test:ui"
+    },
+    {
+      "check": "source_builds",
+      "status": "passed",
+      "targets": [
+        "sidebar-modelo-a",
+        "qualidade main/tasks",
+        "laboratorio postes/novo/cronoanalise"
+      ]
+    }
+  ]
+}

@@ -19,6 +19,18 @@ body {background:var(--c-bg);color:var(--c-ink)}
 .legacy-print-title,.title-decoration {display:none}
 .lib-sector-header {background:var(--c-navy)!important;color:var(--c-surface)!important}
 .lib-sector-header span {color:var(--c-surface)!important}
+/* Compatibility for published unit bundles whose sources are external. */
+.pdr-app [class="eyebrow"],.rbr-app [class="eyebrow"],.nor-app [class="eyebrow"] {display:none}
+.pdr-app .form-grid,.rbr-app .form-grid,.nor-app .form-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+.form-grid>label,.form-grid>div {min-width:0}
+.form-grid input,.form-grid select {max-width:100%;min-width:0}
+.pdr-app input,.pdr-app select {max-width:100%;box-sizing:border-box}
+.pdr-app .inline-field {min-width:0;max-width:100%}
+.pdr-head h1 {font-size:24px;line-height:1.2;letter-spacing:-.02em;font-weight:600}
+.pdr-app .kpi-grid {display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface)}
+.pdr-app .kpi-grid .kpi {flex:1;min-width:140px;border:0;border-right:1px solid var(--c-line);border-radius:0;background:transparent;box-shadow:none;padding:14px 18px}
+.pdr-app .button.primary {background:var(--c-navy);border-color:var(--c-navy);color:var(--c-surface)}
+.pdr-app .badge:not(.alert) {background:transparent!important;border:0;border-radius:0}
 }
 @media screen and (max-width:600px) {
 .content,.page,.lg {padding:16px}
@@ -26,4 +38,7 @@ body {background:var(--c-bg);color:var(--c-ink)}
 .filters {flex-wrap:wrap;min-width:0}
 .filters input,.filters select {min-width:0;max-width:100%}
 .lg-kpis article,.kpis>.kpi {flex-basis:40%;min-width:0}
+.pdr-app .form-grid,.rbr-app .form-grid,.nor-app .form-grid {grid-template-columns:minmax(0,1fr)}
+.pdr-head h1 {font-size:22px}
+.pdr-app .kpi-grid .kpi {flex-basis:40%}
 }

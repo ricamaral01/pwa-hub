@@ -16,7 +16,7 @@ async function api(path,options={},retry=true){
   const result=await response.json().catch(()=>({}));if(!response.ok)throw Error(result.detail||`HTTP ${response.status}`);return result;
 }
 const post=(path,body)=>api(path,{method:'POST',body:JSON.stringify(body)});
-function notify(message){document.querySelector('.sup-toast')?.remove();const node=document.createElement('div');node.className='sup-toast';node.textContent=message;node.style.cssText='position:fixed;bottom:18px;right:18px;z-index:2000;background:#0f766e;color:#fff;padding:12px 16px;border-radius:10px;max-width:min(90vw,400px)';document.body.append(node);setTimeout(()=>node.remove(),4200)}
+function notify(message){document.querySelector('.sup-toast')?.remove();const node=document.createElement('div');node.className='sup-toast';node.textContent=message;node.style.cssText="position:fixed;bottom:18px;right:18px;z-index:2000;background:var(--c-ok);color:var(--c-surface);padding:12px 16px;border-radius:var(--r);max-width:min(90vw,400px);";document.body.append(node);setTimeout(()=>node.remove(),4200)}
 function error(e){notify(e.message||String(e))}
 function dialog(title,detail,fields,submit='Salvar'){
   const content=fields.map(f=>`<label class="sup-dialog-field"><span>${esc(f.label)}</span>${f.options?`<select name="${esc(f.name)}" ${f.required?'required':''}>${f.options.map(o=>`<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('')}</select>`:`<input name="${esc(f.name)}" type="${esc(f.type||'text')}" value="${esc(f.value||'')}" ${f.min!==undefined?`min="${esc(f.min)}"`:''} ${f.step?`step="${esc(f.step)}"`:''} ${f.required?'required':''}>`}</label>`).join('');

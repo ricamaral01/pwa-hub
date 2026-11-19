@@ -136,7 +136,7 @@ export function Collect({activities, stats, setQueue, notify, onActive}: {
       </div>
     </section>
     <div className="cr-collect-columns">
-      <section className="cr-card"><div className="cr-card-head"><div><p className="cr-eyebrow">{stages[context.processo].toUpperCase()}</p><h2>Atividades</h2></div><span className="cr-count">{active.length}</span></div>
+      <section className="cr-card"><div className="cr-card-head"><div><h2>Atividades</h2></div><span className="cr-count">{active.length}</span></div>
         {active.length ? <div className="cr-activity-list">{active.map(activity => {
           const stat = stats[activity.codigo];
           const n = stat?.n || 0; const needed = stat?.n_necessario || 10;

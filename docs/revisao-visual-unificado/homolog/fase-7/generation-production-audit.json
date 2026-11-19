@@ -1,0 +1,49 @@
+{
+  "production_files_verified": 893,
+  "changed_files": [],
+  "production_services_verified": 23,
+  "changed_persistent_process_states": [],
+  "scheduled_job_state_changes": [
+    {
+      "unit": "concrefer-usinas-reporting-sync.service",
+      "type": "oneshot",
+      "reason": "scheduled oneshot lifecycle; not restarted by this deployment"
+    },
+    {
+      "unit": "monitor-unificado.service",
+      "type": "oneshot",
+      "reason": "scheduled oneshot lifecycle; not restarted by this deployment"
+    },
+    {
+      "unit": "qualidade-tarefas-ged.service",
+      "type": "oneshot",
+      "reason": "scheduled oneshot lifecycle; not restarted by this deployment"
+    },
+    {
+      "unit": "qualidade-tarefas-laboratorio.service",
+      "type": "oneshot",
+      "reason": "scheduled oneshot lifecycle; not restarted by this deployment"
+    },
+    {
+      "unit": "qualidade-tarefas-origin.service",
+      "type": "oneshot",
+      "reason": "scheduled oneshot lifecycle; not restarted by this deployment"
+    },
+    {
+      "unit": "qualidade-tarefas-suprimentos.service",
+      "type": "oneshot",
+      "reason": "scheduled oneshot lifecycle; not restarted by this deployment"
+    },
+    {
+      "unit": "suprimentos-prod-fechamento.service",
+      "type": "oneshot",
+      "reason": "scheduled oneshot lifecycle; not restarted by this deployment"
+    },
+    {
+      "unit": "suprimentos-prod-nf-worker.service",
+      "type": "oneshot",
+      "reason": "scheduled oneshot lifecycle; not restarted by this deployment"
+    }
+  ],
+  "production_database_connections": 0
+}

@@ -273,7 +273,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.4.13';
+const APP_VERSION = '1.4.20';
 let platformUpdateAvailable = false;
 let platformUpdateState = 'checking';
 let platformLatestVersion = APP_VERSION;
@@ -809,7 +809,9 @@ function renderGuestHome() {
     notice = document.createElement('p');
     notice.id = 'guest-access-notice';
     notice.className = 'unified-user-editor-note';
-    home.querySelector('.welcome').after(notice);
+    const heading = home.querySelector('.home-heading,.welcome');
+    if (heading) heading.after(notice);
+    else home.prepend(notice);
   }
   notice.hidden = !empty;
   notice.textContent = 'Sua conta de convidado está aguardando a liberação de telas e ações pelo administrador Master.';

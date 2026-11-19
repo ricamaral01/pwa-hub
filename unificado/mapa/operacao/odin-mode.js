@@ -32,7 +32,7 @@ cancelarConcretagemOdin = async function (forma, setor) {
   const info = document.createElement("p");
   info.textContent = "Selecione o registro a desfazer. As reversões ficam auditadas e exigem justificativa.";
   const list = document.createElement("div");
-  list.style.cssText = "display:grid;gap:8px;max-height:50vh;overflow:auto;margin:14px 0";
+  list.style.cssText = "display:grid;gap:8px;max-height:50vh;overflow:auto;margin:14px 0;";
   const reasonLabel = document.createElement("label");
   reasonLabel.textContent = "Justificativa da reversão";
   const reason = document.createElement("textarea");
@@ -40,7 +40,7 @@ cancelarConcretagemOdin = async function (forma, setor) {
   reason.rows = 3;
   reason.maxLength = 500;
   reason.placeholder = "Descreva o erro e a correção necessária (mínimo 8 caracteres).";
-  reason.style.cssText = "width:100%;margin:8px 0 14px";
+  reason.style.cssText = "width:100%;margin:8px 0 14px;";
   const feedback = document.createElement("p");
   feedback.setAttribute("role", "alert");
   const close = document.createElement("button");
@@ -74,7 +74,7 @@ cancelarConcretagemOdin = async function (forma, setor) {
       const actionName = action === "concretagem" && record.status === "INSPECIONADO"
         ? "Inspeção" : names[action];
       const row = document.createElement("div");
-      row.style.cssText = "display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid #cbd5e1;border-radius:8px";
+      row.style.cssText = "display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--c-line);border-radius:var(--r);";
       const detail = document.createElement("span");
       const extra = action === "concretagem" ? ` · ${record.tipo_concreto || "Sem tipo"} · ${record.colaborador || ""}`
         : action === "manutencao" ? ` · ${record.status || ""}` : ` · ${record.modelo || record.colaborador || ""}`;
@@ -83,7 +83,7 @@ cancelarConcretagemOdin = async function (forma, setor) {
       button.className = "btn";
       button.type = "button";
       button.textContent = "Desfazer";
-      button.style.cssText = "background:#b91c1c;color:white;flex:none";
+      button.style.cssText = "background:var(--c-crit);color:white;flex:none;";
       button.onclick = async () => {
         const motivo = reason.value.trim();
         if (motivo.length < 8) {

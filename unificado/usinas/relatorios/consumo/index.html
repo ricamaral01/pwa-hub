@@ -117,8 +117,7 @@
     }
   
 }
-@media screen {
-:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-blue:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);--ct-green:var(--c-ok);--ct-red:var(--c-crit);--ct-yellow:var(--c-orange);--ct-cyan:var(--c-blue);}
+@media screen{:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-blue:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);--ct-green:var(--c-ok);--ct-red:var(--c-crit);--ct-yellow:var(--c-orange);--ct-cyan:var(--c-blue);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--ct-bg);}
 /* Topbar */
@@ -199,7 +198,6 @@ body{background:var(--ct-bg);}
 @media (max-width:768px){.filter-bar{flex-direction:column;}
 .filter-group input,.filter-group select{min-width:100%;}
 }
-
 }
 </style>
 <script>
@@ -227,8 +225,8 @@ body{background:var(--ct-bg);}
       else top.location.assign('/unificado/login.html');
     }
     </script>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.13"><script defer src="/unificado/shell/components.js?v=1.4.13"></script></head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.20"><script defer src="/unificado/shell/components.js?v=1.4.20"></script></head>
 <body>
 
 <!-- TOPBAR -->
@@ -674,11 +672,11 @@ function exportCSV() {
 function exportXLS() {
   if (!lastData) return;
   const mats = getUsedMateriais(lastData.resumo);
-  let html = '<html><head><meta charset="utf-8"><link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.13"><script defer src="/unificado/shell/components.js?v=1.4.13"></script></head><body>';
+  let html = '<html><head><meta charset="utf-8"></head><body>';
   html += '<h2>Consumo de Materiais — ConcreTrack</h2>';
   html += `<p>Período: ${lastData.filtros.data_ini} a ${lastData.filtros.data_fim}</p>`;
   html += '<table border="1" cellpadding="4" cellspacing="0">';
-  html += '<tr style="background:#343B43;color:#fff;font-weight:bold"><th>Data</th><th>Massadas</th><th>Volume (m³)</th>';
+  html += '<tr data-visual-print="be294ecd0d10" style="background:var(--c-blue);color:var(--c-surface);font-weight:bold;"><th>Data</th><th>Massadas</th><th>Volume (m³)</th>';
   mats.forEach(m => { html += `<th>${materialLabel(m)} (${m.unit})</th>`; });
   html += '</tr>';
 
@@ -689,7 +687,7 @@ function exportXLS() {
   });
 
   const r = lastData.resumo;
-  html += `<tr style="background:#f8fafc;font-weight:bold"><td>TOTAL</td><td>${r.massadas}</td><td>${r.volume_total}</td>`;
+  html += `<tr data-visual-print="eba235a8c87a" style="background:var(--c-bg);font-weight:bold;"><td>TOTAL</td><td>${r.massadas}</td><td>${r.volume_total}</td>`;
   mats.forEach(m => { html += `<td>${r[m.key]||0}</td>`; });
   html += '</tr></table></body></html>';
 

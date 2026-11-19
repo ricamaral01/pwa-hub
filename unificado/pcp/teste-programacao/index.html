@@ -6,7 +6,7 @@
   <title>Teste Programação — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.13" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.20" />
   <script src="/unificado/vendor/xlsx/xlsx.full.min.js"></script>
   <style>@media print {
 
@@ -23,8 +23,7 @@
     .loading-spinner { text-align: center; padding: 20px; }
   
 }
-@media screen {
-.kpi-box{background:var(--c-bg);border:1px solid var(--c-line);border-radius:var(--r);padding:12px;text-align:center;}
+@media screen{.kpi-box{background:var(--c-bg);border:1px solid var(--c-line);border-radius:var(--r);padding:12px;text-align:center;}
 .kpi-label{font-size:0.85rem;color:var(--c-ink-2);font-weight:600;}
 .kpi-value{font-size:1.8rem;font-weight:700;color:var(--c-blue);margin-top:4px;}
 .kpi-unit{font-size:0.75rem;color:var(--c-ink-2);}
@@ -35,13 +34,15 @@
 .plano-item-vazio{color:var(--c-line);text-align:center;font-style:italic;}
 .table-small{font-size:0.8rem;}
 .loading-spinner{text-align:center;padding:20px;}
-
 }
 </style>
-  <script src="/unificado/pcp/readonly-guard.js"></script>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13">
-<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13">
-<script defer src="/unificado/shell/components.js?v=1.4.13"></script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.20"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.20"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.20"></script>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20">
+<script defer src="/unificado/shell/components.js?v=1.4.20"></script>
 </head>
 <body>
 
@@ -57,7 +58,7 @@
   </div>
   <div class="sidebar-brand">
     <div>
-      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <span><i class="bi bi-bar-chart-steps me-2" data-visual-print="a2b9161cfe6a" style="color:var(--c-orange);"></i>PCP Concrefer</span>
       <small>Planejamento e Controle</small>
     </div>
   </div>
@@ -245,7 +246,7 @@
     <!-- ESTADO: VAZIO -->
     <div id="card-vazio" class="section-card">
       <div class="text-center py-5">
-        <i class="bi bi-inbox" style="font-size:3rem;color:#ccc"></i>
+        <i class="bi bi-inbox" data-visual-print="c69645626706" style="font-size:3rem;color:var(--c-line);"></i>
         <p class="text-muted mt-3">Selecione os parâmetros e clique em <strong>Programar</strong> para gerar uma automática</p>
       </div>
     </div>
@@ -254,7 +255,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.13"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.20"></script>
 <script>
 const user = requireAuth();
 if (user) {

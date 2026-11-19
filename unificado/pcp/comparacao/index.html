@@ -4,31 +4,29 @@
   <style>@media print {
 @media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}
 }
-@media screen {
-@media screen{html{background:var(--c-navy);}
+@media screen{@media screen{html{background:var(--c-navy);}
 }
 @media screen and (min-width:1025px){body{background:var(--c-navy)!important;}
 }
-
 }
 </style>
   <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.13"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.13"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.13"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.20"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.20"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.20"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Programado vs Realizado — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.13" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.20" />
   <script src="/unificado/vendor/chart.js/chart.umd.js"></script>
     <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
-  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.13">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13">
-<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13">
-<script defer src="/unificado/shell/components.js?v=1.4.13"></script>
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.20">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20">
+<script defer src="/unificado/shell/components.js?v=1.4.20"></script>
 </head>
 <body>
 
@@ -44,7 +42,7 @@
   </div>
   <div class="sidebar-brand">
     <div>
-      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <span><i class="bi bi-bar-chart-steps me-2" data-visual-print="a2b9161cfe6a" style="color:var(--c-orange);"></i>PCP Concrefer</span>
       <small>Planejamento e Controle</small>
     </div>
   </div>
@@ -215,7 +213,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.13"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.20"></script>
 <script>
 const user = requireAuth();
 if (user) {

@@ -1,0 +1,18 @@
+[
+  {
+    "unit": "pederneiras",
+    "published_css": "/unificado/producao/pederneiras/assets/index-Bsklk0xx.css",
+    "source_sha256": "83527a66d346e1f880a5a7e2ca6aa6728025d1c549ff4f184d253858f02a867d",
+    "overlay": "shell/producao-native-visual.css",
+    "compiled_js_changed": false,
+    "print_changed": false
+  },
+  {
+    "unit": "noroeste",
+    "published_css": "/unificado/producao/noroeste/assets/index-TXq_5frg.css",
+    "source_sha256": "766124a819bdef4551a37be1dda87a0e203483c330b25c538579e5839c53a06e",
+    "overlay": "producao/noroeste/visual.css",
+    "compiled_js_changed": false,
+    "print_changed": false
+  }
+]

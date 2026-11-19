@@ -1,0 +1,77 @@
+[
+  {
+    "view": "pcp/numeros-serie/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Planejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nRelatórios de Programação\nArmaduras\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nEtiquet",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "PLANEJAMENTO · SETOR 3\n\nNúmeros de série dos postes\n\nSequência única por modelo e ano. Histórico confirmado e previsão da programação.\n\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdu",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/armaduras/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Planejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nRelatórios de Programação\nArmaduras\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nEtiquet",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "PLANEJAMENTO · CAMPINAS\n\nProdução de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRela",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/armaduras-relatorio/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Planejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nRelatórios de Programação\nArmaduras\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nEtiquet",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "PLANEJAMENTO · CAMPINAS\n\nProdução de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRela",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  }
+]

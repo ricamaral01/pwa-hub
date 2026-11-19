@@ -4,9 +4,7 @@
   <style>@media print {
 html.auth-checking body{visibility:hidden}
 }
-@media screen {
-html.auth-checking body{visibility:hidden;}
-
+@media screen{html.auth-checking body{visibility:hidden;}
 }
 </style>
   <script defer src="supabase.js"></script>
@@ -17,12 +15,12 @@ html.auth-checking body{visibility:hidden;}
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa</title>
-  <link rel="manifest" href="manifest.json?v=1.4.13" />
-  <link rel="stylesheet" href="styles.css?v=1.4.13" />
-  <link rel="stylesheet" href="inspecao-defeitos.css?v=1.4.13" />
-  <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=1.4.13" />
-  <link rel="stylesheet" href="montagem-taxa.css?v=1.4.13" />
-  <link rel="stylesheet" href="dashboard-reference-layout.css?v=1.4.13" />
+  <link rel="manifest" href="manifest.json?v=1.4.20" />
+  <link rel="stylesheet" href="styles.css?v=1.4.20" />
+  <link rel="stylesheet" href="inspecao-defeitos.css?v=1.4.20" />
+  <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=1.4.20" />
+  <link rel="stylesheet" href="montagem-taxa.css?v=1.4.20" />
+  <link rel="stylesheet" href="dashboard-reference-layout.css?v=1.4.20" />
   <link rel="stylesheet" href="assets/msgbox.css" />
   <style>@media print {
 
@@ -57,26 +55,22 @@ html.auth-checking body{visibility:hidden;}
     }
   
 }
-@media screen {
-.nav-group-title{font-size:0.7rem;font-weight:700;text-transform:none;letter-spacing:0.05em;color:var(--c-ink-3);padding:12px 16px 6px;margin-top:6px;border-top:1px solid var(--c-navy);}
+@media screen{.nav-group-title{font-size:0.7rem;font-weight:700;text-transform:none;letter-spacing:0.05em;color:var(--c-ink-3);padding:12px 16px 6px;margin-top:6px;border-top:1px solid var(--c-navy);}
 .sidebar-nav > .nav-group-title:first-of-type{border-top:none;margin-top:0;padding-top:6px;}
 .hub-group-section{margin-bottom:24px;}
 .hub-group-title{font-size:0.85rem;font-weight:700;color:var(--c-ink-3);border-left:3px solid var(--c-ink-3);padding-left:8px;margin-bottom:12px;text-transform:none;letter-spacing:0.05em;text-align:left;}
-
 }
 </style>
   <script src="chart.min.js"></script>
   <script src="chartjs-plugin-datalabels.min.js"></script>
-<link rel="stylesheet" href="dashboard-defeitos-v5.css?v=1.4.13"><link rel="stylesheet" href="dashboards-v6.css?v=1.4.13"><link rel="stylesheet" href="dashboards-v7.css?v=1.4.13"><link rel="stylesheet" href="users-unificado.css?v=1.4.13"><style>@media print {
+<link rel="stylesheet" href="dashboard-defeitos-v5.css?v=1.4.20"><link rel="stylesheet" href="dashboards-v6.css?v=1.4.20"><link rel="stylesheet" href="dashboards-v7.css?v=1.4.20"><link rel="stylesheet" href="users-unificado.css?v=1.4.20"><style>@media print {
 @media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}
 }
-@media screen {
-@media (min-width:1025px){html,body:not(.kiosk-active){background:var(--c-navy)!important;}
+@media screen{@media (min-width:1025px){html,body:not(.kiosk-active){background:var(--c-navy)!important;}
 }
-
 }
-</style><link rel="stylesheet" href="unificado-bridge.css?v=1.4.13"><link rel="stylesheet" href="produtividade-refactor.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.13">
-<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.13"><link rel="stylesheet" href="/unificado/shell/remaining-visual.css?v=1.4.13"><script defer src="/unificado/shell/components.js?v=1.4.13"></script></head>
+</style><link rel="stylesheet" href="unificado-bridge.css?v=1.4.20"><link rel="stylesheet" href="produtividade-refactor.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.20">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.20"><link rel="stylesheet" href="/unificado/shell/remaining-visual.css?v=1.4.20"><script defer src="/unificado/shell/components.js?v=1.4.20"></script></head>
 <body data-app-key="mapa-concretagem">
 <section id="loginScreen" class="login-screen">
   <div class="login-card">
@@ -120,16 +114,16 @@ html.auth-checking body{visibility:hidden;}
         Início
       </button>
       <button class="nav-item" id="hubMontagemIndicadores" type="button">
-        <span class="nav-icon-wrap">📊</span>
+        <span class="nav-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span>
         Dashboard montagem
       </button>
       <button class="nav-item" id="hubDashboardDefeitos" type="button">
-        <span class="nav-icon-wrap" style="background:#dc2626; color:#ffffff;">DF</span>
+        <span class="nav-icon-wrap" data-visual-print="a8b3d0e89c4a" style="background:var(--c-crit);color:var(--c-surface);">DF</span>
         Dashboard Defeitos
       </button>
 
       <button class="nav-item" id="navProdAnalise" type="button">
-        <span class="nav-icon-wrap">📈</span>
+        <span class="nav-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span>
         Dashboard Concretagem Matriz
       </button>
 
@@ -188,15 +182,15 @@ html.auth-checking body{visibility:hidden;}
         Acmp. Concretagem
       </button>
       <button class="nav-item" id="hubRelatorioManutencao" type="button">
-        <span class="nav-icon-wrap" style="background:#f1c40f; color:#1e293b;">🛠️</span>
+        <span class="nav-icon-wrap" data-visual-print="e57c1a7a36fa" style="background:var(--c-orange);color:var(--c-navy);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span>
         Manutenção Formas
       </button>
       <button class="nav-item" id="hubTratativaDefeitos" type="button">
-        <span class="nav-icon-wrap" style="background:#e11d48; color:#ffffff;">📋</span>
+        <span class="nav-icon-wrap" data-visual-print="2af33708af01" style="background:var(--c-crit);color:var(--c-surface);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span>
         Tratativa Defeitos
       </button>
       <button class="nav-item hidden" id="navUsuarios" type="button">
-        <span class="nav-icon-wrap">👤</span>
+        <span class="nav-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span>
         Usuários
       </button>
     </nav>
@@ -229,27 +223,27 @@ html.auth-checking body{visibility:hidden;}
           <h3 class="hub-group-title">Produção</h3>
           <div class="hub-icon-grid">
             <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO">
-              <div class="hub-icon-circle" style="background:#1e40af">PL</div>
+              <div class="hub-icon-circle" data-visual-print="a08ae5239d1b" style="background:var(--c-blue);">PL</div>
               <span class="hub-icon-lbl">Produção / Liberação</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S1">
-              <div class="hub-icon-circle" style="background:#1e40af">P1</div>
+              <div class="hub-icon-circle" data-visual-print="a08ae5239d1b" style="background:var(--c-blue);">P1</div>
               <span class="hub-icon-lbl">Produção Setor 1</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S2">
-              <div class="hub-icon-circle" style="background:#1e40af">P2</div>
+              <div class="hub-icon-circle" data-visual-print="a08ae5239d1b" style="background:var(--c-blue);">P2</div>
               <span class="hub-icon-lbl">Produção Setor 2</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S3">
-              <div class="hub-icon-circle" style="background:#1e40af">P3</div>
+              <div class="hub-icon-circle" data-visual-print="a08ae5239d1b" style="background:var(--c-blue);">P3</div>
               <span class="hub-icon-lbl">Produção Setor 3</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S4">
-              <div class="hub-icon-circle" style="background:#1e40af">P4</div>
+              <div class="hub-icon-circle" data-visual-print="a08ae5239d1b" style="background:var(--c-blue);">P4</div>
               <span class="hub-icon-lbl">Produção Setor 4</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="MANDRIL_CIRCULAR">
-              <div class="hub-icon-circle" style="background:#d97706">MC</div>
+              <div class="hub-icon-circle" data-visual-print="a8b2638bcf4f" style="background:var(--c-orange);">MC</div>
               <span class="hub-icon-lbl">Mandril Circular</span>
             </button>
           </div>
@@ -260,15 +254,15 @@ html.auth-checking body{visibility:hidden;}
           <h3 class="hub-group-title">Montagem</h3>
           <div class="hub-icon-grid">
             <button class="hub-icon-btn" type="button" data-hub-mode="INSPECAO">
-              <div class="hub-icon-circle" style="background:#059669">MI</div>
+              <div class="hub-icon-circle" data-visual-print="d0a94b728097" style="background:var(--c-ok);">MI</div>
               <span class="hub-icon-lbl">Inspeção Setor 3 e 4</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="MONTAGEM_POSTES">
-              <div class="hub-icon-circle" style="background:#0b6b6f">MP</div>
+              <div class="hub-icon-circle" data-visual-print="6e0dca31ec1b" style="background:var(--c-blue);">MP</div>
               <span class="hub-icon-lbl">Montagem Postes</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="SEQUENCIA_S3">
-              <div class="hub-icon-circle" style="background:#3b82f6">S3</div>
+              <div class="hub-icon-circle" data-visual-print="1002161dc471" style="background:var(--c-ink-3);">S3</div>
               <span class="hub-icon-lbl">Sequência Setor 3</span>
             </button>
 
@@ -280,39 +274,39 @@ html.auth-checking body{visibility:hidden;}
           <h3 class="hub-group-title">Geral</h3>
           <div class="hub-icon-grid">
             <button class="hub-icon-btn" type="button" data-hub-mode="MONTAGEM_INDICADORES">
-              <div class="hub-icon-circle" style="background:#0b6b6f">📊</div>
+              <div class="hub-icon-circle" data-visual-print="6e0dca31ec1b" style="background:var(--c-blue);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div>
               <span class="hub-icon-lbl">Dashboard montagem</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="DASHBOARD_DEFEITOS">
-              <div class="hub-icon-circle" style="background:#dc2626; color:#ffffff;">DF</div>
+              <div class="hub-icon-circle" data-visual-print="a8b3d0e89c4a" style="background:var(--c-crit);color:var(--c-surface);">DF</div>
               <span class="hub-icon-lbl">Dashboard Defeitos</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="PROD_ANALISE">
-              <div class="hub-icon-circle" style="background:#10b981">📈</div>
+              <div class="hub-icon-circle" data-visual-print="1d9c41c20650" style="background:var(--c-ok);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div>
               <span class="hub-icon-lbl">Dashboard Concretagem Matriz</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="RELATORIO">
-              <div class="hub-icon-circle" style="background:#7c3aed">RE</div>
+              <div class="hub-icon-circle" data-visual-print="c164aa72dd60" style="background:var(--c-ink-3);">RE</div>
               <span class="hub-icon-lbl">Relatório Enc. Produção</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="HISTORICO">
-              <div class="hub-icon-circle" style="background:#b45309">HI</div>
+              <div class="hub-icon-circle" data-visual-print="a32b1f1b772c" style="background:var(--c-warn);">HI</div>
               <span class="hub-icon-lbl">Histórico</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="ACMP_CONCRETAGEM">
-              <div class="hub-icon-circle" style="background:#be185d">CC</div>
+              <div class="hub-icon-circle" data-visual-print="3c15c6a9b3e7" style="background:var(--c-crit);">CC</div>
               <span class="hub-icon-lbl">Concretagem</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="RELATORIO_MANUTENCAO">
-              <div class="hub-icon-circle" style="background:#f1c40f; color:#1e293b;">🛠️</div>
+              <div class="hub-icon-circle" data-visual-print="e57c1a7a36fa" style="background:var(--c-orange);color:var(--c-navy);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div>
               <span class="hub-icon-lbl">Manutenção Formas</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="TRATATIVA_DEFEITOS">
-              <div class="hub-icon-circle" style="background:#e11d48; color:#ffffff;">📋</div>
+              <div class="hub-icon-circle" data-visual-print="2af33708af01" style="background:var(--c-crit);color:var(--c-surface);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div>
               <span class="hub-icon-lbl">Tratativa de Defeitos</span>
             </button>
             <button class="hub-icon-btn hidden" type="button" data-hub-mode="USUARIOS">
-              <div class="hub-icon-circle" style="background:#4f46e5">👤</div>
+              <div class="hub-icon-circle" data-visual-print="7fdd2af6b982" style="background:var(--c-ink-2);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div>
               <span class="hub-icon-lbl">Usuários</span>
             </button>
           </div>
@@ -395,11 +389,11 @@ html.auth-checking body{visibility:hidden;}
             <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Concreto Fora Padrão</span><span class="mi-kpi-val" id="paKpiVolForaDia">-</span><span class="db-kpi-sub" id="paKpiVolForaMes">Mes: -</span></div>
             <div class="mi-kpi-card mi-kpi-atingimento"><span class="mi-kpi-label">Ciclo medio</span><span class="mi-kpi-val" id="paKpiCicloMedio">-</span><span class="db-kpi-sub" id="paKpiCicloDetalhes">Mediana: -</span></div>
             <div class="mi-kpi-card mi-kpi-dia"><span class="mi-kpi-label">Eficiencia</span><span class="mi-kpi-val" id="paKpiEficiencia">-</span></div>
-            <div class="mi-kpi-card" style="border-left-color: #f59e0b;"><span class="mi-kpi-label">Paradas</span><span class="mi-kpi-val" id="paKpiParadas">-</span><span class="db-kpi-sub" id="paKpiParadasAV">Amarelas: - / Vermelhas: -</span></div>
+            <div class="mi-kpi-card" data-visual-print="079d5bbd853d" style="border-left-color:var(--c-orange);"><span class="mi-kpi-label">Paradas</span><span class="mi-kpi-val" id="paKpiParadas">-</span><span class="db-kpi-sub" id="paKpiParadasAV">Amarelas: - / Vermelhas: -</span></div>
             <div class="mi-kpi-card"><span class="mi-kpi-label">Desvio padrao</span><span class="mi-kpi-val" id="paKpiDesvioPadrao">-</span></div>
             <div class="mi-kpi-card"><span class="mi-kpi-label">Ritmo estimado · formas/h</span><span class="mi-kpi-val" id="paKpiFormasHora">-</span></div>
             <div class="mi-kpi-card"><span class="mi-kpi-label">Ritmo estimado · m³/h</span><span class="mi-kpi-val" id="paKpiM3Hora">-</span></div>
-            <div class="mi-kpi-card" style="border-left-color: #6366f1;"><span class="mi-kpi-label">Jornada (Início / Fim)</span><span class="mi-kpi-val" id="paKpiJornada" style="font-size: 1.15rem; font-weight: bold; white-space: nowrap;">-</span></div>
+            <div class="mi-kpi-card" data-visual-print="65f415c76af9" style="border-left-color:var(--c-ink-3);"><span class="mi-kpi-label">Jornada (Início / Fim)</span><span class="mi-kpi-val" id="paKpiJornada" style="font-size: 1.15rem; font-weight: bold; white-space: nowrap;">-</span></div>
           </div>
         </div>
 
@@ -463,7 +457,7 @@ html.auth-checking body{visibility:hidden;}
           <div class="mc-table-wrap">
             <table class="sheet-table mi-table mc-table-custom">
               <thead>
-                <tr style="border-bottom: 2px solid var(--line); background: #f8fafc;">
+                <tr data-visual-print="76e41bc56ac6" style="border-bottom:2px solid var(--line);background:var(--c-bg);">
                   <th scope="col">Nº Forma</th>
                   <th scope="col">Poste Programado</th>
                   <th scope="col">Modelo Produzido</th>
@@ -503,10 +497,10 @@ html.auth-checking body{visibility:hidden;}
             <div class="kiosk-toggle-field" id="kioskLibToggleField">
               <label class="kiosk-switch">
                 <input type="checkbox" id="kioskLibCheckbox" />
-                <span class="kiosk-slider" style="background-color: var(--kiosk-slider-off, #ccc);"></span>
+                <span class="kiosk-slider" data-visual-print="102bfddfcb5c" style="background-color:var(--kiosk-slider-off, var(--c-line));"></span>
               </label>
               <div class="kiosk-toggle-label">
-                <span class="kiosk-toggle-title" style="color: #ff5f00;">Modo Liberação</span>
+                <span class="kiosk-toggle-title" data-visual-print="835e1ea7c422" style="color:var(--c-orange);">Modo Liberação</span>
                 <span class="kiosk-toggle-subtitle">Tocar nas formas para liberar (azul)</span>
               </div>
             </div>
@@ -517,15 +511,15 @@ html.auth-checking body{visibility:hidden;}
             <div class="kiosk-toggle-field hidden" id="kioskManutencaoToggleField">
               <label class="kiosk-switch">
                 <input type="checkbox" id="kioskManutencaoCheckbox" />
-                <span class="kiosk-slider" style="background-color: var(--kiosk-slider-off, #ccc);"></span>
+                <span class="kiosk-slider" data-visual-print="102bfddfcb5c" style="background-color:var(--kiosk-slider-off, var(--c-line));"></span>
               </label>
               <div class="kiosk-toggle-label">
-                <span class="kiosk-toggle-title" style="color: #f1c40f; text-shadow: 0 0 8px rgba(241,196,15,0.6);">Modo Manutenção</span>
+                <span class="kiosk-toggle-title" data-visual-print="da6a9c32bc34" style="color:var(--c-orange);text-shadow:0 0 8px rgba(241,196,15,0.6);">Modo Manutenção</span>
                 <span class="kiosk-toggle-subtitle">Parar ou liberar formas</span>
               </div>
             </div>
-            <button class="btn-kiosk" id="btnKioskSync" type="button">🔄 Sincronizar</button>
-            <button class="btn-kiosk" id="btnKioskFullscreen" type="button">🖥️ Tela Cheia</button>
+            <button class="btn-kiosk" id="btnKioskSync" type="button"> Sincronizar</button>
+            <button class="btn-kiosk" id="btnKioskFullscreen" type="button"> Tela Cheia</button>
             <button class="btn-kiosk back" id="btnKioskBack" type="button">↩ Sair Quiosque</button>
           </div>
         </div>
@@ -548,7 +542,7 @@ html.auth-checking body{visibility:hidden;}
           </div>
           <div class="kiosk-field" style="justify-self: end; text-align: right; display: flex; flex-direction: column; justify-content: center;">
             <div style="font-size: 0.9rem; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.05em;">Progresso</div>
-            <div style="font-size: 1.8rem; font-weight: 900; color: #10b981; line-height: 1.2;" id="kioskProgressoContador">0 / 0</div>
+            <div data-visual-print="b49f59c4f97b" style="font-size:1.8rem;font-weight:900;color:var(--c-ok);line-height:1.2;" id="kioskProgressoContador">0 / 0</div>
           </div>
         </div>
       </div>
@@ -710,7 +704,7 @@ html.auth-checking body{visibility:hidden;}
           <div><strong>Itens:</strong> <span id="insQtdItens">0</span></div>
         </div>
         <div class="sheet-filter-row">
-          <input id="insFormaFiltro" type="text" placeholder="🔍 Filtrar por N Forma..." autocomplete="off" />
+          <input id="insFormaFiltro" type="text" placeholder=" Filtrar por N Forma..." autocomplete="off" />
         </div>
         <table class="sheet-table">
           <thead>
@@ -795,17 +789,17 @@ html.auth-checking body{visibility:hidden;}
 
       <!-- Indicadores de status da montagem -->
       <div id="mpStatusSummary" class="db-kpi-row" style="margin-top: 15px; margin-bottom: 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
-        <div class="mi-kpi-card" style="border-left-color: #10b981; background: #f0fdf4; padding: 12px; border-radius: 8px; border-left-width: 4px; border-left-style: solid;">
-          <span style="font-size: 0.8rem; color: #15803d; font-weight: bold; display: block;">Aprovados</span>
-          <span id="mpKpiAprovados" style="font-size: 1.4rem; font-weight: bold; color: #166534; display: block; margin-top: 4px;">0</span>
+        <div class="mi-kpi-card" data-visual-print="839ee2c94894" style="border-left-color:var(--c-ok);background:var(--c-bg);padding:12px;border-radius:var(--r);border-left-width:4px;border-left-style:solid;">
+          <span data-visual-print="65133114a05d" style="font-size:0.8rem;color:var(--c-ok);font-weight:bold;display:block;">Aprovados</span>
+          <span id="mpKpiAprovados" data-visual-print="bce253a45689" style="font-size:1.4rem;font-weight:bold;color:var(--c-ok);display:block;margin-top:4px;">0</span>
         </div>
-        <div class="mi-kpi-card" style="border-left-color: #f59e0b; background: #fffbeb; padding: 12px; border-radius: 8px; border-left-width: 4px; border-left-style: solid;">
-          <span style="font-size: 0.8rem; color: #b45309; font-weight: bold; display: block;">Retrabalho</span>
-          <span id="mpKpiRetrabalho" style="font-size: 1.4rem; font-weight: bold; color: #92400e; display: block; margin-top: 4px;">0</span>
+        <div class="mi-kpi-card" data-visual-print="39862d5f23ad" style="border-left-color:var(--c-orange);background:var(--c-bg);padding:12px;border-radius:var(--r);border-left-width:4px;border-left-style:solid;">
+          <span data-visual-print="805e3f050177" style="font-size:0.8rem;color:var(--c-warn);font-weight:bold;display:block;">Retrabalho</span>
+          <span id="mpKpiRetrabalho" data-visual-print="c5236663fa5a" style="font-size:1.4rem;font-weight:bold;color:var(--c-warn);display:block;margin-top:4px;">0</span>
         </div>
-        <div class="mi-kpi-card" style="border-left-color: #ef4444; background: #fef2f2; padding: 12px; border-radius: 8px; border-left-width: 4px; border-left-style: solid;">
-          <span style="font-size: 0.8rem; color: #b91c1c; font-weight: bold; display: block;">Reprovados</span>
-          <span id="mpKpiReprovados" style="font-size: 1.4rem; font-weight: bold; color: #991b1b; display: block; margin-top: 4px;">0</span>
+        <div class="mi-kpi-card" data-visual-print="d4d0bc41431f" style="border-left-color:var(--c-orange);background:var(--c-bg);padding:12px;border-radius:var(--r);border-left-width:4px;border-left-style:solid;">
+          <span data-visual-print="aae2c1d68efe" style="font-size:0.8rem;color:var(--c-crit);font-weight:bold;display:block;">Reprovados</span>
+          <span id="mpKpiReprovados" data-visual-print="199d174e8278" style="font-size:1.4rem;font-weight:bold;color:var(--c-crit);display:block;margin-top:4px;">0</span>
         </div>
       </div>
 
@@ -815,7 +809,7 @@ html.auth-checking body{visibility:hidden;}
           <div><strong>Itens:</strong> <span id="mpQtdItens">0</span></div>
         </div>
         <div class="sheet-filter-row">
-          <input id="mpFormaFiltro" type="text" placeholder="🔍 Filtrar por N Forma..." autocomplete="off" />
+          <input id="mpFormaFiltro" type="text" placeholder=" Filtrar por N Forma..." autocomplete="off" />
         </div>
         <table class="sheet-table">
           <thead>
@@ -838,11 +832,11 @@ html.auth-checking body{visibility:hidden;}
     <section id="viewRelatorioManutencao" class="card hidden">
       <div class="mi-topbar">
         <div>
-          <h2>🛠️ Relatório de Manutenção de Formas</h2>
+          <h2> Relatório de Manutenção de Formas</h2>
           <p id="rmFiltroResumo">Histórico e Formas Paradas</p>
         </div>
         <div class="mi-topbar-actions">
-          <button id="rmBtnImprimirPDF" class="mi-icon-btn mi-icon-btn-primary" type="button" style="background:#d97706; color:#fff;">🖨️ Imprimir PDF Manutenção</button>
+          <button id="rmBtnImprimirPDF" class="mi-icon-btn mi-icon-btn-primary" type="button" data-visual-print="1f2ee971ff48" style="background:var(--c-orange);color:var(--c-surface);"> Imprimir PDF Manutenção</button>
           <button class="mi-icon-btn" type="button" data-back-btn>Voltar</button>
         </div>
       </div>
@@ -896,25 +890,25 @@ html.auth-checking body{visibility:hidden;}
     <section id="viewTratativaDefeitos" class="card hidden">
       <div class="mi-topbar">
         <div>
-          <h2>📋 Relatório de Defeitos & Tratativa de Qualidade</h2>
+          <h2> Relatório de Defeitos & Tratativa de Qualidade</h2>
           <p id="tdFiltroResumo">Gestão de Não Conformidades, Ações Corretivas e Responsáveis</p>
         </div>
         <div class="mi-topbar-actions">
           <button id="tdBtnAtualizar" class="mi-icon-btn" type="button">Atualizar dados</button>
-          <button id="tdBtnNovaOcorrencia" class="mi-icon-btn" type="button" style="background:#2563eb; color:#fff;">➕ Nova Ocorrência</button>
-          <button id="tdBtnImprimirPDF" class="mi-icon-btn mi-icon-btn-primary" type="button" style="background:#d97706; color:#fff;">🖨️ Imprimir PDF Defeitos</button>
+          <button id="tdBtnNovaOcorrencia" class="mi-icon-btn" type="button" data-visual-print="814e5c6aa58a" style="background:var(--c-ink-2);color:var(--c-surface);"> Nova Ocorrência</button>
+          <button id="tdBtnImprimirPDF" class="mi-icon-btn mi-icon-btn-primary" type="button" data-visual-print="1f2ee971ff48" style="background:var(--c-orange);color:var(--c-surface);"> Imprimir PDF Defeitos</button>
           <button class="mi-icon-btn" type="button" data-back-btn>Voltar</button>
         </div>
       </div>
 
       <!-- Resumo KPI de Defeitos -->
-      <div class="manutencao-kpi-panel" style="margin-top:0; margin-bottom:16px; background:#f8fafc; border-color:#e2e8f0;">
-        <div class="manutencao-kpi-title" style="color:#1e293b;">Resumo de Ocorrências e Tratativas de Qualidade</div>
+      <div class="manutencao-kpi-panel" data-visual-print="563c054aa305" style="margin-top:0;margin-bottom:16px;background:var(--c-bg);border-color:var(--c-line);">
+        <div class="manutencao-kpi-title" data-visual-print="e99dce3b92d4" style="color:var(--c-navy);">Resumo de Ocorrências e Tratativas de Qualidade</div>
         <div class="manutencao-kpi-grid">
-          <div class="manutencao-kpi-card" style="border-color:#cbd5e1;"><span>Total Ocorrências</span><strong id="tdKpiTotal" style="color:#1e293b;">0</strong></div>
-          <div class="manutencao-kpi-card" style="border-color:#fca5a5;"><span>Pendentes</span><strong id="tdKpiPendentes" style="color:#dc2626;">0</strong></div>
-          <div class="manutencao-kpi-card" style="border-color:#6ee7b7;"><span>Concluídos</span><strong id="tdKpiConcluidos" style="color:#059669;">0</strong></div>
-          <div class="manutencao-kpi-card" style="border-color:#fde047;"><span>Críticos (Reprovações)</span><strong id="tdKpiCriticos" style="color:#d97706;">0</strong></div>
+          <div class="manutencao-kpi-card" data-visual-print="fbad285cd411" style="border-color:var(--c-line);"><span>Total Ocorrências</span><strong id="tdKpiTotal" data-visual-print="e99dce3b92d4" style="color:var(--c-navy);">0</strong></div>
+          <div class="manutencao-kpi-card" data-visual-print="0c91236054c0" style="border-color:var(--c-line);"><span>Pendentes</span><strong id="tdKpiPendentes" data-visual-print="225b06227e5d" style="color:var(--c-crit);">0</strong></div>
+          <div class="manutencao-kpi-card" data-visual-print="a2c23e9bfc4d" style="border-color:var(--c-ink-3);"><span>Concluídos</span><strong id="tdKpiConcluidos" data-visual-print="8f3b94324665" style="color:var(--c-ok);">0</strong></div>
+          <div class="manutencao-kpi-card" data-visual-print="a4ebf2a9699f" style="border-color:var(--c-orange);"><span>Críticos (Reprovações)</span><strong id="tdKpiCriticos" data-visual-print="d2fee0549d2d" style="color:var(--c-orange);">0</strong></div>
         </div>
       </div>
 
@@ -924,8 +918,8 @@ html.auth-checking body{visibility:hidden;}
             <select id="tdFiltroStatus" class="kiosk-input">
               <option value="TODOS">Todos os status</option>
               <option value="PENDENTE">⏳ Pendentes</option>
-              <option value="EM_ANDAMENTO">🔄 Em Andamento</option>
-              <option value="CONCLUIDO">✅ Concluídos</option>
+              <option value="EM_ANDAMENTO"> Em Andamento</option>
+              <option value="CONCLUIDO">✓ Concluídos</option>
             </select>
           </label>
           <label>Código Defeito
@@ -1063,8 +1057,8 @@ html.auth-checking body{visibility:hidden;}
           <button type="button" data-quick-status="RR">Retrabalhados</button>
         </div></div>
         <div class="mi-filter-item mi-filter-actions">
-          <button id="miBtnLimparFiltros" type="button" class="mi-secondary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid #cbd5e1; background: #fff; color: #475569;">Limpar</button>
-          <button id="miBtnFiltrar" type="button" class="mi-primary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; background: #2563eb; color: #fff; border: none;">Aplicar</button>
+          <button id="miBtnLimparFiltros" type="button" class="mi-secondary-btn" data-visual-print="4dd1c813df94" style="height:34px;white-space:nowrap;padding:0 12px;border-radius:var(--r);font-weight:600;cursor:pointer;border:1px solid var(--c-line);background:var(--c-surface);color:var(--c-ink-2);">Limpar</button>
+          <button id="miBtnFiltrar" type="button" class="mi-primary-btn" data-visual-print="e6851359c2ba" style="height:34px;white-space:nowrap;padding:0 12px;border-radius:var(--r);font-weight:600;cursor:pointer;background:var(--c-ink-2);color:var(--c-surface);border:none;">Aplicar</button>
         </div>
       </div>
 
@@ -1297,8 +1291,8 @@ html.auth-checking body{visibility:hidden;}
           <button type="button" data-quick-status="RR">Retrabalhados</button>
         </div></div>
         <div class="mi-filter-item mi-filter-actions">
-          <button id="dfBtnLimparFiltros" type="button" class="mi-secondary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid #cbd5e1; background: #fff; color: #475569;">Limpar</button>
-          <button id="dfBtnFiltrar" type="button" class="mi-primary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; background: #2563eb; color: #fff; border: none;">Aplicar</button>
+          <button id="dfBtnLimparFiltros" type="button" class="mi-secondary-btn" data-visual-print="4dd1c813df94" style="height:34px;white-space:nowrap;padding:0 12px;border-radius:var(--r);font-weight:600;cursor:pointer;border:1px solid var(--c-line);background:var(--c-surface);color:var(--c-ink-2);">Limpar</button>
+          <button id="dfBtnFiltrar" type="button" class="mi-primary-btn" data-visual-print="e6851359c2ba" style="height:34px;white-space:nowrap;padding:0 12px;border-radius:var(--r);font-weight:600;cursor:pointer;background:var(--c-ink-2);color:var(--c-surface);border:none;">Aplicar</button>
         </div>
       </div>
         <div class="df-v4-data-banner"><span id="dfFonteResumo"><strong>Fonte:</strong> montagem_poste + producao</span><span>Calculo paginado com o mesmo periodo e escopo da tela</span></div>
@@ -1447,8 +1441,8 @@ html.auth-checking body{visibility:hidden;}
             <div class="rel-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
               <button id="gerarRelatorioSetor" class="btn primary" type="button">Gerar Relatório</button>
               <button id="relBtnImprimir" class="btn" type="button">PDF / Imprimir</button>
-              <button id="relBtnWhatsapp" class="btn" type="button" style="background: #25d366; color: white; border: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
-                <span>💬</span> WhatsApp
+              <button id="relBtnWhatsapp" class="btn" type="button" data-visual-print="1803f2232bb6" style="background:var(--c-ok);color:white;border:none;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+                <span></span> WhatsApp
               </button>
             </div>
           </div>
@@ -1482,7 +1476,7 @@ html.auth-checking body{visibility:hidden;}
                 <input id="histForma" type="text" placeholder="Ex: A-52" />
               </label>
             </div>
-            <button id="filtrarHistorico" class="btn primary btn-row-full" type="button">🔍 Filtrar</button>
+            <button id="filtrarHistorico" class="btn primary btn-row-full" type="button"> Filtrar</button>
           </div>
         </div>
         <div class="desktop-split-right">
@@ -1516,11 +1510,11 @@ html.auth-checking body{visibility:hidden;}
             <option value="Setor 4">Setor 4</option>
           </select>
         </label>
-        <button id="acmpCarregar" class="btn primary" type="button">📋 Carregar</button>
+        <button id="acmpCarregar" class="btn primary" type="button"> Carregar</button>
       </div>
       <div class="acmp-action-row">
-        <button id="acmpSalvar" class="btn" type="button">💾 Salvar</button>
-        <button id="acmpImprimir" class="btn" type="button">🖨️ Imprimir</button>
+        <button id="acmpSalvar" class="btn" type="button"> Salvar</button>
+        <button id="acmpImprimir" class="btn" type="button"> Imprimir</button>
       </div>
       <div id="acmpFeedback" class="lib-feedback hidden"></div>
       <div id="acmpOutput" class="report-box" style="margin-top:12px"></div>
@@ -1559,12 +1553,12 @@ html.auth-checking body{visibility:hidden;}
 
   <!-- Barra flutuante de salvar Sequencia Setor 3 -->
   <div id="seqS3FloatBar" class="seq-s3-float-bar">
-    <button id="seqS3BtnSalvar" class="btn primary ins-float-salvar" type="button">💾 Salvar Programação Setor 3</button>
+    <button id="seqS3BtnSalvar" class="btn primary ins-float-salvar" type="button"> Salvar Programação Setor 3</button>
   </div>
 
   <div id="insFloatBar" class="ins-float-bar">
 
-    <button id="salvarInspecaoFloat" class="btn primary ins-float-salvar" type="button">💾 Salvar Inspeções</button>
+    <button id="salvarInspecaoFloat" class="btn primary ins-float-salvar" type="button"> Salvar Inspeções</button>
   </div>
 
   <!-- Modal de carregamento / aguarde -->
@@ -1578,7 +1572,7 @@ html.auth-checking body{visibility:hidden;}
   <!-- Modal de resultado da inspeção -->
   <div id="inspecaoModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-box">
-      <div class="modal-icon" id="modalIcon">✅</div>
+      <div class="modal-icon" id="modalIcon">✓</div>
       <h2 class="modal-title" id="modalTitle">Inspeções Salvas</h2>
       <div class="modal-subtitle" id="modalSubtitle"></div>
       <div class="modal-stats" id="modalStats"></div>
@@ -1588,7 +1582,7 @@ html.auth-checking body{visibility:hidden;}
 
   <div id="mpResumoModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mpResumoTitle">
     <div class="modal-box mp-resumo-box">
-      <div class="modal-icon">📌</div>
+      <div class="modal-icon"></div>
       <h2 class="modal-title" id="mpResumoTitle">Montagem Salva</h2>
       <div id="mpResumoBody" class="mp-resumo-body"></div>
       <button class="btn primary modal-ok" id="mpResumoOkBtn" type="button">OK</button>
@@ -1597,7 +1591,7 @@ html.auth-checking body{visibility:hidden;}
 
   <div id="concretoTipoModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="concretoTipoTitle">
     <div class="modal-box">
-      <div class="modal-icon">🏭</div>
+      <div class="modal-icon"></div>
       <h2 class="modal-title" id="concretoTipoTitle">Tipo de concreto</h2>
       <div class="modal-subtitle" id="concretoTipoSubtitle">Selecione uma opção</div>
       <div id="concretoModeloField" class="concreto-modelo-field">
@@ -1619,7 +1613,7 @@ html.auth-checking body{visibility:hidden;}
       <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end;">
         <button class="btn btn-secondary" id="correcaoConcretagemFechar" type="button">Voltar</button>
         <button class="btn primary" id="correcaoConcretagemSalvar" type="button">Salvar tipo</button>
-        <button class="btn" id="correcaoConcretagemCancelar" type="button" style="background: #b91c1c; color: #fff;">Excluir apontamento para refazer</button>
+        <button class="btn" id="correcaoConcretagemCancelar" type="button" data-visual-print="3a93850757fb" style="background:var(--c-crit);color:var(--c-surface);">Excluir apontamento para refazer</button>
       </div>
     </div>
   </div>
@@ -1648,13 +1642,13 @@ html.auth-checking body{visibility:hidden;}
 
   <div id="visualizarChecklistModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="vcModalTitle">
     <div class="modal-box" style="width: 80%; max-width: 80%; max-height: 90vh; display: flex; flex-direction: column; padding: 24px; border-radius: 16px; overflow: hidden; text-align: left;">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px; flex-shrink: 0;">
-        <h2 id="vcModalTitle" style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #0f172a;">Detalhes da Inspeção</h2>
-        <button type="button" id="vcBtnCloseModal" style="background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #94a3b8; line-height: 1; padding: 0 4px; transition: color 0.2s;">&times;</button>
+      <div data-visual-print="e82630c6e84d" style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--c-line);padding-bottom:12px;margin-bottom:16px;flex-shrink:0;">
+        <h2 id="vcModalTitle" data-visual-print="1af2053fb633" style="margin:0;font-size:1.25rem;font-weight:700;color:var(--c-navy);">Detalhes da Inspeção</h2>
+        <button type="button" id="vcBtnCloseModal" data-visual-print="f753121d7eac" style="background:none;border:none;font-size:1.8rem;cursor:pointer;color:var(--c-ink-3);line-height:1;padding:0 4px;transition:color 0.2s;">&times;</button>
       </div>
 
       <!-- Meta info: Forma, Modelo, Operador, Data -->
-      <div style="background: #f8fafc; border-radius: 10px; padding: 14px; margin-bottom: 16px; font-size: 0.85rem; color: #475569; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-shrink: 0; border: 1px solid #e2e8f0;">
+      <div data-visual-print="3e64cfb1442b" style="background:var(--c-bg);border-radius:var(--r);padding:14px;margin-bottom:16px;font-size:0.85rem;color:var(--c-ink-2);display:grid;grid-template-columns:1fr 1fr;gap:10px;flex-shrink:0;border:1px solid var(--c-line);">
         <div><strong>Forma:</strong> <span id="vcMetaForma">-</span></div>
         <div><strong>Modelo:</strong> <span id="vcMetaModelo">-</span></div>
         <div><strong>Montador:</strong> <span id="vcMetaMontador">-</span></div>
@@ -1675,12 +1669,12 @@ html.auth-checking body{visibility:hidden;}
       </div>
 
       <!-- Observações e Recusa -->
-      <div id="vcObsContainer" style="background: #fef08a; border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 0.85rem; color: #713f12; flex-shrink: 0; border: 1px solid #fef08a; display: none;">
+      <div id="vcObsContainer" data-visual-print="81883e4ed132" style="background:var(--c-line);border-radius:var(--r);padding:12px;margin-bottom:16px;font-size:0.85rem;color:var(--c-warn);flex-shrink:0;border:1px solid var(--c-line);display:none;">
         <strong>Observações/Motivo:</strong> <span id="vcObservacoes">-</span>
       </div>
 
-      <div style="display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0; border-top: 1px solid #e2e8f0; padding-top: 12px;">
-        <button class="btn" id="vcBtnOk" type="button" style="padding: 8px 16px; font-weight: 700; width: 100px; background: #cbd5e1;">Fechar</button>
+      <div data-visual-print="29fc23637fc9" style="display:flex;justify-content:flex-end;gap:8px;flex-shrink:0;border-top:1px solid var(--c-line);padding-top:12px;">
+        <button class="btn" id="vcBtnOk" type="button" data-visual-print="58cec48b90b2" style="padding:8px 16px;font-weight:700;width:100px;background:var(--c-line);">Fechar</button>
       </div>
     </div>
   </div>
@@ -1688,15 +1682,15 @@ html.auth-checking body{visibility:hidden;}
   <!-- Modal de Troca de Senha de Primeiro Acesso -->
   <div id="primeiroAcessoModal" class="modal-overlay pa-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="paTitle">
     <div class="modal-box">
-      <div class="modal-icon">🔑</div>
+      <div class="modal-icon"></div>
       <h2 class="modal-title" id="paTitle">Primeiro Acesso</h2>
       <div class="modal-subtitle">Para sua segurança, você deve alterar sua senha temporária para continuar.</div>
       <div class="pa-form" style="display:flex; flex-direction:column; gap:12px; margin-top:14px; text-align:left;">
         <label style="font-weight:700;">Nova Senha
-          <input id="paNovaSenha" type="password" placeholder="Digite sua nova senha" required style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;" />
+          <input id="paNovaSenha" type="password" placeholder="Digite sua nova senha" required data-visual-print="a1f22460bb98" style="width:100%;padding:8px;border:1px solid var(--c-line);border-radius:var(--r);" />
         </label>
         <label style="font-weight:700;">Confirmar Nova Senha
-          <input id="paConfirmarSenha" type="password" placeholder="Confirme sua nova senha" required style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;" />
+          <input id="paConfirmarSenha" type="password" placeholder="Confirme sua nova senha" required data-visual-print="a1f22460bb98" style="width:100%;padding:8px;border:1px solid var(--c-line);border-radius:var(--r);" />
         </label>
       </div>
       <div id="paFeedback" class="login-feedback hidden" style="margin-top:10px;"></div>
@@ -1706,89 +1700,89 @@ html.auth-checking body{visibility:hidden;}
 
   <!-- Modal de Parada de Forma (Modo Manutenção) -->
   <div id="modalManutencaoParada" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mParadaTitle">
-    <div class="modal-box" style="max-width: 480px; text-align: left; border-top: 5px solid #f1c40f;">
+    <div class="modal-box" data-visual-print="20edf8105122" style="max-width:480px;text-align:left;border-top:5px solid var(--c-orange);">
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-        <span style="font-size: 1.8rem;">🛠️</span>
+        <span style="font-size: 1.8rem;"></span>
         <div>
-          <h2 class="modal-title" id="mParadaTitle" style="margin: 0; font-size: 1.3rem; color: #856404;">Inativar Forma / Manutenção</h2>
-          <div style="font-size: 0.85rem; color: #666;" id="mParadaSub">Registrar parada da forma</div>
+          <h2 class="modal-title" id="mParadaTitle" data-visual-print="e031d654bd46" style="margin:0;font-size:1.3rem;color:var(--c-warn);">Inativar Forma / Manutenção</h2>
+          <div data-visual-print="b89ecc259f44" style="font-size:0.85rem;color:var(--c-ink-2);" id="mParadaSub">Registrar parada da forma</div>
         </div>
       </div>
       <div style="margin-bottom: 14px;">
-        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Motivo da Parada *</label>
-        <textarea id="mParadaMotivo" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Ex: Trinca na aba lateral da forma"></textarea>
+        <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Motivo da Parada *</label>
+        <textarea id="mParadaMotivo" rows="2" class="input-field" data-visual-print="5d801ef28edb" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);" placeholder="Ex: Trinca na aba lateral da forma"></textarea>
       </div>
       <div style="margin-bottom: 18px;">
-        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">O que precisa ser feito para arrumar *</label>
-        <textarea id="mParadaAcao" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Ex: Soldar reforço metálico e alinhar travessa"></textarea>
+        <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">O que precisa ser feito para arrumar *</label>
+        <textarea id="mParadaAcao" rows="2" class="input-field" data-visual-print="5d801ef28edb" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);" placeholder="Ex: Soldar reforço metálico e alinhar travessa"></textarea>
       </div>
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" class="btn btn-secondary" id="mParadaCancelBtn">Cancelar</button>
-        <button type="button" class="btn primary" id="mParadaConfirmBtn" style="background: #d97706; color: #fff; border: none; font-weight: 700;">Confirmar Parada</button>
+        <button type="button" class="btn primary" id="mParadaConfirmBtn" data-visual-print="8366bb002138" style="background:var(--c-orange);color:var(--c-surface);border:none;font-weight:700;">Confirmar Parada</button>
       </div>
     </div>
   </div>
 
   <!-- Modal de Liberação de Forma (Modo Manutenção) -->
   <div id="modalManutencaoLiberacao" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mLiberacaoTitle">
-    <div class="modal-box" style="max-width: 480px; text-align: left; border-top: 5px solid #10b981;">
+    <div class="modal-box" data-visual-print="bfa746f5d2f1" style="max-width:480px;text-align:left;border-top:5px solid var(--c-ok);">
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-        <span style="font-size: 1.8rem;">✅</span>
+        <span style="font-size: 1.8rem;">✓</span>
         <div>
-          <h2 class="modal-title" id="mLiberacaoTitle" style="margin: 0; font-size: 1.3rem; color: #065f46;">Liberar Forma de Manutenção</h2>
-          <div style="font-size: 0.85rem; color: #666;" id="mLiberacaoSub">Retornar forma para o estado ativo</div>
+          <h2 class="modal-title" id="mLiberacaoTitle" data-visual-print="ada127253dd3" style="margin:0;font-size:1.3rem;color:var(--c-ok);">Liberar Forma de Manutenção</h2>
+          <div data-visual-print="b89ecc259f44" style="font-size:0.85rem;color:var(--c-ink-2);" id="mLiberacaoSub">Retornar forma para o estado ativo</div>
         </div>
       </div>
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; font-size: 0.82rem; margin-bottom: 14px;" id="mLiberacaoInfo">
+      <div data-visual-print="73fe6c2e7a07" style="background:var(--c-bg);border:1px solid var(--c-line);padding:10px;border-radius:var(--r);font-size:0.82rem;margin-bottom:14px;" id="mLiberacaoInfo">
         <!-- Detalhes da parada anterior -->
       </div>
       <div style="margin-bottom: 18px;">
-        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Serviço Realizado / Observação de Liberação *</label>
-        <textarea id="mLiberacaoObs" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Ex: Solda concluída, travessa alinhada e teste efetuado"></textarea>
+        <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Serviço Realizado / Observação de Liberação *</label>
+        <textarea id="mLiberacaoObs" rows="2" class="input-field" data-visual-print="5d801ef28edb" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);" placeholder="Ex: Solda concluída, travessa alinhada e teste efetuado"></textarea>
       </div>
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" class="btn btn-secondary" id="mLiberacaoCancelBtn">Cancelar</button>
-        <button type="button" class="btn primary" id="mLiberacaoConfirmBtn" style="background: #059669; color: #fff; border: none; font-weight: 700;">Confirmar Liberação</button>
+        <button type="button" class="btn primary" id="mLiberacaoConfirmBtn" data-visual-print="af31554d8949" style="background:var(--c-ok);color:var(--c-surface);border:none;font-weight:700;">Confirmar Liberação</button>
       </div>
     </div>
   </div>
 
   <!-- Modal de Tratativa / Direcionamento de Defeito -->
   <div id="modalTratativaDefeito" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mTratativaTitle">
-    <div class="modal-box" style="max-width: 680px; max-height: 90vh; overflow-y: auto; text-align: left; border-top: 5px solid #2563eb;">
+    <div class="modal-box" data-visual-print="e59b08876877" style="max-width:680px;max-height:90vh;overflow-y:auto;text-align:left;border-top:5px solid var(--c-ink-2);">
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-        <span style="font-size: 1.8rem;">📋</span>
+        <span style="font-size: 1.8rem;"></span>
         <div>
-          <h2 class="modal-title" id="mTratativaTitle" style="margin: 0; font-size: 1.25rem; color: #1e293b;">Tratativa de Defeito</h2>
-          <div style="font-size: 0.85rem; color: #64748b;" id="mTratativaSub">Registrar direcionamento e ação corretiva realizada</div>
+          <h2 class="modal-title" id="mTratativaTitle" data-visual-print="18831fb2f6e8" style="margin:0;font-size:1.25rem;color:var(--c-navy);">Tratativa de Defeito</h2>
+          <div data-visual-print="0be5700e9e4b" style="font-size:0.85rem;color:var(--c-ink-2);" id="mTratativaSub">Registrar direcionamento e ação corretiva realizada</div>
         </div>
       </div>
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; font-size: 0.84rem; margin-bottom: 14px;" id="mTratativaInfo">
+      <div data-visual-print="e5bbbb9801cd" style="background:var(--c-bg);border:1px solid var(--c-line);padding:12px;border-radius:var(--r);font-size:0.84rem;margin-bottom:14px;" id="mTratativaInfo">
         <!-- Preenchido via JS -->
       </div>
       <div style="margin-bottom: 12px;">
-        <label style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:6px;color:#334155;">Fotos da ocorrência (clique para ampliar)</label>
-        <div id="mTratativaFotos" style="display:flex;flex-wrap:wrap;gap:8px;font-size:0.82rem;color:#64748b;"></div>
+        <label data-visual-print="5ba6c43b447e" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:6px;color:var(--c-blue);">Fotos da ocorrência (clique para ampliar)</label>
+        <div id="mTratativaFotos" data-visual-print="2bb600320823" style="display:flex;flex-wrap:wrap;gap:8px;font-size:0.82rem;color:var(--c-ink-2);"></div>
       </div>
       <div style="margin-bottom: 12px;">
-        <label for="mTratativaNomeDefeito" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:#334155;">Nome do defeito</label>
-        <input id="mTratativaNomeDefeito" type="text" maxlength="120" class="input-field" style="width:100%;padding:8px;border-radius:6px;border:1px solid #cbd5e1;" placeholder="Nome identificado pelo gestor a partir da foto" />
+        <label for="mTratativaNomeDefeito" data-visual-print="fa5d165bbcc9" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Nome do defeito</label>
+        <input id="mTratativaNomeDefeito" type="text" maxlength="120" class="input-field" data-visual-print="91cf8ac75b3e" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);" placeholder="Nome identificado pelo gestor a partir da foto" />
       </div>
       <div style="margin-bottom: 12px;">
-        <label for="mTratativaJustificativa" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:#334155;">Justificativa / análise da foto</label>
-        <textarea id="mTratativaJustificativa" rows="2" maxlength="2000" class="input-field" style="width:100%;padding:8px;border-radius:6px;border:1px solid #cbd5e1;" placeholder="Explique a identificação e a causa provável"></textarea>
+        <label for="mTratativaJustificativa" data-visual-print="fa5d165bbcc9" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Justificativa / análise da foto</label>
+        <textarea id="mTratativaJustificativa" rows="2" maxlength="2000" class="input-field" data-visual-print="91cf8ac75b3e" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);" placeholder="Explique a identificação e a causa provável"></textarea>
       </div>
       <div style="margin-bottom: 12px;">
-        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Status da Tratativa *</label>
-        <select id="mTratativaStatus" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; font-weight: 700; min-height: 42px;">
+        <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Status da Tratativa *</label>
+        <select id="mTratativaStatus" class="input-field" data-visual-print="1014c68a7f9e" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);font-weight:700;min-height:42px;">
           <option value="PENDENTE">⏳ PENDENTE - Aguardando ação</option>
-          <option value="EM_ANDAMENTO">🔄 EM ANDAMENTO - Em reparo / execução</option>
-          <option value="CONCLUIDO">✅ CONCLUÍDO - Ação corretiva finalizada</option>
+          <option value="EM_ANDAMENTO"> EM ANDAMENTO - Em reparo / execução</option>
+          <option value="CONCLUIDO">✓ CONCLUÍDO - Ação corretiva finalizada</option>
         </select>
       </div>
       <div style="margin-bottom: 12px;">
-        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Responsável que Executou / Confirmou a Ação *</label>
-        <select id="mTratativaExecutadoPorSelect" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px; font-weight: 600;">
+        <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Responsável que Executou / Confirmou a Ação *</label>
+        <select id="mTratativaExecutadoPorSelect" class="input-field" data-visual-print="f1455397b2c4" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);min-height:42px;font-weight:600;">
           <option value="Alex">Alex</option>
           <option value="José Carlos">José Carlos</option>
           <option value="Osmar">Osmar</option>
@@ -1799,34 +1793,34 @@ html.auth-checking body{visibility:hidden;}
           <option value="Ricardo / Alex">Ricardo / Alex (Combinado)</option>
           <option value="OUTRO">Outro responsável...</option>
         </select>
-        <input id="mTratativaExecutadoPor" type="text" class="input-field hidden" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px; margin-top: 6px;" placeholder="Digite o nome do responsável..." />
+        <input id="mTratativaExecutadoPor" type="text" class="input-field hidden" data-visual-print="d63358533d08" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);min-height:42px;margin-top:6px;" placeholder="Digite o nome do responsável..." />
       </div>
       <div style="margin-bottom: 18px;">
-        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Direcionamento e Ação Corretiva Realizada *</label>
-        <textarea id="mTratativaAcaoRealizada" rows="3" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Descreva detalhadamente o direcionamento ou a solução aplicada (ex: estucagem concluída, furação desobstruída com martelete, poste encaminhado ao refugo...)"></textarea>
+        <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Direcionamento e Ação Corretiva Realizada *</label>
+        <textarea id="mTratativaAcaoRealizada" rows="3" class="input-field" data-visual-print="5d801ef28edb" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);" placeholder="Descreva detalhadamente o direcionamento ou a solução aplicada (ex: estucagem concluída, furação desobstruída com martelete, poste encaminhado ao refugo...)"></textarea>
       </div>
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" class="btn btn-secondary" id="mTratativaCancelBtn">Cancelar</button>
-        <button type="button" class="btn primary" id="mTratativaConfirmBtn" style="background: #2563eb; color: #fff; border: none; font-weight: 700;">Salvar Tratativa</button>
+        <button type="button" class="btn primary" id="mTratativaConfirmBtn" data-visual-print="6e4e433f7ad0" style="background:var(--c-ink-2);color:var(--c-surface);border:none;font-weight:700;">Salvar Tratativa</button>
       </div>
     </div>
   </div>
 
   <!-- Modal para Registrar Nova Ocorrência de Defeito -->
   <div id="modalNovaOcorrenciaDefeito" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mNovaOcorrenciaTitle">
-    <div class="modal-box" style="max-width: 520px; text-align: left; border-top: 5px solid #2563eb;">
+    <div class="modal-box" data-visual-print="071df4c071ca" style="max-width:520px;text-align:left;border-top:5px solid var(--c-ink-2);">
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-        <span style="font-size: 1.8rem;">➕</span>
+        <span style="font-size: 1.8rem;"></span>
         <div>
-          <h2 class="modal-title" id="mNovaOcorrenciaTitle" style="margin: 0; font-size: 1.25rem; color: #1e293b;">Registrar Ocorrência de Defeito</h2>
-          <div style="font-size: 0.85rem; color: #64748b;">Lançamento manual de não conformidade no poste</div>
+          <h2 class="modal-title" id="mNovaOcorrenciaTitle" data-visual-print="18831fb2f6e8" style="margin:0;font-size:1.25rem;color:var(--c-navy);">Registrar Ocorrência de Defeito</h2>
+          <div data-visual-print="0be5700e9e4b" style="font-size:0.85rem;color:var(--c-ink-2);">Lançamento manual de não conformidade no poste</div>
         </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
         <div>
-          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Setor *</label>
-          <select id="mNovaSetor" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;">
+          <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Setor *</label>
+          <select id="mNovaSetor" class="input-field" data-visual-print="30254f3d2e91" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);min-height:42px;">
             <option value="Setor 1">Setor 1</option>
             <option value="Setor 2">Setor 2</option>
             <option value="Setor 3">Setor 3</option>
@@ -1834,25 +1828,25 @@ html.auth-checking body{visibility:hidden;}
           </select>
         </div>
         <div>
-          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Nº da Forma / Poste *</label>
-          <input id="mNovaForma" type="text" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" placeholder="Ex: 01, 05, P-10..." />
+          <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Nº da Forma / Poste *</label>
+          <input id="mNovaForma" type="text" class="input-field" data-visual-print="30254f3d2e91" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);min-height:42px;" placeholder="Ex: 01, 05, P-10..." />
         </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
         <div>
-          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Data da Ocorrência *</label>
-          <input id="mNovaData" type="date" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" />
+          <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Data da Ocorrência *</label>
+          <input id="mNovaData" type="date" class="input-field" data-visual-print="30254f3d2e91" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);min-height:42px;" />
         </div>
         <div>
-          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Modelo do Poste</label>
-          <input id="mNovaModelo" type="text" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" placeholder="Ex: DT 7,5/300, 2CX VL..." />
+          <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Modelo do Poste</label>
+          <input id="mNovaModelo" type="text" class="input-field" data-visual-print="30254f3d2e91" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);min-height:42px;" placeholder="Ex: DT 7,5/300, 2CX VL..." />
         </div>
       </div>
 
       <div style="margin-bottom: 12px;">
-        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Código do Defeito *</label>
-        <select id="mNovaCodigoDefeito" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px; font-weight: 700;">
+        <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Código do Defeito *</label>
+        <select id="mNovaCodigoDefeito" class="input-field" data-visual-print="40c9dadf3fd0" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);min-height:42px;font-weight:700;">
           <option value="A">A - Falha na Concretagem / Armação Aparente (Osmar / José Carlos)</option>
           <option value="B">B - Cano Entupido (Osmar / José Carlos)</option>
           <option value="C">C - Excesso de Bolhas (Philippe / Ricardo)</option>
@@ -1872,13 +1866,13 @@ html.auth-checking body{visibility:hidden;}
       </div>
 
       <div style="margin-bottom: 18px;">
-        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Observações da Inspeção</label>
-        <textarea id="mNovaObservacoes" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Detalhes adicionais observados na peça..."></textarea>
+        <label data-visual-print="b3d0df01cc22" style="display:block;font-weight:700;font-size:0.85rem;margin-bottom:4px;color:var(--c-blue);">Observações da Inspeção</label>
+        <textarea id="mNovaObservacoes" rows="2" class="input-field" data-visual-print="5d801ef28edb" style="width:100%;padding:8px;border-radius:var(--r);border:1px solid var(--c-line);" placeholder="Detalhes adicionais observados na peça..."></textarea>
       </div>
 
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" class="btn btn-secondary" id="mNovaCancelBtn">Cancelar</button>
-        <button type="button" class="btn primary" id="mNovaConfirmBtn" style="background: #2563eb; color: #fff; border: none; font-weight: 700;">Salvar Ocorrência</button>
+        <button type="button" class="btn primary" id="mNovaConfirmBtn" data-visual-print="6e4e433f7ad0" style="background:var(--c-ink-2);color:var(--c-surface);border:none;font-weight:700;">Salvar Ocorrência</button>
       </div>
     </div>
   <template id="tplItemRegistro">
@@ -1889,12 +1883,12 @@ html.auth-checking body{visibility:hidden;}
   </template>
 
   <script src="assets/msgbox.js"></script>
-  <script src="xlsx.full.min.js?v=1.4.13"></script>
+  <script src="xlsx.full.min.js?v=1.4.20"></script>
   <script src="supabase.js"></script>
-  <script src="modelos-formas.js?v=1.4.13"></script>
-  <script src="montagem-taxa.js?v=1.4.13"></script>
-  <script src="bridge.js?v=1.4.13"></script><script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script><script src="screen-context.js?v=1.4.13"></script><script src="app.js?v=1.4.13"></script><script src="odin-mode.js?v=1.4.13"></script><script src="inspecao-defeitos.js?v=1.4.13"></script><script src="mandril-report.js?v=1.4.13"></script><script src="users-unificado.js?v=1.4.13"></script><script src="unificado-bridge.js?v=1.4.13"></script><script src="dashboard-defeitos-v5.js?v=1.4.13"></script>
-  <script src="dashboard-reference-layout.js?v=1.4.13"></script><script src="dashboards-v6.js?v=1.4.13"></script><script src="dashboards-v7.js?v=1.4.13"></script>
+  <script src="modelos-formas.js?v=1.4.20"></script>
+  <script src="montagem-taxa.js?v=1.4.20"></script>
+  <script src="bridge.js?v=1.4.20"></script><script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script><script src="screen-context.js?v=1.4.20"></script><script src="app.js?v=1.4.20"></script><script src="odin-mode.js?v=1.4.20"></script><script src="inspecao-defeitos.js?v=1.4.20"></script><script src="mandril-report.js?v=1.4.20"></script><script src="users-unificado.js?v=1.4.20"></script><script src="unificado-bridge.js?v=1.4.20"></script><script src="dashboard-defeitos-v5.js?v=1.4.20"></script>
+  <script src="dashboard-reference-layout.js?v=1.4.20"></script><script src="dashboards-v6.js?v=1.4.20"></script><script src="dashboards-v7.js?v=1.4.20"></script>
 
 </body>
 </html>
