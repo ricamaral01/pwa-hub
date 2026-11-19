@@ -7,14 +7,15 @@
     if(!originals.has(node)||displayed.get(node)!==value)originals.set(node,value);
     displayed.set(node,next);node.textContent=next;
   }
-  const acronyms=new Set(['GED','CP','CEC','PCP','MOD','DT','PDF','QR','MCC','IQT','IQF','NC','RNC','SC','ERP','CNPJ','EPI','RH','S1','S2','S3','S4']);
-  const properNames=['Cobli','Mega','Campinas','Pederneiras','Ribeirão Preto','Noroeste','Concrefer','ConcreTrack'];
+  const acronyms=new Set(['GED','CP','CQ','CEC','PCP','MOD','MOI','DT','PDF','QR','MCC','IQT','IQF','NC','RNC','SC','ERP','CNPJ','EPI','EPC','RH','ABNT','NBR','ISO','CSV','XLSX','SGQ','FL','PRO','S1','S2','S3','S4']);
+  const properNames=['Cobli','Mega','Campinas','Pederneiras','Ribeirão Preto','Noroeste','Concrefer','ConcreTrack','MPa'];
   const accents={producao:'produção',programacao:'programação',liberacao:'liberação',relatorio:'relatório',manutencao:'manutenção',analise:'análise',solicitacao:'solicitação',cotacao:'cotação',execucao:'execução',diagnostico:'diagnóstico',secundarios:'secundários',terciarios:'terciários',graficos:'gráficos',medio:'médio',eficiencia:'eficiência',padrao:'padrão',mes:'mês',relatorios:'relatórios',programacoes:'programações',liberacoes:'liberações',analises:'análises',solicitacoes:'solicitações',cotacoes:'cotações',acoes:'ações',aprovacao:'aprovação',aprovacoes:'aprovações',situacao:'situação'};
   function sentence(text){
     let firstWord=true;
-    let value=text.replace(/ vs /gi,' \u00d7 ').replace(/\s+--\s+banco local\b/gi,'').replace(/\s+--\s+/g,' · ').replace(/\bm3\b/g,'m³').split(/(\s+)/).map((word,i)=>{
-      if(!/[A-Za-zÀ-ÿ]/.test(word))return word;
+    let value=pluralText(text).replace(/ vs /gi,' \u00d7 ').replace(/\s+--\s+banco local\b/gi,'').replace(/\s+--\s+/g,' · ').replace(/\bm3\b/g,'m³').split(/(\s+)/).map((word,i)=>{
+      if(!/[A-Za-zÀ-ÿ]/.test(word)){if(/\d/.test(word))firstWord=false;return word;}
       const capitalize=firstWord;firstWord=false;
+      if(/^(?:[A-Z]{1,8}[-/]?)+\d[A-Z\d./:-]*$/.test(word))return word;
       const upper=word.toLocaleUpperCase('pt-BR');if(acronyms.has(upper))return upper;
       const lower=word.toLocaleLowerCase('pt-BR');
       const corrected=accents[lower]||lower;
@@ -25,9 +26,16 @@
   }
   window.UnificadoSentence=sentence;
   function pluralText(value){
-    return value.replace(/(\d+(?:[.,]\d+)?)\s+([\p{L}-]+)\(s\)/gu,(_,count,word)=>`${count} ${Number(count.replace(',','.'))===1?word:word+'s'}`)
-      .replace(/([\p{L}-]+)\(s\)/gu,'$1s')
-      .replace(/\b1 postes\b/g,'1 poste').replace(/\b1 urgentes\b/g,'1 urgente').replace(/\bm3\b/g,'m³')
+    const plurals={homem:'homens',mês:'meses',setor:'setores',trabalhador:'trabalhadores',solicitação:'solicitações',requisição:'requisições',emissão:'emissões',liberação:'liberações',programação:'programações'};
+    const plural=word=>{const result=plurals[word.toLocaleLowerCase('pt-BR')]||word+'s';return word===word.toLocaleUpperCase('pt-BR')?result.toLocaleUpperCase('pt-BR'):result;};
+    return value.replace(/(\d+(?:[.,]\d+)?)\s+([\p{L}-]+)\(s\)(?:\s+([\p{L}-]+)\(s\))?/giu,(_,count,word,adjective)=>{
+      const one=Number(count.replace(',','.'))===1;
+      return `${count} ${one?word:plural(word)}${adjective?' '+(one?adjective:plural(adjective)):''}`;
+    })
+      .replace(/([\p{L}-]+)\(s\)/giu,(_,word)=>plural(word))
+      .replace(/(?<![\d.,])1 dias? incompletos\b/g,'1 dia incompleto')
+      .replace(/(?<![\d.,])1 (postes|urgentes|pessoas|dias)\b/gi,(_,word)=>'1 '+({postes:'poste',urgentes:'urgente',pessoas:'pessoa',dias:'dia'}[word.toLocaleLowerCase('pt-BR')]))
+      .replace(/\bm3\b/g,'m³')
       .replace(/(\d+)\.(\d{1,2})(?=\s*(?:m³|kg|%))/g,'$1,$2');
   }
   window.UnificadoPluralText=pluralText;
@@ -47,6 +55,7 @@
       const text=sentence(title.textContent.trim());
       const duplicate=(title.tagName!=='H1'&&seen.has(titleKey(text)))||(mobile&&Boolean(parentTitle)&&(title.tagName==='H1'||titleKey(text)===titleKey(parentTitle)));
       title.classList.toggle('review-duplicate-title',Boolean(text&&duplicate));
+      if(!duplicate&&text)seen.add(titleKey(text));
     }
     document.querySelectorAll('.info-section .chart-title').forEach(title=>{
       const sectionTitle=title.closest('.info-section')?.querySelector('.info-title');
@@ -62,10 +71,10 @@
     document.querySelectorAll('h1').forEach(title=>{
       const before=title.previousElementSibling,after=title.nextElementSibling;
       if(before?.tagName==='P'&&before.textContent.trim()&&before.textContent===before.textContent.toLocaleUpperCase('pt-BR'))before.classList.add('review-decoration');
-      if(after?.tagName==='P'&&after.textContent.trim()&&!/[0-9]|Campinas|Pederneiras|Ribeir\u00e3o|Noroeste|pend\u00eancia|atualizad/i.test(after.textContent))after.classList.add('review-decoration');
+      if(after?.tagName==='P'&&!after.hasAttribute('data-review-data')&&after.textContent.trim()&&!/[0-9]|Campinas|Pederneiras|Ribeir\u00e3o|Noroeste|pend\u00eancia|atualizad/i.test(after.textContent))after.classList.add('review-decoration');
     });
     document.querySelectorAll('h1,h2,h3,h4,th,label,.section-title,.grouped-card-title,.module-page-category,.module-page-link-title,.nav-item-label,.nav-item,.nav-group-label,.module-page-group-head,.nav-mobile-title,.uqa-link,.review-kpi-label').forEach(el=>{
-      if(el.closest('.login-layout,[contenteditable],.nav-account-title'))return;
+      if(el.closest('.login-layout,[contenteditable],.nav-account-title,[data-review-data]'))return;
       for(const child of [...el.childNodes])if(child.nodeType===3&&child.textContent.trim()){
         const value=child.textContent;
         const next=sentence(value);
@@ -76,7 +85,7 @@
       if(/^(Normal|Concluída|Concluida|Aprovada|Aprovado|Entregue|Vigente)$/i.test(el.textContent.trim()))el.classList.add('review-plain-state');
     });
     document.querySelectorAll('p,small,label,span,div.metric-sub,div[id$="status"],div[role="status"],.totals,.note').forEach(el=>{
-      if(el.closest('td,[contenteditable],.login-layout,.indicator-legacy'))return;
+      if(el.closest('td,[contenteditable],.login-layout,.indicator-legacy,[data-review-data]'))return;
       for(const child of [...el.childNodes])if(child.nodeType===3){
         const value=child.textContent,next=pluralText(value);
         setLabelText(child,value,next);
@@ -114,13 +123,14 @@
     });
   }
   function compactFilters(){
-    // Only the static PCP pages: retain the input nodes and their event handlers.
+    // Retain the existing input nodes, names and event handlers in authored filters.
     const nativeReports=/\/usinas\/relatorios\//.test(location.pathname);
+    const nativeCec=/\/usinas\/$/.test(location.pathname)&&new URLSearchParams(location.search).get('area')==='cec';
     const supplies=/\/suprimentos\//.test(location.pathname);
-    if(!nativeReports&&!supplies&&!/\/(pcp|mapa\/operacao)\//.test(location.pathname))return;
-    document.querySelectorAll('.content-area>.section-card,.filter-card,.dashboard-filter-panel,.pa-filters-inline,.ar-filters,.filter-bar,form.filters,.panel.filters,.sup-buy-filters,.filters').forEach(section=>{
+    if(!nativeReports&&!nativeCec&&!supplies&&!/\/(pcp|mapa\/operacao)\//.test(location.pathname))return;
+    document.querySelectorAll('.content-area>.section-card,.filter-card,.dashboard-filter-panel,.pa-filters-inline,.ar-filters,.filter-bar,form.filters,.panel.filters,.sup-buy-filters,.filters,#viewMontagemPostes>.grid,form.cec-filters').forEach(section=>{
       if(section.closest('dialog,[role=dialog]'))return;
-      if(!((nativeReports||supplies||section.matches('.ar-filters'))&&section.querySelector('input,select'))&&!section.querySelector('#f-inicio,#sh-inicio,#filter-sector,#miDataInicio,#paDataInicio'))return;
+      if(!((nativeReports||nativeCec||supplies||section.matches('.ar-filters'))&&section.querySelector('input,select'))&&!section.querySelector('#f-inicio,#sh-inicio,#filter-sector,#miDataInicio,#paDataInicio,#mpFiltroData'))return;
       if(section.querySelector('table,.review-filter-details'))return;
       const details=document.createElement('details');details.className='review-filter-details';
       const summary=document.createElement('summary');details.append(summary);

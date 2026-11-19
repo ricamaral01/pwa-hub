@@ -51,6 +51,9 @@
     let url;
     try { url = new URL(value, location.href); } catch { return null; }
     if (url.origin !== location.origin || !url.pathname.startsWith(root)) return null;
+    if (/\/laboratorio\/novo\/postes\/?$/.test(url.pathname) && url.searchParams.get('tab') === 'absorcao') {
+      return resolve(MENU_ITEMS.labAbsorption.url);
+    }
     const path = url.pathname.slice(root.length).replace(/index\.html$/, '');
     if (path !== url.pathname.slice(root.length)) url.pathname = root + path;
     if (path === 'pcp/usuarios/' && hasMapa && mapaUser?.role === 'GERENCIA' &&

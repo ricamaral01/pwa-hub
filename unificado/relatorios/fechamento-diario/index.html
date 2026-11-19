@@ -507,16 +507,11 @@ table.report-table{width:100%;border-collapse:collapse;font-size:13px;}
     }
 
     function statusLabel(src) {
-      if (!src) return "sem informacao";
-      const parts = [src.status || "ok"];
-      if (src.auth) parts.push(`auth ${src.auth}`);
-      if (src.erro) parts.push(src.erro);
-      if (src.coluna) parts.push(`coluna ${src.coluna}`);
-      if (src.linha_datas) parts.push(`datas linha ${src.linha_datas}`);
-      if (src.linha_homens) parts.push(`homens linha ${src.linha_homens}`);
-      if (src.fallback_publico) parts.push(`csv publico: ${src.fallback_publico}`);
-      if (src.fallback) parts.push(`fallback: ${src.fallback.fonte} / ${src.fallback.status}`);
-      return parts.join(" | ");
+      if (!src || !src.status) return "Situação não informada";
+      if (src.erro) return "Dados indisponíveis neste ambiente";
+      if (src.status === "ok") return "Dados disponíveis";
+      if (src.status === "parcial") return "Dados parciais";
+      return "Dados indisponíveis neste ambiente";
     }
 
     function renderSources(fontes) {
@@ -525,12 +520,12 @@ table.report-table{width:100%;border-collapse:collapse;font-size:13px;}
         setores: "Resumo por setor",
         volume: "Volume de concreto",
         funcionarios: "Mão de obra direta (setores 1+2, 3 e 4)",
-        ocorrencias: "Ocorrencias",
-        armacoes: "Producao de armacoes"
+        ocorrencias: "Ocorrências",
+        armacoes: "Produção de armações"
       };
       document.getElementById("fontes").innerHTML = Object.keys(labels).map(key => {
         const src = fontes[key] || {};
-        return `<div class="source"><b>${labels[key]}</b><span>${escapeHtml(src.fonte || "-")}<br>${escapeHtml(statusLabel(src))}</span></div>`;
+        return `<div class="source"><b>${labels[key]}</b><span>${escapeHtml(statusLabel(src))}</span></div>`;
       }).join("");
     }
 

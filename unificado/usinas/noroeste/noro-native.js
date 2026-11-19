@@ -1,5 +1,5 @@
 const API = '/unificado/mapa/api/usinas/noro';
-const STYLE = '/unificado/usinas/noroeste/noro-native.css?v=1.4.11';
+const STYLE = '/unificado/usinas/noroeste/noro-native.css?v=1.4.26';
 const label = {painel:'Painel',massadas:'Massadas',cartas:'Cartas de traço',relatorios:'Relatórios',cec:'Controle estatístico',cadastros:'Cadastros',estoque:'Estoque',custos:'Custos'};
 const today = () => new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo'}).format(new Date());
 const number = (value, digits=1) => Number(value || 0).toLocaleString('pt-BR',{maximumFractionDigits:digits});
@@ -21,7 +21,7 @@ async function get(path) {
 }
 function card(title,value,sub='') {
   const box=el('div',null,'noro-card');
-  box.append(el('span',title,'noro-card-label'),el('strong',value,'noro-card-value'));
+  box.append(el('span',title,'noro-card-label'),el('strong',typeof value==='number'?number(value,2):value,'noro-card-value'));
   if(sub) box.append(el('small',sub));
   return box;
 }

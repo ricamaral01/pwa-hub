@@ -28,7 +28,7 @@
   document.getElementById('overview-unit-total').replaceChildren(tableRow('Total',total,failed));
   const timestamp=new Date().toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
   const monthName=new Date(month+'-01T12:00:00').toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
-  document.getElementById('overview-status').textContent=`${monthName} · 4 unidades · ${plural(dates.length,'dia com produção','dias com produção')} · atualizado às ${timestamp}`;
+  document.getElementById('overview-status').textContent=`${monthName} · 4 unidades · dias úteis considerados: — · atualizado às ${timestamp}`;
   const values=dates.map(date=>units.reduce((sum,unit)=>sum+(result[unit.id].rows.find(row=>row.data===date)?.posts||0),0));
   const ticks=window.IndicatorPresentation.axisTicks(Math.max(0,...values));
   const svg=document.getElementById('overview-chart');svg.replaceChildren();

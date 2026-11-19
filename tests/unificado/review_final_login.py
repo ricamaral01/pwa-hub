@@ -35,6 +35,17 @@ with sync_playwright() as pw:
         page=context.new_page()
         page.goto(BASE+'/unificado/login.html',wait_until='networkidle')
         page.evaluate('document.fonts.ready')
+        if args.candidate and width==1440:
+            def metrics(target,selectors):
+                return {name:target.locator(selector).first.evaluate('e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return {x:r.x,y:r.y,width:r.width,height:r.height,font:s.fontFamily,size:s.fontSize,line:s.lineHeight}}') for name,selector in selectors.items()}
+            current=metrics(page,{'logo':'.login-official-logo','title':'h1','label':'.login-field>span:first-child','user':'input[name=username]','password':'input[name=password]','button':'.login-submit','footer':'.login-desktop-foot'})
+            reference=browser.new_page(viewport={'width':1440,'height':900})
+            reference.goto((R/'docs/revisao-visual-unificado/telas/f2-login.html').as_uri());reference.evaluate('document.fonts.ready')
+            expected=metrics(reference,{'logo':'.form img','title':'.form h1','label':'.fld label','user':'.fld .inp','password':'.fld:nth-of-type(2) .inp','button':'.form .btn','footer':'.foot'})
+            reference.close()
+            geometry_equal=all(abs(current[name][key]-expected[name][key])<0.02 for name in expected for key in ['x','y','width','height'])
+            (O/'login-desktop-geometry.json').write_text(json.dumps({'reference':expected,'candidate':current,'geometry_identical':geometry_equal,'comparison':'Seven elements: exact position and size; reference sample values and candidate empty fields are different UI states.'},indent=2))
+            assert geometry_equal,{'reference':expected,'candidate':current}
         page.screenshot(path=str(O / moment / f'login-{width}.png'))
         context.close()
     browser.close()
