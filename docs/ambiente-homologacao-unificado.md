@@ -1,5 +1,57 @@
 # Homologação do sistema unificado
 
+## Etapa separada CQ 006 — 19/11/2026 — execução interrompida
+
+A candidata visual **1.4.26** continua local, no commit `3ec8a07f`.
+A **18446 permanece em 1.4.25**. A rodada visual está suspensa enquanto esta
+etapa separada aguarda a condição de execução estabelecida pelo usuário.
+
+O histórico de certificados retorna HTTP 500 porque a consulta usa
+`cq_certificados.liberacao_excepcional_por`, ausente na cópia isolada. A
+configuração do serviço `unificado-visual-homolog-cq.service` foi lida sem
+registrar credenciais: aponta exclusivamente para
+`laboratorio_visual_homolog_20261118`, em `127.0.0.1:5432`.
+
+A migração oficial é
+`/opt/concrefer-unificado/cq/migrations/006_liberacao_excepcional.sql`.
+Seu arquivo publicado e a cópia em
+`homolog-next/visual-full/cq/migrations/006_liberacao_excepcional.sql` têm o
+mesmo SHA-256:
+`c95fb280c2be0a16f6467b67c87be9f78f8e88bd19e03a73c106449b39d16799`.
+Ela acrescenta exatamente estas cinco colunas, todas ausentes na consulta de
+metadados feita em transação **READ ONLY** no banco de homologação:
+
+| Tabela | Coluna | Tipo |
+| --- | --- | --- |
+| `cq_certificados` | `liberacao_excepcional_por` | `text` |
+| `cq_certificados` | `liberacao_excepcional_nome` | `text` |
+| `cq_certificados` | `liberacao_excepcional_motivo` | `text` |
+| `cq_certificados` | `liberacao_excepcional_em` | `timestamptz` |
+| `cq_resultados_data` | `resultado_origem` | `text` |
+
+**Não foi possível comprovar a execução da 006 em produção.** A presença do
+arquivo no código publicado não prova sua aplicação. O script publicado
+`cq/deploy/deploy_phase2_production.sh` referencia apenas `001` a `005`;
+`migrate.py` executa apenas `001_schema.sql`, e `app.py` não executa a 006
+automaticamente. Os históricos consultados não forneceram registro de execução.
+Isso também não prova que a migração nunca foi aplicada: o estado permanece
+**desconhecido**, sem conexão ao banco de produção.
+
+Conforme as condições do usuário, a execução parou antes de qualquer DDL.
+Não houve dump, migração, alteração de API, regra, permissão, dados existentes,
+serviços ou Nginx. O dump verificado continua obrigatório antes de qualquer
+escrita futura. Nenhuma migração alternativa foi criada.
+
+O próximo passo depende de um registro verificável da aplicação da 006 em
+produção, ou de decisão explícita sobre proceder sem essa comprovação.
+Somente depois será possível aplicar a migração autorizada, comprovar o
+histórico com os perfis permitidos, atualizar matriz/revisão visual e executar
+o gate **7/7 posterior à migração**. Esses testes ainda não foram realizados
+nesta etapa; o gate anterior não os substitui.
+
+Relatório próprio: [diagnóstico CQ 006](revisao-visual-unificado/homolog/cq-migracao-006/diagnostico.json),
+com SQL oficial, hashes, fontes consultadas e limites da evidência.
+
 ## Estado final da revisão visual — 18/11/2026
 
 A porta **18446** recebeu a versão **1.4.20**, com as fases 1–7 concluídas.
