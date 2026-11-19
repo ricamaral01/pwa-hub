@@ -1,5 +1,31 @@
 # Homologação do sistema unificado
 
+## Usinas: dependência externa permitida, sem mudança de infraestrutura
+
+Por decisão do usuário em 19/11/2026, o Fechamento diário continua dependendo
+de `dautomacao.com` em produção e em homologação. A matriz permite somente GET
+no prefixo exato
+`https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/`.
+Não foram copiadas páginas ou manifesto, alteradas constantes, reiniciados
+serviços ou modificados Nginx e bancos nessa etapa.
+
+Na candidata local, seis cenários controlados passaram: navegação e troca de
+data, relatório ausente, origem indisponível, conexão do navegador indisponível,
+manifesto indisponível e lista vazia. As falhas mostram mensagem legível e opção de tentar novamente, com o
+iframe oculto. Os cenários sintéticos não comprovam a consulta de dados reais.
+
+A prova real continua pendente: os endpoints existentes de manifesto e relatório
+na 18446 retornaram 503. A leitura da unidade Mapa de homologação confirmou
+`IPAddressAllow=127.0.0.0/8 ::1/128` e `IPAddressDeny=0.0.0.0/0 ::/0`.
+O relatório público retornou 200 fora desse serviço, inclusive no mesmo servidor.
+A exceção do navegador na matriz não libera a saída de rede do serviço. Essa
+configuração foi preservada conforme a orientação de não reiniciar serviços.
+
+Evidências, capturas 1440/390 e limites da validação estão no
+[relatório da dependência externa](revisao-visual-unificado/homolog/revisao-final/external-report/RELATORIO.md).
+A candidata 1.4.26 ainda não foi publicada; abertura e troca de data reais
+permanecem reprovadas até que o manifesto possa ser consultado pela instância.
+
 ## Etapa separada CQ 006 — aplicada em 19/11/2026
 
 Após a autorização explícita para prosseguir sem comprovação de aplicação da

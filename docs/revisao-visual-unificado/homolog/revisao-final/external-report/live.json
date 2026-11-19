@@ -1,0 +1,12 @@
+[
+  {
+    "mode": "live",
+    "synthetic": false,
+    "ok": false,
+    "availability": "unavailable",
+    "message": "Não foi possível carregar a lista de relatórios. Tente novamente.",
+    "retry_visible": true,
+    "external_gets": [],
+    "normal_navigation_proven": false
+  }
+]

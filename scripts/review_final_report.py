@@ -11,6 +11,13 @@ inventory=read(O/'inventario.json');definitions={r['id']:r for r in inventory}
 rows=[];profiles=[];missing=[]
 for role in ['GERENCIA','LABORATORIO','PCP','PRODUCAO','QUALIDADE','SUPRIMENTOS','CONSULTA']:
     actual=[row for row in read(O/('matrix-'+role.lower()+'.json'),[]) if not definitions[row['screen']].get('inactive')]
+    for row in actual:
+        expected_hash=definitions[row['screen']].get('query','')
+        if expected_hash.startswith('#') and not row.get('native_route_proof'):
+            row.update(ok=False,native_route_unverified=expected_hash)
+        if row['screen']!='shell-login':
+            redirects=[frame['url'] for layout in row.get('layout',[]) for frame in layout['frames'] if '/unificado/login.html' in frame['url']]
+            if redirects:row.update(ok=False,unexpected_central_login_redirects=redirects)
     expected=read(O/('profile-access-'+role.lower()+'.json'))
     absent=sorted(set(expected['eligible_screens'])-{r['screen'] for r in actual}) if expected else ['profile_not_run']
     missing.extend({'profile':role,'screen':screen} for screen in absent)

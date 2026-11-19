@@ -8,7 +8,7 @@ public={}
 for rel in public_base:
     p=U/rel
     if p.is_file() and sha(p)!=public_base[rel]:public[rel]=p
-for rel in ['assets/img/logo-concrefer-oficial.png','producao/indicadores-gerais/overview.js','producao/indicadores-gerais/overview.css','producao/indicadores-gerais/presentation.js']:
+for rel in ['assets/img/logo-concrefer-oficial.png','producao/indicadores-gerais/overview.js','producao/indicadores-gerais/overview.css','producao/indicadores-gerais/presentation.js','usinas/fechamento-diario.js']:
     public[rel]=U/rel
 for p in (U/'qualidade/assets').glob('*'):
     if p.is_file() and p.suffix in {'.js','.css'} and (p.name not in {Path(x).name for x in public_base}):public[p.relative_to(U).as_posix()]=p

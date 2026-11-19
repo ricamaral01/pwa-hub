@@ -61,6 +61,12 @@
 @media print{.sup-compact-list{display:none!important}}
 @media screen{.print-source-title,.review-print-only{display:none!important}}
 @media print{.screen-page-title,.record-title,.review-screen-only{display:none!important}}
+@media screen{.cec-scroll{border:0!important;border-radius:0!important;box-shadow:none!important}}
+@media screen{
+ .preview-cura,.preview-cura[data-theme]{--ct-bg:var(--c-bg);--ct-surface:var(--c-surface);--ct-soft:var(--c-line-2);--ct-text:var(--c-ink);--ct-muted:var(--c-ink-2);--ct-border:var(--c-line);--ct-accent:var(--c-navy);--bg:var(--c-bg);--ink:var(--c-ink);--muted:var(--c-ink-2);--border:var(--c-line)}
+ .layout:has(#slump-form) .page-heading{background:var(--c-surface)!important;color:var(--c-ink)!important;border:0!important;border-bottom:1px solid var(--c-line)!important;border-radius:0!important;box-shadow:none!important}
+ .layout:has(#slump-form) .heading-mark{display:none!important}
+}
 
 @media screen{#bypass-panel{border-radius:var(--r)!important}}
 
@@ -179,6 +185,10 @@
  .sheet .kpis,.aside .source{border-bottom:1px solid var(--c-line)!important}
  :is(button,a,input):is(.btn-print,.btn-success,.btn-warning,.btn-info){background:var(--c-navy)!important;border-color:var(--c-navy)!important;color:var(--c-surface)!important}
  :is(button,a,input):is(.btn-outline-success,.btn-outline-warning,.btn-outline-info){background:var(--c-surface)!important;border-color:var(--c-line)!important;color:var(--c-blue)!important}
+ #report[hidden],#source[hidden],#report-feedback[hidden],#report-retry[hidden],#status[hidden]{display:none!important}
+ .report-feedback{max-width:720px;margin:24px auto;padding:24px;background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--r);color:var(--c-ink)}
+ .report-feedback p{margin:0 0 16px;line-height:1.5}
+ .report-feedback button{min-height:40px;padding:8px 14px;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);color:var(--c-blue)}
 }
 @media screen and (max-width:600px){
  .sr-day-switch{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px!important;margin:12px 0!important}

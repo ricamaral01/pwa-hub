@@ -1,0 +1,62 @@
+{
+  "status": "Inspected samples; no global approval",
+  "source": "Contact sheets inspected directly; full captures remain linked in gallery",
+  "sheets": [
+    {
+      "path": "folhas/qa/shell-001.png",
+      "sha256": "17401905e483f2ac98445255329dc70807c2c38a7e0c45b9d0d45e48b9fa98c9"
+    },
+    {
+      "path": "folhas/qa/shell-002.png",
+      "sha256": "6664d9612a35672f01c6afff477adb38461f1044b7d0a631e4568b01988b8b4d"
+    },
+    {
+      "path": "folhas/qa/shell-003.png",
+      "sha256": "4d43120275324f524a2258e436caacc870bd8d56caf0fd09a61303779ce32ccd"
+    },
+    {
+      "path": "folhas/qa/shell-004.png",
+      "sha256": "7f896f245d2b5b0a6522fa06ccd8b7c0a8cd26ed9b035cb6c8415ad56d26a6f8"
+    },
+    {
+      "path": "folhas/qa/suprimentos-001.png",
+      "sha256": "f3fc0e3ac2eb03b21b6d4c03f087d4a84e9a1afa1ec9812f3d4e393e7b8a3ed9"
+    },
+    {
+      "path": "folhas/qa/suprimentos-002.png",
+      "sha256": "e5f41e9e9f25fe9bce625f968c629318f5c33369e11cb593a3ec10cd1b894604"
+    },
+    {
+      "path": "folhas/qa/laboratorio-001.png",
+      "sha256": "662a2c85a0fba752cb45025a02e9a184057c1e6c918d7a452816e42f8d1bf7c3"
+    },
+    {
+      "path": "folhas/qa/laboratorio-002.png",
+      "sha256": "52911d654e1ef918155b77334640c90e3bb0b232c132d5132c6b95f73e1e9a15"
+    },
+    {
+      "path": "folhas/qa/laboratorio-003.png",
+      "sha256": "41b5db4b5b79cc115c4b126d8dae9679858735c3a61d4d6c673d4622cc5a039c"
+    },
+    {
+      "path": "folhas/qa/laboratorio-004.png",
+      "sha256": "33a3b18eed9b4e278137378fee2f91ca3e9e8b25e6c755266c05452b5393fc6a"
+    },
+    {
+      "path": "folhas/qa/laboratorio-005.png",
+      "sha256": "3662a954a0169ede4f5bf229e95fb1cd65fe12cd7de1f5d6a219659475d79f82"
+    },
+    {
+      "path": "folhas/qa/laboratorio-006.png",
+      "sha256": "7b0ed8e6af6a6f1efc2942b0c7f8b7855db3da67fa825c2a3464789306009a00"
+    }
+  ],
+  "findings": [
+    "Central login redirects in protected routes are failures, even when HTML returns 200.",
+    "Dosagem subroutes were captured without their hash; harness fixed and previous captures unverified.",
+    "Monitor root uses a different server-selected template; keep real routing and authentication intact. Light palette adjustment requires fresh captures.",
+    "Slump header and CEC table borders corrected; fresh captures required.",
+    "CEC analysis reader image replaced on screen only; original retained for print.",
+    "External report failure messages reviewed at 1440 and 390; live normal navigation is blocked."
+  ]
+}

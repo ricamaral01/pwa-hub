@@ -7,7 +7,7 @@ from urllib.parse import urlsplit, quote
 from playwright.async_api import async_playwright
 from homolog_session import test_cookie_for
 from visual_phase05_sessions import sessions
-from review_expectations import legacy_login_challenge
+from review_expectations import legacy_login_challenge,permitted_external_report,EXTERNAL_REPORT_PREFIX
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = 'https://concrefer.concretrack.com.br:18446'
@@ -80,7 +80,12 @@ async def main():
         async def init_asset(route):
             u=urlsplit(route.request.url)
             if u.netloc!=urlsplit(BASE).netloc:
-                await route.abort();return
+                if permitted_external_report(route.request.url,route.request.method):
+                    response=await route.fetch(max_redirects=0)
+                    if 300<=response.status<400:await route.abort()
+                    else:await route.fulfill(response=response)
+                else:await route.abort()
+                return
             if await candidate_asset(route):return
             if '/api/' in u.path:
                 async with api_lock:
@@ -151,24 +156,31 @@ async def main():
         async def check(row):
             async with sem:
                 case_context=await browser.new_context(storage_state=identity_state,service_workers='block',timezone_id='America/Sao_Paulo',locale='pt-BR')
-                if identity.get('cookie'):
-                    fresh_cookie=await asyncio.to_thread(test_cookie_for,identity['mapa']['id'])
-                    await case_context.add_cookies([{'name':'mapa_unificado_homolog_session','value':fresh_cookie,'domain':'concrefer.concretrack.com.br','path':'/unificado/','secure':True,'httpOnly':True}])
                 page = await case_context.new_page()
                 js, http, external = [], [], []
                 transport=[]
                 blocked_upstreams=[]
+                allowed_external=[]
                 capturing=True
                 page.on('pageerror', lambda e:js.append(str(e)))
                 page.on('response', lambda r:http.append({'url':r.url,'status':r.status}) if r.status>=400 else None)
                 async def restrict(route):
                     u = urlsplit(route.request.url)
                     if u.scheme in ('http','https') and u.netloc != urlsplit(BASE).netloc:
-                        external.append(route.request.url)
-                        await route.abort()
-                    elif u.path.startswith('/unificado/mapa/api/usina/reporting/pcp-producao/'):
-                        blocked_upstreams.append({'path':u.path,'reason':'Unisolated static upstream; see diagnosticos/usinas-relatorio-externo.json'})
-                        await route.abort()
+                        if permitted_external_report(route.request.url,route.request.method):
+                            allowed_external.append({'url':route.request.url,'method':'GET'})
+                            try:
+                                response=await route.fetch(max_redirects=0,timeout=30000)
+                                if 300<=response.status<400:
+                                    external.append({'url':route.request.url,'blocked_redirect':response.headers.get('location')})
+                                    await route.abort()
+                                else:await route.fulfill(response=response)
+                            except Exception as exc:
+                                transport.append({'path':u.path,'error':type(exc).__name__})
+                                await route.abort()
+                        else:
+                            external.append(route.request.url)
+                            await route.abort()
                     elif await candidate_asset(route):return
                     elif '/api/' in u.path:
                         # Keep real endpoints/statuses/data; bound read bursts on the shared host.
@@ -186,7 +198,7 @@ async def main():
                 if path.startswith('http'):
                     parsed = urlsplit(path)
                     assert parsed.netloc == urlsplit(BASE).netloc
-                    path = parsed.path + ('?' + parsed.query if parsed.query else '')
+                    path = parsed.path + ('?' + parsed.query if parsed.query else '') + ('#'+parsed.fragment if parsed.fragment else '')
                 if ':id' in path:
                     nc = json.loads((OUT.parent / 'fase-6/qualidade-flow.json').read_text(encoding='utf-8'))['nc_id']
                     path = path.replace(':id', nc)
@@ -198,6 +210,9 @@ async def main():
                     inputs=json.loads(checkpoint.read_text())['files']
                     record['ui_source_hashes']={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in inputs}
                 try:
+                    if identity.get('cookie'):
+                        fresh_cookie=await asyncio.to_thread(test_cookie_for,identity['mapa']['id'])
+                        await case_context.add_cookies([{'name':'mapa_unificado_homolog_session','value':fresh_cookie,'domain':'concrefer.concretrack.com.br','path':'/unificado/','secure':True,'httpOnly':True}])
                     await page.set_viewport_size({'width':1440,'height':900})
                     target = BASE+path if row.get('direct') else BASE + '/unificado/?view=' + quote(view,safe='')
                     response = await page.goto(target, wait_until='domcontentloaded', timeout=30000)
@@ -236,11 +251,16 @@ async def main():
                             except Exception:pass
                         await page.evaluate('()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))')
                         await page.wait_for_timeout(250)
+                        if row.get('query','').startswith('#'):
+                            requested_hash=row['query']
+                            actual_hash=urlsplit(page.url).fragment
+                            record.setdefault('native_route_proof',[]).append({'width':width,'requested':requested_hash,'actual':'#'+actual_hash})
+                            assert '#'+actual_hash==requested_hash,('Native route was not opened',requested_hash,actual_hash)
                         frames = []
                         for frame in page.frames:
                             if not frame.url.startswith(BASE):continue
                             await frame.wait_for_function('document.body && getComputedStyle(document.documentElement).visibility!=="hidden"',timeout=15000)
-                            await frame.wait_for_function("()=>{const scope=document.querySelector('.scrim>.drawer,[role=dialog],[aria-modal=true]')||document;return ![...scope.querySelectorAll('.loading-state,#loading,.page-loading,tbody tr,.native-status,.state-card,.cr-loading')].some(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width&&r.height&&s.display!=='none'&&s.visibility!=='hidden'&&/carregando|consultando dados|preparando consulta/i.test(e.textContent)})}",timeout=30000)
+                            await frame.wait_for_function("()=>{const scope=document.querySelector('.scrim>.drawer,[role=dialog],[aria-modal=true]')||document;return ![...scope.querySelectorAll('.loading-state,#loading,.page-loading,tbody tr,.native-status,.state-card,.cr-loading,#report-feedback')].some(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width&&r.height&&s.display!=='none'&&s.visibility!=='hidden'&&/carregando|consultando dados|preparando consulta/i.test(e.textContent)})}",timeout=30000)
                             record['last_stage']='font readiness '+str(width)+' '+frame.url
                             await asyncio.wait_for(frame.evaluate('Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,2500))])'),timeout=45)
                             await frame.evaluate("Promise.race([Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0&&r.width>0}).map(i=>i.decode().catch(()=>{}))),new Promise(r=>setTimeout(r,3000))])")
@@ -248,9 +268,15 @@ async def main():
                             record['last_stage']='DOM audit '+str(width)+' '+frame.url
                             audit_source=(ROOT/'tests/unificado/review_dom_audit.js').read_text(encoding='utf-8')
                             frames.append({'url':frame.url,'audit_sha256':hashlib.sha256(audit_source.encode()).hexdigest(), 'overflow':await frame.evaluate('document.documentElement.scrollWidth>innerWidth+1'),
-                                'access_denied':any(v in text for v in ['Você não tem acesso a esta tela','Acesso não permitido']),
+                                'access_denied':any(v in text for v in ['Você não tem acesso a esta tela','Acesso não permitido']) or (row['id']!='shell-login' and await frame.locator('.login-layout').count()>0),
                                 'blank':len(text.strip())<10, 'text':text[:180], 'audit':await asyncio.wait_for(frame.evaluate(audit_source),timeout=60)})
                         metrics.append({'width':width,'frames':frames})
+                        if row['id']=='usinas-relatorios-fechamento-diario':
+                            report=next((frame for frame in page.frames if frame.url.startswith(EXTERNAL_REPORT_PREFIX)),None)
+                            assert report is not None,'The authorized external report did not open'
+                            report_text=await report.locator('body').inner_text()
+                            assert len(report_text.strip())>50 and not any(text in report_text for text in ['404 Not Found','502 Bad Gateway','ERR_CONNECTION','Traceback'])
+                            record.setdefault('external_report_proof',[]).append({'width':width,'url':report.url,'text_length':len(report_text),'tables':await report.locator('table').count(),'style_scope':'Read-only external document; not restyled'})
                         if True:
                             dest = OUT / 'capturas' / args.role.lower()
                             dest.mkdir(parents=True,exist_ok=True)
@@ -271,7 +297,7 @@ async def main():
                         record['expected_disabled_unit_denials']=[e for e in errors if e['status'] in (401,403)]
                         errors=[e for e in errors if e['status'] not in (401,403)]
                     record.update(layout=metrics, js_errors=js, http_errors=errors, transport_errors=list(transport),blocked_external_upstreams=list(blocked_upstreams), expected_capability_denials=expected,
-                        expected_legacy_login_challenges=legacy_challenges,legacy_authenticated_data_verified=False if legacy_challenges else None,
+                        expected_legacy_login_challenges=legacy_challenges,legacy_authenticated_data_verified=False if legacy_challenges else None,allowed_external_reads=allowed_external,
                         expected_native_module_denials=scope_denials, authorization_expectation='legacy login required; authenticated data not checked' if legacy_challenges else 'native module denies access' if row['module'] in native_denied else 'allowed', external_attempts=external)
                     record['standard_issues'] = sum(len(f['audit']['issues']) for m in metrics for f in m['frames'])
                     record['ok'] = record['status']==200 and not js and not errors and not external and not transport and not blocked_upstreams and all(

@@ -8,7 +8,7 @@
     displayed.set(node,next);node.textContent=next;
   }
   const acronyms=new Set(['GED','CP','CQ','CEC','PCP','MOD','MOI','DT','PDF','QR','MCC','IQT','IQF','NC','RNC','SC','ERP','CNPJ','EPI','EPC','RH','ABNT','NBR','ISO','CSV','XLSX','SGQ','FL','PRO','S1','S2','S3','S4']);
-  const properNames=['Cobli','Mega','Campinas','Pederneiras','Ribeirão Preto','Noroeste','Concrefer','ConcreTrack','MPa'];
+  const properNames=['Cobli','Mega','Campinas','Pederneiras','Ribeirão Preto','Ribeirão','Noroeste','Concrefer','ConcreTrack','MPa'];
   const accents={producao:'produção',programacao:'programação',liberacao:'liberação',relatorio:'relatório',manutencao:'manutenção',analise:'análise',solicitacao:'solicitação',cotacao:'cotação',execucao:'execução',diagnostico:'diagnóstico',secundarios:'secundários',terciarios:'terciários',graficos:'gráficos',medio:'médio',eficiencia:'eficiência',padrao:'padrão',mes:'mês',relatorios:'relatórios',programacoes:'programações',liberacoes:'liberações',analises:'análises',solicitacoes:'solicitações',cotacoes:'cotações',acoes:'ações',aprovacao:'aprovação',aprovacoes:'aprovações',situacao:'situação'};
   function sentence(text){
     let firstWord=true;

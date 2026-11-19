@@ -1,6 +1,6 @@
 {
   "id": "USINAS-REL-001",
-  "status": "decisão separada necessária; não corrigido na rodada visual",
+  "status": "Known permitted GET dependency; live validation blocked by service egress restriction",
   "screen": "usinas-relatorios-fechamento-diario",
   "frontend": "unificado/usinas/fechamento-diario.html",
   "frontend_cause": "originalBase aponta para https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/; o primeiro relatório é atribuído automaticamente a iframe.src.",
@@ -9,14 +9,6 @@
   "affected_api_prefix": "/unificado/mapa/api/usina/reporting/pcp-producao/",
   "observed_external_browser_request": "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-30.html",
   "existing_homolog_copy": false,
-  "proposal": {
-    "separate_stage": true,
-    "read_only_external_copy_requires_authorization": "Copiar por HTTP GET somente o manifesto e os relatórios HTML públicos do agente pcp-producao para diretório privado de homologação, registrando hashes.",
-    "homolog_only_adjustment": "Após backup dos arquivos de homologação, direcionar somente PCP_MANIFEST_URL e PCP_REPORT_BASE da instância isolada para as cópias locais e ajustar o iframe para o proxy já existente em /report/<data>.",
-    "preserve": "Mesmos endpoints, formatos, consultas aos arquivos, autorização e regras; nenhum banco de produção, DDL, concessão de acesso ou Nginx de produção.",
-    "service_impact": "A mudança das constantes exige reinício somente de unificado-visual-homolog-mapa.service, após autorização explícita. Nenhum serviço de produção.",
-    "validation": "Relatório abre na 18446 sem leitura externa, com os mesmos hashes dos arquivos copiados; matriz, gate e auditoria de IAM/produção repetidos."
-  },
   "changes_executed": {
     "api": 0,
     "database": 0,
@@ -24,5 +16,20 @@
     "services": 0,
     "external_files_downloaded_by_this_diagnosis": 0
   },
-  "test_handling": "Novas chamadas ao prefixo de API afetado são bloqueadas pelo teste e registradas como reprovação. Não são tratadas como sucesso nem como autenticação esperada."
+  "test_handling": "Only exact authorized GET prefix allowed; all other external requests fail. Real manifest/report 503 remains a failure.",
+  "historical_proposal_not_executed": {
+    "separate_stage": true,
+    "read_only_external_copy_requires_authorization": "Copiar por HTTP GET somente o manifesto e os relatórios HTML públicos do agente pcp-producao para diretório privado de homologação, registrando hashes.",
+    "homolog_only_adjustment": "Após backup dos arquivos de homologação, direcionar somente PCP_MANIFEST_URL e PCP_REPORT_BASE da instância isolada para as cópias locais e ajustar o iframe para o proxy já existente em /report/<data>.",
+    "preserve": "Mesmos endpoints, formatos, consultas aos arquivos, autorização e regras; nenhum banco de produção, DDL, concessão de acesso ou Nginx de produção.",
+    "service_impact": "A mudança das constantes exige reinício somente de unificado-visual-homolog-mapa.service, após autorização explícita. Nenhum serviço de produção.",
+    "validation": "Relatório abre na 18446 sem leitura externa, com os mesmos hashes dos arquivos copiados; matriz, gate e auditoria de IAM/produção repetidos."
+  },
+  "user_decision": "No copies, no constant changes, no service restart. Permit only exact report prefix and GET.",
+  "current_evidence": "../external-report/RELATORIO.md",
+  "service_egress_read_only": {
+    "IPAddressAllow": "127.0.0.0/8 ::1/128",
+    "IPAddressDeny": "0.0.0.0/0 ::/0",
+    "changed": false
+  }
 }
