@@ -1,0 +1,1030 @@
+{
+  "previous": 182,
+  "current": 239,
+  "added": [
+    {
+      "id": "route-acmpConcretagem",
+      "module": "producao",
+      "label": "Acmp. Concretagem",
+      "path": "/unificado/relatorios/acmp-concretagem/",
+      "query": "",
+      "access_screen": "acmpConcretagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "campinasUnificado",
+      "module": "producao",
+      "label": "Campinas Unificado · S1+2+3+4",
+      "path": "/unificado/producao/campinas-unificado/",
+      "query": "",
+      "access_screen": "produtividade",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "indicadorGeralProducao",
+      "module": "producao",
+      "label": "Indicador geral",
+      "path": "/unificado/producao/indicadores-gerais/",
+      "query": "",
+      "access_screen": "produtividade",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labCertificadosHistorico",
+      "module": "qualidade",
+      "label": "Histórico de certificados",
+      "path": "/unificado/laboratorio/certificados-qualidade/",
+      "query": "?tab=historico",
+      "access_screen": "labCertificados",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labCertificadosCadastros",
+      "module": "qualidade",
+      "label": "Cadastros de certificados",
+      "path": "/unificado/laboratorio/certificados-qualidade/",
+      "query": "?tab=cadastros",
+      "access_screen": "labCertificados",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "usinasCec",
+      "module": "usinas",
+      "label": "Controle estatístico",
+      "path": "/unificado/usinas/",
+      "query": "?area=cec",
+      "access_screen": "usinasInicio",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "usinasRelatorios",
+      "module": "usinas",
+      "label": "Relatórios gerenciais",
+      "path": "/unificado/usinas/",
+      "query": "?area=relatorios",
+      "access_screen": "usinasInicio",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "usinasEstoque",
+      "module": "usinas",
+      "label": "Controle de estoque",
+      "path": "/unificado/usinas/",
+      "query": "?area=estoque",
+      "access_screen": "usinasInicio",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labCecRompimentosMes",
+      "module": "laboratorio",
+      "label": "Rompimentos por mês",
+      "path": "/unificado/laboratorio/cec/rompimentos-mes/",
+      "query": "",
+      "access_screen": "labCec",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemEmpacotamento",
+      "module": "laboratorio",
+      "label": "Empacotamento",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/dosagem/empacotamento",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemVolume",
+      "module": "laboratorio",
+      "label": "Volume",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/dosagem/volume",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemComparacao",
+      "module": "laboratorio",
+      "label": "Comparação dos métodos",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/comparacao-metodos",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemTracos",
+      "module": "laboratorio",
+      "label": "Traços",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/tracos",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemMateriais",
+      "module": "laboratorio",
+      "label": "Materiais",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/materiais",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemFornecedores",
+      "module": "laboratorio",
+      "label": "Fornecedores",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/fornecedores",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemEnsaios",
+      "module": "laboratorio",
+      "label": "Ensaios",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/ensaios",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemFerramentas",
+      "module": "laboratorio",
+      "label": "Ferramentas",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/ferramentas",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemCustos",
+      "module": "laboratorio",
+      "label": "Custos",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/custos",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemReferencia",
+      "module": "laboratorio",
+      "label": "Referência",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/referencia",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemProducao",
+      "module": "laboratorio",
+      "label": "Produção",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/producao-r1",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemImportacao",
+      "module": "laboratorio",
+      "label": "Importação",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/importacao-r1",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "labDosagemConfig",
+      "module": "laboratorio",
+      "label": "Configurações",
+      "path": "/unificado/laboratorio/dosagem/",
+      "query": "#/config",
+      "access_screen": "labDosagem",
+      "source": "shell/menu.config.js"
+    },
+    {
+      "id": "usinas-relatorios-cartas",
+      "module": "usinas",
+      "label": "Cartas de traço",
+      "path": "/unificado/usinas/",
+      "query": "?area=relatorios&app=cartas",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-relatorios-consumo",
+      "module": "usinas",
+      "label": "Consumo de materiais",
+      "path": "/unificado/usinas/",
+      "query": "?area=relatorios&app=consumo",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-relatorios-custos",
+      "module": "usinas",
+      "label": "Custos do concreto",
+      "path": "/unificado/usinas/",
+      "query": "?area=relatorios&app=custos",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-relatorios-comparar",
+      "module": "usinas",
+      "label": "Comparar traços",
+      "path": "/unificado/usinas/",
+      "query": "?area=relatorios&app=comparar",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-relatorios-exportar",
+      "module": "usinas",
+      "label": "Exportar massadas",
+      "path": "/unificado/usinas/",
+      "query": "?area=relatorios&app=exportar",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-relatorios-fechamento",
+      "module": "usinas",
+      "label": "Fechamento mensal",
+      "path": "/unificado/usinas/",
+      "query": "?area=relatorios&app=fechamento",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-relatorios-fechamento-diario",
+      "module": "usinas",
+      "label": "Fechamento diário",
+      "path": "/unificado/usinas/",
+      "query": "?area=relatorios&app=fechamento-diario",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-relatorios-producao",
+      "module": "usinas",
+      "label": "Produção por período",
+      "path": "/unificado/usinas/",
+      "query": "?area=relatorios&app=producao",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-relatorios-reports",
+      "module": "usinas",
+      "label": "Reports diários",
+      "path": "/unificado/usinas/",
+      "query": "?area=relatorios&app=reports",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-estoque-entrada",
+      "module": "usinas",
+      "label": "Entrada de materiais",
+      "path": "/unificado/usinas/",
+      "query": "?area=estoque&app=entrada",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-estoque-saldo",
+      "module": "usinas",
+      "label": "Saldo de estoque",
+      "path": "/unificado/usinas/",
+      "query": "?area=estoque&app=saldo",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-estoque-relatorio",
+      "module": "usinas",
+      "label": "Relatório de consumo",
+      "path": "/unificado/usinas/",
+      "query": "?area=estoque&app=relatorio",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-estoque-consumo",
+      "module": "usinas",
+      "label": "Consumo de agregados",
+      "path": "/unificado/usinas/",
+      "query": "?area=estoque&app=consumo",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-estoque-cimento",
+      "module": "usinas",
+      "label": "Consumo de cimento",
+      "path": "/unificado/usinas/",
+      "query": "?area=estoque&app=cimento",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-estoque-mapeamento",
+      "module": "usinas",
+      "label": "Mapeamento das caixas",
+      "path": "/unificado/usinas/",
+      "query": "?area=estoque&app=mapeamento",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-estoque-acerto",
+      "module": "usinas",
+      "label": "Acerto de estoque",
+      "path": "/unificado/usinas/",
+      "query": "?area=estoque&app=acerto",
+      "access_screen": "usinasInicio",
+      "source": "usinas/native-areas.js"
+    },
+    {
+      "id": "usinas-cec-resultados",
+      "module": "usinas",
+      "label": "Resultado Corpos de Prova",
+      "path": "/unificado/usinas/",
+      "query": "?area=cec&app=resultados",
+      "access_screen": "usinasInicio",
+      "source": "usinas/cec-native.js"
+    },
+    {
+      "id": "usinas-cec-relatorio",
+      "module": "usinas",
+      "label": "Relatório CEC",
+      "path": "/unificado/usinas/",
+      "query": "?area=cec&app=relatorio",
+      "access_screen": "usinasInicio",
+      "source": "usinas/cec-native.js"
+    },
+    {
+      "id": "usinas-cec-analise",
+      "module": "usinas",
+      "label": "Análise CEC",
+      "path": "/unificado/usinas/",
+      "query": "?area=cec&app=analise",
+      "access_screen": "usinasInicio",
+      "source": "usinas/cec-native.js"
+    },
+    {
+      "id": "usinas-cec-leitura",
+      "module": "usinas",
+      "label": "Leitura de CP",
+      "path": "/unificado/usinas/",
+      "query": "?area=cec&app=leitura",
+      "access_screen": "usinasInicio",
+      "source": "usinas/cec-native.js"
+    },
+    {
+      "id": "usinas-cec-dashboard",
+      "module": "usinas",
+      "label": "Dashboard CEC",
+      "path": "/unificado/usinas/",
+      "query": "?area=cec&app=dashboard",
+      "access_screen": "usinasInicio",
+      "source": "usinas/cec-native.js"
+    },
+    {
+      "id": "usinas-cec-etiquetas",
+      "module": "usinas",
+      "label": "Massadas e etiquetas CP",
+      "path": "/unificado/usinas/",
+      "query": "?area=cec&app=etiquetas",
+      "access_screen": "usinasInicio",
+      "source": "usinas/cec-native.js"
+    },
+    {
+      "id": "inspecao-tab-analise",
+      "module": "producao",
+      "label": "Inspeção Setor 3 e 4 · analise",
+      "path": "/unificado/mapa/operacao/",
+      "query": "?tela=INSPECAO",
+      "screen": "INSPECAO",
+      "require": null,
+      "access_screen": "inspecao",
+      "steps": [
+        {
+          "frame_path": "/mapa/operacao/",
+          "selector": "[data-ins-tab=\"analise\"]"
+        }
+      ],
+      "source": "mapa/operacao/index.html"
+    },
+    {
+      "id": "inspecao-tab-postes",
+      "module": "producao",
+      "label": "Inspeção Setor 3 e 4 · postes",
+      "path": "/unificado/mapa/operacao/",
+      "query": "?tela=INSPECAO",
+      "screen": "INSPECAO",
+      "require": null,
+      "access_screen": "inspecao",
+      "steps": [
+        {
+          "frame_path": "/mapa/operacao/",
+          "selector": "[data-ins-tab=\"postes\"]"
+        }
+      ],
+      "source": "mapa/operacao/index.html"
+    },
+    {
+      "id": "inspecao-tab-producao",
+      "module": "producao",
+      "label": "Inspeção Setor 3 e 4 · producao",
+      "path": "/unificado/mapa/operacao/",
+      "query": "?tela=INSPECAO",
+      "screen": "INSPECAO",
+      "require": null,
+      "access_screen": "inspecao",
+      "steps": [
+        {
+          "frame_path": "/mapa/operacao/",
+          "selector": "[data-ins-tab=\"producao\"]"
+        }
+      ],
+      "source": "mapa/operacao/index.html"
+    },
+    {
+      "id": "dashMontagem-tab-producao",
+      "module": "producao",
+      "label": "Dashboard Montagem · producao",
+      "path": "/unificado/mapa/operacao/",
+      "query": "?tela=MONTAGEM_INDICADORES",
+      "screen": "MONTAGEM_INDICADORES",
+      "require": null,
+      "access_screen": "dashMontagem",
+      "steps": [
+        {
+          "frame_path": "/mapa/operacao/",
+          "selector": "[data-tab=\"producao\"]"
+        }
+      ],
+      "source": "mapa/operacao/index.html",
+      "inactive": true,
+      "inactive_reason": "Controles legados .mi-tab-btn ficam ocultos no dashboard montado atual. Concretagem, Montagem e Defeitos são destinos ativos separados, já inventariados. Evidência: diagnosticos/scan-before-final-gerencia.json e matriz inicial com Locator.click: element is not visible."
+    },
+    {
+      "id": "dashMontagem-tab-qualidade",
+      "module": "producao",
+      "label": "Dashboard Montagem · qualidade",
+      "path": "/unificado/mapa/operacao/",
+      "query": "?tela=MONTAGEM_INDICADORES",
+      "screen": "MONTAGEM_INDICADORES",
+      "require": null,
+      "access_screen": "dashMontagem",
+      "steps": [
+        {
+          "frame_path": "/mapa/operacao/",
+          "selector": "[data-tab=\"qualidade\"]"
+        }
+      ],
+      "source": "mapa/operacao/index.html",
+      "inactive": true,
+      "inactive_reason": "Controles legados .mi-tab-btn ficam ocultos no dashboard montado atual. Concretagem, Montagem e Defeitos são destinos ativos separados, já inventariados. Evidência: diagnosticos/scan-before-final-gerencia.json e matriz inicial com Locator.click: element is not visible."
+    },
+    {
+      "id": "dashMontagem-tab-produtividade",
+      "module": "producao",
+      "label": "Dashboard Montagem · produtividade",
+      "path": "/unificado/mapa/operacao/",
+      "query": "?tela=MONTAGEM_INDICADORES",
+      "screen": "MONTAGEM_INDICADORES",
+      "require": null,
+      "access_screen": "dashMontagem",
+      "steps": [
+        {
+          "frame_path": "/mapa/operacao/",
+          "selector": "[data-tab=\"produtividade\"]"
+        }
+      ],
+      "source": "mapa/operacao/index.html",
+      "inactive": true,
+      "inactive_reason": "Controles legados .mi-tab-btn ficam ocultos no dashboard montado atual. Concretagem, Montagem e Defeitos são destinos ativos separados, já inventariados. Evidência: diagnosticos/scan-before-final-gerencia.json e matriz inicial com Locator.click: element is not visible."
+    },
+    {
+      "id": "cronoanalise.simular-tab-1",
+      "module": "laboratorio",
+      "label": "Simular · Sequências",
+      "path": "/unificado/laboratorio/cronoanalise/simular",
+      "query": "",
+      "screen": null,
+      "require": null,
+      "access_screen": "cronoanalise.simular",
+      "steps": [
+        {
+          "frame_path": "/cronoanalise/",
+          "selector": ".cr-tabs button",
+          "text": "Sequências"
+        }
+      ],
+      "source": "laboratorio/frontend/src/cronoanalise/Pages.tsx"
+    },
+    {
+      "id": "cronoanalise.simular-tab-2",
+      "module": "laboratorio",
+      "label": "Simular · Layout",
+      "path": "/unificado/laboratorio/cronoanalise/simular",
+      "query": "",
+      "screen": null,
+      "require": null,
+      "access_screen": "cronoanalise.simular",
+      "steps": [
+        {
+          "frame_path": "/cronoanalise/",
+          "selector": ".cr-tabs button",
+          "text": "Layout"
+        }
+      ],
+      "source": "laboratorio/frontend/src/cronoanalise/Pages.tsx"
+    },
+    {
+      "id": "cronoanalise.simular-tab-3",
+      "module": "laboratorio",
+      "label": "Simular · Tempos",
+      "path": "/unificado/laboratorio/cronoanalise/simular",
+      "query": "",
+      "screen": null,
+      "require": null,
+      "access_screen": "cronoanalise.simular",
+      "steps": [
+        {
+          "frame_path": "/cronoanalise/",
+          "selector": ".cr-tabs button",
+          "text": "Tempos"
+        }
+      ],
+      "source": "laboratorio/frontend/src/cronoanalise/Pages.tsx"
+    },
+    {
+      "id": "cronoanalise.simular-tab-4",
+      "module": "laboratorio",
+      "label": "Simular · Histórico",
+      "path": "/unificado/laboratorio/cronoanalise/simular",
+      "query": "",
+      "screen": null,
+      "require": null,
+      "access_screen": "cronoanalise.simular",
+      "steps": [
+        {
+          "frame_path": "/cronoanalise/",
+          "selector": ".cr-tabs button",
+          "text": "Histórico"
+        }
+      ],
+      "source": "laboratorio/frontend/src/cronoanalise/Pages.tsx"
+    },
+    {
+      "id": "postesNumerosSerie-tab-1",
+      "module": "planejamento",
+      "label": "Números de série dos postes · Produção e rastreabilidade",
+      "path": "/unificado/pcp/numeros-serie/",
+      "query": "",
+      "screen": null,
+      "require": null,
+      "access_screen": "postesNumerosSerie",
+      "steps": [
+        {
+          "frame_path": "/pcp/numeros-serie/",
+          "selector": "[data-series-view]",
+          "text": "Produção e rastreabilidade"
+        }
+      ],
+      "source": "pcp/numeros-serie/index.html"
+    },
+    {
+      "id": "postesNumerosSerie-tab-2",
+      "module": "planejamento",
+      "label": "Números de série dos postes · Saldos anuais",
+      "path": "/unificado/pcp/numeros-serie/",
+      "query": "",
+      "screen": null,
+      "require": null,
+      "access_screen": "postesNumerosSerie",
+      "steps": [
+        {
+          "frame_path": "/pcp/numeros-serie/",
+          "selector": "[data-series-view]",
+          "text": "Saldos anuais"
+        }
+      ],
+      "source": "pcp/numeros-serie/index.html"
+    },
+    {
+      "id": "modelo-labAbsorption",
+      "module": "laboratorio",
+      "label": "Absorção",
+      "path": "/unificado/laboratorio/novo/postes",
+      "query": "?tab=absorcao",
+      "access_screen": "labAbsorption",
+      "source": "sidebar-modelo-a/src/components/sidebar/navConfig.ts"
+    }
+  ],
+  "modelo_routes": [
+    {
+      "id": "dashboard",
+      "label": "Dashboard",
+      "route": "pcp/dashboard/"
+    },
+    {
+      "id": "comparacao",
+      "label": "Programado vs Realizado",
+      "route": "pcp/comparacao/"
+    },
+    {
+      "id": "programacao12",
+      "label": "Setor 1 e 2",
+      "route": "pcp/programacao-alex/"
+    },
+    {
+      "id": "programacao34",
+      "label": "Setor 3 e 4",
+      "route": "pcp/programacao/"
+    },
+    {
+      "id": "circular3",
+      "label": "Circular Setor 3",
+      "route": "pcp/programacao-circular-s3/"
+    },
+    {
+      "id": "dt4",
+      "label": "DT Setor 4",
+      "route": "pcp/programacao-circular-s4/"
+    },
+    {
+      "id": "programacaoFinal",
+      "label": "Programação Final",
+      "route": "pcp/programacao-final/"
+    },
+    {
+      "id": "relatorio12",
+      "label": "Setor 1 e 2",
+      "route": "pcp/relatorio-producao/"
+    },
+    {
+      "id": "relatorio3",
+      "label": "Setor 3",
+      "route": "pcp/relatorio-programacao-s3/"
+    },
+    {
+      "id": "relatorio4",
+      "label": "Setor 4",
+      "route": "pcp/relatorio-programacao-s4/"
+    },
+    {
+      "id": "postesNumerosSerie",
+      "label": "Números de série dos postes",
+      "route": "pcp/numeros-serie/"
+    },
+    {
+      "id": "armadurasProgramacao",
+      "label": "Programação semanal",
+      "route": "pcp/armaduras/"
+    },
+    {
+      "id": "armadurasRelatorio",
+      "label": "Relatório de produção",
+      "route": "pcp/armaduras-relatorio/"
+    },
+    {
+      "id": "etiquetas",
+      "label": "Padrão",
+      "route": "pcp/etiquetas/"
+    },
+    {
+      "id": "etiquetasSc",
+      "label": "SC-Prod.",
+      "route": "pcp/etiquetas-sc/"
+    },
+    {
+      "id": "etiquetasArmaduras",
+      "label": "Armaduras",
+      "route": "pcp/etiquetas-armaduras/"
+    },
+    {
+      "id": "pcpDiario",
+      "label": "PCP Diário",
+      "route": "pcp/pcp-diario/"
+    },
+    {
+      "id": "acompMensal",
+      "label": "Acompanhamento Mensal",
+      "route": "pcp/acompanhamento-mensal/"
+    },
+    {
+      "id": "acompMensal34",
+      "label": "Acompanhamento Mensal Setor 3 e 4",
+      "route": "pcp/acompanhamento-mensal-setor-34/"
+    },
+    {
+      "id": "apontamentoMega",
+      "label": "Apontamento Mega",
+      "route": "pcp/apontamento-mega/"
+    },
+    {
+      "id": "fechamentoDiarioPcp",
+      "label": "Fechamento Diário",
+      "route": "pcp/fechamento-diario/"
+    },
+    {
+      "id": "producaoPcp",
+      "label": "Produção PCP",
+      "route": "pcp/producao/"
+    },
+    {
+      "id": "maodeobra",
+      "label": "Mão de Obra",
+      "route": "pcp/maodeobra/"
+    },
+    {
+      "id": "maodeobraRateio",
+      "label": "Rateio de Mão de Obra",
+      "route": "pcp/maodeobra-rateio/"
+    },
+    {
+      "id": "formasPorSetor",
+      "label": "Formas por Setor",
+      "route": "pcp/formas-por-setor/"
+    },
+    {
+      "id": "testeProgramacao",
+      "label": "Teste Programação",
+      "route": "pcp/teste-programacao/"
+    },
+    {
+      "id": "tvFormas",
+      "label": "Painel TV — Formas",
+      "route": "tv/formas/"
+    },
+    {
+      "id": "qualidadePainel",
+      "label": "Painel de RNCs",
+      "route": "qualidade/"
+    },
+    {
+      "id": "qualidadeAbertura",
+      "label": "Abrir RNC",
+      "route": "qualidade/abrir"
+    },
+    {
+      "id": "qualidadeResultadosBancada",
+      "label": "Resultados de bancada",
+      "route": "qualidade/resultados-bancada"
+    },
+    {
+      "id": "qualidadeCadastros",
+      "label": "Cadastros",
+      "route": "qualidade/cadastros"
+    },
+    {
+      "id": "labDosagem",
+      "label": "Visão geral",
+      "route": "laboratorio/dosagem/"
+    },
+    {
+      "id": "labDosagemEmpacotamento",
+      "label": "Empacotamento",
+      "route": "laboratorio/dosagem/#/dosagem/empacotamento"
+    },
+    {
+      "id": "labDosagemVolume",
+      "label": "Volume",
+      "route": "laboratorio/dosagem/#/dosagem/volume"
+    },
+    {
+      "id": "labDosagemComparacao",
+      "label": "Comparação dos métodos",
+      "route": "laboratorio/dosagem/#/comparacao-metodos"
+    },
+    {
+      "id": "labDosagemTracos",
+      "label": "Traços",
+      "route": "laboratorio/dosagem/#/tracos"
+    },
+    {
+      "id": "labDosagemMateriais",
+      "label": "Materiais",
+      "route": "laboratorio/dosagem/#/materiais"
+    },
+    {
+      "id": "labDosagemFornecedores",
+      "label": "Fornecedores",
+      "route": "laboratorio/dosagem/#/fornecedores"
+    },
+    {
+      "id": "labDosagemEnsaios",
+      "label": "Ensaios",
+      "route": "laboratorio/dosagem/#/ensaios"
+    },
+    {
+      "id": "labDosagemFerramentas",
+      "label": "Ferramentas",
+      "route": "laboratorio/dosagem/#/ferramentas"
+    },
+    {
+      "id": "labDosagemCustos",
+      "label": "Custos",
+      "route": "laboratorio/dosagem/#/custos"
+    },
+    {
+      "id": "labDosagemReferencia",
+      "label": "Referência",
+      "route": "laboratorio/dosagem/#/referencia"
+    },
+    {
+      "id": "labDosagemProducao",
+      "label": "Produção",
+      "route": "laboratorio/dosagem/#/producao-r1"
+    },
+    {
+      "id": "labDosagemImportacao",
+      "label": "Importação",
+      "route": "laboratorio/dosagem/#/importacao-r1"
+    },
+    {
+      "id": "labDosagemConfig",
+      "label": "Configurações",
+      "route": "laboratorio/dosagem/#/config"
+    },
+    {
+      "id": "labSlump",
+      "label": "Registro de slump / flow",
+      "route": "laboratorio/slump"
+    },
+    {
+      "id": "labMonitor",
+      "label": "Monitoramento",
+      "route": "laboratorio/"
+    },
+    {
+      "id": "labHistory",
+      "label": "Histórico de medições",
+      "route": "laboratorio/?view=history"
+    },
+    {
+      "id": "labDevice",
+      "label": "Dispositivo",
+      "route": "laboratorio/?view=settings"
+    },
+    {
+      "id": "labPole",
+      "label": "Ensaio de postes",
+      "route": "laboratorio/novo/postes"
+    },
+    {
+      "id": "labAbsorption",
+      "label": "Absorção",
+      "route": "laboratorio/novo/postes?tab=absorcao"
+    },
+    {
+      "id": "labTests",
+      "label": "Histórico de ensaios",
+      "route": "laboratorio/novo/postes?tab=historico"
+    },
+    {
+      "id": "labRegisters",
+      "label": "Cadastros",
+      "route": "laboratorio/novo/postes?tab=cadastros"
+    },
+    {
+      "id": "labCriteria",
+      "label": "Critérios",
+      "route": "laboratorio/novo/postes?tab=criterios"
+    },
+    {
+      "id": "cronoanalise.inicio",
+      "label": "Início",
+      "route": "laboratorio/cronoanalise"
+    },
+    {
+      "id": "cronoanalise.coletar",
+      "label": "Coletar",
+      "route": "laboratorio/cronoanalise/coletar"
+    },
+    {
+      "id": "cronoanalise.medicoes",
+      "label": "Medições",
+      "route": "laboratorio/cronoanalise/medicoes"
+    },
+    {
+      "id": "cronoanalise.catalogo",
+      "label": "Catálogo",
+      "route": "laboratorio/cronoanalise/catalogo"
+    },
+    {
+      "id": "cronoanalise.dimensionar",
+      "label": "Dimensionar",
+      "route": "laboratorio/cronoanalise/dimensionar"
+    },
+    {
+      "id": "cronoanalise.simular",
+      "label": "Simular",
+      "route": "laboratorio/cronoanalise/simular"
+    },
+    {
+      "id": "cronoanalise.metodologia",
+      "label": "Metodologia",
+      "route": "laboratorio/cronoanalise/metodologia"
+    },
+    {
+      "id": "usinasInicio",
+      "label": "Cartas de traço",
+      "route": "usinas/"
+    },
+    {
+      "id": "usinasCec",
+      "label": "Controle estatístico",
+      "route": "usinas/?area=cec"
+    },
+    {
+      "id": "usinasRelatorios",
+      "label": "Relatórios gerenciais",
+      "route": "usinas/?area=relatorios"
+    },
+    {
+      "id": "usinasEstoque",
+      "label": "Controle de estoque",
+      "route": "usinas/?area=estoque"
+    },
+    {
+      "id": "ged-dashboard",
+      "label": "Painel",
+      "route": "ged/dashboard"
+    },
+    {
+      "id": "ged-documents",
+      "label": "Documentos",
+      "route": "ged/documents"
+    },
+    {
+      "id": "ged-approvals",
+      "label": "Aprovações",
+      "route": "ged/approvals"
+    },
+    {
+      "id": "ged-tasks",
+      "label": "Tarefas",
+      "route": "ged/tasks"
+    },
+    {
+      "id": "ged-calibrations",
+      "label": "Calibrações",
+      "route": "ged/calibrations"
+    },
+    {
+      "id": "suprimentosPainel",
+      "label": "Painel",
+      "route": "suprimentos/painel/"
+    },
+    {
+      "id": "suprimentosSolicitacoes",
+      "label": "Solicitações",
+      "route": "suprimentos/solicitacoes/"
+    },
+    {
+      "id": "suprimentosNova",
+      "label": "Nova solicitação",
+      "route": "suprimentos/nova/"
+    },
+    {
+      "id": "suprimentosAlmoxarifado",
+      "label": "Almoxarifado",
+      "route": "suprimentos/almoxarifado/"
+    },
+    {
+      "id": "suprimentosInventario",
+      "label": "Inventário",
+      "route": "suprimentos/inventario/"
+    },
+    {
+      "id": "suprimentosCotacoes",
+      "label": "Cotações e pedidos",
+      "route": "suprimentos/cotacoes/"
+    },
+    {
+      "id": "suprimentosRecebimento",
+      "label": "Recebimento",
+      "route": "suprimentos/recebimento/"
+    },
+    {
+      "id": "suprimentosFornecedores",
+      "label": "Fornecedores",
+      "route": "suprimentos/fornecedores/"
+    },
+    {
+      "id": "suprimentosIndicadores",
+      "label": "Indicadores",
+      "route": "suprimentos/analises/"
+    },
+    {
+      "id": "suprimentosCadastros",
+      "label": "Cadastros e alçadas",
+      "route": "suprimentos/cadastros/"
+    }
+  ],
+  "indicator_omission": "The prior catalog-based inventory did not expand menu aliases with permissionId. indicadorGeralProducao uses the existing produtividade permission; its destination must be reviewed separately."
+}

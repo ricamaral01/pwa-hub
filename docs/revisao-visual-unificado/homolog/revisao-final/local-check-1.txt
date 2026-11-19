@@ -1,0 +1,18 @@
+✔ route id disambiguates parameter routes opened through shortcuts (0.7446ms)
+✔ path fallback never chooses another parameter-specific screen (0.2777ms)
+✔ screen types use distinct icons and unknown types have no invented icon (0.714ms)
+✔ dashboard without programming has no percentage or danger tone (14.6764ms)
+✔ service worker revalidates generated GED CSS and leaves APIs alone (1.345ms)
+✔ supply panel renders zero late approvals and a singular urgent request (1.4096ms)
+✔ native Usinas subroutes keep their actual title in mobile navigation (1.6559ms)
+✔ home widget does not query hidden data behind module routes (1.631ms)
+✔ integer chart ticks stay distinct for empty, tiny and large series (1.08ms)
+✔ sentence case preserves proper names, abbreviations and Portuguese titles (2.4995ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 107.3845

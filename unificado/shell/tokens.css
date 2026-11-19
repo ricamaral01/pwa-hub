@@ -1,4 +1,4 @@
-@import url('/unificado/shell/review-complete.css?v=1.4.25');
+@import url('/unificado/shell/review-complete.css?v=1.4.26');
 /* Proposta de padrão único do Unificado — telas de exemplo */
 @font-face{font-family:Geist;src:url(fonts/Geist-Regular.woff2) format("woff2");font-weight:400}
 @font-face{font-family:Geist;src:url(fonts/Geist-Medium.woff2) format("woff2");font-weight:500}
@@ -6,6 +6,7 @@
 @font-face{font-family:"Geist Mono";src:url(fonts/GeistMono-Medium.woff2) format("woff2");font-weight:500}
 @font-face{font-family:"Geist Mono";src:url(fonts/GeistMono-SemiBold.woff2) format("woff2");font-weight:600}
 :root{
+  --cf-blue:#16416f; --cf-red:#a72141;
   --c-navy:#0b1730; --c-blue:#15416f; --c-orange:#e2702a;
   --c-bg:#f4f5f7; --c-surface:#fff; --c-line:#e1e5eb; --c-line-2:#eef1f4; --c-ink:#0b1730; --c-ink-2:#5b6779; --c-ink-3:#8a94a4;
   --c-crit:#b42318; --c-warn:#a15c00; --c-ok:#1d7a4a;

@@ -1,0 +1,42 @@
+[
+  {
+    "command": [
+      "node",
+      "--test",
+      "tests/unificado/review_final.test.cjs",
+      "tests/unificado/review_complete.test.cjs"
+    ],
+    "exit_code": 0,
+    "output": "local-check-1.txt"
+  },
+  {
+    "command": [
+      "python",
+      "tests/unificado/review_final_dom.py"
+    ],
+    "exit_code": 0,
+    "output": "local-check-2.txt"
+  },
+  {
+    "command": [
+      "python",
+      "tests/unificado/visual_style_guard.py"
+    ],
+    "exit_code": 0,
+    "output": "local-check-3.txt"
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/unificado",
+      "-p",
+      "test_visual_style_guard.py"
+    ],
+    "exit_code": 0,
+    "output": "local-check-4.txt"
+  }
+]

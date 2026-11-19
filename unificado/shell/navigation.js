@@ -435,14 +435,15 @@
     const landingTitle=main.querySelector('.module-page:not([hidden]) h1,.content.uqa-personal #uqa-home:not([hidden]) h1')?.textContent;
     mobileContext.textContent=active ? [active.location.unit,active.location.group].filter(Boolean).join(' · ') || active.module.label : landingTitle ? 'Concrefer' : 'Unificado';
     const trail=document.querySelector('.breadcrumb > :last-child')?.textContent;
-    const screenTitle=active?.item.label==='Início'?[active.location.group||active.module.label,active.item.label].join(' · '):active?.item.label;
+    const routeTitle=window.UnificadoPresentation.routeTitle(new URLSearchParams(location.search).get('view')||'');
+    const screenTitle=routeTitle||(active?.item.label==='Início'?[active.location.group||active.module.label,active.item.label].join(' · '):active?.item.label);
     mobileTitle.textContent=screenTitle||landingTitle||(new URLSearchParams(location.search).has('view') ? trail||document.title : 'Início');
     const breadcrumb=document.querySelector('.breadcrumb');
     if(active&&breadcrumb) {
       breadcrumb.replaceChildren();
       for(const [index,label] of [active.location.module,active.location.unit,active.location.group,active.item.label].filter(Boolean).entries()) {
         if(index)breadcrumb.append(el('span','','›'));
-        const part=el(index===0?'strong':'span',label===active.location.unit?'nav-breadcrumb-unit':'',label);
+        const part=el(index===0?'strong':'span',label===active.location.unit?'nav-breadcrumb-unit':'',label===active.item.label&&routeTitle?routeTitle:label);
         breadcrumb.append(part);
       }
     }
@@ -453,7 +454,7 @@
         const chip=itemLink(entry);chip.classList.add('nav-quick-chip');quick.append(chip);
       }
     }
-    quick.hidden=!active;
+    quick.hidden=!active||quick.childElementCount<2;
     banner.hidden=state.snapshot.updateState!=='available';
     banner.textContent=`↻ Nova versão ${state.snapshot.latestVersion} disponível. Toque para atualizar.`;
     for(const action of bottom.children)action.classList.toggle('is-active',

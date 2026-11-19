@@ -1,0 +1,15 @@
+{
+  "version": "1.4.26",
+  "ready": false,
+  "published": false,
+  "gates": {
+    "matrix_zero_failures": false,
+    "all_roles_complete": false,
+    "all_visual_reviews_approved": false,
+    "narrow_login_pixel_identity": true,
+    "live_sw_upgrade": false,
+    "gate_7_of_7": true,
+    "all_print_templates_sha256_verified": false
+  },
+  "reason": "Falhas reais de backend/autenticação, matriz e revisão visual incompletas. Pacote de candidata não autorizado pelo próprio critério de pronto."
+}

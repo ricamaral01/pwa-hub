@@ -38,6 +38,49 @@
  if(/\b0 há mais de 24 h\b/.test(text))issues.push({type:'plural',detail:'0 há mais de 24 h'});
  if(/Atingimento\s+0\.0%/.test(text))issues.push({type:'zero_denominator_or_decimal',detail:'Atingimento 0.0%'});
  const mobileTitle=document.querySelector('.nav-mobile-title')?.textContent;
+ // Expanded final review: inspect computed geometry, rather than CSS class names.
+ const leafText=el=>[...el.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join(' ').trim();
+ const labelNodes=nodes.filter(el=>el.matches('h1,h2,h3,h4,th,.nav-mobile-title,.nav-item,.nav-item-label,.module-page-link-title'));
+ for(const el of nodes){
+  const own=leafText(el);if(!own||el.closest('script,style,svg,.test-environment-bar'))continue;
+  if(/ -- |\(s\)|\bm3\b/.test(own))add('interface_text',el,own);
+  if(/\b(producao|programacao|liberacao|relatorio|manutencao|analise|solicitacao|cotacao)\b/i.test(own)&&labelNodes.includes(el))add('missing_accent',el,own);
+  if(el.matches('th')&&el.scrollWidth>el.clientWidth+1)add('clipped_table_heading',el,{scroll:el.scrollWidth,width:el.clientWidth});
+ }
+ const exceptions=['Cobli','Mega','SC','DT','CP','CEC','PCP','MOD','GED','ERP','IQF','CNPJ','EPI','NC','RH','Campinas','Pederneiras','Ribeirão Preto','Noroeste','Concrefer','ConcreTrack'];
+ for(const el of labelNodes){
+  const own=leafText(el);
+  for(const name of exceptions){const matches=own.match(new RegExp('\\b'+name+'\\b','gi'))||[];if(matches.some(value=>value!==name))add('proper_name_case',el,name);}
+ }
+ for(const el of nodes.filter(el=>el.matches('button,a.btn,input[type=submit],[role=button]'))){
+  const color=getComputedStyle(el).backgroundColor;
+  const rgb=color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+  if(!rgb||el.closest('.login-layout,.nav-modern,.nav-mobile-bottom,.nav-quick'))continue;
+  const [r,g,b]=rgb.slice(1).map(Number);
+  if((r>150&&g>40&&g<180&&b<100)||(b>100&&b>r*1.4&&b>g*1.1)){
+   if(!['rgb(11, 23, 48)','rgb(21, 65, 111)'].includes(color))add('button_palette',el,{color,classes:el.className});
+  }
+ }
+ const siblingGroups=new Map();
+ for(const el of nodes.filter(el=>el.matches('.nav-tree .nav-item'))){
+  const label=el.querySelector('.nav-item-label');let x;
+  if(label)x=label.getBoundingClientRect().left;
+  else{const textNode=[...el.childNodes].find(n=>n.nodeType===3&&n.textContent.trim());if(!textNode)continue;const range=document.createRange();range.selectNodeContents(textNode);x=range.getBoundingClientRect().left;}
+  const group=siblingGroups.get(el.parentElement)||[];group.push({el,x});siblingGroups.set(el.parentElement,group);
+ }
+ for(const group of siblingGroups.values())if(group.length>1){const start=group[0].x;for(const item of group)if(Math.abs(item.x-start)>1)add('menu_alignment',item.el,{x:item.x,expected:start});}
+ const titles=nodes.filter(el=>el.matches('h1,h2,.nav-mobile-title')&&el.getBoundingClientRect().top<innerHeight);
+ for(let i=0;i<titles.length;i++)for(let j=i+1;j<titles.length;j++)if(titles[i].textContent.trim()&&titles[i].textContent.trim()===titles[j].textContent.trim()&&!titles[i].contains(titles[j]))add('duplicate_title',titles[j],titles[i].textContent.trim());
+ const surface=el=>{const s=getComputedStyle(el);return (parseFloat(s.borderTopWidth)>0&&s.borderTopStyle!=='none')||s.boxShadow!=='none';};
+ const surfaceContainers='section,article,fieldset,div[class*="card"],div[class*="panel"],div.box';
+ for(const el of nodes.filter(el=>el.matches(surfaceContainers))){
+  if(!surface(el))continue;let outer=el.parentElement;
+  while(outer&&outer!==document.body&&!(outer.matches(surfaceContainers)&&visible(outer)&&surface(outer)))outer=outer.parentElement;
+  if(outer===document.body)outer=null;
+  if(outer&&visible(outer)&&surface(outer))add('nested_surface',el,outer.className);
+ }
+ for(const el of nodes.filter(el=>el.matches('h2,h3,.section-title'))){const icon=el.querySelector('svg,i')||el.previousElementSibling?.querySelector('svg');if(icon&&visible(icon)){const parent=icon.parentElement,s=getComputedStyle(parent);if(parent!==el&&visible(parent)&&s.backgroundColor!=='rgba(0, 0, 0, 0)'&&parent.getBoundingClientRect().width<=64)add('decorative_title_icon',el,parent.className);}}
+ if(innerWidth<=600){const records=nodes.filter(el=>(location.pathname.endsWith('metodologia-conteudo.html')&&el.matches('p'))||el.matches('tbody tr,.sup-compact-list>*,.overview-unit-row,[data-review-record],.module-page-link,.activity-card,.metric-value,.stat-value,.kpi-value,.kpi strong,.overview-stat strong,.kg-homem-value,.grouped-indicator strong,.mi-kpi-val,.summary-grid strong,.abs-fields,.area-card,.metric strong,.cr-dimension .cr-form,.kpi-val,.kpi .value,.lg-kpis strong,.kpis strong,.cr-kpi strong,.native-card strong,.sup-rec-item,.ar-summary strong,.s4-layout-editor,.forma-card,.sensor .value,.stat strong,.native-tab,.card.grid2,.card.grid3'));const first=records.sort((a,b)=>a.getBoundingClientRect().top-b.getBoundingClientRect().top)[0];if(first&&first.getBoundingClientRect().top>=844)add('mobile_data_below_fold',first,first.getBoundingClientRect().top);}
  if(innerWidth<768&&new URLSearchParams(location.search).has('view')&&mobileTitle==='Início')issues.push({type:'mobile_title',detail:mobileTitle});
  return {issues,images:nodes.filter(n=>n.tagName==='IMG').length,body_font:getComputedStyle(document.body).fontFamily,mobile_title:mobileTitle,
   criteria:{typed_icons:{visible_paths:[...new Set(nodes.filter(el=>el.matches('.module-page-icon path,.nav-item-code path,.uqa-icon path')).map(el=>el.getAttribute('d')))]},filler:{forbidden_phrases_found:issues.filter(i=>i.type==='filler').length},descriptions:{over_limit:issues.filter(i=>i.type==='description_length').length},tabs:{duplicate_labels:labels.length-new Set(labels).size},sentence_case:{uppercase_css:issues.filter(i=>i.type==='uppercase_css').length},density:{module_row_heights:nodes.filter(el=>el.matches('.module-page-link')).map(el=>Math.round(el.getBoundingClientRect().height))},surfaces:{nested_cards:issues.filter(i=>i.type==='nested_card').length},states:{normal_pills:issues.filter(i=>i.type==='normal_pill').length},redundancies:{open_buttons:issues.filter(i=>i.type==='redundant_open_button').length}},

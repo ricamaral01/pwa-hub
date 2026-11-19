@@ -1,0 +1,480 @@
+{
+  "folhas/qa/ged-001.png": [
+    "GERENCIA:ged-dashboard",
+    "GERENCIA:ged-documents",
+    "GERENCIA:ged-approvals",
+    "GERENCIA:ged-tasks",
+    "GERENCIA:ged-calibrations",
+    "GERENCIA:module-ged",
+    "LABORATORIO:ged-tasks"
+  ],
+  "folhas/qa/laboratorio-001.png": [
+    "GERENCIA:labMonitor",
+    "GERENCIA:labHistory",
+    "GERENCIA:labDosagem",
+    "GERENCIA:labDevice",
+    "GERENCIA:labSlump",
+    "GERENCIA:labPole",
+    "GERENCIA:labTests",
+    "GERENCIA:labAbsorption"
+  ],
+  "folhas/qa/laboratorio-002.png": [
+    "GERENCIA:labRegisters",
+    "GERENCIA:labCriteria",
+    "GERENCIA:labHelp",
+    "GERENCIA:labUsuarios",
+    "GERENCIA:labNoroCecRompimentosMes",
+    "GERENCIA:labCertificados",
+    "GERENCIA:labNoroCecLeitura",
+    "GERENCIA:labCartaTraco"
+  ],
+  "folhas/qa/laboratorio-003.png": [
+    "GERENCIA:labNoroUsuarios",
+    "GERENCIA:module-laboratorio",
+    "GERENCIA:module-laboratorio-noroeste",
+    "GERENCIA:labCecRompimentosMes",
+    "GERENCIA:labDosagemEmpacotamento",
+    "GERENCIA:labDosagemVolume",
+    "GERENCIA:labDosagemComparacao",
+    "GERENCIA:labDosagemTracos"
+  ],
+  "folhas/qa/laboratorio-004.png": [
+    "GERENCIA:labDosagemMateriais",
+    "GERENCIA:labDosagemFornecedores",
+    "GERENCIA:labDosagemEnsaios",
+    "GERENCIA:labDosagemFerramentas",
+    "GERENCIA:labDosagemCustos",
+    "GERENCIA:labDosagemProducao",
+    "GERENCIA:labDosagemImportacao",
+    "GERENCIA:labDosagemReferencia"
+  ],
+  "folhas/qa/laboratorio-005.png": [
+    "GERENCIA:labDosagemConfig",
+    "GERENCIA:modelo-labAbsorption",
+    "GERENCIA:labUsinasRelatorios",
+    "LABORATORIO:labMonitor",
+    "LABORATORIO:labHistory",
+    "LABORATORIO:labSlump",
+    "LABORATORIO:labDevice",
+    "LABORATORIO:labDosagem"
+  ],
+  "folhas/qa/laboratorio-006.png": [
+    "LABORATORIO:labPole",
+    "LABORATORIO:labAbsorption",
+    "LABORATORIO:labTests",
+    "LABORATORIO:labRegisters",
+    "LABORATORIO:labCriteria",
+    "LABORATORIO:labHelp",
+    "LABORATORIO:labUsuarios",
+    "LABORATORIO:cronoanalise.inicio"
+  ],
+  "folhas/qa/laboratorio-007.png": [
+    "LABORATORIO:cronoanalise.coletar",
+    "LABORATORIO:cronoanalise.dimensionar",
+    "LABORATORIO:cronoanalise.medicoes",
+    "LABORATORIO:cronoanalise.catalogo",
+    "LABORATORIO:cronoanalise.simular",
+    "LABORATORIO:cronoanalise.metodologia",
+    "LABORATORIO:labCec",
+    "LABORATORIO:labCecRelatorio"
+  ],
+  "folhas/qa/laboratorio-008.png": [
+    "LABORATORIO:labCecResultados",
+    "LABORATORIO:labCecAnalise",
+    "LABORATORIO:labCecEtiquetas",
+    "LABORATORIO:labCecLeitura",
+    "LABORATORIO:labNoroCec",
+    "LABORATORIO:labNoroCecResultados",
+    "LABORATORIO:labNoroCecRelatorio",
+    "LABORATORIO:labNoroCecAnalise"
+  ],
+  "folhas/qa/laboratorio-009.png": [
+    "LABORATORIO:labNoroCecEtiquetas",
+    "LABORATORIO:labCertificados",
+    "LABORATORIO:labNoroCecRompimentosMes",
+    "LABORATORIO:labNoroCecLeitura",
+    "LABORATORIO:labUsinasRelatorios",
+    "LABORATORIO:labCartaTraco",
+    "LABORATORIO:labNoroUsuarios",
+    "LABORATORIO:module-laboratorio-noroeste"
+  ],
+  "folhas/qa/laboratorio-010.png": [
+    "LABORATORIO:labCecRompimentosMes",
+    "LABORATORIO:labDosagemEmpacotamento",
+    "LABORATORIO:labDosagemVolume",
+    "LABORATORIO:labDosagemComparacao",
+    "LABORATORIO:labDosagemTracos",
+    "LABORATORIO:labDosagemMateriais",
+    "LABORATORIO:labDosagemFornecedores",
+    "LABORATORIO:labDosagemEnsaios"
+  ],
+  "folhas/qa/laboratorio-011.png": [
+    "LABORATORIO:labDosagemFerramentas",
+    "LABORATORIO:labDosagemCustos",
+    "LABORATORIO:labDosagemReferencia",
+    "LABORATORIO:labDosagemProducao",
+    "LABORATORIO:labDosagemImportacao",
+    "LABORATORIO:labDosagemConfig",
+    "LABORATORIO:modelo-labAbsorption"
+  ],
+  "folhas/qa/logistica-001.png": [
+    "GERENCIA:logisticaInicio",
+    "GERENCIA:logisticaPainel",
+    "GERENCIA:logisticaCorrecoes",
+    "GERENCIA:logisticaFechamento",
+    "GERENCIA:logisticaPremiacao",
+    "GERENCIA:logisticaMeses",
+    "GERENCIA:logisticaCadastros",
+    "GERENCIA:logisticaMetas"
+  ],
+  "folhas/qa/logistica-002.png": [
+    "GERENCIA:logisticaMotoristas",
+    "GERENCIA:logisticaAjudantes",
+    "GERENCIA:logisticaCobli"
+  ],
+  "folhas/qa/planejamento-001.png": [
+    "GERENCIA:comparacao",
+    "GERENCIA:dashboard",
+    "GERENCIA:programacao12",
+    "GERENCIA:programacao34",
+    "GERENCIA:programacaoSemanal12",
+    "GERENCIA:circular3",
+    "GERENCIA:dt4",
+    "GERENCIA:relatorio12"
+  ],
+  "folhas/qa/planejamento-002.png": [
+    "GERENCIA:programacaoFinal",
+    "GERENCIA:relatorio3",
+    "GERENCIA:relatorio4",
+    "GERENCIA:etiquetas",
+    "GERENCIA:etiquetasSc",
+    "GERENCIA:etiquetasSetor4",
+    "GERENCIA:etiquetasArmaduras",
+    "GERENCIA:pcpDiario"
+  ],
+  "folhas/qa/planejamento-003.png": [
+    "GERENCIA:acompMensal",
+    "GERENCIA:acompMensal34",
+    "GERENCIA:apontamentoMega",
+    "GERENCIA:producaoPcp",
+    "GERENCIA:maodeobraRateio",
+    "GERENCIA:maodeobra",
+    "GERENCIA:formasPorSetor",
+    "GERENCIA:testeProgramacao"
+  ],
+  "folhas/qa/planejamento-004.png": [
+    "GERENCIA:fechamentoDiarioPcp",
+    "GERENCIA:formasPorSetor-variant-2",
+    "GERENCIA:pcpUsuarios",
+    "GERENCIA:armadurasProgramacao",
+    "GERENCIA:armadurasRelatorio",
+    "GERENCIA:postesNumerosSerie",
+    "GERENCIA:module-planejamento",
+    "LABORATORIO:maodeobraRateio"
+  ],
+  "folhas/qa/planejamento-005.png": [
+    "LABORATORIO:maodeobra",
+    "LABORATORIO:formasPorSetor",
+    "LABORATORIO:testeProgramacao",
+    "LABORATORIO:fechamentoDiarioPcp",
+    "LABORATORIO:formasPorSetor-variant-2",
+    "LABORATORIO:pcpUsuarios",
+    "LABORATORIO:armadurasProgramacao",
+    "LABORATORIO:armadurasRelatorio"
+  ],
+  "folhas/qa/planejamento-006.png": [
+    "LABORATORIO:postesNumerosSerie",
+    "PCP:dashboard",
+    "PCP:comparacao",
+    "PCP:programacao12",
+    "PCP:programacaoSemanal12",
+    "PCP:programacao34",
+    "PCP:circular3",
+    "PCP:dt4"
+  ],
+  "folhas/qa/planejamento-007.png": [
+    "PCP:programacaoFinal",
+    "PCP:relatorio12",
+    "PCP:relatorio3",
+    "PCP:maodeobra",
+    "PCP:maodeobraRateio",
+    "PCP:formasPorSetor",
+    "PCP:formasPorSetor-variant-2",
+    "PCP:armadurasProgramacao"
+  ],
+  "folhas/qa/producao-001.png": [
+    "GERENCIA:setor1",
+    "GERENCIA:liberacao",
+    "GERENCIA:setor2",
+    "GERENCIA:setor3",
+    "GERENCIA:setor4",
+    "GERENCIA:mandril",
+    "GERENCIA:inspecao",
+    "GERENCIA:montagem"
+  ],
+  "folhas/qa/producao-002.png": [
+    "GERENCIA:sequencia",
+    "GERENCIA:relatorioMapa",
+    "GERENCIA:acmpConcretagem",
+    "GERENCIA:historico",
+    "GERENCIA:manutencao",
+    "GERENCIA:dashDefeitos",
+    "GERENCIA:pdrApontamento",
+    "GERENCIA:pdrMaoDeObra"
+  ],
+  "folhas/qa/producao-003.png": [
+    "GERENCIA:pdrIndicadores",
+    "GERENCIA:pdrMensal",
+    "GERENCIA:produtividade",
+    "GERENCIA:pdrProdutos",
+    "GERENCIA:rbrApontamento",
+    "GERENCIA:rbrMaoDeObra",
+    "GERENCIA:rbrMensal",
+    "GERENCIA:rbrIndicadores"
+  ],
+  "folhas/qa/producao-004.png": [
+    "GERENCIA:rbrProdutos",
+    "GERENCIA:norApontamento",
+    "GERENCIA:norMaoDeObra",
+    "GERENCIA:norMensal",
+    "GERENCIA:norIndicadores",
+    "GERENCIA:norProdutos",
+    "GERENCIA:fechamentoDiario",
+    "GERENCIA:prodUsuarios"
+  ],
+  "folhas/qa/producao-005.png": [
+    "GERENCIA:tvFormas",
+    "GERENCIA:layoutFormasS4",
+    "GERENCIA:module-producao",
+    "GERENCIA:armacao-campinas-corte",
+    "GERENCIA:armacao-campinas-banca",
+    "GERENCIA:armacao-campinas-rastreabilidade",
+    "GERENCIA:armacao-campinas-supervisor",
+    "GERENCIA:armacao-campinas-cadastros"
+  ],
+  "folhas/qa/producao-006.png": [
+    "GERENCIA:armacao-pederneiras-corte",
+    "GERENCIA:armacao-pederneiras-banca",
+    "GERENCIA:armacao-pederneiras-rastreabilidade",
+    "GERENCIA:armacao-pederneiras-supervisor",
+    "GERENCIA:armacao-pederneiras-cadastros",
+    "GERENCIA:armacao-ribeirao-corte",
+    "GERENCIA:armacao-ribeirao-rastreabilidade",
+    "GERENCIA:armacao-ribeirao-banca"
+  ],
+  "folhas/qa/producao-007.png": [
+    "GERENCIA:armacao-ribeirao-supervisor",
+    "GERENCIA:armacao-ribeirao-cadastros",
+    "GERENCIA:armacao-noroeste-corte",
+    "GERENCIA:armacao-noroeste-banca",
+    "GERENCIA:armacao-noroeste-rastreabilidade",
+    "GERENCIA:armacao-noroeste-supervisor",
+    "GERENCIA:armacao-noroeste-cadastros",
+    "GERENCIA:module-producao-pederneiras"
+  ],
+  "folhas/qa/producao-008.png": [
+    "GERENCIA:module-producao-noroeste",
+    "GERENCIA:module-producao-ribeirao",
+    "GERENCIA:route-acmpConcretagem",
+    "GERENCIA:indicadorGeralProducao",
+    "GERENCIA:inspecao-tab-postes",
+    "GERENCIA:inspecao-tab-analise",
+    "GERENCIA:inspecao-tab-producao",
+    "GERENCIA:tratativa"
+  ],
+  "folhas/qa/producao-009.png": [
+    "GERENCIA:dashMontagem",
+    "GERENCIA:campinasUnificado",
+    "LABORATORIO:setor1",
+    "LABORATORIO:liberacao",
+    "LABORATORIO:setor2",
+    "LABORATORIO:setor3",
+    "LABORATORIO:setor4",
+    "LABORATORIO:mandril"
+  ],
+  "folhas/qa/producao-010.png": [
+    "LABORATORIO:inspecao",
+    "LABORATORIO:montagem",
+    "LABORATORIO:sequencia",
+    "LABORATORIO:relatorioMapa",
+    "LABORATORIO:historico",
+    "LABORATORIO:acmpConcretagem",
+    "LABORATORIO:manutencao",
+    "LABORATORIO:tratativa"
+  ],
+  "folhas/qa/producao-011.png": [
+    "LABORATORIO:dashMontagem",
+    "LABORATORIO:dashDefeitos",
+    "LABORATORIO:pdrApontamento",
+    "LABORATORIO:pdrMaoDeObra",
+    "LABORATORIO:pdrIndicadores",
+    "LABORATORIO:pdrMensal",
+    "LABORATORIO:produtividade",
+    "LABORATORIO:pdrProdutos"
+  ],
+  "folhas/qa/producao-012.png": [
+    "LABORATORIO:rbrApontamento",
+    "LABORATORIO:rbrMaoDeObra",
+    "LABORATORIO:rbrMensal",
+    "LABORATORIO:rbrIndicadores",
+    "LABORATORIO:rbrProdutos",
+    "LABORATORIO:norApontamento",
+    "LABORATORIO:norMaoDeObra",
+    "LABORATORIO:norMensal"
+  ],
+  "folhas/qa/producao-013.png": [
+    "LABORATORIO:norProdutos",
+    "LABORATORIO:norIndicadores",
+    "LABORATORIO:fechamentoDiario",
+    "LABORATORIO:prodUsuarios",
+    "LABORATORIO:tvFormas",
+    "LABORATORIO:layoutFormasS4",
+    "LABORATORIO:module-producao-pederneiras",
+    "LABORATORIO:route-acmpConcretagem"
+  ],
+  "folhas/qa/producao-014.png": [
+    "LABORATORIO:module-producao-noroeste",
+    "LABORATORIO:module-producao-ribeirao",
+    "LABORATORIO:campinasUnificado",
+    "LABORATORIO:indicadorGeralProducao",
+    "LABORATORIO:inspecao-tab-analise",
+    "LABORATORIO:inspecao-tab-postes",
+    "LABORATORIO:inspecao-tab-producao",
+    "PCP:liberacao"
+  ],
+  "folhas/qa/producao-015.png": [
+    "PCP:setor1",
+    "PCP:setor2",
+    "PCP:setor3",
+    "PCP:setor4",
+    "PCP:mandril",
+    "PCP:inspecao",
+    "PCP:montagem",
+    "PCP:sequencia"
+  ],
+  "folhas/qa/producao-016.png": [
+    "PCP:relatorioMapa",
+    "PCP:historico",
+    "PCP:acmpConcretagem",
+    "PCP:manutencao",
+    "PCP:tratativa",
+    "PCP:dashMontagem",
+    "PCP:dashDefeitos",
+    "PCP:prodUsuarios"
+  ],
+  "folhas/qa/qualidade-001.png": [
+    "GERENCIA:qualidadePainel",
+    "GERENCIA:qualidadeAbertura",
+    "GERENCIA:manutencaoUsina",
+    "GERENCIA:qualidadeTarefas",
+    "GERENCIA:qualidadeTratativa",
+    "GERENCIA:qualidadeCadastros",
+    "GERENCIA:module-qualidade",
+    "GERENCIA:labCertificadosHistorico"
+  ],
+  "folhas/qa/qualidade-002.png": [
+    "GERENCIA:labCertificadosCadastros",
+    "LABORATORIO:qualidadePainel",
+    "LABORATORIO:manutencaoUsina",
+    "LABORATORIO:qualidadeAbertura",
+    "LABORATORIO:qualidadeTarefas",
+    "LABORATORIO:qualidadeTratativa",
+    "LABORATORIO:qualidadeCadastros",
+    "LABORATORIO:qualidadeResultadosBancada"
+  ],
+  "folhas/qa/qualidade-003.png": [
+    "LABORATORIO:labCertificadosHistorico",
+    "LABORATORIO:labCertificadosCadastros",
+    "PCP:manutencaoUsina"
+  ],
+  "folhas/qa/shell-001.png": [
+    "GERENCIA:shell-inicio",
+    "GERENCIA:shell-login",
+    "GERENCIA:shell-testar",
+    "GERENCIA:shell-atualizar",
+    "GERENCIA:mobile-conta",
+    "GERENCIA:mobile-recentes",
+    "GERENCIA:lab-monitor-ajuda",
+    "LABORATORIO:shell-inicio"
+  ],
+  "folhas/qa/shell-002.png": [
+    "LABORATORIO:mobile-conta",
+    "LABORATORIO:mobile-recentes",
+    "LABORATORIO:lab-monitor-ajuda"
+  ],
+  "folhas/qa/suprimentos-001.png": [
+    "GERENCIA:suprimentosPainel",
+    "GERENCIA:suprimentosSolicitacoes",
+    "GERENCIA:suprimentosAlmoxarifado",
+    "GERENCIA:suprimentosNova",
+    "GERENCIA:suprimentosInventario",
+    "GERENCIA:suprimentosCotacoes",
+    "GERENCIA:suprimentosFornecedores",
+    "GERENCIA:suprimentosRecebimento"
+  ],
+  "folhas/qa/suprimentos-002.png": [
+    "GERENCIA:suprimentosCadastros",
+    "GERENCIA:suprimentosIndicadores",
+    "GERENCIA:module-suprimentos",
+    "LABORATORIO:suprimentosPainel",
+    "LABORATORIO:suprimentosSolicitacoes",
+    "LABORATORIO:suprimentosAlmoxarifado",
+    "LABORATORIO:suprimentosNova",
+    "LABORATORIO:suprimentosInventario"
+  ],
+  "folhas/qa/suprimentos-003.png": [
+    "LABORATORIO:suprimentosFornecedores",
+    "LABORATORIO:suprimentosCotacoes",
+    "LABORATORIO:suprimentosRecebimento",
+    "LABORATORIO:suprimentosCadastros",
+    "LABORATORIO:suprimentosIndicadores"
+  ],
+  "folhas/qa/usinas-001.png": [
+    "GERENCIA:usinasNoroPainel",
+    "GERENCIA:usinasNoroMassadas",
+    "GERENCIA:usinasNoroCartas",
+    "GERENCIA:usinasNoroRelatorios",
+    "GERENCIA:usinasNoroCec",
+    "GERENCIA:usinasNoroCadastros",
+    "GERENCIA:usinasNoroCustos",
+    "GERENCIA:usinasNoroEstoque"
+  ],
+  "folhas/qa/usinas-002.png": [
+    "GERENCIA:module-usinas",
+    "GERENCIA:usinasCec",
+    "GERENCIA:usinasRelatorios",
+    "GERENCIA:usinasEstoque",
+    "LABORATORIO:usinasInicio",
+    "LABORATORIO:usinasCec",
+    "LABORATORIO:usinasRelatorios",
+    "LABORATORIO:usinasEstoque"
+  ],
+  "folhas/qa/usinas-003.png": [
+    "LABORATORIO:usinas-relatorios-cartas",
+    "LABORATORIO:usinas-relatorios-consumo",
+    "LABORATORIO:usinas-relatorios-custos",
+    "LABORATORIO:usinas-relatorios-comparar",
+    "LABORATORIO:usinas-relatorios-exportar",
+    "LABORATORIO:usinas-relatorios-fechamento",
+    "LABORATORIO:usinas-relatorios-fechamento-diario",
+    "LABORATORIO:usinas-relatorios-producao"
+  ],
+  "folhas/qa/usinas-004.png": [
+    "LABORATORIO:usinas-relatorios-reports",
+    "LABORATORIO:usinas-estoque-entrada",
+    "LABORATORIO:usinas-estoque-saldo",
+    "LABORATORIO:usinas-estoque-relatorio",
+    "LABORATORIO:usinas-estoque-consumo",
+    "LABORATORIO:usinas-estoque-cimento",
+    "LABORATORIO:usinas-estoque-mapeamento",
+    "LABORATORIO:usinas-estoque-acerto"
+  ],
+  "folhas/qa/usinas-005.png": [
+    "LABORATORIO:usinas-cec-resultados",
+    "LABORATORIO:usinas-cec-relatorio",
+    "LABORATORIO:usinas-cec-analise",
+    "LABORATORIO:usinas-cec-leitura",
+    "LABORATORIO:usinas-cec-dashboard",
+    "LABORATORIO:usinas-cec-etiquetas"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "scope": "Somente a amostra efetivamente vista. Demais capturas pendentes; nenhuma aprovação inferida da matriz.",
+  "sheets": {
+    "shell-001": "Inspeção da folha: início e login legíveis; lab-monitor-ajuda apresenta superfícies coloridas aninhadas e ícone decorativo grande. Módulo não aprovado.",
+    "suprimentos-001": "Inspeção da folha: fornecedores e solicitações mostram filtros extensos; botões verdes de estoque. Filtros e cores corrigidos após captura; repetir validação real.",
+    "planejamento-001": "Inspeção da folha: filtros e resumos ocupam altura excessiva no celular em capturas anteriores aos últimos ajustes. Repetir capturas e revisão individual.",
+    "producao-001": "Inspeção da folha: formulários físicos de formas preservados; montagem mostra filtros longos no celular e acentos de cor nos resumos. Sem aprovação global.",
+    "usinas-001": "Inspeção da folha: tabelas legíveis; ações de consulta verdes foram corrigidas após captura. Repetir validação."
+  },
+  "individual_images_viewed": [
+    "depois/login-1440.png",
+    "capturas/gerencia/indicadorGeralProducao-1440.png",
+    "capturas/gerencia/indicadorGeralProducao-390.png"
+  ]
+}

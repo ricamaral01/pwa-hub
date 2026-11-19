@@ -90,7 +90,7 @@
     if (route.path === 'pcp/armaduras-relatorio/') return 'armadurasRelatorio';
     if (route.path === 'usinas/carta-traco.html') return 'usinasCartaTraco';
     if (route.path === 'usinas/') {
-      return 'usinasInicio';
+      return ({cec:'usinasCec',relatorios:'usinasRelatorios',estoque:'usinasEstoque'})[route.url.searchParams.get('area')] || 'usinasInicio';
     }
     if (route.path === 'usinas/noroeste/') {
       return ({painel:'usinasNoroPainel', massadas:'usinasNoroMassadas',
@@ -290,7 +290,7 @@
         style = doc.createElement('link');
         style.id = 'unificado-embedded-style';
         style.rel = 'stylesheet';
-        style.href = root + 'shell/embedded.css?v=1.4.25';
+        style.href = root + 'shell/embedded.css?v=1.4.26';
         doc.head.append(style);
       }
       doc.addEventListener('click', event => {
@@ -316,10 +316,10 @@
     for (const name of ['tokens','review-complete']) {
       if (doc.querySelector('link[data-unificado-review="'+name+'"]')) continue;
       const link=doc.createElement('link');link.rel='stylesheet';link.media='screen';
-      link.dataset.unificadoReview=name;link.href=root+'shell/'+name+'.css?v=1.4.25';doc.head.append(link);
+      link.dataset.unificadoReview=name;link.href=root+'shell/'+name+'.css?v=1.4.26';doc.head.append(link);
     }
     if (!doc.querySelector('script[src*="shell/components.js"]')) {
-      const script=doc.createElement('script');script.src=root+'shell/components.js?v=1.4.25';doc.head.append(script);
+      const script=doc.createElement('script');script.src=root+'shell/components.js?v=1.4.26';doc.head.append(script);
     }
   }
 
@@ -386,7 +386,7 @@
     if (ticket !== pending) return;
     if (route.path === 'usinas/noroeste/') {
       try {
-        const native = await import(root + 'usinas/noroeste/noro-native.js?v=1.4.25');
+        const native = await import(root + 'usinas/noroeste/noro-native.js?v=1.4.26');
         if (ticket !== pending) return;
         let container = document.getElementById('noro-native-host');
         if (!container) {
@@ -417,7 +417,7 @@
         if (!mapaUser?.id) throw new Error('Identidade do Unificado indisponível');
         window.__DOSAGEM_NATIVE__ = true;
         window.__DOSAGEM_NATIVE_USER_ID__ = String(mapaUser.id);
-        const native = await import(root + 'laboratorio/dosagem/native/dosagem-native.js?v=1.4.25');
+        const native = await import(root + 'laboratorio/dosagem/native/dosagem-native.js?v=1.4.26');
         if (ticket !== pending) return;
         let container = document.getElementById('dosagem-native-host');
         if (!container) {
@@ -450,9 +450,9 @@
     }
     if(route.module==='logistica'){
       try{
-        const native=await import(root+'logistica/logistica-native.js?v=1.4.25');
+        const native=await import(root+'logistica/logistica-native.js?v=1.4.26');
         if(ticket!==pending)return;
-        if(!document.querySelector('link[data-logistica-style]')){const css=document.createElement('link');css.rel='stylesheet';css.href=root+'logistica/logistica-native.css?v=1.4.25';css.dataset.logisticaStyle='true';document.head.append(css);}
+        if(!document.querySelector('link[data-logistica-style]')){const css=document.createElement('link');css.rel='stylesheet';css.href=root+'logistica/logistica-native.css?v=1.4.26';css.dataset.logisticaStyle='true';document.head.append(css);}
         let container=document.getElementById('logistica-native-host');if(!container){container=document.createElement('div');container.id='logistica-native-host';host.append(container);}
         window.__logisticaNative=native;
         native.mountLogistica(container,{path:route.path,search:route.url.search,navigate:path=>open(root+path,null,true)});
@@ -648,6 +648,7 @@
     crumb.querySelector('span:last-child').textContent = 'Início';
     if (push) history.pushState({}, '', root);
     updateModelAPath();
+    dispatchEvent(new Event('unificado:home-visible'));
   }
 
   window.UnificadoRouter = Object.freeze({open, openModule, openGed, home, syncGedMenu});

@@ -90,3 +90,4 @@
 .sb-tip{position:fixed;z-index:1000;transform:none;pointer-events:none;background:var(--c-surface);color:var(--c-navy);font-size:13px;font-weight:600;white-space:nowrap;padding:8px 12px;border-radius:var(--r);box-shadow:none;}
 @media (prefers-reduced-motion: reduce){.sb{transition:none;}
 }
+.sb-link>.sb-ic{width:16px;height:16px;flex:0 0 16px}

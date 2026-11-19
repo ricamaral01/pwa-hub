@@ -1,0 +1,59 @@
+[
+  {
+    "id": "dashMontagem-tab-producao",
+    "module": "producao",
+    "label": "Dashboard Montagem · producao",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=MONTAGEM_INDICADORES",
+    "screen": "MONTAGEM_INDICADORES",
+    "require": null,
+    "access_screen": "dashMontagem",
+    "steps": [
+      {
+        "frame_path": "/mapa/operacao/",
+        "selector": "[data-tab=\"producao\"]"
+      }
+    ],
+    "source": "mapa/operacao/index.html",
+    "inactive": true,
+    "inactive_reason": "Controles legados .mi-tab-btn ficam ocultos no dashboard montado atual. Concretagem, Montagem e Defeitos são destinos ativos separados, já inventariados. Evidência: diagnosticos/scan-before-final-gerencia.json e matriz inicial com Locator.click: element is not visible."
+  },
+  {
+    "id": "dashMontagem-tab-qualidade",
+    "module": "producao",
+    "label": "Dashboard Montagem · qualidade",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=MONTAGEM_INDICADORES",
+    "screen": "MONTAGEM_INDICADORES",
+    "require": null,
+    "access_screen": "dashMontagem",
+    "steps": [
+      {
+        "frame_path": "/mapa/operacao/",
+        "selector": "[data-tab=\"qualidade\"]"
+      }
+    ],
+    "source": "mapa/operacao/index.html",
+    "inactive": true,
+    "inactive_reason": "Controles legados .mi-tab-btn ficam ocultos no dashboard montado atual. Concretagem, Montagem e Defeitos são destinos ativos separados, já inventariados. Evidência: diagnosticos/scan-before-final-gerencia.json e matriz inicial com Locator.click: element is not visible."
+  },
+  {
+    "id": "dashMontagem-tab-produtividade",
+    "module": "producao",
+    "label": "Dashboard Montagem · produtividade",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=MONTAGEM_INDICADORES",
+    "screen": "MONTAGEM_INDICADORES",
+    "require": null,
+    "access_screen": "dashMontagem",
+    "steps": [
+      {
+        "frame_path": "/mapa/operacao/",
+        "selector": "[data-tab=\"produtividade\"]"
+      }
+    ],
+    "source": "mapa/operacao/index.html",
+    "inactive": true,
+    "inactive_reason": "Controles legados .mi-tab-btn ficam ocultos no dashboard montado atual. Concretagem, Montagem e Defeitos são destinos ativos separados, já inventariados. Evidência: diagnosticos/scan-before-final-gerencia.json e matriz inicial com Locator.click: element is not visible."
+  }
+]

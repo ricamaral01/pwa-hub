@@ -3,6 +3,7 @@ import type { IconName } from './navConfig';
 
 // Ícones de traço (24×24, stroke = currentColor). Sem dependência externa.
 const PATHS: Record<IconName, ReactElement> = {
+  none: <></>,
   calendar: <><rect x="3" y="4.5" width="18" height="16" rx="2" /><path d="M3 9.5h18M8 2.5v4M16 2.5v4" /></>,
   factory: <path d="M3 20.5h18M4 20.5V11l5 3v-3l5 3v-3l5 3V4.5h2v16" />,
   shield: <><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z" /><path d="M8.5 12l2.5 2.5 4.5-5" /></>,

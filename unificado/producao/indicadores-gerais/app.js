@@ -403,13 +403,22 @@
     const dates=[...new Set(units.flatMap(unit=>result[unit.id].rows.map(row=>row.data)))].sort();
     renderSummary(result);renderProductionTotals(result);renderCombinedProduction(result,dates);
     renderUnitCharts(result,dates);renderTable(result,dates);
+    window.renderIndicatorOverview?.({result,units,summary,fmt,dates,today,month});
     const failed=units.filter(unit=>result[unit.id].error);
     const failures=failed.map(unit=>unit.name);
     if(failures.length){feedback.hidden=false;feedback.textContent='Não foi possível carregar '+failures.join(', ')+'. Confira o acesso e atualize os dados.';}
+    const screenFeedback=document.getElementById('overview-feedback');
+    if(screenFeedback){screenFeedback.hidden=!failures.length;screenFeedback.textContent=feedback.textContent;}
     document.getElementById('updated').textContent='Atualizado às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
     button.disabled=false;
   }
   document.getElementById('reload').addEventListener('click',load);
+  const screenMonth=document.getElementById('overview-month');
+  if(screenMonth){
+    screenMonth.value=monthInput.value;
+    screenMonth.addEventListener('change',()=>{monthInput.value=screenMonth.value;load();});
+    document.getElementById('overview-reload').addEventListener('click',()=>load());
+  }
   monthInput.addEventListener('change',load);
   load().catch(error=>{feedback.hidden=false;feedback.textContent=error.message;document.getElementById('reload').disabled=false;});
 })();

@@ -5,18 +5,18 @@
   <title>Armaduras - Planejamento Concrefer</title>
   <script>if(top===self&&!['localhost','127.0.0.1'].includes(location.hostname))location.replace('/unificado/?view='+encodeURIComponent(location.pathname.slice('/unificado/'.length).replace(/index\.html$/,'')+location.search));</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.25"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.25"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.25"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.26"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.26"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.26"></script>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="/unificado/pcp/static/css/app.css">
   <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css">
-  <link rel="stylesheet" href="/unificado/pcp/armaduras/armaduras.css?v=1.4.25">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.25">
-<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.25">
-<script defer src="/unificado/shell/components.js?v=1.4.25"></script>
-<link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.25" media="screen"></head>
+  <link rel="stylesheet" href="/unificado/pcp/armaduras/armaduras.css?v=1.4.26">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26">
+<script defer src="/unificado/shell/components.js?v=1.4.26"></script>
+<link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
 <body>
 <div id="sidebar-overlay"></div>
 <aside id="sidebar"><div class="sidebar-brand">PCP Concrefer</div><nav>
@@ -38,5 +38,5 @@
 </div>
 <dialog id="calendar-dialog" aria-labelledby="calendar-title"><div class="ar-dialog-head"><h2 id="calendar-title">Calendário das armaduras · Campinas</h2><button type="button" id="calendar-close" class="ar-button">Fechar</button></div><p>Os ajustes recalculam o D-1 das consultas futuras. PDFs já emitidos permanecem preservados.</p><p id="calendar-meta"></p><form id="calendar-form"><fieldset id="calendar-weekdays"><legend>Dias regulares de trabalho</legend><div id="weekdays" class="ar-weekdays"></div></fieldset><button type="submit" id="calendar-save" class="ar-button ar-primary">Salvar dias regulares</button></form><hr><form id="exception-form"><h3>Ajustar feriado, sábado ou paralisação</h3><div class="ar-filters"><label>Data<input id="exception-day" type="date" required></label><label>Funcionamento<select id="exception-open"><option value="false">Sem trabalho</option><option value="true">Com trabalho</option></select></label><label>Motivo<input id="exception-reason" maxlength="200" minlength="3" required placeholder="Ex.: sábado de compensação"></label><button type="submit" id="exception-save" class="ar-button ar-primary">Salvar exceção</button></div></form><p id="calendar-error" role="alert"></p><div class="ar-filters"><label>Ano das exceções<input id="calendar-year" type="number" min="2025" max="2100"></label></div><div class="ar-scroll"><table class="ar-table"><thead><tr><th>Data</th><th>Funcionamento</th><th>Motivo</th><th>Ação</th></tr></thead><tbody id="calendar-exceptions"></tbody></table></div></dialog>
 <script src="/unificado/pcp/static/js/app.js"></script>
-<script src="/unificado/pcp/armaduras/armaduras.js?v=1.4.25"></script>
+<script src="/unificado/pcp/armaduras/armaduras.js?v=1.4.26"></script>
 </body></html>

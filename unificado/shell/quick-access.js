@@ -9,13 +9,14 @@
   function showPersonal(){if(!profile?.enabled)return;content.classList.add('uqa-personal');document.getElementById('uqa-home').hidden=false;window.UnificadoRouter.home();}
   function ensureReturn(){
     if(!profile?.enabled)return;
-    for(const [selector,className] of [['.nav-panel','uqa-return-desktop'],['.nav-mobile-top','uqa-return-mobile']]){
+    for(const [selector,className] of [['.nav-panel','uqa-return-desktop']]){
       const target=document.querySelector(selector);if(!target||document.querySelector('.'+className))continue;
-      const button=node('button','uqa-return '+className,'Meu acesso rápido');button.type='button';button.onclick=showPersonal;
+      const button=node('button','nav-item uqa-return '+className);button.type='button';button.onclick=showPersonal;
+      button.append(window.UnificadoIcons.node('estrela','nav-item-code'),node('span','nav-item-label','Meu acesso rápido'));
       if(className==='uqa-return-mobile')target.after(button);else {const heading=target.querySelector('.nav-panel-head');if(heading)heading.after(button);else target.prepend(button);}
     }
     const homeLabel=document.querySelector('.nav-mobile-bottom [data-mode=inicio] .nav-bottom-label');
-    if(homeLabel&&homeLabel.textContent!=='Meu acesso')homeLabel.textContent='Meu acesso';
+    if(homeLabel&&homeLabel.textContent!=='Início')homeLabel.textContent='Início';
   }
   function clear(){profile=null;content.classList.remove('uqa-personal');document.getElementById('uqa-home')?.remove();document.querySelectorAll('.uqa-return').forEach(el=>el.remove());const label=document.querySelector('.nav-mobile-bottom [data-mode=inicio] .nav-bottom-label');if(label)label.textContent='Início';}
   function render(data){

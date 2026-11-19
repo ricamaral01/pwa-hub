@@ -15,7 +15,13 @@ parser.add_argument('--role', default='GERENCIA')
 parser.add_argument('--only', nargs='*')
 parser.add_argument('--resume',action='store_true')
 parser.add_argument('--concurrency',type=int,default=3)
+parser.add_argument('--output-dir',default='revisao-completa')
+parser.add_argument('--candidate',action='store_true')
 args = parser.parse_args()
+OUT=ROOT/'docs/revisao-visual-unificado/homolog'/args.output_dir
+assert OUT.resolve().is_relative_to((ROOT/'docs/revisao-visual-unificado/homolog').resolve())
+limit=OUT/'matrix-concurrency-limit.txt'
+if limit.exists():args.concurrency=min(args.concurrency,int(limit.read_text().strip()))
 
 async def main():
     identities = sessions()
@@ -82,7 +88,7 @@ async def main():
         module_allowed=set(await init.evaluate('window.UnificadoSidebarModelA.snapshot().allowedModuleIds'))
         native_denied = set()
         boundaries = []
-        if any(row['module']=='suprimentos' and row['id'] in allowed for row in catalog):
+        if any(row['module']=='suprimentos' and row['id'] in allowed and (not args.only or row['id'] in args.only) for row in catalog):
             native = await context.request.get(BASE + '/api/suprimentos/me')
             if native.status == 403:
                 native_denied.add('suprimentos')
@@ -93,11 +99,18 @@ async def main():
                 assert native.status==200, ('native supply authority unavailable',native.status)
         (OUT / ('boundaries-' + args.role.lower() + '.json')).write_text(json.dumps(boundaries,indent=2))
         await init.close()
-        pending = [row for row in catalog if (row['id'] in allowed or row.get('public') or row.get('access_screen') in allowed or args.role in row.get('role_access',[]) or (row['module']=='ged' and 'ged' in module_allowed and (not row.get('access_screen') or row['access_screen'] in allowed))) and (not args.only or row['id'] in args.only)]
+        identity_state=await context.storage_state()
+        eligible = [row for row in catalog if not row.get('inactive') and (row['id'] in allowed or row.get('public') or row.get('access_screen') in allowed or args.role in row.get('role_access',[]) or (row['module']=='ged' and 'ged' in module_allowed and (not row.get('access_screen') or row['access_screen'] in allowed)))]
+        (OUT/('profile-access-'+args.role.lower()+'.json')).write_text(json.dumps({'profile':args.role,'eligible_screens':[row['id'] for row in eligible],'allowed_screens':sorted(allowed),'allowed_modules':sorted(module_allowed),'permission_writes':0},indent=2))
+        pending = [row for row in eligible if not args.only or row['id'] in args.only]
         sem = asyncio.Semaphore(args.concurrency)
         async def check(row):
             async with sem:
-                page = await context.new_page()
+                case_context=await browser.new_context(storage_state=identity_state,service_workers='block',timezone_id='America/Sao_Paulo',locale='pt-BR')
+                if identity.get('cookie'):
+                    fresh_cookie=await asyncio.to_thread(test_cookie_for,identity['mapa']['id'])
+                    await case_context.add_cookies([{'name':'mapa_unificado_homolog_session','value':fresh_cookie,'domain':'concrefer.concretrack.com.br','path':'/unificado/','secure':True,'httpOnly':True}])
+                page = await case_context.new_page()
                 js, http, external = [], [], []
                 page.on('pageerror', lambda e:js.append(str(e)))
                 page.on('response', lambda r:http.append({'url':r.url,'status':r.status}) if r.status>=400 else None)
@@ -106,7 +119,23 @@ async def main():
                     if u.scheme in ('http','https') and u.netloc != urlsplit(BASE).netloc:
                         external.append(route.request.url)
                         await route.abort()
-                    else: await route.continue_()
+                    elif args.candidate and u.path.startswith('/unificado/') and route.request.method=='GET':
+                        relative=u.path.removeprefix('/unificado/')
+                        if relative=='VERSION':
+                            await route.fulfill(body=(ROOT/'unificado/VERSION').read_text(),content_type='text/plain')
+                            return
+                        if not Path(relative).suffix:relative=relative.rstrip('/')+'/index.html'
+                        local=(ROOT/'unificado'/relative).resolve()
+                        safe=local.is_relative_to(ROOT/'unificado') and not {'api','backend','service'}.intersection(Path(relative).parts)
+                        if safe and local.is_file() and local.suffix in ('.html','.css','.js','.png','.woff2'):
+                            if local.suffix=='.html':
+                                source=local.read_text(encoding='utf-8')
+                                if relative in ('index.html','login.html'):
+                                    source=source.replace('</head>','<style>.test-environment-bar{position:relative;z-index:9999;padding:6px 12px;background:#fff3cd;color:#664d03;text-align:center;font:600 12px sans-serif}body{padding-top:31px}</style></head>',1).replace('<body>','<body><div class="test-environment-bar">AMBIENTE DE TESTE · dados isolados de homologação</div>',1)
+                                await route.fulfill(body=source,content_type='text/html; charset=utf-8')
+                            else:await route.fulfill(path=str(local))
+                        else:await route.continue_()
+                    else:await route.continue_()
                 await page.route('**/*', restrict)
                 path = menu_urls.get(row['id'], row['path'] + (row.get('query') or ''))
                 if path.startswith('http'):
@@ -147,13 +176,21 @@ async def main():
                             record.setdefault('module_states',[]).append({'width':width,**await page.locator('.module-page:not([hidden])').evaluate("e=>({description:e.querySelector('.module-page-description')?.textContent,units:[...e.querySelectorAll('.module-page-units button')].map(b=>({label:b.textContent,selected:b.matches('.active,.is-current')}))})")})
                         if row.get('interaction') and width<768:
                             await page.locator('.nav-mobile-bottom [data-mode='+row['interaction']+']').click()
+                        for step in row.get('steps',[]):
+                            step_frame=next((frame for frame in page.frames if step.get('frame_path','') in frame.url),None)
+                            assert step_frame is not None,('Missing tab frame',step)
+                            step_target=step_frame.locator(step['selector'])
+                            if step.get('text'):step_target=step_target.filter(has_text=step['text'])
+                            await step_target.click()
+                            try:await page.wait_for_load_state('networkidle',timeout=4000)
+                            except Exception:pass
                         await page.evaluate('()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))')
                         await page.wait_for_timeout(250)
                         frames = []
                         for frame in page.frames:
                             if not frame.url.startswith(BASE):continue
                             await frame.wait_for_function('document.body && getComputedStyle(document.documentElement).visibility!=="hidden"',timeout=15000)
-                            await frame.wait_for_function("()=>{const scope=document.querySelector('.scrim>.drawer,[role=dialog],[aria-modal=true]')||document;return ![...scope.querySelectorAll('.loading-state,#loading,.page-loading')].some(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width&&r.height&&s.display!=='none'&&s.visibility!=='hidden'&&/carregando/i.test(e.textContent)})}",timeout=30000)
+                            await frame.wait_for_function("()=>{const scope=document.querySelector('.scrim>.drawer,[role=dialog],[aria-modal=true]')||document;return ![...scope.querySelectorAll('.loading-state,#loading,.page-loading,tbody tr,.native-status,.state-card,.cr-loading')].some(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width&&r.height&&s.display!=='none'&&s.visibility!=='hidden'&&/carregando|consultando dados|preparando consulta/i.test(e.textContent)})}",timeout=30000)
                             record['last_stage']='font readiness '+str(width)+' '+frame.url
                             await asyncio.wait_for(frame.evaluate('Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,2500))])'),timeout=45)
                             await frame.evaluate("Promise.race([Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0&&r.width>0}).map(i=>i.decode().catch(()=>{}))),new Promise(r=>setTimeout(r,3000))])")
@@ -185,6 +222,7 @@ async def main():
                 except Exception as exc:
                     record.update(ok=False, error=type(exc).__name__+': '+str(exc), js_errors=js, http_errors=http, external_attempts=external)
                 await page.close()
+                await case_context.close()
                 results.append(record)
                 (OUT / ('matrix-' + args.role.lower() + '.json')).write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding='utf-8')
                 print(args.role, len(results)-retained, '/', len(pending), row['id'], 'OK' if record['ok'] else 'FAIL', flush=True)

@@ -1,16 +1,57 @@
 /* Add accessible mobile labels without replacing framework-owned elements. */
 (() => {
   const originals=new Map();
-  const acronyms=new Set(['GED','CP','CEC','PCP','MOD','DT','PDF','QR','MCC','IQT','NC','RNC','S1','S2','S3','S4']);
-  function sentence(text){
-    return text.replace(/ vs /gi,' \u00d7 ').split(/(\s+)/).map((word,i)=>{
-      if(acronyms.has(word)||!/[A-Za-zÀ-ÿ]/.test(word))return word;
-      const lower=word.toLocaleLowerCase('pt-BR');
-      return i===0?lower.charAt(0).toLocaleUpperCase('pt-BR')+lower.slice(1):lower;
-    }).join('');
+  const displayed=new WeakMap();
+  function setLabelText(node,value,next){
+    if(next===value)return;
+    if(!originals.has(node)||displayed.get(node)!==value)originals.set(node,value);
+    displayed.set(node,next);node.textContent=next;
   }
+  const acronyms=new Set(['GED','CP','CEC','PCP','MOD','DT','PDF','QR','MCC','IQT','IQF','NC','RNC','SC','ERP','CNPJ','EPI','RH','S1','S2','S3','S4']);
+  const properNames=['Cobli','Mega','Campinas','Pederneiras','Ribeirão Preto','Noroeste','Concrefer','ConcreTrack'];
+  const accents={producao:'produção',programacao:'programação',liberacao:'liberação',relatorio:'relatório',manutencao:'manutenção',analise:'análise',solicitacao:'solicitação',cotacao:'cotação',execucao:'execução',diagnostico:'diagnóstico',secundarios:'secundários',terciarios:'terciários',graficos:'gráficos',medio:'médio',eficiencia:'eficiência',padrao:'padrão',mes:'mês',relatorios:'relatórios',programacoes:'programações',liberacoes:'liberações',analises:'análises',solicitacoes:'solicitações',cotacoes:'cotações',acoes:'ações',aprovacao:'aprovação',aprovacoes:'aprovações',situacao:'situação'};
+  function sentence(text){
+    let firstWord=true;
+    let value=text.replace(/ vs /gi,' \u00d7 ').replace(/\s+--\s+banco local\b/gi,'').replace(/\s+--\s+/g,' · ').replace(/\bm3\b/g,'m³').split(/(\s+)/).map((word,i)=>{
+      if(!/[A-Za-zÀ-ÿ]/.test(word))return word;
+      const capitalize=firstWord;firstWord=false;
+      const upper=word.toLocaleUpperCase('pt-BR');if(acronyms.has(upper))return upper;
+      const lower=word.toLocaleLowerCase('pt-BR');
+      const corrected=accents[lower]||lower;
+      return capitalize?corrected.charAt(0).toLocaleUpperCase('pt-BR')+corrected.slice(1):corrected;
+    }).join('');
+    for(const name of [...properNames,...acronyms])value=value.replace(new RegExp('\\b'+name+'\\b','gi'),name);
+    return value;
+  }
+  window.UnificadoSentence=sentence;
+  function pluralText(value){
+    return value.replace(/(\d+(?:[.,]\d+)?)\s+([\p{L}-]+)\(s\)/gu,(_,count,word)=>`${count} ${Number(count.replace(',','.'))===1?word:word+'s'}`)
+      .replace(/([\p{L}-]+)\(s\)/gu,'$1s')
+      .replace(/\b1 postes\b/g,'1 poste').replace(/\b1 urgentes\b/g,'1 urgente').replace(/\bm3\b/g,'m³')
+      .replace(/(\d+)\.(\d{1,2})(?=\s*(?:m³|kg|%))/g,'$1,$2');
+  }
+  window.UnificadoPluralText=pluralText;
   function presentation(){
     if(printing)return;
+    for(const [node] of originals)if(!node.isConnected||node.textContent!==displayed.get(node)){originals.delete(node);displayed.delete(node);}
+    const visibleTitle=doc=>{const el=doc.querySelector('.nav-mobile-title');return el&&el.getBoundingClientRect().width>0&&el.getBoundingClientRect().height>0?el.textContent.trim():'';};
+    let parentTitle=visibleTitle(document);
+    try{if(window.parent!==window)parentTitle=visibleTitle(window.parent.document);}catch{}
+    const mobile=Boolean(parentTitle);
+    const allTitles=[...document.querySelectorAll('h1,h2,.section-title')];
+    allTitles.forEach(el=>el.classList.remove('review-duplicate-title'));
+    const titles=allTitles.filter(el=>!el.closest('[hidden],.hidden,.indicator-legacy,.login-layout')&&el.getBoundingClientRect().width>0&&el.getBoundingClientRect().height>0);
+    const titleKey=text=>sentence(text).toLocaleLowerCase('pt-BR').replace(/[^\p{L}\d]/gu,'');
+    const seen=new Set(titles.filter(el=>el.tagName==='H1').map(el=>titleKey(el.textContent.trim())));
+    for(const title of titles){
+      const text=sentence(title.textContent.trim());
+      const duplicate=(title.tagName!=='H1'&&seen.has(titleKey(text)))||(mobile&&Boolean(parentTitle)&&(title.tagName==='H1'||titleKey(text)===titleKey(parentTitle)));
+      title.classList.toggle('review-duplicate-title',Boolean(text&&duplicate));
+    }
+    document.querySelectorAll('.info-section .chart-title').forEach(title=>{
+      const sectionTitle=title.closest('.info-section')?.querySelector('.info-title');
+      if(sectionTitle&&sectionTitle!==title&&titleKey(sectionTitle.textContent)===titleKey(title.textContent))title.classList.add('review-duplicate-title');
+    });
     document.querySelectorAll('.review-ged .grid').forEach(grid=>{
       const cards=[...grid.children];
       if(cards.length<2||cards.length>6||!cards.every(card=>card.querySelector('.text-3xl,.text-2xl')?.textContent.trim().match(/^\d+$/)))return;
@@ -23,16 +64,41 @@
       if(before?.tagName==='P'&&before.textContent.trim()&&before.textContent===before.textContent.toLocaleUpperCase('pt-BR'))before.classList.add('review-decoration');
       if(after?.tagName==='P'&&after.textContent.trim()&&!/[0-9]|Campinas|Pederneiras|Ribeir\u00e3o|Noroeste|pend\u00eancia|atualizad/i.test(after.textContent))after.classList.add('review-decoration');
     });
-    document.querySelectorAll('h1,h2,h3,h4,th,.section-title,.grouped-card-title,.module-page-category,.module-page-link-title,.nav-item-label,.nav-item,.nav-group-label,.module-page-group-head,.uqa-link,.review-kpi-label').forEach(el=>{
+    document.querySelectorAll('h1,h2,h3,h4,th,label,.section-title,.grouped-card-title,.module-page-category,.module-page-link-title,.nav-item-label,.nav-item,.nav-group-label,.module-page-group-head,.nav-mobile-title,.uqa-link,.review-kpi-label').forEach(el=>{
       if(el.closest('.login-layout,[contenteditable],.nav-account-title'))return;
       for(const child of [...el.childNodes])if(child.nodeType===3&&child.textContent.trim()){
         const value=child.textContent;
         const next=sentence(value);
-        if(next!==value){if(!originals.has(child))originals.set(child,value);child.textContent=next;}
+        setLabelText(child,value,next);
       }
     });
     document.querySelectorAll('.badge,.pill,.tag,.status-badge,.urgency-badge,span').forEach(el=>{
       if(/^(Normal|Concluída|Concluida|Aprovada|Aprovado|Entregue|Vigente)$/i.test(el.textContent.trim()))el.classList.add('review-plain-state');
+    });
+    document.querySelectorAll('p,small,label,span,div.metric-sub,div[id$="status"],div[role="status"],.totals,.note').forEach(el=>{
+      if(el.closest('td,[contenteditable],.login-layout,.indicator-legacy'))return;
+      for(const child of [...el.childNodes])if(child.nodeType===3){
+        const value=child.textContent,next=pluralText(value);
+        setLabelText(child,value,next);
+      }
+    });
+    document.querySelectorAll('td.type').forEach(el=>{
+      for(const child of [...el.childNodes])if(child.nodeType===3&&child.textContent.trim()==='Indice m3 por trabalhador direto'){
+        setLabelText(child,child.textContent,'Índice m³ por trabalhador direto');
+      }
+    });
+    document.querySelectorAll('#rptFooter,#tblFooter').forEach(el=>{
+      for(const child of [...el.childNodes])if(child.nodeType===3){
+        const value=child.textContent;
+        const next=value.split('|').filter(part=>!/Fonte:|Total no banco:|Dados atualizados em\s*--/.test(part)).map(part=>part.trim()).filter(Boolean).join(' · ');
+        setLabelText(child,value,next);
+      }
+    });
+    document.querySelectorAll('.dashboard-filter-heading strong,.dashboard-filter-group-label').forEach(el=>{
+      for(const child of [...el.childNodes])if(child.nodeType===3){
+        const value=child.textContent,next=value.replace(/^[^A-Za-zÀ-ÿ\d]+/,'');
+        setLabelText(child,value,next);
+      }
     });
   }
   function labelTables() {
@@ -47,16 +113,39 @@
       }));
     });
   }
+  function compactFilters(){
+    // Only the static PCP pages: retain the input nodes and their event handlers.
+    const nativeReports=/\/usinas\/relatorios\//.test(location.pathname);
+    const supplies=/\/suprimentos\//.test(location.pathname);
+    if(!nativeReports&&!supplies&&!/\/(pcp|mapa\/operacao)\//.test(location.pathname))return;
+    document.querySelectorAll('.content-area>.section-card,.filter-card,.dashboard-filter-panel,.pa-filters-inline,.ar-filters,.filter-bar,form.filters,.panel.filters,.sup-buy-filters,.filters').forEach(section=>{
+      if(section.closest('dialog,[role=dialog]'))return;
+      if(!((nativeReports||supplies||section.matches('.ar-filters'))&&section.querySelector('input,select'))&&!section.querySelector('#f-inicio,#sh-inicio,#filter-sector,#miDataInicio,#paDataInicio'))return;
+      if(section.querySelector('table,.review-filter-details'))return;
+      const details=document.createElement('details');details.className='review-filter-details';
+      const summary=document.createElement('summary');details.append(summary);
+      while(section.firstChild)details.append(section.firstChild);
+      section.append(details);
+      const update=()=>{const count=[...details.querySelectorAll('input,select')].filter(input=>input.type==='checkbox'?input.checked:Boolean(input.value)).length;summary.textContent='Filtrar'+(count?' ('+count+')':'');};
+      details.addEventListener('input',update);details.addEventListener('change',update);update();
+      details.open=!matchMedia('(max-width:600px)').matches;
+      if(section.id==='paFiltrosDrawer')document.getElementById('paBtnToggleFiltros')?.addEventListener('click',()=>{details.open=!details.open;});
+    });
+  }
   let pending = false;
   new MutationObserver(() => {
     if (pending) return;
     pending = true;
-    requestAnimationFrame(() => { pending = false; labelTables(); presentation(); });
-  }).observe(document.documentElement, {childList: true, subtree: true});
+    requestAnimationFrame(() => { pending = false; labelTables(); compactFilters(); presentation(); });
+  }).observe(document.documentElement, {childList: true, characterData: true, subtree: true});
   document.addEventListener('DOMContentLoaded', labelTables);
   document.addEventListener('DOMContentLoaded',presentation);
+  document.addEventListener('DOMContentLoaded',compactFilters);
+  let filtersWide=!matchMedia('(max-width:600px)').matches;
+  addEventListener('resize',()=>{presentation();const wide=!matchMedia('(max-width:600px)').matches;if(wide!==filtersWide){filtersWide=wide;document.querySelectorAll('.review-filter-details').forEach(details=>{details.open=wide;});}});
   let printing=false;
-  if(document.readyState!=='loading'){labelTables();presentation();}
-  addEventListener('beforeprint',()=>{printing=true;for(const [node,text] of originals)if(node.isConnected)node.textContent=text;});
-  addEventListener('afterprint',()=>{printing=false;presentation();});
+  if(document.readyState!=='loading'){labelTables();compactFilters();presentation();}
+  const printFilters=new Map();
+  addEventListener('beforeprint',()=>{printing=true;for(const [node,text] of originals)if(node.isConnected)node.textContent=text;document.querySelectorAll('.review-filter-details,.review-resource-filters').forEach(details=>{printFilters.set(details,details.open);details.open=true;});});
+  addEventListener('afterprint',()=>{for(const [details,open] of printFilters)details.open=open;printFilters.clear();printing=false;presentation();});
 })();

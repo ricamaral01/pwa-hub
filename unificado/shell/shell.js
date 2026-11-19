@@ -273,7 +273,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.4.25';
+const APP_VERSION = '1.4.26';
 let platformUpdateAvailable = false;
 let platformUpdateState = 'checking';
 let platformLatestVersion = APP_VERSION;
@@ -1057,7 +1057,14 @@ document.addEventListener('visibilitychange', () => {
   if (!document.hidden) checkPlatformUpdate();
 });
 
+function shouldLoadSectorData(search = location.search) {
+  const params = new URLSearchParams(search);
+  return !params.has('view') && !params.has('module');
+}
+let sectorDataKey = '';
 async function loadSectorData() {
+  if (!shouldLoadSectorData() || sectorDataKey === dateISO) return;
+  sectorDataKey = dateISO;
   const requests = [];
   if (hasPcp) requests.push(fetch(`/unificado/pcp/api/dashboard?data_inicio=${dateISO}&data_fim=${dateISO}`, {
     headers: {Authorization: `Bearer ${localStorage.getItem('pcp_token')}`}, cache:'no-store'
@@ -1068,6 +1075,7 @@ async function loadSectorData() {
   }).then(async response => { if (!response.ok) throw new Error(`Mapa HTTP ${response.status}`); return response.json(); }));
   else requests.push(Promise.resolve(null));
   const [pcpResult, mapaResult] = await Promise.allSettled(requests);
+  if (pcpResult.status === 'rejected' || mapaResult.status === 'rejected') sectorDataKey = '';
   const pcpData = pcpResult.status === 'fulfilled' ? pcpResult.value : null;
   const mapaData = mapaResult.status === 'fulfilled' ? mapaResult.value : null;
   for (const card of document.querySelectorAll('.sector-card')) {
@@ -1104,6 +1112,10 @@ accessReady.then(() => {
   if (mapaUser?.role !== 'CONVIDADO' || grantedScreens?.has('dashboard') ||
       grantedScreens?.has('produtividade')) loadSectorData();
 });
+addEventListener('unificado:home-visible', () => accessReady.then(() => {
+  if (mapaUser?.role !== 'CONVIDADO' || grantedScreens?.has('dashboard') ||
+      grantedScreens?.has('produtividade')) loadSectorData();
+}));
 if ('serviceWorker' in navigator) {
   addEventListener('load', () => navigator.serviceWorker.register('/unificado/sw.js',
     {scope:'/unificado/', updateViaCache:'none'}).then(registration => registration.update()).catch(() => {}));

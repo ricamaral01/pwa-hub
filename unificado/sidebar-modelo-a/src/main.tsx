@@ -33,7 +33,7 @@ function filterModules(snapshot: Snapshot): NavModule[] {
     return {
       id:raw.id, label:raw.label, color:template?.color ?? '#5B8DEF', icon:template?.icon ?? 'doc',
       sections:raw.sections.map(group => ({title:group.title,items:group.items.map(item => ({
-        ...item, icon:template?.sections.flatMap(section => section.items).find(old => old.id === item.id)?.icon ?? 'doc',
+        ...item, icon:template?.sections.flatMap(section => section.items).find(old => old.id === item.id)?.icon ?? (/mao.?de.?obra|rateio|premia/i.test(item.id+' '+item.label)?'users':/document|aprov/i.test(item.id+' '+item.label)?'doc':/calibra/i.test(item.id+' '+item.label)?'thermometer':/apontamento|mega|\bDT\b/i.test(item.id+' '+item.label)?'calendar':/massada/i.test(item.id+' '+item.label)?'factory':/custo/i.test(item.id+' '+item.label)?'sliders':'none'),
       }))})),
     } as NavModule;
   }) ?? [];

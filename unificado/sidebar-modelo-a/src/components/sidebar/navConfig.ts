@@ -2,7 +2,7 @@
 export type IconName =
   | 'calendar' | 'factory' | 'shield' | 'flask' | 'folder'
   | 'thermometer' | 'drop' | 'history' | 'database' | 'sliders'
-  | 'help' | 'users' | 'post' | 'alert' | 'map' | 'doc';
+  | 'help' | 'users' | 'post' | 'alert' | 'map' | 'doc' | 'none';
 export type NavBadge = { text: string; tone: 'live' | 'alert' };
 export type NavItem = { id: string; label: string; href: string; icon: IconName; badge?: NavBadge };
 export type NavSection = { title: string; items: NavItem[] };

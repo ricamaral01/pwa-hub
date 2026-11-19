@@ -111,7 +111,7 @@ const MENU_CONFIG = {
         { id: 'norProdutos', mono: 'CP', label: 'Produtos Campinas', path: 'produtos', noroeste: true }
       ] },
       { label: 'Indicadores gerais', items: [
-        { id: 'indicadorGeralProducao', mono: 'IG', label: 'Indicador geral · 4 unidades', path: '/unificado/producao/indicadores-gerais/', permissionId: 'produtividade' }
+        { id: 'indicadorGeralProducao', mono: 'IG', label: 'Indicador geral', path: '/unificado/producao/indicadores-gerais/', permissionId: 'produtividade' }
       ] }
     ]
   },

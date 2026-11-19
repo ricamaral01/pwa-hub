@@ -1,9 +1,20 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Indicador geral · Produção</title><link rel="stylesheet" href="./style.css?v=1.4.25">
-<script defer src="./app.js?v=1.4.25"></script><link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.25">
-<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.25"><link rel="stylesheet" href="/unificado/shell/remaining-visual.css?v=1.4.25"><script defer src="/unificado/shell/components.js?v=1.4.25"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.25" media="screen"></head>
+<title>Indicador geral · Produção</title><link rel="stylesheet" href="./style.css?v=1.4.26">
+<script defer src="./presentation.js?v=1.4.26"></script><script defer src="./overview.js?v=1.4.26"></script><script defer src="./app.js?v=1.4.26"></script><link rel="stylesheet" href="./overview.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/remaining-visual.css?v=1.4.26"><script defer src="/unificado/shell/components.js?v=1.4.26"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
 <body><main class="dashboard">
+  <section id="indicator-overview" class="indicator-overview">
+    <header class="overview-head ph"><div><h1>Indicador geral</h1><div id="overview-status" class="overview-status" role="status"></div></div><div class="overview-actions"><input id="overview-month" type="month" aria-label="Mês"><button id="overview-reload" type="button">Atualizar</button></div></header>
+    <div id="overview-feedback" role="alert" hidden></div>
+    <div id="overview-strip" class="overview-strip strip"></div>
+    <section class="overview-section"><div class="overview-section-head"><h2>Por unidade</h2><a href="/unificado/?view=producao%2Fcampinas-unificado%2F" target="_top">Ver setores de Campinas</a></div>
+      <table class="overview-table"><thead><tr><th>Unidade</th><th>Postes</th><th>Homens-dia</th><th>Dias com produção</th><th>Postes/homem</th><th>Kg/homem</th><th>Dados incompletos</th></tr></thead><tbody id="overview-unit-rows"></tbody><tfoot id="overview-unit-total"></tfoot></table>
+      <div id="overview-unit-list" class="overview-unit-list"></div>
+    </section>
+    <section class="overview-section"><div class="overview-section-head"><h2>Postes por dia · soma das 4 unidades</h2><span id="overview-partial" class="overview-note"></span></div><div class="overview-chart"><svg id="overview-chart" role="img" aria-label="Postes por dia · soma das 4 unidades"></svg></div></section>
+  </section>
+  <div class="indicator-legacy">
   <header class="hero"><div><span class="legacy-print-title">Produção · 4 unidades</span><h1>Indicador geral</h1><p>Compare a produtividade diária de Campinas, Pederneiras, Ribeirão e Noroeste.</p></div><span class="hero-mark" aria-hidden="true">▦</span></header>
   <section class="toolbar" aria-label="Filtros"><label>Mês <input id="month" type="month"></label><button id="reload" type="button">Atualizar dados</button><span id="updated" role="status"></span></section>
   <div id="feedback" class="feedback" role="alert" hidden></div>
@@ -30,4 +41,5 @@
     <p>Considera os dias com produção. A soma dos homens representa pessoas-dia, não funcionários distintos; a média é a razão entre os totais do período, e não a média simples dos indicadores diários. Se algum dia com produção estiver sem equipe, os dois indicadores do resumo ficam indisponíveis; se faltar peso, apenas kg/homem fica indisponível.</p>
     <p class="method">Sem equipe ou peso informado, o indicador correspondente aparece como “—”. kg/homem é exibido sem casas decimais; homens e postes/homem, com duas. O resumo utiliza os pesos e as quantidades de origem, antes do arredondamento da exibição.</p>
   </section>
+  </div>
 </main></body></html>

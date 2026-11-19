@@ -21,6 +21,7 @@
  function html(name='documento') {return `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[name]||paths.documento}"/></svg>`;}
  function node(name,className=''){const span=document.createElement('span');span.className=className;span.innerHTML=html(name);return span;}
  Object.assign(paths,{
+  estrela:'m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9z',
   grafico:'M4 19h16 M7 16V9 M12 16V5 M17 16v-4',
   calendario:paths.planejamento, etiqueta:'M3 4h9l9 9-8 8-10-10z M8 8h.01',
   leitor:'M4 9V4h5 M15 4h5v5 M20 15v5h-5 M9 20H4v-5 M7 12h10',
@@ -32,6 +33,7 @@
  function forScreen(item={}){
   const key=(item.id||'')+' '+(item.label||'');
   const text=key.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  for(const [pattern,name] of [[/mao.?de.?obra|rateio|premia/,'pessoa'],[/document|aprov/,'documento'],[/calibra/,'leitor'],[/massada|custo/,'lista'],[/\bdt\b|apontamento|mega/,'calendario']])if(pattern.test(text))return name;
   for(const [pattern,name] of [[/usuario|users/,'pessoa'],[/qr/,'qr'],[/etiquet/,'etiqueta'],[/leitura|ruptura/,'leitor'],[/numeros.?serie|numeros de serie|postesnumeros/,'lista'],[/estatistica|cec|comparacao|comparad/,'tendencia'],[/relatorio|report|pdf|fechamento/,'documento'],[/dashboard|indicador|painel|acompanhamento/,'grafico'],[/programa|circular|pcpdiario/,'calendario'],[/estoque|almoxarif|inventario/,'caixa'],[/fornecedor|recebimento/,'caminhao'],[/compra|cotac|solicita/,'carrinho'],[/cadastro|produto|catalog/,'pasta']])if(pattern.test(text))return name;
   return '';
  }
@@ -47,5 +49,17 @@
   return entries.find(e=>!/[?#]/.test(viewOf(e.item))&&path(viewOf(e.item))===path(view))||null;
  }
  function shortcutLabel(group,label){return group&&group!=='Geral'&&!String(label).toLocaleLowerCase('pt-BR').includes(String(group).toLocaleLowerCase('pt-BR'))?`${group} · ${label}`:label;}
- window.UnificadoPresentation={resolveEntry,shortcutLabel,descriptions:{"dashboard": "Programado e realizado por per\u00edodo", "comparacao": "PCP contra apontamentos do Mapa", "programacao12": "Programar a produ\u00e7\u00e3o di\u00e1ria", "programacaoSemanal12": "Distribuir a semana nas formas", "programacao34": "Programar os setores 3 e 4", "circular3": "Sequenciar formas circulares", "dt4": "Programar postes duplo T", "programacaoFinal": "Consolidar a programa\u00e7\u00e3o para publicar", "postesNumerosSerie": "Consultar s\u00e9ries e emitir PDF", "armadurasProgramacao": "Programar armaduras por dia", "armadurasRelatorio": "Emitir relat\u00f3rio de armaduras", "relatorio12": "Emitir PDF dos setores 1 e 2", "relatorio3": "Emitir PDF do setor 3", "relatorio4": "Emitir PDF do setor 4", "labCartaTraco": "Cadastrar e revisar cartas de tra\u00e7o", "labLeitura": "Registrar a ruptura de corpos de prova", "labResultados": "Consultar resultados dos ensaios", "suprimentosPainel": "Aprovar e acompanhar solicita\u00e7\u00f5es", "suprimentosSolicitacoes": "Consultar e filtrar solicita\u00e7\u00f5es", "suprimentosNova": "Solicitar materiais e servi\u00e7os", "suprimentosAlmoxarifado": "Consultar saldos e movimenta\u00e7\u00f5es", "suprimentosInventario": "Conferir o estoque f\u00edsico", "suprimentosCotacoes": "Comparar propostas de fornecedores"}};
+ function routeTitle(view){
+  let url;try{url=new URL(view,'https://unificado.invalid/unificado/');}catch{return null;}
+  if(url.pathname!=='/unificado/usinas/')return null;
+  const area=url.searchParams.get('area'),app=url.searchParams.get('app');
+  const groups={relatorios:'Relatórios gerenciais',estoque:'Controle de estoque',cec:'Controle estatístico'};
+  const titles={
+   relatorios:{cartas:'Cartas de traço',consumo:'Consumo de materiais',custos:'Custos do concreto',comparar:'Comparar traços',exportar:'Exportar massadas',fechamento:'Fechamento mensal','fechamento-diario':'Fechamento diário','fechamento-diario-campinas':'Fechamento diário · Campinas',producao:'Produção por período',reports:'Relatórios diários',iqt:'IQT','carta-slide':'Carta de traço'},
+   estoque:{entrada:'Entrada de materiais',saldo:'Saldo de estoque',relatorio:'Relatório de consumo',consumo:'Consumo de agregados',cimento:'Consumo de cimento',mapeamento:'Mapeamento das caixas',acerto:'Acerto de estoque'},
+   cec:{resultados:'Resultado dos corpos de prova',relatorio:'Relatório CEC',analise:'Análise CEC',leitura:'Leitura de CP',dashboard:'Dashboard CEC',etiquetas:'Massadas e etiquetas CP'}
+  };
+  const title=app?titles[area]?.[app]:groups[area];return typeof title==='string'?title:null;
+ }
+ window.UnificadoPresentation={resolveEntry,routeTitle,shortcutLabel,descriptions:{"dashboard": "Programado e realizado por per\u00edodo", "comparacao": "PCP contra apontamentos do Mapa", "programacao12": "Programar a produ\u00e7\u00e3o di\u00e1ria", "programacaoSemanal12": "Distribuir a semana nas formas", "programacao34": "Programar os setores 3 e 4", "circular3": "Sequenciar formas circulares", "dt4": "Programar postes duplo T", "programacaoFinal": "Consolidar a programa\u00e7\u00e3o para publicar", "postesNumerosSerie": "Consultar s\u00e9ries e emitir PDF", "armadurasProgramacao": "Programar armaduras por dia", "armadurasRelatorio": "Emitir relat\u00f3rio de armaduras", "relatorio12": "Emitir PDF dos setores 1 e 2", "relatorio3": "Emitir PDF do setor 3", "relatorio4": "Emitir PDF do setor 4", "labCartaTraco": "Cadastrar e revisar cartas de tra\u00e7o", "labLeitura": "Registrar a ruptura de corpos de prova", "labResultados": "Consultar resultados dos ensaios", "suprimentosPainel": "Aprovar e acompanhar solicita\u00e7\u00f5es", "suprimentosSolicitacoes": "Consultar e filtrar solicita\u00e7\u00f5es", "suprimentosNova": "Solicitar materiais e servi\u00e7os", "suprimentosAlmoxarifado": "Consultar saldos e movimenta\u00e7\u00f5es", "suprimentosInventario": "Conferir o estoque f\u00edsico", "suprimentosCotacoes": "Comparar propostas de fornecedores"}};
 })();
