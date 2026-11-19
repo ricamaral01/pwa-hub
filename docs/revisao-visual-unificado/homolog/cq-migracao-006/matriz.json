@@ -1,0 +1,136 @@
+{
+  "screen": "labCertificadosHistorico",
+  "profiles_checked": 7,
+  "authorized_profiles": [
+    "GERENCIA",
+    "LABORATORIO"
+  ],
+  "widths": [
+    1440,
+    1024,
+    820,
+    390
+  ],
+  "cases": [
+    {
+      "screen": "labCertificadosHistorico",
+      "profile": "GERENCIA",
+      "width": 1440,
+      "functional_ok": true,
+      "candidate_assets": false,
+      "published_version": "1.4.25",
+      "capture": "historico-gerencia-1440.png",
+      "http_status": 200
+    },
+    {
+      "screen": "labCertificadosHistorico",
+      "profile": "GERENCIA",
+      "width": 1024,
+      "functional_ok": true,
+      "candidate_assets": false,
+      "published_version": "1.4.25",
+      "capture": "historico-gerencia-1024.png",
+      "http_status": 200
+    },
+    {
+      "screen": "labCertificadosHistorico",
+      "profile": "GERENCIA",
+      "width": 820,
+      "functional_ok": true,
+      "candidate_assets": false,
+      "published_version": "1.4.25",
+      "capture": "historico-gerencia-820.png",
+      "http_status": 200
+    },
+    {
+      "screen": "labCertificadosHistorico",
+      "profile": "GERENCIA",
+      "width": 390,
+      "functional_ok": true,
+      "candidate_assets": false,
+      "published_version": "1.4.25",
+      "capture": "historico-gerencia-390.png",
+      "http_status": 200
+    },
+    {
+      "screen": "labCertificadosHistorico",
+      "profile": "LABORATORIO",
+      "width": 1440,
+      "functional_ok": true,
+      "candidate_assets": false,
+      "published_version": "1.4.25",
+      "capture": "historico-laboratorio-1440.png",
+      "http_status": 200
+    },
+    {
+      "screen": "labCertificadosHistorico",
+      "profile": "LABORATORIO",
+      "width": 1024,
+      "functional_ok": true,
+      "candidate_assets": false,
+      "published_version": "1.4.25",
+      "capture": "historico-laboratorio-1024.png",
+      "http_status": 200
+    },
+    {
+      "screen": "labCertificadosHistorico",
+      "profile": "LABORATORIO",
+      "width": 820,
+      "functional_ok": true,
+      "candidate_assets": false,
+      "published_version": "1.4.25",
+      "capture": "historico-laboratorio-820.png",
+      "http_status": 200
+    },
+    {
+      "screen": "labCertificadosHistorico",
+      "profile": "LABORATORIO",
+      "width": 390,
+      "functional_ok": true,
+      "candidate_assets": false,
+      "published_version": "1.4.25",
+      "capture": "historico-laboratorio-390.png",
+      "http_status": 200
+    }
+  ],
+  "other_profile_boundaries": [
+    {
+      "profile": "QUALIDADE",
+      "has_central_identity": true,
+      "expected_access": false,
+      "permission_writes": 0,
+      "history_http_status": 403,
+      "boundary_preserved": true
+    },
+    {
+      "profile": "SUPRIMENTOS",
+      "has_central_identity": true,
+      "expected_access": false,
+      "permission_writes": 0,
+      "history_http_status": 403,
+      "boundary_preserved": true
+    },
+    {
+      "profile": "PCP",
+      "has_central_identity": true,
+      "expected_access": false,
+      "permission_writes": 0,
+      "history_http_status": 403,
+      "boundary_preserved": true
+    },
+    {
+      "profile": "PRODUCAO",
+      "has_central_identity": false,
+      "expected_access": false,
+      "reason": "Existing planning-only identity; no central CQ grant. No permissions changed."
+    },
+    {
+      "profile": "CONSULTA",
+      "has_central_identity": true,
+      "expected_access": false,
+      "permission_writes": 0,
+      "history_http_status": 403,
+      "boundary_preserved": true
+    }
+  ]
+}

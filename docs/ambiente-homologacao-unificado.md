@@ -1,5 +1,73 @@
 # Homologação do sistema unificado
 
+## Etapa separada CQ 006 — aplicada em 19/11/2026
+
+Após a autorização explícita para prosseguir sem comprovação de aplicação da
+006 em produção, foi aplicado **somente** o conteúdo exato de
+`/opt/concrefer-unificado/cq/migrations/006_liberacao_excepcional.sql` no banco
+**`laboratorio_visual_homolog_20261118`**, em transação única. O hash do SQL é
+`c95fb280c2be0a16f6467b67c87be9f78f8e88bd19e03a73c106449b39d16799`.
+Nenhuma outra migração foi aplicada e nenhum arquivo de API foi alterado.
+
+Antes da escrita, foi criado o dump customizado:
+
+`/opt/concrefer-unificado/homolog-next/backups/cq-006-20261119T121847Z/laboratorio_visual_homolog_20261118-before-006.dump`
+
+- Tamanho: **218.265 bytes**; arquivo privado fora da árvore pública.
+- SHA-256: `cb9f80b81b23e79c1c0fbbbe376c966bb9d6c462a36975c7b4b14cde348fee03`.
+- Verificação: índice `pg_restore --list` e leitura/descompressão integral com
+  `pg_restore --file=/dev/null`, sem restauração ou conexão a outro banco.
+- A primeira tentativa de abertura do SQL pelo usuário `postgres` foi recusada
+  pelo sistema de arquivos, antes de qualquer DDL. A execução bem-sucedida usou
+  os mesmos bytes do arquivo oficial pela entrada padrão, sem mudar permissões
+  ou arquivos de produção, após novo dump verificado.
+
+Foram confirmadas as quatro colunas `liberacao_excepcional_por`,
+`liberacao_excepcional_nome`, `liberacao_excepcional_motivo` e
+`liberacao_excepcional_em` em `cq_certificados`, além de `resultado_origem` em
+`cq_resultados_data`, com os tipos oficiais. Os hashes e as contagens dos dados
+preexistentes em todas as tabelas públicas, desconsiderando apenas os novos
+campos, permaneceram iguais. Proprietários e permissões dos objetos também
+permaneceram iguais. O comprovante inclui os resultados antes e depois.
+
+**A aplicação da 006 em produção não foi comprovada pelo histórico de
+migrações. O usuário confirmará abrindo o histórico de certificados em
+produção.** Nesta etapa não houve conexão a banco de produção, alteração de
+serviços, Nginx, APIs, regras ou permissões. A comparação dos `app.py` publicados
+mostrou uma única diferença preexistente: o endereço padrão `CQ_VERIFY_BASE`
+inclui `:18446` na cópia isolada; os arquivos não são idênticos byte a byte.
+Nenhum deles foi alterado nesta etapa.
+
+O histórico foi comprovado na **18446**, sem interceptar arquivos candidatos:
+
+- **GERENCIA** e **LABORATORIO** têm acesso existente; página e consulta do
+  histórico responderam **200** em **1440, 1024, 820 e 390px**.
+- Os sete perfis da matriz foram examinados. As contas sem concessão de CQ
+  mantiveram a recusa; identidades exclusivas do Planejamento não receberam
+  concessão central. Nenhum acesso foi criado.
+- O teste bloqueia requisições de escrita no navegador; não houve tentativa
+  de salvar, emitir, corrigir ou alterar cadastros. Não houve erro JavaScript.
+- As capturas 1440/390 dos dois perfis foram inspecionadas: o histórico está
+  funcional; o título repetido da versão publicada foi registrado como problema
+  visual a corrigir na rodada seguinte, sem aprovação visual indevida.
+- Gate executado **depois da migração: 7/7**.
+- Auditoria de arquivos de aplicação de produção, serviços, Nginx e IAM
+  preservada. A observação operacional de fotos já documentada na rodada
+  anterior permanece discriminada, sem atribuí-la a esta migração.
+
+Relatório e evidências próprios:
+[aplicação e dump](revisao-visual-unificado/homolog/cq-migracao-006/aplicacao.json),
+[perfis](revisao-visual-unificado/homolog/cq-migracao-006/historico-perfis.json),
+[matriz](revisao-visual-unificado/homolog/cq-migracao-006/matriz.json),
+[revisão visual](revisao-visual-unificado/homolog/cq-migracao-006/revisao-visual.json),
+[gate](revisao-visual-unificado/homolog/cq-migracao-006/gate.json) e
+[auditoria](revisao-visual-unificado/homolog/cq-migracao-006/auditoria.json).
+Os dumps permanecem somente no diretório privado da VPS.
+
+Esta etapa será preservada em commit próprio, antes de retomar as alterações
+visuais do `PROMPT_CODEX_FINAL.md`. A migração não publica a candidata visual:
+a homologação continua em **1.4.25**, com a candidata **1.4.26** local.
+
 ## Etapa separada CQ 006 — 19/11/2026 — execução interrompida
 
 A candidata visual **1.4.26** continua local, no commit `3ec8a07f`.

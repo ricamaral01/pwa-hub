@@ -1,0 +1,36 @@
+{
+  "origin": "https://concrefer.concretrack.com.br:18446",
+  "after_migration": true,
+  "passed": 7,
+  "total": 7,
+  "cases": [
+    [
+      "casca",
+      200
+    ],
+    [
+      "login",
+      200
+    ],
+    [
+      "PCP protegido",
+      401
+    ],
+    [
+      "Mapa health",
+      200
+    ],
+    [
+      "Laboratorio sem sessao",
+      302
+    ],
+    [
+      "Qualidade protegida",
+      401
+    ],
+    [
+      "GED QR publico",
+      200
+    ]
+  ]
+}

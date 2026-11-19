@@ -1,0 +1,38 @@
+[
+  {
+    "screen": "labCertificadosHistorico",
+    "profile": "GERENCIA",
+    "width": 1440,
+    "status": "problema",
+    "capture": "historico-gerencia-1440.png",
+    "sha256": "d91b64b436246ef6756642e7f6efefcc46c396a6e20c25871771464b4243f46b",
+    "problem": "Repeated page title in h1 and history panel heading; functional history is working. Visual fix deferred to the separately committed visual round."
+  },
+  {
+    "screen": "labCertificadosHistorico",
+    "profile": "GERENCIA",
+    "width": 390,
+    "status": "problema",
+    "capture": "historico-gerencia-390.png",
+    "sha256": "4c9ae8218ea635a233540f4e9a6ebd56ec81f88e12d33db2819ca346b91961ba",
+    "problem": "Repeated page title in h1 and history panel heading; functional history is working. Visual fix deferred to the separately committed visual round."
+  },
+  {
+    "screen": "labCertificadosHistorico",
+    "profile": "LABORATORIO",
+    "width": 1440,
+    "status": "problema",
+    "capture": "historico-laboratorio-1440.png",
+    "sha256": "3a6ba940860efd56686266d91f5583f198739ce1f1b446fb7ffa447f524af2f6",
+    "problem": "Repeated page title in h1 and history panel heading; functional history is working. Visual fix deferred to the separately committed visual round."
+  },
+  {
+    "screen": "labCertificadosHistorico",
+    "profile": "LABORATORIO",
+    "width": 390,
+    "status": "problema",
+    "capture": "historico-laboratorio-390.png",
+    "sha256": "9c826d77a7dfc56b141ab4a65a92764cd2d64d340d06b46253ca0622732865fe",
+    "problem": "Repeated page title in h1 and history panel heading; functional history is working. Visual fix deferred to the separately committed visual round."
+  }
+]

@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import psycopg
 from itsdangerous import URLSafeTimedSerializer
+from urllib.parse import urlsplit
 
 values = {}
 for line in Path('/etc/concrefer-unificado/homolog/visual-mapa.env').read_text().splitlines():
@@ -19,7 +20,10 @@ for line in Path('/etc/concrefer-unificado/homolog/visual-mapa.env').read_text()
         key, value = line.split('=', 1)
         values[key] = value.strip().strip('"').strip("'")
 
+target = urlsplit(values['MAPA_AUTH_DATABASE_URL'])
+assert target.hostname in ('127.0.0.1', 'localhost') and target.path == '/mapa_visual_homolog_20261118'
 with psycopg.connect(values['MAPA_AUTH_DATABASE_URL']) as conn:
+    conn.execute('SET TRANSACTION READ ONLY')
     with conn.cursor() as cur:
         cur.execute("SELECT id, updated_at FROM public.usuarios WHERE id = 'user-ricardo' AND ativo")
         ricardo = cur.fetchone()
