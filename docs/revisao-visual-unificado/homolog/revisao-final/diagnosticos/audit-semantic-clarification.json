@@ -1,0 +1,8 @@
+{
+  "unchanged_checks": 9,
+  "change": "Recognize actual Noroeste measurements, actual monthly closing states and actual series summaries as first data. No filters or navigation labels counted as results.",
+  "accepted_hashes": [
+    "73e7ecc0a533727f2b63eeb7ef46fc3bd3c869accc6b35ab517acfb30b16efe7",
+    "07856ca72ca87c954ea39eb1bb695de479285bef690c7d8ac8a5eac6770a35ad"
+  ]
+}

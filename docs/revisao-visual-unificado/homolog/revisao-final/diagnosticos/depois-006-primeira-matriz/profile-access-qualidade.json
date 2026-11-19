@@ -1,0 +1,39 @@
+{
+  "profile": "QUALIDADE",
+  "eligible_screens": [
+    "fechamentoDiario",
+    "qualidadePainel",
+    "qualidadeAbertura",
+    "manutencaoUsina",
+    "qualidadeTratativa",
+    "qualidadeCadastros",
+    "qualidadeResultadosBancada",
+    "shell-inicio",
+    "shell-login",
+    "shell-atualizar",
+    "shell-testar",
+    "module-qualidade",
+    "ged-dashboard",
+    "ged-documents",
+    "ged-approvals",
+    "ged-calibrations",
+    "module-ged"
+  ],
+  "allowed_screens": [
+    "fechamentoDiario",
+    "manutencaoUsina",
+    "qualidadeAbertura",
+    "qualidadeCadastros",
+    "qualidadePainel",
+    "qualidadeResultadosBancada",
+    "qualidadeTratativa"
+  ],
+  "allowed_modules": [
+    "ged",
+    "producao",
+    "qualidade"
+  ],
+  "permission_writes": 0,
+  "access_verified": true,
+  "permission_source": "central screen-access/me HTTP 200"
+}

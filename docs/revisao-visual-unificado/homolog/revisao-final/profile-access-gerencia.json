@@ -388,5 +388,7 @@
     "suprimentos",
     "usinas"
   ],
-  "permission_writes": 0
+  "permission_writes": 0,
+  "access_verified": true,
+  "permission_source": "central screen-access/me HTTP 200"
 }

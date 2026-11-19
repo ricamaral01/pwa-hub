@@ -2,7 +2,7 @@
   {
     "profile": "GERENCIA",
     "batch": 1,
-    "exit_code": 0,
+    "exit_code": 1,
     "log": "batch-gerencia-01.log"
   },
   {
@@ -116,67 +116,9 @@
   {
     "profile": "LABORATORIO",
     "batch": 8,
-    "exit_code": 1,
-    "log": "batch-laboratorio-08.log"
-  },
-  {
-    "profile": "LABORATORIO",
-    "batch": 9,
-    "exit_code": 1,
-    "log": "batch-laboratorio-09.log"
-  },
-  {
-    "profile": "LABORATORIO",
-    "batch": 10,
-    "exit_code": 1,
-    "log": "batch-laboratorio-10.log"
-  },
-  {
-    "profile": "LABORATORIO",
-    "batch": 11,
-    "exit_code": 1,
-    "log": "batch-laboratorio-11.log"
-  },
-  {
-    "profile": "LABORATORIO",
-    "batch": 12,
-    "exit_code": 1,
-    "log": "batch-laboratorio-12.log"
-  },
-  {
-    "profile": "PCP",
-    "batch": 1,
-    "exit_code": 1,
-    "log": "batch-pcp-01.log"
-  },
-  {
-    "profile": "PCP",
-    "batch": 2,
-    "exit_code": 1,
-    "log": "batch-pcp-02.log"
-  },
-  {
-    "profile": "PCP",
-    "batch": 3,
-    "exit_code": 1,
-    "log": "batch-pcp-03.log"
-  },
-  {
-    "profile": "PCP",
-    "batch": 4,
-    "exit_code": 1,
-    "log": "batch-pcp-04.log"
-  },
-  {
-    "profile": "PCP",
-    "batch": 5,
-    "exit_code": 1,
-    "log": "batch-pcp-05.log"
-  },
-  {
-    "profile": "PCP",
-    "batch": 6,
-    "exit_code": 1,
-    "log": "batch-pcp-06.log"
+    "exit_code": null,
+    "observed_completion": true,
+    "log": "batch-laboratorio-08.log",
+    "note": "Child completed after runner stopped; summary retained. Exit code was not collected."
   }
 ]

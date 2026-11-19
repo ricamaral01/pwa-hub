@@ -315,6 +315,15 @@
     "tvFormas",
     "usinasInicio"
   ],
-  "allowed_modules": [],
-  "permission_writes": 0
+  "allowed_modules": [
+    "laboratorio",
+    "planejamento",
+    "producao",
+    "qualidade",
+    "suprimentos",
+    "usinas"
+  ],
+  "permission_writes": 0,
+  "access_verified": true,
+  "permission_source": "central screen-access/me HTTP 200"
 }

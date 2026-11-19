@@ -1,0 +1,506 @@
+[
+  {
+    "profile": "GERENCIA",
+    "batch": 1,
+    "exit_code": 1,
+    "log": "batch-gerencia-01.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 2,
+    "exit_code": 1,
+    "log": "batch-gerencia-02.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 3,
+    "exit_code": 1,
+    "log": "batch-gerencia-03.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 4,
+    "exit_code": 1,
+    "log": "batch-gerencia-04.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 5,
+    "exit_code": 1,
+    "log": "batch-gerencia-05.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 6,
+    "exit_code": 1,
+    "log": "batch-gerencia-06.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 7,
+    "exit_code": 1,
+    "log": "batch-gerencia-07.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 8,
+    "exit_code": 1,
+    "log": "batch-gerencia-08.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 9,
+    "exit_code": 1,
+    "log": "batch-gerencia-09.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 10,
+    "exit_code": 1,
+    "log": "batch-gerencia-10.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 11,
+    "exit_code": 1,
+    "log": "batch-gerencia-11.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 12,
+    "exit_code": 1,
+    "log": "batch-gerencia-12.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 1,
+    "exit_code": 1,
+    "log": "batch-laboratorio-01.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 2,
+    "exit_code": 1,
+    "log": "batch-laboratorio-02.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 3,
+    "exit_code": 1,
+    "log": "batch-laboratorio-03.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 4,
+    "exit_code": 1,
+    "log": "batch-laboratorio-04.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 5,
+    "exit_code": 1,
+    "log": "batch-laboratorio-05.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 6,
+    "exit_code": 1,
+    "log": "batch-laboratorio-06.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 7,
+    "exit_code": 1,
+    "log": "batch-laboratorio-07.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 8,
+    "exit_code": 1,
+    "log": "batch-laboratorio-08.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 9,
+    "exit_code": 1,
+    "log": "batch-laboratorio-09.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 10,
+    "exit_code": 1,
+    "log": "batch-laboratorio-10.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 11,
+    "exit_code": 1,
+    "log": "batch-laboratorio-11.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 12,
+    "exit_code": 1,
+    "log": "batch-laboratorio-12.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 1,
+    "exit_code": 1,
+    "log": "batch-pcp-01.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 2,
+    "exit_code": 1,
+    "log": "batch-pcp-02.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 3,
+    "exit_code": 1,
+    "log": "batch-pcp-03.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 4,
+    "exit_code": 1,
+    "log": "batch-pcp-04.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 5,
+    "exit_code": 1,
+    "log": "batch-pcp-05.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 6,
+    "exit_code": 1,
+    "log": "batch-pcp-06.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 7,
+    "exit_code": 1,
+    "log": "batch-pcp-07.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 8,
+    "exit_code": 1,
+    "log": "batch-pcp-08.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 9,
+    "exit_code": 1,
+    "log": "batch-pcp-09.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 10,
+    "exit_code": 1,
+    "log": "batch-pcp-10.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 11,
+    "exit_code": 1,
+    "log": "batch-pcp-11.log"
+  },
+  {
+    "profile": "PCP",
+    "batch": 12,
+    "exit_code": 1,
+    "log": "batch-pcp-12.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 1,
+    "exit_code": 0,
+    "log": "batch-producao-01.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 2,
+    "exit_code": 0,
+    "log": "batch-producao-02.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 3,
+    "exit_code": 1,
+    "log": "batch-producao-03.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 4,
+    "exit_code": 1,
+    "log": "batch-producao-04.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 5,
+    "exit_code": 1,
+    "log": "batch-producao-05.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 6,
+    "exit_code": 1,
+    "log": "batch-producao-06.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 7,
+    "exit_code": 1,
+    "log": "batch-producao-07.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 8,
+    "exit_code": 1,
+    "log": "batch-producao-08.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 9,
+    "exit_code": 1,
+    "log": "batch-producao-09.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 10,
+    "exit_code": 1,
+    "log": "batch-producao-10.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 11,
+    "exit_code": 1,
+    "log": "batch-producao-11.log"
+  },
+  {
+    "profile": "PRODUCAO",
+    "batch": 12,
+    "exit_code": 1,
+    "log": "batch-producao-12.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 1,
+    "exit_code": 0,
+    "log": "batch-qualidade-01.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 2,
+    "exit_code": 0,
+    "log": "batch-qualidade-02.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 3,
+    "exit_code": 1,
+    "log": "batch-qualidade-03.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 4,
+    "exit_code": 1,
+    "log": "batch-qualidade-04.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 5,
+    "exit_code": 1,
+    "log": "batch-qualidade-05.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 6,
+    "exit_code": 1,
+    "log": "batch-qualidade-06.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 7,
+    "exit_code": 1,
+    "log": "batch-qualidade-07.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 8,
+    "exit_code": 1,
+    "log": "batch-qualidade-08.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 9,
+    "exit_code": 1,
+    "log": "batch-qualidade-09.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 10,
+    "exit_code": 1,
+    "log": "batch-qualidade-10.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 11,
+    "exit_code": 1,
+    "log": "batch-qualidade-11.log"
+  },
+  {
+    "profile": "QUALIDADE",
+    "batch": 12,
+    "exit_code": 1,
+    "log": "batch-qualidade-12.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 1,
+    "exit_code": 0,
+    "log": "batch-suprimentos-01.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 2,
+    "exit_code": 0,
+    "log": "batch-suprimentos-02.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 3,
+    "exit_code": 0,
+    "log": "batch-suprimentos-03.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 4,
+    "exit_code": 0,
+    "log": "batch-suprimentos-04.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 5,
+    "exit_code": 0,
+    "log": "batch-suprimentos-05.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 6,
+    "exit_code": 1,
+    "log": "batch-suprimentos-06.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 7,
+    "exit_code": 1,
+    "log": "batch-suprimentos-07.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 8,
+    "exit_code": 1,
+    "log": "batch-suprimentos-08.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 9,
+    "exit_code": 1,
+    "log": "batch-suprimentos-09.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 10,
+    "exit_code": 1,
+    "log": "batch-suprimentos-10.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 11,
+    "exit_code": 1,
+    "log": "batch-suprimentos-11.log"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "batch": 12,
+    "exit_code": 1,
+    "log": "batch-suprimentos-12.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 1,
+    "exit_code": 0,
+    "log": "batch-consulta-01.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 2,
+    "exit_code": 0,
+    "log": "batch-consulta-02.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 3,
+    "exit_code": 0,
+    "log": "batch-consulta-03.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 4,
+    "exit_code": 0,
+    "log": "batch-consulta-04.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 5,
+    "exit_code": 0,
+    "log": "batch-consulta-05.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 6,
+    "exit_code": 0,
+    "log": "batch-consulta-06.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 7,
+    "exit_code": 1,
+    "log": "batch-consulta-07.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 8,
+    "exit_code": 1,
+    "log": "batch-consulta-08.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 9,
+    "exit_code": 1,
+    "log": "batch-consulta-09.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 10,
+    "exit_code": 1,
+    "log": "batch-consulta-10.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 11,
+    "exit_code": 1,
+    "log": "batch-consulta-11.log"
+  },
+  {
+    "profile": "CONSULTA",
+    "batch": 12,
+    "exit_code": 1,
+    "log": "batch-consulta-12.log"
+  }
+]

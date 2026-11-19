@@ -3352,7 +3352,7 @@
       "/opt/concrefer-unificado/laboratorio/service/cronoanalise/seeds/layout_setores.json": "f862eaec94efcecf8c39fe47937b988f3f1141f94054f47d261c37cebb2bb36e",
       "/opt/concrefer-unificado/laboratorio/service/cronoanalise/seeds/parametros.json": "6ef80cf2023fcdeb6ef89297e47b2989a417f2e200be2002c11ee877e08d5c45",
       "/opt/concrefer-unificado/laboratorio/service/cronoanalise/seeds/catalogo.json": "efc5dfeed3012343207ad7d3bd140fd072f89009bfcb727872a2b0e91194f114",
-      "/opt/concrefer-unificado/photo-storage/fotos-inspecao.json": "2ec4015315e3a5438d70c5ce5fb408c6f0e8e991446262c75596c2e8d89f85ab",
+      "/opt/concrefer-unificado/photo-storage/fotos-inspecao.json": "4c743ae9d7ff14374b2e288d6807d50725afd868b9c13781619e81a7f59b8701",
       "/opt/concrefer-unificado/previous-hub-api/run.py": "9faa7319cf176e57286597f97f00b4ea41137dd8aef656e58877de98a4ed348d",
       "/opt/concrefer-unificado/previous-hub-api/api/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
       "/opt/concrefer-unificado/previous-hub-api/api/main.py": "49db534285036d97819d90daf4318b859040e4f878eff887a7b35b395f29df33",
@@ -20734,21 +20734,21 @@
         "classification": "operational production photo upload outside this task",
         "production_uploads": [
           {
-            "request": "POST /unificado/mapa/api/inspecoes/af2d88a7-6402-485d-9561-eca00a425999%7C%7C2026-11-18%7C%7CSetor%202%7C%7CC-16/fotos HTTP/2.0",
+            "request": "POST /unificado/mapa/api/inspecoes/a65351ae-74f8-475f-89c1-8a71b0f9c46b%7C%7C2026-11-18%7C%7CSetor%201%7C%7CD-06/fotos HTTP/2.0",
             "referer_origin": "https://concrefer.concretrack.com.br"
           },
           {
-            "request": "POST /unificado/mapa/api/inspecoes/09efd8a9-1b68-40c6-a402-8681dcbb3f5e%7C%7C2026-11-18%7C%7CSetor%201%7C%7CAE-12/fotos HTTP/2.0",
+            "request": "POST /unificado/mapa/api/inspecoes/a65351ae-74f8-475f-89c1-8a71b0f9c46b%7C%7C2026-11-18%7C%7CSetor%201%7C%7CD-06/fotos HTTP/2.0",
             "referer_origin": "https://concrefer.concretrack.com.br"
           },
           {
-            "request": "POST /unificado/mapa/api/inspecoes/f4ba0b04-3f64-4208-bdf9-2f38f536326f%7C%7C2026-11-18%7C%7CSetor%201%7C%7CCE-04/fotos HTTP/2.0",
+            "request": "POST /unificado/mapa/api/inspecoes/eebf179f-0cde-4bc1-a690-b1b7e0a4d107%7C%7C2026-11-17%7C%7CSetor%202%7C%7CA-82/fotos HTTP/2.0",
             "referer_origin": "https://concrefer.concretrack.com.br"
           }
         ],
         "homolog_store_separate_and_unchanged": true,
         "before_sha256": "1cfb8154bafe2c5fc2744b808a054f65077eeded5432537d6844915c234704a6",
-        "after_sha256": "2ec4015315e3a5438d70c5ce5fb408c6f0e8e991446262c75596c2e8d89f85ab"
+        "after_sha256": "4c743ae9d7ff14374b2e288d6807d50725afd868b9c13781619e81a7f59b8701"
       }
     ]
   }

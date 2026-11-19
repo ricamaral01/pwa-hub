@@ -1,0 +1,44 @@
+{
+  "profile": "PRODUCAO",
+  "eligible_screens": [
+    "dashboard",
+    "comparacao",
+    "programacaoSemanal12",
+    "pcpDiario",
+    "apontamentoMega",
+    "producaoPcp",
+    "maodeobra",
+    "maodeobraRateio",
+    "fechamentoDiarioPcp",
+    "armadurasProgramacao",
+    "armadurasRelatorio",
+    "postesNumerosSerie",
+    "shell-inicio",
+    "shell-login",
+    "shell-atualizar",
+    "shell-testar",
+    "module-planejamento",
+    "mobile-conta",
+    "mobile-recentes",
+    "postesNumerosSerie-tab-1",
+    "postesNumerosSerie-tab-2"
+  ],
+  "allowed_screens": [
+    "apontamentoMega",
+    "armadurasProgramacao",
+    "armadurasRelatorio",
+    "comparacao",
+    "dashboard",
+    "fechamentoDiarioPcp",
+    "maodeobra",
+    "maodeobraRateio",
+    "pcpDiario",
+    "postesNumerosSerie",
+    "producaoPcp",
+    "programacaoSemanal12"
+  ],
+  "allowed_modules": [
+    "planejamento"
+  ],
+  "permission_writes": 0
+}

@@ -129,5 +129,6 @@
       "line": "17.4px"
     }
   },
-  "geometry_identical": true
+  "geometry_identical": true,
+  "comparison": "Seven elements: exact position and size; reference sample values and candidate empty fields are different UI states."
 }

@@ -26,6 +26,34 @@ Evidências, capturas 1440/390 e limites da validação estão no
 A candidata 1.4.26 ainda não foi publicada; abertura e troca de data reais
 permanecem reprovadas até que o manifesto possa ser consultado pela instância.
 
+### Continuação da revisão visual
+
+Commits locais: `8c1a1a9b` (falhas do relatório externo e exceção GET restrita)
+e `dbd1b11d` (apresentação e auditoria dentro de Shadow DOM). Os campos de
+filtros no Shadow DOM mantêm os mesmos nós, pais e eventos; a impressão conserva
+o título original e não inclui o novo botão de filtro. A auditoria agora detecta
+também títulos repetidos dentro dessas árvores. O teste de navegação preserva
+os fragmentos das URLs de Dosagem e reprova redirecionamentos inesperados ao
+login central. Capturas antigas sem essas comprovações continuam pendentes.
+
+Passaram 13 testes Node, os testes reais de DOM, seis cenários controlados de
+relatório externo, três testes da exceção de GET e quatro do guard visual.
+O guard verificou 311 arquivos, e o parser verificou 121 blocos sem erros.
+Login em 1024/820/390 mantém zero pixels alterados em comparação controlada;
+desktop mantém a geometria da referência. Os dois PDFs de referência preservam
+os hashes originais; isso não comprova todos os modelos de impressão.
+
+O gate publicado na 18446 foi repetido e passou em 7/7. A auditoria de arquivos
+de aplicação, serviços e Nginx de produção e cinco conjuntos de IAM isolados
+permaneceu igual, sem conexão a banco de produção. A atividade independente de
+upload de foto em produção continua identificada separadamente na evidência.
+
+A matriz global e a revisão visual permanecem incompletas, com falhas reais
+401/500 e telas que exigem recaptura. Não houve publicação da 1.4.26, push, PR,
+reinício ou prova de atualização do service worker. O lote amplo foi encerrado
+após preservar os resultados do lote em andamento; as consultas focadas e suas
+limitações estão no [relatório local](revisao-visual-unificado/homolog/revisao-final/RELATORIO.html).
+
 ## Etapa separada CQ 006 — aplicada em 19/11/2026
 
 Após a autorização explícita para prosseguir sem comprovação de aplicação da

@@ -1,0 +1,27 @@
+{
+  "profile": "SUPRIMENTOS",
+  "eligible_screens": [
+    "manutencaoUsina",
+    "suprimentosPainel",
+    "suprimentosSolicitacoes",
+    "suprimentosNova",
+    "shell-inicio",
+    "shell-login",
+    "shell-atualizar",
+    "shell-testar",
+    "module-suprimentos"
+  ],
+  "allowed_screens": [
+    "manutencaoUsina",
+    "suprimentosNova",
+    "suprimentosPainel",
+    "suprimentosSolicitacoes"
+  ],
+  "allowed_modules": [
+    "qualidade",
+    "suprimentos"
+  ],
+  "permission_writes": 0,
+  "access_verified": true,
+  "permission_source": "central screen-access/me HTTP 200"
+}
