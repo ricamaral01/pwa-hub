@@ -1,0 +1,1372 @@
+[
+  {
+    "id": "logisticaInicio",
+    "module": "Logística",
+    "screen": "Início",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/logistica/",
+    "opened": true,
+    "first_visible_line": "Início",
+    "content_sha256": "9b46db5963ebb44477955e14c7102af2e01baad55a216d2b7ac100e61d9b2336",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "logisticaPainel",
+    "module": "Logística",
+    "screen": "Painel Km/Evento",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/logistica/painel/",
+    "opened": true,
+    "first_visible_line": "Painel km/evento",
+    "content_sha256": "9dc2a25cac5f1742b3338faa6b4a883eadbab3ab34ed65065e464e6767dc66c2",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "logisticaCorrecoes",
+    "module": "Logística",
+    "screen": "Correções e exclusões",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/logistica/correcoes/",
+    "opened": true,
+    "first_visible_line": "Correções e exclusões",
+    "content_sha256": "fb6e169eebbfd0a9fd0e6772266e1379663db192e6eab6e0525dcc2165bda246",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "logisticaFechamento",
+    "module": "Logística",
+    "screen": "Fechamento trimestral",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/logistica/fechamento/",
+    "opened": true,
+    "first_visible_line": "Fechamento trimestral",
+    "content_sha256": "21e7e034a47c9a210aa1b0187de5d39f565beb17fa4a56caf74ba3a59dec23eb",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "logisticaPremiacao",
+    "module": "Logística",
+    "screen": "Premiação",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/logistica/premiacao/",
+    "opened": true,
+    "first_visible_line": "Premiação",
+    "content_sha256": "02452d7d6c038cb470b1d22a943c69a5f26cb46e3d3cbf9a758e3ba75327be6c",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "logisticaMeses",
+    "module": "Logística",
+    "screen": "Meses e importação",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/logistica/meses/",
+    "opened": true,
+    "first_visible_line": "Meses e importação",
+    "content_sha256": "67ce8ece825fc80a166843f75c646090ed74efb46c46a49a7c4ee78dab728dac",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "logisticaMetas",
+    "module": "Logística",
+    "screen": "Metas",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/logistica/metas/",
+    "opened": true,
+    "first_visible_line": "Metas",
+    "content_sha256": "bce9ff875d45c363b9eb0cea2b5296d5b15e375e2bedfe433d982820d098f6ec",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "logisticaMotoristas",
+    "module": "Logística",
+    "screen": "Motoristas",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/logistica/motoristas/",
+    "opened": true,
+    "first_visible_line": "Motoristas",
+    "content_sha256": "334c531f49e03917ba9fda0e83328139f44952aebb7dfc8dbda6031b695596f6",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "logisticaAjudantes",
+    "module": "Logística",
+    "screen": "Ajudantes",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/logistica/ajudantes/",
+    "opened": true,
+    "first_visible_line": "Ajudantes",
+    "content_sha256": "a4f9fddc219b6eb1df06ae436de35ad708557049b78e6d1d7279666f96725f5c",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "logisticaCobli",
+    "module": "Logística",
+    "screen": "Mapeamento Cobli",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/logistica/mapeamento-cobli/",
+    "opened": true,
+    "first_visible_line": "Mapeamento Cobli",
+    "content_sha256": "46c712f22bc2b6a69ea55748863222bcccac3182002523b7fd3bb7d4493074c5",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "etiquetasSc",
+    "module": "Planejamento",
+    "screen": "Setor 3",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+    "opened": true,
+    "first_visible_line": "Impressão de etiquetas setor 3",
+    "content_sha256": "47b0d27b78b91d2024183e46c79e2a2df699b4555f6c4e97583861572764a75c",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "etiquetasSetor4",
+    "module": "Planejamento",
+    "screen": "Setor 4",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-setor4/",
+    "opened": true,
+    "first_visible_line": "Impressão de etiquetas setor 4",
+    "content_sha256": "042f6bf892ceffee130a12542f184674572dcdf79277cdafbedad2a782f3dabb",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "etiquetasArmaduras",
+    "module": "Planejamento",
+    "screen": "Armaduras",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-armaduras/",
+    "opened": true,
+    "first_visible_line": "Etiquetas armaduras · postes SC",
+    "content_sha256": "ccc0b5c8e053878839d796e00b0bb089bc8fe56878f0096fe6b100e32d356ba9",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "pcpDiario",
+    "module": "Planejamento",
+    "screen": "PCP Diário",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/pcp-diario/",
+    "opened": true,
+    "first_visible_line": "Data inicial",
+    "content_sha256": "cab77be62b004b4c107960e6df69398896af66c8f32e63a9901e51e4971fc650",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "apontamentoMega",
+    "module": "Planejamento",
+    "screen": "Apontamento Mega",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/apontamento-mega/",
+    "opened": true,
+    "first_visible_line": "Dia",
+    "content_sha256": "596515fd4aa2cbc926f38482a72b412e33454d1f639e2666e16a8d5b156f930c",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "fechamentoDiarioPcp",
+    "module": "Planejamento",
+    "screen": "Fechamento Diário",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/fechamento-diario/",
+    "opened": true,
+    "first_visible_line": "Fechamento Diario",
+    "content_sha256": "047901c25bb2f00d66ba6a968476c83b172fa8181a54e1e85e65df3ea31ab7c6",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "maodeobra",
+    "module": "Planejamento",
+    "screen": "Mão de Obra",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra/",
+    "opened": true,
+    "first_visible_line": "☰",
+    "content_sha256": "fee71e644355cb3a5ef3c51e3252055dcc40576a0aeab0c26e80877d1bdb1989",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "maodeobraRateio",
+    "module": "Planejamento",
+    "screen": "Rateio de Mão de Obra",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra-rateio/",
+    "opened": true,
+    "first_visible_line": "Registrar rateio de MOI",
+    "content_sha256": "a5cfd447f2c23bece3232a9590630625edcee4272ba941953349aff691f74661",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "liberacao",
+    "module": "Produção",
+    "screen": "Produção / Liberação",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO",
+    "opened": true,
+    "first_visible_line": "☰",
+    "content_sha256": "8328a0ee34ae7d6ffcd0443cf1c1980a53fd38fa027c7a9910670fceaa6f6a2a",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "setor1",
+    "module": "Produção",
+    "screen": "Setor 1",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S1",
+    "opened": true,
+    "first_visible_line": "MC",
+    "content_sha256": "b1101ac1ae51ca2dc0612f888351c33c8a91165ea41a57c7420e88d74a1fe6ed",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "setor2",
+    "module": "Produção",
+    "screen": "Setor 2",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S2",
+    "opened": true,
+    "first_visible_line": "Produção setor 2",
+    "content_sha256": "aa5eafc71cc759777c1c9cc823cd3ba5367abb3c745b9645825975fc87d541c8",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "setor3",
+    "module": "Produção",
+    "screen": "Setor 3",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S3",
+    "opened": true,
+    "first_visible_line": "Produção setor 3",
+    "content_sha256": "71a31f09aab85792feb327a80757a201b42508a4b80ddff8fd90e71cd0bcf6d5",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "setor4",
+    "module": "Produção",
+    "screen": "Setor 4",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S4",
+    "opened": true,
+    "first_visible_line": "Produção setor 4",
+    "content_sha256": "99f0fc3a6b52eab90b5dbc8c37d34ecc74bf0c9b9fea893f07226ec4810120b7",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "mandril",
+    "module": "Produção",
+    "screen": "Mandril Circular",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MANDRIL_CIRCULAR",
+    "opened": true,
+    "first_visible_line": "MC",
+    "content_sha256": "e741abaca32b2ec68b4e2f2867bb883efd5e9e263c6eba1d50600145276e7f36",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "inspecao",
+    "module": "Produção",
+    "screen": "Inspeção Setor 3 e 4",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=INSPECAO",
+    "opened": true,
+    "first_visible_line": "MC",
+    "content_sha256": "b1101ac1ae51ca2dc0612f888351c33c8a91165ea41a57c7420e88d74a1fe6ed",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "montagem",
+    "module": "Produção",
+    "screen": "Montagem Postes",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_POSTES",
+    "opened": true,
+    "first_visible_line": "☰",
+    "content_sha256": "c0df84621c6940bbb6ccf005cf736af54039ed038cb135e17bcb1f9fa81e91ee",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "sequencia",
+    "module": "Produção",
+    "screen": "Sequência Setor 3",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=SEQUENCIA_S3",
+    "opened": true,
+    "first_visible_line": "☰",
+    "content_sha256": "79f49f0dc021c8d38e8e4223804b34704b57a952e55111ca15d3a5ddea4d49b2",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "relatorioMapa",
+    "module": "Produção",
+    "screen": "Relatório Enc. Produção",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO",
+    "opened": true,
+    "first_visible_line": "MC",
+    "content_sha256": "b1101ac1ae51ca2dc0612f888351c33c8a91165ea41a57c7420e88d74a1fe6ed",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "historico",
+    "module": "Produção",
+    "screen": "Histórico",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=HISTORICO",
+    "opened": true,
+    "first_visible_line": "☰",
+    "content_sha256": "55a808c7bad24c5a96a9eebdf90f12bc1e9b16af0d4dd2326ed0823a2fbd6613",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "acmpConcretagem",
+    "module": "Produção",
+    "screen": "Acmp. Concretagem",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/acmp-concretagem/",
+    "opened": true,
+    "first_visible_line": "Acmp. Concretagem",
+    "content_sha256": "832ad2545179933f3c8eb4ed8e9a64d28838c6dd98eb1662033cecfb86f6cf12",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "manutencao",
+    "module": "Produção",
+    "screen": "Manutenção Formas",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO_MANUTENCAO",
+    "opened": true,
+    "first_visible_line": "☰",
+    "content_sha256": "72289fda2530da70887ef8e042180580fc2c03c46b88727af9167dd7a0bd132e",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "tratativa",
+    "module": "Produção",
+    "screen": "Tratativa Defeitos",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=TRATATIVA_DEFEITOS",
+    "opened": true,
+    "first_visible_line": "☰",
+    "content_sha256": "898d7153eb14b5a2648329850d6f5a0931f20e82762c3e246e19a004647d7a2f",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "fechamentoDiario",
+    "module": "Produção",
+    "screen": "Fechamento diário",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+    "opened": true,
+    "first_visible_line": "Fechamento Diario",
+    "content_sha256": "a8e2be105c6b26e41b60b40471c3c7615179c56261bb281be357396aebdbe126",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "campinasUnificado",
+    "module": "Produção",
+    "screen": "Campinas Uni · S1+2+3+4",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/campinas-unificado/",
+    "opened": true,
+    "first_visible_line": "Campinas uni",
+    "content_sha256": "dedd09aadab8fd5297f94e7909cc3fbef3dff54f677652f2ef1384ac0dd98b00",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "dashMontagem",
+    "module": "Produção",
+    "screen": "Dashboard Montagem",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_INDICADORES",
+    "opened": true,
+    "first_visible_line": "MC",
+    "content_sha256": "b1101ac1ae51ca2dc0612f888351c33c8a91165ea41a57c7420e88d74a1fe6ed",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "dashDefeitos",
+    "module": "Produção",
+    "screen": "Dashboard Defeitos",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=DASHBOARD_DEFEITOS",
+    "opened": true,
+    "first_visible_line": "MC",
+    "content_sha256": "b1101ac1ae51ca2dc0612f888351c33c8a91165ea41a57c7420e88d74a1fe6ed",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "produtividade",
+    "module": "Produção",
+    "screen": "Dashboard Concretagem Matriz",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=PROD_ANALISE",
+    "opened": true,
+    "first_visible_line": "☰",
+    "content_sha256": "b55e495ccac9106c98dccecc2e1bf8da5dc22c6fedc3776c3ad381e5e6017ac4",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "pdrApontamento",
+    "module": "Produção",
+    "screen": "Apontamento do dia",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=apontamento",
+    "opened": true,
+    "first_visible_line": "Apontamento do dia",
+    "content_sha256": "462b4003acd5053998ca328499c01e3ef4a0bf0f9d0b8324d55cfb216b61e84d",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "pdrMensal",
+    "module": "Produção",
+    "screen": "Produção Pederneiras",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=mensal",
+    "opened": true,
+    "first_visible_line": "Produção Pederneiras",
+    "content_sha256": "941f66f3283f1b4c217a6153796afc7c962c81a3d3a470a832d15a8dd2222cfb",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "pdrProdutos",
+    "module": "Produção",
+    "screen": "Cadastro de produtos",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=produtos",
+    "opened": true,
+    "first_visible_line": "Cadastro de produtos",
+    "content_sha256": "d42032191338d2143778b2354539370e8e4056e4b7316b4fdf4cb6a0e43097ea",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "rbrApontamento",
+    "module": "Produção",
+    "screen": "Apontamento do dia",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=apontamento",
+    "opened": true,
+    "first_visible_line": "Apontamento do dia",
+    "content_sha256": "3962b47392b4155c37649f8054b151f8beedbb2ab80401fc7c2bb61743569f0b",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "rbrProdutos",
+    "module": "Produção",
+    "screen": "Cadastro de produtos",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=produtos",
+    "opened": true,
+    "first_visible_line": "Cadastro de produtos",
+    "content_sha256": "c3cd87150aba6c3202c2536ae8bc6d5c19bca9a22affe03bc25ad553047c1245",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "norApontamento",
+    "module": "Produção",
+    "screen": "Apontamento do dia",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=apontamento",
+    "opened": true,
+    "first_visible_line": "Apontamento do dia",
+    "content_sha256": "d8c944837d8abfd3850433233aafcf6e5a7c6e886cfa4cb7eba279659ec79302",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "norMensal",
+    "module": "Produção",
+    "screen": "Produção Noroeste",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=mensal",
+    "opened": true,
+    "first_visible_line": "Produção Noroeste",
+    "content_sha256": "52bbabbed47a4a134ff36c8be2fb4ab615a3832c0613dadab42cfd9e9c589761",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "norIndicadores",
+    "module": "Produção",
+    "screen": "Indicadores",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=indicadores",
+    "opened": true,
+    "first_visible_line": "Indicadores",
+    "content_sha256": "91b21b0795785c0b503c5346dc9f36a283bbfb9151ba393423db9a92cadb0afa",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "indicadorGeralProducao",
+    "module": "Produção",
+    "screen": "Indicador geral",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/indicadores-gerais/",
+    "opened": true,
+    "first_visible_line": "Indicador geral",
+    "content_sha256": "9df22f82c41206717cce9a2552710281ab6f614dab0ddb182b11f0770f587908",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "manutencaoUsina",
+    "module": "Qualidade",
+    "screen": "Manutenção Usina",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+    "opened": true,
+    "first_visible_line": "Manutenção usina",
+    "content_sha256": "ae8fdc9ec656633e216b618648242773a1fc2838a9ed9463a02023210b8bab6c",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasInicio",
+    "module": "Usinas",
+    "screen": "Cartas de traço",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/",
+    "opened": true,
+    "first_visible_line": "Cartas de traço",
+    "content_sha256": "b3e4993b44ed4f0eacafbfc07a582fddd382a1b6d8736833cb57a7846ae46001",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasCec",
+    "module": "Usinas",
+    "screen": "Controle estatístico",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=cec",
+    "opened": true,
+    "first_visible_line": "Controle estatístico",
+    "content_sha256": "03c5aa2cf3efec7187b552c07d5f975b03f59f04e423d762f04d34d6f62cf384",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasRelatorios",
+    "module": "Usinas",
+    "screen": "Relatórios gerenciais",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=relatorios",
+    "opened": true,
+    "first_visible_line": "Relatório Gerencial",
+    "content_sha256": "5c64242e0609671ed128069de00f2cda506e8d0ea8fa706416852312d539b8a0",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasEstoque",
+    "module": "Usinas",
+    "screen": "Controle de estoque",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=estoque",
+    "opened": true,
+    "first_visible_line": "Controle de estoque",
+    "content_sha256": "312383468c2836d238a2115ba3952b8baccc6cc43d7028b3e86cf3d4f0c3d808",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasNoroPainel",
+    "module": "Usinas",
+    "screen": "Painel",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/",
+    "opened": true,
+    "first_visible_line": "Painel",
+    "content_sha256": "d208061220051dec9f10dd61633343c8c8771a257cd783d4c2c07a106628cc61",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasNoroMassadas",
+    "module": "Usinas",
+    "screen": "Massadas",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=massadas",
+    "opened": true,
+    "first_visible_line": "Massadas",
+    "content_sha256": "a6b08fee1dcac7a598a9dc3f50d8c95da360ed6c999407156b60811a5a3c4842",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasNoroCartas",
+    "module": "Usinas",
+    "screen": "Cartas de traço",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cartas",
+    "opened": true,
+    "first_visible_line": "Cartas de traço",
+    "content_sha256": "a19e9b1b1943eb9031b3317a5ced80d1b8ddd708d4d7448648cb8fb1118f130e",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasNoroRelatorios",
+    "module": "Usinas",
+    "screen": "Relatórios",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=relatorios",
+    "opened": true,
+    "first_visible_line": "Relatórios",
+    "content_sha256": "7f67aba17a62e673cef929101d640a1bafc12f73ea006edec86ee89c514be024",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasNoroCadastros",
+    "module": "Usinas",
+    "screen": "Cadastros",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cadastros",
+    "opened": true,
+    "first_visible_line": "Cadastros",
+    "content_sha256": "e30d8f04c1050a1d34a5d7406d54560f2eb0950afd20cdd75cdee428af93e75f",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasNoroCustos",
+    "module": "Usinas",
+    "screen": "Custos",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=custos",
+    "opened": true,
+    "first_visible_line": "Custos",
+    "content_sha256": "4af3fbb9e68535b6dd0e4624019218c509f4a9f739f2f80f6f3311e04dc79c03",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "ged-documents",
+    "module": "GED",
+    "screen": "Documentos",
+    "route": "/unificado/ged/documents",
+    "opened": true,
+    "first_visible_line": "Documentos",
+    "content_sha256": "b7ba22c8de5e434f4e464efebddd2454c450de0c1d09234f676158a635f9bfd5",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "ged-calibrations",
+    "module": "GED",
+    "screen": "Calibrações",
+    "route": "/unificado/ged/calibrations",
+    "opened": true,
+    "first_visible_line": "Certificados de calibração",
+    "content_sha256": "0104283763d18fda04a4e0b4171e531458a5b32339b18ed8342c7cf34a018473",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "etiquetas",
+    "module": "Planejamento",
+    "screen": "Padrão",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas/",
+    "opened": true,
+    "first_visible_line": "Impressão de etiquetas padrão",
+    "content_sha256": "e9c7500a424188ebc89cbb7cc5b24c9869a781860dfcb2a93f436db3f4aaaad1",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "acompMensal",
+    "module": "Planejamento",
+    "screen": "Acompanhamento Mensal",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal/",
+    "opened": true,
+    "first_visible_line": "Mês",
+    "content_sha256": "92557fc3a58d83112864e4c7966cb5e5294324ca695e739731d59ea27c089d11",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "acompMensal34",
+    "module": "Planejamento",
+    "screen": "Acompanhamento Mensal Setor 3 e 4",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal-setor-34/",
+    "opened": true,
+    "first_visible_line": "Mês",
+    "content_sha256": "c792286c639273ed7f855f1945fdf2bdd7ff909b1b1a5e0715e390db764778f9",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "producaoPcp",
+    "module": "Planejamento",
+    "screen": "Produção PCP",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/producao/",
+    "opened": true,
+    "first_visible_line": "Filtro de produção",
+    "content_sha256": "63c308618fea9b89e7121527fac490d12fdcb6c53ac9eaac0f5af137d05175d7",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "formasPorSetor",
+    "module": "Planejamento",
+    "screen": "Formas por Setor",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/formas-por-setor/",
+    "opened": true,
+    "first_visible_line": "Formas por setor",
+    "content_sha256": "700a0270381226732cc03a302981f6b88594521d2bca8eb0814e33d10e856c32",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "testeProgramacao",
+    "module": "Planejamento",
+    "screen": "Teste Programação",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/pcp/teste-programacao/",
+    "opened": true,
+    "first_visible_line": "Parâmetros de programação",
+    "content_sha256": "95af4307514b0130bb64928ba1bd3021bae39132004ecee83c1c2d8fed0b1d30",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "pdrMaoDeObra",
+    "module": "Produção",
+    "screen": "Mão de obra",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=mao-de-obra",
+    "opened": true,
+    "first_visible_line": "Mão de obra",
+    "content_sha256": "632eb53a3c4213f2e915888828ec42a9dbb7cb684d613923066fcee667aaea2e",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "pdrIndicadores",
+    "module": "Produção",
+    "screen": "Indicadores",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=indicadores",
+    "opened": true,
+    "first_visible_line": "Indicadores",
+    "content_sha256": "d2d9bf7777332132e7b5f9708d756c3f13b7e421c9d393be92f301d39938965d",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "rbrMaoDeObra",
+    "module": "Produção",
+    "screen": "Mão de obra",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=mao-de-obra",
+    "opened": true,
+    "first_visible_line": "Mão de obra",
+    "content_sha256": "9574bc3903f345dc2c5dce856cfd77c5a180707024af1c441fb7ec6af7fb7191",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "rbrMensal",
+    "module": "Produção",
+    "screen": "Produção Ribeirão",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=mensal",
+    "opened": true,
+    "first_visible_line": "Produção Ribeirão",
+    "content_sha256": "cb7550fb033eb8ca5e21dadd1852fd918892e5c6f459c3e98f730447666670f4",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "rbrIndicadores",
+    "module": "Produção",
+    "screen": "Indicadores",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=indicadores",
+    "opened": true,
+    "first_visible_line": "Indicadores",
+    "content_sha256": "ceaa91876f19b0e4156553311054c3dd60b0128aa3df8708bdc0630b63ba88b5",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "norMaoDeObra",
+    "module": "Produção",
+    "screen": "Mão de obra",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=mao-de-obra",
+    "opened": true,
+    "first_visible_line": "Mão de obra",
+    "content_sha256": "efe9c5293694bcf7c019f7bc66b9c64d7efc3eec3c33fa83ceae6367f82764d8",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "norProdutos",
+    "module": "Produção",
+    "screen": "Produtos Campinas",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=produtos",
+    "opened": true,
+    "first_visible_line": "Produtos Campinas",
+    "content_sha256": "a717394c05275face999f6acc3be9c2a51e36f1c7db67b7bffb45199d45ae67a",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasNoroCec",
+    "module": "Usinas",
+    "screen": "Controle estatístico",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cec",
+    "opened": true,
+    "first_visible_line": "Controle estatístico",
+    "content_sha256": "19cf3b7f374cdf0e08142579dd5ad200b609b246fcf8990a5189edb5b1ef346e",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "usinasNoroEstoque",
+    "module": "Usinas",
+    "screen": "Estoque",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=estoque",
+    "opened": true,
+    "first_visible_line": "Estoque",
+    "content_sha256": "a49e8881daaefbb9b8f70eb467a45f86d16b305bd76c9d08b1a0f7b994366e75",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "qualidadeTarefas",
+    "module": "Qualidade",
+    "screen": "Tarefas",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/tarefas",
+    "opened": true,
+    "first_visible_line": "Hoje",
+    "content_sha256": "3c74b6cc086d34ea1494eb5b9a8711f451afb3467042ef6abd19a1c48d87a129",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "qualidadePainel",
+    "module": "Qualidade",
+    "screen": "Painel",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/",
+    "opened": true,
+    "first_visible_line": "Qualidade · ISO 9001 · 8.7 e 10.2",
+    "content_sha256": "48d9023e6fa83b957d3a7b5300b3cdce366a565ba8b89f469181720ba9ab7c4f",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "qualidadeAbertura",
+    "module": "Qualidade",
+    "screen": "Abrir NC",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/abrir",
+    "opened": true,
+    "first_visible_line": "← RNCs",
+    "content_sha256": "a5d046c0632fde06224569f9e897527aac4d7757e4b9a7cd67a8bcfa7c9610c7",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "qualidadeResultadosBancada",
+    "module": "Qualidade",
+    "screen": "Resultados de bancada",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/resultados-bancada",
+    "opened": true,
+    "first_visible_line": "Qualidade · laboratório",
+    "content_sha256": "a22ecc4f32f0a1e0baabb524093ce36e6b99b16b9c88013c29f68196a2cbe2f9",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "qualidadeCadastros",
+    "module": "Qualidade",
+    "screen": "Cadastros",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/cadastros",
+    "opened": true,
+    "first_visible_line": "Qualidade · Configurações",
+    "content_sha256": "c3cf694795b0f2f39e7bba1db1a9f56d15fb9a9aee800ebdf9cae1bc3dd285a6",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labCertificados",
+    "module": "Laboratório",
+    "screen": "Certificados de qualidade",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/certificados-qualidade/",
+    "opened": true,
+    "first_visible_line": "QUALIDADE / CERTIFICADOS DE QUALIDADE",
+    "content_sha256": "bc410ba013ba0a61b4ec10522a66cf61e8d5f1dae10d2727079654aa6c0f5c14",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labCertificadosHistorico",
+    "module": "Qualidade",
+    "screen": "Histórico de certificados",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/certificados-qualidade/?tab=historico",
+    "opened": true,
+    "first_visible_line": "QUALIDADE / CERTIFICADOS DE QUALIDADE",
+    "content_sha256": "bc410ba013ba0a61b4ec10522a66cf61e8d5f1dae10d2727079654aa6c0f5c14",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labCertificadosCadastros",
+    "module": "Qualidade",
+    "screen": "Cadastros de certificados",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/certificados-qualidade/?tab=cadastros",
+    "opened": true,
+    "first_visible_line": "QUALIDADE / CERTIFICADOS DE QUALIDADE",
+    "content_sha256": "bc410ba013ba0a61b4ec10522a66cf61e8d5f1dae10d2727079654aa6c0f5c14",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labTests",
+    "module": "Laboratório",
+    "screen": "Histórico de ensaios",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=historico",
+    "opened": true,
+    "first_visible_line": "Histórico",
+    "content_sha256": "84dae2cbdb85521ec0ae8fea9c836c4a94e99d03db66d825ec0a2a01ecce162d",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labCecEtiquetas",
+    "module": "Laboratório",
+    "screen": "Etiquetas QR",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/etiquetas/",
+    "opened": true,
+    "first_visible_line": "Geração de Etiquetas",
+    "content_sha256": "afc2fcf63e4ff839890ab805cddb3207ddb53e72d0bd9c79f3d2174ceb29a8af",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labCecLeitura",
+    "module": "Laboratório",
+    "screen": "Leitura de CP",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/leitura/",
+    "opened": true,
+    "first_visible_line": "Leitura CP",
+    "content_sha256": "4be53df414e9010c506a81d4c4d285cd666f772f6e263158ff332248dc42aa0f",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labCecResultados",
+    "module": "Laboratório",
+    "screen": "Resultados dos corpos de prova",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/resultado-cp.html",
+    "opened": true,
+    "first_visible_line": "Resultado corpos de Prova",
+    "content_sha256": "98fa9ba48c20dd409f84fc65b52b2e8e205c9340d13dab8cbf366078e8048fe3",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labCec",
+    "module": "Laboratório",
+    "screen": "Visão geral",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/",
+    "opened": true,
+    "first_visible_line": "Controle Estatístico",
+    "content_sha256": "d30b7152526aee4b49983e6be774aae9a5de9e57620df2cd3175c755ecb1b3b5",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labCecRompimentosMes",
+    "module": "Laboratório",
+    "screen": "Rompimentos por mês",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/rompimentos-mes/",
+    "opened": true,
+    "first_visible_line": "Concrefer • Controle Estatístico",
+    "content_sha256": "beae0e7909e99ae8dbd839c7c80dcb129661c7edfd236e731f62a2450367276a",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labCecAnalise",
+    "module": "Laboratório",
+    "screen": "Análise estatística",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/",
+    "opened": true,
+    "first_visible_line": "Laboratório Concrefer",
+    "content_sha256": "8941e705696e8b3e95a63b367723d71f5633d7e835b89a0941dd22cdefdd6380",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labCecRelatorio",
+    "module": "Laboratório",
+    "screen": "Relatório CEC",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/relatorio.html",
+    "opened": true,
+    "first_visible_line": "Relatório controle Estatístico",
+    "content_sha256": "0564e7963fabcc0e1c9b2d6dac08e93d6b3d83f8d1aab9b8897b2a41a2329104",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "tvFormas",
+    "module": "Produção",
+    "screen": "Painel TV — Formas",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/tv/formas/",
+    "opened": true,
+    "first_visible_line": "Programação × realizado",
+    "content_sha256": "30f2d0c4c3114c75b4ff9d9a6cbb120841e095ad85b95ce15cf4512e118f0d8e",
+    "tv_direct_tab": true
+  },
+  {
+    "id": "labDosagem",
+    "module": "Laboratório",
+    "screen": "Visão geral",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/",
+    "opened": true,
+    "first_visible_line": "Boa tarde",
+    "content_sha256": "5a40ba4dd383bb9fbddbf4674903784109a42390411e6926860ff0c72939d984",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemEmpacotamento",
+    "module": "Laboratório",
+    "screen": "Empacotamento",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/dosagem/empacotamento",
+    "opened": true,
+    "first_visible_line": "Abrams + teor de argamassa",
+    "content_sha256": "e8c95acf665247ba275d00b8cc20efa7dacc825f0d416d071f8a0411b4db5ee5",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemVolume",
+    "module": "Laboratório",
+    "screen": "Volume",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/dosagem/volume",
+    "opened": true,
+    "first_visible_line": "Método Concrefer · Rica v4",
+    "content_sha256": "8c0edce3fb24b5824b3c9278557e5fc749b08b8446c47624cb20fe05fe969117",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemComparacao",
+    "module": "Laboratório",
+    "screen": "Comparação dos métodos",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/comparacao-metodos",
+    "opened": true,
+    "first_visible_line": "Abrams + teor de argamassa",
+    "content_sha256": "be2f16eafaae81924468e36624419d61aeee7acbe4f38e9e892fab8756dd6611",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemTracos",
+    "module": "Laboratório",
+    "screen": "Traços",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/tracos",
+    "opened": true,
+    "first_visible_line": "Engenharia",
+    "content_sha256": "8910e7d4bee5f7b20c9a7a6bac77239a0bf24b75775f1d9c477d3cdaa7272eca",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemMateriais",
+    "module": "Laboratório",
+    "screen": "Materiais",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/materiais",
+    "opened": true,
+    "first_visible_line": "Materiais",
+    "content_sha256": "81b90bbe5b75b6874f6db500faca1c8fdac68f5c216e05370ddbf55cf62b21ed",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemFornecedores",
+    "module": "Laboratório",
+    "screen": "Fornecedores",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/fornecedores",
+    "opened": true,
+    "first_visible_line": "Fornecedores",
+    "content_sha256": "edc41026619b437c5ee93af19162bdf8017f3cc09aff9d7559f9e3749ff84647",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemEnsaios",
+    "module": "Laboratório",
+    "screen": "Ensaios",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/ensaios",
+    "opened": true,
+    "first_visible_line": "Ensaios",
+    "content_sha256": "6e1b04eaf6d75a2d8e6f60ca7c4e72091262b7e510d003c3d10131a28a93686e",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemFerramentas",
+    "module": "Laboratório",
+    "screen": "Ferramentas",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/ferramentas",
+    "opened": true,
+    "first_visible_line": "Ferramentas",
+    "content_sha256": "f13057d14e6c2272e7fb38de63616d2dcd3ba435fdde3182fe6ba8f3c5d75124",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemCustos",
+    "module": "Laboratório",
+    "screen": "Custos",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/custos",
+    "opened": true,
+    "first_visible_line": "Custos MCC",
+    "content_sha256": "009e1d163cc5d15c9c3d50075d625f3e40fb1c54f0b93c467dfe908f27f1e993",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemReferencia",
+    "module": "Laboratório",
+    "screen": "Referência",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/referencia",
+    "opened": true,
+    "first_visible_line": "Referência",
+    "content_sha256": "3e597cc9429ba3f6339c453ed22d3777a4c8437630deda937bc5650d4530c4fe",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemProducao",
+    "module": "Laboratório",
+    "screen": "Produção",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/producao-r1",
+    "opened": true,
+    "first_visible_line": "Produção",
+    "content_sha256": "48bf725aed95daedec7e3a3968bf4106df10bad121b5deb06fb9314472eb7525",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemImportacao",
+    "module": "Laboratório",
+    "screen": "Importação",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/importacao-r1",
+    "opened": true,
+    "first_visible_line": "Importação de planilhas da release 1",
+    "content_sha256": "99a62e6d66a9db89df7c20cc67605f8eb2c57a082b5dd612c3845e713d5965bb",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDosagemConfig",
+    "module": "Laboratório",
+    "screen": "Configurações",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/config",
+    "opened": true,
+    "first_visible_line": "Configurações",
+    "content_sha256": "3ab33e86093cf2c3b4097ff950d2454d108c1dc7808382943943e331599bc920",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labSlump",
+    "module": "Laboratório",
+    "screen": "Registro de slump / flow",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/slump",
+    "opened": true,
+    "first_visible_line": "← Laboratório",
+    "content_sha256": "332f9f1660f05159871f7463a12622b751da333389404b372bf82b84e1706f21",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labUsinasRelatorios",
+    "module": "Laboratório",
+    "screen": "Relatórios e custos",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/usinas-relatorios/",
+    "opened": true,
+    "first_visible_line": "Laboratório / Usina de Campinas",
+    "content_sha256": "65d60be71a20b2ce0bdff126e1b11f0cfa7ca9e09123f366a5e74fe9a024099e",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labMonitor",
+    "module": "Laboratório",
+    "screen": "Monitoramento",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/",
+    "opened": true,
+    "first_visible_line": "Temperatura de cura",
+    "content_sha256": "d5e0f31ac6ae285cb5cc127bc6968ebfe056b09adc8526ea9cc1b0f11a152fb7",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labHistory",
+    "module": "Laboratório",
+    "screen": "Histórico de medições",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=history",
+    "opened": true,
+    "first_visible_line": "CT",
+    "content_sha256": "7cce49a17f772e7c7e6afae78cc9daad21facc6c7b57557ff8a18c2f1f928682",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labDevice",
+    "module": "Laboratório",
+    "screen": "Dispositivo",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=settings",
+    "opened": true,
+    "first_visible_line": "Dispositivo e coleta",
+    "content_sha256": "0ebfc1d5f0454e3da4287cad6a1f0d93c8171fef52ef89cca3c8aa286ae56127",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labAbsorption",
+    "module": "Laboratório",
+    "screen": "Absorção",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/absorcao",
+    "opened": true,
+    "first_visible_line": "Absorção de concreto",
+    "content_sha256": "241bbac15aefcb0e152f1baeeac2830d357eec73c31fef1516647257846201de",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labPole",
+    "module": "Laboratório",
+    "screen": "Ensaio de postes",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes",
+    "opened": true,
+    "first_visible_line": "Ensaio de postes",
+    "content_sha256": "c91c5c9859c2bafc2ff89071925ebd3035f341458bf3e4b9cb0bf71375c7eb09",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labRegisters",
+    "module": "Laboratório",
+    "screen": "Cadastros",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=cadastros",
+    "opened": true,
+    "first_visible_line": "Cadastros",
+    "content_sha256": "5c34441e8ace0c093a8bcd59b1aca18122b48948ca82687739f064e674da9a40",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labCriteria",
+    "module": "Laboratório",
+    "screen": "Critérios",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=criterios",
+    "opened": true,
+    "first_visible_line": "Ensaio de postes",
+    "content_sha256": "c91c5c9859c2bafc2ff89071925ebd3035f341458bf3e4b9cb0bf71375c7eb09",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "cronoanalise.inicio",
+    "module": "Laboratório",
+    "screen": "Início",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise",
+    "opened": true,
+    "first_visible_line": "Cronoanálise",
+    "content_sha256": "bebd2c11578ad702a95588fe37c07567f85b2d37975269b7c02212982cca0767",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "cronoanalise.coletar",
+    "module": "Laboratório",
+    "screen": "Coletar",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/coletar",
+    "opened": true,
+    "first_visible_line": "Cronoanálise",
+    "content_sha256": "3797949659ba1441dbbf15f81cca4229cd3ca17a1dd7f685f91215c7d6bfa34c",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "cronoanalise.medicoes",
+    "module": "Laboratório",
+    "screen": "Medições",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/medicoes",
+    "opened": true,
+    "first_visible_line": "Cronoanálise",
+    "content_sha256": "df8d902f3e9bbe572e29ae4cf3389c15cb0074fd2c787528d3b6baa16705ecda",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "cronoanalise.catalogo",
+    "module": "Laboratório",
+    "screen": "Catálogo",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/catalogo",
+    "opened": true,
+    "first_visible_line": "Cronoanálise",
+    "content_sha256": "64214dd4376cad76d1607cb2bbcf5fac7ffef925de959fa64ef70f8d5adb1b37",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "cronoanalise.dimensionar",
+    "module": "Laboratório",
+    "screen": "Dimensionar",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/dimensionar",
+    "opened": true,
+    "first_visible_line": "Cronoanálise",
+    "content_sha256": "ffc5ed034c915a9a5b1a235129fe9a8a44d08da9d8b1520b057cfd8aece19c83",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "cronoanalise.simular",
+    "module": "Laboratório",
+    "screen": "Simular",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/simular",
+    "opened": true,
+    "first_visible_line": "Cronoanálise",
+    "content_sha256": "3d9f95844111ac61de5214603f065fdfd8714df3ba3add4d7ea42b9eb08e2f5e",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "cronoanalise.metodologia",
+    "module": "Laboratório",
+    "screen": "Metodologia",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/metodologia",
+    "opened": true,
+    "first_visible_line": "Cronoanálise",
+    "content_sha256": "7c948463581a5c0c95e86b69a89ba8a90b96ee51219d3e70865be216347290dd",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labUsuarios",
+    "module": "Laboratório",
+    "screen": "Usuários",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=usuarios",
+    "opened": true,
+    "first_visible_line": "Ensaio de postes",
+    "content_sha256": "c91c5c9859c2bafc2ff89071925ebd3035f341458bf3e4b9cb0bf71375c7eb09",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labHelp",
+    "module": "Laboratório",
+    "screen": "Como funciona",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=help",
+    "opened": true,
+    "first_visible_line": "Da medição ao histórico",
+    "content_sha256": "0fa1797467f789ec659a8ef4f77bf6cff0808acd4c3b4a498ac5163a2e09e041",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labNoroCecEtiquetas",
+    "module": "Laboratório",
+    "screen": "Etiquetas QR",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/etiquetas/",
+    "opened": true,
+    "first_visible_line": "Geração de Etiquetas",
+    "content_sha256": "afc2fcf63e4ff839890ab805cddb3207ddb53e72d0bd9c79f3d2174ceb29a8af",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labNoroCecLeitura",
+    "module": "Laboratório",
+    "screen": "Leitura de CP",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/leitura/",
+    "opened": true,
+    "first_visible_line": "Leitura CP",
+    "content_sha256": "4be53df414e9010c506a81d4c4d285cd666f772f6e263158ff332248dc42aa0f",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labNoroCecResultados",
+    "module": "Laboratório",
+    "screen": "Resultados dos corpos de prova",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/resultado-cp.html",
+    "opened": true,
+    "first_visible_line": "Resultado corpos de Prova",
+    "content_sha256": "98fa9ba48c20dd409f84fc65b52b2e8e205c9340d13dab8cbf366078e8048fe3",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labNoroCec",
+    "module": "Laboratório",
+    "screen": "Visão geral",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/",
+    "opened": true,
+    "first_visible_line": "Controle Estatístico",
+    "content_sha256": "d30b7152526aee4b49983e6be774aae9a5de9e57620df2cd3175c755ecb1b3b5",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labNoroCecRompimentosMes",
+    "module": "Laboratório",
+    "screen": "Rompimentos por mês",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/rompimentos-mes/",
+    "opened": true,
+    "first_visible_line": "Concrefer • Controle Estatístico",
+    "content_sha256": "beae0e7909e99ae8dbd839c7c80dcb129661c7edfd236e731f62a2450367276a",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labNoroCecAnalise",
+    "module": "Laboratório",
+    "screen": "Análise estatística",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/",
+    "opened": true,
+    "first_visible_line": "Laboratório Concrefer",
+    "content_sha256": "8941e705696e8b3e95a63b367723d71f5633d7e835b89a0941dd22cdefdd6380",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labNoroCecRelatorio",
+    "module": "Laboratório",
+    "screen": "Relatório CEC",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/relatorio.html",
+    "opened": true,
+    "first_visible_line": "Relatório controle Estatístico",
+    "content_sha256": "0564e7963fabcc0e1c9b2d6dac08e93d6b3d83f8d1aab9b8897b2a41a2329104",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "labNoroUsuarios",
+    "module": "Laboratório",
+    "screen": "Usuários",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/usuarios/",
+    "opened": true,
+    "first_visible_line": "← Laboratório Noroeste",
+    "content_sha256": "1f150af91dffb030c1cef059c2fa1321012c6a6504b25dcb90412ebd7e7b7d41",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "suprimentosRecebimento",
+    "module": "Suprimentos",
+    "screen": "Recebimento",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/recebimento/",
+    "opened": true,
+    "first_visible_line": "Recebimento",
+    "content_sha256": "2e3f5bab018d72bea71c2ec0e672744c8376feba76c13cf1b6d8ff34b09fbf01",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "suprimentosFornecedores",
+    "module": "Suprimentos",
+    "screen": "Fornecedores",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/fornecedores/",
+    "opened": true,
+    "first_visible_line": "Fornecedores",
+    "content_sha256": "62c90cf80f45d3cf9c29d3f704e2ae1c89a66ccae8f100d6543f2d1d607dbaa7",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "suprimentosIndicadores",
+    "module": "Suprimentos",
+    "screen": "Indicadores",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/analises/",
+    "opened": true,
+    "first_visible_line": "Indicadores",
+    "content_sha256": "5fdd26fed2d1f7fea4dcfd2b94733db0e58afbe3bf963342e1ff618e1741bca2",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "suprimentosCadastros",
+    "module": "Suprimentos",
+    "screen": "Cadastros e alçadas",
+    "route": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/cadastros/",
+    "opened": true,
+    "first_visible_line": "Materiais",
+    "content_sha256": "6dbf30ca30a289dd49b49f14bcd8de04882dc758bdbfa9a814a56b9aaf82275b",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "ged-dashboard",
+    "module": "GED",
+    "screen": "Painel",
+    "route": "/unificado/ged/dashboard",
+    "opened": true,
+    "first_visible_line": "Dashboard",
+    "content_sha256": "39569a4dffab8a81241d2be3fc97e48cfabe1b1bd5c8f58d4e6c0f2580729c1c",
+    "tv_direct_tab": false
+  },
+  {
+    "id": "ged-approvals",
+    "module": "GED",
+    "screen": "Aprovações",
+    "route": "/unificado/ged/approvals",
+    "opened": true,
+    "first_visible_line": "Aprovações",
+    "content_sha256": "4b6ba2a51a29facba147c982f7f349caf9c9c5371152c475040edea02fe3fc9e",
+    "tv_direct_tab": false
+  }
+]

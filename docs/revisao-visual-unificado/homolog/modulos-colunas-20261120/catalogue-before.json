@@ -1,0 +1,4358 @@
+{
+  "entries": [
+    {
+      "id": "logisticaInicio",
+      "name": "Início",
+      "description": "",
+      "module": "Logística",
+      "moduleId": "logistica",
+      "unit": "",
+      "group": "Geral",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/",
+      "ambiente": null
+    },
+    {
+      "id": "logisticaPainel",
+      "name": "Painel Km/Evento",
+      "description": "",
+      "module": "Logística",
+      "moduleId": "logistica",
+      "unit": "",
+      "group": "Km/Evento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/painel/",
+      "ambiente": null
+    },
+    {
+      "id": "logisticaCorrecoes",
+      "name": "Correções e exclusões",
+      "description": "",
+      "module": "Logística",
+      "moduleId": "logistica",
+      "unit": "",
+      "group": "Km/Evento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/correcoes/",
+      "ambiente": null
+    },
+    {
+      "id": "logisticaFechamento",
+      "name": "Fechamento trimestral",
+      "description": "",
+      "module": "Logística",
+      "moduleId": "logistica",
+      "unit": "",
+      "group": "Km/Evento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/fechamento/",
+      "ambiente": null
+    },
+    {
+      "id": "logisticaPremiacao",
+      "name": "Premiação",
+      "description": "",
+      "module": "Logística",
+      "moduleId": "logistica",
+      "unit": "",
+      "group": "Km/Evento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/premiacao/",
+      "ambiente": null
+    },
+    {
+      "id": "logisticaMeses",
+      "name": "Meses e importação",
+      "description": "",
+      "module": "Logística",
+      "moduleId": "logistica",
+      "unit": "",
+      "group": "Km/Evento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/meses/",
+      "ambiente": null
+    },
+    {
+      "id": "logisticaMetas",
+      "name": "Metas",
+      "description": "",
+      "module": "Logística",
+      "moduleId": "logistica",
+      "unit": "",
+      "group": "Km/Evento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/metas/",
+      "ambiente": null
+    },
+    {
+      "id": "logisticaMotoristas",
+      "name": "Motoristas",
+      "description": "",
+      "module": "Logística",
+      "moduleId": "logistica",
+      "unit": "",
+      "group": "Cadastros",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/motoristas/",
+      "ambiente": null
+    },
+    {
+      "id": "logisticaAjudantes",
+      "name": "Ajudantes",
+      "description": "",
+      "module": "Logística",
+      "moduleId": "logistica",
+      "unit": "",
+      "group": "Cadastros",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/ajudantes/",
+      "ambiente": null
+    },
+    {
+      "id": "logisticaCobli",
+      "name": "Mapeamento Cobli",
+      "description": "",
+      "module": "Logística",
+      "moduleId": "logistica",
+      "unit": "",
+      "group": "Cadastros",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/mapeamento-cobli/",
+      "ambiente": null
+    },
+    {
+      "id": "dashboard",
+      "name": "Dashboard",
+      "description": "Programado e realizado por período",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Geral",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/dashboard/",
+      "ambiente": null
+    },
+    {
+      "id": "comparacao",
+      "name": "Programado vs Realizado",
+      "description": "PCP contra apontamentos do Mapa",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Geral",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/comparacao/",
+      "ambiente": null
+    },
+    {
+      "id": "programacao12",
+      "name": "Setor 1 e 2",
+      "description": "Programar a produção diária",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Programação",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-alex/",
+      "ambiente": null
+    },
+    {
+      "id": "programacaoSemanal12",
+      "name": "Semanal S1 e S2",
+      "description": "Distribuir a semana nas formas",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Programação",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/",
+      "ambiente": null
+    },
+    {
+      "id": "programacao34",
+      "name": "Setor 3 e 4",
+      "description": "Programar os setores 3 e 4",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Programação",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao/",
+      "ambiente": null
+    },
+    {
+      "id": "circular3",
+      "name": "Circular Setor 3",
+      "description": "Sequenciar formas circulares",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Programação",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s3/",
+      "ambiente": null
+    },
+    {
+      "id": "dt4",
+      "name": "DT Setor 4",
+      "description": "Programar postes duplo T",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Programação",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s4/",
+      "ambiente": null
+    },
+    {
+      "id": "programacaoFinal",
+      "name": "Programação Final",
+      "description": "Consolidar a programação para publicar",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Programação",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-final/",
+      "ambiente": null
+    },
+    {
+      "id": "relatorio12",
+      "name": "Setor 1 e 2",
+      "description": "Emitir PDF dos setores 1 e 2",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Relatórios de Programação",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-producao/",
+      "ambiente": null
+    },
+    {
+      "id": "relatorio3",
+      "name": "Setor 3",
+      "description": "Emitir PDF do setor 3",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Relatórios de Programação",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s3/",
+      "ambiente": null
+    },
+    {
+      "id": "relatorio4",
+      "name": "Setor 4",
+      "description": "Emitir PDF do setor 4",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Relatórios de Programação",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s4/",
+      "ambiente": null
+    },
+    {
+      "id": "postesNumerosSerie",
+      "name": "Números de série dos postes",
+      "description": "Consultar séries e emitir PDF",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Armaduras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+      "ambiente": null
+    },
+    {
+      "id": "armadurasProgramacao",
+      "name": "Programação semanal",
+      "description": "Programar armaduras por dia",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Armaduras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+      "ambiente": null
+    },
+    {
+      "id": "armadurasRelatorio",
+      "name": "Relatório de produção",
+      "description": "Emitir relatório de armaduras",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Armaduras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+      "ambiente": null
+    },
+    {
+      "id": "etiquetas",
+      "name": "Padrão",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Etiquetas",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas/",
+      "ambiente": null
+    },
+    {
+      "id": "etiquetasSc",
+      "name": "Setor 3",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Etiquetas",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+      "ambiente": null
+    },
+    {
+      "id": "etiquetasSetor4",
+      "name": "Setor 4",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Etiquetas",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-setor4/",
+      "ambiente": null
+    },
+    {
+      "id": "etiquetasArmaduras",
+      "name": "Armaduras",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Etiquetas",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-armaduras/",
+      "ambiente": null
+    },
+    {
+      "id": "pcpDiario",
+      "name": "PCP Diário",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Acompanhamento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/pcp-diario/",
+      "ambiente": null
+    },
+    {
+      "id": "acompMensal",
+      "name": "Acompanhamento Mensal",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Acompanhamento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal/",
+      "ambiente": null
+    },
+    {
+      "id": "acompMensal34",
+      "name": "Acompanhamento Mensal Setor 3 e 4",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Acompanhamento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal-setor-34/",
+      "ambiente": null
+    },
+    {
+      "id": "apontamentoMega",
+      "name": "Apontamento Mega",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Acompanhamento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/apontamento-mega/",
+      "ambiente": null
+    },
+    {
+      "id": "fechamentoDiarioPcp",
+      "name": "Fechamento Diário",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Acompanhamento",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/fechamento-diario/",
+      "ambiente": null
+    },
+    {
+      "id": "producaoPcp",
+      "name": "Produção PCP",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Produção e apoio",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/producao/",
+      "ambiente": null
+    },
+    {
+      "id": "maodeobra",
+      "name": "Mão de Obra",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Produção e apoio",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra/",
+      "ambiente": null
+    },
+    {
+      "id": "maodeobraRateio",
+      "name": "Rateio de Mão de Obra",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Produção e apoio",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra-rateio/",
+      "ambiente": null
+    },
+    {
+      "id": "formasPorSetor",
+      "name": "Formas por Setor",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Produção e apoio",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/formas-por-setor/",
+      "ambiente": null
+    },
+    {
+      "id": "testeProgramacao",
+      "name": "Teste Programação",
+      "description": "",
+      "module": "Planejamento",
+      "moduleId": "planejamento",
+      "unit": "",
+      "group": "Produção e apoio",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/teste-programacao/",
+      "ambiente": "homolog"
+    },
+    {
+      "id": "liberacao",
+      "name": "Produção / Liberação",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Produção",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO",
+      "ambiente": null
+    },
+    {
+      "id": "setor1",
+      "name": "Setor 1",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Produção",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S1",
+      "ambiente": null
+    },
+    {
+      "id": "setor2",
+      "name": "Setor 2",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Produção",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S2",
+      "ambiente": null
+    },
+    {
+      "id": "setor3",
+      "name": "Setor 3",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Produção",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S3",
+      "ambiente": null
+    },
+    {
+      "id": "setor4",
+      "name": "Setor 4",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Produção",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S4",
+      "ambiente": null
+    },
+    {
+      "id": "mandril",
+      "name": "Mandril Circular",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Produção",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MANDRIL_CIRCULAR",
+      "ambiente": null
+    },
+    {
+      "id": "inspecao",
+      "name": "Inspeção Setor 3 e 4",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Montagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=INSPECAO",
+      "ambiente": null
+    },
+    {
+      "id": "montagem",
+      "name": "Montagem Postes",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Montagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_POSTES",
+      "ambiente": null
+    },
+    {
+      "id": "sequencia",
+      "name": "Sequência Setor 3",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Montagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=SEQUENCIA_S3",
+      "ambiente": null
+    },
+    {
+      "id": "relatorioMapa",
+      "name": "Relatório Enc. Produção",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Controle",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO",
+      "ambiente": null
+    },
+    {
+      "id": "historico",
+      "name": "Histórico",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Controle",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=HISTORICO",
+      "ambiente": null
+    },
+    {
+      "id": "acmpConcretagem",
+      "name": "Acmp. Concretagem",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Controle",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/acmp-concretagem/",
+      "ambiente": null
+    },
+    {
+      "id": "manutencao",
+      "name": "Manutenção Formas",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Controle",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO_MANUTENCAO",
+      "ambiente": null
+    },
+    {
+      "id": "tratativa",
+      "name": "Tratativa Defeitos",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Controle",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=TRATATIVA_DEFEITOS",
+      "ambiente": null
+    },
+    {
+      "id": "fechamentoDiario",
+      "name": "Fechamento diário",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Controle",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+      "ambiente": null
+    },
+    {
+      "id": "campinasUnificado",
+      "name": "Campinas Uni · S1+2+3+4",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Indicadores",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/campinas-unificado/",
+      "ambiente": null
+    },
+    {
+      "id": "dashMontagem",
+      "name": "Dashboard Montagem",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Indicadores",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_INDICADORES",
+      "ambiente": null
+    },
+    {
+      "id": "dashDefeitos",
+      "name": "Dashboard Defeitos",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Indicadores",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=DASHBOARD_DEFEITOS",
+      "ambiente": null
+    },
+    {
+      "id": "produtividade",
+      "name": "Dashboard Concretagem Matriz",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Indicadores",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=PROD_ANALISE",
+      "ambiente": null
+    },
+    {
+      "id": "tvFormas",
+      "name": "Painel TV — Formas",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Campinas · Indicadores",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/tv/formas/",
+      "ambiente": null
+    },
+    {
+      "id": "pdrApontamento",
+      "name": "Apontamento do dia",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Pederneiras",
+      "group": "Pederneiras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=apontamento",
+      "ambiente": null
+    },
+    {
+      "id": "pdrMaoDeObra",
+      "name": "Mão de obra",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Pederneiras",
+      "group": "Pederneiras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=mao-de-obra",
+      "ambiente": null
+    },
+    {
+      "id": "pdrMensal",
+      "name": "Produção Pederneiras",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Pederneiras",
+      "group": "Pederneiras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=mensal",
+      "ambiente": null
+    },
+    {
+      "id": "pdrIndicadores",
+      "name": "Indicadores",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Pederneiras",
+      "group": "Pederneiras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=indicadores",
+      "ambiente": null
+    },
+    {
+      "id": "pdrProdutos",
+      "name": "Cadastro de produtos",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Pederneiras",
+      "group": "Pederneiras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=produtos",
+      "ambiente": null
+    },
+    {
+      "id": "rbrApontamento",
+      "name": "Apontamento do dia",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Ribeirão Preto",
+      "group": "Ribeirão",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=apontamento",
+      "ambiente": null
+    },
+    {
+      "id": "rbrMaoDeObra",
+      "name": "Mão de obra",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Ribeirão Preto",
+      "group": "Ribeirão",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=mao-de-obra",
+      "ambiente": null
+    },
+    {
+      "id": "rbrMensal",
+      "name": "Produção Ribeirão",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Ribeirão Preto",
+      "group": "Ribeirão",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=mensal",
+      "ambiente": null
+    },
+    {
+      "id": "rbrIndicadores",
+      "name": "Indicadores",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Ribeirão Preto",
+      "group": "Ribeirão",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=indicadores",
+      "ambiente": null
+    },
+    {
+      "id": "rbrProdutos",
+      "name": "Cadastro de produtos",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Ribeirão Preto",
+      "group": "Ribeirão",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=produtos",
+      "ambiente": null
+    },
+    {
+      "id": "norApontamento",
+      "name": "Apontamento do dia",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=apontamento",
+      "ambiente": null
+    },
+    {
+      "id": "norMaoDeObra",
+      "name": "Mão de obra",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=mao-de-obra",
+      "ambiente": null
+    },
+    {
+      "id": "norMensal",
+      "name": "Produção Noroeste",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=mensal",
+      "ambiente": null
+    },
+    {
+      "id": "norIndicadores",
+      "name": "Indicadores",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=indicadores",
+      "ambiente": null
+    },
+    {
+      "id": "norProdutos",
+      "name": "Produtos Campinas",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=produtos",
+      "ambiente": null
+    },
+    {
+      "id": "indicadorGeralProducao",
+      "name": "Indicador geral",
+      "description": "",
+      "module": "Produção",
+      "moduleId": "producao",
+      "unit": "Campinas",
+      "group": "Indicadores gerais",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/indicadores-gerais/",
+      "ambiente": null
+    },
+    {
+      "id": "qualidadeTarefas",
+      "name": "Tarefas",
+      "description": "",
+      "module": "Qualidade",
+      "moduleId": "qualidade",
+      "unit": "",
+      "group": "Geral",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/tarefas",
+      "ambiente": null
+    },
+    {
+      "id": "manutencaoUsina",
+      "name": "Manutenção Usina",
+      "description": "",
+      "module": "Qualidade",
+      "moduleId": "qualidade",
+      "unit": "",
+      "group": "Geral",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+      "ambiente": null
+    },
+    {
+      "id": "qualidadePainel",
+      "name": "Painel",
+      "description": "",
+      "module": "Qualidade",
+      "moduleId": "qualidade",
+      "unit": "",
+      "group": "Não conformidades",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/",
+      "ambiente": null
+    },
+    {
+      "id": "qualidadeAbertura",
+      "name": "Abrir NC",
+      "description": "",
+      "module": "Qualidade",
+      "moduleId": "qualidade",
+      "unit": "",
+      "group": "Não conformidades",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/abrir",
+      "ambiente": null
+    },
+    {
+      "id": "qualidadeResultadosBancada",
+      "name": "Resultados de bancada",
+      "description": "",
+      "module": "Qualidade",
+      "moduleId": "qualidade",
+      "unit": "",
+      "group": "Não conformidades",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/resultados-bancada",
+      "ambiente": null
+    },
+    {
+      "id": "qualidadeCadastros",
+      "name": "Cadastros",
+      "description": "",
+      "module": "Qualidade",
+      "moduleId": "qualidade",
+      "unit": "",
+      "group": "Não conformidades",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/cadastros",
+      "ambiente": null
+    },
+    {
+      "id": "labCertificados",
+      "name": "Emitir certificado de qualidade",
+      "description": "",
+      "module": "Qualidade",
+      "moduleId": "qualidade",
+      "unit": "",
+      "group": "Certificados",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/certificados-qualidade/",
+      "ambiente": null
+    },
+    {
+      "id": "labCertificadosHistorico",
+      "name": "Histórico de certificados",
+      "description": "",
+      "module": "Qualidade",
+      "moduleId": "qualidade",
+      "unit": "",
+      "group": "Certificados",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/certificados-qualidade/?tab=historico",
+      "ambiente": null
+    },
+    {
+      "id": "labCertificadosCadastros",
+      "name": "Cadastros de certificados",
+      "description": "",
+      "module": "Qualidade",
+      "moduleId": "qualidade",
+      "unit": "",
+      "group": "Certificados",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/certificados-qualidade/?tab=cadastros",
+      "ambiente": null
+    },
+    {
+      "id": "labTests",
+      "name": "Certificados de ensaios",
+      "description": "",
+      "module": "Qualidade",
+      "moduleId": "qualidade",
+      "unit": "",
+      "group": "Certificados",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=historico",
+      "ambiente": null
+    },
+    {
+      "id": "usinasInicio",
+      "name": "Cartas de traço",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Campinas",
+      "group": "Geral",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/",
+      "ambiente": null
+    },
+    {
+      "id": "usinasCec",
+      "name": "Controle estatístico",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Campinas",
+      "group": "Geral",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=cec",
+      "ambiente": null
+    },
+    {
+      "id": "usinasRelatorios",
+      "name": "Relatórios gerenciais",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Campinas",
+      "group": "Geral",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=relatorios",
+      "ambiente": null
+    },
+    {
+      "id": "usinasEstoque",
+      "name": "Controle de estoque",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Campinas",
+      "group": "Geral",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=estoque",
+      "ambiente": null
+    },
+    {
+      "id": "usinasNoroPainel",
+      "name": "Painel",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/",
+      "ambiente": null
+    },
+    {
+      "id": "usinasNoroMassadas",
+      "name": "Massadas",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=massadas",
+      "ambiente": null
+    },
+    {
+      "id": "usinasNoroCartas",
+      "name": "Cartas de traço",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cartas",
+      "ambiente": null
+    },
+    {
+      "id": "usinasNoroRelatorios",
+      "name": "Relatórios",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=relatorios",
+      "ambiente": null
+    },
+    {
+      "id": "usinasNoroCec",
+      "name": "Controle estatístico",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cec",
+      "ambiente": null
+    },
+    {
+      "id": "usinasNoroCadastros",
+      "name": "Cadastros",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cadastros",
+      "ambiente": null
+    },
+    {
+      "id": "usinasNoroEstoque",
+      "name": "Estoque",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=estoque",
+      "ambiente": null
+    },
+    {
+      "id": "usinasNoroCustos",
+      "name": "Custos",
+      "description": "",
+      "module": "Usinas",
+      "moduleId": "usinas",
+      "unit": "Noroeste",
+      "group": "Noroeste",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=custos",
+      "ambiente": null
+    },
+    {
+      "id": "labCecEtiquetas",
+      "name": "Etiquetas QR",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Corpos de Prova",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/etiquetas/",
+      "ambiente": null
+    },
+    {
+      "id": "labCecLeitura",
+      "name": "Leitura de CP",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Corpos de Prova",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/leitura/",
+      "ambiente": null
+    },
+    {
+      "id": "labCecResultados",
+      "name": "Resultados dos corpos de prova",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Corpos de Prova",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/resultado-cp.html",
+      "ambiente": null
+    },
+    {
+      "id": "labCec",
+      "name": "Visão geral",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Controle estatístico",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/",
+      "ambiente": null
+    },
+    {
+      "id": "labCecRompimentosMes",
+      "name": "Rompimentos por mês",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Controle estatístico",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/rompimentos-mes/",
+      "ambiente": null
+    },
+    {
+      "id": "labCecAnalise",
+      "name": "Análise estatística",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Controle estatístico",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/",
+      "ambiente": null
+    },
+    {
+      "id": "labCecRelatorio",
+      "name": "Relatório CEC",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Controle estatístico",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/relatorio.html",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagem",
+      "name": "Visão geral",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemEmpacotamento",
+      "name": "Empacotamento",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/dosagem/empacotamento",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemVolume",
+      "name": "Volume",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/dosagem/volume",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemComparacao",
+      "name": "Comparação dos métodos",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/comparacao-metodos",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemTracos",
+      "name": "Traços",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/tracos",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemMateriais",
+      "name": "Materiais",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/materiais",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemFornecedores",
+      "name": "Fornecedores",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/fornecedores",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemEnsaios",
+      "name": "Ensaios",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/ensaios",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemFerramentas",
+      "name": "Ferramentas",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/ferramentas",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemCustos",
+      "name": "Custos",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/custos",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemReferencia",
+      "name": "Referência",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/referencia",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemProducao",
+      "name": "Produção",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/producao-r1",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemImportacao",
+      "name": "Importação",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/importacao-r1",
+      "ambiente": null
+    },
+    {
+      "id": "labDosagemConfig",
+      "name": "Configurações",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Dosagem",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/config",
+      "ambiente": null
+    },
+    {
+      "id": "labSlump",
+      "name": "Registro de slump / flow",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Concreto fresco",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/slump",
+      "ambiente": null
+    },
+    {
+      "id": "labUsinasRelatorios",
+      "name": "Relatórios e custos",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Usina de Campinas",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/usinas-relatorios/",
+      "ambiente": null
+    },
+    {
+      "id": "labMonitor",
+      "name": "Monitoramento",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Cura térmica",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/",
+      "ambiente": null
+    },
+    {
+      "id": "labHistory",
+      "name": "Histórico de medições",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Cura térmica",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=history",
+      "ambiente": null
+    },
+    {
+      "id": "labDevice",
+      "name": "Dispositivo",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Cura térmica",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=settings",
+      "ambiente": null
+    },
+    {
+      "id": "labAbsorption",
+      "name": "Absorção",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Ensaios de concreto",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/absorcao",
+      "ambiente": null
+    },
+    {
+      "id": "labCertificados",
+      "name": "Certificados de qualidade",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Postes",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/certificados-qualidade/",
+      "ambiente": null
+    },
+    {
+      "id": "labPole",
+      "name": "Ensaio de postes",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Postes",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes",
+      "ambiente": null
+    },
+    {
+      "id": "labTests",
+      "name": "Histórico de ensaios",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Postes",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=historico",
+      "ambiente": null
+    },
+    {
+      "id": "labRegisters",
+      "name": "Cadastros",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Postes",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=cadastros",
+      "ambiente": null
+    },
+    {
+      "id": "labCriteria",
+      "name": "Critérios",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Postes",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=criterios",
+      "ambiente": null
+    },
+    {
+      "id": "cronoanalise.inicio",
+      "name": "Início",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Cronoanálise",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise",
+      "ambiente": null
+    },
+    {
+      "id": "cronoanalise.coletar",
+      "name": "Coletar",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Cronoanálise",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/coletar",
+      "ambiente": null
+    },
+    {
+      "id": "cronoanalise.medicoes",
+      "name": "Medições",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Cronoanálise",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/medicoes",
+      "ambiente": null
+    },
+    {
+      "id": "cronoanalise.catalogo",
+      "name": "Catálogo",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Cronoanálise",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/catalogo",
+      "ambiente": null
+    },
+    {
+      "id": "cronoanalise.dimensionar",
+      "name": "Dimensionar",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Cronoanálise",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/dimensionar",
+      "ambiente": null
+    },
+    {
+      "id": "cronoanalise.simular",
+      "name": "Simular",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Cronoanálise",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/simular",
+      "ambiente": null
+    },
+    {
+      "id": "cronoanalise.metodologia",
+      "name": "Metodologia",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Cronoanálise",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/metodologia",
+      "ambiente": null
+    },
+    {
+      "id": "labCartaTraco",
+      "name": "Carta de traço e MCC",
+      "description": "Cadastrar e revisar cartas de traço",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Carta de traço",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/carta-traco/",
+      "ambiente": null
+    },
+    {
+      "id": "labUsuarios",
+      "name": "Usuários",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Administração",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=usuarios",
+      "ambiente": null
+    },
+    {
+      "id": "labHelp",
+      "name": "Como funciona",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Campinas",
+      "group": "Geral",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=help",
+      "ambiente": null
+    },
+    {
+      "id": "labNoroCecEtiquetas",
+      "name": "Etiquetas QR",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Noroeste",
+      "group": "Corpos de Prova",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/etiquetas/",
+      "ambiente": null
+    },
+    {
+      "id": "labNoroCecLeitura",
+      "name": "Leitura de CP",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Noroeste",
+      "group": "Corpos de Prova",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/leitura/",
+      "ambiente": null
+    },
+    {
+      "id": "labNoroCecResultados",
+      "name": "Resultados dos corpos de prova",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Noroeste",
+      "group": "Corpos de Prova",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/resultado-cp.html",
+      "ambiente": null
+    },
+    {
+      "id": "labNoroCec",
+      "name": "Visão geral",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Noroeste",
+      "group": "Controle estatístico",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/",
+      "ambiente": null
+    },
+    {
+      "id": "labNoroCecRompimentosMes",
+      "name": "Rompimentos por mês",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Noroeste",
+      "group": "Controle estatístico",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/rompimentos-mes/",
+      "ambiente": null
+    },
+    {
+      "id": "labNoroCecAnalise",
+      "name": "Análise estatística",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Noroeste",
+      "group": "Controle estatístico",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/",
+      "ambiente": null
+    },
+    {
+      "id": "labNoroCecRelatorio",
+      "name": "Relatório CEC",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Noroeste",
+      "group": "Controle estatístico",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/relatorio.html",
+      "ambiente": null
+    },
+    {
+      "id": "labNoroUsuarios",
+      "name": "Usuários",
+      "description": "",
+      "module": "Laboratório",
+      "moduleId": "laboratorio",
+      "unit": "Noroeste",
+      "group": "Administração",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/usuarios/",
+      "ambiente": null
+    },
+    {
+      "id": "suprimentosPainel",
+      "name": "Painel",
+      "description": "Aprovar e acompanhar solicitações",
+      "module": "Suprimentos",
+      "moduleId": "suprimentos",
+      "unit": "",
+      "group": "Solicitações",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+      "ambiente": null
+    },
+    {
+      "id": "suprimentosSolicitacoes",
+      "name": "Solicitações",
+      "description": "Consultar e filtrar solicitações",
+      "module": "Suprimentos",
+      "moduleId": "suprimentos",
+      "unit": "",
+      "group": "Solicitações",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+      "ambiente": null
+    },
+    {
+      "id": "suprimentosNova",
+      "name": "Nova solicitação",
+      "description": "Solicitar materiais e serviços",
+      "module": "Suprimentos",
+      "moduleId": "suprimentos",
+      "unit": "",
+      "group": "Solicitações",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+      "ambiente": null
+    },
+    {
+      "id": "suprimentosAlmoxarifado",
+      "name": "Almoxarifado",
+      "description": "Consultar saldos e movimentações",
+      "module": "Suprimentos",
+      "moduleId": "suprimentos",
+      "unit": "",
+      "group": "Solicitações",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/almoxarifado/",
+      "ambiente": null
+    },
+    {
+      "id": "suprimentosInventario",
+      "name": "Inventário",
+      "description": "Conferir o estoque físico",
+      "module": "Suprimentos",
+      "moduleId": "suprimentos",
+      "unit": "",
+      "group": "Solicitações",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/inventario/",
+      "ambiente": null
+    },
+    {
+      "id": "suprimentosCotacoes",
+      "name": "Cotações e pedidos",
+      "description": "Comparar propostas de fornecedores",
+      "module": "Suprimentos",
+      "moduleId": "suprimentos",
+      "unit": "",
+      "group": "Compras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/cotacoes/",
+      "ambiente": null
+    },
+    {
+      "id": "suprimentosRecebimento",
+      "name": "Recebimento",
+      "description": "",
+      "module": "Suprimentos",
+      "moduleId": "suprimentos",
+      "unit": "",
+      "group": "Compras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/recebimento/",
+      "ambiente": null
+    },
+    {
+      "id": "suprimentosFornecedores",
+      "name": "Fornecedores",
+      "description": "",
+      "module": "Suprimentos",
+      "moduleId": "suprimentos",
+      "unit": "",
+      "group": "Compras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/fornecedores/",
+      "ambiente": null
+    },
+    {
+      "id": "suprimentosIndicadores",
+      "name": "Indicadores",
+      "description": "",
+      "module": "Suprimentos",
+      "moduleId": "suprimentos",
+      "unit": "",
+      "group": "Compras",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/analises/",
+      "ambiente": null
+    },
+    {
+      "id": "suprimentosCadastros",
+      "name": "Cadastros e alçadas",
+      "description": "",
+      "module": "Suprimentos",
+      "moduleId": "suprimentos",
+      "unit": "",
+      "group": "Administração",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/cadastros/",
+      "ambiente": null
+    }
+  ],
+  "config": {
+    "logistica": {
+      "label": "Logística",
+      "groups": [
+        {
+          "items": [
+            {
+              "id": "logisticaInicio",
+              "label": "Início",
+              "path": ""
+            }
+          ]
+        },
+        {
+          "label": "Km/Evento",
+          "items": [
+            {
+              "id": "logisticaPainel",
+              "label": "Painel Km/Evento",
+              "path": "painel/"
+            },
+            {
+              "id": "logisticaCorrecoes",
+              "label": "Correções e exclusões",
+              "path": "correcoes/"
+            },
+            {
+              "id": "logisticaFechamento",
+              "label": "Fechamento trimestral",
+              "path": "fechamento/"
+            },
+            {
+              "id": "logisticaPremiacao",
+              "label": "Premiação",
+              "path": "premiacao/"
+            },
+            {
+              "id": "logisticaMeses",
+              "label": "Meses e importação",
+              "path": "meses/"
+            },
+            {
+              "id": "logisticaMetas",
+              "label": "Metas",
+              "path": "metas/"
+            }
+          ]
+        },
+        {
+          "label": "Cadastros",
+          "items": [
+            {
+              "id": "logisticaMotoristas",
+              "label": "Motoristas",
+              "path": "motoristas/"
+            },
+            {
+              "id": "logisticaAjudantes",
+              "label": "Ajudantes",
+              "path": "ajudantes/"
+            },
+            {
+              "id": "logisticaCobli",
+              "label": "Mapeamento Cobli",
+              "path": "mapeamento-cobli/"
+            }
+          ]
+        }
+      ]
+    },
+    "planejamento": {
+      "label": "Planejamento",
+      "groups": [
+        {
+          "items": [
+            {
+              "id": "dashboard",
+              "label": "Dashboard",
+              "path": "/pages/dashboard/"
+            },
+            {
+              "id": "comparacao",
+              "label": "Programado vs Realizado",
+              "path": "/pages/comparacao/"
+            }
+          ]
+        },
+        {
+          "label": "Programação",
+          "items": [
+            {
+              "id": "programacao12",
+              "label": "Setor 1 e 2",
+              "path": "/pages/programacao-alex/"
+            },
+            {
+              "id": "programacaoSemanal12",
+              "label": "Semanal S1 e S2",
+              "path": "/pages/programacao-semanal/"
+            },
+            {
+              "id": "programacao34",
+              "label": "Setor 3 e 4",
+              "path": "/pages/programacao/"
+            },
+            {
+              "id": "circular3",
+              "label": "Circular Setor 3",
+              "path": "/pages/programacao-circular-s3/"
+            },
+            {
+              "id": "dt4",
+              "label": "DT Setor 4",
+              "path": "/pages/programacao-circular-s4/"
+            },
+            {
+              "id": "programacaoFinal",
+              "label": "Programação Final",
+              "path": "/pages/programacao-final/"
+            }
+          ]
+        },
+        {
+          "label": "Relatórios de Programação",
+          "items": [
+            {
+              "id": "relatorio12",
+              "label": "Setor 1 e 2",
+              "path": "/pages/relatorio-producao/"
+            },
+            {
+              "id": "relatorio3",
+              "label": "Setor 3",
+              "path": "/pages/relatorio-programacao-s3/"
+            },
+            {
+              "id": "relatorio4",
+              "label": "Setor 4",
+              "path": "/pages/relatorio-programacao-s4/"
+            }
+          ]
+        },
+        {
+          "label": "Armaduras",
+          "items": [
+            {
+              "id": "postesNumerosSerie",
+              "label": "Números de série dos postes",
+              "path": "/pages/numeros-serie/"
+            },
+            {
+              "id": "armadurasProgramacao",
+              "label": "Programação semanal",
+              "path": "/pages/armaduras/"
+            },
+            {
+              "id": "armadurasRelatorio",
+              "label": "Relatório de produção",
+              "path": "/pages/armaduras-relatorio/"
+            }
+          ]
+        },
+        {
+          "label": "Etiquetas",
+          "items": [
+            {
+              "id": "etiquetas",
+              "label": "Padrão",
+              "path": "/pages/etiquetas/"
+            },
+            {
+              "id": "etiquetasSc",
+              "label": "Setor 3",
+              "path": "/pages/etiquetas-sc/"
+            },
+            {
+              "id": "etiquetasSetor4",
+              "label": "Setor 4",
+              "path": "/pages/etiquetas-setor4/"
+            },
+            {
+              "id": "etiquetasArmaduras",
+              "label": "Armaduras",
+              "path": "/pages/etiquetas-armaduras/"
+            }
+          ]
+        },
+        {
+          "label": "Acompanhamento",
+          "items": [
+            {
+              "id": "pcpDiario",
+              "label": "PCP Diário",
+              "path": "/pages/pcp-diario/"
+            },
+            {
+              "id": "acompMensal",
+              "label": "Acompanhamento Mensal",
+              "path": "/pages/acompanhamento-mensal/"
+            },
+            {
+              "id": "acompMensal34",
+              "label": "Acompanhamento Mensal Setor 3 e 4",
+              "path": "/pages/acompanhamento-mensal-setor-34/"
+            },
+            {
+              "id": "apontamentoMega",
+              "label": "Apontamento Mega",
+              "path": "/pages/apontamento-mega/"
+            },
+            {
+              "id": "fechamentoDiarioPcp",
+              "label": "Fechamento Diário",
+              "path": "/pages/fechamento-diario/"
+            }
+          ]
+        },
+        {
+          "label": "Produção e apoio",
+          "items": [
+            {
+              "id": "producaoPcp",
+              "label": "Produção PCP",
+              "path": "/pages/producao/"
+            },
+            {
+              "id": "maodeobra",
+              "label": "Mão de Obra",
+              "path": "/pages/maodeobra/"
+            },
+            {
+              "id": "maodeobraRateio",
+              "label": "Rateio de Mão de Obra",
+              "path": "/pages/maodeobra-rateio/"
+            },
+            {
+              "id": "formasPorSetor",
+              "label": "Formas por Setor",
+              "path": "/pages/formas-por-setor/"
+            },
+            {
+              "id": "testeProgramacao",
+              "label": "Teste Programação",
+              "path": "/pages/teste-programacao/",
+              "ambiente": "homolog"
+            }
+          ]
+        }
+      ]
+    },
+    "producao": {
+      "label": "Produção",
+      "groups": [
+        {
+          "label": "Campinas · Produção",
+          "items": [
+            {
+              "id": "liberacao",
+              "mono": "PL",
+              "label": "Produção / Liberação",
+              "path": "/index.html",
+              "screen": "LIBERACAO"
+            },
+            {
+              "id": "setor1",
+              "mono": "P1",
+              "label": "Setor 1",
+              "path": "/index.html",
+              "screen": "LIBERACAO_S1"
+            },
+            {
+              "id": "setor2",
+              "mono": "P2",
+              "label": "Setor 2",
+              "path": "/index.html",
+              "screen": "LIBERACAO_S2"
+            },
+            {
+              "id": "setor3",
+              "mono": "P3",
+              "label": "Setor 3",
+              "path": "/index.html",
+              "screen": "LIBERACAO_S3"
+            },
+            {
+              "id": "setor4",
+              "mono": "P4",
+              "label": "Setor 4",
+              "path": "/index.html",
+              "screen": "LIBERACAO_S4"
+            },
+            {
+              "id": "mandril",
+              "mono": "MC",
+              "label": "Mandril Circular",
+              "path": "/index.html",
+              "screen": "MANDRIL_CIRCULAR"
+            }
+          ]
+        },
+        {
+          "label": "Campinas · Montagem",
+          "items": [
+            {
+              "id": "inspecao",
+              "mono": "MI",
+              "label": "Inspeção Setor 3 e 4",
+              "path": "/index.html",
+              "screen": "INSPECAO"
+            },
+            {
+              "id": "montagem",
+              "mono": "MP",
+              "label": "Montagem Postes",
+              "path": "/index.html",
+              "screen": "MONTAGEM_POSTES"
+            },
+            {
+              "id": "sequencia",
+              "mono": "S3",
+              "label": "Sequência Setor 3",
+              "path": "/index.html",
+              "screen": "SEQUENCIA_S3"
+            }
+          ]
+        },
+        {
+          "label": "Campinas · Controle",
+          "items": [
+            {
+              "id": "relatorioMapa",
+              "mono": "RE",
+              "label": "Relatório Enc. Produção",
+              "path": "/index.html",
+              "screen": "RELATORIO"
+            },
+            {
+              "id": "historico",
+              "mono": "HI",
+              "label": "Histórico",
+              "path": "/index.html",
+              "screen": "HISTORICO"
+            },
+            {
+              "id": "acmpConcretagem",
+              "mono": "CC",
+              "label": "Acmp. Concretagem",
+              "path": "/unificado/relatorios/acmp-concretagem/"
+            },
+            {
+              "id": "manutencao",
+              "mono": "MF",
+              "label": "Manutenção Formas",
+              "path": "/index.html",
+              "screen": "RELATORIO_MANUTENCAO"
+            },
+            {
+              "id": "tratativa",
+              "mono": "TD",
+              "label": "Tratativa Defeitos",
+              "path": "/index.html",
+              "screen": "TRATATIVA_DEFEITOS"
+            },
+            {
+              "id": "fechamentoDiario",
+              "label": "Fechamento diário",
+              "path": "/unificado/relatorios/fechamento-diario/"
+            }
+          ]
+        },
+        {
+          "label": "Campinas · Indicadores",
+          "items": [
+            {
+              "id": "campinasUnificado",
+              "mono": "CU",
+              "label": "Campinas Uni · S1+2+3+4",
+              "path": "/unificado/producao/campinas-unificado/",
+              "permissionId": "produtividade"
+            },
+            {
+              "id": "dashMontagem",
+              "mono": "DM",
+              "label": "Dashboard Montagem",
+              "path": "/index.html",
+              "screen": "MONTAGEM_INDICADORES"
+            },
+            {
+              "id": "dashDefeitos",
+              "mono": "DF",
+              "label": "Dashboard Defeitos",
+              "path": "/index.html",
+              "screen": "DASHBOARD_DEFEITOS"
+            },
+            {
+              "id": "produtividade",
+              "mono": "CO",
+              "label": "Dashboard Concretagem Matriz",
+              "path": "/index.html",
+              "screen": "PROD_ANALISE"
+            },
+            {
+              "id": "tvFormas",
+              "mono": "TV",
+              "label": "Painel TV — Formas",
+              "path": "/unificado/tv/formas/",
+              "screen": "TV_FORMAS"
+            }
+          ]
+        },
+        {
+          "label": "Pederneiras",
+          "items": [
+            {
+              "id": "pdrApontamento",
+              "mono": "AP",
+              "label": "Apontamento do dia",
+              "path": "apontamento",
+              "pederneiras": true
+            },
+            {
+              "id": "pdrMaoDeObra",
+              "mono": "MO",
+              "label": "Mão de obra",
+              "path": "mao-de-obra",
+              "pederneiras": true
+            },
+            {
+              "id": "pdrMensal",
+              "mono": "PM",
+              "label": "Produção Pederneiras",
+              "path": "mensal",
+              "pederneiras": true
+            },
+            {
+              "id": "pdrIndicadores",
+              "mono": "IN",
+              "label": "Indicadores",
+              "path": "indicadores",
+              "pederneiras": true
+            },
+            {
+              "id": "pdrProdutos",
+              "mono": "CP",
+              "label": "Cadastro de produtos",
+              "path": "produtos",
+              "pederneiras": true
+            }
+          ]
+        },
+        {
+          "label": "Ribeirão",
+          "items": [
+            {
+              "id": "rbrApontamento",
+              "mono": "AP",
+              "label": "Apontamento do dia",
+              "path": "apontamento",
+              "ribeirao": true
+            },
+            {
+              "id": "rbrMaoDeObra",
+              "mono": "MO",
+              "label": "Mão de obra",
+              "path": "mao-de-obra",
+              "ribeirao": true
+            },
+            {
+              "id": "rbrMensal",
+              "mono": "PM",
+              "label": "Produção Ribeirão",
+              "path": "mensal",
+              "ribeirao": true
+            },
+            {
+              "id": "rbrIndicadores",
+              "mono": "IN",
+              "label": "Indicadores",
+              "path": "indicadores",
+              "ribeirao": true
+            },
+            {
+              "id": "rbrProdutos",
+              "mono": "CP",
+              "label": "Cadastro de produtos",
+              "path": "produtos",
+              "ribeirao": true
+            }
+          ]
+        },
+        {
+          "label": "Noroeste",
+          "items": [
+            {
+              "id": "norApontamento",
+              "mono": "AP",
+              "label": "Apontamento do dia",
+              "path": "apontamento",
+              "noroeste": true
+            },
+            {
+              "id": "norMaoDeObra",
+              "mono": "MO",
+              "label": "Mão de obra",
+              "path": "mao-de-obra",
+              "noroeste": true
+            },
+            {
+              "id": "norMensal",
+              "mono": "PM",
+              "label": "Produção Noroeste",
+              "path": "mensal",
+              "noroeste": true
+            },
+            {
+              "id": "norIndicadores",
+              "mono": "IN",
+              "label": "Indicadores",
+              "path": "indicadores",
+              "noroeste": true
+            },
+            {
+              "id": "norProdutos",
+              "mono": "CP",
+              "label": "Produtos Campinas",
+              "path": "produtos",
+              "noroeste": true
+            }
+          ]
+        },
+        {
+          "label": "Indicadores gerais",
+          "items": [
+            {
+              "id": "indicadorGeralProducao",
+              "mono": "IG",
+              "label": "Indicador geral",
+              "path": "/unificado/producao/indicadores-gerais/",
+              "permissionId": "produtividade"
+            }
+          ]
+        }
+      ]
+    },
+    "qualidade": {
+      "label": "Qualidade",
+      "groups": [
+        {
+          "items": [
+            {
+              "id": "qualidadeTarefas",
+              "label": "Tarefas",
+              "path": "tarefas"
+            },
+            {
+              "id": "manutencaoUsina",
+              "label": "Manutenção Usina",
+              "path": "/unificado/manutencao-usina/"
+            }
+          ]
+        },
+        {
+          "label": "Não conformidades",
+          "items": [
+            {
+              "id": "qualidadePainel",
+              "label": "Painel",
+              "path": ""
+            },
+            {
+              "id": "qualidadeAbertura",
+              "label": "Abrir NC",
+              "path": "abrir"
+            },
+            {
+              "id": "qualidadeResultadosBancada",
+              "label": "Resultados de bancada",
+              "path": "resultados-bancada"
+            },
+            {
+              "id": "qualidadeCadastros",
+              "label": "Cadastros",
+              "path": "cadastros"
+            }
+          ]
+        },
+        {
+          "label": "Certificados",
+          "items": [
+            {
+              "id": "labCertificados",
+              "label": "Emitir certificado de qualidade",
+              "path": "/unificado/laboratorio/certificados-qualidade/"
+            },
+            {
+              "id": "labCertificadosHistorico",
+              "label": "Histórico de certificados",
+              "path": "/unificado/laboratorio/certificados-qualidade/?tab=historico",
+              "permissionId": "labCertificados"
+            },
+            {
+              "id": "labCertificadosCadastros",
+              "label": "Cadastros de certificados",
+              "path": "/unificado/laboratorio/certificados-qualidade/?tab=cadastros",
+              "permissionId": "labCertificados"
+            },
+            {
+              "id": "labTests",
+              "label": "Certificados de ensaios",
+              "path": "/unificado/laboratorio/novo/postes?tab=historico"
+            }
+          ]
+        }
+      ]
+    },
+    "usinas": {
+      "label": "Usinas",
+      "groups": [
+        {
+          "label": "Geral",
+          "items": [
+            {
+              "id": "usinasInicio",
+              "label": "Cartas de traço",
+              "path": ""
+            },
+            {
+              "id": "usinasCec",
+              "label": "Controle estatístico",
+              "path": "?area=cec",
+              "permissionId": "usinasInicio"
+            },
+            {
+              "id": "usinasRelatorios",
+              "label": "Relatórios gerenciais",
+              "path": "?area=relatorios",
+              "permissionId": "usinasInicio"
+            },
+            {
+              "id": "usinasEstoque",
+              "label": "Controle de estoque",
+              "path": "?area=estoque",
+              "permissionId": "usinasInicio"
+            }
+          ]
+        },
+        {
+          "label": "Noroeste",
+          "items": [
+            {
+              "id": "usinasNoroPainel",
+              "label": "Painel",
+              "path": "noroeste/"
+            },
+            {
+              "id": "usinasNoroMassadas",
+              "label": "Massadas",
+              "path": "noroeste/?area=massadas"
+            },
+            {
+              "id": "usinasNoroCartas",
+              "label": "Cartas de traço",
+              "path": "noroeste/?area=cartas"
+            },
+            {
+              "id": "usinasNoroRelatorios",
+              "label": "Relatórios",
+              "path": "noroeste/?area=relatorios"
+            },
+            {
+              "id": "usinasNoroCec",
+              "label": "Controle estatístico",
+              "path": "noroeste/?area=cec"
+            },
+            {
+              "id": "usinasNoroCadastros",
+              "label": "Cadastros",
+              "path": "noroeste/?area=cadastros"
+            },
+            {
+              "id": "usinasNoroEstoque",
+              "label": "Estoque",
+              "path": "noroeste/?area=estoque"
+            },
+            {
+              "id": "usinasNoroCustos",
+              "label": "Custos",
+              "path": "noroeste/?area=custos"
+            }
+          ]
+        }
+      ]
+    },
+    "laboratorio": {
+      "label": "Laboratório",
+      "groups": [
+        {
+          "label": "Corpos de Prova",
+          "items": [
+            {
+              "id": "labCecEtiquetas",
+              "label": "Etiquetas QR",
+              "path": "cec/etiquetas/",
+              "permissionId": "labCec"
+            },
+            {
+              "id": "labCecLeitura",
+              "label": "Leitura de CP",
+              "path": "cec/leitura/",
+              "permissionId": "labCec"
+            },
+            {
+              "id": "labCecResultados",
+              "label": "Resultados dos corpos de prova",
+              "path": "cec/analise/resultado-cp.html",
+              "permissionId": "labCec"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "label": "Controle estatístico",
+          "items": [
+            {
+              "id": "labCec",
+              "label": "Visão geral",
+              "path": "cec/"
+            },
+            {
+              "id": "labCecRompimentosMes",
+              "label": "Rompimentos por mês",
+              "path": "cec/rompimentos-mes/",
+              "permissionId": "labCec"
+            },
+            {
+              "id": "labCecAnalise",
+              "label": "Análise estatística",
+              "path": "cec/analise/",
+              "permissionId": "labCec"
+            },
+            {
+              "id": "labCecRelatorio",
+              "label": "Relatório CEC",
+              "path": "cec/analise/relatorio.html",
+              "permissionId": "labCec"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "label": "Dosagem",
+          "items": [
+            {
+              "id": "labDosagem",
+              "label": "Visão geral",
+              "path": "dosagem/"
+            },
+            {
+              "id": "labDosagemEmpacotamento",
+              "label": "Empacotamento",
+              "path": "dosagem/#/dosagem/empacotamento",
+              "permissionId": "labDosagem"
+            },
+            {
+              "id": "labDosagemVolume",
+              "label": "Volume",
+              "path": "dosagem/#/dosagem/volume",
+              "permissionId": "labDosagem"
+            },
+            {
+              "id": "labDosagemComparacao",
+              "label": "Comparação dos métodos",
+              "path": "dosagem/#/comparacao-metodos",
+              "permissionId": "labDosagem"
+            },
+            {
+              "id": "labDosagemTracos",
+              "label": "Traços",
+              "path": "dosagem/#/tracos",
+              "permissionId": "labDosagem"
+            },
+            {
+              "id": "labDosagemMateriais",
+              "label": "Materiais",
+              "path": "dosagem/#/materiais",
+              "permissionId": "labDosagem"
+            },
+            {
+              "id": "labDosagemFornecedores",
+              "label": "Fornecedores",
+              "path": "dosagem/#/fornecedores",
+              "permissionId": "labDosagem"
+            },
+            {
+              "id": "labDosagemEnsaios",
+              "label": "Ensaios",
+              "path": "dosagem/#/ensaios",
+              "permissionId": "labDosagem"
+            },
+            {
+              "id": "labDosagemFerramentas",
+              "label": "Ferramentas",
+              "path": "dosagem/#/ferramentas",
+              "permissionId": "labDosagem"
+            },
+            {
+              "id": "labDosagemCustos",
+              "label": "Custos",
+              "path": "dosagem/#/custos",
+              "permissionId": "labDosagem"
+            },
+            {
+              "id": "labDosagemReferencia",
+              "label": "Referência",
+              "path": "dosagem/#/referencia",
+              "permissionId": "labDosagem"
+            },
+            {
+              "id": "labDosagemProducao",
+              "label": "Produção",
+              "path": "dosagem/#/producao-r1",
+              "permissionId": "labDosagem"
+            },
+            {
+              "id": "labDosagemImportacao",
+              "label": "Importação",
+              "path": "dosagem/#/importacao-r1",
+              "permissionId": "labDosagem",
+              "dosagemAdmin": true
+            },
+            {
+              "id": "labDosagemConfig",
+              "label": "Configurações",
+              "path": "dosagem/#/config",
+              "permissionId": "labDosagem"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "label": "Concreto fresco",
+          "items": [
+            {
+              "id": "labSlump",
+              "label": "Registro de slump / flow",
+              "path": "slump"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "label": "Usina de Campinas",
+          "items": [
+            {
+              "id": "labUsinasRelatorios",
+              "label": "Relatórios e custos",
+              "path": "usinas-relatorios/"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "label": "Cura térmica",
+          "items": [
+            {
+              "id": "labMonitor",
+              "label": "Monitoramento",
+              "path": ""
+            },
+            {
+              "id": "labHistory",
+              "label": "Histórico de medições",
+              "path": "?view=history"
+            },
+            {
+              "id": "labDevice",
+              "label": "Dispositivo",
+              "path": "?view=settings"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "label": "Ensaios de concreto",
+          "items": [
+            {
+              "id": "labAbsorption",
+              "label": "Absorção",
+              "path": "novo/absorcao"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "label": "Postes",
+          "items": [
+            {
+              "id": "labCertificados",
+              "label": "Certificados de qualidade",
+              "path": "certificados-qualidade/"
+            },
+            {
+              "id": "labPole",
+              "label": "Ensaio de postes",
+              "path": "novo/postes"
+            },
+            {
+              "id": "labTests",
+              "label": "Histórico de ensaios",
+              "path": "novo/postes?tab=historico"
+            },
+            {
+              "id": "labRegisters",
+              "label": "Cadastros",
+              "path": "novo/postes?tab=cadastros"
+            },
+            {
+              "id": "labCriteria",
+              "label": "Critérios",
+              "path": "novo/postes?tab=criterios"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "label": "Cronoanálise",
+          "items": [
+            {
+              "id": "cronoanalise.inicio",
+              "label": "Início",
+              "path": "cronoanalise"
+            },
+            {
+              "id": "cronoanalise.coletar",
+              "label": "Coletar",
+              "path": "cronoanalise/coletar"
+            },
+            {
+              "id": "cronoanalise.medicoes",
+              "label": "Medições",
+              "path": "cronoanalise/medicoes"
+            },
+            {
+              "id": "cronoanalise.catalogo",
+              "label": "Catálogo",
+              "path": "cronoanalise/catalogo"
+            },
+            {
+              "id": "cronoanalise.dimensionar",
+              "label": "Dimensionar",
+              "path": "cronoanalise/dimensionar"
+            },
+            {
+              "id": "cronoanalise.simular",
+              "label": "Simular",
+              "path": "cronoanalise/simular"
+            },
+            {
+              "id": "cronoanalise.metodologia",
+              "label": "Metodologia",
+              "path": "cronoanalise/metodologia"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "label": "Carta de traço",
+          "items": [
+            {
+              "id": "labCartaTraco",
+              "label": "Carta de traço e MCC",
+              "path": "carta-traco/"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "label": "Administração",
+          "items": [
+            {
+              "id": "labUsuarios",
+              "label": "Usuários",
+              "path": "novo/postes?tab=usuarios"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "items": [
+            {
+              "id": "labHelp",
+              "label": "Como funciona",
+              "path": "?view=help"
+            }
+          ],
+          "unitName": "Campinas",
+          "unitCode": "campinas"
+        },
+        {
+          "label": "Corpos de Prova",
+          "unitName": "Noroeste",
+          "unitCode": "noroeste",
+          "items": [
+            {
+              "id": "labNoroCecEtiquetas",
+              "label": "Etiquetas QR",
+              "path": "noroeste/cec/etiquetas/"
+            },
+            {
+              "id": "labNoroCecLeitura",
+              "label": "Leitura de CP",
+              "path": "noroeste/cec/leitura/"
+            },
+            {
+              "id": "labNoroCecResultados",
+              "label": "Resultados dos corpos de prova",
+              "path": "noroeste/cec/analise/resultado-cp.html"
+            }
+          ]
+        },
+        {
+          "label": "Controle estatístico",
+          "unitName": "Noroeste",
+          "unitCode": "noroeste",
+          "items": [
+            {
+              "id": "labNoroCec",
+              "label": "Visão geral",
+              "path": "noroeste/cec/"
+            },
+            {
+              "id": "labNoroCecRompimentosMes",
+              "label": "Rompimentos por mês",
+              "path": "noroeste/cec/rompimentos-mes/"
+            },
+            {
+              "id": "labNoroCecAnalise",
+              "label": "Análise estatística",
+              "path": "noroeste/cec/analise/"
+            },
+            {
+              "id": "labNoroCecRelatorio",
+              "label": "Relatório CEC",
+              "path": "noroeste/cec/analise/relatorio.html"
+            }
+          ]
+        },
+        {
+          "label": "Administração",
+          "unitName": "Noroeste",
+          "unitCode": "noroeste",
+          "items": [
+            {
+              "id": "labNoroUsuarios",
+              "label": "Usuários",
+              "path": "noroeste/usuarios/"
+            }
+          ]
+        }
+      ]
+    },
+    "suprimentos": {
+      "label": "Suprimentos",
+      "groups": [
+        {
+          "label": "Solicitações",
+          "items": [
+            {
+              "id": "suprimentosPainel",
+              "label": "Painel",
+              "path": "painel/"
+            },
+            {
+              "id": "suprimentosSolicitacoes",
+              "label": "Solicitações",
+              "path": "solicitacoes/"
+            },
+            {
+              "id": "suprimentosNova",
+              "label": "Nova solicitação",
+              "path": "nova/"
+            },
+            {
+              "id": "suprimentosAlmoxarifado",
+              "label": "Almoxarifado",
+              "path": "almoxarifado/",
+              "futurePhase": "S2"
+            },
+            {
+              "id": "suprimentosInventario",
+              "label": "Inventário",
+              "path": "inventario/",
+              "futurePhase": "S2"
+            }
+          ]
+        },
+        {
+          "label": "Compras",
+          "items": [
+            {
+              "id": "suprimentosCotacoes",
+              "label": "Cotações e pedidos",
+              "path": "cotacoes/",
+              "futurePhase": "S3A"
+            },
+            {
+              "id": "suprimentosRecebimento",
+              "label": "Recebimento",
+              "path": "recebimento/",
+              "futurePhase": "S3B"
+            },
+            {
+              "id": "suprimentosFornecedores",
+              "label": "Fornecedores",
+              "path": "fornecedores/",
+              "futurePhase": "S3A"
+            },
+            {
+              "id": "suprimentosIndicadores",
+              "label": "Indicadores",
+              "path": "analises/",
+              "futurePhase": "S5"
+            }
+          ]
+        },
+        {
+          "label": "Administração",
+          "items": [
+            {
+              "id": "suprimentosCadastros",
+              "label": "Cadastros e alçadas",
+              "path": "cadastros/"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "items": {
+    "logisticaInicio": {
+      "id": "logisticaInicio",
+      "label": "Início",
+      "path": "",
+      "module": "logistica",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/",
+      "available": true
+    },
+    "logisticaPainel": {
+      "id": "logisticaPainel",
+      "label": "Painel Km/Evento",
+      "path": "painel/",
+      "module": "logistica",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/painel/",
+      "available": true
+    },
+    "logisticaCorrecoes": {
+      "id": "logisticaCorrecoes",
+      "label": "Correções e exclusões",
+      "path": "correcoes/",
+      "module": "logistica",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/correcoes/",
+      "available": true
+    },
+    "logisticaFechamento": {
+      "id": "logisticaFechamento",
+      "label": "Fechamento trimestral",
+      "path": "fechamento/",
+      "module": "logistica",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/fechamento/",
+      "available": true
+    },
+    "logisticaPremiacao": {
+      "id": "logisticaPremiacao",
+      "label": "Premiação",
+      "path": "premiacao/",
+      "module": "logistica",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/premiacao/",
+      "available": true
+    },
+    "logisticaMeses": {
+      "id": "logisticaMeses",
+      "label": "Meses e importação",
+      "path": "meses/",
+      "module": "logistica",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/meses/",
+      "available": true
+    },
+    "logisticaMetas": {
+      "id": "logisticaMetas",
+      "label": "Metas",
+      "path": "metas/",
+      "module": "logistica",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/metas/",
+      "available": true
+    },
+    "logisticaMotoristas": {
+      "id": "logisticaMotoristas",
+      "label": "Motoristas",
+      "path": "motoristas/",
+      "module": "logistica",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/motoristas/",
+      "available": true
+    },
+    "logisticaAjudantes": {
+      "id": "logisticaAjudantes",
+      "label": "Ajudantes",
+      "path": "ajudantes/",
+      "module": "logistica",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/ajudantes/",
+      "available": true
+    },
+    "logisticaCobli": {
+      "id": "logisticaCobli",
+      "label": "Mapeamento Cobli",
+      "path": "mapeamento-cobli/",
+      "module": "logistica",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/logistica/mapeamento-cobli/",
+      "available": true
+    },
+    "dashboard": {
+      "id": "dashboard",
+      "label": "Dashboard",
+      "path": "/pages/dashboard/",
+      "module": "planejamento",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/dashboard/",
+      "available": true
+    },
+    "comparacao": {
+      "id": "comparacao",
+      "label": "Programado vs Realizado",
+      "path": "/pages/comparacao/",
+      "module": "planejamento",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/comparacao/",
+      "available": true
+    },
+    "programacao12": {
+      "id": "programacao12",
+      "label": "Setor 1 e 2",
+      "path": "/pages/programacao-alex/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-alex/",
+      "available": true
+    },
+    "programacaoSemanal12": {
+      "id": "programacaoSemanal12",
+      "label": "Semanal S1 e S2",
+      "path": "/pages/programacao-semanal/",
+      "module": "planejamento",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/",
+      "available": true
+    },
+    "programacao34": {
+      "id": "programacao34",
+      "label": "Setor 3 e 4",
+      "path": "/pages/programacao/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao/",
+      "available": true
+    },
+    "circular3": {
+      "id": "circular3",
+      "label": "Circular Setor 3",
+      "path": "/pages/programacao-circular-s3/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s3/",
+      "available": true
+    },
+    "dt4": {
+      "id": "dt4",
+      "label": "DT Setor 4",
+      "path": "/pages/programacao-circular-s4/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s4/",
+      "available": true
+    },
+    "programacaoFinal": {
+      "id": "programacaoFinal",
+      "label": "Programação Final",
+      "path": "/pages/programacao-final/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-final/",
+      "available": true
+    },
+    "relatorio12": {
+      "id": "relatorio12",
+      "label": "Setor 1 e 2",
+      "path": "/pages/relatorio-producao/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-producao/",
+      "available": true
+    },
+    "relatorio3": {
+      "id": "relatorio3",
+      "label": "Setor 3",
+      "path": "/pages/relatorio-programacao-s3/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s3/",
+      "available": true
+    },
+    "relatorio4": {
+      "id": "relatorio4",
+      "label": "Setor 4",
+      "path": "/pages/relatorio-programacao-s4/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s4/",
+      "available": true
+    },
+    "postesNumerosSerie": {
+      "id": "postesNumerosSerie",
+      "label": "Números de série dos postes",
+      "path": "/pages/numeros-serie/",
+      "module": "planejamento",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+      "available": true
+    },
+    "armadurasProgramacao": {
+      "id": "armadurasProgramacao",
+      "label": "Programação semanal",
+      "path": "/pages/armaduras/",
+      "module": "planejamento",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+      "available": true
+    },
+    "armadurasRelatorio": {
+      "id": "armadurasRelatorio",
+      "label": "Relatório de produção",
+      "path": "/pages/armaduras-relatorio/",
+      "module": "planejamento",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+      "available": true
+    },
+    "etiquetas": {
+      "id": "etiquetas",
+      "label": "Padrão",
+      "path": "/pages/etiquetas/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas/",
+      "available": true
+    },
+    "etiquetasSc": {
+      "id": "etiquetasSc",
+      "label": "Setor 3",
+      "path": "/pages/etiquetas-sc/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+      "available": true
+    },
+    "etiquetasSetor4": {
+      "id": "etiquetasSetor4",
+      "label": "Setor 4",
+      "path": "/pages/etiquetas-setor4/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-setor4/",
+      "available": true
+    },
+    "etiquetasArmaduras": {
+      "id": "etiquetasArmaduras",
+      "label": "Armaduras",
+      "path": "/pages/etiquetas-armaduras/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-armaduras/",
+      "available": true
+    },
+    "pcpDiario": {
+      "id": "pcpDiario",
+      "label": "PCP Diário",
+      "path": "/pages/pcp-diario/",
+      "module": "planejamento",
+      "require": "PRODUCAO",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/pcp-diario/",
+      "available": true
+    },
+    "acompMensal": {
+      "id": "acompMensal",
+      "label": "Acompanhamento Mensal",
+      "path": "/pages/acompanhamento-mensal/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal/",
+      "available": true
+    },
+    "acompMensal34": {
+      "id": "acompMensal34",
+      "label": "Acompanhamento Mensal Setor 3 e 4",
+      "path": "/pages/acompanhamento-mensal-setor-34/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal-setor-34/",
+      "available": true
+    },
+    "apontamentoMega": {
+      "id": "apontamentoMega",
+      "label": "Apontamento Mega",
+      "path": "/pages/apontamento-mega/",
+      "module": "planejamento",
+      "require": "PRODUCAO",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/apontamento-mega/",
+      "available": true
+    },
+    "fechamentoDiarioPcp": {
+      "id": "fechamentoDiarioPcp",
+      "label": "Fechamento Diário",
+      "path": "/pages/fechamento-diario/",
+      "module": "planejamento",
+      "require": "PRODUCAO",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/fechamento-diario/",
+      "available": true
+    },
+    "producaoPcp": {
+      "id": "producaoPcp",
+      "label": "Produção PCP",
+      "path": "/pages/producao/",
+      "module": "planejamento",
+      "require": "PRODUCAO",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/producao/",
+      "available": true
+    },
+    "maodeobra": {
+      "id": "maodeobra",
+      "label": "Mão de Obra",
+      "path": "/pages/maodeobra/",
+      "module": "planejamento",
+      "require": "PRODUCAO",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra/",
+      "available": true
+    },
+    "maodeobraRateio": {
+      "id": "maodeobraRateio",
+      "label": "Rateio de Mão de Obra",
+      "path": "/pages/maodeobra-rateio/",
+      "module": "planejamento",
+      "require": "PRODUCAO",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra-rateio/",
+      "available": true
+    },
+    "formasPorSetor": {
+      "id": "formasPorSetor",
+      "label": "Formas por Setor",
+      "path": "/pages/formas-por-setor/",
+      "module": "planejamento",
+      "require": "PCP",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/formas-por-setor/",
+      "available": true
+    },
+    "testeProgramacao": {
+      "id": "testeProgramacao",
+      "label": "Teste Programação",
+      "path": "/pages/teste-programacao/",
+      "ambiente": "homolog",
+      "module": "planejamento",
+      "require": "ADMIN",
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/teste-programacao/",
+      "available": true
+    },
+    "liberacao": {
+      "id": "liberacao",
+      "mono": "PL",
+      "label": "Produção / Liberação",
+      "path": "/index.html",
+      "screen": "LIBERACAO",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO",
+      "available": true
+    },
+    "setor1": {
+      "id": "setor1",
+      "mono": "P1",
+      "label": "Setor 1",
+      "path": "/index.html",
+      "screen": "LIBERACAO_S1",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S1",
+      "available": true
+    },
+    "setor2": {
+      "id": "setor2",
+      "mono": "P2",
+      "label": "Setor 2",
+      "path": "/index.html",
+      "screen": "LIBERACAO_S2",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S2",
+      "available": true
+    },
+    "setor3": {
+      "id": "setor3",
+      "mono": "P3",
+      "label": "Setor 3",
+      "path": "/index.html",
+      "screen": "LIBERACAO_S3",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S3",
+      "available": true
+    },
+    "setor4": {
+      "id": "setor4",
+      "mono": "P4",
+      "label": "Setor 4",
+      "path": "/index.html",
+      "screen": "LIBERACAO_S4",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S4",
+      "available": true
+    },
+    "mandril": {
+      "id": "mandril",
+      "mono": "MC",
+      "label": "Mandril Circular",
+      "path": "/index.html",
+      "screen": "MANDRIL_CIRCULAR",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MANDRIL_CIRCULAR",
+      "available": true
+    },
+    "inspecao": {
+      "id": "inspecao",
+      "mono": "MI",
+      "label": "Inspeção Setor 3 e 4",
+      "path": "/index.html",
+      "screen": "INSPECAO",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=INSPECAO",
+      "available": true
+    },
+    "montagem": {
+      "id": "montagem",
+      "mono": "MP",
+      "label": "Montagem Postes",
+      "path": "/index.html",
+      "screen": "MONTAGEM_POSTES",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_POSTES",
+      "available": true
+    },
+    "sequencia": {
+      "id": "sequencia",
+      "mono": "S3",
+      "label": "Sequência Setor 3",
+      "path": "/index.html",
+      "screen": "SEQUENCIA_S3",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=SEQUENCIA_S3",
+      "available": true
+    },
+    "relatorioMapa": {
+      "id": "relatorioMapa",
+      "mono": "RE",
+      "label": "Relatório Enc. Produção",
+      "path": "/index.html",
+      "screen": "RELATORIO",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO",
+      "available": true
+    },
+    "historico": {
+      "id": "historico",
+      "mono": "HI",
+      "label": "Histórico",
+      "path": "/index.html",
+      "screen": "HISTORICO",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=HISTORICO",
+      "available": true
+    },
+    "acmpConcretagem": {
+      "id": "acmpConcretagem",
+      "mono": "CC",
+      "label": "Acmp. Concretagem",
+      "path": "/unificado/relatorios/acmp-concretagem/",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/acmp-concretagem/",
+      "available": true
+    },
+    "manutencao": {
+      "id": "manutencao",
+      "mono": "MF",
+      "label": "Manutenção Formas",
+      "path": "/index.html",
+      "screen": "RELATORIO_MANUTENCAO",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO_MANUTENCAO",
+      "available": true
+    },
+    "tratativa": {
+      "id": "tratativa",
+      "mono": "TD",
+      "label": "Tratativa Defeitos",
+      "path": "/index.html",
+      "screen": "TRATATIVA_DEFEITOS",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=TRATATIVA_DEFEITOS",
+      "available": true
+    },
+    "fechamentoDiario": {
+      "id": "fechamentoDiario",
+      "label": "Fechamento diário",
+      "path": "/unificado/relatorios/fechamento-diario/",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+      "available": true
+    },
+    "campinasUnificado": {
+      "id": "campinasUnificado",
+      "mono": "CU",
+      "label": "Campinas Uni · S1+2+3+4",
+      "path": "/unificado/producao/campinas-unificado/",
+      "permissionId": "produtividade",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/campinas-unificado/",
+      "available": true
+    },
+    "dashMontagem": {
+      "id": "dashMontagem",
+      "mono": "DM",
+      "label": "Dashboard Montagem",
+      "path": "/index.html",
+      "screen": "MONTAGEM_INDICADORES",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_INDICADORES",
+      "available": true
+    },
+    "dashDefeitos": {
+      "id": "dashDefeitos",
+      "mono": "DF",
+      "label": "Dashboard Defeitos",
+      "path": "/index.html",
+      "screen": "DASHBOARD_DEFEITOS",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=DASHBOARD_DEFEITOS",
+      "available": true
+    },
+    "produtividade": {
+      "id": "produtividade",
+      "mono": "CO",
+      "label": "Dashboard Concretagem Matriz",
+      "path": "/index.html",
+      "screen": "PROD_ANALISE",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=PROD_ANALISE",
+      "available": true
+    },
+    "tvFormas": {
+      "id": "tvFormas",
+      "mono": "TV",
+      "label": "Painel TV — Formas",
+      "path": "/unificado/tv/formas/",
+      "screen": "TV_FORMAS",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/tv/formas/",
+      "available": true
+    },
+    "pdrApontamento": {
+      "id": "pdrApontamento",
+      "mono": "AP",
+      "label": "Apontamento do dia",
+      "path": "apontamento",
+      "pederneiras": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=apontamento",
+      "available": true
+    },
+    "pdrMaoDeObra": {
+      "id": "pdrMaoDeObra",
+      "mono": "MO",
+      "label": "Mão de obra",
+      "path": "mao-de-obra",
+      "pederneiras": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=mao-de-obra",
+      "available": true
+    },
+    "pdrMensal": {
+      "id": "pdrMensal",
+      "mono": "PM",
+      "label": "Produção Pederneiras",
+      "path": "mensal",
+      "pederneiras": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=mensal",
+      "available": true
+    },
+    "pdrIndicadores": {
+      "id": "pdrIndicadores",
+      "mono": "IN",
+      "label": "Indicadores",
+      "path": "indicadores",
+      "pederneiras": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=indicadores",
+      "available": true
+    },
+    "pdrProdutos": {
+      "id": "pdrProdutos",
+      "mono": "CP",
+      "label": "Cadastro de produtos",
+      "path": "produtos",
+      "pederneiras": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/pederneiras/?tab=produtos",
+      "available": true
+    },
+    "rbrApontamento": {
+      "id": "rbrApontamento",
+      "mono": "AP",
+      "label": "Apontamento do dia",
+      "path": "apontamento",
+      "ribeirao": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=apontamento",
+      "available": true
+    },
+    "rbrMaoDeObra": {
+      "id": "rbrMaoDeObra",
+      "mono": "MO",
+      "label": "Mão de obra",
+      "path": "mao-de-obra",
+      "ribeirao": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=mao-de-obra",
+      "available": true
+    },
+    "rbrMensal": {
+      "id": "rbrMensal",
+      "mono": "PM",
+      "label": "Produção Ribeirão",
+      "path": "mensal",
+      "ribeirao": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=mensal",
+      "available": true
+    },
+    "rbrIndicadores": {
+      "id": "rbrIndicadores",
+      "mono": "IN",
+      "label": "Indicadores",
+      "path": "indicadores",
+      "ribeirao": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=indicadores",
+      "available": true
+    },
+    "rbrProdutos": {
+      "id": "rbrProdutos",
+      "mono": "CP",
+      "label": "Cadastro de produtos",
+      "path": "produtos",
+      "ribeirao": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/ribeirao/?tab=produtos",
+      "available": true
+    },
+    "norApontamento": {
+      "id": "norApontamento",
+      "mono": "AP",
+      "label": "Apontamento do dia",
+      "path": "apontamento",
+      "noroeste": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=apontamento",
+      "available": true
+    },
+    "norMaoDeObra": {
+      "id": "norMaoDeObra",
+      "mono": "MO",
+      "label": "Mão de obra",
+      "path": "mao-de-obra",
+      "noroeste": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=mao-de-obra",
+      "available": true
+    },
+    "norMensal": {
+      "id": "norMensal",
+      "mono": "PM",
+      "label": "Produção Noroeste",
+      "path": "mensal",
+      "noroeste": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=mensal",
+      "available": true
+    },
+    "norIndicadores": {
+      "id": "norIndicadores",
+      "mono": "IN",
+      "label": "Indicadores",
+      "path": "indicadores",
+      "noroeste": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=indicadores",
+      "available": true
+    },
+    "norProdutos": {
+      "id": "norProdutos",
+      "mono": "CP",
+      "label": "Produtos Campinas",
+      "path": "produtos",
+      "noroeste": true,
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/noroeste/?tab=produtos",
+      "available": true
+    },
+    "indicadorGeralProducao": {
+      "id": "indicadorGeralProducao",
+      "mono": "IG",
+      "label": "Indicador geral",
+      "path": "/unificado/producao/indicadores-gerais/",
+      "permissionId": "produtividade",
+      "module": "producao",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/producao/indicadores-gerais/",
+      "available": true
+    },
+    "qualidadeTarefas": {
+      "id": "qualidadeTarefas",
+      "label": "Tarefas",
+      "path": "tarefas",
+      "module": "qualidade",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/tarefas",
+      "available": true
+    },
+    "manutencaoUsina": {
+      "id": "manutencaoUsina",
+      "label": "Manutenção Usina",
+      "path": "/unificado/manutencao-usina/",
+      "module": "qualidade",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+      "available": true
+    },
+    "qualidadePainel": {
+      "id": "qualidadePainel",
+      "label": "Painel",
+      "path": "",
+      "module": "qualidade",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/",
+      "available": true
+    },
+    "qualidadeAbertura": {
+      "id": "qualidadeAbertura",
+      "label": "Abrir NC",
+      "path": "abrir",
+      "module": "qualidade",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/abrir",
+      "available": true
+    },
+    "qualidadeResultadosBancada": {
+      "id": "qualidadeResultadosBancada",
+      "label": "Resultados de bancada",
+      "path": "resultados-bancada",
+      "module": "qualidade",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/resultados-bancada",
+      "available": true
+    },
+    "qualidadeCadastros": {
+      "id": "qualidadeCadastros",
+      "label": "Cadastros",
+      "path": "cadastros",
+      "module": "qualidade",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/qualidade/cadastros",
+      "available": true
+    },
+    "labCertificados": {
+      "id": "labCertificados",
+      "label": "Certificados de qualidade",
+      "path": "certificados-qualidade/",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/certificados-qualidade/",
+      "available": true
+    },
+    "labCertificadosHistorico": {
+      "id": "labCertificadosHistorico",
+      "label": "Histórico de certificados",
+      "path": "/unificado/laboratorio/certificados-qualidade/?tab=historico",
+      "permissionId": "labCertificados",
+      "module": "qualidade",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/certificados-qualidade/?tab=historico",
+      "available": true
+    },
+    "labCertificadosCadastros": {
+      "id": "labCertificadosCadastros",
+      "label": "Cadastros de certificados",
+      "path": "/unificado/laboratorio/certificados-qualidade/?tab=cadastros",
+      "permissionId": "labCertificados",
+      "module": "qualidade",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/certificados-qualidade/?tab=cadastros",
+      "available": true
+    },
+    "labTests": {
+      "id": "labTests",
+      "label": "Histórico de ensaios",
+      "path": "novo/postes?tab=historico",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=historico",
+      "available": true
+    },
+    "usinasInicio": {
+      "id": "usinasInicio",
+      "label": "Cartas de traço",
+      "path": "",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/",
+      "available": true
+    },
+    "usinasCec": {
+      "id": "usinasCec",
+      "label": "Controle estatístico",
+      "path": "?area=cec",
+      "permissionId": "usinasInicio",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=cec",
+      "available": true
+    },
+    "usinasRelatorios": {
+      "id": "usinasRelatorios",
+      "label": "Relatórios gerenciais",
+      "path": "?area=relatorios",
+      "permissionId": "usinasInicio",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=relatorios",
+      "available": true
+    },
+    "usinasEstoque": {
+      "id": "usinasEstoque",
+      "label": "Controle de estoque",
+      "path": "?area=estoque",
+      "permissionId": "usinasInicio",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=estoque",
+      "available": true
+    },
+    "usinasNoroPainel": {
+      "id": "usinasNoroPainel",
+      "label": "Painel",
+      "path": "noroeste/",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/",
+      "available": true
+    },
+    "usinasNoroMassadas": {
+      "id": "usinasNoroMassadas",
+      "label": "Massadas",
+      "path": "noroeste/?area=massadas",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=massadas",
+      "available": true
+    },
+    "usinasNoroCartas": {
+      "id": "usinasNoroCartas",
+      "label": "Cartas de traço",
+      "path": "noroeste/?area=cartas",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cartas",
+      "available": true
+    },
+    "usinasNoroRelatorios": {
+      "id": "usinasNoroRelatorios",
+      "label": "Relatórios",
+      "path": "noroeste/?area=relatorios",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=relatorios",
+      "available": true
+    },
+    "usinasNoroCec": {
+      "id": "usinasNoroCec",
+      "label": "Controle estatístico",
+      "path": "noroeste/?area=cec",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cec",
+      "available": true
+    },
+    "usinasNoroCadastros": {
+      "id": "usinasNoroCadastros",
+      "label": "Cadastros",
+      "path": "noroeste/?area=cadastros",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cadastros",
+      "available": true
+    },
+    "usinasNoroEstoque": {
+      "id": "usinasNoroEstoque",
+      "label": "Estoque",
+      "path": "noroeste/?area=estoque",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=estoque",
+      "available": true
+    },
+    "usinasNoroCustos": {
+      "id": "usinasNoroCustos",
+      "label": "Custos",
+      "path": "noroeste/?area=custos",
+      "module": "usinas",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=custos",
+      "available": true
+    },
+    "labCecEtiquetas": {
+      "id": "labCecEtiquetas",
+      "label": "Etiquetas QR",
+      "path": "cec/etiquetas/",
+      "permissionId": "labCec",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/etiquetas/",
+      "available": true
+    },
+    "labCecLeitura": {
+      "id": "labCecLeitura",
+      "label": "Leitura de CP",
+      "path": "cec/leitura/",
+      "permissionId": "labCec",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/leitura/",
+      "available": true
+    },
+    "labCecResultados": {
+      "id": "labCecResultados",
+      "label": "Resultados dos corpos de prova",
+      "path": "cec/analise/resultado-cp.html",
+      "permissionId": "labCec",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/resultado-cp.html",
+      "available": true
+    },
+    "labCec": {
+      "id": "labCec",
+      "label": "Visão geral",
+      "path": "cec/",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/",
+      "available": true
+    },
+    "labCecRompimentosMes": {
+      "id": "labCecRompimentosMes",
+      "label": "Rompimentos por mês",
+      "path": "cec/rompimentos-mes/",
+      "permissionId": "labCec",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/rompimentos-mes/",
+      "available": true
+    },
+    "labCecAnalise": {
+      "id": "labCecAnalise",
+      "label": "Análise estatística",
+      "path": "cec/analise/",
+      "permissionId": "labCec",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/",
+      "available": true
+    },
+    "labCecRelatorio": {
+      "id": "labCecRelatorio",
+      "label": "Relatório CEC",
+      "path": "cec/analise/relatorio.html",
+      "permissionId": "labCec",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/relatorio.html",
+      "available": true
+    },
+    "labDosagem": {
+      "id": "labDosagem",
+      "label": "Visão geral",
+      "path": "dosagem/",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/",
+      "available": true
+    },
+    "labDosagemEmpacotamento": {
+      "id": "labDosagemEmpacotamento",
+      "label": "Empacotamento",
+      "path": "dosagem/#/dosagem/empacotamento",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/dosagem/empacotamento",
+      "available": true
+    },
+    "labDosagemVolume": {
+      "id": "labDosagemVolume",
+      "label": "Volume",
+      "path": "dosagem/#/dosagem/volume",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/dosagem/volume",
+      "available": true
+    },
+    "labDosagemComparacao": {
+      "id": "labDosagemComparacao",
+      "label": "Comparação dos métodos",
+      "path": "dosagem/#/comparacao-metodos",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/comparacao-metodos",
+      "available": true
+    },
+    "labDosagemTracos": {
+      "id": "labDosagemTracos",
+      "label": "Traços",
+      "path": "dosagem/#/tracos",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/tracos",
+      "available": true
+    },
+    "labDosagemMateriais": {
+      "id": "labDosagemMateriais",
+      "label": "Materiais",
+      "path": "dosagem/#/materiais",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/materiais",
+      "available": true
+    },
+    "labDosagemFornecedores": {
+      "id": "labDosagemFornecedores",
+      "label": "Fornecedores",
+      "path": "dosagem/#/fornecedores",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/fornecedores",
+      "available": true
+    },
+    "labDosagemEnsaios": {
+      "id": "labDosagemEnsaios",
+      "label": "Ensaios",
+      "path": "dosagem/#/ensaios",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/ensaios",
+      "available": true
+    },
+    "labDosagemFerramentas": {
+      "id": "labDosagemFerramentas",
+      "label": "Ferramentas",
+      "path": "dosagem/#/ferramentas",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/ferramentas",
+      "available": true
+    },
+    "labDosagemCustos": {
+      "id": "labDosagemCustos",
+      "label": "Custos",
+      "path": "dosagem/#/custos",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/custos",
+      "available": true
+    },
+    "labDosagemReferencia": {
+      "id": "labDosagemReferencia",
+      "label": "Referência",
+      "path": "dosagem/#/referencia",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/referencia",
+      "available": true
+    },
+    "labDosagemProducao": {
+      "id": "labDosagemProducao",
+      "label": "Produção",
+      "path": "dosagem/#/producao-r1",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/producao-r1",
+      "available": true
+    },
+    "labDosagemImportacao": {
+      "id": "labDosagemImportacao",
+      "label": "Importação",
+      "path": "dosagem/#/importacao-r1",
+      "permissionId": "labDosagem",
+      "dosagemAdmin": true,
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/importacao-r1",
+      "available": true
+    },
+    "labDosagemConfig": {
+      "id": "labDosagemConfig",
+      "label": "Configurações",
+      "path": "dosagem/#/config",
+      "permissionId": "labDosagem",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/config",
+      "available": true
+    },
+    "labSlump": {
+      "id": "labSlump",
+      "label": "Registro de slump / flow",
+      "path": "slump",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/slump",
+      "available": true
+    },
+    "labUsinasRelatorios": {
+      "id": "labUsinasRelatorios",
+      "label": "Relatórios e custos",
+      "path": "usinas-relatorios/",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/usinas-relatorios/",
+      "available": true
+    },
+    "labMonitor": {
+      "id": "labMonitor",
+      "label": "Monitoramento",
+      "path": "",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/",
+      "available": true
+    },
+    "labHistory": {
+      "id": "labHistory",
+      "label": "Histórico de medições",
+      "path": "?view=history",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=history",
+      "available": true
+    },
+    "labDevice": {
+      "id": "labDevice",
+      "label": "Dispositivo",
+      "path": "?view=settings",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=settings",
+      "available": true
+    },
+    "labAbsorption": {
+      "id": "labAbsorption",
+      "label": "Absorção",
+      "path": "novo/absorcao",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/absorcao",
+      "available": true
+    },
+    "labPole": {
+      "id": "labPole",
+      "label": "Ensaio de postes",
+      "path": "novo/postes",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes",
+      "available": true
+    },
+    "labRegisters": {
+      "id": "labRegisters",
+      "label": "Cadastros",
+      "path": "novo/postes?tab=cadastros",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=cadastros",
+      "available": true
+    },
+    "labCriteria": {
+      "id": "labCriteria",
+      "label": "Critérios",
+      "path": "novo/postes?tab=criterios",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=criterios",
+      "available": true
+    },
+    "cronoanalise.inicio": {
+      "id": "cronoanalise.inicio",
+      "label": "Início",
+      "path": "cronoanalise",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise",
+      "available": true
+    },
+    "cronoanalise.coletar": {
+      "id": "cronoanalise.coletar",
+      "label": "Coletar",
+      "path": "cronoanalise/coletar",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/coletar",
+      "available": true
+    },
+    "cronoanalise.medicoes": {
+      "id": "cronoanalise.medicoes",
+      "label": "Medições",
+      "path": "cronoanalise/medicoes",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/medicoes",
+      "available": true
+    },
+    "cronoanalise.catalogo": {
+      "id": "cronoanalise.catalogo",
+      "label": "Catálogo",
+      "path": "cronoanalise/catalogo",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/catalogo",
+      "available": true
+    },
+    "cronoanalise.dimensionar": {
+      "id": "cronoanalise.dimensionar",
+      "label": "Dimensionar",
+      "path": "cronoanalise/dimensionar",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/dimensionar",
+      "available": true
+    },
+    "cronoanalise.simular": {
+      "id": "cronoanalise.simular",
+      "label": "Simular",
+      "path": "cronoanalise/simular",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/simular",
+      "available": true
+    },
+    "cronoanalise.metodologia": {
+      "id": "cronoanalise.metodologia",
+      "label": "Metodologia",
+      "path": "cronoanalise/metodologia",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/metodologia",
+      "available": true
+    },
+    "labCartaTraco": {
+      "id": "labCartaTraco",
+      "label": "Carta de traço e MCC",
+      "path": "carta-traco/",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/carta-traco/",
+      "available": true
+    },
+    "labUsuarios": {
+      "id": "labUsuarios",
+      "label": "Usuários",
+      "path": "novo/postes?tab=usuarios",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=usuarios",
+      "available": true
+    },
+    "labHelp": {
+      "id": "labHelp",
+      "label": "Como funciona",
+      "path": "?view=help",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=help",
+      "available": true
+    },
+    "labNoroCecEtiquetas": {
+      "id": "labNoroCecEtiquetas",
+      "label": "Etiquetas QR",
+      "path": "noroeste/cec/etiquetas/",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/etiquetas/",
+      "available": true
+    },
+    "labNoroCecLeitura": {
+      "id": "labNoroCecLeitura",
+      "label": "Leitura de CP",
+      "path": "noroeste/cec/leitura/",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/leitura/",
+      "available": true
+    },
+    "labNoroCecResultados": {
+      "id": "labNoroCecResultados",
+      "label": "Resultados dos corpos de prova",
+      "path": "noroeste/cec/analise/resultado-cp.html",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/resultado-cp.html",
+      "available": true
+    },
+    "labNoroCec": {
+      "id": "labNoroCec",
+      "label": "Visão geral",
+      "path": "noroeste/cec/",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/",
+      "available": true
+    },
+    "labNoroCecRompimentosMes": {
+      "id": "labNoroCecRompimentosMes",
+      "label": "Rompimentos por mês",
+      "path": "noroeste/cec/rompimentos-mes/",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/rompimentos-mes/",
+      "available": true
+    },
+    "labNoroCecAnalise": {
+      "id": "labNoroCecAnalise",
+      "label": "Análise estatística",
+      "path": "noroeste/cec/analise/",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/",
+      "available": true
+    },
+    "labNoroCecRelatorio": {
+      "id": "labNoroCecRelatorio",
+      "label": "Relatório CEC",
+      "path": "noroeste/cec/analise/relatorio.html",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/relatorio.html",
+      "available": true
+    },
+    "labNoroUsuarios": {
+      "id": "labNoroUsuarios",
+      "label": "Usuários",
+      "path": "noroeste/usuarios/",
+      "module": "laboratorio",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/usuarios/",
+      "available": true
+    },
+    "suprimentosPainel": {
+      "id": "suprimentosPainel",
+      "label": "Painel",
+      "path": "painel/",
+      "module": "suprimentos",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+      "available": true
+    },
+    "suprimentosSolicitacoes": {
+      "id": "suprimentosSolicitacoes",
+      "label": "Solicitações",
+      "path": "solicitacoes/",
+      "module": "suprimentos",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+      "available": true
+    },
+    "suprimentosNova": {
+      "id": "suprimentosNova",
+      "label": "Nova solicitação",
+      "path": "nova/",
+      "module": "suprimentos",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+      "available": true
+    },
+    "suprimentosAlmoxarifado": {
+      "id": "suprimentosAlmoxarifado",
+      "label": "Almoxarifado",
+      "path": "almoxarifado/",
+      "futurePhase": "S2",
+      "module": "suprimentos",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/almoxarifado/",
+      "available": true
+    },
+    "suprimentosInventario": {
+      "id": "suprimentosInventario",
+      "label": "Inventário",
+      "path": "inventario/",
+      "futurePhase": "S2",
+      "module": "suprimentos",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/inventario/",
+      "available": true
+    },
+    "suprimentosCotacoes": {
+      "id": "suprimentosCotacoes",
+      "label": "Cotações e pedidos",
+      "path": "cotacoes/",
+      "futurePhase": "S3A",
+      "module": "suprimentos",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/cotacoes/",
+      "available": true
+    },
+    "suprimentosRecebimento": {
+      "id": "suprimentosRecebimento",
+      "label": "Recebimento",
+      "path": "recebimento/",
+      "futurePhase": "S3B",
+      "module": "suprimentos",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/recebimento/",
+      "available": true
+    },
+    "suprimentosFornecedores": {
+      "id": "suprimentosFornecedores",
+      "label": "Fornecedores",
+      "path": "fornecedores/",
+      "futurePhase": "S3A",
+      "module": "suprimentos",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/fornecedores/",
+      "available": true
+    },
+    "suprimentosIndicadores": {
+      "id": "suprimentosIndicadores",
+      "label": "Indicadores",
+      "path": "analises/",
+      "futurePhase": "S5",
+      "module": "suprimentos",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/analises/",
+      "available": true
+    },
+    "suprimentosCadastros": {
+      "id": "suprimentosCadastros",
+      "label": "Cadastros e alçadas",
+      "path": "cadastros/",
+      "module": "suprimentos",
+      "require": null,
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/cadastros/",
+      "available": true
+    }
+  }
+}

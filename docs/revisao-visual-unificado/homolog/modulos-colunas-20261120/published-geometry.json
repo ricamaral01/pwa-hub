@@ -1,0 +1,7850 @@
+[
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Programação",
+        "gap": 16
+      },
+      {
+        "group": "Relatórios de Programação",
+        "gap": 16
+      },
+      {
+        "group": "Armaduras",
+        "gap": 16
+      },
+      {
+        "group": "Etiquetas",
+        "gap": 0
+      },
+      {
+        "group": "Acompanhamento",
+        "gap": 16
+      },
+      {
+        "group": "Produção e apoio",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 284,
+        "y": 232.640625,
+        "width": 556,
+        "height": 140,
+        "bottom": 372.640625,
+        "items": 2
+      },
+      {
+        "label": "Programação",
+        "x": 284,
+        "y": 388.640625,
+        "width": 556,
+        "height": 340,
+        "bottom": 728.640625,
+        "items": 6
+      },
+      {
+        "label": "Relatórios de Programação",
+        "x": 284,
+        "y": 744.640625,
+        "width": 556,
+        "height": 190,
+        "bottom": 934.640625,
+        "items": 3
+      },
+      {
+        "label": "Armaduras",
+        "x": 284,
+        "y": 950.640625,
+        "width": 556,
+        "height": 190,
+        "bottom": 1140.640625,
+        "items": 3
+      },
+      {
+        "label": "Etiquetas",
+        "x": 856,
+        "y": 232.640625,
+        "width": 556,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      },
+      {
+        "label": "Acompanhamento",
+        "x": 856,
+        "y": 488.640625,
+        "width": 556,
+        "height": 290,
+        "bottom": 778.640625,
+        "items": 5
+      },
+      {
+        "label": "Produção e apoio",
+        "x": 856,
+        "y": 794.640625,
+        "width": 556,
+        "height": 290,
+        "bottom": 1084.640625,
+        "items": 5
+      }
+    ],
+    "items": [
+      {
+        "id": "dashboard",
+        "description": "Programado e realizado por período",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "comparacao",
+        "description": "PCP contra apontamentos do Mapa",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacao12",
+        "description": "Programar a produção diária",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "programacaoSemanal12",
+        "description": "Distribuir a semana nas formas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacao34",
+        "description": "Programar os setores 3 e 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "circular3",
+        "description": "Sequenciar formas circulares",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "dt4",
+        "description": "Programar postes duplo T",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacaoFinal",
+        "description": "Consolidar a programação para publicar",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorio12",
+        "description": "Emitir PDF dos setores 1 e 2",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "relatorio3",
+        "description": "Emitir PDF do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorio4",
+        "description": "Emitir PDF do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "postesNumerosSerie",
+        "description": "Consultar séries e emitir PDF",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "armadurasProgramacao",
+        "description": "Programar armaduras por dia",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "armadurasRelatorio",
+        "description": "Emitir relatório de armaduras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetas",
+        "description": "Imprimir etiquetas dos postes",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "etiquetasSc",
+        "description": "Imprimir etiquetas do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetasSetor4",
+        "description": "Imprimir etiquetas do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetasArmaduras",
+        "description": "Imprimir etiquetas das armaduras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pcpDiario",
+        "description": "Acompanhar a produção diária por setor",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "acompMensal",
+        "description": "Comparar a programação e a produção mensal",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "acompMensal34",
+        "description": "Comparar a produção mensal dos setores 3 e 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "apontamentoMega",
+        "description": "Conferir os apontamentos do Mega",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "fechamentoDiarioPcp",
+        "description": "Conferir o fechamento diário da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "producaoPcp",
+        "description": "Registrar a produção pelo PCP",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "maodeobra",
+        "description": "Registrar a equipe por dia e setor",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "maodeobraRateio",
+        "description": "Ratear a mão de obra indireta por atividade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "formasPorSetor",
+        "description": "Consultar as formas e sua situação por setor",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "testeProgramacao",
+        "description": "Testar a programação na homologação",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1140.640625,
+      1084.640625
+    ],
+    "module": "planejamento",
+    "width": 1440,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 284,
+          "y": 232.640625,
+          "width": 556,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "dashboard",
+          "description": "Programado e realizado por período",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Campinas · Produção",
+        "gap": 0
+      },
+      {
+        "group": "Campinas · Montagem",
+        "gap": 16
+      },
+      {
+        "group": "Campinas · Controle",
+        "gap": 16
+      },
+      {
+        "group": "Campinas · Indicadores",
+        "gap": 16
+      },
+      {
+        "group": "Pederneiras",
+        "gap": 0
+      },
+      {
+        "group": "Ribeirão",
+        "gap": 16
+      },
+      {
+        "group": "Noroeste",
+        "gap": 16
+      },
+      {
+        "group": "Indicadores gerais",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Campinas · Produção",
+        "x": 284,
+        "y": 365.375,
+        "width": 556,
+        "height": 340,
+        "bottom": 705.375,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Montagem",
+        "x": 284,
+        "y": 721.375,
+        "width": 556,
+        "height": 190,
+        "bottom": 911.375,
+        "items": 3
+      },
+      {
+        "label": "Campinas · Controle",
+        "x": 284,
+        "y": 927.375,
+        "width": 556,
+        "height": 340,
+        "bottom": 1267.375,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Indicadores",
+        "x": 284,
+        "y": 1283.375,
+        "width": 556,
+        "height": 290,
+        "bottom": 1573.375,
+        "items": 5
+      },
+      {
+        "label": "Pederneiras",
+        "x": 856,
+        "y": 365.375,
+        "width": 556,
+        "height": 290,
+        "bottom": 655.375,
+        "items": 5
+      },
+      {
+        "label": "Ribeirão",
+        "x": 856,
+        "y": 671.375,
+        "width": 556,
+        "height": 290,
+        "bottom": 961.375,
+        "items": 5
+      },
+      {
+        "label": "Noroeste",
+        "x": 856,
+        "y": 977.375,
+        "width": 556,
+        "height": 290,
+        "bottom": 1267.375,
+        "items": 5
+      },
+      {
+        "label": "Indicadores gerais",
+        "x": 856,
+        "y": 1283.375,
+        "width": 556,
+        "height": 90,
+        "bottom": 1373.375,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "liberacao",
+        "description": "Acompanhar a liberação da produção",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "setor1",
+        "description": "Registrar a produção do setor 1",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor2",
+        "description": "Registrar a produção do setor 2",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor3",
+        "description": "Registrar a produção do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor4",
+        "description": "Registrar a produção do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "mandril",
+        "description": "Controlar os mandris circulares",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "inspecao",
+        "description": "Inspecionar postes dos setores 3 e 4",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "montagem",
+        "description": "Registrar a montagem dos postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "sequencia",
+        "description": "Consultar a sequência do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorioMapa",
+        "description": "Consultar o relatório da produção",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "historico",
+        "description": "Consultar o histórico dos apontamentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "acmpConcretagem",
+        "description": "Acompanhar o andamento da concretagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "manutencao",
+        "description": "Consultar a manutenção das formas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "tratativa",
+        "description": "Acompanhar as tratativas de defeitos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "fechamentoDiario",
+        "description": "Conferir o fechamento diário da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "campinasUnificado",
+        "description": "Acompanhar os quatro setores de Campinas",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "dashMontagem",
+        "description": "Consultar os indicadores de montagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "dashDefeitos",
+        "description": "Analisar os defeitos da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "produtividade",
+        "description": "Analisar a produtividade da concretagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "tvFormas",
+        "description": "Acompanhar as formas no painel de produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrApontamento",
+        "description": "Registrar a produção diária de Pederneiras",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "pdrMaoDeObra",
+        "description": "Registrar a equipe de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrMensal",
+        "description": "Consultar a produção mensal de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrIndicadores",
+        "description": "Analisar os indicadores de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrProdutos",
+        "description": "Cadastrar os produtos de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrApontamento",
+        "description": "Registrar a produção diária de Ribeirão",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "rbrMaoDeObra",
+        "description": "Registrar a equipe de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrMensal",
+        "description": "Consultar a produção mensal de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrIndicadores",
+        "description": "Analisar os indicadores de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrProdutos",
+        "description": "Cadastrar os produtos de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norApontamento",
+        "description": "Registrar a produção diária de Noroeste",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "norMaoDeObra",
+        "description": "Registrar a equipe de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norMensal",
+        "description": "Consultar a produção mensal de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norIndicadores",
+        "description": "Analisar os indicadores de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norProdutos",
+        "description": "Consultar o cadastro de produtos de Campinas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "indicadorGeralProducao",
+        "description": "Comparar a produção das quatro unidades",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1573.375,
+      1373.375
+    ],
+    "module": "producao",
+    "width": 1440,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Campinas · Produção",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Campinas · Produção",
+          "x": 284,
+          "y": 365.375,
+          "width": 556,
+          "height": 90,
+          "bottom": 455.375,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "liberacao",
+          "description": "Acompanhar a liberação da produção",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        455.375
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 0
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 16
+      },
+      {
+        "group": "Dosagem",
+        "gap": 16
+      },
+      {
+        "group": "Concreto fresco",
+        "gap": 16
+      },
+      {
+        "group": "Usina de Campinas",
+        "gap": 16
+      },
+      {
+        "group": "Cura térmica",
+        "gap": 0
+      },
+      {
+        "group": "Ensaios de concreto",
+        "gap": 16
+      },
+      {
+        "group": "Postes",
+        "gap": 16
+      },
+      {
+        "group": "Cronoanálise",
+        "gap": 16
+      },
+      {
+        "group": "Carta de traço",
+        "gap": 16
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      },
+      {
+        "group": "Ajuda",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 284,
+        "y": 289.640625,
+        "width": 556,
+        "height": 190,
+        "bottom": 479.640625,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 284,
+        "y": 495.640625,
+        "width": 556,
+        "height": 240,
+        "bottom": 735.640625,
+        "items": 4
+      },
+      {
+        "label": "Dosagem",
+        "x": 284,
+        "y": 751.640625,
+        "width": 556,
+        "height": 740,
+        "bottom": 1491.640625,
+        "items": 14
+      },
+      {
+        "label": "Concreto fresco",
+        "x": 284,
+        "y": 1507.640625,
+        "width": 556,
+        "height": 90,
+        "bottom": 1597.640625,
+        "items": 1
+      },
+      {
+        "label": "Usina de Campinas",
+        "x": 284,
+        "y": 1613.640625,
+        "width": 556,
+        "height": 90,
+        "bottom": 1703.640625,
+        "items": 1
+      },
+      {
+        "label": "Cura térmica",
+        "x": 856,
+        "y": 289.640625,
+        "width": 556,
+        "height": 190,
+        "bottom": 479.640625,
+        "items": 3
+      },
+      {
+        "label": "Ensaios de concreto",
+        "x": 856,
+        "y": 495.640625,
+        "width": 556,
+        "height": 90,
+        "bottom": 585.640625,
+        "items": 1
+      },
+      {
+        "label": "Postes",
+        "x": 856,
+        "y": 601.640625,
+        "width": 556,
+        "height": 290,
+        "bottom": 891.640625,
+        "items": 5
+      },
+      {
+        "label": "Cronoanálise",
+        "x": 856,
+        "y": 907.640625,
+        "width": 556,
+        "height": 390,
+        "bottom": 1297.640625,
+        "items": 7
+      },
+      {
+        "label": "Carta de traço",
+        "x": 856,
+        "y": 1313.640625,
+        "width": 556,
+        "height": 90,
+        "bottom": 1403.640625,
+        "items": 1
+      },
+      {
+        "label": "Administração",
+        "x": 856,
+        "y": 1419.640625,
+        "width": 556,
+        "height": 90,
+        "bottom": 1509.640625,
+        "items": 1
+      },
+      {
+        "label": "Ajuda",
+        "x": 856,
+        "y": 1525.640625,
+        "width": 556,
+        "height": 90,
+        "bottom": 1615.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labCecEtiquetas",
+        "description": "Emitir etiquetas QR de corpos de prova",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCecLeitura",
+        "description": "Registrar a ruptura dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecResultados",
+        "description": "Consultar os resultados dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCec",
+        "description": "Consultar os indicadores do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCecRompimentosMes",
+        "description": "Consultar os rompimentos por mês",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecAnalise",
+        "description": "Analisar os resultados de resistência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecRelatorio",
+        "description": "Emitir o relatório estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagem",
+        "description": "Acompanhar os estudos de dosagem",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labDosagemEmpacotamento",
+        "description": "Calcular a dosagem por empacotamento",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemVolume",
+        "description": "Calcular a dosagem por volume absoluto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemComparacao",
+        "description": "Comparar os métodos de dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemTracos",
+        "description": "Consultar e cadastrar traços de concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemMateriais",
+        "description": "Gerenciar os materiais da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemFornecedores",
+        "description": "Cadastrar os fornecedores de materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemEnsaios",
+        "description": "Registrar os ensaios dos materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemFerramentas",
+        "description": "Calcular volume, Abrams e empacotamento",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemCustos",
+        "description": "Comparar os custos dos traços",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemReferencia",
+        "description": "Consultar os indicadores e o uso da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemProducao",
+        "description": "Conferir a dosagem e a desforma por lote",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemImportacao",
+        "description": "Importar planilhas de dosagem para referência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemConfig",
+        "description": "Configurar os parâmetros da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labSlump",
+        "description": "Registrar o abatimento e o espalhamento",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labUsinasRelatorios",
+        "description": "Consultar a produção e os custos da usina",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labMonitor",
+        "description": "Monitorar as temperaturas da cura térmica",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labHistory",
+        "description": "Consultar o histórico da cura térmica",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDevice",
+        "description": "Configurar o dispositivo de medição",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labAbsorption",
+        "description": "Registrar ensaios de absorção do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCertificados",
+        "description": "Emitir certificados de qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labPole",
+        "description": "Registrar os ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labTests",
+        "description": "Consultar o histórico de ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labRegisters",
+        "description": "Gerenciar os cadastros dos ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCriteria",
+        "description": "Configurar os critérios dos ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.inicio",
+        "description": "Acompanhar os estudos de cronoanálise",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "cronoanalise.coletar",
+        "description": "Cronometrar os ciclos de trabalho",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.medicoes",
+        "description": "Consultar as medições de tempo",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.catalogo",
+        "description": "Gerenciar as operações da cronoanálise",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.dimensionar",
+        "description": "Dimensionar a equipe para a produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.simular",
+        "description": "Simular a capacidade de produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.metodologia",
+        "description": "Consultar o método de cronoanálise",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCartaTraco",
+        "description": "Cadastrar e revisar cartas de traço",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labUsuarios",
+        "description": "Administrar o acesso aos ensaios de postes",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labHelp",
+        "description": "Consultar a ajuda da cura térmica",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1703.640625,
+      1615.640625
+    ],
+    "module": "laboratorio",
+    "width": 1440,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Corpos de Prova",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Corpos de Prova",
+          "x": 284,
+          "y": 289.640625,
+          "width": 556,
+          "height": 90,
+          "bottom": 379.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "labCecEtiquetas",
+          "description": "Emitir etiquetas QR de corpos de prova",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        379.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Não conformidades",
+        "gap": 16
+      },
+      {
+        "group": "Certificados",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 284,
+        "y": 232.640625,
+        "width": 556,
+        "height": 140,
+        "bottom": 372.640625,
+        "items": 2
+      },
+      {
+        "label": "Não conformidades",
+        "x": 284,
+        "y": 388.640625,
+        "width": 556,
+        "height": 240,
+        "bottom": 628.640625,
+        "items": 4
+      },
+      {
+        "label": "Certificados",
+        "x": 856,
+        "y": 232.640625,
+        "width": 556,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "qualidadeTarefas",
+        "description": "Acompanhar as tarefas da Qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "manutencaoUsina",
+        "description": "Acompanhar a manutenção da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadePainel",
+        "description": "Acompanhar as não conformidades",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "qualidadeAbertura",
+        "description": "Registrar uma não conformidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadeResultadosBancada",
+        "description": "Conferir os resultados de bancada",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadeCadastros",
+        "description": "Gerenciar os cadastros da Qualidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCertificados",
+        "description": "Emitir certificados de qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCertificadosHistorico",
+        "description": "Consultar os certificados emitidos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCertificadosCadastros",
+        "description": "Gerenciar os cadastros dos certificados",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labTests",
+        "description": "Consultar o histórico de ensaios de postes",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      628.640625,
+      472.640625
+    ],
+    "module": "qualidade",
+    "width": 1440,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 284,
+          "y": 232.640625,
+          "width": 556,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "qualidadeTarefas",
+          "description": "Acompanhar as tarefas da Qualidade",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Noroeste",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 284,
+        "y": 232.640625,
+        "width": 556,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      },
+      {
+        "label": "Noroeste",
+        "x": 856,
+        "y": 232.640625,
+        "width": 556,
+        "height": 440,
+        "bottom": 672.640625,
+        "items": 8
+      }
+    ],
+    "items": [
+      {
+        "id": "usinasInicio",
+        "description": "Consultar as cartas de traço da usina",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "usinasCec",
+        "description": "Analisar o controle estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasRelatorios",
+        "description": "Consultar os relatórios da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasEstoque",
+        "description": "Consultar o estoque de materiais da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroPainel",
+        "description": "Acompanhar a operação da usina Noroeste",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "usinasNoroMassadas",
+        "description": "Consultar as massadas da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCartas",
+        "description": "Consultar as cartas de traço de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroRelatorios",
+        "description": "Consultar os relatórios da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCec",
+        "description": "Analisar o controle estatístico de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCadastros",
+        "description": "Gerenciar os cadastros da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroEstoque",
+        "description": "Consultar o estoque da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCustos",
+        "description": "Consultar os custos da usina Noroeste",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      472.640625,
+      672.640625
+    ],
+    "module": "usinas",
+    "width": 1440,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 70,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 284,
+          "y": 232.640625,
+          "width": 556,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "usinasInicio",
+          "description": "Consultar as cartas de traço da usina",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Solicitações",
+        "gap": 0
+      },
+      {
+        "group": "Compras",
+        "gap": 0
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Solicitações",
+        "x": 284,
+        "y": 232.640625,
+        "width": 556,
+        "height": 290,
+        "bottom": 522.640625,
+        "items": 5
+      },
+      {
+        "label": "Compras",
+        "x": 856,
+        "y": 232.640625,
+        "width": 556,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 856,
+        "y": 488.640625,
+        "width": 556,
+        "height": 90,
+        "bottom": 578.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "suprimentosPainel",
+        "description": "Aprovar e acompanhar solicitações",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "suprimentosSolicitacoes",
+        "description": "Consultar e filtrar solicitações",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosNova",
+        "description": "Solicitar materiais e serviços",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosAlmoxarifado",
+        "description": "Consultar saldos e movimentações",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosInventario",
+        "description": "Conferir o estoque físico",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosCotacoes",
+        "description": "Comparar propostas de fornecedores",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "suprimentosRecebimento",
+        "description": "Conferir o recebimento dos pedidos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosFornecedores",
+        "description": "Gerenciar os fornecedores de materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosIndicadores",
+        "description": "Analisar os indicadores de compras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosCadastros",
+        "description": "Gerenciar os cadastros e as alçadas",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      522.640625,
+      578.640625
+    ],
+    "module": "suprimentos",
+    "width": 1440,
+    "phase": "after",
+    "connections_before": 71,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Solicitações",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Solicitações",
+          "x": 284,
+          "y": 232.640625,
+          "width": 556,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "suprimentosPainel",
+          "description": "Aprovar e acompanhar solicitações",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Km/Evento",
+        "gap": 16
+      },
+      {
+        "group": "Cadastros",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 284,
+        "y": 232.640625,
+        "width": 556,
+        "height": 90,
+        "bottom": 322.640625,
+        "items": 1
+      },
+      {
+        "label": "Km/Evento",
+        "x": 284,
+        "y": 338.640625,
+        "width": 556,
+        "height": 340,
+        "bottom": 678.640625,
+        "items": 6
+      },
+      {
+        "label": "Cadastros",
+        "x": 856,
+        "y": 232.640625,
+        "width": 556,
+        "height": 190,
+        "bottom": 422.640625,
+        "items": 3
+      }
+    ],
+    "items": [
+      {
+        "id": "logisticaInicio",
+        "description": "Encontrar as ferramentas da Logística",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaPainel",
+        "description": "Acompanhar indicadores de km por evento",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaCorrecoes",
+        "description": "Revisar falsos alarmes e exclusões",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaFechamento",
+        "description": "Conferir os meses do trimestre",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaPremiacao",
+        "description": "Consultar avaliações e classificação",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMeses",
+        "description": "Importar e conferir relatórios mensais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMetas",
+        "description": "Definir metas por trimestre e unidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMotoristas",
+        "description": "Cadastrar motoristas e vínculos Cobli",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaAjudantes",
+        "description": "Cadastrar ajudantes por unidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaCobli",
+        "description": "Relacionar grupos Cobli às unidades",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      678.640625,
+      422.640625
+    ],
+    "module": "logistica",
+    "width": 1440,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 284,
+          "y": 232.640625,
+          "width": 556,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "logisticaInicio",
+          "description": "Encontrar as ferramentas da Logística",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Gestão documental",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Gestão documental",
+        "x": 284,
+        "y": 232.640625,
+        "width": 556,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "ged-dashboard",
+        "description": "Acompanhar os indicadores dos documentos",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "ged-documents",
+        "description": "Consultar e gerenciar os documentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "ged-approvals",
+        "description": "Revisar as aprovações dos documentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "ged-calibrations",
+        "description": "Acompanhar as calibrações dos instrumentos",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      472.640625
+    ],
+    "module": "ged",
+    "width": 1440,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Gestão documental",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Gestão documental",
+          "x": 284,
+          "y": 232.640625,
+          "width": 556,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "ged-dashboard",
+          "description": "Acompanhar os indicadores dos documentos",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 0
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 0
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 284,
+        "y": 289.640625,
+        "width": 556,
+        "height": 190,
+        "bottom": 479.640625,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 856,
+        "y": 289.640625,
+        "width": 556,
+        "height": 240,
+        "bottom": 529.640625,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 856,
+        "y": 545.640625,
+        "width": 556,
+        "height": 90,
+        "bottom": 635.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labNoroCecEtiquetas",
+        "description": "Emitir etiquetas QR de corpos de prova",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labNoroCecLeitura",
+        "description": "Registrar a ruptura dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecResultados",
+        "description": "Consultar os resultados dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCec",
+        "description": "Consultar os indicadores do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labNoroCecRompimentosMes",
+        "description": "Consultar os rompimentos por mês",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecAnalise",
+        "description": "Analisar os resultados de resistência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecRelatorio",
+        "description": "Emitir o relatório estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroUsuarios",
+        "description": "Administrar os usuários do Laboratório",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      479.640625,
+      635.640625
+    ],
+    "module": "laboratorio-noroeste",
+    "width": 1440,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Corpos de Prova",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Corpos de Prova",
+          "x": 284,
+          "y": 289.640625,
+          "width": 556,
+          "height": 90,
+          "bottom": 379.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "labNoroCecEtiquetas",
+          "description": "Emitir etiquetas QR de corpos de prova",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        379.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Programação",
+        "gap": 16
+      },
+      {
+        "group": "Relatórios de Programação",
+        "gap": 16
+      },
+      {
+        "group": "Armaduras",
+        "gap": 16
+      },
+      {
+        "group": "Etiquetas",
+        "gap": 0
+      },
+      {
+        "group": "Acompanhamento",
+        "gap": 16
+      },
+      {
+        "group": "Produção e apoio",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 284,
+        "y": 265.640625,
+        "width": 476,
+        "height": 140,
+        "bottom": 405.640625,
+        "items": 2
+      },
+      {
+        "label": "Programação",
+        "x": 284,
+        "y": 421.640625,
+        "width": 476,
+        "height": 340,
+        "bottom": 761.640625,
+        "items": 6
+      },
+      {
+        "label": "Relatórios de Programação",
+        "x": 284,
+        "y": 777.640625,
+        "width": 476,
+        "height": 190,
+        "bottom": 967.640625,
+        "items": 3
+      },
+      {
+        "label": "Armaduras",
+        "x": 284,
+        "y": 983.640625,
+        "width": 476,
+        "height": 190,
+        "bottom": 1173.640625,
+        "items": 3
+      },
+      {
+        "label": "Etiquetas",
+        "x": 776,
+        "y": 265.640625,
+        "width": 476,
+        "height": 240,
+        "bottom": 505.640625,
+        "items": 4
+      },
+      {
+        "label": "Acompanhamento",
+        "x": 776,
+        "y": 521.640625,
+        "width": 476,
+        "height": 290,
+        "bottom": 811.640625,
+        "items": 5
+      },
+      {
+        "label": "Produção e apoio",
+        "x": 776,
+        "y": 827.640625,
+        "width": 476,
+        "height": 290,
+        "bottom": 1117.640625,
+        "items": 5
+      }
+    ],
+    "items": [
+      {
+        "id": "dashboard",
+        "description": "Programado e realizado por período",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "comparacao",
+        "description": "PCP contra apontamentos do Mapa",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacao12",
+        "description": "Programar a produção diária",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "programacaoSemanal12",
+        "description": "Distribuir a semana nas formas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacao34",
+        "description": "Programar os setores 3 e 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "circular3",
+        "description": "Sequenciar formas circulares",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "dt4",
+        "description": "Programar postes duplo T",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacaoFinal",
+        "description": "Consolidar a programação para publicar",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorio12",
+        "description": "Emitir PDF dos setores 1 e 2",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "relatorio3",
+        "description": "Emitir PDF do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorio4",
+        "description": "Emitir PDF do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "postesNumerosSerie",
+        "description": "Consultar séries e emitir PDF",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "armadurasProgramacao",
+        "description": "Programar armaduras por dia",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "armadurasRelatorio",
+        "description": "Emitir relatório de armaduras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetas",
+        "description": "Imprimir etiquetas dos postes",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "etiquetasSc",
+        "description": "Imprimir etiquetas do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetasSetor4",
+        "description": "Imprimir etiquetas do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetasArmaduras",
+        "description": "Imprimir etiquetas das armaduras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pcpDiario",
+        "description": "Acompanhar a produção diária por setor",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "acompMensal",
+        "description": "Comparar a programação e a produção mensal",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "acompMensal34",
+        "description": "Comparar a produção mensal dos setores 3 e 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "apontamentoMega",
+        "description": "Conferir os apontamentos do Mega",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "fechamentoDiarioPcp",
+        "description": "Conferir o fechamento diário da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "producaoPcp",
+        "description": "Registrar a produção pelo PCP",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "maodeobra",
+        "description": "Registrar a equipe por dia e setor",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "maodeobraRateio",
+        "description": "Ratear a mão de obra indireta por atividade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "formasPorSetor",
+        "description": "Consultar as formas e sua situação por setor",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "testeProgramacao",
+        "description": "Testar a programação na homologação",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1173.640625,
+      1117.640625
+    ],
+    "module": "planejamento",
+    "width": 1280,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 284,
+          "y": 265.640625,
+          "width": 476,
+          "height": 90,
+          "bottom": 355.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "dashboard",
+          "description": "Programado e realizado por período",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        355.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Campinas · Produção",
+        "gap": 0
+      },
+      {
+        "group": "Campinas · Montagem",
+        "gap": 16
+      },
+      {
+        "group": "Campinas · Controle",
+        "gap": 16
+      },
+      {
+        "group": "Campinas · Indicadores",
+        "gap": 16
+      },
+      {
+        "group": "Pederneiras",
+        "gap": 0
+      },
+      {
+        "group": "Ribeirão",
+        "gap": 16
+      },
+      {
+        "group": "Noroeste",
+        "gap": 16
+      },
+      {
+        "group": "Indicadores gerais",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Campinas · Produção",
+        "x": 284,
+        "y": 365.375,
+        "width": 476,
+        "height": 340,
+        "bottom": 705.375,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Montagem",
+        "x": 284,
+        "y": 721.375,
+        "width": 476,
+        "height": 190,
+        "bottom": 911.375,
+        "items": 3
+      },
+      {
+        "label": "Campinas · Controle",
+        "x": 284,
+        "y": 927.375,
+        "width": 476,
+        "height": 340,
+        "bottom": 1267.375,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Indicadores",
+        "x": 284,
+        "y": 1283.375,
+        "width": 476,
+        "height": 290,
+        "bottom": 1573.375,
+        "items": 5
+      },
+      {
+        "label": "Pederneiras",
+        "x": 776,
+        "y": 365.375,
+        "width": 476,
+        "height": 290,
+        "bottom": 655.375,
+        "items": 5
+      },
+      {
+        "label": "Ribeirão",
+        "x": 776,
+        "y": 671.375,
+        "width": 476,
+        "height": 290,
+        "bottom": 961.375,
+        "items": 5
+      },
+      {
+        "label": "Noroeste",
+        "x": 776,
+        "y": 977.375,
+        "width": 476,
+        "height": 290,
+        "bottom": 1267.375,
+        "items": 5
+      },
+      {
+        "label": "Indicadores gerais",
+        "x": 776,
+        "y": 1283.375,
+        "width": 476,
+        "height": 90,
+        "bottom": 1373.375,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "liberacao",
+        "description": "Acompanhar a liberação da produção",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "setor1",
+        "description": "Registrar a produção do setor 1",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor2",
+        "description": "Registrar a produção do setor 2",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor3",
+        "description": "Registrar a produção do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor4",
+        "description": "Registrar a produção do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "mandril",
+        "description": "Controlar os mandris circulares",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "inspecao",
+        "description": "Inspecionar postes dos setores 3 e 4",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "montagem",
+        "description": "Registrar a montagem dos postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "sequencia",
+        "description": "Consultar a sequência do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorioMapa",
+        "description": "Consultar o relatório da produção",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "historico",
+        "description": "Consultar o histórico dos apontamentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "acmpConcretagem",
+        "description": "Acompanhar o andamento da concretagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "manutencao",
+        "description": "Consultar a manutenção das formas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "tratativa",
+        "description": "Acompanhar as tratativas de defeitos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "fechamentoDiario",
+        "description": "Conferir o fechamento diário da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "campinasUnificado",
+        "description": "Acompanhar os quatro setores de Campinas",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "dashMontagem",
+        "description": "Consultar os indicadores de montagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "dashDefeitos",
+        "description": "Analisar os defeitos da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "produtividade",
+        "description": "Analisar a produtividade da concretagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "tvFormas",
+        "description": "Acompanhar as formas no painel de produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrApontamento",
+        "description": "Registrar a produção diária de Pederneiras",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "pdrMaoDeObra",
+        "description": "Registrar a equipe de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrMensal",
+        "description": "Consultar a produção mensal de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrIndicadores",
+        "description": "Analisar os indicadores de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrProdutos",
+        "description": "Cadastrar os produtos de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrApontamento",
+        "description": "Registrar a produção diária de Ribeirão",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "rbrMaoDeObra",
+        "description": "Registrar a equipe de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrMensal",
+        "description": "Consultar a produção mensal de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrIndicadores",
+        "description": "Analisar os indicadores de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrProdutos",
+        "description": "Cadastrar os produtos de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norApontamento",
+        "description": "Registrar a produção diária de Noroeste",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "norMaoDeObra",
+        "description": "Registrar a equipe de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norMensal",
+        "description": "Consultar a produção mensal de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norIndicadores",
+        "description": "Analisar os indicadores de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norProdutos",
+        "description": "Consultar o cadastro de produtos de Campinas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "indicadorGeralProducao",
+        "description": "Comparar a produção das quatro unidades",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1573.375,
+      1373.375
+    ],
+    "module": "producao",
+    "width": 1280,
+    "phase": "after",
+    "connections_before": 70,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Campinas · Produção",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Campinas · Produção",
+          "x": 284,
+          "y": 365.375,
+          "width": 476,
+          "height": 90,
+          "bottom": 455.375,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "liberacao",
+          "description": "Acompanhar a liberação da produção",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        455.375
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 0
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 16
+      },
+      {
+        "group": "Dosagem",
+        "gap": 16
+      },
+      {
+        "group": "Concreto fresco",
+        "gap": 16
+      },
+      {
+        "group": "Usina de Campinas",
+        "gap": 16
+      },
+      {
+        "group": "Cura térmica",
+        "gap": 0
+      },
+      {
+        "group": "Ensaios de concreto",
+        "gap": 16
+      },
+      {
+        "group": "Postes",
+        "gap": 16
+      },
+      {
+        "group": "Cronoanálise",
+        "gap": 16
+      },
+      {
+        "group": "Carta de traço",
+        "gap": 16
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      },
+      {
+        "group": "Ajuda",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 284,
+        "y": 322.640625,
+        "width": 476,
+        "height": 190,
+        "bottom": 512.640625,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 284,
+        "y": 528.640625,
+        "width": 476,
+        "height": 240,
+        "bottom": 768.640625,
+        "items": 4
+      },
+      {
+        "label": "Dosagem",
+        "x": 284,
+        "y": 784.640625,
+        "width": 476,
+        "height": 740,
+        "bottom": 1524.640625,
+        "items": 14
+      },
+      {
+        "label": "Concreto fresco",
+        "x": 284,
+        "y": 1540.640625,
+        "width": 476,
+        "height": 90,
+        "bottom": 1630.640625,
+        "items": 1
+      },
+      {
+        "label": "Usina de Campinas",
+        "x": 284,
+        "y": 1646.640625,
+        "width": 476,
+        "height": 90,
+        "bottom": 1736.640625,
+        "items": 1
+      },
+      {
+        "label": "Cura térmica",
+        "x": 776,
+        "y": 322.640625,
+        "width": 476,
+        "height": 190,
+        "bottom": 512.640625,
+        "items": 3
+      },
+      {
+        "label": "Ensaios de concreto",
+        "x": 776,
+        "y": 528.640625,
+        "width": 476,
+        "height": 90,
+        "bottom": 618.640625,
+        "items": 1
+      },
+      {
+        "label": "Postes",
+        "x": 776,
+        "y": 634.640625,
+        "width": 476,
+        "height": 290,
+        "bottom": 924.640625,
+        "items": 5
+      },
+      {
+        "label": "Cronoanálise",
+        "x": 776,
+        "y": 940.640625,
+        "width": 476,
+        "height": 390,
+        "bottom": 1330.640625,
+        "items": 7
+      },
+      {
+        "label": "Carta de traço",
+        "x": 776,
+        "y": 1346.640625,
+        "width": 476,
+        "height": 90,
+        "bottom": 1436.640625,
+        "items": 1
+      },
+      {
+        "label": "Administração",
+        "x": 776,
+        "y": 1452.640625,
+        "width": 476,
+        "height": 90,
+        "bottom": 1542.640625,
+        "items": 1
+      },
+      {
+        "label": "Ajuda",
+        "x": 776,
+        "y": 1558.640625,
+        "width": 476,
+        "height": 90,
+        "bottom": 1648.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labCecEtiquetas",
+        "description": "Emitir etiquetas QR de corpos de prova",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCecLeitura",
+        "description": "Registrar a ruptura dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecResultados",
+        "description": "Consultar os resultados dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCec",
+        "description": "Consultar os indicadores do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCecRompimentosMes",
+        "description": "Consultar os rompimentos por mês",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecAnalise",
+        "description": "Analisar os resultados de resistência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecRelatorio",
+        "description": "Emitir o relatório estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagem",
+        "description": "Acompanhar os estudos de dosagem",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labDosagemEmpacotamento",
+        "description": "Calcular a dosagem por empacotamento",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemVolume",
+        "description": "Calcular a dosagem por volume absoluto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemComparacao",
+        "description": "Comparar os métodos de dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemTracos",
+        "description": "Consultar e cadastrar traços de concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemMateriais",
+        "description": "Gerenciar os materiais da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemFornecedores",
+        "description": "Cadastrar os fornecedores de materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemEnsaios",
+        "description": "Registrar os ensaios dos materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemFerramentas",
+        "description": "Calcular volume, Abrams e empacotamento",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemCustos",
+        "description": "Comparar os custos dos traços",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemReferencia",
+        "description": "Consultar os indicadores e o uso da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemProducao",
+        "description": "Conferir a dosagem e a desforma por lote",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemImportacao",
+        "description": "Importar planilhas de dosagem para referência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemConfig",
+        "description": "Configurar os parâmetros da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labSlump",
+        "description": "Registrar o abatimento e o espalhamento",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labUsinasRelatorios",
+        "description": "Consultar a produção e os custos da usina",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labMonitor",
+        "description": "Monitorar as temperaturas da cura térmica",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labHistory",
+        "description": "Consultar o histórico da cura térmica",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDevice",
+        "description": "Configurar o dispositivo de medição",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labAbsorption",
+        "description": "Registrar ensaios de absorção do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCertificados",
+        "description": "Emitir certificados de qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labPole",
+        "description": "Registrar os ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labTests",
+        "description": "Consultar o histórico de ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labRegisters",
+        "description": "Gerenciar os cadastros dos ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCriteria",
+        "description": "Configurar os critérios dos ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.inicio",
+        "description": "Acompanhar os estudos de cronoanálise",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "cronoanalise.coletar",
+        "description": "Cronometrar os ciclos de trabalho",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.medicoes",
+        "description": "Consultar as medições de tempo",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.catalogo",
+        "description": "Gerenciar as operações da cronoanálise",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.dimensionar",
+        "description": "Dimensionar a equipe para a produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.simular",
+        "description": "Simular a capacidade de produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.metodologia",
+        "description": "Consultar o método de cronoanálise",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCartaTraco",
+        "description": "Cadastrar e revisar cartas de traço",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labUsuarios",
+        "description": "Administrar o acesso aos ensaios de postes",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labHelp",
+        "description": "Consultar a ajuda da cura térmica",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1736.640625,
+      1648.640625
+    ],
+    "module": "laboratorio",
+    "width": 1280,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Corpos de Prova",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Corpos de Prova",
+          "x": 284,
+          "y": 322.640625,
+          "width": 476,
+          "height": 90,
+          "bottom": 412.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "labCecEtiquetas",
+          "description": "Emitir etiquetas QR de corpos de prova",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        412.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Não conformidades",
+        "gap": 16
+      },
+      {
+        "group": "Certificados",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 284,
+        "y": 232.640625,
+        "width": 476,
+        "height": 140,
+        "bottom": 372.640625,
+        "items": 2
+      },
+      {
+        "label": "Não conformidades",
+        "x": 284,
+        "y": 388.640625,
+        "width": 476,
+        "height": 240,
+        "bottom": 628.640625,
+        "items": 4
+      },
+      {
+        "label": "Certificados",
+        "x": 776,
+        "y": 232.640625,
+        "width": 476,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "qualidadeTarefas",
+        "description": "Acompanhar as tarefas da Qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "manutencaoUsina",
+        "description": "Acompanhar a manutenção da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadePainel",
+        "description": "Acompanhar as não conformidades",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "qualidadeAbertura",
+        "description": "Registrar uma não conformidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadeResultadosBancada",
+        "description": "Conferir os resultados de bancada",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadeCadastros",
+        "description": "Gerenciar os cadastros da Qualidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCertificados",
+        "description": "Emitir certificados de qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCertificadosHistorico",
+        "description": "Consultar os certificados emitidos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCertificadosCadastros",
+        "description": "Gerenciar os cadastros dos certificados",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labTests",
+        "description": "Consultar o histórico de ensaios de postes",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      628.640625,
+      472.640625
+    ],
+    "module": "qualidade",
+    "width": 1280,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 284,
+          "y": 232.640625,
+          "width": 476,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "qualidadeTarefas",
+          "description": "Acompanhar as tarefas da Qualidade",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Noroeste",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 284,
+        "y": 232.640625,
+        "width": 476,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      },
+      {
+        "label": "Noroeste",
+        "x": 776,
+        "y": 232.640625,
+        "width": 476,
+        "height": 440,
+        "bottom": 672.640625,
+        "items": 8
+      }
+    ],
+    "items": [
+      {
+        "id": "usinasInicio",
+        "description": "Consultar as cartas de traço da usina",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "usinasCec",
+        "description": "Analisar o controle estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasRelatorios",
+        "description": "Consultar os relatórios da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasEstoque",
+        "description": "Consultar o estoque de materiais da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroPainel",
+        "description": "Acompanhar a operação da usina Noroeste",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "usinasNoroMassadas",
+        "description": "Consultar as massadas da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCartas",
+        "description": "Consultar as cartas de traço de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroRelatorios",
+        "description": "Consultar os relatórios da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCec",
+        "description": "Analisar o controle estatístico de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCadastros",
+        "description": "Gerenciar os cadastros da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroEstoque",
+        "description": "Consultar o estoque da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCustos",
+        "description": "Consultar os custos da usina Noroeste",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      472.640625,
+      672.640625
+    ],
+    "module": "usinas",
+    "width": 1280,
+    "phase": "after",
+    "connections_before": 70,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 284,
+          "y": 232.640625,
+          "width": 476,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "usinasInicio",
+          "description": "Consultar as cartas de traço da usina",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Solicitações",
+        "gap": 0
+      },
+      {
+        "group": "Compras",
+        "gap": 0
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Solicitações",
+        "x": 284,
+        "y": 232.640625,
+        "width": 476,
+        "height": 290,
+        "bottom": 522.640625,
+        "items": 5
+      },
+      {
+        "label": "Compras",
+        "x": 776,
+        "y": 232.640625,
+        "width": 476,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 776,
+        "y": 488.640625,
+        "width": 476,
+        "height": 90,
+        "bottom": 578.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "suprimentosPainel",
+        "description": "Aprovar e acompanhar solicitações",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "suprimentosSolicitacoes",
+        "description": "Consultar e filtrar solicitações",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosNova",
+        "description": "Solicitar materiais e serviços",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosAlmoxarifado",
+        "description": "Consultar saldos e movimentações",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosInventario",
+        "description": "Conferir o estoque físico",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosCotacoes",
+        "description": "Comparar propostas de fornecedores",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "suprimentosRecebimento",
+        "description": "Conferir o recebimento dos pedidos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosFornecedores",
+        "description": "Gerenciar os fornecedores de materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosIndicadores",
+        "description": "Analisar os indicadores de compras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosCadastros",
+        "description": "Gerenciar os cadastros e as alçadas",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      522.640625,
+      578.640625
+    ],
+    "module": "suprimentos",
+    "width": 1280,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 70,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Solicitações",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Solicitações",
+          "x": 284,
+          "y": 232.640625,
+          "width": 476,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "suprimentosPainel",
+          "description": "Aprovar e acompanhar solicitações",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Km/Evento",
+        "gap": 16
+      },
+      {
+        "group": "Cadastros",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 284,
+        "y": 232.640625,
+        "width": 476,
+        "height": 90,
+        "bottom": 322.640625,
+        "items": 1
+      },
+      {
+        "label": "Km/Evento",
+        "x": 284,
+        "y": 338.640625,
+        "width": 476,
+        "height": 340,
+        "bottom": 678.640625,
+        "items": 6
+      },
+      {
+        "label": "Cadastros",
+        "x": 776,
+        "y": 232.640625,
+        "width": 476,
+        "height": 190,
+        "bottom": 422.640625,
+        "items": 3
+      }
+    ],
+    "items": [
+      {
+        "id": "logisticaInicio",
+        "description": "Encontrar as ferramentas da Logística",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaPainel",
+        "description": "Acompanhar indicadores de km por evento",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaCorrecoes",
+        "description": "Revisar falsos alarmes e exclusões",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaFechamento",
+        "description": "Conferir os meses do trimestre",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaPremiacao",
+        "description": "Consultar avaliações e classificação",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMeses",
+        "description": "Importar e conferir relatórios mensais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMetas",
+        "description": "Definir metas por trimestre e unidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMotoristas",
+        "description": "Cadastrar motoristas e vínculos Cobli",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaAjudantes",
+        "description": "Cadastrar ajudantes por unidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaCobli",
+        "description": "Relacionar grupos Cobli às unidades",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      678.640625,
+      422.640625
+    ],
+    "module": "logistica",
+    "width": 1280,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 284,
+          "y": 232.640625,
+          "width": 476,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "logisticaInicio",
+          "description": "Encontrar as ferramentas da Logística",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Gestão documental",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Gestão documental",
+        "x": 284,
+        "y": 232.640625,
+        "width": 476,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "ged-dashboard",
+        "description": "Acompanhar os indicadores dos documentos",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "ged-documents",
+        "description": "Consultar e gerenciar os documentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "ged-approvals",
+        "description": "Revisar as aprovações dos documentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "ged-calibrations",
+        "description": "Acompanhar as calibrações dos instrumentos",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      472.640625
+    ],
+    "module": "ged",
+    "width": 1280,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Gestão documental",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Gestão documental",
+          "x": 284,
+          "y": 232.640625,
+          "width": 476,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "ged-dashboard",
+          "description": "Acompanhar os indicadores dos documentos",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 0
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 0
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 284,
+        "y": 289.640625,
+        "width": 476,
+        "height": 190,
+        "bottom": 479.640625,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 776,
+        "y": 289.640625,
+        "width": 476,
+        "height": 240,
+        "bottom": 529.640625,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 776,
+        "y": 545.640625,
+        "width": 476,
+        "height": 90,
+        "bottom": 635.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labNoroCecEtiquetas",
+        "description": "Emitir etiquetas QR de corpos de prova",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labNoroCecLeitura",
+        "description": "Registrar a ruptura dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecResultados",
+        "description": "Consultar os resultados dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCec",
+        "description": "Consultar os indicadores do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labNoroCecRompimentosMes",
+        "description": "Consultar os rompimentos por mês",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecAnalise",
+        "description": "Analisar os resultados de resistência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecRelatorio",
+        "description": "Emitir o relatório estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroUsuarios",
+        "description": "Administrar os usuários do Laboratório",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      479.640625,
+      635.640625
+    ],
+    "module": "laboratorio-noroeste",
+    "width": 1280,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Corpos de Prova",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Corpos de Prova",
+          "x": 284,
+          "y": 289.640625,
+          "width": 476,
+          "height": 90,
+          "bottom": 379.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "labNoroCecEtiquetas",
+          "description": "Emitir etiquetas QR de corpos de prova",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        379.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Programação",
+        "gap": 16
+      },
+      {
+        "group": "Relatórios de Programação",
+        "gap": 16
+      },
+      {
+        "group": "Armaduras",
+        "gap": 16
+      },
+      {
+        "group": "Etiquetas",
+        "gap": 0
+      },
+      {
+        "group": "Acompanhamento",
+        "gap": 16
+      },
+      {
+        "group": "Produção e apoio",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 92,
+        "y": 265.640625,
+        "width": 444,
+        "height": 140,
+        "bottom": 405.640625,
+        "items": 2
+      },
+      {
+        "label": "Programação",
+        "x": 92,
+        "y": 421.640625,
+        "width": 444,
+        "height": 340,
+        "bottom": 761.640625,
+        "items": 6
+      },
+      {
+        "label": "Relatórios de Programação",
+        "x": 92,
+        "y": 777.640625,
+        "width": 444,
+        "height": 190,
+        "bottom": 967.640625,
+        "items": 3
+      },
+      {
+        "label": "Armaduras",
+        "x": 92,
+        "y": 983.640625,
+        "width": 444,
+        "height": 190,
+        "bottom": 1173.640625,
+        "items": 3
+      },
+      {
+        "label": "Etiquetas",
+        "x": 552,
+        "y": 265.640625,
+        "width": 444,
+        "height": 240,
+        "bottom": 505.640625,
+        "items": 4
+      },
+      {
+        "label": "Acompanhamento",
+        "x": 552,
+        "y": 521.640625,
+        "width": 444,
+        "height": 290,
+        "bottom": 811.640625,
+        "items": 5
+      },
+      {
+        "label": "Produção e apoio",
+        "x": 552,
+        "y": 827.640625,
+        "width": 444,
+        "height": 290,
+        "bottom": 1117.640625,
+        "items": 5
+      }
+    ],
+    "items": [
+      {
+        "id": "dashboard",
+        "description": "Programado e realizado por período",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "comparacao",
+        "description": "PCP contra apontamentos do Mapa",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacao12",
+        "description": "Programar a produção diária",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "programacaoSemanal12",
+        "description": "Distribuir a semana nas formas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacao34",
+        "description": "Programar os setores 3 e 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "circular3",
+        "description": "Sequenciar formas circulares",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "dt4",
+        "description": "Programar postes duplo T",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacaoFinal",
+        "description": "Consolidar a programação para publicar",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorio12",
+        "description": "Emitir PDF dos setores 1 e 2",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "relatorio3",
+        "description": "Emitir PDF do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorio4",
+        "description": "Emitir PDF do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "postesNumerosSerie",
+        "description": "Consultar séries e emitir PDF",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "armadurasProgramacao",
+        "description": "Programar armaduras por dia",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "armadurasRelatorio",
+        "description": "Emitir relatório de armaduras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetas",
+        "description": "Imprimir etiquetas dos postes",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "etiquetasSc",
+        "description": "Imprimir etiquetas do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetasSetor4",
+        "description": "Imprimir etiquetas do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetasArmaduras",
+        "description": "Imprimir etiquetas das armaduras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pcpDiario",
+        "description": "Acompanhar a produção diária por setor",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "acompMensal",
+        "description": "Comparar a programação e a produção mensal",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "acompMensal34",
+        "description": "Comparar a produção mensal dos setores 3 e 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "apontamentoMega",
+        "description": "Conferir os apontamentos do Mega",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "fechamentoDiarioPcp",
+        "description": "Conferir o fechamento diário da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "producaoPcp",
+        "description": "Registrar a produção pelo PCP",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "maodeobra",
+        "description": "Registrar a equipe por dia e setor",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "maodeobraRateio",
+        "description": "Ratear a mão de obra indireta por atividade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "formasPorSetor",
+        "description": "Consultar as formas e sua situação por setor",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "testeProgramacao",
+        "description": "Testar a programação na homologação",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1173.640625,
+      1117.640625
+    ],
+    "module": "planejamento",
+    "width": 1024,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 70,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 92,
+          "y": 265.640625,
+          "width": 444,
+          "height": 90,
+          "bottom": 355.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "dashboard",
+          "description": "Programado e realizado por período",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        355.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Campinas · Produção",
+        "gap": 0
+      },
+      {
+        "group": "Campinas · Montagem",
+        "gap": 16
+      },
+      {
+        "group": "Campinas · Controle",
+        "gap": 16
+      },
+      {
+        "group": "Campinas · Indicadores",
+        "gap": 16
+      },
+      {
+        "group": "Pederneiras",
+        "gap": 0
+      },
+      {
+        "group": "Ribeirão",
+        "gap": 16
+      },
+      {
+        "group": "Noroeste",
+        "gap": 16
+      },
+      {
+        "group": "Indicadores gerais",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Campinas · Produção",
+        "x": 92,
+        "y": 365.375,
+        "width": 444,
+        "height": 340,
+        "bottom": 705.375,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Montagem",
+        "x": 92,
+        "y": 721.375,
+        "width": 444,
+        "height": 190,
+        "bottom": 911.375,
+        "items": 3
+      },
+      {
+        "label": "Campinas · Controle",
+        "x": 92,
+        "y": 927.375,
+        "width": 444,
+        "height": 340,
+        "bottom": 1267.375,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Indicadores",
+        "x": 92,
+        "y": 1283.375,
+        "width": 444,
+        "height": 290,
+        "bottom": 1573.375,
+        "items": 5
+      },
+      {
+        "label": "Pederneiras",
+        "x": 552,
+        "y": 365.375,
+        "width": 444,
+        "height": 290,
+        "bottom": 655.375,
+        "items": 5
+      },
+      {
+        "label": "Ribeirão",
+        "x": 552,
+        "y": 671.375,
+        "width": 444,
+        "height": 290,
+        "bottom": 961.375,
+        "items": 5
+      },
+      {
+        "label": "Noroeste",
+        "x": 552,
+        "y": 977.375,
+        "width": 444,
+        "height": 290,
+        "bottom": 1267.375,
+        "items": 5
+      },
+      {
+        "label": "Indicadores gerais",
+        "x": 552,
+        "y": 1283.375,
+        "width": 444,
+        "height": 90,
+        "bottom": 1373.375,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "liberacao",
+        "description": "Acompanhar a liberação da produção",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "setor1",
+        "description": "Registrar a produção do setor 1",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor2",
+        "description": "Registrar a produção do setor 2",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor3",
+        "description": "Registrar a produção do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor4",
+        "description": "Registrar a produção do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "mandril",
+        "description": "Controlar os mandris circulares",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "inspecao",
+        "description": "Inspecionar postes dos setores 3 e 4",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "montagem",
+        "description": "Registrar a montagem dos postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "sequencia",
+        "description": "Consultar a sequência do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorioMapa",
+        "description": "Consultar o relatório da produção",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "historico",
+        "description": "Consultar o histórico dos apontamentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "acmpConcretagem",
+        "description": "Acompanhar o andamento da concretagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "manutencao",
+        "description": "Consultar a manutenção das formas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "tratativa",
+        "description": "Acompanhar as tratativas de defeitos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "fechamentoDiario",
+        "description": "Conferir o fechamento diário da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "campinasUnificado",
+        "description": "Acompanhar os quatro setores de Campinas",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "dashMontagem",
+        "description": "Consultar os indicadores de montagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "dashDefeitos",
+        "description": "Analisar os defeitos da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "produtividade",
+        "description": "Analisar a produtividade da concretagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "tvFormas",
+        "description": "Acompanhar as formas no painel de produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrApontamento",
+        "description": "Registrar a produção diária de Pederneiras",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "pdrMaoDeObra",
+        "description": "Registrar a equipe de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrMensal",
+        "description": "Consultar a produção mensal de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrIndicadores",
+        "description": "Analisar os indicadores de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrProdutos",
+        "description": "Cadastrar os produtos de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrApontamento",
+        "description": "Registrar a produção diária de Ribeirão",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "rbrMaoDeObra",
+        "description": "Registrar a equipe de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrMensal",
+        "description": "Consultar a produção mensal de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrIndicadores",
+        "description": "Analisar os indicadores de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrProdutos",
+        "description": "Cadastrar os produtos de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norApontamento",
+        "description": "Registrar a produção diária de Noroeste",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "norMaoDeObra",
+        "description": "Registrar a equipe de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norMensal",
+        "description": "Consultar a produção mensal de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norIndicadores",
+        "description": "Analisar os indicadores de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norProdutos",
+        "description": "Consultar o cadastro de produtos de Campinas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "indicadorGeralProducao",
+        "description": "Comparar a produção das quatro unidades",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1573.375,
+      1373.375
+    ],
+    "module": "producao",
+    "width": 1024,
+    "phase": "after",
+    "connections_before": 75,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Campinas · Produção",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Campinas · Produção",
+          "x": 92,
+          "y": 365.375,
+          "width": 444,
+          "height": 90,
+          "bottom": 455.375,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "liberacao",
+          "description": "Acompanhar a liberação da produção",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        455.375
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 0
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 16
+      },
+      {
+        "group": "Dosagem",
+        "gap": 16
+      },
+      {
+        "group": "Concreto fresco",
+        "gap": 16
+      },
+      {
+        "group": "Usina de Campinas",
+        "gap": 16
+      },
+      {
+        "group": "Cura térmica",
+        "gap": 0
+      },
+      {
+        "group": "Ensaios de concreto",
+        "gap": 16
+      },
+      {
+        "group": "Postes",
+        "gap": 16
+      },
+      {
+        "group": "Cronoanálise",
+        "gap": 16
+      },
+      {
+        "group": "Carta de traço",
+        "gap": 16
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      },
+      {
+        "group": "Ajuda",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 92,
+        "y": 322.640625,
+        "width": 444,
+        "height": 190,
+        "bottom": 512.640625,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 92,
+        "y": 528.640625,
+        "width": 444,
+        "height": 240,
+        "bottom": 768.640625,
+        "items": 4
+      },
+      {
+        "label": "Dosagem",
+        "x": 92,
+        "y": 784.640625,
+        "width": 444,
+        "height": 740,
+        "bottom": 1524.640625,
+        "items": 14
+      },
+      {
+        "label": "Concreto fresco",
+        "x": 92,
+        "y": 1540.640625,
+        "width": 444,
+        "height": 90,
+        "bottom": 1630.640625,
+        "items": 1
+      },
+      {
+        "label": "Usina de Campinas",
+        "x": 92,
+        "y": 1646.640625,
+        "width": 444,
+        "height": 90,
+        "bottom": 1736.640625,
+        "items": 1
+      },
+      {
+        "label": "Cura térmica",
+        "x": 552,
+        "y": 322.640625,
+        "width": 444,
+        "height": 190,
+        "bottom": 512.640625,
+        "items": 3
+      },
+      {
+        "label": "Ensaios de concreto",
+        "x": 552,
+        "y": 528.640625,
+        "width": 444,
+        "height": 90,
+        "bottom": 618.640625,
+        "items": 1
+      },
+      {
+        "label": "Postes",
+        "x": 552,
+        "y": 634.640625,
+        "width": 444,
+        "height": 290,
+        "bottom": 924.640625,
+        "items": 5
+      },
+      {
+        "label": "Cronoanálise",
+        "x": 552,
+        "y": 940.640625,
+        "width": 444,
+        "height": 390,
+        "bottom": 1330.640625,
+        "items": 7
+      },
+      {
+        "label": "Carta de traço",
+        "x": 552,
+        "y": 1346.640625,
+        "width": 444,
+        "height": 90,
+        "bottom": 1436.640625,
+        "items": 1
+      },
+      {
+        "label": "Administração",
+        "x": 552,
+        "y": 1452.640625,
+        "width": 444,
+        "height": 90,
+        "bottom": 1542.640625,
+        "items": 1
+      },
+      {
+        "label": "Ajuda",
+        "x": 552,
+        "y": 1558.640625,
+        "width": 444,
+        "height": 90,
+        "bottom": 1648.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labCecEtiquetas",
+        "description": "Emitir etiquetas QR de corpos de prova",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCecLeitura",
+        "description": "Registrar a ruptura dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecResultados",
+        "description": "Consultar os resultados dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCec",
+        "description": "Consultar os indicadores do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCecRompimentosMes",
+        "description": "Consultar os rompimentos por mês",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecAnalise",
+        "description": "Analisar os resultados de resistência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecRelatorio",
+        "description": "Emitir o relatório estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagem",
+        "description": "Acompanhar os estudos de dosagem",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labDosagemEmpacotamento",
+        "description": "Calcular a dosagem por empacotamento",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemVolume",
+        "description": "Calcular a dosagem por volume absoluto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemComparacao",
+        "description": "Comparar os métodos de dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemTracos",
+        "description": "Consultar e cadastrar traços de concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemMateriais",
+        "description": "Gerenciar os materiais da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemFornecedores",
+        "description": "Cadastrar os fornecedores de materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemEnsaios",
+        "description": "Registrar os ensaios dos materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemFerramentas",
+        "description": "Calcular volume, Abrams e empacotamento",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemCustos",
+        "description": "Comparar os custos dos traços",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemReferencia",
+        "description": "Consultar os indicadores e o uso da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemProducao",
+        "description": "Conferir a dosagem e a desforma por lote",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemImportacao",
+        "description": "Importar planilhas de dosagem para referência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemConfig",
+        "description": "Configurar os parâmetros da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labSlump",
+        "description": "Registrar o abatimento e o espalhamento",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labUsinasRelatorios",
+        "description": "Consultar a produção e os custos da usina",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labMonitor",
+        "description": "Monitorar as temperaturas da cura térmica",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labHistory",
+        "description": "Consultar o histórico da cura térmica",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDevice",
+        "description": "Configurar o dispositivo de medição",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labAbsorption",
+        "description": "Registrar ensaios de absorção do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCertificados",
+        "description": "Emitir certificados de qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labPole",
+        "description": "Registrar os ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labTests",
+        "description": "Consultar o histórico de ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labRegisters",
+        "description": "Gerenciar os cadastros dos ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCriteria",
+        "description": "Configurar os critérios dos ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.inicio",
+        "description": "Acompanhar os estudos de cronoanálise",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "cronoanalise.coletar",
+        "description": "Cronometrar os ciclos de trabalho",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.medicoes",
+        "description": "Consultar as medições de tempo",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.catalogo",
+        "description": "Gerenciar as operações da cronoanálise",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.dimensionar",
+        "description": "Dimensionar a equipe para a produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.simular",
+        "description": "Simular a capacidade de produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.metodologia",
+        "description": "Consultar o método de cronoanálise",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCartaTraco",
+        "description": "Cadastrar e revisar cartas de traço",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labUsuarios",
+        "description": "Administrar o acesso aos ensaios de postes",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labHelp",
+        "description": "Consultar a ajuda da cura térmica",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1736.640625,
+      1648.640625
+    ],
+    "module": "laboratorio",
+    "width": 1024,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Corpos de Prova",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Corpos de Prova",
+          "x": 92,
+          "y": 322.640625,
+          "width": 444,
+          "height": 90,
+          "bottom": 412.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "labCecEtiquetas",
+          "description": "Emitir etiquetas QR de corpos de prova",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        412.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Não conformidades",
+        "gap": 16
+      },
+      {
+        "group": "Certificados",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 92,
+        "y": 232.640625,
+        "width": 444,
+        "height": 140,
+        "bottom": 372.640625,
+        "items": 2
+      },
+      {
+        "label": "Não conformidades",
+        "x": 92,
+        "y": 388.640625,
+        "width": 444,
+        "height": 240,
+        "bottom": 628.640625,
+        "items": 4
+      },
+      {
+        "label": "Certificados",
+        "x": 552,
+        "y": 232.640625,
+        "width": 444,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "qualidadeTarefas",
+        "description": "Acompanhar as tarefas da Qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "manutencaoUsina",
+        "description": "Acompanhar a manutenção da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadePainel",
+        "description": "Acompanhar as não conformidades",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "qualidadeAbertura",
+        "description": "Registrar uma não conformidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadeResultadosBancada",
+        "description": "Conferir os resultados de bancada",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadeCadastros",
+        "description": "Gerenciar os cadastros da Qualidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCertificados",
+        "description": "Emitir certificados de qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCertificadosHistorico",
+        "description": "Consultar os certificados emitidos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCertificadosCadastros",
+        "description": "Gerenciar os cadastros dos certificados",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labTests",
+        "description": "Consultar o histórico de ensaios de postes",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      628.640625,
+      472.640625
+    ],
+    "module": "qualidade",
+    "width": 1024,
+    "phase": "after",
+    "connections_before": 70,
+    "connections_after": 71,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 92,
+          "y": 232.640625,
+          "width": 444,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "qualidadeTarefas",
+          "description": "Acompanhar as tarefas da Qualidade",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Noroeste",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 92,
+        "y": 232.640625,
+        "width": 444,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      },
+      {
+        "label": "Noroeste",
+        "x": 552,
+        "y": 232.640625,
+        "width": 444,
+        "height": 440,
+        "bottom": 672.640625,
+        "items": 8
+      }
+    ],
+    "items": [
+      {
+        "id": "usinasInicio",
+        "description": "Consultar as cartas de traço da usina",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "usinasCec",
+        "description": "Analisar o controle estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasRelatorios",
+        "description": "Consultar os relatórios da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasEstoque",
+        "description": "Consultar o estoque de materiais da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroPainel",
+        "description": "Acompanhar a operação da usina Noroeste",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "usinasNoroMassadas",
+        "description": "Consultar as massadas da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCartas",
+        "description": "Consultar as cartas de traço de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroRelatorios",
+        "description": "Consultar os relatórios da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCec",
+        "description": "Analisar o controle estatístico de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCadastros",
+        "description": "Gerenciar os cadastros da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroEstoque",
+        "description": "Consultar o estoque da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCustos",
+        "description": "Consultar os custos da usina Noroeste",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      472.640625,
+      672.640625
+    ],
+    "module": "usinas",
+    "width": 1024,
+    "phase": "after",
+    "connections_before": 70,
+    "connections_after": 70,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 92,
+          "y": 232.640625,
+          "width": 444,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "usinasInicio",
+          "description": "Consultar as cartas de traço da usina",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Solicitações",
+        "gap": 0
+      },
+      {
+        "group": "Compras",
+        "gap": 0
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Solicitações",
+        "x": 92,
+        "y": 232.640625,
+        "width": 444,
+        "height": 290,
+        "bottom": 522.640625,
+        "items": 5
+      },
+      {
+        "label": "Compras",
+        "x": 552,
+        "y": 232.640625,
+        "width": 444,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 552,
+        "y": 488.640625,
+        "width": 444,
+        "height": 90,
+        "bottom": 578.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "suprimentosPainel",
+        "description": "Aprovar e acompanhar solicitações",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "suprimentosSolicitacoes",
+        "description": "Consultar e filtrar solicitações",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosNova",
+        "description": "Solicitar materiais e serviços",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosAlmoxarifado",
+        "description": "Consultar saldos e movimentações",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosInventario",
+        "description": "Conferir o estoque físico",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosCotacoes",
+        "description": "Comparar propostas de fornecedores",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "suprimentosRecebimento",
+        "description": "Conferir o recebimento dos pedidos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosFornecedores",
+        "description": "Gerenciar os fornecedores de materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosIndicadores",
+        "description": "Analisar os indicadores de compras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosCadastros",
+        "description": "Gerenciar os cadastros e as alçadas",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      522.640625,
+      578.640625
+    ],
+    "module": "suprimentos",
+    "width": 1024,
+    "phase": "after",
+    "connections_before": 70,
+    "connections_after": 71,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Solicitações",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Solicitações",
+          "x": 92,
+          "y": 232.640625,
+          "width": 444,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "suprimentosPainel",
+          "description": "Aprovar e acompanhar solicitações",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Km/Evento",
+        "gap": 16
+      },
+      {
+        "group": "Cadastros",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 92,
+        "y": 232.640625,
+        "width": 444,
+        "height": 90,
+        "bottom": 322.640625,
+        "items": 1
+      },
+      {
+        "label": "Km/Evento",
+        "x": 92,
+        "y": 338.640625,
+        "width": 444,
+        "height": 340,
+        "bottom": 678.640625,
+        "items": 6
+      },
+      {
+        "label": "Cadastros",
+        "x": 552,
+        "y": 232.640625,
+        "width": 444,
+        "height": 190,
+        "bottom": 422.640625,
+        "items": 3
+      }
+    ],
+    "items": [
+      {
+        "id": "logisticaInicio",
+        "description": "Encontrar as ferramentas da Logística",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaPainel",
+        "description": "Acompanhar indicadores de km por evento",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaCorrecoes",
+        "description": "Revisar falsos alarmes e exclusões",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaFechamento",
+        "description": "Conferir os meses do trimestre",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaPremiacao",
+        "description": "Consultar avaliações e classificação",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMeses",
+        "description": "Importar e conferir relatórios mensais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMetas",
+        "description": "Definir metas por trimestre e unidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMotoristas",
+        "description": "Cadastrar motoristas e vínculos Cobli",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaAjudantes",
+        "description": "Cadastrar ajudantes por unidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaCobli",
+        "description": "Relacionar grupos Cobli às unidades",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      678.640625,
+      422.640625
+    ],
+    "module": "logistica",
+    "width": 1024,
+    "phase": "after",
+    "connections_before": 70,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 92,
+          "y": 232.640625,
+          "width": 444,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "logisticaInicio",
+          "description": "Encontrar as ferramentas da Logística",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Gestão documental",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Gestão documental",
+        "x": 92,
+        "y": 232.640625,
+        "width": 444,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "ged-dashboard",
+        "description": "Acompanhar os indicadores dos documentos",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "ged-documents",
+        "description": "Consultar e gerenciar os documentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "ged-approvals",
+        "description": "Revisar as aprovações dos documentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "ged-calibrations",
+        "description": "Acompanhar as calibrações dos instrumentos",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      472.640625
+    ],
+    "module": "ged",
+    "width": 1024,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Gestão documental",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Gestão documental",
+          "x": 92,
+          "y": 232.640625,
+          "width": 444,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "ged-dashboard",
+          "description": "Acompanhar os indicadores dos documentos",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 0
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 0
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 92,
+        "y": 289.640625,
+        "width": 444,
+        "height": 190,
+        "bottom": 479.640625,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 552,
+        "y": 289.640625,
+        "width": 444,
+        "height": 240,
+        "bottom": 529.640625,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 552,
+        "y": 545.640625,
+        "width": 444,
+        "height": 90,
+        "bottom": 635.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labNoroCecEtiquetas",
+        "description": "Emitir etiquetas QR de corpos de prova",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labNoroCecLeitura",
+        "description": "Registrar a ruptura dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecResultados",
+        "description": "Consultar os resultados dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCec",
+        "description": "Consultar os indicadores do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labNoroCecRompimentosMes",
+        "description": "Consultar os rompimentos por mês",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecAnalise",
+        "description": "Analisar os resultados de resistência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecRelatorio",
+        "description": "Emitir o relatório estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroUsuarios",
+        "description": "Administrar os usuários do Laboratório",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      479.640625,
+      635.640625
+    ],
+    "module": "laboratorio-noroeste",
+    "width": 1024,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Corpos de Prova",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Corpos de Prova",
+          "x": 92,
+          "y": 289.640625,
+          "width": 444,
+          "height": 90,
+          "bottom": 379.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "labNoroCecEtiquetas",
+          "description": "Emitir etiquetas QR de corpos de prova",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        379.640625
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Programação",
+        "gap": 16
+      },
+      {
+        "group": "Relatórios de Programação",
+        "gap": 16
+      },
+      {
+        "group": "Armaduras",
+        "gap": 16
+      },
+      {
+        "group": "Etiquetas",
+        "gap": 16
+      },
+      {
+        "group": "Acompanhamento",
+        "gap": 16
+      },
+      {
+        "group": "Produção e apoio",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 92,
+        "y": 307.640625,
+        "width": 700,
+        "height": 140,
+        "bottom": 447.640625,
+        "items": 2
+      },
+      {
+        "label": "Programação",
+        "x": 92,
+        "y": 463.640625,
+        "width": 700,
+        "height": 340,
+        "bottom": 803.640625,
+        "items": 6
+      },
+      {
+        "label": "Relatórios de Programação",
+        "x": 92,
+        "y": 819.640625,
+        "width": 700,
+        "height": 190,
+        "bottom": 1009.640625,
+        "items": 3
+      },
+      {
+        "label": "Armaduras",
+        "x": 92,
+        "y": 1025.640625,
+        "width": 700,
+        "height": 190,
+        "bottom": 1215.640625,
+        "items": 3
+      },
+      {
+        "label": "Etiquetas",
+        "x": 92,
+        "y": 1231.640625,
+        "width": 700,
+        "height": 240,
+        "bottom": 1471.640625,
+        "items": 4
+      },
+      {
+        "label": "Acompanhamento",
+        "x": 92,
+        "y": 1487.640625,
+        "width": 700,
+        "height": 290,
+        "bottom": 1777.640625,
+        "items": 5
+      },
+      {
+        "label": "Produção e apoio",
+        "x": 92,
+        "y": 1793.640625,
+        "width": 700,
+        "height": 290,
+        "bottom": 2083.640625,
+        "items": 5
+      }
+    ],
+    "items": [
+      {
+        "id": "dashboard",
+        "description": "Programado e realizado por período",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "comparacao",
+        "description": "PCP contra apontamentos do Mapa",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacao12",
+        "description": "Programar a produção diária",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "programacaoSemanal12",
+        "description": "Distribuir a semana nas formas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacao34",
+        "description": "Programar os setores 3 e 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "circular3",
+        "description": "Sequenciar formas circulares",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "dt4",
+        "description": "Programar postes duplo T",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "programacaoFinal",
+        "description": "Consolidar a programação para publicar",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorio12",
+        "description": "Emitir PDF dos setores 1 e 2",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "relatorio3",
+        "description": "Emitir PDF do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorio4",
+        "description": "Emitir PDF do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "postesNumerosSerie",
+        "description": "Consultar séries e emitir PDF",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "armadurasProgramacao",
+        "description": "Programar armaduras por dia",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "armadurasRelatorio",
+        "description": "Emitir relatório de armaduras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetas",
+        "description": "Imprimir etiquetas dos postes",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "etiquetasSc",
+        "description": "Imprimir etiquetas do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetasSetor4",
+        "description": "Imprimir etiquetas do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "etiquetasArmaduras",
+        "description": "Imprimir etiquetas das armaduras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pcpDiario",
+        "description": "Acompanhar a produção diária por setor",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "acompMensal",
+        "description": "Comparar a programação e a produção mensal",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "acompMensal34",
+        "description": "Comparar a produção mensal dos setores 3 e 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "apontamentoMega",
+        "description": "Conferir os apontamentos do Mega",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "fechamentoDiarioPcp",
+        "description": "Conferir o fechamento diário da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "producaoPcp",
+        "description": "Registrar a produção pelo PCP",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "maodeobra",
+        "description": "Registrar a equipe por dia e setor",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "maodeobraRateio",
+        "description": "Ratear a mão de obra indireta por atividade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "formasPorSetor",
+        "description": "Consultar as formas e sua situação por setor",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "testeProgramacao",
+        "description": "Testar a programação na homologação",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      2083.640625
+    ],
+    "module": "planejamento",
+    "width": 820,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 92,
+          "y": 307.640625,
+          "width": 700,
+          "height": 90,
+          "bottom": 397.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "dashboard",
+          "description": "Programado e realizado por período",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        397.640625
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Campinas · Produção",
+        "gap": 0
+      },
+      {
+        "group": "Campinas · Montagem",
+        "gap": 16
+      },
+      {
+        "group": "Campinas · Controle",
+        "gap": 16
+      },
+      {
+        "group": "Campinas · Indicadores",
+        "gap": 16
+      },
+      {
+        "group": "Pederneiras",
+        "gap": 16
+      },
+      {
+        "group": "Ribeirão",
+        "gap": 16
+      },
+      {
+        "group": "Noroeste",
+        "gap": 16
+      },
+      {
+        "group": "Indicadores gerais",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Campinas · Produção",
+        "x": 92,
+        "y": 449.375,
+        "width": 700,
+        "height": 340,
+        "bottom": 789.375,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Montagem",
+        "x": 92,
+        "y": 805.375,
+        "width": 700,
+        "height": 190,
+        "bottom": 995.375,
+        "items": 3
+      },
+      {
+        "label": "Campinas · Controle",
+        "x": 92,
+        "y": 1011.375,
+        "width": 700,
+        "height": 340,
+        "bottom": 1351.375,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Indicadores",
+        "x": 92,
+        "y": 1367.375,
+        "width": 700,
+        "height": 290,
+        "bottom": 1657.375,
+        "items": 5
+      },
+      {
+        "label": "Pederneiras",
+        "x": 92,
+        "y": 1673.375,
+        "width": 700,
+        "height": 290,
+        "bottom": 1963.375,
+        "items": 5
+      },
+      {
+        "label": "Ribeirão",
+        "x": 92,
+        "y": 1979.375,
+        "width": 700,
+        "height": 290,
+        "bottom": 2269.375,
+        "items": 5
+      },
+      {
+        "label": "Noroeste",
+        "x": 92,
+        "y": 2285.375,
+        "width": 700,
+        "height": 290,
+        "bottom": 2575.375,
+        "items": 5
+      },
+      {
+        "label": "Indicadores gerais",
+        "x": 92,
+        "y": 2591.375,
+        "width": 700,
+        "height": 90,
+        "bottom": 2681.375,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "liberacao",
+        "description": "Acompanhar a liberação da produção",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "setor1",
+        "description": "Registrar a produção do setor 1",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor2",
+        "description": "Registrar a produção do setor 2",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor3",
+        "description": "Registrar a produção do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "setor4",
+        "description": "Registrar a produção do setor 4",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "mandril",
+        "description": "Controlar os mandris circulares",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "inspecao",
+        "description": "Inspecionar postes dos setores 3 e 4",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "montagem",
+        "description": "Registrar a montagem dos postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "sequencia",
+        "description": "Consultar a sequência do setor 3",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "relatorioMapa",
+        "description": "Consultar o relatório da produção",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "historico",
+        "description": "Consultar o histórico dos apontamentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "acmpConcretagem",
+        "description": "Acompanhar o andamento da concretagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "manutencao",
+        "description": "Consultar a manutenção das formas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "tratativa",
+        "description": "Acompanhar as tratativas de defeitos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "fechamentoDiario",
+        "description": "Conferir o fechamento diário da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "campinasUnificado",
+        "description": "Acompanhar os quatro setores de Campinas",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "dashMontagem",
+        "description": "Consultar os indicadores de montagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "dashDefeitos",
+        "description": "Analisar os defeitos da produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "produtividade",
+        "description": "Analisar a produtividade da concretagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "tvFormas",
+        "description": "Acompanhar as formas no painel de produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrApontamento",
+        "description": "Registrar a produção diária de Pederneiras",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "pdrMaoDeObra",
+        "description": "Registrar a equipe de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrMensal",
+        "description": "Consultar a produção mensal de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrIndicadores",
+        "description": "Analisar os indicadores de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "pdrProdutos",
+        "description": "Cadastrar os produtos de Pederneiras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrApontamento",
+        "description": "Registrar a produção diária de Ribeirão",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "rbrMaoDeObra",
+        "description": "Registrar a equipe de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrMensal",
+        "description": "Consultar a produção mensal de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrIndicadores",
+        "description": "Analisar os indicadores de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "rbrProdutos",
+        "description": "Cadastrar os produtos de Ribeirão",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norApontamento",
+        "description": "Registrar a produção diária de Noroeste",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "norMaoDeObra",
+        "description": "Registrar a equipe de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norMensal",
+        "description": "Consultar a produção mensal de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norIndicadores",
+        "description": "Analisar os indicadores de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "norProdutos",
+        "description": "Consultar o cadastro de produtos de Campinas",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "indicadorGeralProducao",
+        "description": "Comparar a produção das quatro unidades",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      2681.375
+    ],
+    "module": "producao",
+    "width": 820,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Campinas · Produção",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Campinas · Produção",
+          "x": 92,
+          "y": 449.375,
+          "width": 700,
+          "height": 90,
+          "bottom": 539.375,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "liberacao",
+          "description": "Acompanhar a liberação da produção",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        539.375
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 0
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 16
+      },
+      {
+        "group": "Dosagem",
+        "gap": 16
+      },
+      {
+        "group": "Concreto fresco",
+        "gap": 16
+      },
+      {
+        "group": "Usina de Campinas",
+        "gap": 16
+      },
+      {
+        "group": "Cura térmica",
+        "gap": 16
+      },
+      {
+        "group": "Ensaios de concreto",
+        "gap": 16
+      },
+      {
+        "group": "Postes",
+        "gap": 16
+      },
+      {
+        "group": "Cronoanálise",
+        "gap": 16
+      },
+      {
+        "group": "Carta de traço",
+        "gap": 16
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      },
+      {
+        "group": "Ajuda",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 92,
+        "y": 322.640625,
+        "width": 700,
+        "height": 190,
+        "bottom": 512.640625,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 92,
+        "y": 528.640625,
+        "width": 700,
+        "height": 240,
+        "bottom": 768.640625,
+        "items": 4
+      },
+      {
+        "label": "Dosagem",
+        "x": 92,
+        "y": 784.640625,
+        "width": 700,
+        "height": 740,
+        "bottom": 1524.640625,
+        "items": 14
+      },
+      {
+        "label": "Concreto fresco",
+        "x": 92,
+        "y": 1540.640625,
+        "width": 700,
+        "height": 90,
+        "bottom": 1630.640625,
+        "items": 1
+      },
+      {
+        "label": "Usina de Campinas",
+        "x": 92,
+        "y": 1646.640625,
+        "width": 700,
+        "height": 90,
+        "bottom": 1736.640625,
+        "items": 1
+      },
+      {
+        "label": "Cura térmica",
+        "x": 92,
+        "y": 1752.640625,
+        "width": 700,
+        "height": 190,
+        "bottom": 1942.640625,
+        "items": 3
+      },
+      {
+        "label": "Ensaios de concreto",
+        "x": 92,
+        "y": 1958.640625,
+        "width": 700,
+        "height": 90,
+        "bottom": 2048.640625,
+        "items": 1
+      },
+      {
+        "label": "Postes",
+        "x": 92,
+        "y": 2064.640625,
+        "width": 700,
+        "height": 290,
+        "bottom": 2354.640625,
+        "items": 5
+      },
+      {
+        "label": "Cronoanálise",
+        "x": 92,
+        "y": 2370.640625,
+        "width": 700,
+        "height": 390,
+        "bottom": 2760.640625,
+        "items": 7
+      },
+      {
+        "label": "Carta de traço",
+        "x": 92,
+        "y": 2776.640625,
+        "width": 700,
+        "height": 90,
+        "bottom": 2866.640625,
+        "items": 1
+      },
+      {
+        "label": "Administração",
+        "x": 92,
+        "y": 2882.640625,
+        "width": 700,
+        "height": 90,
+        "bottom": 2972.640625,
+        "items": 1
+      },
+      {
+        "label": "Ajuda",
+        "x": 92,
+        "y": 2988.640625,
+        "width": 700,
+        "height": 90,
+        "bottom": 3078.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labCecEtiquetas",
+        "description": "Emitir etiquetas QR de corpos de prova",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCecLeitura",
+        "description": "Registrar a ruptura dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecResultados",
+        "description": "Consultar os resultados dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCec",
+        "description": "Consultar os indicadores do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCecRompimentosMes",
+        "description": "Consultar os rompimentos por mês",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecAnalise",
+        "description": "Analisar os resultados de resistência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCecRelatorio",
+        "description": "Emitir o relatório estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagem",
+        "description": "Acompanhar os estudos de dosagem",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labDosagemEmpacotamento",
+        "description": "Calcular a dosagem por empacotamento",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemVolume",
+        "description": "Calcular a dosagem por volume absoluto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemComparacao",
+        "description": "Comparar os métodos de dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemTracos",
+        "description": "Consultar e cadastrar traços de concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemMateriais",
+        "description": "Gerenciar os materiais da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemFornecedores",
+        "description": "Cadastrar os fornecedores de materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemEnsaios",
+        "description": "Registrar os ensaios dos materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemFerramentas",
+        "description": "Calcular volume, Abrams e empacotamento",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemCustos",
+        "description": "Comparar os custos dos traços",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemReferencia",
+        "description": "Consultar os indicadores e o uso da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemProducao",
+        "description": "Conferir a dosagem e a desforma por lote",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemImportacao",
+        "description": "Importar planilhas de dosagem para referência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDosagemConfig",
+        "description": "Configurar os parâmetros da dosagem",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labSlump",
+        "description": "Registrar o abatimento e o espalhamento",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labUsinasRelatorios",
+        "description": "Consultar a produção e os custos da usina",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labMonitor",
+        "description": "Monitorar as temperaturas da cura térmica",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labHistory",
+        "description": "Consultar o histórico da cura térmica",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labDevice",
+        "description": "Configurar o dispositivo de medição",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labAbsorption",
+        "description": "Registrar ensaios de absorção do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCertificados",
+        "description": "Emitir certificados de qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labPole",
+        "description": "Registrar os ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labTests",
+        "description": "Consultar o histórico de ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labRegisters",
+        "description": "Gerenciar os cadastros dos ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCriteria",
+        "description": "Configurar os critérios dos ensaios de postes",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.inicio",
+        "description": "Acompanhar os estudos de cronoanálise",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "cronoanalise.coletar",
+        "description": "Cronometrar os ciclos de trabalho",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.medicoes",
+        "description": "Consultar as medições de tempo",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.catalogo",
+        "description": "Gerenciar as operações da cronoanálise",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.dimensionar",
+        "description": "Dimensionar a equipe para a produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.simular",
+        "description": "Simular a capacidade de produção",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "cronoanalise.metodologia",
+        "description": "Consultar o método de cronoanálise",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCartaTraco",
+        "description": "Cadastrar e revisar cartas de traço",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labUsuarios",
+        "description": "Administrar o acesso aos ensaios de postes",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labHelp",
+        "description": "Consultar a ajuda da cura térmica",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      3078.640625
+    ],
+    "module": "laboratorio",
+    "width": 820,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 70,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Corpos de Prova",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Corpos de Prova",
+          "x": 92,
+          "y": 322.640625,
+          "width": 700,
+          "height": 90,
+          "bottom": 412.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "labCecEtiquetas",
+          "description": "Emitir etiquetas QR de corpos de prova",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        412.640625
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Não conformidades",
+        "gap": 16
+      },
+      {
+        "group": "Certificados",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 92,
+        "y": 265.640625,
+        "width": 700,
+        "height": 140,
+        "bottom": 405.640625,
+        "items": 2
+      },
+      {
+        "label": "Não conformidades",
+        "x": 92,
+        "y": 421.640625,
+        "width": 700,
+        "height": 240,
+        "bottom": 661.640625,
+        "items": 4
+      },
+      {
+        "label": "Certificados",
+        "x": 92,
+        "y": 677.640625,
+        "width": 700,
+        "height": 240,
+        "bottom": 917.640625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "qualidadeTarefas",
+        "description": "Acompanhar as tarefas da Qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "manutencaoUsina",
+        "description": "Acompanhar a manutenção da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadePainel",
+        "description": "Acompanhar as não conformidades",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "qualidadeAbertura",
+        "description": "Registrar uma não conformidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadeResultadosBancada",
+        "description": "Conferir os resultados de bancada",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "qualidadeCadastros",
+        "description": "Gerenciar os cadastros da Qualidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCertificados",
+        "description": "Emitir certificados de qualidade",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labCertificadosHistorico",
+        "description": "Consultar os certificados emitidos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labCertificadosCadastros",
+        "description": "Gerenciar os cadastros dos certificados",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labTests",
+        "description": "Consultar o histórico de ensaios de postes",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      917.640625
+    ],
+    "module": "qualidade",
+    "width": 820,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 92,
+          "y": 265.640625,
+          "width": 700,
+          "height": 90,
+          "bottom": 355.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "qualidadeTarefas",
+          "description": "Acompanhar as tarefas da Qualidade",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        355.640625
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Noroeste",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 92,
+        "y": 232.640625,
+        "width": 700,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      },
+      {
+        "label": "Noroeste",
+        "x": 92,
+        "y": 488.640625,
+        "width": 700,
+        "height": 440,
+        "bottom": 928.640625,
+        "items": 8
+      }
+    ],
+    "items": [
+      {
+        "id": "usinasInicio",
+        "description": "Consultar as cartas de traço da usina",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "usinasCec",
+        "description": "Analisar o controle estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasRelatorios",
+        "description": "Consultar os relatórios da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasEstoque",
+        "description": "Consultar o estoque de materiais da usina",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroPainel",
+        "description": "Acompanhar a operação da usina Noroeste",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "usinasNoroMassadas",
+        "description": "Consultar as massadas da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCartas",
+        "description": "Consultar as cartas de traço de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroRelatorios",
+        "description": "Consultar os relatórios da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCec",
+        "description": "Analisar o controle estatístico de Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCadastros",
+        "description": "Gerenciar os cadastros da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroEstoque",
+        "description": "Consultar o estoque da usina Noroeste",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "usinasNoroCustos",
+        "description": "Consultar os custos da usina Noroeste",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      928.640625
+    ],
+    "module": "usinas",
+    "width": 820,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 92,
+          "y": 232.640625,
+          "width": 700,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "usinasInicio",
+          "description": "Consultar as cartas de traço da usina",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Solicitações",
+        "gap": 0
+      },
+      {
+        "group": "Compras",
+        "gap": 16
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Solicitações",
+        "x": 92,
+        "y": 265.640625,
+        "width": 700,
+        "height": 290,
+        "bottom": 555.640625,
+        "items": 5
+      },
+      {
+        "label": "Compras",
+        "x": 92,
+        "y": 571.640625,
+        "width": 700,
+        "height": 240,
+        "bottom": 811.640625,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 92,
+        "y": 827.640625,
+        "width": 700,
+        "height": 90,
+        "bottom": 917.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "suprimentosPainel",
+        "description": "Aprovar e acompanhar solicitações",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "suprimentosSolicitacoes",
+        "description": "Consultar e filtrar solicitações",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosNova",
+        "description": "Solicitar materiais e serviços",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosAlmoxarifado",
+        "description": "Consultar saldos e movimentações",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosInventario",
+        "description": "Conferir o estoque físico",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosCotacoes",
+        "description": "Comparar propostas de fornecedores",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "suprimentosRecebimento",
+        "description": "Conferir o recebimento dos pedidos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosFornecedores",
+        "description": "Gerenciar os fornecedores de materiais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosIndicadores",
+        "description": "Analisar os indicadores de compras",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "suprimentosCadastros",
+        "description": "Gerenciar os cadastros e as alçadas",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      917.640625
+    ],
+    "module": "suprimentos",
+    "width": 820,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Solicitações",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Solicitações",
+          "x": 92,
+          "y": 265.640625,
+          "width": 700,
+          "height": 90,
+          "bottom": 355.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "suprimentosPainel",
+          "description": "Aprovar e acompanhar solicitações",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        355.640625
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 0
+      },
+      {
+        "group": "Km/Evento",
+        "gap": 16
+      },
+      {
+        "group": "Cadastros",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 92,
+        "y": 232.640625,
+        "width": 700,
+        "height": 90,
+        "bottom": 322.640625,
+        "items": 1
+      },
+      {
+        "label": "Km/Evento",
+        "x": 92,
+        "y": 338.640625,
+        "width": 700,
+        "height": 340,
+        "bottom": 678.640625,
+        "items": 6
+      },
+      {
+        "label": "Cadastros",
+        "x": 92,
+        "y": 694.640625,
+        "width": 700,
+        "height": 190,
+        "bottom": 884.640625,
+        "items": 3
+      }
+    ],
+    "items": [
+      {
+        "id": "logisticaInicio",
+        "description": "Encontrar as ferramentas da Logística",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaPainel",
+        "description": "Acompanhar indicadores de km por evento",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaCorrecoes",
+        "description": "Revisar falsos alarmes e exclusões",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaFechamento",
+        "description": "Conferir os meses do trimestre",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaPremiacao",
+        "description": "Consultar avaliações e classificação",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMeses",
+        "description": "Importar e conferir relatórios mensais",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMetas",
+        "description": "Definir metas por trimestre e unidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaMotoristas",
+        "description": "Cadastrar motoristas e vínculos Cobli",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "logisticaAjudantes",
+        "description": "Cadastrar ajudantes por unidade",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "logisticaCobli",
+        "description": "Relacionar grupos Cobli às unidades",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      884.640625
+    ],
+    "module": "logistica",
+    "width": 820,
+    "phase": "after",
+    "connections_before": 70,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Geral",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Geral",
+          "x": 92,
+          "y": 232.640625,
+          "width": 700,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "logisticaInicio",
+          "description": "Encontrar as ferramentas da Logística",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Gestão documental",
+        "gap": 0
+      }
+    ],
+    "groups": [
+      {
+        "label": "Gestão documental",
+        "x": 92,
+        "y": 232.640625,
+        "width": 700,
+        "height": 240,
+        "bottom": 472.640625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "ged-dashboard",
+        "description": "Acompanhar os indicadores dos documentos",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "ged-documents",
+        "description": "Consultar e gerenciar os documentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "ged-approvals",
+        "description": "Revisar as aprovações dos documentos",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "ged-calibrations",
+        "description": "Acompanhar as calibrações dos instrumentos",
+        "icon": true,
+        "height": 50
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      472.640625
+    ],
+    "module": "ged",
+    "width": 820,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Gestão documental",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Gestão documental",
+          "x": 92,
+          "y": 232.640625,
+          "width": 700,
+          "height": 90,
+          "bottom": 322.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "ged-dashboard",
+          "description": "Acompanhar os indicadores dos documentos",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        322.640625
+      ]
+    }
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 0
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 16
+      },
+      {
+        "group": "Administração",
+        "gap": 16
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 92,
+        "y": 322.640625,
+        "width": 700,
+        "height": 190,
+        "bottom": 512.640625,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 92,
+        "y": 528.640625,
+        "width": 700,
+        "height": 240,
+        "bottom": 768.640625,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 92,
+        "y": 784.640625,
+        "width": 700,
+        "height": 90,
+        "bottom": 874.640625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labNoroCecEtiquetas",
+        "description": "Emitir etiquetas QR de corpos de prova",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labNoroCecLeitura",
+        "description": "Registrar a ruptura dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecResultados",
+        "description": "Consultar os resultados dos corpos de prova",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCec",
+        "description": "Consultar os indicadores do concreto",
+        "icon": true,
+        "height": 49
+      },
+      {
+        "id": "labNoroCecRompimentosMes",
+        "description": "Consultar os rompimentos por mês",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecAnalise",
+        "description": "Analisar os resultados de resistência",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroCecRelatorio",
+        "description": "Emitir o relatório estatístico do concreto",
+        "icon": true,
+        "height": 50
+      },
+      {
+        "id": "labNoroUsuarios",
+        "description": "Administrar os usuários do Laboratório",
+        "icon": true,
+        "height": 49
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      874.640625
+    ],
+    "module": "laboratorio-noroeste",
+    "width": 820,
+    "phase": "after",
+    "connections_before": 69,
+    "connections_after": 69,
+    "filter": {
+      "columns": 1,
+      "gaps": [
+        {
+          "group": "Corpos de Prova",
+          "gap": 0
+        }
+      ],
+      "groups": [
+        {
+          "label": "Corpos de Prova",
+          "x": 92,
+          "y": 322.640625,
+          "width": 700,
+          "height": 90,
+          "bottom": 412.640625,
+          "items": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "labNoroCecEtiquetas",
+          "description": "Emitir etiquetas QR de corpos de prova",
+          "icon": true,
+          "height": 49
+        }
+      ],
+      "overflow": false,
+      "columnEnds": [
+        412.640625
+      ]
+    }
+  }
+]

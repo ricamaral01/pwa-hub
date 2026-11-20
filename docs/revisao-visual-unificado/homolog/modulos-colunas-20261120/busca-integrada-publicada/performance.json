@@ -1,0 +1,13 @@
+{
+  "catalogue_size": 160,
+  "cpu_throttle": 2,
+  "viewport": 820,
+  "physical_tablet": false,
+  "engine_p95_ms": 3.0999999940395355,
+  "engine_max_ms": 4.700000002980232,
+  "ui_p95_ms": 13.5,
+  "ui_max_ms": 18.099999994039536,
+  "search_fetch_calls": [],
+  "input_to_frame_p95_ms": 15.600000008940697,
+  "input_to_frame_max_ms": 32.3999999910593
+}

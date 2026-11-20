@@ -1,0 +1,12 @@
+{
+  "version": "1.4.30",
+  "previous_version": "1.4.29",
+  "search_commit": "964e4281",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/modulos-colunas-20261120T155119Z",
+  "files": 18,
+  "connections_before": 69,
+  "services_restarted": false,
+  "database_writes": 0,
+  "production_changed": false,
+  "rollback": "python3 /opt/concrefer-unificado/homolog-next/staging/modulos-colunas-20261120/modulos_colunas_rollback.py /opt/concrefer-unificado/homolog-next/backups/modulos-colunas-20261120T155119Z"
+}

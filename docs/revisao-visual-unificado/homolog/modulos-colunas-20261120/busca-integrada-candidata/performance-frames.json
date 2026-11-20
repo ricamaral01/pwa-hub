@@ -1,0 +1,126 @@
+{
+  "samples": [
+    {
+      "query": "etiqeta",
+      "processing_ms": 11,
+      "ms": 11.299999997019768
+    },
+    {
+      "query": "programacao setr 3",
+      "processing_ms": 11.5,
+      "ms": 11.900000005960464
+    },
+    {
+      "query": "noroeste rompimento",
+      "processing_ms": 8.399999991059303,
+      "ms": 8.599999994039536
+    },
+    {
+      "query": "corpo de prova",
+      "processing_ms": 10.5,
+      "ms": 10.699999988079071
+    },
+    {
+      "query": "inventario",
+      "processing_ms": 11.299999997019768,
+      "ms": 11.599999994039536
+    },
+    {
+      "query": "de",
+      "processing_ms": 15.400000005960464,
+      "ms": 15.799999997019768
+    },
+    {
+      "query": "3",
+      "processing_ms": 10.899999991059303,
+      "ms": 11.200000002980232
+    },
+    {
+      "query": "prod",
+      "processing_ms": 14.100000008940697,
+      "ms": 14.299999997019768
+    },
+    {
+      "query": "etiqeta",
+      "processing_ms": 18.400000005960464,
+      "ms": 18.799999997019768
+    },
+    {
+      "query": "programacao setr 3",
+      "processing_ms": 13.400000005960464,
+      "ms": 13.599999994039536
+    },
+    {
+      "query": "noroeste rompimento",
+      "processing_ms": 10.399999991059303,
+      "ms": 10.699999988079071
+    },
+    {
+      "query": "corpo de prova",
+      "processing_ms": 9.400000005960464,
+      "ms": 9.600000008940697
+    },
+    {
+      "query": "inventario",
+      "processing_ms": 7.200000002980232,
+      "ms": 7.4000000059604645
+    },
+    {
+      "query": "de",
+      "processing_ms": 16.200000002980232,
+      "ms": 16.5
+    },
+    {
+      "query": "3",
+      "processing_ms": 11.399999991059303,
+      "ms": 11.699999988079071
+    },
+    {
+      "query": "prod",
+      "processing_ms": 11.399999991059303,
+      "ms": 11.599999994039536
+    },
+    {
+      "query": "etiqeta",
+      "processing_ms": 11.599999994039536,
+      "ms": 12
+    },
+    {
+      "query": "programacao setr 3",
+      "processing_ms": 8.799999997019768,
+      "ms": 9.200000002980232
+    },
+    {
+      "query": "noroeste rompimento",
+      "processing_ms": 9.599999994039536,
+      "ms": 9.899999991059303
+    },
+    {
+      "query": "corpo de prova",
+      "processing_ms": 11.599999994039536,
+      "ms": 11.799999997019768
+    },
+    {
+      "query": "inventario",
+      "processing_ms": 9.700000002980232,
+      "ms": 9.900000005960464
+    },
+    {
+      "query": "de",
+      "processing_ms": 10.299999997019768,
+      "ms": 10.900000005960464
+    },
+    {
+      "query": "3",
+      "processing_ms": 12.400000005960464,
+      "ms": 12.700000002980232
+    },
+    {
+      "query": "prod",
+      "processing_ms": 14.600000008940697,
+      "ms": 14.900000005960464
+    }
+  ],
+  "p95_ms": 16.5,
+  "max_ms": 18.799999997019768
+}

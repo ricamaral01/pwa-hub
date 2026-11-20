@@ -1,0 +1,49 @@
+{
+  "version": "1.4.30",
+  "previous_actual_homolog": "1.4.29",
+  "search_commit": "964e4281",
+  "columns_commit": "da9f4526f0e345ee387f1f1622cb5fd3d3c64bb3",
+  "gate": "7/7",
+  "reference_queries": 48,
+  "search_tests": 59,
+  "environment_tests": 5,
+  "profiles": 9,
+  "role_module_cases": 72,
+  "before_captures": 36,
+  "after_captures": 36,
+  "filtered_captures": 36,
+  "new_description_ids": 137,
+  "description_rows": 139,
+  "gap_limit_px": 16,
+  "tablet_820_one_column": true,
+  "production_changed": false,
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/modulos-colunas-20261120T155119Z",
+  "pwa": {
+    "cache_keys": [
+      "concrefer-unificado-shell-v1.4.30"
+    ],
+    "storage_preserved": true,
+    "new_version_visible": true,
+    "combined_assets_cached": true,
+    "activation_complete_before_reload": true,
+    "registration_update_via_cache": "none (same as shell)",
+    "old_cache_absent_after_reload": true,
+    "manual_cache_clear": false,
+    "reinstall": false
+  },
+  "performance": {
+    "catalogue_size": 160,
+    "cpu_throttle": 2,
+    "viewport": 820,
+    "physical_tablet": false,
+    "engine_p95_ms": 3.0999999940395355,
+    "engine_max_ms": 4.700000002980232,
+    "ui_p95_ms": 13.5,
+    "ui_max_ms": 18.099999994039536,
+    "search_fetch_calls": [],
+    "input_to_frame_p95_ms": 15.600000008940697,
+    "input_to_frame_max_ms": 32.3999999910593
+  },
+  "push": false,
+  "pr": false
+}

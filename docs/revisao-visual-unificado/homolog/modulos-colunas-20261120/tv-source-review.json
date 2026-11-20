@@ -1,0 +1,14 @@
+{
+  "id": "tvFormas",
+  "method": "authenticated GET of actual screen and local source review",
+  "status": 200,
+  "title": [
+    "Painel TV — Programação × Realizado"
+  ],
+  "response_sha256": "c97efcb66e19fcbfc680fd89fe7cd6f5c42bfc5f83cd16531901b123c4a9ed34",
+  "local_sources": [
+    "unificado/tv/formas/index.html",
+    "unificado/tv/formas/tv.js"
+  ],
+  "operational_actions": false
+}

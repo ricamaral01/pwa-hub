@@ -15,11 +15,14 @@ with sync_playwright() as pw:
   p.evaluate("localStorage.setItem('modulos-colunas-upgrade','preservar')")
   result={'cache_keys':keys,'actual_old_worker':True,'manually_cleared':False,'offline_observation':True,'profile':str(profile)}
  else:
-  p.goto(BASE+'/unificado/login.html',wait_until='networkidle');p.evaluate("async()=>{const r=await navigator.serviceWorker.getRegistration('/unificado/');if(r)await r.update();else await navigator.serviceWorker.register('/unificado/sw.js',{scope:'/unificado/'})}")
+  p.goto(BASE+'/unificado/login.html',wait_until='networkidle');p.evaluate("async()=>{const r=await navigator.serviceWorker.register('/unificado/sw.js',{scope:'/unificado/',updateViaCache:'none'});await r.update()}")
   p.wait_for_function("async()=>(await caches.keys()).includes('concrefer-unificado-shell-v1.4.30')",timeout=90000)
+  # The cache is created at install start, before CORE finishes and activation
+  # removes old caches. Wait for activation instead of racing installation.
+  p.wait_for_function("async()=>{const keys=await caches.keys(),r=await navigator.serviceWorker.getRegistration('/unificado/');return r?.active?.state==='activated'&&!r.installing&&!r.waiting&&navigator.serviceWorker.controller&&keys.includes('concrefer-unificado-shell-v1.4.30')&&!keys.includes('concrefer-unificado-shell-v1.4.27')}",timeout=90000)
   p.reload(wait_until='networkidle');assert 'Uni 1.4.30' in p.locator('body').inner_text();assert p.evaluate("localStorage.getItem('modulos-colunas-upgrade')")=='preservar'
   keys=p.evaluate('caches.keys()');assert 'concrefer-unificado-shell-v1.4.27' not in keys
   assets=p.evaluate("async()=>{const c=await caches.open('concrefer-unificado-shell-v1.4.30');return (await c.keys()).map(r=>new URL(r.url).pathname)}")
   assert all('/unificado/'+r in assets for r in ['shell/busca.js','shell/busca.css','shell/busca-sinonimos.json','shell/module-columns.css','shell/module-pages.js','shell/icons.js'])
-  p.screenshot(path=str(O/'pwa-after.png'));result={'cache_keys':keys,'storage_preserved':True,'new_version_visible':True,'combined_assets_cached':True,'manual_cache_clear':False,'reinstall':False}
+  p.screenshot(path=str(O/'pwa-after.png'));result={'cache_keys':keys,'storage_preserved':True,'new_version_visible':True,'combined_assets_cached':True,'activation_complete_before_reload':True,'registration_update_via_cache':'none (same as shell)','old_cache_absent_after_reload':True,'manual_cache_clear':False,'reinstall':False}
  (O/('pwa-'+args.mode+'.json')).write_text(json.dumps(result,indent=2),encoding='utf-8');ctx.close();print(json.dumps(result))
