@@ -1,0 +1,13 @@
+{
+  "index.html": "9a2d34c00865d74a858a48b8611c27773b2aa4acc88d7ac736b998e84ef2b2d0",
+  "login.html": "11c5b322f9e56d2e07340981c43d47f85a8b35d5e92dfb19cad8468ee914b3ef",
+  "VERSION": "15befb83be11509f3db3e570e7a7712c449137e07dc58bfcdfd2f37885d0104c",
+  "sw.js": "de0d33183e4766534683845af6cee54fec8b57afaa779083e5fc129a52223f93",
+  "shell/shell.js": "121342eebe19d8fc836287cdd95c0d7fe01fdcca3fa49345b71c05971aaded40",
+  "shell/menu.config.js": "c9e2af67e9d0addcd7705bed3e7b82cb942a990d584090c9e3f769897fa22b24",
+  "shell/module-pages.js": "abdf02a20070a8eaa67b5588af4c6e8c58e6e0682e52a82c0f564a1d90527160",
+  "shell/module-pages-mobile.js": "4d63feab63a41761c2109886038e4403f4c7e0ac3b3364336817ff38897e520b",
+  "shell/navigation.js": "f8f3ede4ffc908d9b5d777896a8125427f7fa308e80d0d03bb313630167fb772",
+  "shell/modelo-a/menu.js": "1584a7f0bbe8a3b0de34aa6b9c9a2eb22e95106362a362e6aa60b33dd2a75726",
+  "logistica/logistica-native.js": "14402c7b4463f1f54d90df7f5e8f296e8d908a07ebaccf82f4a8d252fe843d47"
+}

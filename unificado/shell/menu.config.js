@@ -54,7 +54,7 @@ const MENU_CONFIG = {
         { id: 'maodeobra', label: 'Mão de Obra', path: '/pages/maodeobra/' },
         { id: 'maodeobraRateio', label: 'Rateio de Mão de Obra', path: '/pages/maodeobra-rateio/' },
         { id: 'formasPorSetor', label: 'Formas por Setor', path: '/pages/formas-por-setor/' },
-        { id: 'testeProgramacao', label: 'Teste Programação', path: '/pages/teste-programacao/' }
+        { id: 'testeProgramacao', label: 'Teste Programação', path: '/pages/teste-programacao/', ambiente: 'homolog' }
       ] }
     ]
   },

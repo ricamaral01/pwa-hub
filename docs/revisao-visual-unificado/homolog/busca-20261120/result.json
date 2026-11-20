@@ -1,0 +1,28 @@
+{
+  "version": "1.4.29",
+  "scope": "homolog 18446 only",
+  "unit_tests_passed": 59,
+  "reference_queries": 48,
+  "profiles_passed": 9,
+  "captures": 20,
+  "gate": "7/7",
+  "performance": {
+    "catalogue_size": 160,
+    "cpu_throttle": 2,
+    "viewport": 820,
+    "physical_tablet": false,
+    "engine_p95_ms": 4.399999991059303,
+    "engine_max_ms": 13.099999994039536,
+    "ui_p95_ms": 21.600000008940697,
+    "ui_max_ms": 39.1000000089407,
+    "search_fetch_calls": [],
+    "input_to_frame_p95_ms": 29.399999991059303,
+    "input_to_frame_max_ms": 33.900000005960464
+  },
+  "performance_limitation": "No physical tablet; exploratory 4x CPU emulation exceeded 50 ms. Final 2x measurement is explicitly emulated.",
+  "production_changed": false,
+  "iam_changed": false,
+  "service_restarts": 0,
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/busca-20261120T143159Z",
+  "stopped_after_delivery": true
+}

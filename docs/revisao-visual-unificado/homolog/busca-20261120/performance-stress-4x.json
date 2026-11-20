@@ -1,0 +1,9 @@
+{
+  "cpu_throttle": 4,
+  "physical_tablet": false,
+  "met_50ms_input_to_frame": false,
+  "engine_max_ms": 14,
+  "ui_handler_max_ms": 79,
+  "input_to_frame_max_ms": 291,
+  "note": "Exploratory CPU4x emulation exceeded 50 ms with variable host load. Not presented as a passing physical-tablet result; final reproducible profile uses CPU2x and records that factor explicitly."
+}

@@ -87,9 +87,9 @@
   moduleSwitcher.setAttribute('aria-expanded','false');
   const moduleArea = el('div','nav-module-area');
   const searchWrap = el('div','nav-search-wrap');
-  const search = el('input','nav-search'); search.type='search'; search.placeholder='Buscar tela';
-  search.setAttribute('aria-label','Buscar tela em todos os módulos');
-  search.addEventListener('input',() => {state.search=search.value; renderTrees();});
+  const search = button('uni-search-trigger','',()=>window.UnificadoBusca.open());
+  search.setAttribute('aria-label','Buscar telas · Ctrl K');
+  search.append(window.UnificadoIcons.node('busca'),el('span','uni-search-trigger-text','Buscar'),el('kbd','','Ctrl K'));
   searchWrap.append(search);
   const controls = el('div','nav-controls');
   const tree = el('div','nav-tree');
@@ -105,7 +105,7 @@
   const mobileContext=el('small','nav-mobile-context','Uni');
   const mobileTitle=el('strong','nav-mobile-title','Início');
   mobileHeading.append(mobileContext,mobileTitle);
-  const mobileSearch=button('nav-mobile-search','',() => {openMobile('telas'); search.focus();});
+  const mobileSearch=button('nav-mobile-search','',() => window.UnificadoBusca.open());
   mobileSearch.setAttribute('aria-label','Buscar tela');mobileSearch.append(window.UnificadoIcons.node('busca'));
   mobileTop.append(mobileMenu,mobileHeading,mobileSearch);
   const banner=button('nav-mobile-update','',() => host.update()); banner.hidden=true;
@@ -285,10 +285,8 @@
     tree.replaceChildren(); controls.replaceChildren();
     const query=state.search.trim().toLocaleLowerCase('pt-BR');
     if(query) {
-      const results=allItems().filter(entry=>{
-        const path=Object.values(entry.location).join(' ');
-        return path.toLocaleLowerCase('pt-BR').includes(query);
-      });
+      const matches=new Set(window.UnificadoBusca.search(query).results.map(entry=>entry.id));
+      const results=allItems().filter(entry=>matches.has(entry.item.id));
       tree.append(el('div','nav-search-summary',`${results.length} tela(s) encontrada(s)`));
       for(const entry of results) {
         const result=el('div','nav-search-result');

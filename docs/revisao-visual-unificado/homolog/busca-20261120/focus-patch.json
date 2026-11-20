@@ -1,0 +1,8 @@
+{
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/busca-foco-20261120T143654Z",
+  "file": "shell/busca.js",
+  "change": "restore focus outside a closed dialog; preserve initial focus on repeated open requests",
+  "services_restarted": false,
+  "production_changed": false,
+  "rollback": "restore busca.js to public/unificado/shell/busca.js and release-manifest.json to staging from this backup; no restart"
+}

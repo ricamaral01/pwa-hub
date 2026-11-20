@@ -1,0 +1,14 @@
+{
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/busca-feedback-20261120T150216Z",
+  "files": [
+    "logistica/logistica-native.js",
+    "shell/busca.css",
+    "shell/busca.js",
+    "shell/module-pages-mobile.js",
+    "shell/module-pages.js"
+  ],
+  "services_restarted": false,
+  "database_writes": 0,
+  "production_changed": false,
+  "rollback": "restore these files and release-manifest.json from this backup; full rollback remains the original busca_rollback.py backup"
+}

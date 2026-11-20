@@ -137,6 +137,7 @@ let menuModuleOverride = null;
 
 function canUse(item) {
   const route = MENU_ITEMS[item.id] || item;
+  if (route.ambiente === 'homolog' && location.port !== '18446') return false;
   if (route.module === 'suprimentos' && (!suprimentosFlags.S1 || route.futurePhase && !suprimentosFlags[route.futurePhase])) return false;
   if (route.dosagemAdmin && !masterIds.has(mapaUser?.id)) return false;
   if (grantedScreens !== null && !grantedScreens.has(route.permissionId || route.id)) return false;
@@ -273,7 +274,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.4.27';
+const APP_VERSION = '1.4.29';
 let platformUpdateAvailable = false;
 let platformUpdateState = 'checking';
 let platformLatestVersion = APP_VERSION;

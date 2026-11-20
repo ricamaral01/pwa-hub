@@ -111,6 +111,9 @@ export function Sidebar(p: SidebarProps) {
         </button>
       </div>
 
+      <button type="button" className="uni-search-trigger" aria-label="Buscar telas · Ctrl K" data-tip="Buscar telas · Ctrl K" onClick={() => (window as any).UnificadoBusca?.open()}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><span className="uni-search-trigger-text">Buscar</span><kbd>Ctrl K</kbd>
+      </button>
       {/* Seletor de módulo */}
       <div className="sb-switcher" ref={switcherRef}>
         <button

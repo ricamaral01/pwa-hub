@@ -1,0 +1,17 @@
+{
+  "index.html": "622a956f562c596b6107a0bf7506f8c3ef2fa1bead7ca3e6a04e162fa26ebcfd",
+  "login.html": "46e14c0befb9201d4df435e4782535b35bbd12603a482ce6c8288b07dde49da6",
+  "VERSION": "8cb08df2c05c8fd54610646bb1671d271dcab25447e69edd20cb3a428cb464a7",
+  "sw.js": "92991211abdf79121f27859c3e9724c124a82866fc0dc32fe779373092f87992",
+  "shell/busca.js": "7a25d8bbb4fd5a9df98375b710af4e79ee50f2ba50ad2c4e788541dc45a676d1",
+  "shell/busca.css": "bf3bccd98577b2497e0a800cacb28b665dfab70950d04ae00c983b8c75f5e57b",
+  "shell/busca-sinonimos.json": "121815fefc8c70d01bc3bf89ba0be44a48f00e634538db44f09f6b778201cd56",
+  "shell/shell.js": "5a18713d7a3d22cb3412c18bacc13fcaf1ba66968aef0ff6574ca9677522ef5e",
+  "shell/menu.config.js": "9715ca208463ba9da27fc0beb3b83cdbf224fb3df06c2178c45bb6ab7c5bb244",
+  "shell/module-pages.js": "06414b5303ede1744b3ca1259f4c19819031f7af1a2044a4f61bf168231ffd3e",
+  "shell/module-pages-mobile.js": "f571c0e5c12262759ff896445ba763b0d6d60d43a19876dc458974d245821326",
+  "shell/navigation.js": "ca2dee99fa02f6c7376465fee40e88f97c049ff6fa862b27f7eeb8513c9aea6d",
+  "shell/modelo-a/menu.js": "f8d6b0e3089ea57564ae9345dc2523a0c461fcd002305d0cbb3d7f085358fd82",
+  "shell/modelo-a/menu.css": "f0b65f0c4cfc6bec10386ff1590704c2a3f1689f25607ff080155588bcf5116b",
+  "logistica/logistica-native.js": "d359b55430c008dffcd5b1a2a1ffde8f46c89fa305941f7f0f61d83413d7f492"
+}

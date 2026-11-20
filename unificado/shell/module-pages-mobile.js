@@ -83,11 +83,12 @@
     search.type = 'search'; search.placeholder = 'Buscar tela ou atividade';
     search.setAttribute('aria-label', search.placeholder);
     selector.append(unitTabs, search);
+    const searchFeedback=document.createElement('p');searchFeedback.className='uni-search-inline-feedback';searchFeedback.setAttribute('role','status');searchFeedback.hidden=true;
     const layout = document.createElement('div'); layout.className = 'module-page-layout';
     const categories = document.createElement('nav'); categories.className = 'module-page-categories';
     const content = document.createElement('div'); content.className = 'module-page-content';
     const quick = document.createElement('aside'); quick.className = 'module-page-quick';
-    layout.append(categories, content, quick); page.append(selector, layout);
+    layout.append(categories, content, quick); page.append(selector,searchFeedback,layout);
     function buildGroup(group, items) {
       const section = document.createElement('section');
       section.className = 'module-page-group';
@@ -146,13 +147,15 @@
         categories.append(button);
       });
       if (active.query) {
-        const q = active.query.toLocaleLowerCase('pt-BR');
+        const response=window.UnificadoBusca.search(active.query,{moduleId});
+        const matches = new Set(response.results.map(entry=>entry.id));
+        searchFeedback.textContent=(window.UnificadoBusca.explanation?.(response)||'');searchFeedback.hidden=!searchFeedback.textContent;
         for (const group of current) {
-          const found = group.items.filter(item => (item.label + ' ' + group.label).toLocaleLowerCase('pt-BR').includes(q));
+          const found = group.items.filter(item => matches.has(item.id || window.UnificadoGedMenu.find(entry=>entry.route===item.route)?.id));
           if (found.length) content.append(buildGroup(group, found));
         }
         if (!content.children.length) content.textContent = 'Nenhuma tela encontrada.';
-      } else if (current[active.group]) content.append(buildGroup(current[active.group], current[active.group].items));
+      } else {searchFeedback.hidden=true;if (current[active.group]) content.append(buildGroup(current[active.group], current[active.group].items));}
 
       for (const group of current.slice(0, 4)) {
         const item = group.items[0];

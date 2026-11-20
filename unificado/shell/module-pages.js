@@ -26,6 +26,7 @@
     link.className = 'module-page-link';
     link.href = href;
     link.dataset.search = `${label} ${description}`;
+    link.dataset.itemId = item?.id || window.UnificadoGedMenu.find(entry => href.includes('/ged/'+entry.route))?.id || '';
     const icon = document.createElement('span');
     icon.className = 'module-page-icon';
     icon.append(window.UnificadoIcons.node(window.UnificadoIcons.forScreen(item || {label})));
@@ -137,18 +138,21 @@
     search.setAttribute('aria-label', 'Buscar tela ou atividade');
     toolbar.append(quick, search);
     page.append(toolbar);
-    const fold = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const searchFeedback=document.createElement('p');searchFeedback.className='uni-search-inline-feedback';searchFeedback.setAttribute('role','status');searchFeedback.hidden=true;page.append(searchFeedback);
     const empty = document.createElement('p');
     empty.className = 'module-page-empty';
     empty.textContent = 'Nenhuma tela encontrada.';
     empty.hidden = true;
     search.addEventListener('input', () => {
-      const query = fold(search.value.trim());
+      const query = search.value.trim();
+      const response=window.UnificadoBusca.search(query,{moduleId});
+      const matches = new Set(response.results.map(entry=>entry.id));
+      searchFeedback.textContent=query?(window.UnificadoBusca.explanation?.(response)||''):'';searchFeedback.hidden=!searchFeedback.textContent;
       let visible = 0;
       for (const section of page.querySelectorAll('.module-page-group')) {
         let count = 0;
         for (const card of section.querySelectorAll('.module-page-link')) {
-          card.hidden = !!query && !fold(`${card.dataset.search} ${section.dataset.group}`).includes(query);
+          card.hidden = !!query && !matches.has(card.dataset.itemId);
           if (!card.hidden) count++;
         }
         section.hidden = count === 0;
