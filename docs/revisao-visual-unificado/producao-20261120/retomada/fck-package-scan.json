@@ -1,0 +1,17 @@
+{
+  "archive_sha256": "899286028563d1ca2a5911cd8f163d340dcfbb7a06d25e36ecd4bb8b1b9cbedc",
+  "files": 384,
+  "fixed_fck_35_found": false,
+  "unrelated_35_contexts": [
+    {
+      "file": "services/laboratorio/server/static/cec/analise/relatorio.html",
+      "context": "0} } } },\n      scales:{\n        x:{ ticks:{ color:'#5a6a7e', font:{size:10}, maxRotation:35 }, grid:{ color:'rgba(0,0,0,.07)' } },\n        y:{ ticks:{ color:'#5a6a7e', font:{size:10} }, grid:{ color:'r",
+      "linked_to_fck": false
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/analise/relatorio.html",
+      "context": "0} } } },\n      scales:{\n        x:{ ticks:{ color:'#5a6a7e', font:{size:10}, maxRotation:35 }, grid:{ color:'rgba(0,0,0,.07)' } },\n        y:{ ticks:{ color:'#5a6a7e', font:{size:10} }, grid:{ color:'r",
+      "linked_to_fck": false
+    }
+  ]
+}

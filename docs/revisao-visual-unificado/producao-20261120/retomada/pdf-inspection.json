@@ -1,0 +1,11 @@
+{
+  "file": "cq-historical-existing.pdf",
+  "pages": 1,
+  "renderer": "PyMuPDF (Poppler was not available in the local runtime)",
+  "renders": [
+    "cq-historical-existing-page-1.png"
+  ],
+  "text_extractable": true,
+  "historical_document_only": true,
+  "not_a_new_fck25_preview": true
+}

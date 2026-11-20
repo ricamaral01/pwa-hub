@@ -1,0 +1,722 @@
+[
+  {
+    "environment": "homolog",
+    "version": "1.4.30",
+    "origin": "central",
+    "profile": "MONTADOR",
+    "account": "alexh",
+    "api": {
+      "status": 200,
+      "units": []
+    },
+    "menu": [],
+    "module": [],
+    "search": [],
+    "visible_search_text": "",
+    "page_errors": [],
+    "blocked_writes": [],
+    "connections": 68
+  },
+  {
+    "environment": "homolog",
+    "version": "1.4.30",
+    "origin": "central",
+    "profile": "GESTOR",
+    "account": "josue",
+    "api": {
+      "status": 200,
+      "units": []
+    },
+    "menu": [],
+    "module": [],
+    "search": [],
+    "visible_search_text": "",
+    "page_errors": [],
+    "blocked_writes": [],
+    "connections": 68
+  },
+  {
+    "environment": "homolog",
+    "version": "1.4.30",
+    "origin": "central",
+    "profile": "GERENCIA",
+    "account": "alex",
+    "api": {
+      "status": 200,
+      "units": [
+        {
+          "id": 1,
+          "codigo": "campinas",
+          "nome": "Campinas",
+          "enabled": true,
+          "actions": [
+            "armacao.banca",
+            "armacao.cadastros",
+            "armacao.consulta",
+            "armacao.corte",
+            "armacao.supervisor"
+          ],
+          "master": true
+        },
+        {
+          "id": 2,
+          "codigo": "pederneiras",
+          "nome": "Pederneiras",
+          "enabled": true,
+          "actions": [
+            "armacao.banca",
+            "armacao.cadastros",
+            "armacao.consulta",
+            "armacao.corte",
+            "armacao.supervisor"
+          ],
+          "master": true
+        },
+        {
+          "id": 3,
+          "codigo": "ribeirao",
+          "nome": "Ribeirão",
+          "enabled": true,
+          "actions": [
+            "armacao.banca",
+            "armacao.cadastros",
+            "armacao.consulta",
+            "armacao.corte",
+            "armacao.supervisor"
+          ],
+          "master": true
+        },
+        {
+          "id": 4,
+          "codigo": "noroeste",
+          "nome": "Noroeste",
+          "enabled": true,
+          "actions": [
+            "armacao.banca",
+            "armacao.cadastros",
+            "armacao.consulta",
+            "armacao.corte",
+            "armacao.supervisor"
+          ],
+          "master": true
+        }
+      ]
+    },
+    "menu": [
+      {
+        "key": "campinas|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=campinas&tela=corte"
+      },
+      {
+        "key": "campinas|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=campinas&tela=banca"
+      },
+      {
+        "key": "campinas|banca",
+        "label": "Fechamento do dia",
+        "href": "/unificado/armacao/?unidade=campinas&tela=banca"
+      },
+      {
+        "key": "campinas|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=campinas&tela=rastreabilidade"
+      },
+      {
+        "key": "campinas|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=campinas&tela=supervisor"
+      },
+      {
+        "key": "campinas|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=campinas&tela=cadastros"
+      },
+      {
+        "key": "pederneiras|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=corte"
+      },
+      {
+        "key": "pederneiras|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=banca"
+      },
+      {
+        "key": "pederneiras|banca",
+        "label": "Fechamento do dia",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=banca"
+      },
+      {
+        "key": "pederneiras|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=rastreabilidade"
+      },
+      {
+        "key": "pederneiras|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=supervisor"
+      },
+      {
+        "key": "pederneiras|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=cadastros"
+      },
+      {
+        "key": "ribeirao|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=corte"
+      },
+      {
+        "key": "ribeirao|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=banca"
+      },
+      {
+        "key": "ribeirao|banca",
+        "label": "Fechamento do dia",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=banca"
+      },
+      {
+        "key": "ribeirao|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=rastreabilidade"
+      },
+      {
+        "key": "ribeirao|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=supervisor"
+      },
+      {
+        "key": "ribeirao|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=cadastros"
+      },
+      {
+        "key": "noroeste|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=corte"
+      },
+      {
+        "key": "noroeste|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=banca"
+      },
+      {
+        "key": "noroeste|banca",
+        "label": "Fechamento do dia",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=banca"
+      },
+      {
+        "key": "noroeste|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=rastreabilidade"
+      },
+      {
+        "key": "noroeste|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=supervisor"
+      },
+      {
+        "key": "noroeste|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=cadastros"
+      }
+    ],
+    "module": [
+      {
+        "key": "campinas|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=campinas&tela=corte"
+      },
+      {
+        "key": "campinas|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=campinas&tela=banca"
+      },
+      {
+        "key": "campinas|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=campinas&tela=rastreabilidade"
+      },
+      {
+        "key": "campinas|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=campinas&tela=supervisor"
+      },
+      {
+        "key": "campinas|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=campinas&tela=cadastros"
+      },
+      {
+        "key": "pederneiras|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=corte"
+      },
+      {
+        "key": "pederneiras|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=banca"
+      },
+      {
+        "key": "pederneiras|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=rastreabilidade"
+      },
+      {
+        "key": "pederneiras|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=supervisor"
+      },
+      {
+        "key": "pederneiras|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=cadastros"
+      },
+      {
+        "key": "ribeirao|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=corte"
+      },
+      {
+        "key": "ribeirao|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=banca"
+      },
+      {
+        "key": "ribeirao|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=rastreabilidade"
+      },
+      {
+        "key": "ribeirao|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=supervisor"
+      },
+      {
+        "key": "ribeirao|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=cadastros"
+      },
+      {
+        "key": "noroeste|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=corte"
+      },
+      {
+        "key": "noroeste|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=banca"
+      },
+      {
+        "key": "noroeste|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=rastreabilidade"
+      },
+      {
+        "key": "noroeste|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=supervisor"
+      },
+      {
+        "key": "noroeste|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=cadastros"
+      }
+    ],
+    "search": [],
+    "visible_search_text": "",
+    "page_errors": [],
+    "blocked_writes": [],
+    "connections": 68
+  },
+  {
+    "environment": "homolog",
+    "version": "1.4.30",
+    "origin": "central",
+    "profile": "APONTADOR",
+    "account": "setor1",
+    "api": {
+      "status": 200,
+      "units": []
+    },
+    "menu": [],
+    "module": [],
+    "search": [],
+    "visible_search_text": "",
+    "page_errors": [],
+    "blocked_writes": [],
+    "connections": 69
+  },
+  {
+    "environment": "homolog",
+    "version": "1.4.30",
+    "origin": "central",
+    "profile": "CONVIDADO",
+    "account": "e2e-suprimentos-almox",
+    "api": {
+      "status": 200,
+      "units": []
+    },
+    "menu": [],
+    "module": [],
+    "search": [],
+    "visible_search_text": "",
+    "page_errors": [],
+    "blocked_writes": [],
+    "connections": 68
+  },
+  {
+    "environment": "homolog",
+    "version": "1.4.30",
+    "origin": "PCP",
+    "profile": "ADMIN",
+    "account": "Ricardo",
+    "api": {
+      "status": 200,
+      "units": [
+        {
+          "id": 1,
+          "codigo": "campinas",
+          "nome": "Campinas",
+          "enabled": true,
+          "actions": [
+            "armacao.banca",
+            "armacao.cadastros",
+            "armacao.consulta",
+            "armacao.corte",
+            "armacao.supervisor"
+          ],
+          "master": true
+        },
+        {
+          "id": 2,
+          "codigo": "pederneiras",
+          "nome": "Pederneiras",
+          "enabled": true,
+          "actions": [
+            "armacao.banca",
+            "armacao.cadastros",
+            "armacao.consulta",
+            "armacao.corte",
+            "armacao.supervisor"
+          ],
+          "master": true
+        },
+        {
+          "id": 3,
+          "codigo": "ribeirao",
+          "nome": "Ribeirão",
+          "enabled": true,
+          "actions": [
+            "armacao.banca",
+            "armacao.cadastros",
+            "armacao.consulta",
+            "armacao.corte",
+            "armacao.supervisor"
+          ],
+          "master": true
+        },
+        {
+          "id": 4,
+          "codigo": "noroeste",
+          "nome": "Noroeste",
+          "enabled": true,
+          "actions": [
+            "armacao.banca",
+            "armacao.cadastros",
+            "armacao.consulta",
+            "armacao.corte",
+            "armacao.supervisor"
+          ],
+          "master": true
+        }
+      ]
+    },
+    "menu": [
+      {
+        "key": "campinas|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=campinas&tela=corte"
+      },
+      {
+        "key": "campinas|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=campinas&tela=banca"
+      },
+      {
+        "key": "campinas|banca",
+        "label": "Fechamento do dia",
+        "href": "/unificado/armacao/?unidade=campinas&tela=banca"
+      },
+      {
+        "key": "campinas|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=campinas&tela=rastreabilidade"
+      },
+      {
+        "key": "campinas|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=campinas&tela=supervisor"
+      },
+      {
+        "key": "campinas|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=campinas&tela=cadastros"
+      },
+      {
+        "key": "pederneiras|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=corte"
+      },
+      {
+        "key": "pederneiras|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=banca"
+      },
+      {
+        "key": "pederneiras|banca",
+        "label": "Fechamento do dia",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=banca"
+      },
+      {
+        "key": "pederneiras|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=rastreabilidade"
+      },
+      {
+        "key": "pederneiras|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=supervisor"
+      },
+      {
+        "key": "pederneiras|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=cadastros"
+      },
+      {
+        "key": "ribeirao|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=corte"
+      },
+      {
+        "key": "ribeirao|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=banca"
+      },
+      {
+        "key": "ribeirao|banca",
+        "label": "Fechamento do dia",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=banca"
+      },
+      {
+        "key": "ribeirao|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=rastreabilidade"
+      },
+      {
+        "key": "ribeirao|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=supervisor"
+      },
+      {
+        "key": "ribeirao|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=cadastros"
+      },
+      {
+        "key": "noroeste|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=corte"
+      },
+      {
+        "key": "noroeste|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=banca"
+      },
+      {
+        "key": "noroeste|banca",
+        "label": "Fechamento do dia",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=banca"
+      },
+      {
+        "key": "noroeste|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=rastreabilidade"
+      },
+      {
+        "key": "noroeste|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=supervisor"
+      },
+      {
+        "key": "noroeste|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=cadastros"
+      }
+    ],
+    "module": [
+      {
+        "key": "campinas|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=campinas&tela=corte"
+      },
+      {
+        "key": "campinas|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=campinas&tela=banca"
+      },
+      {
+        "key": "campinas|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=campinas&tela=rastreabilidade"
+      },
+      {
+        "key": "campinas|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=campinas&tela=supervisor"
+      },
+      {
+        "key": "campinas|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=campinas&tela=cadastros"
+      },
+      {
+        "key": "pederneiras|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=corte"
+      },
+      {
+        "key": "pederneiras|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=banca"
+      },
+      {
+        "key": "pederneiras|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=rastreabilidade"
+      },
+      {
+        "key": "pederneiras|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=supervisor"
+      },
+      {
+        "key": "pederneiras|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=pederneiras&tela=cadastros"
+      },
+      {
+        "key": "ribeirao|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=corte"
+      },
+      {
+        "key": "ribeirao|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=banca"
+      },
+      {
+        "key": "ribeirao|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=rastreabilidade"
+      },
+      {
+        "key": "ribeirao|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=supervisor"
+      },
+      {
+        "key": "ribeirao|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=ribeirao&tela=cadastros"
+      },
+      {
+        "key": "noroeste|corte",
+        "label": "Corte de aço",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=corte"
+      },
+      {
+        "key": "noroeste|banca",
+        "label": "Banca de solda",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=banca"
+      },
+      {
+        "key": "noroeste|rastreabilidade",
+        "label": "Rastreabilidade",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=rastreabilidade"
+      },
+      {
+        "key": "noroeste|supervisor",
+        "label": "Supervisor",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=supervisor"
+      },
+      {
+        "key": "noroeste|cadastros",
+        "label": "Cadastros",
+        "href": "/unificado/armacao/?unidade=noroeste&tela=cadastros"
+      }
+    ],
+    "search": [],
+    "visible_search_text": "",
+    "page_errors": [],
+    "blocked_writes": [],
+    "connections": 68
+  },
+  {
+    "environment": "homolog",
+    "version": "1.4.30",
+    "origin": "PCP",
+    "profile": "PCP",
+    "account": "Diego",
+    "api": {
+      "status": 200,
+      "units": []
+    },
+    "menu": [],
+    "module": [],
+    "search": [],
+    "visible_search_text": "",
+    "page_errors": [],
+    "blocked_writes": [],
+    "connections": 68
+  },
+  {
+    "environment": "homolog",
+    "version": "1.4.30",
+    "origin": "PCP",
+    "profile": "PRODUCAO",
+    "account": "producao",
+    "api": {
+      "status": 401,
+      "units": []
+    },
+    "menu": [],
+    "module": [],
+    "search": [],
+    "visible_search_text": "",
+    "page_errors": [],
+    "blocked_writes": [],
+    "connections": 68
+  },
+  {
+    "environment": "homolog",
+    "version": "1.4.30",
+    "origin": "PCP",
+    "profile": "CONSULTA",
+    "account": "e2e-pcp-quality-link-probe",
+    "api": {
+      "status": 200,
+      "units": []
+    },
+    "menu": [],
+    "module": [],
+    "search": [],
+    "visible_search_text": "",
+    "page_errors": [],
+    "blocked_writes": [],
+    "connections": 68
+  }
+]

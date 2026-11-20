@@ -1,0 +1,152 @@
+{
+  "directory": "/opt/concrefer-unificado/homolog-next/backups/producao-retomada-config-20261120T173130Z",
+  "databases": {
+    "pcp_visual_homolog_20261118": {
+      "bytes": 1460194,
+      "sha256": "dc8370d50a8e4076873892fb49c98cbc386e7992a29f2336948ecde937864c7e",
+      "list_verified": true,
+      "full_decode_verified": true
+    },
+    "laboratorio_visual_homolog_20261118": {
+      "bytes": 228066,
+      "sha256": "e8da52de5146dcc64d03247ca776c42b736a628e75d683d1ce8966c08f1d16bd",
+      "list_verified": true,
+      "full_decode_verified": true
+    }
+  },
+  "before": {
+    "armacao": [
+      {
+        "unidade_id": 1,
+        "enabled": false,
+        "prefixo": "CAM",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-11-18T17:51:17.88329+00:00"
+      },
+      {
+        "unidade_id": 2,
+        "enabled": false,
+        "prefixo": "PED",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-11-18T17:51:17.88329+00:00"
+      },
+      {
+        "unidade_id": 3,
+        "enabled": false,
+        "prefixo": "RIB",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-11-18T17:51:17.88329+00:00"
+      },
+      {
+        "unidade_id": 4,
+        "enabled": false,
+        "prefixo": "NOR",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-11-18T17:51:17.88329+00:00"
+      }
+    ],
+    "cq": {
+      "row": {
+        "id": 1,
+        "fck_mpa": 35.0,
+        "observacoes": "Conforme ABNT NBR 8451-1 a 8451-5.",
+        "updated_at": "2026-10-25T10:42:03.804839+00:00",
+        "resp_laboratorio_padrao": "Ricardo Do Amaral"
+      },
+      "default": "35"
+    }
+  },
+  "production_reference": {
+    "armacao": [
+      {
+        "unidade_id": 1,
+        "enabled": true,
+        "prefixo": "CAM",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-10-30T00:15:10.175991+00:00"
+      },
+      {
+        "unidade_id": 2,
+        "enabled": true,
+        "prefixo": "PED",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-10-30T00:15:10.175991+00:00"
+      },
+      {
+        "unidade_id": 3,
+        "enabled": true,
+        "prefixo": "RIB",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-10-30T00:15:10.175991+00:00"
+      },
+      {
+        "unidade_id": 4,
+        "enabled": true,
+        "prefixo": "NOR",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-10-30T00:15:10.175991+00:00"
+      }
+    ],
+    "cq": {
+      "row": {
+        "id": 1,
+        "fck_mpa": 25.0,
+        "observacoes": "Conforme ABNT NBR 8451-1 a 8451-5.",
+        "updated_at": "2026-10-27T11:42:39.675959+00:00",
+        "resp_laboratorio_padrao": "Ricardo Do Amaral"
+      },
+      "default": "25"
+    }
+  },
+  "production_changes": 0,
+  "no_services_restarted": true,
+  "after": {
+    "armacao": [
+      {
+        "unidade_id": 1,
+        "enabled": true,
+        "prefixo": "CAM",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-11-20T17:31:56.827027+00:00"
+      },
+      {
+        "unidade_id": 2,
+        "enabled": true,
+        "prefixo": "PED",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-11-20T17:31:56.827027+00:00"
+      },
+      {
+        "unidade_id": 3,
+        "enabled": true,
+        "prefixo": "RIB",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-11-20T17:31:56.827027+00:00"
+      },
+      {
+        "unidade_id": 4,
+        "enabled": true,
+        "prefixo": "NOR",
+        "tolerancia_saldo": 0.03,
+        "atualizado_em": "2026-11-20T17:31:56.827027+00:00"
+      }
+    ],
+    "cq": {
+      "row": {
+        "id": 1,
+        "fck_mpa": 25.0,
+        "observacoes": "Conforme ABNT NBR 8451-1 a 8451-5.",
+        "updated_at": "2026-11-20T17:31:56.889099+00:00",
+        "resp_laboratorio_padrao": "Ricardo Do Amaral"
+      },
+      "default": "25"
+    }
+  },
+  "homolog_changes": {
+    "armacao_rows": 4,
+    "cq_parameter_rows": 1,
+    "cq_default": 25
+  },
+  "leave_homolog_aligned": true,
+  "ok": true
+}

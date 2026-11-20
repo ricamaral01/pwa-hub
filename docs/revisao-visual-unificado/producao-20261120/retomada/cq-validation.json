@@ -1,0 +1,128 @@
+{
+  "origin": "https://concrefer.concretrack.com.br:18446",
+  "fck": 25,
+  "history_status": 200,
+  "history_records": 35,
+  "created_marked_draft_this_invocation": false,
+  "marked_draft_created_for_this_task": true,
+  "draft_id": 35,
+  "draft_record": {
+    "id": 35,
+    "status": "rascunho",
+    "cliente": "TESTE-RETOMADA-FCK25",
+    "fck_mpa": 25.0,
+    "criado_por": "alex",
+    "numero": null,
+    "pdf_path": null,
+    "pdf_hash": null,
+    "emitido_em": null
+  },
+  "draft_status": "rascunho",
+  "issued_new_certificate": false,
+  "source_cp": "antigo",
+  "detail_status": 503,
+  "detail_error": {
+    "detail": "Fonte de CPs indisponível. Emissão bloqueada."
+  },
+  "historical_pdf_status": 200,
+  "pdf_status": 503,
+  "pdf_error": {
+    "detail": "Fonte de CPs indisponível. Emissão bloqueada."
+  },
+  "pdf_bytes": 0,
+  "pdf_sha256": null,
+  "snapshot_before_probe": {
+    "cq_modelos_poste": {
+      "rows": 100,
+      "md5": "e5ef23252f8e905408e2e2547ea4fe47"
+    },
+    "cq_parametros": {
+      "rows": 1,
+      "md5": "97e26fa9baff1b7c38e1cc4eaa6b405b"
+    },
+    "cq_prensas": {
+      "rows": 5,
+      "md5": "cc86a8a6bd56d908fac387bb287cbdbb"
+    },
+    "cq_sequencias": {
+      "rows": 1,
+      "md5": "cb080be6b50dfe288398b90cf9354047"
+    },
+    "cq_certificados": {
+      "rows": 35,
+      "md5": "06561d4fcef5298df7a4320a9de84f12"
+    },
+    "cq_itens": {
+      "rows": 149,
+      "md5": "3e7aa4d1c80eeb44843ee0266fc8d725"
+    },
+    "cq_resultados_data": {
+      "rows": 80,
+      "md5": "55d6ebacf8e596d578be9c86d5f68d07"
+    }
+  },
+  "snapshot_after_draft": {
+    "cq_modelos_poste": {
+      "rows": 100,
+      "md5": "e5ef23252f8e905408e2e2547ea4fe47"
+    },
+    "cq_parametros": {
+      "rows": 1,
+      "md5": "97e26fa9baff1b7c38e1cc4eaa6b405b"
+    },
+    "cq_prensas": {
+      "rows": 5,
+      "md5": "cc86a8a6bd56d908fac387bb287cbdbb"
+    },
+    "cq_sequencias": {
+      "rows": 1,
+      "md5": "cb080be6b50dfe288398b90cf9354047"
+    },
+    "cq_certificados": {
+      "rows": 35,
+      "md5": "06561d4fcef5298df7a4320a9de84f12"
+    },
+    "cq_itens": {
+      "rows": 149,
+      "md5": "3e7aa4d1c80eeb44843ee0266fc8d725"
+    },
+    "cq_resultados_data": {
+      "rows": 80,
+      "md5": "55d6ebacf8e596d578be9c86d5f68d07"
+    }
+  },
+  "snapshot_after_preview": {
+    "cq_modelos_poste": {
+      "rows": 100,
+      "md5": "e5ef23252f8e905408e2e2547ea4fe47"
+    },
+    "cq_parametros": {
+      "rows": 1,
+      "md5": "97e26fa9baff1b7c38e1cc4eaa6b405b"
+    },
+    "cq_prensas": {
+      "rows": 5,
+      "md5": "cc86a8a6bd56d908fac387bb287cbdbb"
+    },
+    "cq_sequencias": {
+      "rows": 1,
+      "md5": "cb080be6b50dfe288398b90cf9354047"
+    },
+    "cq_certificados": {
+      "rows": 35,
+      "md5": "06561d4fcef5298df7a4320a9de84f12"
+    },
+    "cq_itens": {
+      "rows": 149,
+      "md5": "3e7aa4d1c80eeb44843ee0266fc8d725"
+    },
+    "cq_resultados_data": {
+      "rows": 80,
+      "md5": "55d6ebacf8e596d578be9c86d5f68d07"
+    }
+  },
+  "preview_did_not_change_rows": true,
+  "production_changes": 0,
+  "connections": 69,
+  "ok": false
+}

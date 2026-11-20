@@ -1,0 +1,10 @@
+{
+  "phase": "STOPPED at resumed checkpoint: Armação search regression and CQ CP source 503",
+  "production_application_modified": false,
+  "production_database_modified": false,
+  "homolog_armacao_enabled": true,
+  "homolog_fck_value": 25,
+  "homolog_fck_default": 25,
+  "marked_homolog_draft_id": 35,
+  "next": "Deliver report and stop. No production publication until the failing search and CQ preview checks are resolved."
+}

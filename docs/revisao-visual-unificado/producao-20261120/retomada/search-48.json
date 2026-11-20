@@ -1,0 +1,8 @@
+{
+  "reference_queries": 48,
+  "production_catalogue_excludes_test": true,
+  "pcp_indicator_guard": true,
+  "test_identity_not_master": true,
+  "login_notice_inactive": true,
+  "ok": true
+}
