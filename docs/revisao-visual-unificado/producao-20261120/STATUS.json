@@ -1,12 +1,14 @@
 {
   "authorization": "PEDIDO_PRODUCAO.txt",
   "version": "1.4.30",
-  "phase": "1: production read-only inventory",
+  "phase": "STOPPED: Arma??o enabled flags and CQ FCK differ between production and homolog",
   "production_application_modified": false,
   "production_database_modified": false,
   "candidate_frozen": true,
   "completed_phases": [
-    0
+    0,
+    1,
+    2
   ],
-  "next": "Read-only production inventory; verified backups and staging rollback rehearsal; stop if any checkpoint fails before production changes."
+  "next": "Deliver report and stop. Resolve Arma??o flags and reconcile homolog CQ FCK 35 vs production/reference 25 before a new deployment checkpoint."
 }

@@ -1,0 +1,104 @@
+[
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "producao",
+      "table_name": "apontamento_dia",
+      "name": "ck_apontamento_status",
+      "kind": "c",
+      "definition": "CHECK (status::text = ANY (ARRAY['rascunho'::character varying::text, 'enviado'::character varying::text, 'confirmado'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "producao",
+      "table_name": "apontamento_dia",
+      "name": "ck_apontamento_status",
+      "kind": "c",
+      "definition": "CHECK (status::text = ANY (ARRAY['rascunho'::character varying, 'enviado'::character varying, 'confirmado'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "producao",
+      "table_name": "usuario_unidade",
+      "name": "usuario_unidade_papel_check",
+      "kind": "c",
+      "definition": "CHECK (papel::text = ANY (ARRAY['gestor'::character varying::text, 'supervisor'::character varying::text, 'operador'::character varying::text, 'leitor'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "producao",
+      "table_name": "usuario_unidade",
+      "name": "usuario_unidade_papel_check",
+      "kind": "c",
+      "definition": "CHECK (papel::text = ANY (ARRAY['gestor'::character varying, 'supervisor'::character varying, 'operador'::character varying, 'leitor'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "public",
+      "table_name": "armaduras_emissao",
+      "name": "armaduras_emissao_grupo_check",
+      "kind": "c",
+      "definition": "CHECK (grupo::text = ANY (ARRAY['12'::character varying::text, '34'::character varying::text, 'todos'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "public",
+      "table_name": "armaduras_emissao",
+      "name": "armaduras_emissao_grupo_check",
+      "kind": "c",
+      "definition": "CHECK (grupo::text = ANY (ARRAY['12'::character varying, '34'::character varying, 'todos'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "public",
+      "table_name": "poste_serie_emissao",
+      "name": "poste_serie_emissao_escopo_check",
+      "kind": "c",
+      "definition": "CHECK (escopo::text = ANY (ARRAY['dia'::character varying::text, 'semana'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "public",
+      "table_name": "poste_serie_emissao",
+      "name": "poste_serie_emissao_escopo_check",
+      "kind": "c",
+      "definition": "CHECK (escopo::text = ANY (ARRAY['dia'::character varying, 'semana'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "public",
+      "table_name": "poste_serie_emissao",
+      "name": "poste_serie_emissao_modo_check",
+      "kind": "c",
+      "definition": "CHECK (modo::text = ANY (ARRAY['previsao'::character varying::text, 'confirmados'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "public",
+      "table_name": "poste_serie_emissao",
+      "name": "poste_serie_emissao_modo_check",
+      "kind": "c",
+      "definition": "CHECK (modo::text = ANY (ARRAY['previsao'::character varying, 'confirmados'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "public",
+      "table_name": "programacao_semana",
+      "name": "programacao_semana_status_check",
+      "kind": "c",
+      "definition": "CHECK (status::text = ANY (ARRAY['rascunho'::character varying::text, 'publicada'::character varying::text, 'substituida'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "public",
+      "table_name": "programacao_semana",
+      "name": "programacao_semana_status_check",
+      "kind": "c",
+      "definition": "CHECK (status::text = ANY (ARRAY['rascunho'::character varying, 'publicada'::character varying, 'substituida'::character varying]::text[]))"
+    }
+  }
+]

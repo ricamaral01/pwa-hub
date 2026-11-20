@@ -1,0 +1,8081 @@
+[
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "nome",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "codigo_traco",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "revisao",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "unidade_id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "status",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'Ativa'::text"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "vigencia",
+      "type": "date",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "observacao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "tipo_frete",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "criado_por",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'sistema'::text"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "criado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "legado_id",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "motivo_inativacao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "receita_origem_id",
+      "type": "bigint",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "receita_grupo",
+      "type": "uuid",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "receita_nome",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "carta_id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "fornecedor_id",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "qtd_kg",
+      "type": "numeric(10,3)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "massa_especifica",
+      "type": "numeric(6,3)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "ordem",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "0"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "custo_origem",
+      "name": "custo_id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "custo_origem",
+      "name": "criado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "unidade_id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "posicao",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "grupo",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "rotulo",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "unidade_receita",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "massa_especifica",
+      "type": "numeric(8,4)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "vigente_desde",
+      "type": "date",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "vigente_ate",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "origem_decisao",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "observacao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "criado_por",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'migracao'::text"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "criado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "id",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "true"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "fonte_oficial",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'sheets'::text"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "last_success_at",
+      "type": "timestamp with time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "cadastro_linhas",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "custos_linhas",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "cartas_ativas",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "last_error",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "alias",
+      "name": "alias",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "alias",
+      "name": "material",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "alias",
+      "name": "grupo",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "linha",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "legado_id",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "nome",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "revisao",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "unidade",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "status",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "vigencia",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "cadastro",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "fornecedor",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "produto",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "quantidade",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "un_medida",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "massa_especifica",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "observacao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "tipo_frete",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "linha",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "legado_id",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "data",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "unidade",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "fornecedor",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "material",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "un_medida",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "valor",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "icms_pct",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "frete",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "valor_liquido",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "produto_fornecedor",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "tipo_frete",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "consumo_execucao",
+      "name": "id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "consumo_execucao",
+      "name": "de",
+      "type": "date",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "consumo_execucao",
+      "name": "ate",
+      "type": "date",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "consumo_execucao",
+      "name": "simulacao",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "consumo_execucao",
+      "name": "inseridos",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "consumo_execucao",
+      "name": "atualizados",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "consumo_execucao",
+      "name": "removidos",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "consumo_execucao",
+      "name": "executado_por",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "consumo_execucao",
+      "name": "executado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "material_silo_permitido",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "material_silo_permitido",
+      "name": "silo_id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "unidade_id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "tipo",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "data",
+      "type": "date",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "quantidade",
+      "type": "numeric(14,4)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "silo_id",
+      "type": "smallint",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "origem",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'manual'::text"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "grupo_id",
+      "type": "uuid",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "nota_fiscal_id",
+      "type": "bigint",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "fornecedor_id",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "referencia",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "valor_nota",
+      "type": "numeric(14,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "icms_pct",
+      "type": "numeric(5,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "frete_unit",
+      "type": "numeric(14,4)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "icms_frete_pct",
+      "type": "numeric(5,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "custo_unit_liquido",
+      "type": "numeric(14,4)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": "\nCASE\n    WHEN ((tipo = 'entrada'::text) AND (quantidade > (0)::numeric) AND (valor_nota IS NOT NULL)) THEN insumos.custo_liquido_unit((valor_nota / quantidade), icms_pct, frete_unit, icms_frete_pct)\n    ELSE NULL::numeric\nEND"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "chave_natural",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "observacao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "anulado",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "false"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "anulado_por",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "anulado_em",
+      "type": "timestamp with time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "motivo_anulacao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "criado_por",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'sistema'::text"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "criado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "legado_id",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "id",
+      "type": "uuid",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "gen_random_uuid()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "unidade_id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "status",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'pendente'::text"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "provider",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "arquivo_sha256",
+      "type": "character(64)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "anexo_caminho",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "anexo_mime",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "anexo_bytes",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "resultado",
+      "type": "jsonb",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "erro",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "tentativas",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "0"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "iniciado_em",
+      "type": "timestamp with time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "concluido_em",
+      "type": "timestamp with time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "criado_por",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "criado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "unidade_id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "chave_acesso",
+      "type": "character(44)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "numero",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "serie",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "emitente_cnpj",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "fornecedor_id",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "data_emissao",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "valor_total",
+      "type": "numeric(14,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "leitura_id",
+      "type": "uuid",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "anexo_caminho",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "criado_por",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "criado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "unidade_id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "coluna",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "label",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "silo_id",
+      "type": "smallint",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "fator",
+      "type": "numeric(12,6)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "0.001"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "true"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "ordem",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "0"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "desde",
+      "type": "date",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'2000-01-01'::date"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "ate",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "saldo_inicial",
+      "name": "unidade_id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "saldo_inicial",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "saldo_inicial",
+      "name": "quantidade",
+      "type": "numeric(14,4)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "unidade_id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "numero",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "nome",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "capacidade_nominal",
+      "type": "numeric(10,3)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "alivio_pct",
+      "type": "numeric(5,2)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "0"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "capacidade_operacional",
+      "type": "numeric(10,3)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": "round((capacidade_nominal * ((1)::numeric - (alivio_pct / (100)::numeric))), 3)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "true"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo_material",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo_material",
+      "name": "silo_id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo_material",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo_material",
+      "name": "desde",
+      "type": "date",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo_material",
+      "name": "ate",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "auditoria",
+      "name": "id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "auditoria",
+      "name": "esquema",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "auditoria",
+      "name": "tabela",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "auditoria",
+      "name": "operacao",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "auditoria",
+      "name": "registro",
+      "type": "jsonb",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "auditoria",
+      "name": "anterior",
+      "type": "jsonb",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "auditoria",
+      "name": "usuario",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "auditoria",
+      "name": "em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "config",
+      "name": "chave",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "config",
+      "name": "valor",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "config",
+      "name": "descricao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "unidade_id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "fornecedor_id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "un_medida",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "valor",
+      "type": "numeric(14,4)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "icms_pct",
+      "type": "numeric(5,2)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "0"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "frete",
+      "type": "numeric(14,4)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "0"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "icms_frete_pct",
+      "type": "numeric(5,2)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "0"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "tipo_frete",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "valor_liquido",
+      "type": "numeric(14,4)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": "round(((valor * ((1)::numeric - (icms_pct / (100)::numeric))) + (frete * ((1)::numeric - (icms_frete_pct / (100)::numeric)))), 4)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "produto_fornecedor",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "vigente_desde",
+      "type": "date",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "CURRENT_DATE"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "true"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "criado_por",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'sistema'::text"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "criado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "legado_id",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "legado_valor_liquido",
+      "type": "numeric(14,4)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "fornecedor",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "fornecedor",
+      "name": "nome",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "fornecedor",
+      "name": "cnpj",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "fornecedor",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "true"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "codigo",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "nome",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "grupo",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'outro'::text"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "massa_especifica",
+      "type": "numeric(6,3)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "massa_unitaria",
+      "type": "numeric(6,3)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "un_estoque",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'t'::text"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "usa_silo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "false"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "ordem",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "100"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "true"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material_alias",
+      "name": "alias",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material_alias",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "unidade",
+      "name": "id",
+      "type": "smallint",
+      "not_null": true,
+      "identity": "a",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "unidade",
+      "name": "nome",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "unidade",
+      "name": "unidade_corp_id",
+      "type": "bigint",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "unidade",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "true"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "ct_usuarios_auditoria",
+      "name": "id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "ct_usuarios_auditoria",
+      "name": "usuario_id",
+      "type": "bigint",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "ct_usuarios_auditoria",
+      "name": "ator",
+      "type": "character varying(80)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "ct_usuarios_auditoria",
+      "name": "acao",
+      "type": "character varying(80)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "ct_usuarios_auditoria",
+      "name": "detalhes",
+      "type": "jsonb",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "ct_usuarios_auditoria",
+      "name": "criado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_agregados",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_agregados",
+      "name": "nome",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_agregados",
+      "name": "tipo",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_agregados",
+      "name": "unidade",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_agregados",
+      "name": "descricao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_agregados",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_agregados",
+      "name": "criado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_config_traco_campo",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_config_traco_campo",
+      "name": "coluna",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_config_traco_campo",
+      "name": "label",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_config_traco_campo",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_config_traco_campo",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_config_traco_campo",
+      "name": "ordem",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "id",
+      "type": "character varying(36)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "unidade",
+      "type": "character varying(80)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "operador",
+      "type": "character varying(120)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "resistencia_mpa",
+      "type": "numeric(10,2)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "traco",
+      "type": "character varying(200)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "numero_serie",
+      "type": "character varying(50)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "nome",
+      "type": "character varying(200)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "cp",
+      "type": "character varying(20)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "idade",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "data_moldagem",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "hora_moldagem",
+      "type": "character varying(10)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "data_ruptura",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "qr_raw",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "local_id",
+      "type": "character varying(80)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "etiqueta_hash",
+      "type": "character(64)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_controle_estatistico",
+      "name": "origem",
+      "type": "character varying(20)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_config_massada",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_config_massada",
+      "name": "coluna",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_config_massada",
+      "name": "label",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_config_massada",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_config_massada",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_config_massada",
+      "name": "ordem",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_config_massada",
+      "name": "fator_conversao",
+      "type": "numeric",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_custos_ajustes",
+      "name": "id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_custos_ajustes",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_custos_ajustes",
+      "name": "valor_unitario",
+      "type": "numeric(14,6)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_custos_ajustes",
+      "name": "vigencia",
+      "type": "date",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_custos_ajustes",
+      "name": "motivo",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_custos_ajustes",
+      "name": "responsavel",
+      "type": "character varying(100)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_custos_ajustes",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_materiais",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_materiais",
+      "name": "codigo",
+      "type": "character varying(50)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_materiais",
+      "name": "nome",
+      "type": "character varying(200)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_materiais",
+      "name": "categoria",
+      "type": "character varying(50)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_materiais",
+      "name": "unidade",
+      "type": "character varying(20)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_materiais",
+      "name": "saldo_inicial",
+      "type": "numeric(16,3)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_materiais",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_materiais",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "material_id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "tipo",
+      "type": "character varying(20)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "data",
+      "type": "date",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "quantidade",
+      "type": "numeric(16,3)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "nota_fiscal",
+      "type": "character varying(100)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "fornecedor",
+      "type": "character varying(200)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "observacao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "responsavel",
+      "type": "character varying(100)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "origem",
+      "type": "character varying(50)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "referencia_id",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "unidade",
+      "type": "character varying(20)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "silo_id",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "valor_nota",
+      "type": "numeric(12,4)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "icms_perc",
+      "type": "numeric(5,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "valor_frete",
+      "type": "numeric(12,4)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "icms_frete",
+      "type": "numeric(12,4)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_movimentos",
+      "name": "valor_unitario_liquido",
+      "type": "numeric(12,4)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_silos",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_silos",
+      "name": "nome",
+      "type": "character varying(100)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_silos",
+      "name": "capacidade_nominal",
+      "type": "numeric(10,2)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_silos",
+      "name": "capacidade_operacional",
+      "type": "numeric(10,2)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_silos",
+      "name": "unidade",
+      "type": "character varying(20)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_silos",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_est_silos",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_leiturasetor",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_leiturasetor",
+      "name": "datahora",
+      "type": "timestamp without time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_leiturasetor",
+      "name": "id_leitura",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_leiturasetor",
+      "name": "qr_raw",
+      "type": "character varying(100)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_leiturasetor",
+      "name": "volume",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_leiturasetor",
+      "name": "n_serie",
+      "type": "character varying(100)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_leiturasetor",
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_leiturasetor",
+      "name": "uid",
+      "type": "character varying(30)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "produto",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "formula",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "qtd",
+      "type": "numeric",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "data",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "hora",
+      "type": "time without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "data_hora",
+      "type": "timestamp without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "hora_inicio",
+      "type": "time without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "hora_final",
+      "type": "time without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "hora_descarga",
+      "type": "time without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "misturador",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "numero_serie",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "temperatura",
+      "type": "double precision",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_agregado1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_agregado2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_agregado3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_agregado4",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_agregado5",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_agregado6",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_agregado7",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_agregado1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_agregado2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_agregado3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_agregado4",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_agregado5",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_agregado6",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_agregado7",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "ur1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "ur2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "ur3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "ur4",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "ur5",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "ur6",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "ur7",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_silo1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_silo2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_silo3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_silo4",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_silo1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_silo2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_silo3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_silo4",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_agua1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_agua1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_aditivo1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_aditivo2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "real_aditivo3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_aditivo1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_aditivo2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "prog_aditivo3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "corte",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "ac",
+      "type": "double precision",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "carregado",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "alterado",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "setor",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "setor_atualizado_em",
+      "type": "timestamp without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "ativa",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_massadas",
+      "name": "redosa",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_pcpsetor",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_pcpsetor",
+      "name": "data",
+      "type": "date",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_pcpsetor",
+      "name": "dia_semana",
+      "type": "character varying(20)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_pcpsetor",
+      "name": "setor",
+      "type": "character varying(20)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_pcpsetor",
+      "name": "volume",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_pcpsetor",
+      "name": "status",
+      "type": "character(1)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_pcpsetor",
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_pcpsetor",
+      "name": "updated_at",
+      "type": "timestamp without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_produtos",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_produtos",
+      "name": "nome",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_produtos",
+      "name": "codigo",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_produtos",
+      "name": "descricao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_produtos",
+      "name": "ativo",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_produtos",
+      "name": "criado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_produtos",
+      "name": "alterado",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "id",
+      "type": "character varying(36)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "traco",
+      "type": "character varying(200)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "numero_serie",
+      "type": "character varying(50)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "nome",
+      "type": "character varying(200)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "cp",
+      "type": "character varying(10)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "idade",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "data_moldagem",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "hora_moldagem",
+      "type": "character varying(10)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "data_ruptura",
+      "type": "date",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "qr_raw",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_qrcp",
+      "name": "resistencia_mpa",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "id",
+      "type": "bigint",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "nome",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "agregado1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "agregado2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "agregado3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "agregado4",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "agregado5",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "agregado6",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "agregado7",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "cimento1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "cimento2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "cimento3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "cimento4",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "agua",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "aditivo1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "aditivo2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "aditivo3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "ativa",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "alterado",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "nome_traco",
+      "type": "character varying",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "cimento",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "adicao_1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "adicao_2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "areia_1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "areia_2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "areia_3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "brita_1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "brita_2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "aditivo_1",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "aditivo_2",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "ac",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "r24h",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "r3",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "r7",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "r28",
+      "type": "numeric",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "revisao_grupo",
+      "type": "uuid",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "revisao_numero",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "revisao_origem_id",
+      "type": "bigint",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "observacao_revisao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "revisado_em",
+      "type": "timestamp without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_receitas",
+      "name": "alterado_por",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "id",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "nome_traco",
+      "type": "character varying(200)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "cimento",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "adicao_1",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "adicao_2",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "areia_1",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "areia_2",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "areia_3",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "brita_1",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "brita_2",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "aditivo_1",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "aditivo_2",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "agua",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "ac",
+      "type": "numeric(10,4)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "r24h",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "r3",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "r7",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "r28",
+      "type": "numeric(10,2)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "created_at",
+      "type": "timestamp without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "ativa",
+      "type": "boolean",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "revisao_grupo",
+      "type": "uuid",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "revisao_numero",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "revisao_origem_id",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "observacao_revisao",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "revisado_em",
+      "type": "timestamp without time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "noro_sup",
+      "table_name": "tbl_tracos",
+      "name": "alterado_por",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "public",
+      "table_name": "inspecao_defeitos",
+      "name": "turno",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": {
+      "schema": "public",
+      "table_name": "inspecao_defeitos",
+      "name": "turno",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    }
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "operation_id",
+      "type": "uuid",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "idempotency_key",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "unidade_id",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "origem_tabela",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "origem_id",
+      "type": "bigint",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "acao",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "ator_iam",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "identidade_legada",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "base_source_hash",
+      "type": "character(64)",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "payload",
+      "type": "jsonb",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "antes",
+      "type": "jsonb",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "depois",
+      "type": "jsonb",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "estado",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "'pendente'::text"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "tentativas",
+      "type": "integer",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "0"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "endpoint",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "codigo_http",
+      "type": "integer",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "ultimo_erro",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "criado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "enviado_em",
+      "type": "timestamp with time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "confirmado_em",
+      "type": "timestamp with time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "atualizado_em",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "now()"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "permissions",
+      "name": "unidade_id",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "permissions",
+      "name": "origem_tabela",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "permissions",
+      "name": "acao",
+      "type": "text",
+      "not_null": true,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "permissions",
+      "name": "despacho_habilitado",
+      "type": "boolean",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "false"
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "permissions",
+      "name": "aprovado_por",
+      "type": "text",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "permissions",
+      "name": "aprovado_em",
+      "type": "timestamp with time zone",
+      "not_null": false,
+      "identity": "",
+      "default_expr": null
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "carta_nome_check",
+      "kind": "c",
+      "definition": "CHECK (btrim(nome) <> ''::text)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "carta_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "carta_revisao_check",
+      "kind": "c",
+      "definition": "CHECK (revisao >= 0)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "carta_status_check",
+      "kind": "c",
+      "definition": "CHECK (status = ANY (ARRAY['Ativa'::text, 'Inativa'::text, 'Rascunho'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "carta_tipo_frete_check",
+      "kind": "c",
+      "definition": "CHECK (tipo_frete = ANY (ARRAY['CIF'::text, 'FOB'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "carta_unidade_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (unidade_id) REFERENCES insumos.unidade(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "carta_item_carta_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (carta_id) REFERENCES carta_traco.carta(id) ON DELETE CASCADE"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "carta_item_fornecedor_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (fornecedor_id) REFERENCES insumos.fornecedor(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "carta_item_massa_especifica_check",
+      "kind": "c",
+      "definition": "CHECK (massa_especifica > 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "carta_item_material_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (material_id) REFERENCES insumos.material(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "carta_item_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (carta_id, material_id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "carta_item_qtd_kg_check",
+      "kind": "c",
+      "definition": "CHECK (qtd_kg >= 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "custo_origem",
+      "name": "custo_origem_custo_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (custo_id) REFERENCES insumos.custo(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "custo_origem",
+      "name": "custo_origem_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (custo_id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "receita_posicao_check",
+      "kind": "c",
+      "definition": "CHECK (vigente_ate IS NULL OR vigente_ate >= vigente_desde)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "receita_posicao_grupo_check",
+      "kind": "c",
+      "definition": "CHECK (btrim(grupo) <> ''::text)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "receita_posicao_massa_especifica_check",
+      "kind": "c",
+      "definition": "CHECK (massa_especifica > 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "receita_posicao_material_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (material_id) REFERENCES insumos.material(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "receita_posicao_origem_decisao_check",
+      "kind": "c",
+      "definition": "CHECK (origem_decisao = ANY (ARRAY['aprovado'::text, 'provisorio'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "receita_posicao_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "receita_posicao_posicao_check",
+      "kind": "c",
+      "definition": "CHECK (posicao ~ '^(agregado[1-7]|cimento[1-4]|agua|aditivo[1-3])$'::text)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "receita_posicao_unidade_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (unidade_id) REFERENCES insumos.unidade(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "receita_posicao_unidade_receita_check",
+      "kind": "c",
+      "definition": "CHECK (unidade_receita = ANY (ARRAY['kg'::text, 'L'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "sync_status_fonte_oficial_check",
+      "kind": "c",
+      "definition": "CHECK (fonte_oficial = ANY (ARRAY['sheets'::text, 'postgres'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "sync_status_id_check",
+      "kind": "c",
+      "definition": "CHECK (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "sync_status_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "alias",
+      "name": "alias_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (alias)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "cadastro_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (linha)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "custos_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (linha)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque",
+      "table_name": "movimento",
+      "name": "noro_movimento_origem",
+      "kind": "c",
+      "definition": "CHECK (origem::text = ANY (ARRAY['manual'::character varying::text, 'massada'::character varying::text, 'acerto'::character varying::text, 'producao_massadas'::character varying::text, 'entrada'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "estoque",
+      "table_name": "movimento",
+      "name": "noro_movimento_origem",
+      "kind": "c",
+      "definition": "CHECK (origem::text = ANY (ARRAY['manual'::character varying, 'massada'::character varying, 'acerto'::character varying, 'producao_massadas'::character varying, 'entrada'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque",
+      "table_name": "movimento",
+      "name": "noro_movimento_tipo",
+      "kind": "c",
+      "definition": "CHECK (tipo::text = ANY (ARRAY['entrada'::character varying::text, 'consumo'::character varying::text, 'acerto'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "estoque",
+      "table_name": "movimento",
+      "name": "noro_movimento_tipo",
+      "kind": "c",
+      "definition": "CHECK (tipo::text = ANY (ARRAY['entrada'::character varying, 'consumo'::character varying, 'acerto'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "consumo_execucao",
+      "name": "consumo_execucao_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "material_silo_permitido",
+      "name": "material_silo_permitido_material_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (material_id) REFERENCES insumos.material(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "material_silo_permitido",
+      "name": "material_silo_permitido_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (material_id, silo_id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "material_silo_permitido",
+      "name": "material_silo_permitido_silo_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (silo_id) REFERENCES estoque_carta_arquivo.silo(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_check",
+      "kind": "c",
+      "definition": "CHECK ((tipo <> ALL (ARRAY['entrada'::text, 'consumo'::text])) OR quantidade > 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_check1",
+      "kind": "c",
+      "definition": "CHECK (tipo <> 'contagem'::text OR quantidade >= 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_check2",
+      "kind": "c",
+      "definition": "CHECK (NOT anulado OR anulado_por IS NOT NULL AND motivo_anulacao IS NOT NULL)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_fornecedor_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (fornecedor_id) REFERENCES insumos.fornecedor(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_frete_unit_check",
+      "kind": "c",
+      "definition": "CHECK (frete_unit >= 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_icms_frete_pct_check",
+      "kind": "c",
+      "definition": "CHECK (icms_frete_pct >= 0::numeric AND icms_frete_pct <= 100::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_icms_pct_check",
+      "kind": "c",
+      "definition": "CHECK (icms_pct >= 0::numeric AND icms_pct <= 100::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_material_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (material_id) REFERENCES insumos.material(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_nota_fiscal_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (nota_fiscal_id) REFERENCES estoque_carta_arquivo.nota_fiscal(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_origem_check",
+      "kind": "c",
+      "definition": "CHECK (origem = ANY (ARRAY['manual'::text, 'nf_ia'::text, 'producao_massadas'::text, 'legado'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_silo_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (silo_id) REFERENCES estoque_carta_arquivo.silo(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_tipo_check",
+      "kind": "c",
+      "definition": "CHECK (tipo = ANY (ARRAY['entrada'::text, 'consumo'::text, 'acerto'::text, 'contagem'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_unidade_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (unidade_id) REFERENCES insumos.unidade(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "nf_leitura_anexo_bytes_check",
+      "kind": "c",
+      "definition": "CHECK (anexo_bytes > 0)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "nf_leitura_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "nf_leitura_status_check",
+      "kind": "c",
+      "definition": "CHECK (status = ANY (ARRAY['pendente'::text, 'processando'::text, 'concluida'::text, 'erro'::text, 'confirmada'::text, 'descartada'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "nf_leitura_unidade_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (unidade_id) REFERENCES insumos.unidade(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "nota_fiscal_chave_acesso_check",
+      "kind": "c",
+      "definition": "CHECK (chave_acesso ~ '^\\d{44}$'::text)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "nota_fiscal_emitente_cnpj_check",
+      "kind": "c",
+      "definition": "CHECK (emitente_cnpj ~ '^\\d{14}$'::text)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "nota_fiscal_fornecedor_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (fornecedor_id) REFERENCES insumos.fornecedor(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "nota_fiscal_leitura_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (leitura_id) REFERENCES estoque_carta_arquivo.nf_leitura(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "nota_fiscal_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "nota_fiscal_unidade_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (unidade_id) REFERENCES insumos.unidade(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "posicao_misturador_check",
+      "kind": "c",
+      "definition": "CHECK ((material_id IS NULL) <> (silo_id IS NULL))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "posicao_misturador_fator_check",
+      "kind": "c",
+      "definition": "CHECK (fator > 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "posicao_misturador_material_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (material_id) REFERENCES insumos.material(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "posicao_misturador_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "posicao_misturador_silo_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (silo_id) REFERENCES estoque_carta_arquivo.silo(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "posicao_misturador_unidade_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (unidade_id) REFERENCES insumos.unidade(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "saldo_inicial",
+      "name": "saldo_inicial_material_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (material_id) REFERENCES insumos.material(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "saldo_inicial",
+      "name": "saldo_inicial_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (unidade_id, material_id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "saldo_inicial",
+      "name": "saldo_inicial_unidade_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (unidade_id) REFERENCES insumos.unidade(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "silo_alivio_pct_check",
+      "kind": "c",
+      "definition": "CHECK (alivio_pct >= 0::numeric AND alivio_pct <= 100::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "silo_capacidade_nominal_check",
+      "kind": "c",
+      "definition": "CHECK (capacidade_nominal > 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "silo_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "silo_unidade_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (unidade_id) REFERENCES insumos.unidade(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "silo_unidade_id_numero_key",
+      "kind": "u",
+      "definition": "UNIQUE (unidade_id, numero)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo_material",
+      "name": "silo_material_check",
+      "kind": "c",
+      "definition": "CHECK (ate IS NULL OR ate >= desde)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo_material",
+      "name": "silo_material_material_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (material_id) REFERENCES insumos.material(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo_material",
+      "name": "silo_material_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo_material",
+      "name": "silo_material_silo_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (silo_id) REFERENCES estoque_carta_arquivo.silo(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "auditoria",
+      "name": "auditoria_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "config",
+      "name": "config_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (chave)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "custo_fornecedor_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (fornecedor_id) REFERENCES insumos.fornecedor(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "custo_frete_check",
+      "kind": "c",
+      "definition": "CHECK (frete >= 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "custo_icms_frete_pct_check",
+      "kind": "c",
+      "definition": "CHECK (icms_frete_pct >= 0::numeric AND icms_frete_pct <= 100::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "custo_icms_pct_check",
+      "kind": "c",
+      "definition": "CHECK (icms_pct >= 0::numeric AND icms_pct <= 100::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "custo_material_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (material_id) REFERENCES insumos.material(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "custo_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "custo_tipo_frete_check",
+      "kind": "c",
+      "definition": "CHECK (tipo_frete = ANY (ARRAY['CIF'::text, 'FOB'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "custo_un_medida_check",
+      "kind": "c",
+      "definition": "CHECK (un_medida = ANY (ARRAY['kg'::text, 't'::text, 'm3'::text, 'L'::text, 'saco'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "custo_unidade_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (unidade_id) REFERENCES insumos.unidade(id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "custo_valor_check",
+      "kind": "c",
+      "definition": "CHECK (valor >= 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "fornecedor",
+      "name": "fornecedor_cnpj_check",
+      "kind": "c",
+      "definition": "CHECK (cnpj ~ '^\\d{14}$'::text)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "fornecedor",
+      "name": "fornecedor_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "material_grupo_check",
+      "kind": "c",
+      "definition": "CHECK (grupo = ANY (ARRAY['cimento'::text, 'adicao'::text, 'areia'::text, 'brita'::text, 'agua'::text, 'aditivo'::text, 'fibra'::text, 'outro'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "material_massa_especifica_check",
+      "kind": "c",
+      "definition": "CHECK (massa_especifica > 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "material_massa_unitaria_check",
+      "kind": "c",
+      "definition": "CHECK (massa_unitaria > 0::numeric)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "material_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "material_un_estoque_check",
+      "kind": "c",
+      "definition": "CHECK (un_estoque = ANY (ARRAY['t'::text, 'kg'::text, 'L'::text, 'm3'::text, 'un'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material_alias",
+      "name": "material_alias_material_id_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (material_id) REFERENCES insumos.material(id) ON DELETE CASCADE"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material_alias",
+      "name": "material_alias_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (alias)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "unidade",
+      "name": "unidade_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "outbox_estado_check",
+      "kind": "c",
+      "definition": "CHECK (estado = ANY (ARRAY['pendente'::text, 'enviando'::text, 'confirmado'::text, 'conflito'::text, 'resultado_desconhecido'::text, 'erro'::text, 'cancelado'::text]))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "outbox_idempotency_key_key",
+      "kind": "u",
+      "definition": "UNIQUE (idempotency_key)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "outbox_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (operation_id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "outbox_tentativas_check",
+      "kind": "c",
+      "definition": "CHECK (tentativas >= 0)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "outbox_unidade_id_origem_tabela_acao_fkey",
+      "kind": "f",
+      "definition": "FOREIGN KEY (unidade_id, origem_tabela, acao) REFERENCES usinas_write.permissions(unidade_id, origem_tabela, acao)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "permissions",
+      "name": "permissions_check",
+      "kind": "c",
+      "definition": "CHECK (NOT despacho_habilitado OR aprovado_por IS NOT NULL AND aprovado_em IS NOT NULL)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "permissions",
+      "name": "permissions_pkey",
+      "kind": "p",
+      "definition": "PRIMARY KEY (unidade_id, origem_tabela, acao)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "carta_pkey",
+      "definition": "CREATE UNIQUE INDEX carta_pkey ON carta_traco.carta USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "ix_carta_codigo",
+      "definition": "CREATE INDEX ix_carta_codigo ON carta_traco.carta USING btree (unidade_id, codigo_traco, vigencia) WHERE (codigo_traco IS NOT NULL)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "ux_carta_ativa",
+      "definition": "CREATE UNIQUE INDEX ux_carta_ativa ON carta_traco.carta USING btree (lower(nome), unidade_id) WHERE (status = 'Ativa'::text)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta",
+      "name": "ux_carta_revisao",
+      "definition": "CREATE UNIQUE INDEX ux_carta_revisao ON carta_traco.carta USING btree (lower(nome), unidade_id, revisao)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "carta_item",
+      "name": "carta_item_pkey",
+      "definition": "CREATE UNIQUE INDEX carta_item_pkey ON carta_traco.carta_item USING btree (carta_id, material_id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "custo_origem",
+      "name": "custo_origem_pkey",
+      "definition": "CREATE UNIQUE INDEX custo_origem_pkey ON carta_traco.custo_origem USING btree (custo_id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "ix_receita_posicao_vigencia",
+      "definition": "CREATE INDEX ix_receita_posicao_vigencia ON carta_traco.receita_posicao USING btree (unidade_id, posicao, vigente_desde, vigente_ate)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "receita_posicao_pkey",
+      "definition": "CREATE UNIQUE INDEX receita_posicao_pkey ON carta_traco.receita_posicao USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "receita_posicao",
+      "name": "ux_receita_posicao_inicio",
+      "definition": "CREATE UNIQUE INDEX ux_receita_posicao_inicio ON carta_traco.receita_posicao USING btree (unidade_id, posicao, vigente_desde)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco",
+      "table_name": "sync_status",
+      "name": "sync_status_pkey",
+      "definition": "CREATE UNIQUE INDEX sync_status_pkey ON carta_traco.sync_status USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "alias",
+      "name": "alias_pkey",
+      "definition": "CREATE UNIQUE INDEX alias_pkey ON carta_traco_stg.alias USING btree (alias)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "cadastro",
+      "name": "cadastro_pkey",
+      "definition": "CREATE UNIQUE INDEX cadastro_pkey ON carta_traco_stg.cadastro USING btree (linha)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "carta_traco_stg",
+      "table_name": "custos",
+      "name": "custos_pkey",
+      "definition": "CREATE UNIQUE INDEX custos_pkey ON carta_traco_stg.custos USING btree (linha)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "consumo_execucao",
+      "name": "consumo_execucao_pkey",
+      "definition": "CREATE UNIQUE INDEX consumo_execucao_pkey ON estoque_carta_arquivo.consumo_execucao USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "material_silo_permitido",
+      "name": "material_silo_permitido_pkey",
+      "definition": "CREATE UNIQUE INDEX material_silo_permitido_pkey ON estoque_carta_arquivo.material_silo_permitido USING btree (material_id, silo_id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "ix_mov_grupo",
+      "definition": "CREATE INDEX ix_mov_grupo ON estoque_carta_arquivo.movimento USING btree (grupo_id) WHERE (grupo_id IS NOT NULL)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "ix_mov_material_data",
+      "definition": "CREATE INDEX ix_mov_material_data ON estoque_carta_arquivo.movimento USING btree (unidade_id, material_id, data) WHERE (NOT anulado)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "ix_mov_silo_data",
+      "definition": "CREATE INDEX ix_mov_silo_data ON estoque_carta_arquivo.movimento USING btree (silo_id, data) WHERE ((NOT anulado) AND (silo_id IS NOT NULL))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "movimento_pkey",
+      "definition": "CREATE UNIQUE INDEX movimento_pkey ON estoque_carta_arquivo.movimento USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "ux_mov_chave_natural",
+      "definition": "CREATE UNIQUE INDEX ux_mov_chave_natural ON estoque_carta_arquivo.movimento USING btree (chave_natural) WHERE (chave_natural IS NOT NULL)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "movimento",
+      "name": "ux_mov_legado",
+      "definition": "CREATE UNIQUE INDEX ux_mov_legado ON estoque_carta_arquivo.movimento USING btree (legado_id) WHERE (legado_id IS NOT NULL)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "ix_nf_leitura_sha",
+      "definition": "CREATE INDEX ix_nf_leitura_sha ON estoque_carta_arquivo.nf_leitura USING btree (arquivo_sha256)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "ix_nf_leitura_status",
+      "definition": "CREATE INDEX ix_nf_leitura_status ON estoque_carta_arquivo.nf_leitura USING btree (status, criado_em)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nf_leitura",
+      "name": "nf_leitura_pkey",
+      "definition": "CREATE UNIQUE INDEX nf_leitura_pkey ON estoque_carta_arquivo.nf_leitura USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "nota_fiscal_pkey",
+      "definition": "CREATE UNIQUE INDEX nota_fiscal_pkey ON estoque_carta_arquivo.nota_fiscal USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "ux_nf_chave",
+      "definition": "CREATE UNIQUE INDEX ux_nf_chave ON estoque_carta_arquivo.nota_fiscal USING btree (chave_acesso) WHERE (chave_acesso IS NOT NULL)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "nota_fiscal",
+      "name": "ux_nf_numero",
+      "definition": "CREATE UNIQUE INDEX ux_nf_numero ON estoque_carta_arquivo.nota_fiscal USING btree (emitente_cnpj, numero, COALESCE(serie, ''::text)) WHERE ((emitente_cnpj IS NOT NULL) AND (numero IS NOT NULL))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "ix_posicao",
+      "definition": "CREATE INDEX ix_posicao ON estoque_carta_arquivo.posicao_misturador USING btree (unidade_id, coluna, desde)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "posicao_misturador",
+      "name": "posicao_misturador_pkey",
+      "definition": "CREATE UNIQUE INDEX posicao_misturador_pkey ON estoque_carta_arquivo.posicao_misturador USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "saldo_inicial",
+      "name": "saldo_inicial_pkey",
+      "definition": "CREATE UNIQUE INDEX saldo_inicial_pkey ON estoque_carta_arquivo.saldo_inicial USING btree (unidade_id, material_id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "silo_pkey",
+      "definition": "CREATE UNIQUE INDEX silo_pkey ON estoque_carta_arquivo.silo USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo",
+      "name": "silo_unidade_id_numero_key",
+      "definition": "CREATE UNIQUE INDEX silo_unidade_id_numero_key ON estoque_carta_arquivo.silo USING btree (unidade_id, numero)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "estoque_carta_arquivo",
+      "table_name": "silo_material",
+      "name": "silo_material_pkey",
+      "definition": "CREATE UNIQUE INDEX silo_material_pkey ON estoque_carta_arquivo.silo_material USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "auditoria",
+      "name": "auditoria_pkey",
+      "definition": "CREATE UNIQUE INDEX auditoria_pkey ON insumos.auditoria USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "auditoria",
+      "name": "ix_auditoria_tabela",
+      "definition": "CREATE INDEX ix_auditoria_tabela ON insumos.auditoria USING btree (esquema, tabela, em DESC)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "config",
+      "name": "config_pkey",
+      "definition": "CREATE UNIQUE INDEX config_pkey ON insumos.config USING btree (chave)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "custo_pkey",
+      "definition": "CREATE UNIQUE INDEX custo_pkey ON insumos.custo USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "custo",
+      "name": "ix_custo_busca",
+      "definition": "CREATE INDEX ix_custo_busca ON insumos.custo USING btree (unidade_id, material_id, fornecedor_id, vigente_desde DESC, id DESC) WHERE ativo"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "fornecedor",
+      "name": "fornecedor_pkey",
+      "definition": "CREATE UNIQUE INDEX fornecedor_pkey ON insumos.fornecedor USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "fornecedor",
+      "name": "ux_fornecedor_cnpj",
+      "definition": "CREATE UNIQUE INDEX ux_fornecedor_cnpj ON insumos.fornecedor USING btree (cnpj) WHERE (cnpj IS NOT NULL)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "fornecedor",
+      "name": "ux_fornecedor_nome",
+      "definition": "CREATE UNIQUE INDEX ux_fornecedor_nome ON insumos.fornecedor USING btree (lower(nome))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "material_pkey",
+      "definition": "CREATE UNIQUE INDEX material_pkey ON insumos.material USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "ux_material_codigo",
+      "definition": "CREATE UNIQUE INDEX ux_material_codigo ON insumos.material USING btree (codigo) WHERE (codigo IS NOT NULL)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material",
+      "name": "ux_material_nome",
+      "definition": "CREATE UNIQUE INDEX ux_material_nome ON insumos.material USING btree (lower(nome))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "material_alias",
+      "name": "material_alias_pkey",
+      "definition": "CREATE UNIQUE INDEX material_alias_pkey ON insumos.material_alias USING btree (alias)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "unidade",
+      "name": "unidade_pkey",
+      "definition": "CREATE UNIQUE INDEX unidade_pkey ON insumos.unidade USING btree (id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "insumos",
+      "table_name": "unidade",
+      "name": "ux_unidade_nome",
+      "definition": "CREATE UNIQUE INDEX ux_unidade_nome ON insumos.unidade USING btree (lower(nome))"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "outbox_fila_idx",
+      "definition": "CREATE INDEX outbox_fila_idx ON usinas_write.outbox USING btree (estado, criado_em)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "outbox_idempotency_key_key",
+      "definition": "CREATE UNIQUE INDEX outbox_idempotency_key_key ON usinas_write.outbox USING btree (idempotency_key)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "outbox",
+      "name": "outbox_pkey",
+      "definition": "CREATE UNIQUE INDEX outbox_pkey ON usinas_write.outbox USING btree (operation_id)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "usinas_write",
+      "table_name": "permissions",
+      "name": "permissions_pkey",
+      "definition": "CREATE UNIQUE INDEX permissions_pkey ON usinas_write.permissions USING btree (unidade_id, origem_tabela, acao)"
+    },
+    "actual": null
+  }
+]

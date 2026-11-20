@@ -1,0 +1,12 @@
+[
+  {
+    "database": "laboratorio_visual_homolog_20261118",
+    "schema": "public",
+    "table": "cq_parametros",
+    "column": "fck_mpa",
+    "tested_homolog_default": "35",
+    "source_sql_001_007_default": "25",
+    "production_default": "25",
+    "checkpoint": "FAIL: reconcile the homolog configuration and revalidate; do not change production FCK silently."
+  }
+]

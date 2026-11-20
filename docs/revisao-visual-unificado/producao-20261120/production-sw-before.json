@@ -1,0 +1,30 @@
+{
+  "version": "1.4.6",
+  "origin": "https://concrefer.concretrack.com.br",
+  "persistent_profile": "C:\\Users\\Admin\\Documents\\pwa-hub-padrao-visual\\.codex-tmp\\producao-20261120\\production-installed-app-profile",
+  "before": {
+    "keys": [
+      "concrefer-unificado-shell-v1.4.6"
+    ],
+    "registrations": []
+  },
+  "after": {
+    "cache_keys": [
+      "concrefer-unificado-shell-v1.4.6"
+    ],
+    "scope": "https://concrefer.concretrack.com.br/unificado/",
+    "active": "activated",
+    "installing": false,
+    "waiting": false,
+    "controller": true,
+    "cache_entries": 21,
+    "cached_index": true,
+    "cached_index_length": 5577
+  },
+  "cache_cleared": false,
+  "app_reinstalled": false,
+  "cache_contents_manually_created": false,
+  "physical_installed_app_ui_verified": false,
+  "limitation": "Persistent Chrome worker upgrade; operating system installation UI and a physical mobile device were not available.",
+  "ok": true
+}

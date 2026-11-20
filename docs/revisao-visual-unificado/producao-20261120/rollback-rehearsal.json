@@ -1,0 +1,37 @@
+{
+  "snapshot": "/opt/concrefer-unificado/homolog-next/backups/production-rollback-rehearsal-1795194375",
+  "started_epoch": 1795194375.3760822,
+  "static_files": 348,
+  "production_changes": 0,
+  "database_changes": 0,
+  "deleted_homolog_files": 0,
+  "previous_version": "1.4.29",
+  "previous_restored_epoch": 1795194375.592177,
+  "candidate_version": "1.4.30",
+  "candidate_restored_epoch": 1795194401.1849246,
+  "duration_seconds": 25.81,
+  "restored_sha256_verified": true,
+  "checks": [
+    {
+      "version": "1.4.29",
+      "gate": "7/7",
+      "alex_session": true,
+      "planning_module": true,
+      "screenshot": "rollback-1.4.29.png",
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "version": "1.4.30",
+      "gate": "7/7",
+      "alex_session": true,
+      "planning_module": true,
+      "screenshot": "rollback-1.4.30.png",
+      "connections": 68,
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "total_duration_seconds_approx": 45.34,
+  "total_duration_method": "UTC epoch of remote start to local completed evidence write; approximately 45 seconds including both versions validation"
+}

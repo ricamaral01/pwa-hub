@@ -1,0 +1,62 @@
+{
+  "production_version": "1.4.6",
+  "homolog_version": "1.4.30",
+  "publication_started": false,
+  "application_file_changes": 0,
+  "database_changes": 0,
+  "service_restarts": 0,
+  "config_hashes_unchanged": true,
+  "nginx_hashes_unchanged": true,
+  "application_roots_unchanged": 11,
+  "application_files_unchanged": 1100,
+  "migrations_present": 34,
+  "pcp_migrations_present": 19,
+  "blockers": [
+    "Armação: four enabled:true production rows versus disabled release decision",
+    "CQ: live/default FCK 35 on homolog versus 25 on production and reference SQL"
+  ],
+  "backup": {
+    "directory": "/opt/concrefer-unificado/backups/producao-20261120T170515Z",
+    "bundle": "/opt/concrefer-unificado/backups/producao-20261120T170515Z-revisado.tar.gz",
+    "bytes": 201907995,
+    "sha256": "aac15ae0ce988f6535bfec2e77d94a170a19c7163070a00fc59aa3010d8eee3c",
+    "directory_mode": "0o700",
+    "bundle_mode": "0o600",
+    "retain_until": "2026-12-20T17:05:15.813549+00:00",
+    "dumps_verified": 6,
+    "rollback_verify_only": {
+      "apply": false,
+      "version_restored": null,
+      "original_files_verified": 286,
+      "files_restored": 0,
+      "new_assets_quarantined": 0,
+      "sql_changes": 0,
+      "configuration_changes": 0,
+      "service_restarts": 0,
+      "homolog_next_changes": 0
+    },
+    "production_application_mutations": 0,
+    "production_database_mutations": 0,
+    "includes_completed_checkpoint": true,
+    "initial_bundle_retained": "/opt/concrefer-unificado/backups/producao-20261120T170515Z.tar.gz"
+  },
+  "candidate": {
+    "version": "1.4.30",
+    "tag": "candidata-producao-1.4.30",
+    "archive": "candidate.tgz",
+    "archive_bytes": 7743045,
+    "archive_sha256": "899286028563d1ca2a5911cd8f163d340dcfbb7a06d25e36ecd4bb8b1b9cbedc",
+    "manifest_sha256": "94bfb07b5e5bc353ce79e1e67e78e99a12c2d8ea2b88330a41442825d4fb1867",
+    "verification": {
+      "static_files_verified": 348,
+      "manifest_files": 384,
+      "archive_sha256": "899286028563d1ca2a5911cd8f163d340dcfbb7a06d25e36ecd4bb8b1b9cbedc"
+    },
+    "source": "live 18446 source capture, explicit production exclusions tested on 18446",
+    "no_further_candidate_changes": true
+  },
+  "cluster_common_headroom_before": 34,
+  "cluster_common_headroom_after": 34,
+  "production_tag_created": false,
+  "push_or_pr": false
+}

@@ -1,0 +1,173 @@
+[
+  {
+    "kind": "columns",
+    "expected": {
+      "schema": "public",
+      "table_name": "cq_parametros",
+      "name": "fck_mpa",
+      "type": "numeric(7,2)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "35"
+    },
+    "actual": {
+      "schema": "public",
+      "table_name": "cq_parametros",
+      "name": "fck_mpa",
+      "type": "numeric(7,2)",
+      "not_null": true,
+      "identity": "",
+      "default_expr": "25"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "ensaio_postes",
+      "table_name": "flow_planilha_registro",
+      "name": "flow_planilha_registro_vinculo_check",
+      "kind": "c",
+      "definition": "CHECK (vinculo::text = ANY (ARRAY['inferido'::character varying::text, 'pendente'::character varying::text, 'futuro'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "ensaio_postes",
+      "table_name": "flow_planilha_registro",
+      "name": "flow_planilha_registro_vinculo_check",
+      "kind": "c",
+      "definition": "CHECK (vinculo::text = ANY (ARRAY['inferido'::character varying, 'pendente'::character varying, 'futuro'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "ensaio_postes",
+      "table_name": "flow_planilha_registro",
+      "name": "flow_planilha_vinculo_check",
+      "kind": "c",
+      "definition": "CHECK (vinculo::text = 'inferido'::text AND massada IS NOT NULL AND serie_id_origem IS NOT NULL AND serie_medido_em IS NOT NULL AND diferenca_minutos IS NOT NULL OR (vinculo::text = ANY (ARRAY['pendente'::character varying::text, 'futuro'::character varying::text])) AND massada IS NULL AND serie_id_origem IS NULL AND serie_medido_em IS NULL AND diferenca_minutos IS NULL)"
+    },
+    "actual": {
+      "schema": "ensaio_postes",
+      "table_name": "flow_planilha_registro",
+      "name": "flow_planilha_vinculo_check",
+      "kind": "c",
+      "definition": "CHECK (vinculo::text = 'inferido'::text AND massada IS NOT NULL AND serie_id_origem IS NOT NULL AND serie_medido_em IS NOT NULL AND diferenca_minutos IS NOT NULL OR (vinculo::text = ANY (ARRAY['pendente'::character varying, 'futuro'::character varying]::text[])) AND massada IS NULL AND serie_id_origem IS NULL AND serie_medido_em IS NULL AND diferenca_minutos IS NULL)"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "ensaio_postes",
+      "table_name": "referencia_dimensional",
+      "name": "referencia_dimensional_tabela_check",
+      "kind": "c",
+      "definition": "CHECK (tabela::text = ANY (ARRAY['A.1'::character varying::text, 'A.2'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "ensaio_postes",
+      "table_name": "referencia_dimensional",
+      "name": "referencia_dimensional_tabela_check",
+      "kind": "c",
+      "definition": "CHECK (tabela::text = ANY (ARRAY['A.1'::character varying, 'A.2'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "ensaio_postes",
+      "table_name": "referencia_dimensional",
+      "name": "referencia_dimensional_tipo_check",
+      "kind": "c",
+      "definition": "CHECK (tipo::text = ANY (ARRAY['C'::character varying::text, 'DT'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "ensaio_postes",
+      "table_name": "referencia_dimensional",
+      "name": "referencia_dimensional_tipo_check",
+      "kind": "c",
+      "definition": "CHECK (tipo::text = ANY (ARRAY['C'::character varying, 'DT'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "ensaio_postes",
+      "table_name": "slump_registro",
+      "name": "slump_registro_origem_horario_check",
+      "kind": "c",
+      "definition": "CHECK (origem_horario::text = ANY (ARRAY['automatico'::character varying::text, 'manual'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "ensaio_postes",
+      "table_name": "slump_registro",
+      "name": "slump_registro_origem_horario_check",
+      "kind": "c",
+      "definition": "CHECK (origem_horario::text = ANY (ARRAY['automatico'::character varying, 'manual'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "ensaio_postes",
+      "table_name": "slump_registro",
+      "name": "slump_registro_tipo_check",
+      "kind": "c",
+      "definition": "CHECK (tipo::text = ANY (ARRAY['slump'::character varying::text, 'flow'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "ensaio_postes",
+      "table_name": "slump_registro",
+      "name": "slump_registro_tipo_check",
+      "kind": "c",
+      "definition": "CHECK (tipo::text = ANY (ARRAY['slump'::character varying, 'flow'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "ensaio_postes",
+      "table_name": "umidade_areia_registro",
+      "name": "umidade_areia_registro_tipo_areia_check",
+      "kind": "c",
+      "definition": "CHECK (tipo_areia::text = ANY (ARRAY['natural'::character varying::text, 'industrial'::character varying::text]))"
+    },
+    "actual": {
+      "schema": "ensaio_postes",
+      "table_name": "umidade_areia_registro",
+      "name": "umidade_areia_registro_tipo_areia_check",
+      "kind": "c",
+      "definition": "CHECK (tipo_areia::text = ANY (ARRAY['natural'::character varying, 'industrial'::character varying]::text[]))"
+    }
+  },
+  {
+    "kind": "constraints",
+    "expected": {
+      "schema": "public",
+      "table_name": "laboratorio_cp_moldagem",
+      "name": "laboratorio_cp_moldagem_massada_id_idade_dias_key",
+      "kind": "u",
+      "definition": "UNIQUE (massada_id, idade_dias)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "public",
+      "table_name": "laboratorio_cp_moldagem",
+      "name": "laboratorio_cp_moldagem_massada_id_idade_dias_key",
+      "definition": "CREATE UNIQUE INDEX laboratorio_cp_moldagem_massada_id_idade_dias_key ON public.laboratorio_cp_moldagem USING btree (massada_id, idade_dias)"
+    },
+    "actual": null
+  },
+  {
+    "kind": "indexes",
+    "expected": {
+      "schema": "public",
+      "table_name": "laboratorio_cp_moldagem",
+      "name": "laboratorio_cp_moldagem_unidade_massada_idade_idx",
+      "definition": "CREATE UNIQUE INDEX laboratorio_cp_moldagem_unidade_massada_idade_idx ON public.laboratorio_cp_moldagem USING btree (unidade_codigo, massada_id, idade_dias)"
+    },
+    "actual": null
+  }
+]
