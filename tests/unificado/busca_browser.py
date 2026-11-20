@@ -5,7 +5,8 @@ from urllib.parse import urlsplit,unquote
 from playwright.sync_api import sync_playwright
 from visual_phase05_sessions import REMOTE
 R=Path(__file__).resolve().parents[2];O=R/'docs/revisao-visual-unificado/homolog/busca-20261120';BASE='https://concrefer.concretrack.com.br:18446'
-parser=argparse.ArgumentParser();parser.add_argument('--published',action='store_true');parser.add_argument('--perf-only',action='store_true');parser.add_argument('--quick',action='store_true');args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--published',action='store_true');parser.add_argument('--perf-only',action='store_true');parser.add_argument('--quick',action='store_true');parser.add_argument('--output-dir');args=parser.parse_args()
+if args.output_dir:O=Path(args.output_dir).resolve();O.mkdir(parents=True,exist_ok=True)
 def count():
  value=subprocess.run(['ssh','-o','BatchMode=yes','vps-concrefer','sudo -u postgres psql -X -qAt -c "BEGIN READ ONLY; SELECT count(*) FROM pg_stat_activity; ROLLBACK;"'],capture_output=True,text=True,check=True,timeout=30);n=int(value.stdout.strip());assert n<=80,('CAPACITY_STOP',n);return n
 extra=r'''
@@ -20,7 +21,7 @@ for role,u in out.items():
 print(json.dumps(actors,default=str))
 '''
 count();process=subprocess.run(['ssh','-o','BatchMode=yes','vps-concrefer','/opt/concrefer-unificado/homolog-next/visual-full/mapa/.venv/bin/python','-'],input=REMOTE.replace('print(json.dumps(out,default=str))',extra),text=True,capture_output=True,check=True);actors=json.loads(process.stdout)
-candidate={'index.html','login.html','sw.js','VERSION','shell/busca.js','shell/busca.css','shell/busca-sinonimos.json','shell/menu.config.js','shell/shell.js','shell/navigation.js','shell/module-pages.js','shell/module-pages-mobile.js','shell/modelo-a/menu.js','shell/modelo-a/menu.css','logistica/logistica-native.js'}
+candidate={'index.html','login.html','sw.js','VERSION','shell/icons.js','shell/module-columns.css','shell/busca.js','shell/busca.css','shell/busca-sinonimos.json','shell/menu.config.js','shell/shell.js','shell/navigation.js','shell/module-pages.js','shell/module-pages-mobile.js','shell/modelo-a/menu.js','shell/modelo-a/menu.css','logistica/logistica-native.js'}
 banner_style='<style>.test-environment-bar{position:relative;z-index:9999;padding:6px 12px;background:#fff3cd;color:#664d03;text-align:center;font:600 12px sans-serif}body{padding-top:31px}</style>';banner='<div class="test-environment-bar">AMBIENTE DE TESTE · dados isolados de homologação</div>'
 matrix=[];screenshots=[];bench={}
 with sync_playwright() as pw:

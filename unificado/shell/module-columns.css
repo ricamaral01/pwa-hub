@@ -1,0 +1,23 @@
+/* Independent desktop/tablet columns; phone/PWA module layout is unchanged. */
+@media screen and (min-width:601px){
+ .module-page:not(.module-page-a){display:block;padding:24px 28px 40px}
+ .module-page:not(.module-page-a)>.module-page-heading{margin:0 0 12px}
+ .module-page:not(.module-page-a)>.module-page-toolbar{margin:0 0 18px}
+ .module-page:not(.module-page-a) .module-page-columns{columns:2 420px;column-gap:16px;column-fill:balance}
+ .module-page:not(.module-page-a) .module-page-group{display:block;break-inside:avoid;page-break-inside:avoid;overflow:hidden;box-sizing:border-box;margin:0 0 16px;padding:0;border:1px solid #e1e5eb;border-radius:6px!important;background:#fff}
+ .module-page:not(.module-page-a) .module-page-group-head{display:flex;justify-content:space-between;align-items:center;margin:0;padding:10px 14px;border:0!important;border-bottom:1px solid #e1e5eb!important;border-radius:0!important;background:#fff}
+ .module-page:not(.module-page-a) .module-page-group-head h2{font-size:13px;font-weight:600;line-height:18px}
+ .module-page:not(.module-page-a) .module-page-count{display:block;margin-left:auto;color:#8a94a4!important;font-size:12px;font-weight:500;font-variant-numeric:tabular-nums}
+ .module-page:not(.module-page-a) .module-page-grid{display:block;border:0;border-radius:0;overflow:visible;background:#fff}
+ .module-page:not(.module-page-a) .module-page-link{display:flex;box-sizing:border-box;align-items:center!important;gap:12px;min-height:44px;height:auto!important;padding:6px 14px!important;border:0;border-top:1px solid #eef1f4;border-radius:0!important;background:#fff!important}
+ .module-page:not(.module-page-a) .module-page-link:first-child{border-top:0}
+ .module-page:not(.module-page-a) .module-page-link:hover{background:#f4f6f9!important}
+ .module-page:not(.module-page-a) .module-page-icon{display:grid;flex:0 0 18px!important;width:18px;height:18px!important;color:#5b6779!important}
+ .module-page:not(.module-page-a) .module-page-icon svg{display:block;width:18px;height:18px}
+ .module-page:not(.module-page-a) .module-page-link-title{font-size:13.5px!important;font-weight:500;line-height:18px!important}
+ .module-page:not(.module-page-a) .module-page-link-description{display:block;font-size:12px!important;line-height:16px!important;color:#5b6779;margin:1px 0 0}
+ .module-page:not(.module-page-a) .module-page-arrow,.module-page:not(.module-page-a) .module-page-group-head::before{display:none!important}
+}
+@media screen and (min-width:601px) and (max-width:899px){
+ .module-page:not(.module-page-a) .module-page-columns{columns:1}
+}

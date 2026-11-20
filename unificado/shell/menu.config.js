@@ -271,6 +271,17 @@ MENU_CONFIG.laboratorio.groups.push(
   ]}
 );
 
+// Keep test definitions in source, but exclude them from the production catalogue.
+const UNIFICADO_AMBIENTE = UNIFICADO_BASE.port === '18446' ? 'homolog' : 'producao';
+const ambientePorId = new Map(Object.values(MENU_CONFIG).flatMap(module => module.groups.flatMap(group => group.items.filter(item => item.ambiente).map(item => [item.id,item.ambiente]))));
+window.UnificadoCatalogEnvironment = Object.freeze({
+  name: UNIFICADO_AMBIENTE,
+  allows(value) { const id=typeof value==='string'?value:value?.id;const ambiente=typeof value==='object'?value?.ambiente||ambientePorId.get(id):ambientePorId.get(id);return !ambiente || ambiente===UNIFICADO_AMBIENTE; }
+});
+Object.values(MENU_CONFIG).forEach(module => module.groups.forEach(group => {
+  group.items = group.items.filter(item => window.UnificadoCatalogEnvironment.allows(item));
+}));
+
 const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([module, value]) =>
   value.groups.flatMap(group => group.items.map(item => [item.id, {
     ...item,

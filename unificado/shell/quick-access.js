@@ -20,6 +20,7 @@
   }
   function clear(){profile=null;content.classList.remove('uqa-personal');document.getElementById('uqa-home')?.remove();document.querySelectorAll('.uqa-return').forEach(el=>el.remove());const label=document.querySelector('.nav-mobile-bottom [data-mode=inicio] .nav-bottom-label');if(label)label.textContent='Início';}
   function render(data){
+    data={...data,items:data.items.map(item=>({...item,destinations:item.destinations.filter(dest=>window.UnificadoCatalogEnvironment.allows(dest.screen))})).filter(item=>item.destinations.length)};
     const wasHome=content.classList.contains('uqa-personal');profile=data;
     const panel=node('section');panel.id='uqa-home';
     const welcome=node('header','uqa-welcome'),copy=node('div');

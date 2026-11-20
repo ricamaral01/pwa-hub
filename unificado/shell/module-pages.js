@@ -5,7 +5,7 @@
   const home = document.querySelector('.main-panel > .content');
   if (!home) return;
 
-  const gedItems = window.UnificadoGedMenu.map(item => [item.label, item.route]);
+  const gedItems = window.UnificadoGedMenu;
   const page = document.createElement('section');
   page.className = 'module-page';
   page.hidden = true;
@@ -101,7 +101,7 @@
     }
 
     const groups = moduleId === 'ged'
-      ? [{label: 'Gestão documental', items: gedItems.map(([label, route]) => ({label, route}))}]
+      ? [{label: 'Gestão documental', items: gedItems.filter(item => window.UnificadoSidebarModelA?.snapshot().allowedItemIds.includes(item.id))}]
       : config.groups.filter(group => moduleId !== 'laboratorio' || (group.unitCode || 'campinas') === selectedUnit).map(group => ({
           label: group.label || (group.items.some(item => item.id === 'labHelp') ? 'Ajuda' : 'Geral'),
           items: group.items.filter(item => canUse(MENU_ITEMS[item.id])),
@@ -161,6 +161,9 @@
       }
       empty.hidden = visible > 0;
     });
+    const columns = document.createElement('div');
+    columns.className = 'module-page-columns';
+    page.append(columns);
     for (const group of groups) {
       if (!group.items.length) continue;
       const section = document.createElement('section');
@@ -182,7 +185,7 @@
           grid.append(itemLink(item.label, root + 'ged/' + route, () => {
             if (!window.UnificadoRouter?.openGed) return false;
             window.UnificadoRouter.openGed(route);
-          }));
+          }, '', item));
         } else {
           const route = MENU_ITEMS[item.id];
           const opensCertificateTab = moduleId === 'qualidade' &&
@@ -208,7 +211,7 @@
         }
       }
       section.append(head, grid);
-      page.append(section);
+      columns.append(section);
     }
     page.append(empty);
 
@@ -247,7 +250,7 @@
                 window.UnificadoRouter.open(href);
               }));
             }
-            section.append(head,grid);page.insertBefore(section, empty);
+            section.append(head,grid);columns.append(section);
             search.dispatchEvent(new Event('input'));
           }
         }).catch(() => {});
