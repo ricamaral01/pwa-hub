@@ -1,50 +1,214 @@
 [
- ["producao","labDosagemProducao"],
- ["produção","labDosagemProducao"],
- ["dashboard","dashboard"],
- ["dashboard montagem","dashMontagem"],
- ["indicador geral","indicadorGeralProducao"],
- ["programacao diaria","programacao12"],
- ["programacao setr 3","programacao34"],
- ["programacao semanal","armadurasProgramacao"],
- ["acompanhamento mensal","acompMensal"],
- ["mensal acompanhamento","acompMensal"],
- ["etiqeta","etiquetas"],
- ["etiqeta 3","etiquetasSc"],
- ["etiqueta setor 3","etiquetasSc"],
- ["setor 3 etiqueta","etiquetasSc"],
- ["rotulo setor 3","etiquetasSc"],
- ["rotulos setor 4","etiquetasSetor4"],
- ["etiquetas qr","labCecEtiquetas"],
- ["QR","labCecEtiquetas"],
- ["CP","labCecLeitura"],
- ["leitura cp","labCecLeitura"],
- ["noroeste CP","labNoroCecLeitura"],
- ["corpos de prova","labCecResultados"],
- ["corpo prova","labCecResultados"],
- ["noroeste rompimento","labNoroCecRompimentosMes"],
- ["rompimento noroeste","labNoroCecRompimentosMes"],
- ["rompimentos","labCecRompimentosMes"],
- ["compressao","labCecRompimentosMes"],
- ["compressão noroeste","labNoroCecRompimentosMes"],
- ["slump","labSlump"],
- ["slmup","labSlump"],
- ["abatimento","labSlump"],
- ["cartas traco","usinasInicio"],
- ["traco cartas","usinasInicio"],
- ["inventario","suprimentosInventario"],
- ["inventário","suprimentosInventario"],
- ["almoxarifado","suprimentosAlmoxarifado"],
- ["motoristas","logisticaMotoristas"],
- ["motorista","logisticaMotoristas"],
- ["ajudantes","logisticaAjudantes"],
- ["km evento","logisticaPainel"],
- ["mapeamento cobli","logisticaCobli"],
- ["premiacao","logisticaPremiacao"],
- ["fechamento trimestral","logisticaFechamento"],
- ["NF",null],
- ["nota fiscal",null],
- ["Cq",null],
- ["etiqeta 9",null],
- ["zzzzxyz",null]
+ [
+  "producao",
+  "labDosagemProducao"
+ ],
+ [
+  "produção",
+  "labDosagemProducao"
+ ],
+ [
+  "dashboard",
+  "dashboard"
+ ],
+ [
+  "dashboard montagem",
+  "dashMontagem"
+ ],
+ [
+  "indicador geral",
+  "indicadorGeralProducao"
+ ],
+ [
+  "programacao diaria",
+  "programacao12"
+ ],
+ [
+  "programacao setr 3",
+  "programacao34"
+ ],
+ [
+  "programacao semanal",
+  "armadurasProgramacao"
+ ],
+ [
+  "acompanhamento mensal",
+  "acompMensal"
+ ],
+ [
+  "mensal acompanhamento",
+  "acompMensal"
+ ],
+ [
+  "etiqeta",
+  "etiquetas"
+ ],
+ [
+  "etiqeta 3",
+  "etiquetasSc"
+ ],
+ [
+  "etiqueta setor 3",
+  "etiquetasSc"
+ ],
+ [
+  "setor 3 etiqueta",
+  "etiquetasSc"
+ ],
+ [
+  "rotulo setor 3",
+  "etiquetasSc"
+ ],
+ [
+  "rotulos setor 4",
+  "etiquetasSetor4"
+ ],
+ [
+  "etiquetas qr",
+  "labCecEtiquetas"
+ ],
+ [
+  "QR",
+  "labCecEtiquetas"
+ ],
+ [
+  "CP",
+  "labCecLeitura"
+ ],
+ [
+  "leitura cp",
+  "labCecLeitura"
+ ],
+ [
+  "noroeste CP",
+  "labNoroCecLeitura"
+ ],
+ [
+  "corpos de prova",
+  "labCecResultados"
+ ],
+ [
+  "corpo prova",
+  "labCecResultados"
+ ],
+ [
+  "noroeste rompimento",
+  "labNoroCecRompimentosMes"
+ ],
+ [
+  "rompimento noroeste",
+  "labNoroCecRompimentosMes"
+ ],
+ [
+  "rompimentos",
+  "labCecRompimentosMes"
+ ],
+ [
+  "compressao",
+  "labCecRompimentosMes"
+ ],
+ [
+  "compressão noroeste",
+  "labNoroCecRompimentosMes"
+ ],
+ [
+  "slump",
+  "labSlump"
+ ],
+ [
+  "slmup",
+  "labSlump"
+ ],
+ [
+  "abatimento",
+  "labSlump"
+ ],
+ [
+  "cartas traco",
+  "usinasInicio"
+ ],
+ [
+  "traco cartas",
+  "usinasInicio"
+ ],
+ [
+  "inventario",
+  "suprimentosInventario"
+ ],
+ [
+  "inventário",
+  "suprimentosInventario"
+ ],
+ [
+  "almoxarifado",
+  "suprimentosAlmoxarifado"
+ ],
+ [
+  "motoristas",
+  "logisticaMotoristas"
+ ],
+ [
+  "motorista",
+  "logisticaMotoristas"
+ ],
+ [
+  "ajudantes",
+  "logisticaAjudantes"
+ ],
+ [
+  "km evento",
+  "logisticaPainel"
+ ],
+ [
+  "mapeamento cobli",
+  "logisticaCobli"
+ ],
+ [
+  "premiacao",
+  "logisticaPremiacao"
+ ],
+ [
+  "fechamento trimestral",
+  "logisticaFechamento"
+ ],
+ [
+  "NF",
+  null
+ ],
+ [
+  "nota fiscal",
+  null
+ ],
+ [
+  "Cq",
+  null
+ ],
+ [
+  "etiqeta 9",
+  null
+ ],
+ [
+  "zzzzxyz",
+  null
+ ],
+ [
+  "armação campinas",
+  "armacao-campinas-corte"
+ ],
+ [
+  "armacao pederneiras banca",
+  "armacao-pederneiras-banca"
+ ],
+ [
+  "armacoa ribeirao",
+  "armacao-ribeirao-corte"
+ ],
+ [
+  "corte noroeste armacao",
+  "armacao-noroeste-corte"
+ ],
+ [
+  "fechamento dia campinas armacao",
+  "armacao-campinas-banca"
+ ]
 ]

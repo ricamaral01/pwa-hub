@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {engine,entries,config,items}=require('./busca_catalog.cjs')();
 const synonyms=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../unificado/shell/busca-sinonimos.json'),'utf8'));
-const reference=require('./busca-referencia.json'),index=engine.createIndex(entries,synonyms);
+const reference=require('./busca-referencia.json'),dynamic=require('./busca_dynamic_fixture.cjs')(),index=engine.createIndex(engine.mergeCatalog([...entries,...dynamic]),synonyms);
 for(const [query,expected] of reference)test('primeiro resultado: '+query,()=>assert.equal(index.search(query).results[0]?.id??null,expected));
 test('transposição conta como uma edição e distância respeita os limites',()=>{assert.equal(engine.distance('slmup','slump'),1);assert.equal(engine.distance('programacao','programaaco'),1);assert.ok(engine.distance('abc','xyz')>2);});
 test('a correção de singular inclui a palavra plural do catálogo',()=>assert.deepEqual(index.search('etiqeta').corrections,[{from:'etiqeta',to:'etiqueta'}]));
@@ -13,4 +13,6 @@ test('produção não inclui telas marcadas somente homolog',()=>{const e=engine
 test('siglas curtas e números não são corrigidos',()=>{const i=engine.createIndex([{id:'a',name:'CP 3'}]);assert.equal(i.search('CQ 3').results.length,0);assert.equal(i.search('CP 4').results.length,0);});
 test('plural simples e acento',()=>{assert.ok(engine.forms('producoes').includes('producao'));assert.ok(engine.forms('materiais').includes('material'));assert.equal(index.search('produção').results[0].id,index.search('producao').results[0].id);});
 test('a ordem não depende da ordem das palavras',()=>assert.deepEqual(index.search('etiqueta setor 3').results.map(r=>r.id),index.search('setor 3 etiqueta').results.map(r=>r.id)));
+test('atalhos dinâmicos de Banca e Fechamento são uma tela por unidade',()=>{const rows=engine.mergeCatalog(dynamic);assert.equal(rows.length,20);assert.equal(rows.filter(r=>r.url.includes('tela=banca')).length,4);assert.equal(index.search('fechamento dia campinas armacao').results.filter(r=>r.id.startsWith('armacao-')).length,1);});
+test('a identidade de uma tela preserva a rota de SPA no fragmento',()=>{assert.equal(engine.mergeCatalog([{id:'a',moduleId:'lab',url:'/lab/#/a'},{id:'b',moduleId:'lab',url:'/lab/#/b'}]).length,2);});
 test('nenhuma palavra da consulta é descartada',()=>{const i=engine.createIndex([{id:'a',name:'Etiqueta'}]);assert.equal(i.search('etiqueta de').results.length,0);});

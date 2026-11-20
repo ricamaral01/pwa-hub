@@ -1,0 +1,23 @@
+{
+  "reviewed": [
+    "shell/navigation.js",
+    "shell/module-pages.js",
+    "shell/module-pages-mobile.js",
+    "shell/menu.config.js",
+    "shell/shell.js",
+    "shell/modelo-a/menu.js"
+  ],
+  "dynamic_modules": [
+    {
+      "module": "Armação",
+      "producer": "navigation.js native unit/action response",
+      "new_network_calls": 0
+    },
+    {
+      "module": "GED",
+      "producer": "authorized native GED navigation group; access snapshot may arrive late",
+      "new_network_calls": 0
+    }
+  ],
+  "other_modules": "Existing static routes are filtered by central grants/feature flags; no other late route producer found. Generic coverage checks every unknown menu ID in every visible module against the search index."
+}

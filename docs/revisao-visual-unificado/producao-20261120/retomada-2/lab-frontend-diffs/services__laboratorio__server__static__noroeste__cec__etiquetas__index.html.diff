@@ -1,0 +1,121 @@
+--- 1.4.6/services/laboratorio/server/static/noroeste/cec/etiquetas/index.html
++++ 1.4.31/services/laboratorio/server/static/noroeste/cec/etiquetas/index.html
+@@ -10,7 +10,8 @@
+   <script src="/unificado/laboratorio/noroeste/cec/assets/vendor/qrcode.min.js"></script>
+   <script src="/unificado/laboratorio/noroeste/cec/assets/vendor/jspdf.umd.min.js"></script>
+   
+-  <style>
++  <style>@media print {
++
+     :root{
+       --ct-orange:#E07A3A;--ct-gray:#343B43;--ct-gray-lt:#5A6270;
+       --ct-blue:#1976D2;--ct-navy:#0D3B66;--ct-silver:#BFC5CC;--ct-bg:#F2F3F5;
+@@ -149,8 +150,91 @@
+     }
+     .empty-state{text-align:center;padding:40px 20px;color:var(--ct-silver)}
+     .empty-state i{font-size:40px;display:block;margin-bottom:8px}
+-  </style>
+-</head>
++  
++}
++@media screen{:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-blue:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);--ct-green:var(--c-ok);--ct-red:var(--c-crit);--ct-yellow:var(--c-orange);}
++*{margin:0;padding:0;box-sizing:border-box;}
++body{background:var(--ct-bg);color:var(--ct-gray);}
++.mono{}
++/* ── Topbar ── */
++.app-topbar{background:var(--ct-gray);color:var(--c-surface);position:sticky;top:0;z-index:1000;}
++.topbar-inner{display:flex;align-items:center;padding:12px 0;gap:12px;}
++.topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:var(--r);}
++.topbar-title{font-size:18px;font-weight:700;}
++.topbar-title span{color:var(--ct-orange);}
++.topbar-sub{font-size:10px;color:var(--ct-silver);}
++.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
++.btn-back{border-radius:var(--r);height:36px;font-weight:600;font-size:12px;border:1px solid rgba(255,255,255,.18);color:var(--c-surface);background:rgba(255,255,255,.06);display:inline-flex;align-items:center;gap:6px;padding:0 14px;text-decoration:none;transition:background .2s;}
++.btn-back:hover{background:rgba(255,255,255,.12);color:var(--c-surface);}
++.btn-logout{border-radius:var(--r);border:1px solid rgba(255,255,255,.15);color:var(--c-surface);font-size:12px;padding:5px 14px;background:rgba(224,122,58,.25);font-weight:600;cursor:pointer;transition:background .2s;}
++.btn-logout:hover{background:rgba(224,122,58,.5);}
++.topbar-accent{height:3px;background:var(--c-surface);}
++/* ── Page ── */
++.page-header{padding:24px 0 14px;}
++.page-header h2{font-size:22px;font-weight:800;color:var(--ct-gray);}
++.page-header h2 span{color:var(--ct-orange);}
++.page-header p{color:var(--ct-gray-lt);font-size:13px;}
++/* ── Section Card ── */
++.section-card{background:var(--c-surface);border-radius:var(--r);border:1px solid rgba(15,23,42,.06);box-shadow:none;overflow:hidden;margin-bottom:16px;}
++.section-head{padding:14px 20px;border-bottom:1px solid var(--c-line-2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
++.section-head h6{font-weight:800;font-size:14px;color:var(--ct-gray);margin:0;}
++.section-head h6 i{color:var(--ct-orange);margin-right:6px;}
++.section-body{padding:16px 20px;}
++/* ── Table ── */
++.ct-table{width:100%;border-collapse:collapse;}
++.ct-table th{background:var(--ct-gray);color:var(--c-surface);font-size:11px;font-weight:700;text-transform:none;letter-spacing:.3px;padding:10px 12px;position:sticky;top:0;}
++.ct-table td{padding:8px 12px;border-bottom:1px solid var(--c-line-2);font-size:13px;color:var(--ct-gray);}
++.ct-table tbody tr{cursor:pointer;transition:background .15s;}
++.ct-table tbody tr:hover{background:rgba(224,122,58,.06);}
++.ct-table tbody tr.selected{background:rgba(25,118,210,.08);outline:2px solid var(--ct-blue);outline-offset:-2px;}
++/* ── Filters ── */
++.filter-row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;}
++.filter-group label{font-size:11px;font-weight:700;color:var(--ct-gray-lt);text-transform:none;letter-spacing:.3px;display:block;margin-bottom:4px;}
++.filter-group select,.filter-group input{border:1px solid var(--c-line);border-radius:var(--r);padding:7px 12px;font-size:13px;background:var(--c-surface);color:var(--ct-gray);min-width:100px;}
++.filter-group select:focus,.filter-group input:focus{outline:none;border-color:var(--ct-blue);box-shadow:none;}
++.btn-ct{border:none;border-radius:var(--r);padding:8px 20px;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
++.btn-ct-primary{background:var(--ct-blue);color:var(--c-surface);}
++.btn-ct-primary:hover{background:var(--c-blue);}
++.btn-ct-primary:disabled{opacity:.4;cursor:not-allowed;}
++.btn-ct-orange{background:var(--ct-orange);color:var(--c-surface);}
++.btn-ct-orange:hover{background:var(--c-orange);}
++.btn-ct-navy{background:var(--ct-navy);color:var(--c-surface);}
++.btn-ct-navy:hover{background:var(--c-blue);}
++/* ── Etiqueta ── */
++.etiquetas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:16px;padding:20px 0;}
++.etiqueta{border:2px solid var(--ct-gray);border-radius:var(--r);padding:14px;background:var(--c-surface);page-break-inside:avoid;break-inside:avoid;display:flex;gap:12px;align-items:stretch;min-height:160px;}
++.etiqueta-left{flex:1;display:flex;flex-direction:column;justify-content:space-between;}
++.etiqueta-right{display:flex;align-items:center;justify-content:center;flex-shrink:0;}
++.etiqueta-right svg{width:142px;height:142px;display:block;flex-shrink:0;}
++.etq-traco{font-size:15px;font-weight:900;color:var(--ct-navy);letter-spacing:.3px;}
++.etq-cp{font-size:12px;font-weight:700;color:var(--ct-orange);margin-top:2px;}
++.etq-field{font-size:11px;color:var(--ct-gray);margin-top:3px;}
++.etq-field b{font-weight:700;color:var(--ct-gray);}
++.etq-idade{font-size:28px;font-weight:900;color:var(--ct-navy);letter-spacing:.5px;margin-top:6px;line-height:1;}
++.etq-ruptura{font-size:11px;color:var(--ct-gray-lt);margin-top:4px;}
++/* ── Scrollable table ── */
++.table-scroll{max-height:420px;overflow-y:auto;border-radius:var(--r);}
++/* ── Idades config ── */
++.idade-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
++.idade-chip{display:inline-flex;align-items:center;gap:4px;background:rgba(13,59,102,.08);border:1px solid rgba(13,59,102,.18);border-radius:var(--r);padding:4px 12px;font-size:12px;font-weight:700;color:var(--ct-navy);}
++.idade-chip .remove{cursor:pointer;font-size:14px;color:var(--ct-red);margin-left:2px;}
++/* ── Print ── */
++@media print{
++      body{background:#fff!important}
++      .app-topbar,.topbar-accent,.section-card:not(.print-area),.page-header,.app-footer,.no-print{display:none!important}
++      .print-area{box-shadow:none!important;border:none!important;margin:0!important}
++      .etiquetas-grid{grid-template-columns:repeat(2,1fr);gap:12px;padding:0}
++      .etiqueta{border:1.5px solid #000}
++      .etiqueta-right svg{width:37mm;height:37mm}
++    }
++.app-footer{text-align:center;padding:20px;font-size:11px;color:var(--ct-silver);}
++.app-footer span{color:var(--ct-orange);font-weight:600;}
++.count-badge{display:inline-flex;align-items:center;justify-content:center;background:var(--ct-orange);color:var(--c-surface);border-radius:var(--r);min-width:24px;height:24px;font-size:12px;font-weight:800;padding:0 8px;}
++.empty-state{text-align:center;padding:40px 20px;color:var(--ct-silver);}
++.empty-state i{font-size:40px;display:block;margin-bottom:8px;}
++}
++</style>
++<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.26"><script defer src="/unificado/shell/components.js?v=1.4.26"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
+ <body>
+ 
+ <!-- ═══ TOPBAR ═══ -->
+@@ -213,12 +297,12 @@
+       </div>
+ 
+       <!-- ── Configuração Idades (inline) ── -->
+-      <div style="border-top:1px solid #eef1f5;padding-top:14px;margin-top:14px">
++      <div data-visual-print="ec429e61cf2f" style="border-top:1px solid var(--c-line-2);padding-top:14px;margin-top:14px;">
+         <div class="row g-3 align-items-end">
+           <div class="col-12 col-md-6">
+             <label style="font-size:11px;font-weight:700;color:var(--ct-gray-lt);text-transform:uppercase;letter-spacing:.3px"><i class="bi bi-gear-fill me-1" style="color:var(--ct-orange)"></i>Idades (dias)</label>
+             <div class="d-flex gap-2 mt-1">
+-              <input type="number" id="inputIdade" min="1" max="365" placeholder="Ex: 7" style="border:1px solid #d1d5db;border-radius:8px;padding:7px 12px;font-size:13px;width:90px;font-family:inherit">
++              <input type="number" id="inputIdade" min="1" max="365" placeholder="Ex: 7" data-visual-print="a716ea180895" style="border:1px solid var(--c-line);border-radius:var(--r);padding:7px 12px;font-size:13px;width:90px;">
+               <button class="btn-ct btn-ct-navy" onclick="addIdade()" style="padding:7px 14px"><i class="bi bi-plus-lg"></i> Adicionar</button>
+             </div>
+             <div class="idade-chips mt-2" id="idadeChips"></div>

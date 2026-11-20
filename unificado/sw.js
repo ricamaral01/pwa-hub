@@ -1,21 +1,21 @@
-const CACHE = 'concrefer-unificado-shell-v1.4.30';
+const CACHE = 'concrefer-unificado-shell-v1.4.31';
 const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const QUALITY_CACHE = 'concrefer-qualidade-static-v1.2.7';
 const ROOT = '/unificado/';
-const CORE = [ROOT+'shell/module-columns.css?v=1.4.30',ROOT+'shell/busca.js?v=1.4.30',ROOT+'shell/busca.css?v=1.4.30',ROOT+'shell/busca-sinonimos.json',ROOT+'shell/review-complete.css?v=1.4.30',ROOT+'shell/components.js?v=1.4.30',ROOT + 'shell/tokens.css?v=1.4.30', ROOT + 'shell/visual-shell.css?v=1.4.30', ROOT + 'shell/icons.js?v=1.4.30',ROOT+'shell/quick-access.js?v=1.4.30',ROOT+'shell/quick-access.css?v=1.4.30',ROOT+'shell/fonts/Geist-Regular.woff2',ROOT+'shell/fonts/Geist-Medium.woff2',ROOT+'shell/fonts/Geist-SemiBold.woff2',ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.4.30',
-  ROOT + 'shell/shared-menu.css?v=1.4.30',
-  ROOT + 'shell/modelo-a/menu.css?v=1.4.30', ROOT + 'shell/modelo-a-host.css?v=1.4.30',
-  ROOT + 'shell/modelo-a/menu.js?v=1.4.30',
-  ROOT + 'shell/modelo-a-loader.js?v=1.4.30',
-  ROOT + 'shell/menu.config.js?v=1.4.30', ROOT + 'shell/auth.js?v=1.4.30',
-  ROOT + 'shell/shell.js?v=1.4.30', ROOT + 'shell/navigation.css?v=1.4.30',
-  ROOT + 'shell/navigation.js?v=1.4.30', ROOT + 'shell/router.js?v=1.4.30',
-  ROOT + 'shell/module-pages-mobile.js?v=1.4.30', ROOT + 'shell/module-pages.js?v=1.4.30',
-  ROOT + 'shell/module-pages-a.css?v=1.4.30', ROOT + 'shell/module-cards.css?v=1.4.30',
-  ROOT + 'shell/module-theme.js?v=1.4.30',
-  ROOT + 'shell/home-header-compact.css?v=1.4.30',
-  ROOT + 'shell/home-header-compact.js?v=1.4.30',
-  ROOT + 'shell/embedded.css?v=1.4.30'];
+const CORE = [ROOT+'shell/module-columns.css?v=1.4.31',ROOT+'shell/busca.js?v=1.4.31',ROOT+'shell/busca.css?v=1.4.31',ROOT+'shell/busca-sinonimos.json',ROOT+'shell/review-complete.css?v=1.4.31',ROOT+'shell/components.js?v=1.4.31',ROOT + 'shell/tokens.css?v=1.4.31', ROOT + 'shell/visual-shell.css?v=1.4.31', ROOT + 'shell/icons.js?v=1.4.31',ROOT+'shell/quick-access.js?v=1.4.31',ROOT+'shell/quick-access.css?v=1.4.31',ROOT+'shell/fonts/Geist-Regular.woff2',ROOT+'shell/fonts/Geist-Medium.woff2',ROOT+'shell/fonts/Geist-SemiBold.woff2',ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.4.31',
+  ROOT + 'shell/shared-menu.css?v=1.4.31',
+  ROOT + 'shell/modelo-a/menu.css?v=1.4.31', ROOT + 'shell/modelo-a-host.css?v=1.4.31',
+  ROOT + 'shell/modelo-a/menu.js?v=1.4.31',
+  ROOT + 'shell/modelo-a-loader.js?v=1.4.31',
+  ROOT + 'shell/menu.config.js?v=1.4.31', ROOT + 'shell/auth.js?v=1.4.31',
+  ROOT + 'shell/shell.js?v=1.4.31', ROOT + 'shell/navigation.css?v=1.4.31',
+  ROOT + 'shell/navigation.js?v=1.4.31', ROOT + 'shell/router.js?v=1.4.31',
+  ROOT + 'shell/module-pages-mobile.js?v=1.4.31', ROOT + 'shell/module-pages.js?v=1.4.31',
+  ROOT + 'shell/module-pages-a.css?v=1.4.31', ROOT + 'shell/module-cards.css?v=1.4.31',
+  ROOT + 'shell/module-theme.js?v=1.4.31',
+  ROOT + 'shell/home-header-compact.css?v=1.4.31',
+  ROOT + 'shell/home-header-compact.js?v=1.4.31',
+  ROOT + 'shell/embedded.css?v=1.4.31'];
 self.addEventListener('message', event => {
   if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });

@@ -122,9 +122,21 @@
     }
     return entries;
   }
+  function mergeCatalog(entries) {
+    const screens=new Map();
+    for(const entry of entries){
+      if(!entry?.id||!entry.url)continue;
+      const url=new URL(entry.url,'https://unificado.invalid');url.searchParams.sort();
+      const key=entry.moduleId+'|'+url.pathname+'?'+url.searchParams+url.hash;
+      const existing=screens.get(key);
+      if(!existing){screens.set(key,{...entry});continue;}
+      existing.description=[...new Set([existing.description,entry.name!==existing.name?entry.name:'',entry.description].filter(Boolean))].join(' · ');
+    }
+    return [...screens.values()];
+  }
   let index=createIndex([]),synonyms={},ready=Promise.resolve(),generation=0;
   const explanation=response=>response?.corrections?.length?'mostrando resultados para '+[...new Set(response.corrections.map(row=>row.to))].join(', '):response?.results?.[0]?.synonymsUsed?.length?'Encontradas pelo sinônimo '+response.results[0].synonymsUsed.join(', '):'';
-  const api={fold,words,forms,distance,createIndex,catalog,explanation,search:(query,options)=>index.search(query,options),entries:()=>index.entries,ready:()=>ready};
+  const api={fold,words,forms,distance,createIndex,catalog,mergeCatalog,explanation,search:(query,options)=>index.search(query,options),entries:()=>index.entries,ready:()=>ready};
   if(typeof window==='undefined'||!window.document)return api;
   const root='/unificado/',homolog=location.port==='18446';
   const scriptUrl=document.currentScript.src;
@@ -145,7 +157,10 @@
     if(snapshot.allowedModuleIds.includes('ged'))configs.ged={label:'GED',groups:[{label:'Gestão documental',items:(window.UnificadoGedMenu||[]).map(item=>({...item}))}]};
     const items={...MENU_ITEMS};for(const item of window.UnificadoGedMenu||[])items[item.id]={...item,url:root+'ged/'+item.route};
     const entries=catalog(configs,items,window.UnificadoPresentation?.descriptions||{},item=>snapshot.allowedItemIds.includes(item.id)&&(item.id.startsWith('ged-')||canUse(item)),{homolog,allowedModules:snapshot.allowedModuleIds});
-    if(ticket===generation)index=createIndex(entries,synonyms);
+    // Navigation publishes the exact authorized menu, including late native
+    // groups and GED. Consume its existing result; never request access again.
+    const menu=window.UnificadoNavigationCatalog?.entries()||[];
+    if(ticket===generation){index=createIndex(mergeCatalog([...entries,...menu]),synonyms);if(dialog.open)render();}
   }
   ready=fetch(new URL('busca-sinonimos.json',scriptUrl),{cache:'no-store',credentials:'same-origin'}).then(response=>response.ok?response.json():{}).then(data=>{synonyms=data&&typeof data==='object'&&!Array.isArray(data)?data:{};}).catch(()=>{}).then(rebuild);
   api.rebuild=()=>{ready=ready.then(rebuild);return ready;};
@@ -250,5 +265,6 @@
   function wireFrames(){for(const frame of document.querySelectorAll('iframe')){if(wired.has(frame))continue;wired.add(frame);const wire=()=>{try{if(frame.contentWindow.location.origin===location.origin)frame.contentDocument.addEventListener('keydown',shortcut);}catch{}};frame.addEventListener('load',wire);wire();}}
   new MutationObserver(wireFrames).observe(document.getElementById('module-host')||document.body,{childList:true,subtree:true});wireFrames();
   addEventListener('unificado-sidebar-model-a-update',()=>{if(dialog.open)list.replaceChildren();api.rebuild().then(()=>{if(dialog.open)render();});});
+  addEventListener('unificado-navigation-catalog-updated',()=>{api.rebuild();});
   return api;
 });

@@ -1,7 +1,7 @@
 {
   "authorization": "PEDIDO_PRODUCAO.txt",
-  "version": "1.4.30",
-  "phase": "STOPPED at resumed checkpoint: Armação search regression and CQ CP source 503",
+  "version": "1.4.31",
+  "phase": "candidate frozen; prepare recovery metadata and final checkpoint",
   "production_application_modified": false,
   "production_database_modified": false,
   "candidate_frozen": true,
@@ -10,7 +10,7 @@
     1,
     2
   ],
-  "next": "Deliver report and stop. No production publication until the failing search and CQ preview checks are resolved.",
-  "latest_report": "retomada/RELATORIO.html",
+  "next": "Update existing backup recovery plan for 1.4.31, verify final checkpoint, then publish without additional approval.",
+  "latest_report": "retomada-2/RELATORIO.html",
   "resumption_authority": "PROMPT_CODEX_PRODUCAO_RETOMADA.md"
 }

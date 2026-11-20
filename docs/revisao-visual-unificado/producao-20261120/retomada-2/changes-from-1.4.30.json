@@ -1,0 +1,42 @@
+[
+  {
+    "file": "public/index.html",
+    "before_sha256": "11a887a41a8df7130e2f93e3bb7c5e14783c71a4345ce04a2ce82e97d6463ce4",
+    "after_sha256": "980e36c196f468da824f0b92163604ad5eaaf569f41fb3c5d703daa9f2855d08"
+  },
+  {
+    "file": "public/login.html",
+    "before_sha256": "20096330eebf1d62b577c1fb78ae6590623663eaf4f4d905767e3f7f08f8f49a",
+    "after_sha256": "1b40e01f407aaa7e510bf652c039594a80ecdeb0e563894846b3db41a861f084"
+  },
+  {
+    "file": "public/shell/busca.js",
+    "before_sha256": "0298842b00eb2f0d6d2f37618d18270a5a8e0f8f57b9cbeb310d5a3235a52584",
+    "after_sha256": "ef685d65c117732c4280e3facd1efe992516c6d332956a293c0d157e572c3db6"
+  },
+  {
+    "file": "public/shell/navigation.js",
+    "before_sha256": "103fb6690bfba1b764ec68ea33a76d447a0472d0da590e64532ca866c2a2af78",
+    "after_sha256": "d6519fd5109d0fb15c662dbed406b297bd3982f329b4804d0019c129ccaae7fd"
+  },
+  {
+    "file": "public/shell/shell.js",
+    "before_sha256": "22877204e60aaa4d0abb0acbab20e3abd2aa6b007381e291f445b6aed6073a42",
+    "after_sha256": "014e540fd74ff5e78ef157074b5dfe600f78c36c5e8832d16cc5900227e25705"
+  },
+  {
+    "file": "public/sw.js",
+    "before_sha256": "8e1efbc7abe94d88fc2454af2573476e26286f782bc86a6ed67a7a01e186c02a",
+    "after_sha256": "e8af2ddd1f519a97333d6f86a9933ad8c2cbb8965fe7b420257fb56b627bd837"
+  },
+  {
+    "file": "public/VERSION",
+    "before_sha256": "5612fda0181af2d910e51a07b024f3b7e7f27885555b4855791cc664e92893ab",
+    "after_sha256": "cec7f07926f66e21006b88a6ef21d7ac6f68112253a983a0e5ad3475acbe7a85"
+  },
+  {
+    "file": "policy/production-policy.json",
+    "before_sha256": "ec88366dcdf856ba40a586adc7bf685a40e49139b2a491b6e0c5ca2b4fb4c88e",
+    "after_sha256": "1e12fa320370079e9b18c46265b261b1d72353da60d08bb5f1d7c0bc7433e356"
+  }
+]

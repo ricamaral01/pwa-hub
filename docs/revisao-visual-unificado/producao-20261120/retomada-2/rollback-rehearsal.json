@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "version": "1.4.30",
+      "gate": "7/7",
+      "planning_module": true,
+      "connections": 67,
+      "ok": true
+    },
+    {
+      "version": "1.4.31",
+      "gate": "7/7",
+      "planning_module": true,
+      "connections": 67,
+      "ok": true
+    }
+  ],
+  "candidate_restored": {
+    "version": "1.4.31",
+    "static_hashes_verified": 348,
+    "production_changes": 0
+  },
+  "total_seconds": 35.07,
+  "production_changes": 0,
+  "database_changes": 0,
+  "homolog_config_preserved": "Arma\u00e7\u00e3o enabled:true; FCK25",
+  "deleted_homolog_files": 0,
+  "ok": true
+}

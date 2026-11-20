@@ -31,6 +31,7 @@
     desktopCollapsed:safeGet('ct.sidebar.collapsed')==='1', mobileOpen:false,
     mobileMode:'telas', historyAdded:false, helpOpen:false, recent:[], snapshot:null};
   state.armacaoUnits=[];
+  let publishedCatalogSignature='';
   try { state.recent = JSON.parse(safeGet(recentKey) || '[]').slice(0,8); } catch { state.recent=[]; }
 
   const el = (tag, className, text) => {
@@ -177,6 +178,19 @@
     return visibleModules().flatMap(module=>module.groups.flatMap(group=>group.items.map(item=>
       ({module,group,item,location:locationFor(module,group,item)}))));
   }
+  function catalogEntries() {
+    return allItems().map(({module,group,item,location})=>({
+      id:item.id,name:item.label,description:window.UnificadoPresentation?.descriptions?.[item.id]||'',
+      module:module.label,moduleId:module.id,unit:location.unit||'',group:group.label||'Geral',url:itemUrl(item)
+    }));
+  }
+  function publishCatalog() {
+    const signature=JSON.stringify(catalogEntries());
+    if(signature===publishedCatalogSignature)return;
+    publishedCatalogSignature=signature;
+    dispatchEvent(new Event('unificado-navigation-catalog-updated'));
+  }
+  window.UnificadoNavigationCatalog=Object.freeze({entries:catalogEntries});
   function activeEntry() {
     const view=new URLSearchParams(location.search).get('view');
     return window.UnificadoPresentation.resolveEntry(allItems(),view,window.UnificadoActiveItem,viewOf);
@@ -506,6 +520,7 @@
     const snap=host.snapshot();
     if(!snap||document.body.classList.contains('unificado-permissions-loading'))return;
     state.snapshot=snap;
+    publishCatalog();
     const route=new URLSearchParams(location.search).get('view')||'';
     if(route!==state.route) {
       state.route=route;

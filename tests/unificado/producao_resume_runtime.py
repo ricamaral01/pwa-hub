@@ -31,7 +31,7 @@ print(json.dumps(actors,default=str))
 '''
  src=src.replace('print(json.dumps(out,default=str))',extra)
  p=subprocess.run(['ssh','vps-concrefer','/opt/concrefer-unificado/homolog-next/visual-full/mapa/.venv/bin/python','-'],input=src.encode(),capture_output=True);assert p.returncode==0,p.stderr.decode();return json.loads(p.stdout)
-def start(browser,actor,environment,bootstrap=False):
+def start(browser,actor,environment,bootstrap=False,initial_module='producao',before_navigation=None):
  base='https://concrefer.concretrack.com.br'+(':18446' if environment=='homolog' else '');ctx=browser.new_context(viewport={'width':1440,'height':1000},service_workers='block');errors=[];blocked=[]
  allowed_bootstrap=['/unificado/mapa/api/unified/'+kind+'-bootstrap' for kind in ['laboratorio','qualidade','suprimentos']]
  def protect(route):
@@ -41,8 +41,9 @@ def start(browser,actor,environment,bootstrap=False):
   if u.netloc!=urlsplit(base).netloc:return route.abort()
   route.continue_()
  ctx.route('**/*',protect)
+ if before_navigation:before_navigation(ctx)
  central_cookie='mapa_unificado_homolog_session' if environment=='homolog' else 'mapa_unificado_session';pcp_cookie='unificado_homolog_pcp_screen' if environment=='homolog' else 'unificado_pcp_screen'
  if actor.get('cookie'):ctx.add_cookies([{'name':central_cookie,'value':actor['cookie'],'domain':'concrefer.concretrack.com.br','path':'/unificado/','secure':True,'httpOnly':True}])
  if actor.get('token'):ctx.add_cookies([{'name':pcp_cookie,'value':actor['token'],'domain':'concrefer.concretrack.com.br','path':'/unificado/pcp/','secure':True,'httpOnly':True}])
  page=ctx.new_page();page.on('pageerror',lambda err:errors.append(str(err)));page.goto(base+'/unificado/login.html',wait_until='domcontentloaded');page.evaluate('''a=>{if(a.token){localStorage.setItem('pcp_token',a.token);localStorage.setItem('pcp_user',JSON.stringify(a.user))}if(a.mapa)localStorage.setItem('pwa_mapa_auth_session_v1',JSON.stringify({id:a.mapa.id,role:a.mapa.perfil,name:a.mapa.nome}))}''',actor)
- page.goto(base+'/unificado/?module=producao',wait_until='domcontentloaded');page.wait_for_function('window.UnificadoSidebarModelA');page.evaluate('async()=>{await window.UnificadoScreenAccess?.ready;if(window.UnificadoBusca?.ready)await UnificadoBusca.ready()}');page.wait_for_timeout(600);return ctx,page,errors,blocked
+ page.goto(base+'/unificado/'+('?module='+initial_module if initial_module else ''),wait_until='domcontentloaded');page.wait_for_function('window.UnificadoSidebarModelA');page.evaluate('async()=>{await window.UnificadoScreenAccess?.ready;if(window.UnificadoBusca?.ready)await UnificadoBusca.ready()}');page.wait_for_timeout(600);return ctx,page,errors,blocked

@@ -1,0 +1,16 @@
+--- 1.4.6/services/laboratorio/server/static/novo/postes/novo.html
++++ 1.4.31/services/laboratorio/server/static/novo/postes/novo.html
+@@ -1,3 +1,10 @@
+-<!doctype html><html lang="pt-BR"><head><link rel="stylesheet" href="/unificado/shell/password-visibility.css?v=2"><script defer src="/unificado/shell/password-visibility.js?v=2"></script><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Concretrack · Ensaio de postes</title><link rel="stylesheet" href="/unificado/laboratorio/laboratorio-embedded.css"><script src="/unificado/laboratorio/laboratorio-bridge.js"></script>  <script type="module" crossorigin src="/unificado/laboratorio/novo/postes/assets/novo-conicidade-20261027.js"></script>
+-  <link rel="stylesheet" crossorigin href="/unificado/laboratorio/novo/postes/assets/novo-CN9ofp5M.css">
+-<link rel="stylesheet" href="/unificado/laboratorio/novo/postes/assets/absorcao-historico.css?v=20261026-1"><script defer src="/unificado/laboratorio/novo/postes/assets/absorcao-historico.js?v=20261026-1"></script><link rel="stylesheet" href="/unificado/laboratorio/novo/postes/assets/cobrimento.css?v=20261027"></head><body><div id="root"></div></body></html>
++<!doctype html><html lang="pt-BR"><head><link rel="stylesheet" href="/unificado/shell/password-visibility.css?v=1.4.26"><script defer src="/unificado/shell/password-visibility.js?v=1.4.26"></script><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Concretrack · Ensaio de postes</title><link rel="stylesheet" href="/unificado/laboratorio/laboratorio-embedded.css"><link rel="stylesheet" href="/unificado/laboratorio/novo/postes/assets/absorcao-historico.css?v=1.4.26"><script defer src="/unificado/laboratorio/novo/postes/assets/absorcao-historico.js?v=1.4.26"></script><script src="/unificado/laboratorio/laboratorio-bridge.js"></script>
++<link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen">  <script type="module" crossorigin src="/unificado/laboratorio/novo/postes/assets/novo-1KSm-RTS.js"></script>
++  <link rel="modulepreload" crossorigin href="/unificado/laboratorio/novo/postes/assets/AbsorptionHistory-kgUGt9tp.js">
++  <link rel="stylesheet" crossorigin href="/unificado/laboratorio/novo/postes/assets/AbsorptionHistory-DpAlj5PN.css">
++  <script defer src="/unificado/shell/components.js?v=1.4.26"></script>
++  <link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26">
++  <link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26">
++  <link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.26">
++  <link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26">
++</head><body><div id="root"></div></body></html>

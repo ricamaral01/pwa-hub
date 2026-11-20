@@ -1,0 +1,21 @@
+--- 1.4.6/services/laboratorio/server/static/slump/index.html
++++ 1.4.31/services/laboratorio/server/static/slump/index.html
+@@ -5,14 +5,14 @@
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="theme-color" content="#0B1730">
+   <title>Slump e flow · Laboratório Concrefer</title>
+-  <link rel="stylesheet" href="/unificado/laboratorio/slump/slump.css?v=1">
+-  <script defer src="/unificado/laboratorio/slump/slump.js?v=1"></script>
+-</head>
++  <link rel="stylesheet" href="/unificado/laboratorio/slump/slump.css?v=1.4.26">
++  <script defer src="/unificado/laboratorio/slump/slump.js?v=1.4.26"></script>
++<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.26"><script defer src="/unificado/shell/components.js?v=1.4.26"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
+ <body>
+   <main class="layout">
+     <header class="page-heading">
+       <a class="back" href="/unificado/?module=laboratorio" target="_top">← Laboratório</a>
+-      <div class="heading-copy"><span class="eyebrow">LABORATÓRIO / CONCRETO FRESCO</span><h1>Registro de slump e flow</h1><p>Informe a massada e a medida realizada.</p></div>
++      <div class="heading-copy"><span class="section-context legacy-print-title">LABORATÓRIO / CONCRETO FRESCO</span><h1>Registro de slump e flow</h1><p>Informe a massada e a medida realizada.</p></div>
+       <a class="report-link" href="/unificado/laboratorio/slump/flow.html">Consultar Flow e emitir relatório →</a>
+       <a class="report-link" href="/unificado/laboratorio/slump/umidade.html">Registrar umidade da areia →</a>
+       <span class="heading-mark" aria-hidden="true">01</span>

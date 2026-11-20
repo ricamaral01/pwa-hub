@@ -1,0 +1,9 @@
+{
+  "phase": "candidate frozen; prepare recovery metadata and final checkpoint",
+  "production_application_modified": false,
+  "production_database_modified": false,
+  "candidate_frozen": true,
+  "backup_reused": "/opt/concrefer-unificado/backups/producao-20261120T170515Z",
+  "cq_baseline_recorded": true,
+  "next": "Update existing backup recovery plan for 1.4.31, verify final checkpoint, then publish without additional approval."
+}

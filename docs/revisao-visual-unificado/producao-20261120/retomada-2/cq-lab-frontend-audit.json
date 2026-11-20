@@ -1,0 +1,627 @@
+{
+  "cq_frontend_unchanged": {
+    "app.js": {
+      "bytes": 22204,
+      "sha256": "b9fb5bfe04ab77417e858b19d918080526301193f005a98c4060b0412b1326c2"
+    },
+    "index.html": {
+      "bytes": 8486,
+      "sha256": "0495f609573676868140efb75af048e0d42570a44f80609e7cb0c4bf1ee3d1f3"
+    },
+    "app.css": {
+      "bytes": 7985,
+      "sha256": "9089be8a54430f016fd76814050568efe04476a09609aed6b82f41cef5dac9ff"
+    }
+  },
+  "cq_preview_client_not_in_manifest": true,
+  "preview_url_parameters_headers_changed": false,
+  "unchanged_cq_client_pdf_calls": [
+    "async function preview(){try{const id=await save();if(!id)return;window.open(`./api/certificados/${id}/pdf`,'_blank','noopener')}catch(e){notice(e.message,true)}}",
+    "$('preview').addEventListener('click',preview);",
+    "async function loadHistory(){try{const rows=await api('certificados?q='+encodeURIComponent($('search').value));const el=$('history');el.replaceChildren();if(!rows.length)el.textContent='Nenhum certificado encontrado.';for(const row of rows){const line=document.createElement('div'),info=document.createElement('div'),actions=document.createElement('div'),badge=document.createElement('span');const label=row.liberacao_excepcional_por?'liberado':row.status;badge.className='badge '+label;badge.textContent=label;const title=document.createElement('strong');title.textContent=`${row.numero||'Rascunho #'+row.id} · ${row.cliente}`;const meta=document.createElement('small');meta.textContent=`${br(row.data_emissao)} · revisão ${row.revisao} · `;meta.append(badge);info.append(title,meta);const open=document.createElement('button');open.className='secondary';open.textContent='Abrir';open.addEventListener('click',()=>openCert(row.id));actions.append(open);if(row.status!=='legado'){const pdf=document.createElement('button');pdf.className='secondary';pdf.textContent='PDF';pdf.addEventListener('click',()=>window.open(`./api/certificados/${row.id}/pdf`,'_blank','noopener'));actions.append(pdf)}if(row.status==='emitido'&&config.can_correct){const revise=document.createElement('button');revise.className='secondary';revise.textContent='Nova revisão';revise.addEventListener('click',async()=>{try{const result=await api(`certificados/${row.id}/revisar`,{method:'POST',body:'{}'});await openCert(result.id);notice('Nova revisão criada como rascunho.')}catch(e){notice(e.message,true)}});actions.append(revise)}line.append(info,actions);el.append(line)}}catch(e){notice(e.message,true)}}"
+  ],
+  "changed_lab_files": [
+    {
+      "file": "services/laboratorio/server/static/cec/analise/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__analise__index.html.diff",
+      "before_bytes": 12013,
+      "after_bytes": 16975,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/analise/relatorio.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__analise__relatorio.html.diff",
+      "before_bytes": 50241,
+      "after_bytes": 58498,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/analise/resultado-cp.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__analise__resultado-cp.html.diff",
+      "before_bytes": 22407,
+      "after_bytes": 28010,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/assets/vendor/bootstrap-icons.min.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__assets__vendor__bootstrap-icons.min.css.diff",
+      "before_bytes": 85879,
+      "after_bytes": 167240,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/assets/vendor/bootstrap.min.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__assets__vendor__bootstrap.min.css.diff",
+      "before_bytes": 232808,
+      "after_bytes": 468969,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/assets/vendor/montserrat.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__assets__vendor__montserrat.css.diff",
+      "before_bytes": 10482,
+      "after_bytes": 1059,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/etiquetas/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__etiquetas__index.html.diff",
+      "before_bytes": 31502,
+      "after_bytes": 37841,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__index.html.diff",
+      "before_bytes": 8031,
+      "after_bytes": 10779,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/leitura/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__leitura__index.html.diff",
+      "before_bytes": 30781,
+      "after_bytes": 38466,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/relatorio/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__relatorio__index.html.diff",
+      "before_bytes": 7445,
+      "after_bytes": 10709,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/resultados/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__resultados__index.html.diff",
+      "before_bytes": 13994,
+      "after_bytes": 19484,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/rompimentos-mes/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cec__rompimentos-mes__index.html.diff",
+      "before_bytes": 12305,
+      "after_bytes": 16107,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/assets/absorcao-historico.css",
+      "action": "add",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cronoanalise__assets__absorcao-historico.css.diff",
+      "before_bytes": 0,
+      "after_bytes": 1155,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/assets/absorcao-historico.js",
+      "action": "add",
+      "summary": "Bundle JavaScript: diferença integral disponível; não é o cliente da prévia CQ.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cronoanalise__assets__absorcao-historico.js.diff",
+      "before_bytes": 0,
+      "after_bytes": 5631,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/assets/cronoanalise-B420ID87.css",
+      "action": "add",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cronoanalise__assets__cronoanalise-B420ID87.css.diff",
+      "before_bytes": 0,
+      "after_bytes": 11955,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/assets/cronoanalise-CCcHt3IK.js",
+      "action": "add",
+      "summary": "Bundle JavaScript: diferença integral disponível; não é o cliente da prévia CQ.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cronoanalise__assets__cronoanalise-CCcHt3IK.js.diff",
+      "before_bytes": 0,
+      "after_bytes": 189734,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/assets/cronoanalise-DoT_CKxg.js",
+      "action": "add",
+      "summary": "Bundle JavaScript: diferença integral disponível; não é o cliente da prévia CQ.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cronoanalise__assets__cronoanalise-DoT_CKxg.js.diff",
+      "before_bytes": 0,
+      "after_bytes": 189811,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/cronoanalise.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cronoanalise__cronoanalise.html.diff",
+      "before_bytes": 480,
+      "after_bytes": 953,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/metodologia-conteudo.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__cronoanalise__metodologia-conteudo.html.diff",
+      "before_bytes": 26657,
+      "after_bytes": 26519,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__index.html.diff",
+      "before_bytes": 51837,
+      "after_bytes": 68945,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/laboratorio-bridge.js",
+      "action": "replace",
+      "summary": "Bundle JavaScript: diferença integral disponível; não é o cliente da prévia CQ.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__laboratorio-bridge.js.diff",
+      "before_bytes": 4360,
+      "after_bytes": 4264,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/laboratorio-embedded.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__laboratorio-embedded.css.diff",
+      "before_bytes": 1352,
+      "after_bytes": 2734,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/analise/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__analise__index.html.diff",
+      "before_bytes": 12224,
+      "after_bytes": 16940,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/analise/relatorio.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__analise__relatorio.html.diff",
+      "before_bytes": 50488,
+      "after_bytes": 58745,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/analise/resultado-cp.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__analise__resultado-cp.html.diff",
+      "before_bytes": 22627,
+      "after_bytes": 28230,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/assets/vendor/bootstrap-icons.min.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__assets__vendor__bootstrap-icons.min.css.diff",
+      "before_bytes": 85879,
+      "after_bytes": 167240,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/assets/vendor/bootstrap.min.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__assets__vendor__bootstrap.min.css.diff",
+      "before_bytes": 232808,
+      "after_bytes": 468969,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/assets/vendor/montserrat.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__assets__vendor__montserrat.css.diff",
+      "before_bytes": 10482,
+      "after_bytes": 1059,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/etiquetas/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__etiquetas__index.html.diff",
+      "before_bytes": 31592,
+      "after_bytes": 37931,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__index.html.diff",
+      "before_bytes": 8139,
+      "after_bytes": 10887,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/leitura/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__leitura__index.html.diff",
+      "before_bytes": 30886,
+      "after_bytes": 38571,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/relatorio/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__relatorio__index.html.diff",
+      "before_bytes": 7499,
+      "after_bytes": 10763,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/resultados/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__resultados__index.html.diff",
+      "before_bytes": 14048,
+      "after_bytes": 19538,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/rompimentos-mes/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__cec__rompimentos-mes__index.html.diff",
+      "before_bytes": 12323,
+      "after_bytes": 16125,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/usuarios/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__usuarios__index.html.diff",
+      "before_bytes": 1488,
+      "after_bytes": 1858,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/usuarios/users.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__noroeste__usuarios__users.css.diff",
+      "before_bytes": 1209,
+      "after_bytes": 2641,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/assets/cura.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__novo__assets__cura.css.diff",
+      "before_bytes": 12361,
+      "after_bytes": 25373,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/assets/tokens.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__novo__assets__tokens.css.diff",
+      "before_bytes": 7261,
+      "after_bytes": 6969,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__novo__index.html.diff",
+      "before_bytes": 52138,
+      "after_bytes": 69246,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/absorcao.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__novo__postes__absorcao.html.diff",
+      "before_bytes": 988,
+      "after_bytes": 1443,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/AbsorptionHistory-DpAlj5PN.css",
+      "action": "add",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__novo__postes__assets__AbsorptionHistory-DpAlj5PN.css.diff",
+      "before_bytes": 0,
+      "after_bytes": 45423,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/AbsorptionHistory-kgUGt9tp.js",
+      "action": "add",
+      "summary": "Bundle JavaScript: diferença integral disponível; não é o cliente da prévia CQ.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__novo__postes__assets__AbsorptionHistory-kgUGt9tp.js.diff",
+      "before_bytes": 0,
+      "after_bytes": 147331,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/absorcao-C8qq_oRc.js",
+      "action": "add",
+      "summary": "Bundle JavaScript: diferença integral disponível; não é o cliente da prévia CQ.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__novo__postes__assets__absorcao-C8qq_oRc.js.diff",
+      "before_bytes": 0,
+      "after_bytes": 9621,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/novo-1KSm-RTS.js",
+      "action": "add",
+      "summary": "Bundle JavaScript: diferença integral disponível; não é o cliente da prévia CQ.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__novo__postes__assets__novo-1KSm-RTS.js.diff",
+      "before_bytes": 0,
+      "after_bytes": 114057,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/novo-CYnAcjTw.js",
+      "action": "add",
+      "summary": "Bundle JavaScript: diferença integral disponível; não é o cliente da prévia CQ.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__novo__postes__assets__novo-CYnAcjTw.js.diff",
+      "before_bytes": 0,
+      "after_bytes": 113817,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/metodologia-conteudo.html",
+      "action": "add",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__novo__postes__metodologia-conteudo.html.diff",
+      "before_bytes": 0,
+      "after_bytes": 26519,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/novo.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__novo__postes__novo.html.diff",
+      "before_bytes": 1063,
+      "after_bytes": 1562,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/assets/index-67Zoh3iH.js",
+      "action": "add",
+      "summary": "Bundle JavaScript: diferença integral disponível; não é o cliente da prévia CQ.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__postes__assets__index-67Zoh3iH.js.diff",
+      "before_bytes": 0,
+      "after_bytes": 211790,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/assets/index-Cseexa9g.js",
+      "action": "add",
+      "summary": "Bundle JavaScript: diferença integral disponível; não é o cliente da prévia CQ.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__postes__assets__index-Cseexa9g.js.diff",
+      "before_bytes": 0,
+      "after_bytes": 211634,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/assets/index-pdkh_yNf.css",
+      "action": "add",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__postes__assets__index-pdkh_yNf.css.diff",
+      "before_bytes": 0,
+      "after_bytes": 29675,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__postes__index.html.diff",
+      "before_bytes": 944,
+      "after_bytes": 1333,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/metodologia-conteudo.html",
+      "action": "add",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__postes__metodologia-conteudo.html.diff",
+      "before_bytes": 0,
+      "after_bytes": 26519,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/flow.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__slump__flow.css.diff",
+      "before_bytes": 2821,
+      "after_bytes": 5898,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/flow.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__slump__flow.html.diff",
+      "before_bytes": 2562,
+      "after_bytes": 2953,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__slump__index.html.diff",
+      "before_bytes": 3280,
+      "after_bytes": 3654,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/slump.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__slump__slump.css.diff",
+      "before_bytes": 4108,
+      "after_bytes": 8598,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/umidade.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__slump__umidade.css.diff",
+      "before_bytes": 6880,
+      "after_bytes": 14282,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/umidade.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__slump__umidade.html.diff",
+      "before_bytes": 5737,
+      "after_bytes": 6105,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/usinas-relatorios/index.html",
+      "action": "replace",
+      "summary": "HTML: apresentação e referências a recursos; diferença integral disponível.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__usinas-relatorios__index.html.diff",
+      "before_bytes": 1741,
+      "after_bytes": 2954,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    },
+    {
+      "file": "services/laboratorio/server/static/usinas-relatorios/native-areas.css",
+      "action": "replace",
+      "summary": "Folha de estilo: tipografia, cores, espaçamento e tokens do padrão visual.",
+      "diff": "lab-frontend-diffs/services__laboratorio__server__static__usinas-relatorios__native-areas.css.diff",
+      "before_bytes": 3462,
+      "after_bytes": 7243,
+      "cq_urls_before": [],
+      "cq_urls_after": []
+    }
+  ],
+  "production_changes": 0,
+  "ok": true
+}

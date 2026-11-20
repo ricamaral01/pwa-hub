@@ -1,0 +1,11 @@
+{
+  "command": "node --test tests/unificado/busca.test.cjs",
+  "tests": 66,
+  "passed": 66,
+  "reference_queries": 53,
+  "original_reference_queries": 48,
+  "new_armacao_reference_queries": 5,
+  "candidate_command": "node tests/unificado/producao_candidate_test.cjs",
+  "candidate_ok": true,
+  "result_source": "Successful command outputs recorded during this release validation."
+}

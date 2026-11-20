@@ -1,0 +1,72 @@
+{
+  "mode": "before",
+  "version": "1.4.6",
+  "account": "alex",
+  "issued": {
+    "id": 25,
+    "numero": "CQ-2026-0016",
+    "revisao": 0,
+    "status": "emitido",
+    "cliente": "MEG ELETROMECANICA INDUSTRIA E COMERCIO LTDA",
+    "data_emissao": "2026-11-17",
+    "criado_em": "2026-11-17 13:08:54.653729+00:00",
+    "origem": "unificado",
+    "liberacao_excepcional_por": "user-ricardo"
+  },
+  "draft": {
+    "id": 9,
+    "numero": null,
+    "revisao": 0,
+    "status": "rascunho",
+    "cliente": "tESTE 1",
+    "data_emissao": "2026-10-26",
+    "criado_em": "2026-10-26 15:24:32.737625+00:00",
+    "origem": "unificado",
+    "liberacao_excepcional_por": null
+  },
+  "requests": [
+    {
+      "name": "history",
+      "method": "GET",
+      "path": "/unificado/laboratorio/certificados-qualidade/api/certificados",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "status": 200,
+      "seconds": 1.009,
+      "bytes": 6474,
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "1269e9bfda3b522fcc467ca116320d5298ce9cebc1b9f5e6d7c2e98495c2d151"
+    },
+    {
+      "name": "issued-pdf",
+      "method": "GET",
+      "path": "/unificado/laboratorio/certificados-qualidade/api/certificados/25/pdf",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "status": 200,
+      "seconds": 0.93,
+      "bytes": 332418,
+      "content_type": "application/pdf",
+      "sha256": "457ac7841f6b1ba8e9b792548aab3b38d8869f5ddbb884a851f662740c9121dd"
+    },
+    {
+      "name": "draft-preview",
+      "method": "GET",
+      "path": "/unificado/laboratorio/certificados-qualidade/api/certificados/9/pdf",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "status": 200,
+      "seconds": 1.346,
+      "bytes": 332052,
+      "content_type": "application/pdf",
+      "sha256": "0304dd3ea9685b8206512b59718c6a85077d3421a3321f93ff00ea135fdbc770"
+    }
+  ],
+  "only_get": true,
+  "created_records": 0,
+  "connections": 68,
+  "ok": true
+}

@@ -1,0 +1,15 @@
+{
+  "production_version": "1.4.6",
+  "unchanged_files": 1100,
+  "systemd_nginx_unchanged": true,
+  "production_armacao_cq_unchanged": true,
+  "homolog_armacao_enabled": true,
+  "homolog_fck25": true,
+  "common_headroom": 35,
+  "original_backup_bundle_verified": {
+    "sha256": "aac15ae0ce988f6535bfec2e77d94a170a19c7163070a00fc59aa3010d8eee3c",
+    "bytes": 201907995
+  },
+  "production_changes": 0,
+  "ok": true
+}

@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0B1730">
-  <link rel="manifest" href="manifest.webmanifest?v=1.4.30">
+  <link rel="manifest" href="manifest.webmanifest?v=1.4.31">
   <link rel="icon" href="data:,">
   <title>Entrar · Uni</title>
-  <link rel="stylesheet" href="shell/shell.css?v=1.4.30">
-  <link rel="stylesheet" href="shell/password-visibility.css?v=1.4.30">
-  <link rel="stylesheet" href="shell/login-original.css?v=1.4.30" media="(max-width:1024px)">
-  <script defer src="shell/auth.js?v=1.4.30"></script>
-  <script defer src="shell/password-visibility.js?v=1.4.30"></script>
-  <script defer src="shell/login-uni.js?v=1.4.30"></script>
-  <link rel="stylesheet" href="shell/login-uni.css?v=1.4.30">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.30" media="(min-width:1025px)">
-<link rel="stylesheet" href="shell/login-desktop.css?v=1.4.30" media="(min-width:1025px)">
+  <link rel="stylesheet" href="shell/shell.css?v=1.4.31">
+  <link rel="stylesheet" href="shell/password-visibility.css?v=1.4.31">
+  <link rel="stylesheet" href="shell/login-original.css?v=1.4.31" media="(max-width:1024px)">
+  <script defer src="shell/auth.js?v=1.4.31"></script>
+  <script defer src="shell/password-visibility.js?v=1.4.31"></script>
+  <script defer src="shell/login-uni.js?v=1.4.31"></script>
+  <link rel="stylesheet" href="shell/login-uni.css?v=1.4.31">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.31" media="(min-width:1025px)">
+<link rel="stylesheet" href="shell/login-desktop.css?v=1.4.31" media="(min-width:1025px)">
 <style>.login-desktop-story,.login-desktop-heading,.login-official-logo,.login-desktop-foot{display:none}</style>
 </head>
 <body>
@@ -50,10 +50,10 @@
         <button class="button button-primary login-submit" type="submit">Definir senha e entrar</button>
       </form>
       <small class="login-note">Sem acesso ou esqueceu a senha? Fale com o PCP da sua unidade.</small>
-      <div class="login-desktop-foot"><span>Sem acesso ou esqueceu a senha? Fale com o PCP da sua unidade.</span><span id="login-desktop-version">Uni 1.4.30</span></div>
+      <div class="login-desktop-foot"><span>Sem acesso ou esqueceu a senha? Fale com o PCP da sua unidade.</span><span id="login-desktop-version">Uni 1.4.31</span></div>
     </section>
   </main>
-  <small id="unificado-version" style="position:fixed;right:10px;bottom:8px;color:#acb8ca;font:11px monospace">Uni 1.4.30</small>
+  <small id="unificado-version" style="position:fixed;right:10px;bottom:8px;color:#acb8ca;font:11px monospace">Uni 1.4.31</small>
   <script>fetch('/unificado/VERSION',{cache:'no-store'}).then(r=>r.ok?r.text():'').then(v=>{
     if(!/^\d+\.\d+\.\d+$/.test(v.trim()))return;
     document.getElementById('unificado-version').textContent='Uni '+v.trim();
