@@ -168,7 +168,7 @@ main{flex:1;padding:0 20px 60px;max-width:760px;width:100%;margin:0 auto;}
 .btn-install.visible{display:inline-flex;}
 }
 </style>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.26"><script defer src="/unificado/shell/components.js?v=1.4.26"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.27"><script defer src="/unificado/shell/components.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"></head>
 
 <body data-app-key="controle-estatistico">
 
@@ -236,7 +236,7 @@ main{flex:1;padding:0 20px 60px;max-width:760px;width:100%;margin:0 auto;}
   // Registrar SW próprio do módulo
   try{
     if ("serviceWorker" in navigator) {
-      const registration = await navigator.serviceWorker.register("./sw.js?v=1.4.26", { scope: "./", updateViaCache: "none" });
+      const registration = await navigator.serviceWorker.register("./sw.js?v=1.4.27", { scope: "./", updateViaCache: "none" });
       registration.update().catch(function(){});
     }
   }catch(e){}

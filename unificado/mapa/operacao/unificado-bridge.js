@@ -308,7 +308,7 @@
       button.type = "button";
       button.addEventListener("click", () => {
         const dialog = element("div", "unificado-install-dialog");
-        dialog.innerHTML = '<section class="unificado-install-card"><div class="unificado-install-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></div><h2>Instalar Produção Concrefer</h2><p>Este aplicativo abre o módulo Produção do sistema unificado.</p><button type="button" data-install>Instalar</button><button type="button" class="secondary" data-close>Cancelar</button></section>';
+        dialog.innerHTML = '<section class="unificado-install-card"><div class="unificado-install-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></div><h2>Instalar Produção Concrefer</h2><p>Este aplicativo abre o módulo Produção do Uni.</p><button type="button" data-install>Instalar</button><button type="button" class="secondary" data-close>Cancelar</button></section>';
         dialog.querySelector("[data-close]").addEventListener("click", () => dialog.remove());
         dialog.querySelector("[data-install]").addEventListener("click", async () => { dialog.remove(); await promptEvent.prompt(); promptEvent = null; button.remove(); });
         document.body.append(dialog);

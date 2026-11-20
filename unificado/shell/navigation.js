@@ -61,12 +61,12 @@
   const groupChevron=()=>strokeIcon('nav-chevron','m9 18 6-6-6-6');
   const downChevron=className=>strokeIcon(className,'m6 9 6 6 6-6');
   const reloadIcon=()=>strokeIcon('nav-reload-icon','M20 11a8 8 0 1 1-2.4-5.7 M20 4v7h-7');
-  const nav = el('nav','nav-modern'); nav.id='nav-modern'; nav.setAttribute('aria-label','Navegação do Unificado');
+  const nav = el('nav','nav-modern'); nav.id='nav-modern'; nav.setAttribute('aria-label','Navegação do Uni');
   const rail = el('div','nav-rail');
   const panel = el('div','nav-panel');
   const panelHead = el('div','nav-panel-head');
   const panelTitle = el('strong','nav-panel-title','Telas');
-  const brand=el('a','nav-brand');brand.href='/unificado/';brand.setAttribute('aria-label','Início do Unificado');
+  const brand=el('a','nav-brand');brand.href='/unificado/';brand.setAttribute('aria-label','Início do Uni');
   const brandLogo=el('img','nav-brand-logo');brandLogo.src='/unificado/assets/img/logo-concrefer.png';brandLogo.alt='Concrefer';
   brand.append(brandLogo);
   brand.addEventListener('click',event=>{event.preventDefault();navigateHref('/unificado/');});
@@ -102,7 +102,7 @@
   const mobileMenu = button('nav-mobile-icon','',() => openMobile('telas'));
   mobileMenu.setAttribute('aria-label','Abrir telas');mobileMenu.append(window.UnificadoIcons.node('menu'));
   const mobileHeading=el('div','nav-mobile-heading');
-  const mobileContext=el('small','nav-mobile-context','Unificado');
+  const mobileContext=el('small','nav-mobile-context','Uni');
   const mobileTitle=el('strong','nav-mobile-title','Início');
   mobileHeading.append(mobileContext,mobileTitle);
   const mobileSearch=button('nav-mobile-search','',() => {openMobile('telas'); search.focus();});
@@ -316,7 +316,7 @@
   function renderModules() {
     moduleArea.replaceChildren();rail.replaceChildren();
     const railBrand=el('a','nav-rail-brand');railBrand.href='/unificado/';
-    railBrand.setAttribute('aria-label','Início do Unificado');
+    railBrand.setAttribute('aria-label','Início do Uni');
     const railLogo=el('img','nav-rail-logo');railLogo.src='/unificado/assets/img/logo-concretrack.png';
     railLogo.alt='ConcreTrack';railBrand.append(railLogo);
     railBrand.addEventListener('click',event=>{event.preventDefault();navigateHref('/unificado/');});
@@ -367,7 +367,7 @@
     railUpdate.append(reloadIcon());
     railUpdate.setAttribute('aria-label',updateText());
     railUpdate.dataset.state=state.snapshot.updateState;
-    rail.append(railUpdate,el('small','nav-rail-version',`v${state.snapshot.version}`));
+    rail.append(railUpdate,el('small','nav-rail-version',`Uni ${state.snapshot.version}`));
   }
   function updateText() {
     const snap=state.snapshot;
@@ -427,13 +427,13 @@
     const update=button('nav-update','',()=>host.update());
     update.append(reloadIcon(),el('span','',updateText()));
     update.dataset.state=snap.updateState;
-    wrap.append(update,el('small','nav-update-version',`Versão ${snap.version}`));
+    wrap.append(update,el('small','nav-update-version',`Uni ${snap.version}`));
     return wrap;
   }
   function renderContext() {
     const active=activeEntry();
     const landingTitle=main.querySelector('.module-page:not([hidden]) h1,.content.uqa-personal #uqa-home:not([hidden]) h1')?.textContent;
-    mobileContext.textContent=active ? [active.location.unit,active.location.group].filter(Boolean).join(' · ') || active.module.label : landingTitle ? 'Concrefer' : 'Unificado';
+    mobileContext.textContent=active ? [active.location.unit,active.location.group].filter(Boolean).join(' · ') || active.module.label : landingTitle ? 'Concrefer' : 'Uni';
     const trail=document.querySelector('.breadcrumb > :last-child')?.textContent;
     const routeTitle=window.UnificadoPresentation.routeTitle(new URLSearchParams(location.search).get('view')||'');
     const screenTitle=routeTitle||(active?.item.label==='Início'?[active.location.group||active.module.label,active.item.label].join(' · '):active?.item.label);

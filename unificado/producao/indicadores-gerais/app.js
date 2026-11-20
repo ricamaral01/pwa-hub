@@ -25,7 +25,7 @@
       }
     }
     const response=await fetch('/unificado/mapa/api/unified/pcp-session',{credentials:'same-origin',cache:'no-store'});
-    if (!response.ok) throw new Error('Sessão do Planejamento indisponível. Entre novamente no Unificado.');
+    if (!response.ok) throw new Error('Sessão do Planejamento indisponível. Entre novamente no Uni.');
     const data=await response.json();
     if (!data.access_token) throw new Error('Não foi possível renovar a sessão do Planejamento.');
     localStorage.setItem('pcp_token',data.access_token);
@@ -318,7 +318,7 @@
     if(!dates.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=17;td.textContent='Nenhuma produção no período.';tr.append(td);tbody.append(tr);}
   }
   function renderUnified(result) {
-    const unit={id:'campinas_unificado',name:'Campinas · Unificado',color:'#176a79'};
+    const unit={id:'campinas_unificado',name:'Campinas · Uni',color:'#176a79'};
     renderSummary({[unit.id]:result},[unit],'unified-summary');
     const charts=document.getElementById('unified-charts');charts.replaceChildren();
     const dates=result.rows.map(row=>row.data).sort(),value=summary(result.rows);
@@ -382,7 +382,7 @@
       }else{
         const message=response.reason?.message || 'Falha de leitura';
         renderUnified({rows:[],error:message});renderMissingWeights([],true);
-        feedback.hidden=false;feedback.textContent='Não foi possível carregar Campinas Unificado: '+message;
+        feedback.hidden=false;feedback.textContent='Não foi possível carregar Campinas Uni: '+message;
       }
       document.getElementById('updated').textContent='Atualizado às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
       button.disabled=false;return;

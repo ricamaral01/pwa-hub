@@ -5837,7 +5837,7 @@ function Zf(h) {
               /* @__PURE__ */ g.jsx("span", { className: "sb-user-name", children: h.user.name }),
               /* @__PURE__ */ g.jsx("span", { className: "sb-user-meta", children: h.user.role }),
               /* @__PURE__ */ g.jsxs("span", { className: "sb-user-meta sb-mono", children: [
-                "v",
+                "Uni ",
                 h.version
               ] })
             ] }),

@@ -1,0 +1,25 @@
+{
+  "version": "1.4.27",
+  "gate": "7/7",
+  "published_notice_active": false,
+  "manifest_id_preserved": true,
+  "hashes": {
+    "files_verified": 121,
+    "all_equal": true
+  },
+  "audit": {
+    "mode": "after",
+    "production_files": 20945,
+    "counts": {
+      "total": 63,
+      "clients": 58,
+      "idle": 57,
+      "idle_in_transaction": 0
+    },
+    "ok": true,
+    "differences": []
+  },
+  "real_positive_password_login_waived_by_user": true,
+  "push": false,
+  "production_deployed": false
+}

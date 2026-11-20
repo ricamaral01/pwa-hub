@@ -47,6 +47,7 @@
     const config = MENU_CONFIG[moduleId];
     if (!config && moduleId !== 'ged') return;
     const title = config?.label || 'GED';
+    document.title = title + ' · Uni';
     page.replaceChildren();
     page.dataset.module = moduleId;
 

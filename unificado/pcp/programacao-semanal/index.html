@@ -14,16 +14,16 @@
 </style>
   <script>if(top===self && !['localhost','127.0.0.1'].includes(location.hostname)){location.replace('/unificado/?view='+encodeURIComponent(location.pathname.slice('/unificado/'.length).replace(/index\.html$/,'')+location.search))}</script>
   <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
-  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.26"></script>
-  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.26"></script>
-  <script src="/unificado/pcp/unificado-shell.js?v=1.4.26"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.27"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.27"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.27"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Programação da semana — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css">
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.26">
-  <link rel="stylesheet" href="/unificado/pcp/programacao-semanal/semana.css?v=1.4.26">
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.27">
+  <link rel="stylesheet" href="/unificado/pcp/programacao-semanal/semana.css?v=1.4.27">
   <style>@media print {
 
     #main-content { width: calc(100% - 240px); min-width: 0; }
@@ -54,11 +54,11 @@ body.sidebar-force-hidden #main-content{width:100%;}
 }
 </style>
   <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
-  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.26">
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26">
-<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26">
-<script defer src="/unificado/shell/components.js?v=1.4.26"></script>
-<link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27">
+<script defer src="/unificado/shell/components.js?v=1.4.27"></script>
+<link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"></head>
 <body>
 <div id="sidebar-overlay"></div>
 <aside id="sidebar">
@@ -98,9 +98,9 @@ body.sidebar-force-hidden #main-content{width:100%;}
   </main>
 </div>
 
-<dialog id="publish-dialog" class="publish-dialog" aria-labelledby="publish-title"><div class="dialog-head"><div><p class="legacy-print-title">REVISÃO FINAL</p><h2 id="publish-title">Publicar versão</h2><p id="dialog-period"></p></div><button type="button" id="close-dialog" class="dialog-close" aria-label="Fechar">×</button></div><div class="dialog-body"><div id="dialog-cards" class="dialog-cards"></div><div id="dialog-checks" class="dialog-checks"></div><h3>O que muda em relação à versão anterior</h3><div class="dialog-table-wrap"><table class="dialog-table"><thead><tr><th>Setor</th><th>Poste</th><th>Dia</th><th>Antes</th><th>Agora</th><th>Dif.</th></tr></thead><tbody id="diff-body"></tbody></table></div><label class="dialog-label" for="publish-reason">Motivo da revisão <span id="reason-required"></span></label><textarea id="publish-reason" rows="2" placeholder="Descreva o motivo da mudança"></textarea><label class="notice-check"><input id="notify-production" type="checkbox"><span>Avisar responsáveis dos setores 1 e 2 dentro do Unificado</span></label><p class="notice-note">O painel da TV lê a programação oficial automaticamente. Com a opção marcada, um aviso aparece nas telas dos setores 1 e 2 até ser marcado como lido neste dispositivo.</p></div><div class="dialog-footer"><button type="button" id="back-to-grid" class="btn btn-outline-primary">Voltar à grade</button><button type="button" id="confirm-publish" class="btn btn-primary-pcp">Publicar versão</button></div></dialog>
+<dialog id="publish-dialog" class="publish-dialog" aria-labelledby="publish-title"><div class="dialog-head"><div><p class="legacy-print-title">REVISÃO FINAL</p><h2 id="publish-title">Publicar versão</h2><p id="dialog-period"></p></div><button type="button" id="close-dialog" class="dialog-close" aria-label="Fechar">×</button></div><div class="dialog-body"><div id="dialog-cards" class="dialog-cards"></div><div id="dialog-checks" class="dialog-checks"></div><h3>O que muda em relação à versão anterior</h3><div class="dialog-table-wrap"><table class="dialog-table"><thead><tr><th>Setor</th><th>Poste</th><th>Dia</th><th>Antes</th><th>Agora</th><th>Dif.</th></tr></thead><tbody id="diff-body"></tbody></table></div><label class="dialog-label" for="publish-reason">Motivo da revisão <span id="reason-required"></span></label><textarea id="publish-reason" rows="2" placeholder="Descreva o motivo da mudança"></textarea><label class="notice-check"><input id="notify-production" type="checkbox"><span>Avisar responsáveis dos setores 1 e 2 dentro do Uni</span></label><p class="notice-note">O painel da TV lê a programação oficial automaticamente. Com a opção marcada, um aviso aparece nas telas dos setores 1 e 2 até ser marcado como lido neste dispositivo.</p></div><div class="dialog-footer"><button type="button" id="back-to-grid" class="btn btn-outline-primary">Voltar à grade</button><button type="button" id="confirm-publish" class="btn btn-primary-pcp">Publicar versão</button></div></dialog>
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=1.4.26"></script>
-<script src="/unificado/pcp/programacao-semanal/semana.js?v=1.4.26"></script>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.27"></script>
+<script src="/unificado/pcp/programacao-semanal/semana.js?v=1.4.27"></script>
 </body>
 </html>

@@ -62,11 +62,11 @@ async function init(){
     let me;
     if(!navigator.onLine){
       try{me=JSON.parse(localStorage.getItem('suprimentos-last-identity')||'null');}catch{}
-      if(!me){app.innerHTML='<div class="error">Conecte-se e entre no Unificado uma vez para usar o PWA offline.</div>';return;}
+      if(!me){app.innerHTML='<div class="error">Conecte-se e entre no Uni uma vez para usar o PWA offline.</div>';return;}
     }else{
       let bootstrap=await fetch('/unificado/mapa/api/unified/suprimentos-bootstrap',{method:'POST',credentials:'same-origin',cache:'no-store'}).catch(()=>null);
       if(!bootstrap?.ok)bootstrap=await fetch('/unificado/suprimentos/session-renew',{credentials:'same-origin',cache:'no-store'}).catch(()=>null);
-      if(!bootstrap?.ok){app.innerHTML='<div class="error">Entre no Unificado para usar Suprimentos.</div>';return;}
+      if(!bootstrap?.ok){app.innerHTML='<div class="error">Entre no Uni para usar Suprimentos.</div>';return;}
       me=await api('/me');localStorage.setItem('suprimentos-last-identity',JSON.stringify(me));
     }
     state.me=me;
@@ -75,7 +75,7 @@ async function init(){
   }catch(e){app.innerHTML='<div class="error">'+esc(e.message)+'</div>';}
 }
 function shell(content){const count=state.home?.aprovar?.length||0;const sync=!navigator.onLine?'Sem conexão':state.authExpired?'Sessão expirada':state.pending?`${state.pending} pendente${state.pending>1?'s':''}`:'Sincronizado';
-  app.innerHTML=`<header class="top"><div class="top-inner"><div class="brand"><span class="brand-mark">C</span>Suprimentos</div><span class="sync ${!navigator.onLine?'offline':state.pending?'pending':''}">${esc(sync)}</span></div></header><main>${state.authExpired?'<div class="banner warn">Sua sessão terminou. Entre novamente no Unificado; os envios pendentes continuam neste aparelho.</div>':''}${content}</main><nav class="app-nav" aria-label="Navegação">${nav('inicio','Início','⌂')}${nav('nova','Nova','＋')}${nav('minhas','Minhas','▤')}${state.me?.flags?.S3C&&state.me?.papeis?.some(p=>p.papel==='ALMOXARIFE')?nav('receber','Receber','↓'):''}${isApprover()?nav('aprovar','Aprovar','✓',count):''}</nav>`;
+  app.innerHTML=`<header class="top"><div class="top-inner"><div class="brand"><span class="brand-mark">C</span>Suprimentos</div><span class="sync ${!navigator.onLine?'offline':state.pending?'pending':''}">${esc(sync)}</span></div></header><main>${state.authExpired?'<div class="banner warn">Sua sessão terminou. Entre novamente no Uni; os envios pendentes continuam neste aparelho.</div>':''}${content}</main><nav class="app-nav" aria-label="Navegação">${nav('inicio','Início','⌂')}${nav('nova','Nova','＋')}${nav('minhas','Minhas','▤')}${state.me?.flags?.S3C&&state.me?.papeis?.some(p=>p.papel==='ALMOXARIFE')?nav('receber','Receber','↓'):''}${isApprover()?nav('aprovar','Aprovar','✓',count):''}</nav>`;
   app.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>navigate(b.dataset.view));
 }
 function nav(view,label,icon,count=0){return `<button type="button" data-view="${view}" class="${state.view===view?'active':''}" aria-label="${label}"><span style="font-size:23px;line-height:23px">${icon}</span>${label}${count?`<span class="count">${count}</span>`:''}</button>`;}

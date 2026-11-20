@@ -88,6 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('unificado-login-form');
   if (!form) return;
   const feedback = document.getElementById('login-feedback');
+  const showFeedback = (text, error = false) => {
+    if (window.UnificadoLoginUI) window.UnificadoLoginUI.feedback(text, error);
+    else { feedback.textContent = text; feedback.hidden = !text; }
+  };
+  const invalidCredentials = 'Usuário ou senha incorretos. Confira e tente de novo.';
+  const serverUnavailable = 'Sem conexão com o servidor. Tente de novo em instantes.';
   const button = form.querySelector('button[type="submit"]');
   const firstAccessForm = document.getElementById('first-access-form');
   let passwordToken = null;
@@ -111,7 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     button.disabled = true;
-    feedback.textContent = 'Verificando acesso…';
+    showFeedback('Verificando acesso…');
+    let failureMessage = serverUnavailable;
     try {
       const response = await fetch(new URL('unified/login', MAPA_API), {
         method: 'POST', credentials: 'same-origin', cache: 'no-store',
@@ -123,7 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const result = await response.json();
       if (!response.ok || !result.ok) {
-        throw new Error(result.error || 'Não foi possível entrar.');
+        failureMessage = response.status >= 500 ? serverUnavailable : invalidCredentials;
+        throw new Error(failureMessage);
       }
       if (result.reset_required || result.first_access_token) {
         passwordToken = result.reset_token || result.first_access_token;
@@ -132,15 +140,15 @@ document.addEventListener('DOMContentLoaded', () => {
         modulesAfterChange = result.modules || (passwordMode === 'pcp' ? ['pcp'] : ['mapa']);
         form.hidden = true;
         firstAccessForm.hidden = false;
-        feedback.textContent = result.reset_required
+        showFeedback(result.reset_required
           ? 'Defina uma senha única para os dois módulos.'
-          : 'Defina uma senha nova para o primeiro acesso.';
+          : 'Defina uma senha nova para o primeiro acesso.');
         return;
       }
       storeModuleSessions(result);
       await finishLogin(result.modules || []);
     } catch (error) {
-      feedback.textContent = error.message || 'Falha de conexão.';
+      showFeedback(failureMessage, true);
     } finally {
       form.elements.password.value = '';
       button.disabled = false;
@@ -151,11 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
     const password = firstAccessForm.elements.newPassword.value;
     if (password !== firstAccessForm.elements.confirmPassword.value) {
-      feedback.textContent = 'As senhas não coincidem.';
+      showFeedback('As senhas não coincidem.', true);
       return;
     }
     const submit = firstAccessForm.querySelector('button[type="submit"]');
     submit.disabled = true;
+    let failureMessage = serverUnavailable;
     try {
       const endpoint = passwordMode === 'pair' ? 'unified/reset' :
         passwordMode === 'pcp' ? 'unified/pcp-first-access' : 'first-access';
@@ -166,13 +175,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const result = await response.json();
       if (!response.ok || !result.ok) {
-        throw new Error(result.error || 'Não foi possível atualizar a senha.');
+        failureMessage = response.status >= 500 ? serverUnavailable : 'Não foi possível atualizar a senha. Confira os campos e tente novamente.';
+        throw new Error(failureMessage);
       }
       if (passwordMode === 'mapa' && result.user) result.mapa = result.user;
       storeModuleSessions(result);
       await finishLogin(result.modules || modulesAfterChange);
     } catch (error) {
-      feedback.textContent = error.message || 'Falha de conexão.';
+      showFeedback(failureMessage, true);
     } finally {
       firstAccessForm.reset();
       submit.disabled = false;

@@ -1,0 +1,39 @@
+[
+  {
+    "case": "missing-notice",
+    "ok": true,
+    "controlled_response": true
+  },
+  {
+    "case": "malformed-notice",
+    "ok": true,
+    "controlled_response": true
+  },
+  {
+    "case": "invalid-expiry",
+    "ok": true,
+    "controlled_response": true
+  },
+  {
+    "case": "storage-blocked",
+    "ok": true,
+    "controlled_response": true
+  },
+  {
+    "case": "server-500",
+    "ok": true,
+    "controlled_response": true
+  },
+  {
+    "case": "invalid-json",
+    "ok": true,
+    "controlled_response": true
+  },
+  {
+    "case": "unknown-user-real-server",
+    "status": 401,
+    "ok": true,
+    "controlled_response": false,
+    "accounts_created": 0
+  }
+]

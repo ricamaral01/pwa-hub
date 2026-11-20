@@ -360,7 +360,7 @@
       const result = await request('POST', `/api/programacao-semana/${currentWeek().id}/publicar`, {motivo:reason || null, avisar_producao:$('notify-production').checked});
       $('publish-dialog').close();
       await load();
-      showToast(result.aviso_producao === 'disponivel_unificado' ? 'Semana publicada. O aviso está disponível nos setores 1 e 2 do Unificado.' : 'Semana publicada com sucesso', 'success', 7000);
+      showToast(result.aviso_producao === 'disponivel_unificado' ? 'Semana publicada. O aviso está disponível nos setores 1 e 2 do Uni.' : 'Semana publicada com sucesso', 'success', 7000);
     } catch (error) { showToast(errorMessage(error), 'error', 8000); $('confirm-publish').disabled = false; }
   }
   async function reimportMega(file) {

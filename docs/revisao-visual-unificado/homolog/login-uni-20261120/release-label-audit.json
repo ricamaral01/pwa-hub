@@ -1,0 +1,567 @@
+[
+  {
+    "file": "atualizar.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "4f23b6e515e9661741283913a2c471bd842fbaf2477924d1c2e9b7341fa98e7e"
+  },
+  {
+    "file": "index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "e07b9147c81f87aa022107f6fbfad5d9ef026a5d28cae6bacc8236a7a0040f1b"
+  },
+  {
+    "file": "login.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "094b5cd82d6116ff4687ef88db8616f71f2cc747d5310e4ce92394772b9863c1"
+  },
+  {
+    "file": "manifest.webmanifest",
+    "kind": "display label / asset version only",
+    "before_sha256": "b6babd6c90ec4920fb4d877979fec2d9a3ab8fc63c1379e018ad41db27a52eee"
+  },
+  {
+    "file": "sw.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "14baab3c1fc61d3727cfd5e72a1f31e9a673b719d603b3973c1b3a694a8ec0be"
+  },
+  {
+    "file": "logistica/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "03cf9a8695884c31d94845d59ad2920fa1dc13bd78799f1a0e31b871ca607e6b"
+  },
+  {
+    "file": "manutencao-usina/app.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "94e2607b53cc0e23d2ed4948a6faadda352fe661a49eaec47702a9951aa4ab98"
+  },
+  {
+    "file": "manutencao-usina/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "70ce973bbb4d176ba419773db7eaa3498a3a4a74c850286837067ea936263cef"
+  },
+  {
+    "file": "mapa/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "8d6320f0970a656642755e8c19d7e8998300192d4ce55429ab5aa8bb2ec807c8"
+  },
+  {
+    "file": "qualidade/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "81d003b3741075dffb6f160f7b2ad1e08626635a73334033139938501b6f37c1"
+  },
+  {
+    "file": "shell/components.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "1b495075381840255a402ef2bbeb8689adde1155b6617d9cf9fb3d536cd10173"
+  },
+  {
+    "file": "shell/embedded.css",
+    "kind": "display label / asset version only",
+    "before_sha256": "c70740c1eb5911c746c9cc7ca47e702a7bfc229d93d1763a902aa9a6d77b8c0a"
+  },
+  {
+    "file": "shell/menu.config.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "ec15bdd703f6804ad08600a2d99a419b5ea35cea687f90ca892037eeffa9e56c"
+  },
+  {
+    "file": "shell/modelo-a-loader.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "5a5d60f13e0707c8a1c1a4ac52572b91111e2b3f6ca78cf7ea80bd41012a03ee"
+  },
+  {
+    "file": "shell/navigation.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "1c58b92af0fb9f46fb7d274ca4941987405a9c5abd43b77667fa0b1f56089f17"
+  },
+  {
+    "file": "shell/router.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "7239f4497836c4d8db5047f53cab48ac6decfc953da443ec6688ad731b22ffa3"
+  },
+  {
+    "file": "shell/shell.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "6eb5c49b4b1a38f3c63ba6a0937003700f1efc55cd3046f9daadefbc1ef8c3e0"
+  },
+  {
+    "file": "shell/tokens.css",
+    "kind": "display label / asset version only",
+    "before_sha256": "c7dc1112bedff447fc52a65ec2935b8acc3082323bb57188be428eb631e80b20"
+  },
+  {
+    "file": "testar/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "29e350c0a421d26cecf5af24a647763a69186c70e4ac3ec3f768551ca177f996"
+  },
+  {
+    "file": "usinas/carta-traco.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "c2ee5fe4d77cbd60cd9f2c48d8d55b03c0b522b8399b4f4aedee62df56e55bf0"
+  },
+  {
+    "file": "usinas/fechamento-diario.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "7ae37c5c8973628113431b32aa34f1458dd2a68b85b174afbc0c83369c8a822b"
+  },
+  {
+    "file": "usinas/fechamento.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "7b3a43f7ce874a9f441279714cd8815427c0d14c81781dc6b8c47ee227598c28"
+  },
+  {
+    "file": "usinas/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "c2ee5fe4d77cbd60cd9f2c48d8d55b03c0b522b8399b4f4aedee62df56e55bf0"
+  },
+  {
+    "file": "usinas/native-areas.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "885dbff24d3c78683b17d0702a2b0c5744ad03a6c11c03bace89fecea16c05c3"
+  },
+  {
+    "file": "usinas/noroeste/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "5d5737f7c915edf82559e02aa4c206cda0282be06c81b1b6cb5c6d0a61cede1c"
+  },
+  {
+    "file": "usinas/noroeste/noro-cec.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "bd18682dc9af0ec21211ce9cac84ec5fc3d4bd6022c1f097a67c1fc961aa17d2"
+  },
+  {
+    "file": "usinas/noroeste/noro-native.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "38b472b5ab668addf4dba6dfb4bdc1456d116ecdcb952ab0e86ace956da7d9a9"
+  },
+  {
+    "file": "usinas/relatorios/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "da4f8ab8e29191fa322fcd04659f6159d5ad3356cba5dbd0c7b291c391ed08f2"
+  },
+  {
+    "file": "usinas/relatorios/cartas-traco/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "2e083db0b377e9b57f91abbddc16341250960d15fcefb1b15676491e91d29ca7"
+  },
+  {
+    "file": "usinas/relatorios/consumo/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "7d46d7910d14f74f97f6a181ce2aa03e42dd967d47d8b71ef3f0b7a6ce9ea9e6"
+  },
+  {
+    "file": "usinas/relatorios/custos/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "dfaa2f29c0bce6bafbc62688b6082dadc0674ccc2351cd36d1b3eb19fcac6401"
+  },
+  {
+    "file": "usinas/relatorios/exportar/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "949d6ff603651532827726c4c5ff937d41641ce8ee233c0dd61909efe93cce0f"
+  },
+  {
+    "file": "usinas/relatorios/fechamento/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "f4729a5f914141f2178f99237b93c4a753f6d8b293fac52de1f7d31486cd49fc"
+  },
+  {
+    "file": "usinas/relatorios/fechamento-diario/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "bfc06b8b9f91b79596130a03a9e46e138592644d422af9f4d8be29ebcbad11ed"
+  },
+  {
+    "file": "usinas/relatorios/iqt/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "57489abb1202ae1b867b850574882f5c5459cda2ec3b1108995837751f4d0155"
+  },
+  {
+    "file": "usinas/relatorios/producao-periodo/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "44833dbb3b912e3e4b9d0e0d33d21b5fedce052488705109c1d0921f8bd4cb2d"
+  },
+  {
+    "file": "usinas/relatorios/reports-diarios/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "53d429a24d583783dd18675693c42b005f5cb8b528d0c0bfaadbaf66c9c40a84"
+  },
+  {
+    "file": "usinas/relatorios/custos/carta-slide/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "56f8ffd52891cd89f9c085201b5a38f0267e18129780fae75bb7f026990cdf14"
+  },
+  {
+    "file": "usinas/relatorios/custos/comparar/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "d1fdda2e0ddb40f7160309fbd138629e2ef72eb27851a1a14aaf23be428f87da"
+  },
+  {
+    "file": "tv/formas/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "8dac30dffff9488234d3bef71d04c0cc2ab326f0919ee3d92a8ac65e16ae474f"
+  },
+  {
+    "file": "suprimentos/almoxarifado/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "d40161fc72489175439e3eaa1331330e72510f1a5573477b284c7fbeb3c02d83"
+  },
+  {
+    "file": "suprimentos/analises/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "a69aa3bd1eb1dae26b215657ce74b1aff54727ecaf62039fdfcfca386617eca7"
+  },
+  {
+    "file": "suprimentos/cadastros/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "c85def7c58c2168b5998e172faa1f5dee61845ec74b472f210129bfca33387ef"
+  },
+  {
+    "file": "suprimentos/cotacoes/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "c642d5a4536a0bc745a64619fca209329b90708de95fc280c03bceca586865a7"
+  },
+  {
+    "file": "suprimentos/fornecedores/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "20f3c657c1cea221a8580725206d14bca84aa2720ccb4522dc60e65af92cf474"
+  },
+  {
+    "file": "suprimentos/inventario/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "ef72029373e4ef43b310b61073779c6dd4ebb936af8e31f19a86d76855164c6b"
+  },
+  {
+    "file": "suprimentos/nova/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "c85def7c58c2168b5998e172faa1f5dee61845ec74b472f210129bfca33387ef"
+  },
+  {
+    "file": "suprimentos/painel/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "c85def7c58c2168b5998e172faa1f5dee61845ec74b472f210129bfca33387ef"
+  },
+  {
+    "file": "suprimentos/pwa/app.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "3e8a680d3e16627ce7248f24debed87b773c73ca675d2e1ab0eb34343b9c53e9"
+  },
+  {
+    "file": "suprimentos/pwa/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "8a1d29f3341b55d9db0ed5df7d5c7be4b8782e14d94a64d4cf0e914f7f87786e"
+  },
+  {
+    "file": "suprimentos/recebimento/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "b3792d17964155fbef70275b9052571de7ee761dc3746f0af1a363924442d83c"
+  },
+  {
+    "file": "suprimentos/solicitacao/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "c85def7c58c2168b5998e172faa1f5dee61845ec74b472f210129bfca33387ef"
+  },
+  {
+    "file": "suprimentos/solicitacoes/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "c85def7c58c2168b5998e172faa1f5dee61845ec74b472f210129bfca33387ef"
+  },
+  {
+    "file": "shell/modelo-a/menu.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "2ff68809fdbc141988df1d60f3c93e3630334bed07efd9e00265bfe694d4f645"
+  },
+  {
+    "file": "relatorios/acmp-concretagem/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "9673dbc8672512d19ecbd39ef9ff9fa1dac3150b78a7941e4bc1c336911d6b86"
+  },
+  {
+    "file": "relatorios/fechamento-diario/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "76493c92a85b2ca539048f8866f1481574f323ba4fa8f80a0f8380262bea1fe8"
+  },
+  {
+    "file": "qualidade/assets/index-Bn4z2eAt.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "c1b9a1b0d92953ff48b127227b38e56ef4dd0cc817d98d8d0dc1cf2673b5378b"
+  },
+  {
+    "file": "qualidade/assets/index-CI1pdTnl.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "32c9fed3eea7dee17828fad4673114d18ad9be0449cbdb8db1bebe52592aadb8"
+  },
+  {
+    "file": "qualidade/assets/index-DAAJAVY4.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "75647c49013b1e572e9b7fdebcf6b9e0ac22013511302254055ac99582a905ae"
+  },
+  {
+    "file": "qualidade/assets/index-Dix4Rzzi.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "7bd3f1d05fb13256f5ad3d7163d919f090674a0c397a046bcaa35d99fd2d60d4"
+  },
+  {
+    "file": "qualidade/dist/assets/index-Bn4z2eAt.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "c1b9a1b0d92953ff48b127227b38e56ef4dd0cc817d98d8d0dc1cf2673b5378b"
+  },
+  {
+    "file": "producao/campinas-unificado/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "efb482d1d253e5a9c0b7aeb4b21462f93fa59689d13c2e9d7928f63d90c12e3f"
+  },
+  {
+    "file": "producao/indicadores-gerais/app.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "86b4a4765de40a15d8b674768866348e812e9960045b3b0e3e28fab916b7a1bf"
+  },
+  {
+    "file": "producao/indicadores-gerais/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "d4742497513bbd6847f0e71f3775bbe1c21524528c6b77a6cb0073204e3a8236"
+  },
+  {
+    "file": "producao/noroeste/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "ddfc1d687ab8631710bfaeb4908b6af574cf52037eed175f8e9bba0b082a737d"
+  },
+  {
+    "file": "producao/pederneiras/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "137d167bd8b3c35befdd7be3e984de068dc6282d8f595c279d8010b7e0998741"
+  },
+  {
+    "file": "producao/ribeirao/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "5d0f1220789f6f79adc4dec46ee8530a201eed033b9cd4776747dc00fde55a72"
+  },
+  {
+    "file": "producao/ribeirao/app/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "3fc72f525c3736a1de77507e6e69e8132b8869e6e00cfd2cfa56331389ba16ef"
+  },
+  {
+    "file": "producao/ribeirao/mao-de-obra/app/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "e3cf4b8b6bd5f95281a30e34b615557fe53072843cec762ba556dafedcfacdae"
+  },
+  {
+    "file": "producao/pederneiras/app/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "622a663642b3c1f07d7c1972485382ccc176bf75a9ee95b3298d78367bcc206c"
+  },
+  {
+    "file": "producao/pederneiras/mao-de-obra/app/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "830696f90e102ea87b582ce481fffb9f9060eca586a3f4a055d722e3304f76d2"
+  },
+  {
+    "file": "producao/noroeste/app/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "fac83082be696eb48749cc1caf15f8a991803aee59ba5182360fdd77e9a43923"
+  },
+  {
+    "file": "producao/noroeste/mao-de-obra/app/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "287e868f6095abde80f4fcbfa74e71128c82de993756086d916cf7f3f4b79bb4"
+  },
+  {
+    "file": "pcp/acompanhamento-mensal/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "4add6397f324234086f9d681209924b0377d3e9acd0a331196460ec4a235f0b9"
+  },
+  {
+    "file": "pcp/acompanhamento-mensal-setor-34/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "02e1425f1c9c38517bda69a30f037b5361972c4dfd5eec79d3704a8a42a69359"
+  },
+  {
+    "file": "pcp/apontamento-mega/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "53459e5dc488f01ce4a7b5c84b250d459f525b17cc6a0654dc32de2e9b0b2ddc"
+  },
+  {
+    "file": "pcp/armaduras/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "f49038e8e90ff844204111250d1a74edae4f65c460c9d41f13e0196931788cbe"
+  },
+  {
+    "file": "pcp/armaduras-relatorio/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "f49038e8e90ff844204111250d1a74edae4f65c460c9d41f13e0196931788cbe"
+  },
+  {
+    "file": "pcp/comparacao/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "aa16cd31c8a661429427e0138724be1cfc7e2909fc1cef62e7429b9b806fbd79"
+  },
+  {
+    "file": "pcp/dashboard/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "bf18f14ce8aa12dff41d9a3bc46d4702f279b9c303cd5f923008412d40b0bc7c"
+  },
+  {
+    "file": "pcp/etiquetas/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "d3f872daadfebae6f10cd857804f5c76c9aff595f44bca52f7e35c82e0dd2422"
+  },
+  {
+    "file": "pcp/etiquetas-armaduras/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "c7c43a7dfa95d6d6524d54ae8857552c5ebadb54f47bbed213436de68b070ab1"
+  },
+  {
+    "file": "pcp/etiquetas-sc/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "f4fe30ee5c323169cfb763a66320ca8fe163daddbc3e7f948a5be21f41fc638e"
+  },
+  {
+    "file": "pcp/etiquetas-setor4/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "a4c44955992ed4a04866a9416c0d687bcd2f97f64997a9cdd019dbf83391c838"
+  },
+  {
+    "file": "pcp/fechamento-diario/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "fd4627ba0fe43fd895009a91c791e363da4a3824e3516554db9e05cece361536"
+  },
+  {
+    "file": "pcp/formas-por-setor/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "0ab0d5b1d2ec97be11ae1e61e969efa2c63bef8d525b98078acdf62427cbde53"
+  },
+  {
+    "file": "pcp/maodeobra/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "225d9fe3ae3fd8d7d496aa69a41c0a97b3b5dae29615ab4b01d3a85a1a5b73b2"
+  },
+  {
+    "file": "pcp/maodeobra-rateio/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "94eb617a805a94ac803fea4fe48c3e571ecad0e80c2385a078c316dd1b44a31b"
+  },
+  {
+    "file": "pcp/numeros-serie/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "1d2117601ce792a37d55584358b9d9c138033a89e407e3b1a80f0f1a09f811c7"
+  },
+  {
+    "file": "pcp/pcp-diario/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "07b158a5a2716fef731184f5d2c7b24f146e058081b404ca622cddd33e805a59"
+  },
+  {
+    "file": "pcp/primeiro-acesso/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "2fcd418f85d75aad484e0d5f73273cc2b876d7ba346902885cd4a7555a9a3ba9"
+  },
+  {
+    "file": "pcp/producao/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "24a4b58266b1d7bd3bfaa2643ac2a0b051c48f6b84e9f732cbe62be2b5b0a0c9"
+  },
+  {
+    "file": "pcp/programacao/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "8abf7b570d9154672e3e5fa8f9eb81332b8e9d0d20b5ac3cec63f2150b9d66a0"
+  },
+  {
+    "file": "pcp/programacao-alex/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "e48a7fba6667bccf35c628ae81cb2733e83b436d523e2847d27a9ead7ef88ed8"
+  },
+  {
+    "file": "pcp/programacao-circular-s3/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "f517a815a2523eb7783505800d943d93fd553dc3de4ac9cc9831b244f1782629"
+  },
+  {
+    "file": "pcp/programacao-circular-s4/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "3a2b059639bab228a245d81b0b4127ed44e0e072953c7c62a5e424ebb8c94632"
+  },
+  {
+    "file": "pcp/programacao-final/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "e713d71eeda96bf4f47ec2334c4b2d14244ba347e6ba2e0c861c2b34747b83fb"
+  },
+  {
+    "file": "pcp/programacao-semanal/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "520e7223af024d9bd2b25aa523a6ba9008e5c1e56b9d5b53b1bc73ce03b3c7f2"
+  },
+  {
+    "file": "pcp/programacao-semanal/semana.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "1382abceea88adbdce30dc2678d57d6edcf36e1277ffdd094696ae6a23045bdf"
+  },
+  {
+    "file": "pcp/relatorio-producao/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "994c67186d1a1687ca6e6e742ef552eb43527594e88a47387a3feca77683e836"
+  },
+  {
+    "file": "pcp/relatorio-programacao-s3/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "e1f986f743c29ac80826e8894b14cf8483a0590d73583f8d9d35cd750eadb497"
+  },
+  {
+    "file": "pcp/relatorio-programacao-s4/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "98353240985a6c924995c6a33ea7102ef6f685208a03bd6745fb75faaf22bae8"
+  },
+  {
+    "file": "pcp/teste-programacao/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "ef49ea173cfde17024a8cf89da4eaf8f18b520ad6ddb0ca55bfda5da9186f5ff"
+  },
+  {
+    "file": "pcp/usuarios/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "2cf66abd8ca0740af8041dbd9f5f4a6ecf1189a4ec5be236fb2615ac90c2c9eb"
+  },
+  {
+    "file": "mapa/operacao/dashboard-defeitos-v5.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "9c63a2ddb3ed3c2e1275fe89e5fa6821957f189daca8a36ffe79d2cf62c10510"
+  },
+  {
+    "file": "mapa/operacao/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "813dc56899242a27abe2eda061943a630bb37b464fac724a7bfce9679938daae"
+  },
+  {
+    "file": "mapa/operacao/manifest.json",
+    "kind": "display label / asset version only",
+    "before_sha256": "d4ee8f236bacf3340daae6cd6b05758deaa9aa3b9f06382ed5385db680c1800c"
+  },
+  {
+    "file": "mapa/operacao/unificado-bridge.js",
+    "kind": "display label / asset version only",
+    "before_sha256": "fd769cc8eac68c0ffa07b1a2d7a1ed72ce2e77ca4d1db8ce3d01607d9596c5c9"
+  },
+  {
+    "file": "m/inspecao/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "52f0bd4ba0ff2f56ea8058c954854d784042e024eea360671797654edb17fb3d"
+  },
+  {
+    "file": "m/inspecao/login.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "91c784f83bcffe26851dc8986bfb3fc4280d504ca3e2597fbb75770a6436b523"
+  },
+  {
+    "file": "m/inspecao/menu.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "eeb4c377d08bba22e8d4b42e5ea4400c85b4071c1ae75a48f96a916c572816ec"
+  },
+  {
+    "file": "m/maodeobra/index.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "75f522a2a6c2a751663006d2c360c9f1b0b911653589cd489f7b181c48f7cf98"
+  },
+  {
+    "file": "m/maodeobra/login.html",
+    "kind": "display label / asset version only",
+    "before_sha256": "a3eb89c8409b4a2abab1a83fce0597d18886dac8896fe94f1f0d769442aeee3c"
+  }
+]

@@ -26,7 +26,7 @@
       {id:'fechamento',title:'Fechamento mensal',description:'Indicadores do fechamento da usina.',path:'relatorios/fechamento'},
       {id:'fechamento-diario',title:'Fechamento diário',description:'PCP x Produção + Qualidade de Ribeirão.',path:'relatorios/fechamento-diario'},
       {id:'producao',title:'Produção por período',description:'Massadas e indicadores de ritmo no período.',path:'relatorios/producao-periodo',fields:[D('data_ini','Data inicial'),D('data_fim','Data final'),D('produto','Produto','text','')]},
-      {id:'reports',title:'Reports diários',description:'A geração dos reports executa uma rotina na origem e ainda não está disponível no Unificado.'}
+      {id:'reports',title:'Reports diários',description:'A geração dos reports executa uma rotina na origem e ainda não está disponível no Uni.'}
     ],
     estoque:[
       {id:'entrada',title:'Entrada de materiais',description:'Consulte entradas registradas. O cadastro de notas permanece pendente.',path:'estoque/movimentos',fixed:{tipo:'entrada',limit:'100'},fields:[D('data_ini','Data inicial'),D('data_fim','Data final')]},
@@ -92,7 +92,7 @@
     panel.querySelectorAll('[data-filter]').forEach(input=>{if(input.value.trim())qs.set(input.name,input.value.trim())});
     try{
       const response=await fetch(base+current.path+(qs.size?'?'+qs:''),{credentials:'same-origin',cache:'no-store'});
-      if(response.status===401){showStatus(nativeReport?'Sua sessão do Unificado expirou. Entre novamente.':'Entre com sua conta antiga do ConcreTrack para consultar esta tela.',true);const loginBox=panel.querySelector('.native-login');if(loginBox)loginBox.hidden=false;return}
+      if(response.status===401){showStatus(nativeReport?'Sua sessão do Uni expirou. Entre novamente.':'Entre com sua conta antiga do ConcreTrack para consultar esta tela.',true);const loginBox=panel.querySelector('.native-login');if(loginBox)loginBox.hidden=false;return}
       const payload=await response.json();
       if(!response.ok)throw new Error(payload.detail||payload.error||`Consulta falhou (${response.status}).`);
       const loginBox=panel.querySelector('.native-login');if(loginBox)loginBox.hidden=true;

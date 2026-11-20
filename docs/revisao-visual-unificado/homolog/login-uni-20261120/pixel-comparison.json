@@ -1,0 +1,392 @@
+[
+  {
+    "width": 1024,
+    "before": {
+      ".login-card": {
+        "x": 302,
+        "y": 205.171875,
+        "width": 420,
+        "height": 512.640625
+      },
+      ".login-brand": {
+        "x": 332,
+        "y": 235.171875,
+        "width": 360,
+        "height": 76
+      },
+      "#login-title": {
+        "x": 332,
+        "y": 339.171875,
+        "width": 360,
+        "height": 36
+      },
+      ".login-field input[name=username]": {
+        "x": 332,
+        "y": 455.765625,
+        "width": 360,
+        "height": 43
+      },
+      ".login-field input[name=password]": {
+        "x": 332,
+        "y": 542.0625,
+        "width": 360,
+        "height": 43
+      },
+      ".login-submit": {
+        "x": 332,
+        "y": 608.0625,
+        "width": 360,
+        "height": 37
+      },
+      ".login-note": {
+        "x": 332,
+        "y": 669.0625,
+        "width": 360,
+        "height": 18.75
+      },
+      "#unificado-version": {
+        "x": 971.65625,
+        "y": 747,
+        "width": 42.34375,
+        "height": 13
+      },
+      ".login-remember": null,
+      "#login-feedback": {
+        "x": 332,
+        "y": 654.0625,
+        "width": 360,
+        "height": 0
+      }
+    },
+    "after": {
+      ".login-card": {
+        "x": 302,
+        "y": 205.171875,
+        "width": 420,
+        "height": 512.640625
+      },
+      ".login-brand": {
+        "x": 332,
+        "y": 235.171875,
+        "width": 360,
+        "height": 76
+      },
+      "#login-title": {
+        "x": 332,
+        "y": 339.171875,
+        "width": 360,
+        "height": 36
+      },
+      ".login-field input[name=username]": {
+        "x": 332,
+        "y": 455.765625,
+        "width": 360,
+        "height": 43
+      },
+      ".login-field input[name=password]": {
+        "x": 332,
+        "y": 542.0625,
+        "width": 360,
+        "height": 43
+      },
+      ".login-submit": {
+        "x": 332,
+        "y": 608.0625,
+        "width": 360,
+        "height": 37
+      },
+      ".login-note": {
+        "x": 332,
+        "y": 669.0625,
+        "width": 360,
+        "height": 35.75
+      },
+      "#unificado-version": {
+        "x": 953.515625,
+        "y": 747,
+        "width": 60.484375,
+        "height": 13
+      },
+      ".login-remember": {
+        "x": 332,
+        "y": 586.21875,
+        "width": 360,
+        "height": 18.84375
+      },
+      "#login-feedback": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    "mask_selectors": [
+      "#login-title",
+      ".login-note",
+      "#unificado-version",
+      ".login-remember",
+      "#login-feedback"
+    ],
+    "changed_pixels_outside_allowed": 0
+  },
+  {
+    "width": 820,
+    "before": {
+      ".login-card": {
+        "x": 200,
+        "y": 411.171875,
+        "width": 420,
+        "height": 512.640625
+      },
+      ".login-brand": {
+        "x": 230,
+        "y": 441.171875,
+        "width": 360,
+        "height": 76
+      },
+      "#login-title": {
+        "x": 230,
+        "y": 545.171875,
+        "width": 360,
+        "height": 36
+      },
+      ".login-field input[name=username]": {
+        "x": 230,
+        "y": 661.765625,
+        "width": 360,
+        "height": 43
+      },
+      ".login-field input[name=password]": {
+        "x": 230,
+        "y": 748.0625,
+        "width": 360,
+        "height": 43
+      },
+      ".login-submit": {
+        "x": 230,
+        "y": 814.0625,
+        "width": 360,
+        "height": 37
+      },
+      ".login-note": {
+        "x": 230,
+        "y": 875.0625,
+        "width": 360,
+        "height": 18.75
+      },
+      "#unificado-version": {
+        "x": 767.65625,
+        "y": 1159,
+        "width": 42.34375,
+        "height": 13
+      },
+      ".login-remember": null,
+      "#login-feedback": {
+        "x": 230,
+        "y": 860.0625,
+        "width": 360,
+        "height": 0
+      }
+    },
+    "after": {
+      ".login-card": {
+        "x": 200,
+        "y": 411.171875,
+        "width": 420,
+        "height": 512.640625
+      },
+      ".login-brand": {
+        "x": 230,
+        "y": 441.171875,
+        "width": 360,
+        "height": 76
+      },
+      "#login-title": {
+        "x": 230,
+        "y": 545.171875,
+        "width": 360,
+        "height": 36
+      },
+      ".login-field input[name=username]": {
+        "x": 230,
+        "y": 661.765625,
+        "width": 360,
+        "height": 43
+      },
+      ".login-field input[name=password]": {
+        "x": 230,
+        "y": 748.0625,
+        "width": 360,
+        "height": 43
+      },
+      ".login-submit": {
+        "x": 230,
+        "y": 814.0625,
+        "width": 360,
+        "height": 37
+      },
+      ".login-note": {
+        "x": 230,
+        "y": 875.0625,
+        "width": 360,
+        "height": 35.75
+      },
+      "#unificado-version": {
+        "x": 749.515625,
+        "y": 1159,
+        "width": 60.484375,
+        "height": 13
+      },
+      ".login-remember": {
+        "x": 230,
+        "y": 792.21875,
+        "width": 360,
+        "height": 18.84375
+      },
+      "#login-feedback": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    "mask_selectors": [
+      "#login-title",
+      ".login-note",
+      "#unificado-version",
+      ".login-remember",
+      "#login-feedback"
+    ],
+    "changed_pixels_outside_allowed": 0
+  },
+  {
+    "width": 390,
+    "before": {
+      ".login-card": {
+        "x": 24,
+        "y": 233.03125,
+        "width": 342,
+        "height": 532.9375
+      },
+      ".login-brand": {
+        "x": 54,
+        "y": 263.03125,
+        "width": 282,
+        "height": 76
+      },
+      "#login-title": {
+        "x": 54,
+        "y": 367.03125,
+        "width": 282,
+        "height": 36
+      },
+      ".login-field input[name=username]": {
+        "x": 54,
+        "y": 503.921875,
+        "width": 282,
+        "height": 43
+      },
+      ".login-field input[name=password]": {
+        "x": 54,
+        "y": 590.21875,
+        "width": 282,
+        "height": 43
+      },
+      ".login-submit": {
+        "x": 54,
+        "y": 656.21875,
+        "width": 282,
+        "height": 37
+      },
+      ".login-note": {
+        "x": 54,
+        "y": 717.21875,
+        "width": 282,
+        "height": 18.75
+      },
+      "#unificado-version": {
+        "x": 337.65625,
+        "y": 823,
+        "width": 42.34375,
+        "height": 13
+      },
+      ".login-remember": null,
+      "#login-feedback": {
+        "x": 54,
+        "y": 702.21875,
+        "width": 282,
+        "height": 0
+      }
+    },
+    "after": {
+      ".login-card": {
+        "x": 24,
+        "y": 233.03125,
+        "width": 342,
+        "height": 532.9375
+      },
+      ".login-brand": {
+        "x": 54,
+        "y": 263.03125,
+        "width": 282,
+        "height": 76
+      },
+      "#login-title": {
+        "x": 54,
+        "y": 367.03125,
+        "width": 282,
+        "height": 36
+      },
+      ".login-field input[name=username]": {
+        "x": 54,
+        "y": 503.921875,
+        "width": 282,
+        "height": 43
+      },
+      ".login-field input[name=password]": {
+        "x": 54,
+        "y": 590.21875,
+        "width": 282,
+        "height": 43
+      },
+      ".login-submit": {
+        "x": 54,
+        "y": 656.21875,
+        "width": 282,
+        "height": 37
+      },
+      ".login-note": {
+        "x": 54,
+        "y": 717.21875,
+        "width": 282,
+        "height": 35.75
+      },
+      "#unificado-version": {
+        "x": 319.515625,
+        "y": 823,
+        "width": 60.484375,
+        "height": 13
+      },
+      ".login-remember": {
+        "x": 54,
+        "y": 634.375,
+        "width": 282,
+        "height": 18.84375
+      },
+      "#login-feedback": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    "mask_selectors": [
+      "#login-title",
+      ".login-note",
+      "#unificado-version",
+      ".login-remember",
+      "#login-feedback"
+    ],
+    "changed_pixels_outside_allowed": 0
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "manifest": {
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/manifest.webmanifest?v=1.4.26",
+    "errors": [],
+    "data": "{\n  \"id\": \"/unificado/mapa/operacao/index.html\",\n  \"name\": \"Concrefer Unificado\",\n  \"short_name\": \"Concrefer\",\n  \"start_url\": \"/unificado/\",\n  \"scope\": \"/unificado/\",\n  \"display\": \"standalone\",\n  \"orientation\": \"any\",\n  \"background_color\": \"#0B1730\",\n  \"theme_color\": \"#0B1730\",\n  \"icons\": [\n    {\n      \"src\": \"/unificado/assets/img/unificado-pwa-icon.svg\",\n      \"sizes\": \"any\",\n      \"type\": \"image/svg+xml\",\n      \"purpose\": \"any\"\n    },\n    {\n      \"src\": \"/unificado/mapa/operacao/unificado-icon.png\",\n      \"sizes\": \"1254x1254\",\n      \"type\": \"image/png\",\n      \"purpose\": \"any maskable\"\n    }\n  ]\n}\n",
+    "parsed": {
+      "scope": "https://concrefer.concretrack.com.br:18446/unificado/"
+    },
+    "manifest": {
+      "backgroundColor": "rgba(11,23,48,1)",
+      "display": "kStandalone",
+      "icons": [
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/unificado-pwa-icon.svg",
+          "sizes": "0x0",
+          "type": "image/svg+xml"
+        },
+        {
+          "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/unificado-icon.png",
+          "sizes": "1254x1254",
+          "type": "image/png"
+        }
+      ],
+      "id": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/index.html",
+      "name": "Concrefer Unificado",
+      "orientation": "ANY",
+      "preferRelatedApplications": false,
+      "scope": "https://concrefer.concretrack.com.br:18446/unificado/",
+      "startUrl": "https://concrefer.concretrack.com.br:18446/unificado/",
+      "themeColor": "rgba(11,23,48,1)"
+    }
+  },
+  "errors": {
+    "installabilityErrors": []
+  }
+}

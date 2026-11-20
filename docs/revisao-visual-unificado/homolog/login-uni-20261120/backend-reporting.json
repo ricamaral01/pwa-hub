@@ -1,0 +1,24 @@
+{
+  "unit": "unificado-visual-homolog-reporting.service",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-reporting-20261120T135314Z",
+  "changes": [
+    {
+      "file": "reporting/reporting_service/legacy_reports.py",
+      "before_sha256": "23d4014914c7aca564fafa7efd0bb723053b612211337db4e1d7cf48ba313159",
+      "after_sha256": "8862c1e408d9418f57598faacd899a197153cc9de909681bc1e37da43de4dd97",
+      "patch": "--- reporting/reporting_service/legacy_reports.py\n+++ reporting/reporting_service/legacy_reports.py\n@@ -356,7 +356,7 @@\n def _unificado_get(resource: str, data_ref: date):\n     key = os.getenv(\"MAPA_USINA_INTEGRATION_KEY\", \"\").strip()\n     if not key:\n-        raise RuntimeError(\"Chave de integracao do Mapa Unificado nao configurada\")\n+        raise RuntimeError(\"Chave de integracao do Mapa Uni nao configurada\")\n     url = (\n         \"https://concrefer.concretrack.com.br:18446/unificado/mapa/api/\"\n         f\"integrations/usina/{resource}?data={data_ref.isoformat()}\"\n@@ -371,7 +371,7 @@\n     try:\n         payload = _unificado_get(\"formas\", data_ref)\n         if payload.get(\"data_filtro\") != data_ref.isoformat() or not isinstance(payload.get(\"rows\"), list):\n-            raise ValueError(\"Resposta invalida do Mapa Unificado\")\n+            raise ValueError(\"Resposta invalida do Mapa Uni\")\n         rows = [row for row in payload[\"rows\"]\n                 if _normalize_upper(row.get(\"status\")) in {\"LIBERADO\", \"INSPECIONADO\"}]\n         rows = _dedupe_producao_mapa(rows)\n@@ -543,10 +543,10 @@\n     try:\n         payload = _unificado_get(\"mao-de-obra\", data_ref)\n         if payload.get(\"data_filtro\") != data_ref.isoformat():\n-            raise ValueError(\"Resposta invalida do PCP Unificado\")\n+            raise ValueError(\"Resposta invalida do PCP Uni\")\n         setores = payload.get(\"setores\") or []\n         if {str(row.get(\"grupo_setor\")) for row in setores} != {\"12\", \"3\", \"4\"}:\n-            raise ValueError(\"Grupos MOD incompletos no PCP Unificado\")\n+            raise ValueError(\"Grupos MOD incompletos no PCP Uni\")\n         lancamentos = sum(int(row.get(\"lancamentos\") or 0) for row in setores)\n         setores_lancados = sum(1 for row in setores if int(row.get(\"lancamentos\") or 0) > 0)\n         quantidade = sum(int(row.get(\"quantidade\") or 0) for row in setores) if lancamentos else None\n"
+    }
+  ],
+  "changed_files": 1,
+  "restarted": true,
+  "responds": true,
+  "connections_before": 66,
+  "connections_after": 66,
+  "database_writes": 0,
+  "business_logic_unchanged_ast": true,
+  "rollback": {
+    "copy_each_file_from": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-reporting-20261120T135314Z",
+    "copy_to": "/opt/concrefer-unificado/homolog-next/visual-full",
+    "restart_only": "unificado-visual-homolog-reporting.service"
+  }
+}

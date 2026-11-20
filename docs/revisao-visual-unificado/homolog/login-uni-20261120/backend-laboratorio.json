@@ -1,0 +1,50 @@
+{
+  "unit": "unificado-visual-homolog-laboratorio.service",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-laboratorio-20261120T135301Z",
+  "changes": [
+    {
+      "file": "laboratorio/cronoanalise/api.py",
+      "before_sha256": "a0dfc26f1954a1029446fe6c74785aecd68db5a874f3ce4d7bc5173dcdd22e7a",
+      "after_sha256": "af40bb6258c57311d133445591d395c4c5733edfd4c15944f8002d9d0f17445c",
+      "patch": "--- laboratorio/cronoanalise/api.py\n+++ laboratorio/cronoanalise/api.py\n@@ -43,7 +43,7 @@\n def actor(request: Request):\n     user = gateway_user(request)\n     if not user:\n-        raise CronoError(401, \"sessao_invalida\", \"Entre novamente no Unificado.\")\n+        raise CronoError(401, \"sessao_invalida\", \"Entre novamente no Uni.\")\n     if not user.crono_screens:\n         raise CronoError(403, \"sem_permissao\", \"Cronoanálise não liberada para este usuário.\")\n     return user\n"
+    }
+  ],
+  "changed_files": 1,
+  "restarted": true,
+  "responds": true,
+  "connections_before": 73,
+  "connections_after": 67,
+  "database_writes": 0,
+  "business_logic_unchanged_ast": true,
+  "rollback": {
+    "copy_each_file_from": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-laboratorio-20261120T135301Z",
+    "copy_to": "/opt/concrefer-unificado/homolog-next/visual-full",
+    "restart_only": "unificado-visual-homolog-laboratorio.service"
+  },
+  "previous_changes": [
+    {
+      "unit": "unificado-visual-homolog-laboratorio.service",
+      "backup": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-laboratorio-20261120T133602Z",
+      "changes": [
+        {
+          "file": "laboratorio/server/cec_api.py",
+          "before_sha256": "311a771e7569fb1e9943a58ef4eaaa456ae74646ac302acc2bd0bfa5c82b2f8a",
+          "after_sha256": "e909145a90a683fee4b3589f51055dbe9c6bc075135f985028b65db197fdcfa7",
+          "patch": "--- laboratorio/server/cec_api.py\n+++ laboratorio/server/cec_api.py\n@@ -106,7 +106,7 @@\n     user = gateway_user(request)\n     factory = getattr(request.app.state, 'postes_session', None)\n     if not user:\n-        raise HTTPException(401, 'Sessão do Unificado inválida.')\n+        raise HTTPException(401, 'Sessão do Uni inválida.')\n     if factory is None:\n         raise HTTPException(503, 'Banco do Laboratório indisponível.')\n     if (item.massada_id <= 0 or not item.numero_serie.strip() or not item.traco.strip()\n@@ -162,7 +162,7 @@\n     from .postes_api import gateway_user\n     user = gateway_user(request)\n     if not user:\n-        raise HTTPException(401, 'Sessão do Unificado inválida.')\n+        raise HTTPException(401, 'Sessão do Uni inválida.')\n     return {'id': user.id, 'name': user.username}\n \n \n@@ -171,7 +171,7 @@\n     from .postes_api import gateway_user\n     user = gateway_user(request)\n     if not user:\n-        raise HTTPException(401, 'Sessão do Unificado inválida.')\n+        raise HTTPException(401, 'Sessão do Uni inválida.')\n     if len(item.qr_raw) > 2000:\n         raise HTTPException(400, 'QR inválido.')\n     parsed = parse_qr(item.qr_raw)\n"
+        }
+      ],
+      "changed_files": 1,
+      "restarted": true,
+      "responds": true,
+      "connections_before": 72,
+      "connections_after": 69,
+      "database_writes": 0,
+      "business_logic_unchanged_ast": true,
+      "rollback": {
+        "copy_each_file_from": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-laboratorio-20261120T133602Z",
+        "copy_to": "/opt/concrefer-unificado/homolog-next/visual-full",
+        "restart_only": "unificado-visual-homolog-laboratorio.service"
+      }
+    }
+  ]
+}

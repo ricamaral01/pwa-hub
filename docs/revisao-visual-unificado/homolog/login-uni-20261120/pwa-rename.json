@@ -1,0 +1,33 @@
+{
+  "after_upgrade_without_reinstall": {
+    "chrome_apps": [
+      {
+        "id": "nfbgdffjclcmfjhepjfgibbhopcolfmk",
+        "title": null,
+        "name": "Concrefer Unificado",
+        "text": "Concrefer Unificado\n\n\n\n  \n    Ver na Chrome Web Store\n  \n  \n    Abrir na janela\n  \n  \n    Abrir na inicialização\n  \n  \n    Criar atalho\n  \n  \n    Instalar neste dispositivo\n  \n  \n  \n    Desinstalar\n  \n  \n    Remover do Google Chrome\n  \n  \n    Configurações do app"
+      }
+    ],
+    "windows_shortcut_paths": [
+      "C:\\Users\\Admin\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Concrefer.lnk",
+      "C:\\Users\\Admin\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\apps do Chrome\\Concrefer Unificado.lnk"
+    ]
+  },
+  "after_separate_name_reinstall_test": {
+    "chrome_apps": [
+      {
+        "id": "nfbgdffjclcmfjhepjfgibbhopcolfmk",
+        "title": null,
+        "name": "Uni",
+        "text": "Uni\n\n\n\n  \n    Ver na Chrome Web Store\n  \n  \n    Abrir na janela\n  \n  \n    Abrir na inicialização\n  \n  \n    Criar atalho\n  \n  \n    Instalar neste dispositivo\n  \n  \n  \n    Desinstalar\n  \n  \n    Remover do Google Chrome\n  \n  \n    Configurações do app"
+      }
+    ],
+    "windows_shortcut_paths": [
+      "C:\\Users\\Admin\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Concrefer.lnk",
+      "C:\\Users\\Admin\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\apps do Chrome\\Uni.lnk"
+    ]
+  },
+  "name_uni_proven_after_reinstall": true,
+  "upgrade_evidence_saved_before_reinstall": true,
+  "scope": "Only the 18446 test app in its dedicated Chrome profile; production app untouched"
+}

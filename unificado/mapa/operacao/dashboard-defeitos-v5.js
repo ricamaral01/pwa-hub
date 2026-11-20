@@ -292,8 +292,8 @@
     panel.append(detail);
     const source = document.createElement('small');
     source.textContent = view === 'history'
-      ? 'Fonte: imagem enviada (jan–set/2026, total geral); outubro: Unificado, conferido em 06/11/2026. Média = total de defeitos ÷ total produzido nos meses com dados.'
-      : 'Fonte: inspeções registradas no Unificado. Aplicados os mesmos filtros de setor, status e busca; período anual completo.';
+      ? 'Fonte: imagem enviada (jan–set/2026, total geral); outubro: Uni, conferido em 06/11/2026. Média = total de defeitos ÷ total produzido nos meses com dados.'
+      : 'Fonte: inspeções registradas no Uni. Aplicados os mesmos filtros de setor, status e busca; período anual completo.';
     panel.append(source);
   }
 

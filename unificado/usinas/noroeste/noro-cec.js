@@ -60,7 +60,7 @@ function renderTable(rows, onDelete, api) {
     const tr=element('tr');
     const values=[String(row.created_at||'').slice(0,16).replace('T',' '),row.traco,
       row.numero_serie,row.cp,row.idade,row.data_moldagem,row.data_ruptura,
-      row.resistencia_mpa,row.fonte_tabela==='unificado'?'Unificado':'Legado'];
+      row.resistencia_mpa,row.fonte_tabela==='unificado'?'Uni':'Legado'];
     for(const value of values) tr.append(element('td',value ?? '—'));
     const action=element('td');
     if(row.fonte_tabela==='unificado' && row.local_id){
@@ -81,7 +81,7 @@ function renderTable(rows, onDelete, api) {
 export async function mountCec(container, api) {
   if (activeOnlineHandler) window.removeEventListener('online', activeOnlineHandler);
   const title=element('h2','Leituras de corpos de prova','noro-section-title');
-  const notice=element('p','Registros novos ficam no Unificado. O aplicativo antigo continua oficial durante o paralelo.','noro-note');
+  const notice=element('p','Registros novos ficam no Uni. O aplicativo antigo continua oficial durante o paralelo.','noro-note');
   const status=element('p','', 'noro-note');
   const cards=element('div',undefined,'noro-grid');
   const list=element('div');
@@ -206,7 +206,7 @@ export async function mountCec(container, api) {
           feedback.textContent=`Envio pendente: ${data.error||response.status}`;break;
         }
         await queueOp('readwrite','delete',item.local_id);
-        feedback.textContent='Leitura enviada ao Unificado.';
+        feedback.textContent='Leitura enviada ao Uni.';
       }
       if (navigator.onLine) await refresh();
       else await pendingCount();

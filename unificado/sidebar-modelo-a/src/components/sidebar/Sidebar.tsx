@@ -172,7 +172,7 @@ export function Sidebar(p: SidebarProps) {
           <span className="sb-user-text">
             <span className="sb-user-name">{p.user.name}</span>
             <span className="sb-user-meta">{p.user.role}</span>
-            <span className="sb-user-meta sb-mono">v{p.version}</span>
+            <span className="sb-user-meta sb-mono">Uni {p.version}</span>
           </span>
           <button type="button" className="sb-iconbtn" aria-label="Sair" data-tip="Sair" onClick={p.onLogout}>
             <Icon name="logout" />

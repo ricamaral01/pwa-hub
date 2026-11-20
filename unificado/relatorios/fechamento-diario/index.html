@@ -10,7 +10,7 @@
   <link href="/unificado/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
   <link href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   
-  <script src="/unificado/shell/auth.js?v=1.4.26"></script>
+  <script src="/unificado/shell/auth.js?v=1.4.27"></script>
   <script src="/unificado/vendor/published/html2pdf.bundle.min-651b119678.js"></script>
   <script src="/unificado/vendor/published/html2canvas.min-3e8c1b841f.js"></script>
   <script src="/unificado/vendor/published/jspdf.umd.min-a15ba80217.js"></script>
@@ -351,8 +351,8 @@ table.report-table{width:100%;border-collapse:collapse;font-size:13px;}
 
 }
 </style>
-<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26">
-<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/remaining-visual.css?v=1.4.26"><script defer src="/unificado/shell/components.js?v=1.4.26"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/remaining-visual.css?v=1.4.27"><script defer src="/unificado/shell/components.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"></head>
 <body>
   <div class="topbar">
     <div class="container">
@@ -546,7 +546,7 @@ table.report-table{width:100%;border-collapse:collapse;font-size:13px;}
       report.innerHTML = `
         <div class="report-header">
           <div class="brand">
-            <img class="logo-concrefer" src="/unificado/assets/img/logo-concrefer.png?v=1.4.26" alt="Concrefer">
+            <img class="logo-concrefer" src="/unificado/assets/img/logo-concrefer.png?v=1.4.27" alt="Concrefer">
           </div>
           <div class="report-title"><h2>Fechamento Diario</h2><p>Unidade Campinas</p></div>
           <div class="date-badge"><span>Data de producao</span><strong>${fmtDate(data.data)}</strong></div>
@@ -557,7 +557,7 @@ table.report-table{width:100%;border-collapse:collapse;font-size:13px;}
             <span class="text-muted small fw-bold">Atualizado em ${atualizado}</span>
           </div>
           <div class="kpis">
-            <div class="kpi"><span>Total de postes</span><small>Mapa Unificado</small><strong>${fmtInt(c.total_postes_produzidos)}</strong></div>
+            <div class="kpi"><span>Total de postes</span><small>Mapa Uni</small><strong>${fmtInt(c.total_postes_produzidos)}</strong></div>
             <div class="kpi"><span>Concreto registrado</span><small>Usina até ${escapeHtml(String(data.fontes?.volume?.ultima || "-").slice(0, 5))}</small><strong>${fmtNum(c.total_m3_concreto_produzido)}</strong></div>
             <div class="kpi"><span>Funcionários MOD</span><small>Setores 1+2, 3 e 4</small><strong>${fmtInt(funcionarios)}</strong></div>
             <div class="kpi"><span>m³ por funcionário</span><small>Volume da usina / MOD</small><strong>${fmtNum(indiceM3Funcionario)}</strong></div>
@@ -568,12 +568,12 @@ table.report-table{width:100%;border-collapse:collapse;font-size:13px;}
             <div class="section-head"><h3>Resumo por setor</h3><span>postes e volume estimado</span></div>
             <div class="table-scroll"><table class="report-table">
               <thead><tr><th>Setor</th><th class="text-end">Postes</th><th class="text-end">m³ estimado</th></tr></thead>
-              <tbody>${setores.length ? setores.map(s => `<tr><td class="type">${escapeHtml(s.setor)}</td><td class="num">${fmtInt(s.postes)}</td><td class="num m3">${fmtVolumePostes(s)}</td></tr>`).join("") : `<tr><td colspan="3" class="text-center fw-bold">Sem registros por setor no Mapa Unificado nesta data</td></tr>`}</tbody>
+              <tbody>${setores.length ? setores.map(s => `<tr><td class="type">${escapeHtml(s.setor)}</td><td class="num">${fmtInt(s.postes)}</td><td class="num m3">${fmtVolumePostes(s)}</td></tr>`).join("") : `<tr><td colspan="3" class="text-center fw-bold">Sem registros por setor no Mapa Uni nesta data</td></tr>`}</tbody>
               <tfoot><tr><th>Total</th><th class="num">${fmtInt(setores.reduce((sum, s) => sum + Number(s.postes || 0), 0))}</th><th class="num m3">${fmtVolumePostes({m3:c.m3_estimado_postes,m3_identificado:c.m3_postes_identificados,postes_sem_peso:c.postes_sem_peso})}</th></tr></tfoot>
             </table></div>
           </div>
           <div class="section section-labor">
-            <div class="section-head"><h3>Mão de obra direta por grupo</h3><span>PCP Unificado - MOD</span></div>
+            <div class="section-head"><h3>Mão de obra direta por grupo</h3><span>PCP Uni - MOD</span></div>
             <div class="table-scroll"><table class="report-table">
               <thead><tr><th>Grupo</th><th class="text-end">Trabalhadores</th></tr></thead>
               <tbody>${maoSetores.some(s => Number(s.lancamentos) > 0) ? maoSetores.map(s => `<tr><td class="type">${escapeHtml(s.setor)}</td><td class="num">${Number(s.lancamentos) > 0 ? fmtInt(s.quantidade) : "-"}</td></tr>`).join("") : `<tr><td colspan="2" class="text-center fw-bold">Sem lancamentos de mao de obra direta nesta data</td></tr>`}</tbody>
@@ -602,7 +602,7 @@ table.report-table{width:100%;border-collapse:collapse;font-size:13px;}
             <div class="section-head"><h3>Produção de postes</h3><span>volume estimado por tipo</span></div>
             <div class="table-scroll"><table class="report-table">
               <thead><tr><th>Tipo / forma</th><th class="text-end">Qtd</th><th class="text-end">m³ estimado</th></tr></thead>
-              <tbody>${postes.length ? postes.map(p => `<tr><td class="type">${escapeHtml(p.tipo)}</td><td class="num">${fmtInt(p.qtd)}</td><td class="num m3">${fmtVolumePostes(p)}</td></tr>`).join("") : `<tr><td colspan="3" class="text-center fw-bold">Sem postes registrados no Mapa Unificado nesta data</td></tr>`}</tbody>
+              <tbody>${postes.length ? postes.map(p => `<tr><td class="type">${escapeHtml(p.tipo)}</td><td class="num">${fmtInt(p.qtd)}</td><td class="num m3">${fmtVolumePostes(p)}</td></tr>`).join("") : `<tr><td colspan="3" class="text-center fw-bold">Sem postes registrados no Mapa Uni nesta data</td></tr>`}</tbody>
               <tfoot><tr><th>Total</th><th class="num">${fmtInt(c.total_postes_produzidos)}</th><th class="num m3">${fmtVolumePostes({m3:c.m3_estimado_postes,m3_identificado:c.m3_postes_identificados,postes_sem_peso:c.postes_sem_peso})}</th></tr></tfoot>
             </table></div>
           </div>
@@ -690,12 +690,12 @@ table.report-table{width:100%;border-collapse:collapse;font-size:13px;}
         document.getElementById("shareText").value = buildShareText(currentReport);
         const mapaSrc = currentReport.fontes?.postes || {};
         if (mapaSrc.status !== "ok") {
-          warnMapa.textContent = `Postes do Mapa Unificado nao disponiveis para esta data. Detalhe: ${statusLabel(mapaSrc)}.`;
+          warnMapa.textContent = `Postes do Mapa Uni nao disponiveis para esta data. Detalhe: ${statusLabel(mapaSrc)}.`;
           warnMapa.style.display = "block";
         }
         const funcSrc = currentReport.fontes?.funcionarios || {};
         if (funcSrc.status !== "ok") {
-          warnFuncionarios.textContent = `Mão de obra direta dos grupos 1+2, 3 e 4 incompleta ou sem lancamento no PCP Unificado para esta data. Os indices de produtividade por trabalhador ficam indisponiveis. Detalhe: ${statusLabel(funcSrc)}.`;
+          warnFuncionarios.textContent = `Mão de obra direta dos grupos 1+2, 3 e 4 incompleta ou sem lancamento no PCP Uni para esta data. Os indices de produtividade por trabalhador ficam indisponiveis. Detalhe: ${statusLabel(funcSrc)}.`;
           warnFuncionarios.style.display = "block";
         }
         const armSrc = currentReport.fontes?.armacoes || {};

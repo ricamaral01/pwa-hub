@@ -9,7 +9,7 @@
         if(!observedShadows.has(shadow)){
           observedShadows.add(shadow);
           const style=document.createElement('link');style.rel='stylesheet';
-          style.href=document.querySelector('link[href*="review-complete.css"]')?.href||'/unificado/shell/review-complete.css?v=1.4.26';
+          style.href=document.querySelector('link[href*="review-complete.css"]')?.href||'/unificado/shell/review-complete.css?v=1.4.27';
           shadow.append(style);
           new MutationObserver(schedule).observe(shadow,{childList:true,characterData:true,subtree:true});
         }

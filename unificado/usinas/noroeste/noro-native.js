@@ -1,5 +1,5 @@
 const API = '/unificado/mapa/api/usinas/noro';
-const STYLE = '/unificado/usinas/noroeste/noro-native.css?v=1.4.26';
+const STYLE = '/unificado/usinas/noroeste/noro-native.css?v=1.4.27';
 const label = {painel:'Painel',massadas:'Massadas',cartas:'Cartas de traço',relatorios:'Relatórios',cec:'Controle estatístico',cadastros:'Cadastros',estoque:'Estoque',custos:'Custos'};
 const today = () => new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo'}).format(new Date());
 const number = (value, digits=1) => Number(value || 0).toLocaleString('pt-BR',{maximumFractionDigits:digits});
@@ -151,7 +151,7 @@ async function massadas(content) {
 }
 async function cartas(content) {
   const data=await get('/cartas');
-  content.append(el('p','Cartas operacionais em consulta. Revisões históricas ficam no banco do Unificado.','noro-note'));
+  content.append(el('p','Cartas operacionais em consulta. Revisões históricas ficam no banco do Uni.','noro-note'));
   const detail=el('section',null,'noro-detail');
   const rows=data.rows.map(r=>{
     const button=el('button','Detalhes','noro-link-button');button.type='button';
@@ -224,7 +224,7 @@ async function estoque(content) {
   const data=await get('/estoque');
   const local=await get('/estoque/movimentos-locais');
   const balance=await get('/estoque/saldo');
-  content.append(el('p','Saldo calculado no Unificado a partir do espelho Noroeste. O aplicativo antigo continua oficial para lançamentos.','noro-note'));
+  content.append(el('p','Saldo calculado no Uni a partir do espelho Noroeste. O aplicativo antigo continua oficial para lançamentos.','noro-note'));
   const grid=el('div',null,'noro-grid');grid.append(card('Materiais',data.materiais.length),
     card('Silos',data.silos.length),card('Movimentos exibidos',data.movimentos.length));content.append(grid);
   content.append(section('Saldo calculado'),table(['Código','Material','Saldo','Unidade','Contábil','Déficit silo','Entradas','Consumo'],balance.rows.map(r=>

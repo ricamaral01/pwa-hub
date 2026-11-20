@@ -1,0 +1,146 @@
+{
+  "credential_candidate_paths": [],
+  "backend_labels": [
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/usinas_noro.py",
+      "line": 1,
+      "public_phrase_candidates": [
+        "scoped read API for the active Unificado shell."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/production_labels.py",
+      "line": 34,
+      "public_phrase_candidates": [
+        "Entre no Unificado para consultar as etiquetas."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/usina_iqt.py",
+      "line": 68,
+      "public_phrase_candidates": [
+        "Sessão expirada no Unificado."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/usinas_cec.py",
+      "line": 1,
+      "public_phrase_candidates": [
+        " protected by the Unificado session."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/manutencao_usina.py",
+      "line": 130,
+      "public_phrase_candidates": [
+        "Entre novamente no Unificado."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/usinas_reporting.py",
+      "line": 33,
+      "public_phrase_candidates": [
+        "Sessão expirada no Unificado."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/usina_integration.py",
+      "line": 105,
+      "public_phrase_candidates": [
+        "Mapa Unificado"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/usina_integration.py",
+      "line": 168,
+      "public_phrase_candidates": [
+        "PCP Unificado "
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/usinas_legacy_read.py",
+      "line": 1,
+      "public_phrase_candidates": [
+        "only Campinas ERP bridge under the Unificado session."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/usinas_legacy_read.py",
+      "line": 36,
+      "public_phrase_candidates": [
+        "Sessão expirada no Unificado."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_api.py",
+      "line": 109,
+      "public_phrase_candidates": [
+        "Sessão do Unificado inválida."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_api.py",
+      "line": 165,
+      "public_phrase_candidates": [
+        "Sessão do Unificado inválida."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_api.py",
+      "line": 174,
+      "public_phrase_candidates": [
+        "Sessão do Unificado inválida."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/postes_certificates.py",
+      "line": 32,
+      "public_phrase_candidates": [
+        "eway signs this assertion after checking the Unificado session."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/qualidade/quality/auth.py",
+      "line": 1,
+      "public_phrase_candidates": [
+        "only verification of the short lived Unificado assertion."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/qualidade/quality/db.py",
+      "line": 1,
+      "public_phrase_candidates": [
+        " no connection to another Unificado database."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/qualidade/quality/outbox.py",
+      "line": 42,
+      "public_phrase_candidates": [
+        " no Unificado."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/qualidade/quality/tasks.py",
+      "line": 71,
+      "public_phrase_candidates": [
+        "Use uma rota interna do Unificado"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/suprimentos/suprimentos/__init__.py",
+      "line": 1,
+      "public_phrase_candidates": [
+        "Suprimentos nativo do Unificado."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/suprimentos/suprimentos/main.py",
+      "line": 12,
+      "public_phrase_candidates": [
+        " Unificado"
+      ]
+    }
+  ],
+  "template_labels": []
+}

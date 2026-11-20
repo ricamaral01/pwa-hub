@@ -273,7 +273,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.4.26';
+const APP_VERSION = '1.4.27';
 let platformUpdateAvailable = false;
 let platformUpdateState = 'checking';
 let platformLatestVersion = APP_VERSION;
@@ -398,7 +398,7 @@ async function updateApplication(button) {
   } catch (error) {
     platformUpdateFailures++;
     publishUpdateState('failed');
-    console.warn('Atualização do Unificado falhou:', error);
+    console.warn('Atualização do Uni falhou:', error);
   }
 }
 window.addEventListener('load', () => {
@@ -424,7 +424,7 @@ async function clearShellCacheAndReload() {
 function appendVersionBadge(container) {
   const badge = document.createElement('span');
   badge.className = 'app-version-badge';
-  badge.textContent = `Versão ${APP_VERSION}`;
+  badge.textContent = `Uni ${APP_VERSION}`;
   container.append(badge);
 }
 

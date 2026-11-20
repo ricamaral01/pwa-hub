@@ -1,0 +1,61 @@
+{
+  "published_static": true,
+  "checks": [
+    {
+      "width": 1440,
+      "ok": true,
+      "controlled_server_responses": true,
+      "remember_storage_before_success": {
+        "unificado_remember_username": "usuario-prova"
+      },
+      "page_errors": [],
+      "keyboard_tab_enter": true,
+      "error_role_alert": true
+    },
+    {
+      "width": 1280,
+      "ok": true,
+      "controlled_server_responses": true,
+      "remember_storage_before_success": {
+        "unificado_remember_username": "usuario-prova"
+      },
+      "page_errors": [],
+      "keyboard_tab_enter": true,
+      "error_role_alert": true
+    },
+    {
+      "width": 1024,
+      "ok": true,
+      "controlled_server_responses": true,
+      "remember_storage_before_success": {
+        "unificado_remember_username": "usuario-prova"
+      },
+      "page_errors": [],
+      "keyboard_tab_enter": true,
+      "error_role_alert": true
+    },
+    {
+      "width": 820,
+      "ok": true,
+      "controlled_server_responses": true,
+      "remember_storage_before_success": {
+        "unificado_remember_username": "usuario-prova"
+      },
+      "page_errors": [],
+      "keyboard_tab_enter": true,
+      "error_role_alert": true
+    },
+    {
+      "width": 390,
+      "ok": true,
+      "controlled_server_responses": true,
+      "remember_storage_before_success": {
+        "unificado_remember_username": "usuario-prova"
+      },
+      "page_errors": [],
+      "keyboard_tab_enter": true,
+      "error_role_alert": true
+    }
+  ],
+  "all_ok": true
+}

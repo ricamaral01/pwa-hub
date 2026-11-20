@@ -34,7 +34,7 @@ async function load({quiet=false}={}){
     const value=await api('',{signal:controller.signal});if(controller.signal.aborted)return;
     state.rows=value.rows;state.config=value.config;state.canEdit=value.can_edit;state.loaded=true;
     $('new').hidden=!state.canEdit;$('config').hidden=!state.canEdit;
-    $('policy').textContent=state.canEdit?'Você pode cadastrar e atualizar as atividades. Todos os usuários do Unificado podem acompanhar.':'Você está visualizando o acompanhamento. A edição está disponível aos gestores.';
+    $('policy').textContent=state.canEdit?'Você pode cadastrar e atualizar as atividades. Todos os usuários do Uni podem acompanhar.':'Você está visualizando o acompanhamento. A edição está disponível aos gestores.';
     $('sync').textContent='Conferido às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'})+' · atualização automática a cada 30 segundos.';
     message('',true);render();
   }catch(error){if(!controller.signal.aborted)message(error.message,true)}

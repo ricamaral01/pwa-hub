@@ -1,19 +1,19 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Campinas Unificado · Indicadores</title>
-<link rel="stylesheet" href="../indicadores-gerais/style.css?v=1.4.26">
-<script defer src="../indicadores-gerais/app.js?v=1.4.26"></script><link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26">
-<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/remaining-visual.css?v=1.4.26"><script defer src="/unificado/shell/components.js?v=1.4.26"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
+<title>Campinas Uni · Indicadores</title>
+<link rel="stylesheet" href="../indicadores-gerais/style.css?v=1.4.27">
+<script defer src="../indicadores-gerais/app.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/remaining-visual.css?v=1.4.27"><script defer src="/unificado/shell/components.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"></head>
 <body data-page="campinas-unificado"><main class="dashboard">
-  <header class="hero"><div><span class="legacy-print-title">CAMPINAS · SETORES 1 + 2 + 3 + 4</span><h1>Campinas Unificado</h1><p>Quilos e postes por homem de toda a produção de Campinas.</p></div><span class="hero-mark" aria-hidden="true">▦</span></header>
+  <header class="hero"><div><span class="legacy-print-title">CAMPINAS · SETORES 1 + 2 + 3 + 4</span><h1>Campinas Uni</h1><p>Quilos e postes por homem de toda a produção de Campinas.</p></div><span class="hero-mark" aria-hidden="true">▦</span></header>
   <section class="toolbar" aria-label="Filtros"><label>Mês <input id="month" type="month"></label><button id="reload" type="button">Atualizar dados</button><span id="updated" role="status"></span><a class="page-link" href="/unificado/producao/indicadores-gerais/" target="_top">Indicador geral · 4 unidades →</a></section>
   <div id="feedback" class="feedback" role="alert" hidden></div>
   <section class="campinas-unified" aria-labelledby="unified-title">
-    <div class="section-heading"><div><span class="kicker">CAMPINAS · CONSOLIDADO</span><h2 id="unified-title">Campinas · Unificado</h2><p>Produção dos setores 1 + 2 + 3 + 4 ÷ MOD + MOI dos grupos 1 e 2 e 3 e 4, na mesma data.</p></div><span class="unit-label">Setores 1 + 2 + 3 + 4</span></div>
-    <div class="summary unified-summary" id="unified-summary" aria-label="Resumo de Campinas Unificado"></div>
+    <div class="section-heading"><div><span class="kicker">CAMPINAS · CONSOLIDADO</span><h2 id="unified-title">Campinas · Uni</h2><p>Produção dos setores 1 + 2 + 3 + 4 ÷ MOD + MOI dos grupos 1 e 2 e 3 e 4, na mesma data.</p></div><span class="unit-label">Setores 1 + 2 + 3 + 4</span></div>
+    <div class="summary unified-summary" id="unified-summary" aria-label="Resumo de Campinas Uni"></div>
     <p id="unified-weight-note" class="feedback" role="status" hidden></p>
-    <div class="chart-pair" id="unified-charts" aria-label="Indicadores diários de Campinas Unificado"></div>
-    <section class="table-card"><div class="section-heading"><div><h2>Campinas Unificado · Dados dia a dia</h2><p>Mão de obra do PCP. “—” indica indicador indisponível; a equipe precisa estar apontada em cada grupo com produção.</p></div></div>
+    <div class="chart-pair" id="unified-charts" aria-label="Indicadores diários de Campinas Uni"></div>
+    <section class="table-card"><div class="section-heading"><div><h2>Campinas Uni · Dados dia a dia</h2><p>Mão de obra do PCP. “—” indica indicador indisponível; a equipe precisa estar apontada em cada grupo com produção.</p></div></div>
       <div class="table-scroll"><table class="unified-table" aria-label="Produção e mão de obra dos quatro setores de Campinas"><thead><tr><th scope="col" class="date-heading">Data</th><th scope="col">Postes</th><th scope="col">Peso (kg)</th><th scope="col">MOD</th><th scope="col">MOI</th><th scope="col">Homens</th><th scope="col">kg/homem</th><th scope="col">Postes/homem</th></tr></thead><tbody id="unified-rows"></tbody></table></div>
     </section>
   </section>

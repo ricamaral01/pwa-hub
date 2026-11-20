@@ -1,0 +1,31 @@
+{
+  "actual_version": "1.4.26",
+  "cache_keys": [
+    "concrefer-unificado-shell-v1.4.26"
+  ],
+  "controlled": true,
+  "synthetic_worker": false,
+  "profile": "C:\\Users\\Admin\\Documents\\pwa-hub-padrao-visual\\.codex-tmp\\login-uni-pwa-profile",
+  "installation": {
+    "installed": true,
+    "method": "Chrome CDP PWA.install; persistent real browser profile",
+    "installed_metadata": {
+      "chrome_apps": [
+        {
+          "id": "nfbgdffjclcmfjhepjfgibbhopcolfmk",
+          "title": null,
+          "name": "Concrefer Unificado",
+          "text": "Concrefer Unificado\n\n\n\n  \n    Ver na Chrome Web Store\n  \n  \n    Abrir na janela\n  \n  \n    Abrir na inicialização\n  \n  \n    Criar atalho\n  \n  \n    Instalar neste dispositivo\n  \n  \n  \n    Desinstalar\n  \n  \n    Remover do Google Chrome\n  \n  \n    Configurações do app"
+        }
+      ],
+      "windows_shortcut_paths": [
+        "C:\\Users\\Admin\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Concrefer.lnk",
+        "C:\\Users\\Admin\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\apps do Chrome\\Concrefer Unificado.lnk"
+      ]
+    },
+    "os_app_state": {
+      "badgeCount": 0,
+      "fileHandlers": []
+    }
+  }
+}

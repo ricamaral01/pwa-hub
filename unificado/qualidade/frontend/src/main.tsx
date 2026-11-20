@@ -25,13 +25,13 @@ function App() {
     addEventListener('popstate', pop); return () => removeEventListener('popstate', pop);
   }, []);
   const go = (to: string) => { history.pushState({}, '', `/unificado/qualidade${to}`); setPath(to); scrollTo(0, 0); };
-  if (error && !ctx) return <main className="solo"><h1>Qualidade</h1><p role="alert">{error}</p><a href="/unificado/">Voltar ao Unificado</a></main>;
+  if (error && !ctx) return <main className="solo"><h1>Qualidade</h1><p role="alert">{error}</p><a href="/unificado/">Voltar ao Uni</a></main>;
   if (!ctx) return <main className="solo">Carregando Qualidade…</main>;
   const company = ctx.units.find(x => x.codigo === unit)?.empresa_id || ctx.companies[0]?.id || '';
   const unitControl = <label className="unit-select">Unidade <select value={unit} onChange={e => setUnit(e.target.value)}>{ctx.units.map(x => <option value={x.codigo} key={x.codigo}>{x.nome}</option>)}</select></label>;
   return <div className={`quality-app${embedded ? ' embedded' : ''}${path.startsWith('/tarefas') ? ' tasks-page-active' : ''}`}>
     {!embedded && <header className="top"><a href="/unificado/" className="brand"><span className="mark">C</span><span>ConcreTrack <small>· Qualidade</small></span></a><span>{ctx.user.name}</span></header>}
-    <div className="body">{!embedded && !path.startsWith('/tarefas') && <nav className="rail" aria-label="Qualidade"><button onClick={() => go('/')}>Não conformidades</button><button onClick={() => go('/abrir')}>Abrir RNC</button><button onClick={() => go('/resultados-bancada')}>Resultados de bancada</button>{can(ctx, 'qualidade.nc.cadastros') && <button onClick={() => go('/cadastros')}>Cadastros</button>}<a href="/unificado/">← Unificado</a></nav>}
+    <div className="body">{!embedded && !path.startsWith('/tarefas') && <nav className="rail" aria-label="Qualidade"><button onClick={() => go('/')}>Não conformidades</button><button onClick={() => go('/abrir')}>Abrir RNC</button><button onClick={() => go('/resultados-bancada')}>Resultados de bancada</button>{can(ctx, 'qualidade.nc.cadastros') && <button onClick={() => go('/cadastros')}>Cadastros</button>}<a href="/unificado/">← Uni</a></nav>}
       <main className="content">
         {path === '/' ? <Dashboard ctx={ctx} unit={unit} company={company} go={go} unitControl={unitControl}/> : path === '/abrir' ? <Opening ctx={ctx} unit={unit} company={company} go={go} unitControl={unitControl}/> : path.startsWith('/tarefas') ? <Tasks ctx={ctx} unit={unit} go={go}/> : path === '/resultados-bancada' ? <PoleResults go={go}/> : path.startsWith('/nc/') ? <Treatment ctx={ctx} id={path.slice(4)} go={go} unitControl={unitControl}/> : path === '/cadastros' ? <CatalogPage ctx={ctx} company={company} unit={unit} unitControl={unitControl}/> : <p>Página não encontrada.</p>}
       </main>

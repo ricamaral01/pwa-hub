@@ -83,7 +83,7 @@ const MENU_CONFIG = {
         { id: 'fechamentoDiario', label: 'Fechamento diário', path: '/unificado/relatorios/fechamento-diario/' }
       ] },
       { label: 'Campinas · Indicadores', items: [
-        { id: 'campinasUnificado', mono: 'CU', label: 'Campinas Unificado · S1+2+3+4', path: '/unificado/producao/campinas-unificado/', permissionId: 'produtividade' },
+        { id: 'campinasUnificado', mono: 'CU', label: 'Campinas Uni · S1+2+3+4', path: '/unificado/producao/campinas-unificado/', permissionId: 'produtividade' },
         { id: 'dashMontagem', mono: 'DM', label: 'Dashboard Montagem', path: '/index.html', screen: 'MONTAGEM_INDICADORES' },
         { id: 'dashDefeitos', mono: 'DF', label: 'Dashboard Defeitos', path: '/index.html', screen: 'DASHBOARD_DEFEITOS' },
         { id: 'produtividade', mono: 'CO', label: 'Dashboard Concretagem Matriz', path: '/index.html', screen: 'PROD_ANALISE' },

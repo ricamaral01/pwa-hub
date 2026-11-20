@@ -1,0 +1,12 @@
+{
+  "version": "1.4.27",
+  "origin_port": 18446,
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/login-uni-20261120T134410Z",
+  "static_files": 121,
+  "connections_before": 67,
+  "services_restarted": false,
+  "database_writes": 0,
+  "notice_active": false,
+  "production_changed": false,
+  "rollback": "python3 /opt/concrefer-unificado/homolog-next/staging/login-uni-20261120/login_uni_rollback.py /opt/concrefer-unificado/homolog-next/backups/login-uni-20261120T134410Z"
+}

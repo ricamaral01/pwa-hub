@@ -1,0 +1,176 @@
+{
+  "before_sha256": "070e4e4c30837ddecf3678e4703646a091e7300ad49ff97222c3cfcf2dc7215d",
+  "after_sha256": "2c668d308e9edf069aba473b217455db58c9d7cbe66d79c9bb47b20ab48c3210",
+  "pages": 19,
+  "only_replacement": {
+    "page": 1,
+    "from": "UNIFICADO",
+    "to": "UNI",
+    "rect": [
+      267.2736511230469,
+      112.79296875,
+      353.1675109863281,
+      129.71484375
+    ]
+  },
+  "checks": [
+    {
+      "page": 1,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 2,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 3,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 4,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 5,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 6,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 7,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 8,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 9,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 10,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 11,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 12,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 13,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 14,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 15,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 16,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 17,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 18,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    },
+    {
+      "page": 19,
+      "same_page_size": true,
+      "changed_pixels_outside_header": 0
+    }
+  ],
+  "remaining_body_occurrences": [
+    {
+      "page": 2,
+      "rect": [
+        199.78125,
+        112.88671875,
+        254.4532470703125,
+        126.29296875
+      ],
+      "classification": "body or embedded historical diagram; intentionally unchanged per PDF header/footer-only instruction"
+    },
+    {
+      "page": 16,
+      "rect": [
+        413.2642822265625,
+        94.88671875,
+        463.2802734375,
+        108.29296875
+      ],
+      "classification": "body or embedded historical diagram; intentionally unchanged per PDF header/footer-only instruction"
+    },
+    {
+      "page": 16,
+      "rect": [
+        264.8920593261719,
+        453.404052734375,
+        271.79254150390625,
+        454.9952087402344
+      ],
+      "classification": "body or embedded historical diagram; intentionally unchanged per PDF header/footer-only instruction"
+    },
+    {
+      "page": 16,
+      "rect": [
+        299.5158996582031,
+        297.9039306640625,
+        306.4163818359375,
+        299.4950866699219
+      ],
+      "classification": "body or embedded historical diagram; intentionally unchanged per PDF header/footer-only instruction"
+    },
+    {
+      "page": 16,
+      "rect": [
+        412.203369140625,
+        535.88671875,
+        462.2193603515625,
+        549.29296875
+      ],
+      "classification": "body or embedded historical diagram; intentionally unchanged per PDF header/footer-only instruction"
+    },
+    {
+      "page": 17,
+      "rect": [
+        215.09765625,
+        276.8525390625,
+        252.60964965820312,
+        286.9072265625
+      ],
+      "classification": "body or embedded historical diagram; intentionally unchanged per PDF header/footer-only instruction"
+    }
+  ],
+  "body_layout_unchanged": true
+}

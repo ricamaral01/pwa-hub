@@ -1,0 +1,24 @@
+{
+  "unit": "unificado-visual-homolog-suprimentos.service",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-suprimentos-20261120T133826Z",
+  "changes": [
+    {
+      "file": "suprimentos/suprimentos/main.py",
+      "before_sha256": "fff34d09ebdf484c2d3b028f23fedcff5676758dc0d5f84d22a9779a6663ca9d",
+      "after_sha256": "43facd0c039c4a3a6aa8b5a6a4cbbd96c4fe9dc80a2c544cc634901f02957587",
+      "patch": "--- suprimentos/suprimentos/main.py\n+++ suprimentos/suprimentos/main.py\n@@ -9,7 +9,7 @@\n from .api.analises import router as analises_router\n from .api.tasks_bridge import router as tasks_bridge_router\n \n-app = FastAPI(title=\"Suprimentos — Unificado\", docs_url=None, redoc_url=None)\n+app = FastAPI(title=\"Suprimentos — Uni\", docs_url=None, redoc_url=None)\n app.include_router(cadastros_router)\n app.include_router(solicitacoes_router)\n app.include_router(compras_router)\n"
+    }
+  ],
+  "changed_files": 1,
+  "restarted": true,
+  "responds": true,
+  "connections_before": 68,
+  "connections_after": 68,
+  "database_writes": 0,
+  "business_logic_unchanged_ast": true,
+  "rollback": {
+    "copy_each_file_from": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-suprimentos-20261120T133826Z",
+    "copy_to": "/opt/concrefer-unificado/homolog-next/visual-full",
+    "restart_only": "unificado-visual-homolog-suprimentos.service"
+  }
+}
