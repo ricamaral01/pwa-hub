@@ -1,0 +1,11 @@
+{
+  "version": "1.4.32",
+  "only_homolog": true,
+  "files": 54,
+  "native_html_files": 47,
+  "archive_sha256": "a8bf54b00c067aec4fec1ab02e431aae9f2cff76a2ef1ee6a9be0f0e36f86503",
+  "database_changes": 0,
+  "service_restarts": 0,
+  "production_changes": 0,
+  "noroeste_shell_scoped": true
+}

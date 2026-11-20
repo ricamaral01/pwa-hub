@@ -1,0 +1,474 @@
+[
+  {
+    "file": "public/usinas/carta-traco.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [
+      "legacy-card"
+    ],
+    "has_review_css": true,
+    "table_wrappers": [
+      "scroll"
+    ]
+  },
+  {
+    "file": "public/usinas/fechamento-diario.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "public/usinas/fechamento.html",
+    "visual_style": true,
+    "static_tables": 2,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "stops-table-wrap"
+    ]
+  },
+  {
+    "file": "public/usinas/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [
+      "legacy-card"
+    ],
+    "has_review_css": true,
+    "table_wrappers": [
+      "scroll"
+    ]
+  },
+  {
+    "file": "public/usinas/noroeste/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "public/usinas/relatorios/cartas-traco/index.html",
+    "visual_style": true,
+    "static_tables": 2,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-wrap"
+    ]
+  },
+  {
+    "file": "public/usinas/relatorios/consumo/index.html",
+    "visual_style": true,
+    "static_tables": 4,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "public/usinas/relatorios/custos/carta-slide/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "public/usinas/relatorios/custos/comparar/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-wrap"
+    ]
+  },
+  {
+    "file": "public/usinas/relatorios/custos/index.html",
+    "visual_style": true,
+    "static_tables": 3,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-wrap"
+    ]
+  },
+  {
+    "file": "public/usinas/relatorios/exportar/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-wrap"
+    ]
+  },
+  {
+    "file": "public/usinas/relatorios/fechamento/index.html",
+    "visual_style": true,
+    "static_tables": 2,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "stops-table-wrap"
+    ]
+  },
+  {
+    "file": "public/usinas/relatorios/fechamento-diario/index.html",
+    "visual_style": true,
+    "static_tables": 5,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-scroll"
+    ]
+  },
+  {
+    "file": "public/usinas/relatorios/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "public/usinas/relatorios/iqt/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-wrap"
+    ]
+  },
+  {
+    "file": "public/usinas/relatorios/producao-periodo/index.html",
+    "visual_style": true,
+    "static_tables": 2,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "public/usinas/relatorios/reports-diarios/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/analise/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/analise/relatorio.html",
+    "visual_style": true,
+    "static_tables": 3,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "tbl-wrap"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/analise/resultado-cp.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "tbl-wrap"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/etiquetas/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-scroll"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/leitura/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/relatorio/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/resultados/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-wrap"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/rompimentos-mes/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-wrap"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/cronoanalise/cronoanalise.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/cronoanalise/metodologia-conteudo.html",
+    "visual_style": false,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "scroll"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/analise/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/analise/relatorio.html",
+    "visual_style": true,
+    "static_tables": 3,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "tbl-wrap"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/analise/resultado-cp.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "tbl-wrap"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/etiquetas/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-scroll"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/leitura/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/relatorio/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/resultados/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-wrap"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/rompimentos-mes/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-wrap"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/usuarios/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/novo/index.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/novo/postes/absorcao.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/novo/postes/metodologia-conteudo.html",
+    "visual_style": false,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "scroll"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/novo/postes/novo.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/postes/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/postes/metodologia-conteudo.html",
+    "visual_style": false,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "scroll"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/slump/flow.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": [
+      "table-wrap"
+    ]
+  },
+  {
+    "file": "services/laboratorio/server/static/slump/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/slump/umidade.html",
+    "visual_style": true,
+    "static_tables": 1,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/laboratorio/server/static/usinas-relatorios/index.html",
+    "visual_style": true,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": true,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/carta-static/index.html",
+    "visual_style": true,
+    "static_tables": 2,
+    "list_classes": [
+      "ct-home-card"
+    ],
+    "has_review_css": true,
+    "table_wrappers": [
+      "ct-scroll"
+    ]
+  },
+  {
+    "file": "services/carta-static/manual/manual-carta-traco.html",
+    "visual_style": false,
+    "static_tables": 8,
+    "list_classes": [],
+    "has_review_css": false,
+    "table_wrappers": []
+  },
+  {
+    "file": "services/dosagem-static/direct-entry.html",
+    "visual_style": false,
+    "static_tables": 0,
+    "list_classes": [],
+    "has_review_css": false,
+    "table_wrappers": []
+  }
+]

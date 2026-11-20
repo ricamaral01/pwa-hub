@@ -1,0 +1,8 @@
+casca: 200/200
+login: 200/200
+PCP protegido: 401/401
+Mapa saúde: 200/200
+Laboratório requer sessão: 302/302
+Qualidade protegida: 401/401
+GED QR público: 200/200
+Gate Modelo A: 7/7

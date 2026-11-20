@@ -1,0 +1,312 @@
+[
+  {
+    "id": "labCertificados",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/certificados-qualidade/",
+    "label": "Certificados de qualidade"
+  },
+  {
+    "id": "labTests",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=historico",
+    "label": "Histórico de ensaios"
+  },
+  {
+    "id": "usinasInicio",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/",
+    "label": "Cartas de traço"
+  },
+  {
+    "id": "usinasCec",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=cec",
+    "label": "Controle estatístico"
+  },
+  {
+    "id": "usinasRelatorios",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=relatorios",
+    "label": "Relatórios gerenciais"
+  },
+  {
+    "id": "usinasEstoque",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/?area=estoque",
+    "label": "Controle de estoque"
+  },
+  {
+    "id": "usinasNoroPainel",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/",
+    "label": "Painel"
+  },
+  {
+    "id": "usinasNoroMassadas",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=massadas",
+    "label": "Massadas"
+  },
+  {
+    "id": "usinasNoroCartas",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cartas",
+    "label": "Cartas de traço"
+  },
+  {
+    "id": "usinasNoroRelatorios",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=relatorios",
+    "label": "Relatórios"
+  },
+  {
+    "id": "usinasNoroCec",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cec",
+    "label": "Controle estatístico"
+  },
+  {
+    "id": "usinasNoroCadastros",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=cadastros",
+    "label": "Cadastros"
+  },
+  {
+    "id": "usinasNoroEstoque",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=estoque",
+    "label": "Estoque"
+  },
+  {
+    "id": "usinasNoroCustos",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/usinas/noroeste/?area=custos",
+    "label": "Custos"
+  },
+  {
+    "id": "labCecEtiquetas",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/etiquetas/",
+    "label": "Etiquetas QR"
+  },
+  {
+    "id": "labCecLeitura",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/leitura/",
+    "label": "Leitura de CP"
+  },
+  {
+    "id": "labCecResultados",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/resultado-cp.html",
+    "label": "Resultados dos corpos de prova"
+  },
+  {
+    "id": "labCec",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/",
+    "label": "Visão geral"
+  },
+  {
+    "id": "labCecRompimentosMes",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/rompimentos-mes/",
+    "label": "Rompimentos por mês"
+  },
+  {
+    "id": "labCecAnalise",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/",
+    "label": "Análise estatística"
+  },
+  {
+    "id": "labCecRelatorio",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cec/analise/relatorio.html",
+    "label": "Relatório CEC"
+  },
+  {
+    "id": "labDosagem",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/",
+    "label": "Visão geral"
+  },
+  {
+    "id": "labDosagemEmpacotamento",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/dosagem/empacotamento",
+    "label": "Empacotamento"
+  },
+  {
+    "id": "labDosagemVolume",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/dosagem/volume",
+    "label": "Volume"
+  },
+  {
+    "id": "labDosagemComparacao",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/comparacao-metodos",
+    "label": "Comparação dos métodos"
+  },
+  {
+    "id": "labDosagemTracos",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/tracos",
+    "label": "Traços"
+  },
+  {
+    "id": "labDosagemMateriais",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/materiais",
+    "label": "Materiais"
+  },
+  {
+    "id": "labDosagemFornecedores",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/fornecedores",
+    "label": "Fornecedores"
+  },
+  {
+    "id": "labDosagemEnsaios",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/ensaios",
+    "label": "Ensaios"
+  },
+  {
+    "id": "labDosagemFerramentas",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/ferramentas",
+    "label": "Ferramentas"
+  },
+  {
+    "id": "labDosagemCustos",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/custos",
+    "label": "Custos"
+  },
+  {
+    "id": "labDosagemReferencia",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/referencia",
+    "label": "Referência"
+  },
+  {
+    "id": "labDosagemProducao",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/producao-r1",
+    "label": "Produção"
+  },
+  {
+    "id": "labDosagemImportacao",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/importacao-r1",
+    "label": "Importação"
+  },
+  {
+    "id": "labDosagemConfig",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/dosagem/#/config",
+    "label": "Configurações"
+  },
+  {
+    "id": "labSlump",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/slump",
+    "label": "Registro de slump / flow"
+  },
+  {
+    "id": "labUsinasRelatorios",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/usinas-relatorios/",
+    "label": "Relatórios e custos"
+  },
+  {
+    "id": "labMonitor",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/",
+    "label": "Monitoramento"
+  },
+  {
+    "id": "labHistory",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=history",
+    "label": "Histórico de medições"
+  },
+  {
+    "id": "labDevice",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=settings",
+    "label": "Dispositivo"
+  },
+  {
+    "id": "labAbsorption",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/absorcao",
+    "label": "Absorção"
+  },
+  {
+    "id": "labPole",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes",
+    "label": "Ensaio de postes"
+  },
+  {
+    "id": "labRegisters",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=cadastros",
+    "label": "Cadastros"
+  },
+  {
+    "id": "labCriteria",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=criterios",
+    "label": "Critérios"
+  },
+  {
+    "id": "cronoanalise.inicio",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise",
+    "label": "Início"
+  },
+  {
+    "id": "cronoanalise.coletar",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/coletar",
+    "label": "Coletar"
+  },
+  {
+    "id": "cronoanalise.medicoes",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/medicoes",
+    "label": "Medições"
+  },
+  {
+    "id": "cronoanalise.catalogo",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/catalogo",
+    "label": "Catálogo"
+  },
+  {
+    "id": "cronoanalise.dimensionar",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/dimensionar",
+    "label": "Dimensionar"
+  },
+  {
+    "id": "cronoanalise.simular",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/simular",
+    "label": "Simular"
+  },
+  {
+    "id": "cronoanalise.metodologia",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/cronoanalise/metodologia",
+    "label": "Metodologia"
+  },
+  {
+    "id": "labCartaTraco",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/carta-traco/",
+    "label": "Carta de traço e MCC"
+  },
+  {
+    "id": "labUsuarios",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/novo/postes?tab=usuarios",
+    "label": "Usuários"
+  },
+  {
+    "id": "labHelp",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/?view=help",
+    "label": "Como funciona"
+  },
+  {
+    "id": "labNoroCecEtiquetas",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/etiquetas/",
+    "label": "Etiquetas QR"
+  },
+  {
+    "id": "labNoroCecLeitura",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/leitura/",
+    "label": "Leitura de CP"
+  },
+  {
+    "id": "labNoroCecResultados",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/resultado-cp.html",
+    "label": "Resultados dos corpos de prova"
+  },
+  {
+    "id": "labNoroCec",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/",
+    "label": "Visão geral"
+  },
+  {
+    "id": "labNoroCecRompimentosMes",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/rompimentos-mes/",
+    "label": "Rompimentos por mês"
+  },
+  {
+    "id": "labNoroCecAnalise",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/",
+    "label": "Análise estatística"
+  },
+  {
+    "id": "labNoroCecRelatorio",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/analise/relatorio.html",
+    "label": "Relatório CEC"
+  },
+  {
+    "id": "labNoroUsuarios",
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/usuarios/",
+    "label": "Usuários"
+  }
+]

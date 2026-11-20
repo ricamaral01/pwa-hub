@@ -1,0 +1,21 @@
+{
+  "version": "1.4.32",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/usinas-sobreposicao-1.4.32-1795207185",
+  "files": 54,
+  "connections_before": 67,
+  "production_changes": 0,
+  "database_changes": 0,
+  "permissions_changes": 0,
+  "service_restarts": 0,
+  "rollback": "python3 /opt/concrefer-unificado/homolog-next/staging/usinas-sobreposicao-1.4.32/usinas32_publish.py rollback",
+  "noroeste_revision": {
+    "files": [
+      "public/index.html",
+      "public/sw.js",
+      "public/shell/noroeste-content.css"
+    ],
+    "at_epoch": 1795207552.2793665,
+    "original_backup_preserved": true,
+    "connections": 67
+  }
+}

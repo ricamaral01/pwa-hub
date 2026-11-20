@@ -1,0 +1,133 @@
+{
+  "mode": "after",
+  "profiles": 9,
+  "rows": [
+    {
+      "origin": "central",
+      "profile": "MONTADOR",
+      "account": "alexh",
+      "allowed": false,
+      "allowed_items": [],
+      "native_opened": false,
+      "connections": 67,
+      "js_errors": [],
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GESTOR",
+      "account": "josue",
+      "allowed": false,
+      "allowed_items": [],
+      "native_opened": false,
+      "connections": 67,
+      "js_errors": [],
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GERENCIA",
+      "account": "alex",
+      "allowed": true,
+      "allowed_items": [
+        "usinasCec",
+        "usinasEstoque",
+        "usinasInicio",
+        "usinasNoroCadastros",
+        "usinasNoroCartas",
+        "usinasNoroCec",
+        "usinasNoroCustos",
+        "usinasNoroEstoque",
+        "usinasNoroMassadas",
+        "usinasNoroPainel",
+        "usinasNoroRelatorios",
+        "usinasRelatorios"
+      ],
+      "native_opened": true,
+      "connections": 67,
+      "js_errors": [],
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "APONTADOR",
+      "account": "setor1",
+      "allowed": false,
+      "allowed_items": [],
+      "native_opened": false,
+      "connections": 67,
+      "js_errors": [],
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "CONVIDADO",
+      "account": "e2e-suprimentos-almox",
+      "allowed": false,
+      "allowed_items": [],
+      "native_opened": false,
+      "connections": 67,
+      "js_errors": [],
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "ADMIN",
+      "account": "Ricardo",
+      "allowed": true,
+      "allowed_items": [
+        "usinasCec",
+        "usinasEstoque",
+        "usinasInicio",
+        "usinasNoroCadastros",
+        "usinasNoroCartas",
+        "usinasNoroCec",
+        "usinasNoroCustos",
+        "usinasNoroEstoque",
+        "usinasNoroMassadas",
+        "usinasNoroPainel",
+        "usinasNoroRelatorios",
+        "usinasRelatorios"
+      ],
+      "native_opened": true,
+      "connections": 67,
+      "js_errors": [],
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PCP",
+      "account": "Diego",
+      "allowed": false,
+      "allowed_items": [],
+      "native_opened": false,
+      "connections": 67,
+      "js_errors": [],
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PRODUCAO",
+      "account": "producao",
+      "allowed": false,
+      "allowed_items": [],
+      "native_opened": false,
+      "connections": 67,
+      "js_errors": [],
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "CONSULTA",
+      "account": "e2e-pcp-quality-link-probe",
+      "allowed": false,
+      "allowed_items": [],
+      "native_opened": false,
+      "connections": 67,
+      "js_errors": [],
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "permissions_unchanged": true
+}

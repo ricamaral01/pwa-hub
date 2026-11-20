@@ -1,0 +1,582 @@
+{
+  "public/VERSION": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/VERSION",
+    "before": {
+      "sha256": "cec7f07926f66e21006b88a6ef21d7ac6f68112253a983a0e5ad3475acbe7a85",
+      "bytes": 8
+    },
+    "after": {
+      "sha256": "7a50f783f01fd320d4989e47ddd7db1ad1233cfa41d6e08dd4ae289f379ac5dc",
+      "bytes": 7
+    }
+  },
+  "public/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/index.html",
+    "before": {
+      "sha256": "899fd96b2105f80b8b51af2e35c40acc1370e0ee50a45a51dedd1e56e803c37e",
+      "bytes": 6110
+    },
+    "after": {
+      "sha256": "b4ea85c761d277b5f2e8470a002867eebf7a0fcddbfa79abe2d69d6110908f51",
+      "bytes": 6110
+    }
+  },
+  "public/login.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/login.html",
+    "before": {
+      "sha256": "6a553b24bd9cd9321c159d3f7097180177a74f7797e360de99643a43a4e7998b",
+      "bytes": 5173
+    },
+    "after": {
+      "sha256": "2129a909bfc32153eb0f7a7c996708dd1a10c06f94bd9517f8fa527a33634cce",
+      "bytes": 5173
+    }
+  },
+  "public/sw.js": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/sw.js",
+    "before": {
+      "sha256": "e8af2ddd1f519a97333d6f86a9933ad8c2cbb8965fe7b420257fb56b627bd837",
+      "bytes": 7283
+    },
+    "after": {
+      "sha256": "4744f0bf410f8715277f1a08eaa50f6d9d407ba973faeb991c5f00e285fce9e6",
+      "bytes": 7283
+    }
+  },
+  "public/shell/shell.js": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/shell.js",
+    "before": {
+      "sha256": "014e540fd74ff5e78ef157074b5dfe600f78c36c5e8832d16cc5900227e25705",
+      "bytes": 58449
+    },
+    "after": {
+      "sha256": "6683d7a0973808dd4e38f88ec51e710ad91e95ae74ea8bbebbe6727b8417ee6f",
+      "bytes": 58449
+    }
+  },
+  "public/usinas/carta-traco.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/carta-traco.html",
+    "before": {
+      "sha256": "c3451d27073035805370d5b8961c9ed17ed76f0233a506dac2dbfa09fa05f0c4",
+      "bytes": 26850
+    },
+    "after": {
+      "sha256": "9304f3f8ea555347ab2ea3e499fd04a29f1ed207825465f9cbc7f3b1c77b9346",
+      "bytes": 26584
+    }
+  },
+  "public/usinas/fechamento-diario.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/fechamento-diario.html",
+    "before": {
+      "sha256": "ee829766c7df1d88cd55159ec2b3f6f78f8a983c64a989c3efb4e5f631d4d97f",
+      "bytes": 4736
+    },
+    "after": {
+      "sha256": "5f296d2dc89f715cf5d141886fd75254dcbdb7464d8c1b5e84c1835b92b70b1e",
+      "bytes": 4761
+    }
+  },
+  "public/usinas/fechamento.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/fechamento.html",
+    "before": {
+      "sha256": "42c6bfcaacb545bdbf73bb9f50b00026b6f4ab55e10fb233177765895171b16c",
+      "bytes": 40061
+    },
+    "after": {
+      "sha256": "37f1ad627af0281030d8d75dd5faa53e192dfb2cd8e9919ec80386323b3cddcf",
+      "bytes": 39829
+    }
+  },
+  "public/usinas/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/index.html",
+    "before": {
+      "sha256": "c3451d27073035805370d5b8961c9ed17ed76f0233a506dac2dbfa09fa05f0c4",
+      "bytes": 26850
+    },
+    "after": {
+      "sha256": "9304f3f8ea555347ab2ea3e499fd04a29f1ed207825465f9cbc7f3b1c77b9346",
+      "bytes": 26584
+    }
+  },
+  "public/usinas/noroeste/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/noroeste/index.html",
+    "before": {
+      "sha256": "22a22c4d0b9eeecf8f5b7c2f2c90e105ea347cdf1b52db2f876e73acff38aaca",
+      "bytes": 820
+    },
+    "after": {
+      "sha256": "e5d785a0e7df3fc0d4b158fc702b470709e1fbb84e5da8df95b23172c837da14",
+      "bytes": 903
+    }
+  },
+  "public/usinas/relatorios/cartas-traco/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/cartas-traco/index.html",
+    "before": {
+      "sha256": "4fedd48cc6b8f6cb26568e7c0dd21b2bfc514ba9a3f99200efe0d4ed82cef369",
+      "bytes": 28009
+    },
+    "after": {
+      "sha256": "df1cfed543979c78ba9763bac9ee359d1c0db8e99769924ee71750777286342d",
+      "bytes": 27728
+    }
+  },
+  "public/usinas/relatorios/consumo/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/consumo/index.html",
+    "before": {
+      "sha256": "a898c9859197c5afc43113cc52d99d3448de7facdb877230e526af125623a67e",
+      "bytes": 38564
+    },
+    "after": {
+      "sha256": "0e18e354d3214a2e2cccec37a5a46910244d587cef3ccf6853fb2269b27f1563",
+      "bytes": 37944
+    }
+  },
+  "public/usinas/relatorios/custos/carta-slide/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/custos/carta-slide/index.html",
+    "before": {
+      "sha256": "7276387d798cd5c1ff098bdb12f03c8cd2c13402d37cd782edbd44a41de88072",
+      "bytes": 26551
+    },
+    "after": {
+      "sha256": "9e3ffa6f5e801cbe965710022a74ea481e97eb07b4c50b2d981c7ee2265f1aef",
+      "bytes": 25960
+    }
+  },
+  "public/usinas/relatorios/custos/comparar/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/custos/comparar/index.html",
+    "before": {
+      "sha256": "0f0892ea61b865933d1bf147fa4fa6b189bb199d4975ee43d9ca3e631b4521c2",
+      "bytes": 22396
+    },
+    "after": {
+      "sha256": "6af2aa3229658d688ad9b85586660d80d7b0f8e4936e5ef3ef181021fce5c1c2",
+      "bytes": 22268
+    }
+  },
+  "public/usinas/relatorios/custos/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/custos/index.html",
+    "before": {
+      "sha256": "a5472343fd71fb3d327c2c62867d8ff65f3673eb41e41d6cd4e0b994ad38691b",
+      "bytes": 39360
+    },
+    "after": {
+      "sha256": "4dbbd2a59fbb541eb56a900ddb091617b63d0f8f0fb90e11fe215cb69c816c98",
+      "bytes": 38352
+    }
+  },
+  "public/usinas/relatorios/exportar/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/exportar/index.html",
+    "before": {
+      "sha256": "49be3d4c4e66d7e717473f25e311d8d4ee598e46d0d80e4a62df280afbf042d4",
+      "bytes": 24561
+    },
+    "after": {
+      "sha256": "dd4213908eee8c8045349d5825b26bbe175ec5f8896f7eada1e92a4365894239",
+      "bytes": 24121
+    }
+  },
+  "public/usinas/relatorios/fechamento/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/fechamento/index.html",
+    "before": {
+      "sha256": "975d99fc44649c3fcf8ef95597a2421c454c64e4f0f6c8d80a3f9dea5cf4f985",
+      "bytes": 41376
+    },
+    "after": {
+      "sha256": "a45cab4f06a8beb4115a140abae5e0f6e77826df0d9ec7114ac9c526f3403556",
+      "bytes": 41112
+    }
+  },
+  "public/usinas/relatorios/fechamento-diario/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/fechamento-diario/index.html",
+    "before": {
+      "sha256": "eccd8c2d33f4df53c2b080da188d467691e21709315e88473f92aa799153b809",
+      "bytes": 57122
+    },
+    "after": {
+      "sha256": "bf94b232b0faf6053c6b265b8290588787ae5c2fbf263939aaa1974b0666c994",
+      "bytes": 56287
+    }
+  },
+  "public/usinas/relatorios/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/index.html",
+    "before": {
+      "sha256": "c51773126668e5cba742f3a1e1333fbaceafcbd68e0a807af4f8a9cc0a5644c0",
+      "bytes": 13861
+    },
+    "after": {
+      "sha256": "1f28cd4f91f3c3f5c556851e6c309e0178d523b8538628709ff06749aba769ba",
+      "bytes": 13709
+    }
+  },
+  "public/usinas/relatorios/iqt/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/iqt/index.html",
+    "before": {
+      "sha256": "b8ccddc5179c7cce73375c306f5fac955d2b9745a3d57d1eb5972815e11c12f0",
+      "bytes": 13242
+    },
+    "after": {
+      "sha256": "8dfcd7923eecae419ad79743a7d4ce41ae8312ac333a017b77baed3fe30c9c05",
+      "bytes": 13191
+    }
+  },
+  "public/usinas/relatorios/producao-periodo/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/producao-periodo/index.html",
+    "before": {
+      "sha256": "a98a4187e5684ddac4da71a857f8eeac38ff202e009a4d5e91a29665dfa85c7a",
+      "bytes": 59527
+    },
+    "after": {
+      "sha256": "233d2f2e57f36464116b3f1974ec308df80a287f1255f6a08191d1659e2126ab",
+      "bytes": 58651
+    }
+  },
+  "public/usinas/relatorios/reports-diarios/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/usinas/relatorios/reports-diarios/index.html",
+    "before": {
+      "sha256": "dd86c984b9fe02ed00617c38957d87a7b1172cdb9c76c5bf01b5540a73775e87",
+      "bytes": 15653
+    },
+    "after": {
+      "sha256": "b75c0f2ee7c112f4eb49024908e0fefbb0ee27262c121b68d9ad97ad1ad73c4a",
+      "bytes": 15569
+    }
+  },
+  "services/laboratorio/server/static/cec/analise/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/analise/index.html",
+    "before": {
+      "sha256": "ea6e2c6983ab2ca0167260bcd6a7df7af0dbae36f8ca8875d710cb4d2054e645",
+      "bytes": 16975
+    },
+    "after": {
+      "sha256": "8096a8bdbca848abf71f77e0b47b82b8befa68704f150cf974ee8e7aa845469b",
+      "bytes": 17066
+    }
+  },
+  "services/laboratorio/server/static/cec/analise/relatorio.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/analise/relatorio.html",
+    "before": {
+      "sha256": "ac4915a718694b8462fa26fade337156d006013f0f126c49b34526f8dabb06d0",
+      "bytes": 58498
+    },
+    "after": {
+      "sha256": "c6fd10215f51a96b1a6a1544a4baf0b628c6300e1b00b2e4166421da2f1ae6f0",
+      "bytes": 58589
+    }
+  },
+  "services/laboratorio/server/static/cec/analise/resultado-cp.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/analise/resultado-cp.html",
+    "before": {
+      "sha256": "453596da1fe3844bb34b7210205f8451d7675e1d6f3f7a758236f2a597f64a15",
+      "bytes": 28010
+    },
+    "after": {
+      "sha256": "70b096e6737965fcaf7b45aa34b42d0133e0ff672356e9974816e2fc6454e2e7",
+      "bytes": 28101
+    }
+  },
+  "services/laboratorio/server/static/cec/etiquetas/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/etiquetas/index.html",
+    "before": {
+      "sha256": "abd5eebfce470c2f15e5c5a8cd203d9d6fc53155204b08938b748cb34112fdc4",
+      "bytes": 37841
+    },
+    "after": {
+      "sha256": "939e5a29d3a7e0bc1adf3f8797b4ca25dc93b345068e27a4a2ae65a0087411b8",
+      "bytes": 37932
+    }
+  },
+  "services/laboratorio/server/static/cec/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/index.html",
+    "before": {
+      "sha256": "f7928779d97976d1b332777c92df9f20d04c64495dd0c4ffbbca5536811a37e2",
+      "bytes": 10779
+    },
+    "after": {
+      "sha256": "40821c1a68fd8aaf2f1f29e0895e560a1bb89c44902a85baaeb9347740de1127",
+      "bytes": 10870
+    }
+  },
+  "services/laboratorio/server/static/cec/leitura/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/leitura/index.html",
+    "before": {
+      "sha256": "51b8a2efdc934ed907578f0954a6522acbc2d12420856549a51999db3554dce3",
+      "bytes": 38466
+    },
+    "after": {
+      "sha256": "687f57a07893f7469735b62b45c310901020df03b4911826d5adab35ec381494",
+      "bytes": 38557
+    }
+  },
+  "services/laboratorio/server/static/cec/relatorio/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/relatorio/index.html",
+    "before": {
+      "sha256": "66d8ac836cab122e5896d5b2b8ddad3197e2c1e1030b1a5ab15ddb1c494af119",
+      "bytes": 10709
+    },
+    "after": {
+      "sha256": "8ebb8cbf38d35b7354cf54ed3f8a90cadab03a852831c6f0f191d62b8e1d9263",
+      "bytes": 10800
+    }
+  },
+  "services/laboratorio/server/static/cec/resultados/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/resultados/index.html",
+    "before": {
+      "sha256": "69ffc090bc4b814912ec6d47b068b12d7586aa812bae07d3394ecf2af67e357e",
+      "bytes": 19484
+    },
+    "after": {
+      "sha256": "f675d2d8af0a74456f0d1d26fb0723d9d4daa58d519690afc90af71a6adbb76c",
+      "bytes": 19575
+    }
+  },
+  "services/laboratorio/server/static/cec/rompimentos-mes/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/rompimentos-mes/index.html",
+    "before": {
+      "sha256": "589a329ae590d1b3955ccfa12ac91f864a9c67ed3f62e606acdd5866c849204c",
+      "bytes": 16107
+    },
+    "after": {
+      "sha256": "0d6ce30d98b848c4b1d1d427eb2c76c68672dab39d479182f79a75b258a6710b",
+      "bytes": 16198
+    }
+  },
+  "services/laboratorio/server/static/cronoanalise/cronoanalise.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cronoanalise/cronoanalise.html",
+    "before": {
+      "sha256": "73c128eb651ae21acb95d22f4a4fcdb39a74baae5004bed63277173158da52cf",
+      "bytes": 953
+    },
+    "after": {
+      "sha256": "96c22d17b472cecf6655197728a51d0bf609ec8f68fda78b9ae76569f1005e68",
+      "bytes": 1044
+    }
+  },
+  "services/laboratorio/server/static/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/index.html",
+    "before": {
+      "sha256": "97e601ee7101b799d6ab07fbcc5e9d3dfaf7f9c32688ec50a5eedb1e49217670",
+      "bytes": 68945
+    },
+    "after": {
+      "sha256": "4fa33471f10f43eadf500b548f1651bdffb41ee1dbe92a28e9f3893dc9aad39c",
+      "bytes": 69036
+    }
+  },
+  "services/laboratorio/server/static/noroeste/cec/analise/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/analise/index.html",
+    "before": {
+      "sha256": "866139587ed20c895512a3b627784de82b146e667e7fe696b147ff07b080b24f",
+      "bytes": 16940
+    },
+    "after": {
+      "sha256": "6e15c962676399f53336c263343d3422f215df4e97e2dfc08c7c73afbc5a48d8",
+      "bytes": 17031
+    }
+  },
+  "services/laboratorio/server/static/noroeste/cec/analise/relatorio.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/analise/relatorio.html",
+    "before": {
+      "sha256": "8c03137b8f8ed68e4a1e3027b06a7ac1f95aecf5223c1755748164eb3ac2ac5d",
+      "bytes": 58745
+    },
+    "after": {
+      "sha256": "2cd32244de3ae4ddb963fdf189c8924c353eff910c46a1472ae01424a0f69528",
+      "bytes": 58836
+    }
+  },
+  "services/laboratorio/server/static/noroeste/cec/analise/resultado-cp.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/analise/resultado-cp.html",
+    "before": {
+      "sha256": "3d8b0886b5dd43dcab549529ff5dd6f9ba59df29eb7ac6b3d4ca5f2e3ef54258",
+      "bytes": 28230
+    },
+    "after": {
+      "sha256": "f6b6f99283859ba436348a1af61df098b969dc05dbaa7548ea5c2fb47ce68e7c",
+      "bytes": 28321
+    }
+  },
+  "services/laboratorio/server/static/noroeste/cec/etiquetas/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/etiquetas/index.html",
+    "before": {
+      "sha256": "d8603ad7d7dc40b3e4ba4ffcafe6e69043fb301e278bf7ec1f9f357e44de22ea",
+      "bytes": 37931
+    },
+    "after": {
+      "sha256": "4c3d26282d0f4dbbefc58c4a5906304e1546e8df0a98cd7ad136ad87fff00801",
+      "bytes": 38022
+    }
+  },
+  "services/laboratorio/server/static/noroeste/cec/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/index.html",
+    "before": {
+      "sha256": "f208f443147d19a1a987e15d398ed8a559ca72ccbc655ceb2679bcf4a893bea8",
+      "bytes": 10887
+    },
+    "after": {
+      "sha256": "30318acfe75d83fff453c14a745b5e1fcd303ad6755f5f3e9b2a96dcf24392ac",
+      "bytes": 10978
+    }
+  },
+  "services/laboratorio/server/static/noroeste/cec/leitura/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/leitura/index.html",
+    "before": {
+      "sha256": "0eb20aa749241ee1f501dfeeb7e981f6c1c4a0a1d7c70d45412e15f35c45c738",
+      "bytes": 38571
+    },
+    "after": {
+      "sha256": "5bbf6bc0381093388fb4fccf0d0e7eced29c384f86e9862a0e7b24c0a46da922",
+      "bytes": 38662
+    }
+  },
+  "services/laboratorio/server/static/noroeste/cec/relatorio/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/relatorio/index.html",
+    "before": {
+      "sha256": "66f62b4ca67a83020b09f5643fe0d17b8545e3c50ffd33e79e83c66abb014902",
+      "bytes": 10763
+    },
+    "after": {
+      "sha256": "df95c4e13ed9e844b5cf155775d182d09c8ddbfe1ecb52996b4c7a3d3202ad8e",
+      "bytes": 10854
+    }
+  },
+  "services/laboratorio/server/static/noroeste/cec/resultados/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/resultados/index.html",
+    "before": {
+      "sha256": "2fb03524e7a751d8a070e448894ade93c16407cf32f1d949a5ccda6c5f31366a",
+      "bytes": 19538
+    },
+    "after": {
+      "sha256": "14641d1ed15de9cb1e2afbded1ccdcbd947e8cbac45bf4a2bc69a3c73f1a51ad",
+      "bytes": 19629
+    }
+  },
+  "services/laboratorio/server/static/noroeste/cec/rompimentos-mes/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/rompimentos-mes/index.html",
+    "before": {
+      "sha256": "37b543e676a8decae4516efaf1214430446f01a8b56b1f4a259727f53acf84e3",
+      "bytes": 16125
+    },
+    "after": {
+      "sha256": "80dc678d500d0b7fd421d260e1e4825216b0b8d2cf6ff567e767bfb13c7a4f5f",
+      "bytes": 16216
+    }
+  },
+  "services/laboratorio/server/static/noroeste/usuarios/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/usuarios/index.html",
+    "before": {
+      "sha256": "b0f813b9c4423d329f2b5411a5bd7566257dfd949f3c96cf2dfef6fade6a34bf",
+      "bytes": 1858
+    },
+    "after": {
+      "sha256": "54dbd78cf93bc3dd2c913eac479339b1c51d43a595e9ca40a64093ba021a1788",
+      "bytes": 1949
+    }
+  },
+  "services/laboratorio/server/static/novo/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/novo/index.html",
+    "before": {
+      "sha256": "a4852500df44e2331fc5cec5b3c4a00285b4a56baf26c1ebecd57f7c5a540f04",
+      "bytes": 69246
+    },
+    "after": {
+      "sha256": "cc3332689cdbb79c57d7203486e27d67a8ee96c4366344406caaf76f39f32254",
+      "bytes": 69337
+    }
+  },
+  "services/laboratorio/server/static/novo/postes/absorcao.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/novo/postes/absorcao.html",
+    "before": {
+      "sha256": "a62517ef5d38ad9e5aeddade3380aaea4a3f38e256f99046c3edbc447b082017",
+      "bytes": 1443
+    },
+    "after": {
+      "sha256": "ee7fb0bc582d2ad17ca278c6682f8a373c764f89f2f51f7a316be996ffbb87df",
+      "bytes": 1534
+    }
+  },
+  "services/laboratorio/server/static/novo/postes/novo.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/novo/postes/novo.html",
+    "before": {
+      "sha256": "0dd676700d82fdd05c2b7cd003e1ea46f0c0976c973ea19ffa8f23c504907c85",
+      "bytes": 1562
+    },
+    "after": {
+      "sha256": "450c4572b7c3e86d278bbb0b09a912d508fc75d788a4fa60a2b6115b47a9fd21",
+      "bytes": 1653
+    }
+  },
+  "services/laboratorio/server/static/postes/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/postes/index.html",
+    "before": {
+      "sha256": "2dbed0aec4cc6678b6e26e246856aced7da391751735923ccc8258f4ac8d26d3",
+      "bytes": 1333
+    },
+    "after": {
+      "sha256": "3b21d4cda7f2c882cf3a4a6a36df17ebfe963d01e207b547c02ea8634f03ca14",
+      "bytes": 1424
+    }
+  },
+  "services/laboratorio/server/static/slump/flow.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/slump/flow.html",
+    "before": {
+      "sha256": "d2e070d6baa8209c1a9d1660f649f49e5df9c26081896331ff9d948e60be4478",
+      "bytes": 2953
+    },
+    "after": {
+      "sha256": "21d150535b7b26a5c74a00cf34c0796a95a7d208d39c57a8cb2dc5a5c027a604",
+      "bytes": 3044
+    }
+  },
+  "services/laboratorio/server/static/slump/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/slump/index.html",
+    "before": {
+      "sha256": "6b77cd74d64e5f78b288ec9ca43f9b13bc552e7ea6b4507dec8071283533b327",
+      "bytes": 3654
+    },
+    "after": {
+      "sha256": "7ee65a237e14c318060c3a354dae545ea816f6c49ce9c82017b396abdd9efb56",
+      "bytes": 3745
+    }
+  },
+  "services/laboratorio/server/static/slump/umidade.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/slump/umidade.html",
+    "before": {
+      "sha256": "42d38c8dc3f232a62df970d2f0dee9a906af00974da7b4dee033fd6e2f6a5cb8",
+      "bytes": 6105
+    },
+    "after": {
+      "sha256": "d5d7dfce229df5a2036753dc85e6fb4c93fa77a35613af45449b0bbc9c9eb3c3",
+      "bytes": 6196
+    }
+  },
+  "services/laboratorio/server/static/usinas-relatorios/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/usinas-relatorios/index.html",
+    "before": {
+      "sha256": "37c0f240d4d8f82dce781c25d9ac29912647b75ce3b093e8175ae90290483a73",
+      "bytes": 2954
+    },
+    "after": {
+      "sha256": "563e8343c13f30e9de1822365dde24fb03ff56aa2e96f358639eea3df84cda3b",
+      "bytes": 3045
+    }
+  },
+  "services/carta-static/index.html": {
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/carta-static/index.html",
+    "before": {
+      "sha256": "9f09f7e463e7d02f9aba55d45fe42c09f1a74206e5d4224e8980c4acf8279005",
+      "bytes": 16048
+    },
+    "after": {
+      "sha256": "2e7e79479c5e9273f1dfa63c039897934c2080ee15dec8ea578e1a9c8953b52a",
+      "bytes": 16139
+    }
+  },
+  "public/shell/native-content.css": {
+    "destination": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/native-content.css",
+    "before": null,
+    "after": {
+      "sha256": "1707ff9f1eec38969c4427228a6a92f0bb62b3e9973e8d4b1e04983447bc7cf7",
+      "bytes": 942
+    }
+  }
+}

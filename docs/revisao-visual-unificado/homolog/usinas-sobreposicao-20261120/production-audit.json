@@ -1,0 +1,19 @@
+{
+  "version_before": "1.4.31",
+  "version_after": "1.4.31",
+  "application_files_unchanged": 1162,
+  "systemd_nginx_pool_configs_unchanged": true,
+  "schemas_unchanged": [
+    "mapa_unificado_teste",
+    "pcp_unificado_teste",
+    "concretrack_postes",
+    "suprimentos_prod",
+    "qualidade",
+    "ged_postgres"
+  ],
+  "production_changes": 0,
+  "connections_before": 68,
+  "connections_after": 67,
+  "common_headroom_after": 35,
+  "ok": true
+}

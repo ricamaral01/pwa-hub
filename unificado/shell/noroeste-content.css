@@ -1,0 +1,9 @@
+/* Noroeste renders in the shell; keep its table rules scoped to that host. */
+@media screen {
+ html body .noro-table-wrap {min-width:0;max-width:100%;overflow-x:auto}
+ html body .noro-table-wrap table {table-layout:auto!important}
+ html body .noro-table-wrap table th {
+  overflow-wrap:normal!important;word-break:normal!important;
+  white-space:normal!important;hyphens:none;
+ }
+}
