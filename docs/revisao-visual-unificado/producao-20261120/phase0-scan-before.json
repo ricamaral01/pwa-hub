@@ -1,0 +1,229 @@
+[
+  {
+    "file": "public/index.html",
+    "hits": {
+      "homolog": 1
+    }
+  },
+  {
+    "file": "public/login.html",
+    "hits": {
+      "homolog": 1
+    }
+  },
+  {
+    "file": "services/mapa/testar-index.html",
+    "hits": {
+      "teste.programa": 1
+    }
+  },
+  {
+    "file": "public/logistica/logistica-native.js",
+    "hits": {
+      "user-alex": 4
+    }
+  },
+  {
+    "file": "public/shell/auth.js",
+    "hits": {
+      "teste.programa": 1
+    }
+  },
+  {
+    "file": "public/shell/busca.js",
+    "hits": {
+      "homolog": 6,
+      "18446": 1
+    }
+  },
+  {
+    "file": "public/shell/icons.js",
+    "hits": {
+      "homolog": 2
+    }
+  },
+  {
+    "file": "public/shell/menu.config.js",
+    "hits": {
+      "homolog": 2,
+      "18446": 1,
+      "teste.programa": 2
+    }
+  },
+  {
+    "file": "public/shell/shell.js",
+    "hits": {
+      "homolog": 1,
+      "18446": 1,
+      "user-alex": 2
+    }
+  },
+  {
+    "file": "public/testar/index.html",
+    "hits": {
+      "teste.programa": 1
+    }
+  },
+  {
+    "file": "public/suprimentos/frontend/app.js",
+    "hits": {
+      "homolog": 1
+    }
+  },
+  {
+    "file": "public/suprimentos/frontend/compras.js",
+    "hits": {
+      "homolog": 19
+    }
+  },
+  {
+    "file": "public/shell/modelo-a/menu.js",
+    "hits": {
+      "teste.programa": 2
+    }
+  },
+  {
+    "file": "public/pcp/acompanhamento-mensal/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/acompanhamento-mensal-setor-34/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/apontamento-mega/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/comparacao/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/dashboard/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/etiquetas/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/etiquetas-sc/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/etiquetas-setor4/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/maodeobra/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/maodeobra-rateio/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/pcp-diario/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/producao/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/programacao/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/programacao-alex/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/programacao-circular-s3/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/programacao-circular-s4/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/programacao-final/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/relatorio-producao/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/relatorio-programacao-s3/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/relatorio-programacao-s4/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/teste-programacao/index.html",
+    "hits": {
+      "teste.programa": 5
+    }
+  },
+  {
+    "file": "public/pcp/usuarios/index.html",
+    "hits": {
+      "teste.programa": 3
+    }
+  },
+  {
+    "file": "public/pcp/static/js/app.js",
+    "hits": {
+      "teste.programa": 1
+    }
+  },
+  {
+    "file": "public/logistica/dist/logistica-native.js",
+    "hits": {
+      "user-alex": 4
+    }
+  }
+]

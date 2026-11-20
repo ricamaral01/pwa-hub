@@ -1,0 +1,118 @@
+Publicação em produção, hoje: backup primeiro, depois migração
+Autorização do usuário (20/11/2026): hoje não há produção na fábrica, então a publicação pode ser feita agora, sem esperar a janela das 20h. Este prompt vale como "aprovado, publicar em produção" para o pacote congelado na Fase 0 e para a lista de mudanças abaixo. Qualquer coisa fora disso continua precisando da minha aprovação.
+
+A produção está na 1.4.6. A homologação passou por 1.4.7 a 1.4.30. Leve para a produção exatamente o pacote testado na homologação, com backup completo e rollback testado antes.
+
+Use o modelo mais capaz com raciocínio alto. Siga as fases na ordem.
+
+Decisões do usuário (já tomadas)
+Item	Decisão
+Alex	A conta real é alex (Alex Zaranello). Ela recebe a concessão master em todos os módulos, igual à que foi validada na homologação, reconciliada pelo estado real da produção. user-alex é identidade de teste: não recebe nenhuma concessão na produção.
+PCP no Indicador geral	Esconder a tela do menu, da página de módulo e da busca para o perfil PCP. Nenhuma permissão nova.
+Sinônimos da busca	Todos aprovados. Publique o busca-sinonimos.json como está na homologação.
+Estoque (conta técnica do ERP)	Fica fora desta publicação. As telas de Estoque ficam como estão hoje na produção.
+Armação	Continua desativada.
+Pools de conexão de produção	Sem mudança nesta publicação.
+Usinas / Fechamento diário	Nada do drop-in nem do eBPF da homologação vai para a produção.
+Aviso do login	aviso.json publicado com ativo:false.
+Fase 0 — Congelar a versão candidata (homologação)
+Termine o trabalho em andamento (páginas de módulo em colunas, 1.4.30) e aplique nele a decisão de esconder o Indicador geral do PCP. Commit, publicação na 18446, gate 7/7 e matriz de todos os perfis.
+Congele: nenhuma mudança nova depois disso.
+Tag local candidata-producao-<versão>, sem push.
+Manifesto do pacote: arquivo, tamanho, SHA-256.
+Confira no pacote:
+sem a faixa "AMBIENTE DE TESTE";
+sem dados TESTE-REVISAO-COMPLETA;
+sem DSNs, cookies, nomes de bancos ou portas da homologação (procure por homolog, 18446, visual_homolog, _homolog_);
+sem telas só de homologação ("Teste programação");
+sem user-alex em nenhuma lista master.
+Fase 1 — Inventário somente leitura da produção
+Sem alterar nada, registre:
+
+a) Versão e arquivos
+
+Versão publicada e hashes de /opt/concrefer-unificado/public/unificado e dos diretórios de backend que o pacote altera.
+b) Serviços e Nginx
+
+Unidades systemd, drop-ins e configurações do Nginx envolvidas.
+c) Banco
+
+Para cada migração que a homologação recebeu "porque já estaria em produção", comprove no esquema de produção, uma por uma, e marque como presente, ausente ou diferente:
+as 19 do PCP;
+as tabelas do acesso rápido;
+user_units;
+CQ 006;
+as de Armação;
+qualquer outra que o pacote exija.
+d) Permissões
+
+Estado atual: lista master central, Logística, GED, Suprimentos (sup_usuario_papel) e a identidade alex em cada módulo.
+e) Conexões
+
+pg_stat_activity por serviço e folga comum do cluster.
+f) Diferença
+
+O que muda da 1.4.6 para a candidata: arquivos, backend, banco, permissões, serviços a reiniciar.
+Fase 2 — Backup completo (antes de qualquer mudança)
+Em diretório privado /opt/concrefer-unificado/backups/producao-<data-hora>/, fora da árvore pública, com permissões restritas:
+
+Arquivos: tar de public/unificado e de cada diretório de backend e configuração que o pacote toca, com o SHA-256 de cada um.
+Serviços e Nginx: cópia das unidades systemd, dos drop-ins e das configurações do Nginx envolvidas.
+Bancos: pg_dump -Fc de cada banco que receberá migração ou mudança de permissão.
+Verifique cada dump com pg_restore --list e leitura integral (--file=/dev/null).
+Registre tamanho e SHA-256.
+Permissões: exportação em SQL das linhas atuais das tabelas de acesso que serão alteradas.
+Cópia para o meu computador: gere um único arquivo compactado do backup e me informe o comando scp para baixar. Não envie para nenhum serviço externo.
+rollback.sh no mesmo diretório, que:
+restaura arquivos, unidades e configurações da 1.4.6;
+reinicia só os serviços afetados, um por vez;
+reverte as concessões pelas linhas exportadas;
+mantém as migrações aditivas (a 1.4.6 as ignora). Se alguma migração não for aditiva, o script precisa tratá-la.
+Teste do rollback na homologação: volte a 18446 para a versão anterior à candidata, confirme que funciona, publique a candidata de novo e registre o tempo total.
+Ponto de verificação (só para se algo estiver errado)
+Se tudo abaixo estiver OK, siga direto para a Fase 3, sem me esperar:
+
+todos os dumps verificados;
+rollback testado com sucesso na homologação;
+nenhuma migração não aditiva necessária;
+nenhuma migração diferente do esperado;
+folga do cluster de pelo menos 15 conexões comuns;
+nenhuma mudança fora da lista.
+Se qualquer item falhar, pare antes de tocar a produção e me explique o problema e a proposta.
+
+Fase 3 — Publicação (agora)
+Antes de começar, confira de novo os hashes do backup e se nada mudou na produção desde o inventário. Se mudou, pare e me avise.
+Ordem, verificando cada passo antes do próximo:
+Banco: só as migrações ausentes, necessárias e aditivas, cada uma em transação e com verificação.
+Backend: patches mínimos e reinício de cada serviço afetado, um por vez.
+Permissões: concessão master para alex, reconciliada pelo estado real. Não reutilize os UUIDs da homologação e não crie identidade nova se alex já tiver vínculo no módulo. No GED, verifique o vínculo existente de alex antes de criar qualquer coisa.
+Frontend: o pacote congelado, conferindo os hashes do manifesto.
+Nenhuma mudança fora da lista. Se algo não bater, restaure com rollback.sh e me avise. Não improvise na produção.
+Fase 4 — Verificação logo após publicar
+Gate e auditoria adaptados à produção, só leitura, sem criar dados de teste.
+Login: login novo do Uni no computador; login do celular e do tablet sem mudança de layout.
+Perfis: com uma conta de cada perfil disponível, abra as telas principais de cada módulo. As recusas de acesso continuam iguais. O PCP não vê mais o Indicador geral.
+alex: acessa os 8 módulos.
+Busca: Ctrl+K, erro de digitação, sinônimo e permissões.
+Páginas de módulo: colunas sem blocos vazios.
+Atualização do app instalado: o service worker da 1.4.6 para a nova versão, sem limpar cache.
+Integrações: histórico de certificados e Fechamento diário de Usinas abrem.
+Conexões do PostgreSQL antes e depois, e logs de erro dos serviços nos primeiros 30 minutos.
+Rollback imediato (execute rollback.sh e me avise) se:
+o login quebrar para algum perfil;
+aparecer erro 500 em tela principal;
+as conexões do banco chegarem perto do limite;
+a impressão de etiquetas ou PDFs quebrar.
+Fase 5 — Entrega
+Relatório final:
+versão publicada e hashes;
+migrações aplicadas;
+concessões feitas a alex;
+resultado de cada verificação;
+capturas da produção em 1440 e 390 (login, Início, uma página de módulo, busca);
+caminho do backup e comando scp;
+como acionar o rollback.
+Tag local producao-<versão>-<data>, sem push e sem PR.
+Mantenha os backups por pelo menos 30 dias.
+Não apague nada da homologação.
+Pare depois da Fase 5 e me entregue o relatório.

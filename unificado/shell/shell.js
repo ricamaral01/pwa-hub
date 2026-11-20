@@ -139,6 +139,7 @@ function canUse(item) {
   const route = MENU_ITEMS[item.id] || item;
   if (!window.UnificadoCatalogEnvironment.allows(route)) return false;
   if (route.ambiente === 'homolog' && location.port !== '18446') return false;
+  if (route.id === 'indicadorGeralProducao' && pcpUser?.nivel_acesso === 'PCP') return false;
   if (route.module === 'suprimentos' && (!suprimentosFlags.S1 || route.futurePhase && !suprimentosFlags[route.futurePhase])) return false;
   if (route.dosagemAdmin && !masterIds.has(mapaUser?.id)) return false;
   if (grantedScreens !== null && !grantedScreens.has(route.permissionId || route.id)) return false;

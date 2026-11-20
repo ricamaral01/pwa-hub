@@ -1,0 +1,12 @@
+{
+  "authorization": "PEDIDO_PRODUCAO.txt",
+  "version": "1.4.30",
+  "phase": "1: production read-only inventory",
+  "production_application_modified": false,
+  "production_database_modified": false,
+  "candidate_frozen": true,
+  "completed_phases": [
+    0
+  ],
+  "next": "Read-only production inventory; verified backups and staging rollback rehearsal; stop if any checkpoint fails before production changes."
+}

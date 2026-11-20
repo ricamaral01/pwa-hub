@@ -1,0 +1,67 @@
+[
+  {
+    "file": "mapa/screen_access.py",
+    "variable": "MASTER_USER_IDS",
+    "before": [
+      "user-ricardo",
+      "marcelo",
+      "alex",
+      "alex51",
+      "philippe",
+      "user-alex"
+    ],
+    "after": [
+      "user-ricardo",
+      "marcelo",
+      "alex",
+      "alex51",
+      "philippe"
+    ],
+    "changed": true,
+    "before_sha256": "e0454a776aa462a3c157d02804008f8e8abc2d55c7fb7060163e0d9854e86c90",
+    "after_sha256": "9c3a9ff4c0af5c7de9033cb6351936a029dff104112fdd544decee4d57af4d66",
+    "changes_outside_master_collection": false
+  },
+  {
+    "file": "mapa/logistica_access.py",
+    "variable": "MASTERS",
+    "before": [
+      "user-ricardo",
+      "alex",
+      "marcelo",
+      "suportelogistica",
+      "user-alex"
+    ],
+    "after": [
+      "user-ricardo",
+      "alex",
+      "marcelo",
+      "suportelogistica"
+    ],
+    "changed": true,
+    "before_sha256": "714b3ab94dc25ab8031d9d0ad5127547ad3af825836262f935bb13490d9f7cdf",
+    "after_sha256": "28de9860a80cee1e7ac92100be74f92b386ee59f8e5dbb2f03e10622fcbb6059",
+    "changes_outside_master_collection": false
+  },
+  {
+    "file": "logistica/logistica/core.py",
+    "variable": "MASTERS",
+    "before": [
+      "user-ricardo",
+      "alex",
+      "marcelo",
+      "suportelogistica",
+      "user-alex"
+    ],
+    "after": [
+      "user-ricardo",
+      "alex",
+      "marcelo",
+      "suportelogistica"
+    ],
+    "changed": true,
+    "before_sha256": "99de12e74486aad77f565e49dbf6262399c7b67f2d3d63a95214749d2cfe7453",
+    "after_sha256": "071ccd9c56322948da4e631088b361300cfca82030a1daf7c84c29b81cc36d49",
+    "changes_outside_master_collection": false
+  }
+]

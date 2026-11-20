@@ -1,0 +1,1 @@
+{"version": "1.4.30", "backup": "/opt/concrefer-unificado/homolog-next/backups/freeze-production-20261120T164412Z", "static_files": 348, "test_files_deleted": false, "homolog_banner_outside_production_artefact": true, "production_changes": 0, "database_changes": 0, "service_restarts": 0, "cluster_total": 67}

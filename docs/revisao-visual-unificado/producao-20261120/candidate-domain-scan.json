@@ -1,0 +1,12 @@
+[
+  {
+    "file": "public/suprimentos/frontend/app.js",
+    "meaning": "supplier qualification status/fields, not a test-environment setting",
+    "occurrences": 1
+  },
+  {
+    "file": "public/suprimentos/frontend/compras.js",
+    "meaning": "supplier qualification status/fields, not a test-environment setting",
+    "occurrences": 19
+  }
+]

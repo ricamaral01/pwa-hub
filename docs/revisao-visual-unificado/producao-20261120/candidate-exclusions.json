@@ -1,0 +1,18 @@
+[
+  {
+    "file": "public/pcp/teste-programacao/index.html",
+    "reason": "test-only surface or migration rollback reference, not a production update"
+  },
+  {
+    "file": "public/testar/index.html",
+    "reason": "test-only surface or migration rollback reference, not a production update"
+  },
+  {
+    "file": "schema/cq/migrations/999_rollback.sql",
+    "reason": "test-only surface or migration rollback reference, not a production update"
+  },
+  {
+    "file": "services/mapa/testar-index.html",
+    "reason": "test-only surface or migration rollback reference, not a production update"
+  }
+]
