@@ -59951,7 +59951,7 @@
     }
   },
   "cluster": {
-    "captured_at": "2026-11-20T19:05:15.016996+00:00",
+    "captured_at": "2026-11-20T19:24:46.554964+00:00",
     "max_connections": 100,
     "superuser_reserved_connections": 3,
     "reserved_connections": 0,
@@ -60165,7 +60165,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-14T06:43:38.636356+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:05:03.29942+00:00",
+        "state_change": "2026-11-20T19:24:34.105529+00:00",
         "client_pid": null
       },
       {
@@ -60209,7 +60209,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-14T06:43:39.142115+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:05:09.926609+00:00",
+        "state_change": "2026-11-20T19:24:40.688633+00:00",
         "client_pid": 1516596,
         "client_cgroup": "0::/system.slice/cec-campinas-worker.service"
       },
@@ -60224,7 +60224,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-18T16:06:53.099644+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T17:37:45.111747+00:00",
+        "state_change": "2026-11-20T19:16:31.323969+00:00",
         "client_pid": 3433383,
         "client_cgroup": "0::/system.slice/pcp-unificado-test.service"
       },
@@ -60233,13 +60233,13 @@
         "usename": "concrefer_suprimentos_homolog",
         "application_name": "",
         "state": "idle",
-        "pid": 2682233,
+        "pid": 2730523,
         "client_addr": "127.0.0.1",
-        "client_port": 43602,
+        "client_port": 34558,
         "backend_type": "client backend",
-        "backend_start": "2026-11-20T19:03:37.808088+00:00",
+        "backend_start": "2026-11-20T19:23:37.680578+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:03:54.525762+00:00",
+        "state_change": "2026-11-20T19:23:37.692732+00:00",
         "client_pid": 1854969,
         "client_cgroup": "0::/system.slice/unificado-visual-homolog-suprimentos.service"
       },
@@ -60269,7 +60269,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-16T23:07:42.693384+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:04:02.066875+00:00",
+        "state_change": "2026-11-20T19:24:02.033619+00:00",
         "client_pid": 1941400,
         "client_cgroup": "0::/system.slice/suprimentos-homolog.service"
       },
@@ -60299,7 +60299,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-14T06:44:02.376999+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:05:02.902237+00:00",
+        "state_change": "2026-11-20T19:20:03.522027+00:00",
         "client_pid": 1516637,
         "client_cgroup": "0::/system.slice/laboratorio-unificado.service"
       },
@@ -60314,7 +60314,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-16T23:09:16.737196+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:05:02.510852+00:00",
+        "state_change": "2026-11-20T19:23:02.047395+00:00",
         "client_pid": 1941400,
         "client_cgroup": "0::/system.slice/suprimentos-homolog.service"
       },
@@ -60329,7 +60329,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T00:04:58.556878+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:05:02.064482+00:00",
+        "state_change": "2026-11-20T19:23:55.076854+00:00",
         "client_pid": 2072046,
         "client_cgroup": "0::/system.slice/suprimentos-prod.service"
       },
@@ -60344,7 +60344,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-18T20:19:19.576686+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T17:38:01.058993+00:00",
+        "state_change": "2026-11-20T19:16:32.569453+00:00",
         "client_pid": 3433383,
         "client_cgroup": "0::/system.slice/pcp-unificado-test.service"
       },
@@ -60374,7 +60374,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T09:48:35.462233+00:00",
         "xact_start": null,
-        "state_change": "2026-11-19T20:15:30.03766+00:00",
+        "state_change": "2026-11-20T19:20:59.304285+00:00",
         "client_pid": 3389962,
         "client_cgroup": "0::/system.slice/concrefer-logistica.service"
       },
@@ -60389,7 +60389,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-14T08:54:55.043021+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T17:38:01.06263+00:00",
+        "state_change": "2026-11-20T19:21:04.576538+00:00",
         "client_pid": 1516633,
         "client_cgroup": "0::/system.slice/concrefer-armacao.service"
       },
@@ -60404,7 +60404,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T00:09:49.872724+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:04:55.049779+00:00",
+        "state_change": "2026-11-20T19:24:01.730855+00:00",
         "client_pid": 2072046,
         "client_cgroup": "0::/system.slice/suprimentos-prod.service"
       },
@@ -60419,7 +60419,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T09:48:35.486092+00:00",
         "xact_start": null,
-        "state_change": "2026-11-19T20:15:30.245273+00:00",
+        "state_change": "2026-11-20T19:21:00.517587+00:00",
         "client_pid": 3389962,
         "client_cgroup": "0::/system.slice/concrefer-logistica.service"
       },
@@ -60434,23 +60434,24 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T09:48:35.556481+00:00",
         "xact_start": null,
-        "state_change": "2026-11-19T20:15:30.196546+00:00",
+        "state_change": "2026-11-20T19:21:00.61537+00:00",
         "client_pid": 3389962,
         "client_cgroup": "0::/system.slice/concrefer-logistica.service"
       },
       {
-        "datname": "postgres",
-        "usename": "postgres",
-        "application_name": "psql",
-        "state": "active",
-        "pid": 2686333,
-        "client_addr": null,
-        "client_port": -1,
+        "datname": "mapa_unificado_teste",
+        "usename": "mapa_api_authenticator",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "pid": 2723856,
+        "client_addr": "127.0.0.1",
+        "client_port": 57252,
         "backend_type": "client backend",
-        "backend_start": "2026-11-20T19:05:15.009444+00:00",
-        "xact_start": "2026-11-20T19:05:15.012834+00:00",
-        "state_change": "2026-11-20T19:05:15.013118+00:00",
-        "client_pid": null
+        "backend_start": "2026-11-20T19:20:51.424149+00:00",
+        "xact_start": null,
+        "state_change": "2026-11-20T19:21:05.1283+00:00",
+        "client_pid": 2445,
+        "client_cgroup": "0::/system.slice/docker-0c268d79dbfdec130868fc8e85c90f35b905e4390d78cf572b5f3980ab9ac360.scope"
       },
       {
         "datname": "pcp_unificado_homolog_20261016",
@@ -60478,7 +60479,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-18T16:07:01.120871+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T17:38:27.749615+00:00",
+        "state_change": "2026-11-20T19:20:58.362422+00:00",
         "client_pid": 3433383,
         "client_cgroup": "0::/system.slice/pcp-unificado-test.service"
       },
@@ -60493,7 +60494,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T09:49:38.322606+00:00",
         "xact_start": null,
-        "state_change": "2026-11-19T20:15:30.194456+00:00",
+        "state_change": "2026-11-20T19:21:00.412984+00:00",
         "client_pid": 3389962,
         "client_cgroup": "0::/system.slice/concrefer-logistica.service"
       },
@@ -60508,7 +60509,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-14T10:56:08.247663+00:00",
         "xact_start": null,
-        "state_change": "2026-11-19T12:29:24.835358+00:00",
+        "state_change": "2026-11-20T19:16:05.285665+00:00",
         "client_pid": 1516665,
         "client_cgroup": "0::/system.slice/qualidade-api.service"
       },
@@ -60523,7 +60524,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T09:49:38.478599+00:00",
         "xact_start": null,
-        "state_change": "2026-11-19T20:15:12.493447+00:00",
+        "state_change": "2026-11-20T19:21:00.175213+00:00",
         "client_pid": 3389961,
         "client_cgroup": "0::/system.slice/concrefer-logistica.service"
       },
@@ -60538,7 +60539,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T10:00:52.12294+00:00",
         "xact_start": null,
-        "state_change": "2026-11-19T20:15:12.505652+00:00",
+        "state_change": "2026-11-20T19:21:00.18336+00:00",
         "client_pid": 3389961,
         "client_cgroup": "0::/system.slice/concrefer-logistica.service"
       },
@@ -60568,7 +60569,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T09:49:38.504971+00:00",
         "xact_start": null,
-        "state_change": "2026-11-19T20:15:12.5187+00:00",
+        "state_change": "2026-11-20T19:21:00.188146+00:00",
         "client_pid": 3389961,
         "client_cgroup": "0::/system.slice/concrefer-logistica.service"
       },
@@ -60583,7 +60584,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-18T16:07:05.241799+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T17:38:10.65627+00:00",
+        "state_change": "2026-11-20T19:20:51.498908+00:00",
         "client_pid": 3433383,
         "client_cgroup": "0::/system.slice/pcp-unificado-test.service"
       },
@@ -60613,7 +60614,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T13:15:47.262048+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:03:01.574892+00:00",
+        "state_change": "2026-11-20T19:23:01.534105+00:00",
         "client_pid": 1516637,
         "client_cgroup": "0::/system.slice/laboratorio-unificado.service"
       },
@@ -60643,7 +60644,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-18T16:07:05.242195+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T17:35:48.307729+00:00",
+        "state_change": "2026-11-20T19:21:04.887399+00:00",
         "client_pid": 3433383,
         "client_cgroup": "0::/system.slice/pcp-unificado-test.service"
       },
@@ -60658,7 +60659,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T13:15:47.352921+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:02:01.956777+00:00",
+        "state_change": "2026-11-20T19:22:02.448409+00:00",
         "client_pid": 1516637,
         "client_cgroup": "0::/system.slice/laboratorio-unificado.service"
       },
@@ -60673,7 +60674,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T13:15:47.257679+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:01:01.829038+00:00",
+        "state_change": "2026-11-20T19:21:01.870604+00:00",
         "client_pid": 1516637,
         "client_cgroup": "0::/system.slice/laboratorio-unificado.service"
       },
@@ -60763,7 +60764,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-17T13:15:47.546344+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:04:01.941615+00:00",
+        "state_change": "2026-11-20T19:24:01.340426+00:00",
         "client_pid": 1516637,
         "client_cgroup": "0::/system.slice/laboratorio-unificado.service"
       },
@@ -60888,6 +60889,20 @@
         "client_cgroup": "0::/system.slice/unificado-visual-homolog-carta.service"
       },
       {
+        "datname": "postgres",
+        "usename": "postgres",
+        "application_name": "psql",
+        "state": "active",
+        "pid": 2733283,
+        "client_addr": null,
+        "client_port": -1,
+        "backend_type": "client backend",
+        "backend_start": "2026-11-20T19:24:46.549576+00:00",
+        "xact_start": "2026-11-20T19:24:46.552396+00:00",
+        "state_change": "2026-11-20T19:24:46.552665+00:00",
+        "client_pid": null
+      },
+      {
         "datname": "pcp_visual_homolog_20261118",
         "usename": "pcp_unificado_app",
         "application_name": "",
@@ -60973,7 +60988,7 @@
         "backend_type": "client backend",
         "backend_start": "2026-11-19T10:38:04.614816+00:00",
         "xact_start": null,
-        "state_change": "2026-11-20T19:00:11.660903+00:00",
+        "state_change": "2026-11-20T19:23:37.679096+00:00",
         "client_pid": 5009,
         "client_cgroup": "0::/system.slice/unificado-visual-homolog-armacao.service"
       },
@@ -61050,8 +61065,8 @@
         "client_pid": null
       }
     ],
-    "client_backends": 62,
-    "common_headroom": 35
+    "client_backends": 63,
+    "common_headroom": 34
   },
-  "disk": "Filesystem        1B-blocks         Used    Available Use% Mounted on\n/dev/sda1      414921494528 135149473792 279755243520  33% /\n"
+  "disk": "Filesystem        1B-blocks         Used    Available Use% Mounted on\n/dev/sda1      414921494528 135368351744 279536365568  33% /\n"
 }

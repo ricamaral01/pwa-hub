@@ -1,0 +1,244 @@
+{
+  "mode": "after",
+  "views": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "version": "Uni 1.4.31",
+      "inputs": [
+        {
+          "type": "text",
+          "name": "username",
+          "rect": {
+            "x": 970,
+            "y": 453.4375,
+            "width": 380,
+            "height": 42
+          }
+        },
+        {
+          "type": "password",
+          "name": "password",
+          "rect": {
+            "x": 970,
+            "y": 536.5625,
+            "width": 380,
+            "height": 42
+          }
+        },
+        {
+          "type": "checkbox",
+          "name": "",
+          "rect": {
+            "x": 970,
+            "y": 593.984375,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "version": "Uni 1.4.31",
+      "inputs": [
+        {
+          "type": "text",
+          "name": "username",
+          "rect": {
+            "x": 54,
+            "y": 441.921875,
+            "width": 282,
+            "height": 43
+          }
+        },
+        {
+          "type": "password",
+          "name": "password",
+          "rect": {
+            "x": 54,
+            "y": 528.21875,
+            "width": 282,
+            "height": 43
+          }
+        },
+        {
+          "type": "checkbox",
+          "name": "",
+          "rect": {
+            "x": 54,
+            "y": 573.796875,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "width": 820,
+      "height": 1180,
+      "version": "Uni 1.4.31",
+      "inputs": [
+        {
+          "type": "text",
+          "name": "username",
+          "rect": {
+            "x": 230,
+            "y": 599.765625,
+            "width": 360,
+            "height": 43
+          }
+        },
+        {
+          "type": "password",
+          "name": "password",
+          "rect": {
+            "x": 230,
+            "y": 686.0625,
+            "width": 360,
+            "height": 43
+          }
+        },
+        {
+          "type": "checkbox",
+          "name": "",
+          "rect": {
+            "x": 230,
+            "y": 731.640625,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ],
+      "overflow": false
+    }
+  ],
+  "password_submission_tested": false,
+  "password_test": "Pending for the user, as explicitly requested",
+  "ok": true,
+  "mobile_tablet_comparison": [
+    {
+      "width": 390,
+      "original_credential_fields_unchanged": true,
+      "input_geometry_unchanged": true,
+      "approved_new_control": "Remember username checkbox: explicitly authorized on all widths by PROMPT_CODEX_LOGIN_UNI.md items 2c and 3",
+      "before": [
+        {
+          "type": "text",
+          "name": "username",
+          "rect": {
+            "x": 54,
+            "y": 441.921875,
+            "width": 282,
+            "height": 43
+          }
+        },
+        {
+          "type": "password",
+          "name": "password",
+          "rect": {
+            "x": 54,
+            "y": 528.21875,
+            "width": 282,
+            "height": 43
+          }
+        }
+      ],
+      "after": [
+        {
+          "type": "text",
+          "name": "username",
+          "rect": {
+            "x": 54,
+            "y": 441.921875,
+            "width": 282,
+            "height": 43
+          }
+        },
+        {
+          "type": "password",
+          "name": "password",
+          "rect": {
+            "x": 54,
+            "y": 528.21875,
+            "width": 282,
+            "height": 43
+          }
+        },
+        {
+          "type": "checkbox",
+          "name": "",
+          "rect": {
+            "x": 54,
+            "y": 573.796875,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ]
+    },
+    {
+      "width": 820,
+      "original_credential_fields_unchanged": true,
+      "input_geometry_unchanged": true,
+      "approved_new_control": "Remember username checkbox: explicitly authorized on all widths by PROMPT_CODEX_LOGIN_UNI.md items 2c and 3",
+      "before": [
+        {
+          "type": "text",
+          "name": "username",
+          "rect": {
+            "x": 230,
+            "y": 599.765625,
+            "width": 360,
+            "height": 43
+          }
+        },
+        {
+          "type": "password",
+          "name": "password",
+          "rect": {
+            "x": 230,
+            "y": 686.0625,
+            "width": 360,
+            "height": 43
+          }
+        }
+      ],
+      "after": [
+        {
+          "type": "text",
+          "name": "username",
+          "rect": {
+            "x": 230,
+            "y": 599.765625,
+            "width": 360,
+            "height": 43
+          }
+        },
+        {
+          "type": "password",
+          "name": "password",
+          "rect": {
+            "x": 230,
+            "y": 686.0625,
+            "width": 360,
+            "height": 43
+          }
+        },
+        {
+          "type": "checkbox",
+          "name": "",
+          "rect": {
+            "x": 230,
+            "y": 731.640625,
+            "width": 16,
+            "height": 16
+          }
+        }
+      ]
+    }
+  ]
+}

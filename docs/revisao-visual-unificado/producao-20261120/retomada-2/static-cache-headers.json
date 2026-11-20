@@ -1,0 +1,20 @@
+[
+  {
+    "path": "/unificado/pcp/unificado-shell.css?v=1.4.27",
+    "status": 200,
+    "headers": {
+      "Last-Modified": "Fri, 20 Nov 2026 18:42:15 GMT",
+      "ETag": "\"6b009487-609b\"",
+      "Cache-Control": "private, max-age=300, must-revalidate"
+    }
+  },
+  {
+    "path": "/unificado/shell/module-columns.css?v=1.4.31",
+    "status": 200,
+    "headers": {
+      "Last-Modified": "Fri, 20 Nov 2026 18:42:15 GMT",
+      "ETag": "\"6b009487-a21\"",
+      "Cache-Control": "public, max-age=31536000, immutable"
+    }
+  }
+]

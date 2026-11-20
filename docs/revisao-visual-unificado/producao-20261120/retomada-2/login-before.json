@@ -1,0 +1,92 @@
+{
+  "mode": "before",
+  "views": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "version": "v1.4.6",
+      "inputs": [
+        {
+          "type": "text",
+          "name": "username",
+          "rect": {
+            "x": 540,
+            "y": 509.765625,
+            "width": 360,
+            "height": 43
+          }
+        },
+        {
+          "type": "password",
+          "name": "password",
+          "rect": {
+            "x": 540,
+            "y": 596.0625,
+            "width": 360,
+            "height": 43
+          }
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "version": "v1.4.6",
+      "inputs": [
+        {
+          "type": "text",
+          "name": "username",
+          "rect": {
+            "x": 54,
+            "y": 441.921875,
+            "width": 282,
+            "height": 43
+          }
+        },
+        {
+          "type": "password",
+          "name": "password",
+          "rect": {
+            "x": 54,
+            "y": 528.21875,
+            "width": 282,
+            "height": 43
+          }
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "width": 820,
+      "height": 1180,
+      "version": "v1.4.6",
+      "inputs": [
+        {
+          "type": "text",
+          "name": "username",
+          "rect": {
+            "x": 230,
+            "y": 599.765625,
+            "width": 360,
+            "height": 43
+          }
+        },
+        {
+          "type": "password",
+          "name": "password",
+          "rect": {
+            "x": 230,
+            "y": 686.0625,
+            "width": 360,
+            "height": 43
+          }
+        }
+      ],
+      "overflow": false
+    }
+  ],
+  "password_submission_tested": false,
+  "password_test": "Pending for the user, as explicitly requested",
+  "ok": true
+}

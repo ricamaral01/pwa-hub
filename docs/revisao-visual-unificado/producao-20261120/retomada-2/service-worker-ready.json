@@ -1,0 +1,13 @@
+{
+  "version": "1.4.6",
+  "state": {
+    "keys": [
+      "concrefer-unificado-shell-v1.4.6"
+    ],
+    "active": "activated",
+    "installing": false,
+    "waiting": false,
+    "controller": true
+  },
+  "browser_kept_running": true
+}

@@ -1,0 +1,477 @@
+{
+  "views": [
+    {
+      "width": 1440,
+      "ctrl_k": true,
+      "escape": true,
+      "overflow": false,
+      "search": [
+        {
+          "query": "etiqeta",
+          "results": [
+            {
+              "id": "etiquetas",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/pcp/etiquetas/"
+            },
+            {
+              "id": "etiquetasSc",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/pcp/etiquetas-sc/"
+            },
+            {
+              "id": "etiquetasSetor4",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/pcp/etiquetas-setor4/"
+            },
+            {
+              "id": "etiquetasArmaduras",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/pcp/etiquetas-armaduras/"
+            },
+            {
+              "id": "labCecEtiquetas",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/laboratorio/cec/etiquetas/"
+            }
+          ]
+        },
+        {
+          "query": "rotulo setor 3",
+          "results": [
+            {
+              "id": "etiquetasSc",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/pcp/etiquetas-sc/"
+            }
+          ]
+        },
+        {
+          "query": "armacoa ribeirao",
+          "results": [
+            {
+              "id": "armacao-ribeirao-corte",
+              "title": null,
+              "url": "/unificado/armacao/?unidade=ribeirao&tela=corte"
+            },
+            {
+              "id": "armacao-ribeirao-banca",
+              "title": null,
+              "url": "/unificado/armacao/?unidade=ribeirao&tela=banca"
+            },
+            {
+              "id": "armacao-ribeirao-rastreabilidade",
+              "title": null,
+              "url": "/unificado/armacao/?unidade=ribeirao&tela=rastreabilidade"
+            },
+            {
+              "id": "armacao-ribeirao-supervisor",
+              "title": null,
+              "url": "/unificado/armacao/?unidade=ribeirao&tela=supervisor"
+            },
+            {
+              "id": "armacao-ribeirao-cadastros",
+              "title": null,
+              "url": "/unificado/armacao/?unidade=ribeirao&tela=cadastros"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "ctrl_k": true,
+      "escape": true,
+      "overflow": false,
+      "search": [
+        {
+          "query": "etiqeta",
+          "results": [
+            {
+              "id": "etiquetas",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/pcp/etiquetas/"
+            },
+            {
+              "id": "etiquetasSc",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/pcp/etiquetas-sc/"
+            },
+            {
+              "id": "etiquetasSetor4",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/pcp/etiquetas-setor4/"
+            },
+            {
+              "id": "etiquetasArmaduras",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/pcp/etiquetas-armaduras/"
+            },
+            {
+              "id": "labCecEtiquetas",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/laboratorio/cec/etiquetas/"
+            }
+          ]
+        },
+        {
+          "query": "rotulo setor 3",
+          "results": [
+            {
+              "id": "etiquetasSc",
+              "title": null,
+              "url": "https://concrefer.concretrack.com.br/unificado/pcp/etiquetas-sc/"
+            }
+          ]
+        },
+        {
+          "query": "armacoa ribeirao",
+          "results": [
+            {
+              "id": "armacao-ribeirao-corte",
+              "title": null,
+              "url": "/unificado/armacao/?unidade=ribeirao&tela=corte"
+            },
+            {
+              "id": "armacao-ribeirao-banca",
+              "title": null,
+              "url": "/unificado/armacao/?unidade=ribeirao&tela=banca"
+            },
+            {
+              "id": "armacao-ribeirao-rastreabilidade",
+              "title": null,
+              "url": "/unificado/armacao/?unidade=ribeirao&tela=rastreabilidade"
+            },
+            {
+              "id": "armacao-ribeirao-supervisor",
+              "title": null,
+              "url": "/unificado/armacao/?unidade=ribeirao&tela=supervisor"
+            },
+            {
+              "id": "armacao-ribeirao-cadastros",
+              "title": null,
+              "url": "/unificado/armacao/?unidade=ribeirao&tela=cadastros"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "module_columns": [
+    {
+      "module": "planejamento",
+      "columns": "2",
+      "groups": [
+        {
+          "title": "Geral",
+          "links": 2,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Programação",
+          "links": 6,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Relatórios de programação",
+          "links": 3,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Armaduras",
+          "links": 3,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Etiquetas",
+          "links": 4,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Acompanhamento",
+          "links": 5,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Produção e apoio",
+          "links": 4,
+          "breakInside": "avoid",
+          "rects": 1
+        }
+      ],
+      "empty": 0
+    },
+    {
+      "module": "producao",
+      "columns": "2",
+      "groups": [
+        {
+          "title": "Campinas · produção",
+          "links": 6,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Campinas · montagem",
+          "links": 3,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Campinas · controle",
+          "links": 6,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Campinas · indicadores",
+          "links": 5,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Pederneiras",
+          "links": 5,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Ribeirão",
+          "links": 5,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Noroeste",
+          "links": 5,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Indicadores gerais",
+          "links": 1,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Campinas · armação",
+          "links": 5,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Pederneiras · armação",
+          "links": 5,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Ribeirão · armação",
+          "links": 5,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Noroeste · armação",
+          "links": 5,
+          "breakInside": "avoid",
+          "rects": 1
+        }
+      ],
+      "empty": 0
+    },
+    {
+      "module": "laboratorio",
+      "columns": "2",
+      "groups": [
+        {
+          "title": "Corpos de prova",
+          "links": 3,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Controle estatístico",
+          "links": 4,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Dosagem",
+          "links": 14,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Concreto fresco",
+          "links": 1,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Usina de Campinas",
+          "links": 1,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Cura térmica",
+          "links": 3,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Ensaios de concreto",
+          "links": 1,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Postes",
+          "links": 5,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Cronoanálise",
+          "links": 7,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Carta de traço",
+          "links": 1,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Administração",
+          "links": 1,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Ajuda",
+          "links": 1,
+          "breakInside": "avoid",
+          "rects": 1
+        }
+      ],
+      "empty": 0
+    },
+    {
+      "module": "qualidade",
+      "columns": "2",
+      "groups": [
+        {
+          "title": "Geral",
+          "links": 2,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Não conformidades",
+          "links": 4,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Certificados",
+          "links": 4,
+          "breakInside": "avoid",
+          "rects": 1
+        }
+      ],
+      "empty": 0
+    },
+    {
+      "module": "usinas",
+      "columns": "2",
+      "groups": [
+        {
+          "title": "Geral",
+          "links": 4,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Noroeste",
+          "links": 8,
+          "breakInside": "avoid",
+          "rects": 1
+        }
+      ],
+      "empty": 0
+    },
+    {
+      "module": "suprimentos",
+      "columns": "2",
+      "groups": [
+        {
+          "title": "Solicitações",
+          "links": 5,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Compras",
+          "links": 4,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Administração",
+          "links": 1,
+          "breakInside": "avoid",
+          "rects": 1
+        }
+      ],
+      "empty": 0
+    },
+    {
+      "module": "logistica",
+      "columns": "2",
+      "groups": [
+        {
+          "title": "Geral",
+          "links": 1,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Km/evento",
+          "links": 6,
+          "breakInside": "avoid",
+          "rects": 1
+        },
+        {
+          "title": "Cadastros",
+          "links": 3,
+          "breakInside": "avoid",
+          "rects": 1
+        }
+      ],
+      "empty": 0
+    },
+    {
+      "module": "ged",
+      "columns": "2",
+      "groups": [
+        {
+          "title": "Gestão documental",
+          "links": 4,
+          "breakInside": "avoid",
+          "rects": 1
+        }
+      ],
+      "empty": 0
+    }
+  ],
+  "ok": true
+}

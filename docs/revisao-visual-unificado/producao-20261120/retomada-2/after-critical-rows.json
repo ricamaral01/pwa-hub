@@ -1,0 +1,82 @@
+{
+  "armacao": [
+    {
+      "unidade_id": 1,
+      "enabled": true,
+      "prefixo": "CAM",
+      "tolerancia_saldo": 0.03,
+      "atualizado_em": "2026-10-30T00:15:10.175991+00:00"
+    },
+    {
+      "unidade_id": 2,
+      "enabled": true,
+      "prefixo": "PED",
+      "tolerancia_saldo": 0.03,
+      "atualizado_em": "2026-10-30T00:15:10.175991+00:00"
+    },
+    {
+      "unidade_id": 3,
+      "enabled": true,
+      "prefixo": "RIB",
+      "tolerancia_saldo": 0.03,
+      "atualizado_em": "2026-10-30T00:15:10.175991+00:00"
+    },
+    {
+      "unidade_id": 4,
+      "enabled": true,
+      "prefixo": "NOR",
+      "tolerancia_saldo": 0.03,
+      "atualizado_em": "2026-10-30T00:15:10.175991+00:00"
+    }
+  ],
+  "cq": {
+    "row": {
+      "id": 1,
+      "fck_mpa": 25.0,
+      "observacoes": "Conforme ABNT NBR 8451-1 a 8451-5.",
+      "updated_at": "2026-10-27T11:42:39.675959+00:00",
+      "resp_laboratorio_padrao": "Ricardo Do Amaral"
+    },
+    "default": "25"
+  },
+  "homolog_armacao": [
+    {
+      "unidade_id": 1,
+      "enabled": true,
+      "prefixo": "CAM",
+      "tolerancia_saldo": 0.03,
+      "atualizado_em": "2026-11-20T17:31:56.827027+00:00"
+    },
+    {
+      "unidade_id": 2,
+      "enabled": true,
+      "prefixo": "PED",
+      "tolerancia_saldo": 0.03,
+      "atualizado_em": "2026-11-20T17:31:56.827027+00:00"
+    },
+    {
+      "unidade_id": 3,
+      "enabled": true,
+      "prefixo": "RIB",
+      "tolerancia_saldo": 0.03,
+      "atualizado_em": "2026-11-20T17:31:56.827027+00:00"
+    },
+    {
+      "unidade_id": 4,
+      "enabled": true,
+      "prefixo": "NOR",
+      "tolerancia_saldo": 0.03,
+      "atualizado_em": "2026-11-20T17:31:56.827027+00:00"
+    }
+  ],
+  "homolog_cq": {
+    "row": {
+      "id": 1,
+      "fck_mpa": 25.0,
+      "observacoes": "Conforme ABNT NBR 8451-1 a 8451-5.",
+      "updated_at": "2026-11-20T17:31:56.889099+00:00",
+      "resp_laboratorio_padrao": "Ricardo Do Amaral"
+    },
+    "default": "25"
+  }
+}

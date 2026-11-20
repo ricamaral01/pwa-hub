@@ -1,0 +1,28 @@
+{
+  "before": {
+    "keys": [
+      "concrefer-unificado-shell-v1.4.6"
+    ],
+    "active": "activated",
+    "installing": false,
+    "waiting": false,
+    "controller": true
+  },
+  "after": {
+    "keys": [
+      "concrefer-unificado-shell-v1.4.31"
+    ],
+    "active": "activated",
+    "installing": false,
+    "waiting": false,
+    "controller": true
+  },
+  "version_before": "1.4.6",
+  "version_after": "1.4.31",
+  "same_running_browser": true,
+  "cache_cleared": false,
+  "app_reinstalled": false,
+  "manual_cache_contents": false,
+  "physical_os_installation_ui_tested": false,
+  "ok": true
+}

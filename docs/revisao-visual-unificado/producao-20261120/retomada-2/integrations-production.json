@@ -1,0 +1,63 @@
+{
+  "operational_writes": 0,
+  "physical_printer_tested": false,
+  "daily_closing": {
+    "report_visible": true,
+    "responses": [
+      {
+        "url": "https://concrefer.concretrack.com.br/unificado/mapa/api/usina/reporting/pcp-producao/manifest",
+        "status": 200
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br/unificado/mapa/api/usina/reporting/pcp-producao/report/2026-10-30",
+        "status": 200
+      },
+      {
+        "url": "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-30.html",
+        "status": 200
+      },
+      {
+        "url": "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-30.html",
+        "status": 200
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css",
+        "status": 200
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br/unificado/mapa/api/usina/reporting/pcp-producao/report/2026-10-19",
+        "status": 200
+      },
+      {
+        "url": "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-19.html",
+        "status": 200
+      },
+      {
+        "url": "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-19.html",
+        "status": 200
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css",
+        "status": 200
+      }
+    ],
+    "dates_count": 14,
+    "first_url": "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-30.html",
+    "date_changed": true,
+    "second_url": "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-19.html",
+    "ok": true
+  },
+  "armadura_labels": {
+    "models_status": 200,
+    "schedule_status": 200,
+    "existing_date": "2026-11-27",
+    "template_model": "9X200",
+    "labels": 8,
+    "print_handler_called": true,
+    "pdf_from_real_generated_dom": true,
+    "pdf_bytes": 27557,
+    "ok": true
+  },
+  "rejected_requests": [],
+  "ok": true
+}
