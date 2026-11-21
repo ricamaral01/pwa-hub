@@ -1,0 +1,26 @@
+[
+  {
+    "unit": "campinas",
+    "kind": "labels",
+    "text_identical": true,
+    "render_identical": true,
+    "pages_before": 8,
+    "pages_after": 8
+  },
+  {
+    "unit": "campinas",
+    "kind": "report",
+    "text_identical": true,
+    "render_identical": true,
+    "pages_before": 3,
+    "pages_after": 3
+  },
+  {
+    "unit": "noroeste",
+    "kind": "report",
+    "text_identical": true,
+    "render_identical": true,
+    "pages_before": 1,
+    "pages_after": 1
+  }
+]

@@ -1,0 +1,48 @@
+[
+  {
+    "unit": "campinas",
+    "mode": "before",
+    "business_writes_blocked": true,
+    "source": "real H18446 data",
+    "labels_pdf": "existing-campinas-labels-before.pdf",
+    "labels_fingerprint": {
+      "pages": 8,
+      "text_sha256": "1937097939378028838200e6b73a0ea217814ffe6abf998688ba9e69302412f5",
+      "page_raster_sha256": [
+        "c0ebd3a7d354a79703eae0a27c1fe3ce88ef076d6b3b13c1dcb3584347ebec71",
+        "ef340873b2246d4da676d1ab2e1b2799d6b0a999bda0769af6607145c35662c2",
+        "75f95d5d83bc6d315338787330055140bc00ec665e42316a00b0f78927d57dd8",
+        "1fd386cbbf627cfbb6be079b52c83d51487b35653959507bb487f30133ab51b7",
+        "d76c9c87487b2cb9cddde0077f018c7b5268b7d57be22367a79904ef81519589",
+        "d59a570ea8c829621c8882290bc6d67d57cfdf9b61a0731e37304f3975d00007",
+        "91d4d42b785f38bff713433c83060f46ff5c7a5e69d2c1d348de06af3759f2f5",
+        "18f212487cb77035d244bbab944edc92bc67da81bcba48ff39f1f58507e585dd"
+      ]
+    },
+    "report_pdf": "existing-campinas-report-before.pdf",
+    "report_fingerprint": {
+      "pages": 3,
+      "text_sha256": "ef759c29aebc8ec1e7d9a895e23a52618f646019ed09ee65c529b7e154132d47",
+      "page_raster_sha256": [
+        "c1d09e58ee80351d22d7bf04c80503788b0dcde83da428ce6ab455bf780c1fe2",
+        "306cfb2fb70491e0be62cdd1f4b327eeb83358ee2db0ab86490d238029ce2f6b",
+        "5cd97458fc940fe410e8dbe3ba2e5e3c5ea4fa62ea371f9419f952796b121871"
+      ]
+    }
+  },
+  {
+    "unit": "noroeste",
+    "mode": "before",
+    "business_writes_blocked": true,
+    "source": "real H18446 data",
+    "labels_not_generated_reason": "H Noroeste has0 source batches; no data invented or copied into the unit",
+    "report_pdf": "existing-noroeste-report-before.pdf",
+    "report_fingerprint": {
+      "pages": 1,
+      "text_sha256": "a38e5c4a45258b4e364a8480b054d03e3de0949318ed84233a350f46b50f8af4",
+      "page_raster_sha256": [
+        "5f7792f331dc62d63c40127c0bde1750d75a86d4114a96dde0309517678fbdc2"
+      ]
+    }
+  }
+]

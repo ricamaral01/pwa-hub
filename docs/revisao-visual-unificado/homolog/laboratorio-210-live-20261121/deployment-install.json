@@ -1,0 +1,49 @@
+{
+  "phase": "backend_ready",
+  "imported": [
+    {
+      "unit": "pederneiras",
+      "source_count": 1621,
+      "imported_count": 1613,
+      "rejected": 8
+    },
+    {
+      "unit": "ribeirao",
+      "source_count": 829,
+      "imported_count": 829,
+      "rejected": 0
+    }
+  ],
+  "fixtures": [
+    {
+      "unit": "pederneiras",
+      "id": 9002100001,
+      "marker": "TESTE-LAB-PEDE",
+      "series": "TESTE-LAB-PEDE-001",
+      "molded_at": "2026-11-20",
+      "formula_source_id": 71467
+    },
+    {
+      "unit": "ribeirao",
+      "id": 9002100002,
+      "marker": "TESTE-LAB-RIB",
+      "series": "TESTE-LAB-RIB-001",
+      "molded_at": "2026-11-20",
+      "formula_source_id": 829
+    }
+  ],
+  "http": [
+    {
+      "service": "unificado-visual-homolog-laboratorio.service",
+      "status": 200,
+      "activity_after_restart": 79,
+      "connections_after_restart": 0
+    },
+    {
+      "service": "unificado-visual-homolog-mapa.service",
+      "status": 200,
+      "activity_after_restart": 79,
+      "connections_after_restart": 0
+    }
+  ]
+}

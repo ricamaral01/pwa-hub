@@ -1,0 +1,536 @@
+{
+  "environment": "real H18446",
+  "queries": [
+    {
+      "query": "producao",
+      "expected": "labDosagemProducao",
+      "actual": "labDosagemProducao",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "produção",
+      "expected": "labDosagemProducao",
+      "actual": "labDosagemProducao",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "dashboard",
+      "expected": "dashboard",
+      "actual": "dashboard",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "dashboard montagem",
+      "expected": "dashMontagem",
+      "actual": "dashMontagem",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "indicador geral",
+      "expected": "indicadorGeralProducao",
+      "actual": "indicadorGeralProducao",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "programacao diaria",
+      "expected": "programacao12",
+      "actual": "programacao12",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "programacao setr 3",
+      "expected": "programacao34",
+      "actual": "programacao34",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "programacao semanal",
+      "expected": "armadurasProgramacao",
+      "actual": "armadurasProgramacao",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "acompanhamento mensal",
+      "expected": "acompMensal",
+      "actual": "acompMensal",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "mensal acompanhamento",
+      "expected": "acompMensal",
+      "actual": "acompMensal",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "etiqeta",
+      "expected": "etiquetas",
+      "actual": "etiquetas",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "etiqeta 3",
+      "expected": "etiquetasSc",
+      "actual": "etiquetasSc",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "etiqueta setor 3",
+      "expected": "etiquetasSc",
+      "actual": "etiquetasSc",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "setor 3 etiqueta",
+      "expected": "etiquetasSc",
+      "actual": "etiquetasSc",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "rotulo setor 3",
+      "expected": "etiquetasSc",
+      "actual": "etiquetasSc",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "rotulos setor 4",
+      "expected": "etiquetasSetor4",
+      "actual": "etiquetasSetor4",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "etiquetas qr",
+      "expected": "labCecEtiquetas",
+      "actual": "labCecEtiquetas",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "QR",
+      "expected": "labCecEtiquetas",
+      "actual": "labCecEtiquetas",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "CP",
+      "expected": "labCecLeitura",
+      "actual": "labCecLeitura",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "leitura cp",
+      "expected": "labCecLeitura",
+      "actual": "labCecLeitura",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "noroeste CP",
+      "expected": "labNoroCecLeitura",
+      "actual": "labNoroCecLeitura",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "corpos de prova",
+      "expected": "labCecResultados",
+      "actual": "labCecResultados",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "corpo prova",
+      "expected": "labCecResultados",
+      "actual": "labCecResultados",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "noroeste rompimento",
+      "expected": "labNoroCecRompimentosMes",
+      "actual": "labNoroCecRompimentosMes",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "rompimento noroeste",
+      "expected": "labNoroCecRompimentosMes",
+      "actual": "labNoroCecRompimentosMes",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "rompimentos",
+      "expected": "labCecRompimentosMes",
+      "actual": "labCecRompimentosMes",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "compressao",
+      "expected": "labCecRompimentosMes",
+      "actual": "labCecRompimentosMes",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "compressão noroeste",
+      "expected": "labNoroCecRompimentosMes",
+      "actual": "labNoroCecRompimentosMes",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "slump",
+      "expected": "labSlump",
+      "actual": "labSlump",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "slmup",
+      "expected": "labSlump",
+      "actual": "labSlump",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "abatimento",
+      "expected": "labSlump",
+      "actual": "labSlump",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "cartas traco",
+      "expected": "usinasInicio",
+      "actual": "usinasInicio",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "traco cartas",
+      "expected": "usinasInicio",
+      "actual": "usinasInicio",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "inventario",
+      "expected": "suprimentosInventario",
+      "actual": "suprimentosInventario",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "inventário",
+      "expected": "suprimentosInventario",
+      "actual": "suprimentosInventario",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "almoxarifado",
+      "expected": "suprimentosAlmoxarifado",
+      "actual": "suprimentosAlmoxarifado",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "motoristas",
+      "expected": "logisticaMotoristas",
+      "actual": "logisticaMotoristas",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "motorista",
+      "expected": "logisticaMotoristas",
+      "actual": "logisticaMotoristas",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "ajudantes",
+      "expected": "logisticaAjudantes",
+      "actual": "logisticaAjudantes",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "km evento",
+      "expected": "logisticaPainel",
+      "actual": "logisticaPainel",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "mapeamento cobli",
+      "expected": "logisticaCobli",
+      "actual": "logisticaCobli",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "premiacao",
+      "expected": "logisticaPremiacao",
+      "actual": "logisticaPremiacao",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "fechamento trimestral",
+      "expected": "logisticaFechamento",
+      "actual": "logisticaFechamento",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "NF",
+      "expected": null,
+      "actual": null,
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "nota fiscal",
+      "expected": null,
+      "actual": null,
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "Cq",
+      "expected": null,
+      "actual": null,
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "etiqeta 9",
+      "expected": null,
+      "actual": null,
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "zzzzxyz",
+      "expected": null,
+      "actual": null,
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "armação campinas",
+      "expected": "armacao-campinas-corte",
+      "actual": "armacao-campinas-corte",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "armacao pederneiras banca",
+      "expected": "armacao-pederneiras-banca",
+      "actual": "armacao-pederneiras-banca",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "armacoa ribeirao",
+      "expected": "armacao-ribeirao-corte",
+      "actual": "armacao-ribeirao-corte",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "corte noroeste armacao",
+      "expected": "armacao-noroeste-corte",
+      "actual": "armacao-noroeste-corte",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "fechamento dia campinas armacao",
+      "expected": "armacao-campinas-banca",
+      "actual": "armacao-campinas-banca",
+      "passed": true,
+      "new_unit": false
+    },
+    {
+      "query": "visao geral pederneiras",
+      "expected": "labPedeCec",
+      "actual": "labPedeCec",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "etiquetas qr pederneiras",
+      "expected": "labPedeCecEtiquetas",
+      "actual": "labPedeCecEtiquetas",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "leitura cp pederneiras",
+      "expected": "labPedeCecLeitura",
+      "actual": "labPedeCecLeitura",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "resultados corpos prova pederneiras",
+      "expected": "labPedeCecResultados",
+      "actual": "labPedeCecResultados",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "rompimentos mes pederneiras",
+      "expected": "labPedeCecRompimentosMes",
+      "actual": "labPedeCecRompimentosMes",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "analise estatistica pederneiras",
+      "expected": "labPedeCecAnalise",
+      "actual": "labPedeCecAnalise",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "relatorio cec pederneiras",
+      "expected": "labPedeCecRelatorio",
+      "actual": "labPedeCecRelatorio",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "visao geral ribeirao preto",
+      "expected": "labRibCec",
+      "actual": "labRibCec",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "etiquetas qr ribeirao preto",
+      "expected": "labRibCecEtiquetas",
+      "actual": "labRibCecEtiquetas",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "leitura cp ribeirao preto",
+      "expected": "labRibCecLeitura",
+      "actual": "labRibCecLeitura",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "resultados corpos prova ribeirao preto",
+      "expected": "labRibCecResultados",
+      "actual": "labRibCecResultados",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "rompimentos mes ribeirao preto",
+      "expected": "labRibCecRompimentosMes",
+      "actual": "labRibCecRompimentosMes",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "analise estatistica ribeirao preto",
+      "expected": "labRibCecAnalise",
+      "actual": "labRibCecAnalise",
+      "passed": true,
+      "new_unit": true
+    },
+    {
+      "query": "relatorio cec ribeirao preto",
+      "expected": "labRibCecRelatorio",
+      "actual": "labRibCecRelatorio",
+      "passed": true,
+      "new_unit": true
+    }
+  ],
+  "module_captures": [
+    {
+      "unit": "pederneiras",
+      "width": 1440,
+      "file": "module-pederneiras-1440.png",
+      "description": "7 telas · Pederneiras",
+      "fresh_navigation_at_each_viewport": true
+    },
+    {
+      "unit": "pederneiras",
+      "width": 1024,
+      "file": "module-pederneiras-1024.png",
+      "description": "7 telas · Pederneiras",
+      "fresh_navigation_at_each_viewport": true
+    },
+    {
+      "unit": "pederneiras",
+      "width": 820,
+      "file": "module-pederneiras-820.png",
+      "description": "7 telas · Pederneiras",
+      "fresh_navigation_at_each_viewport": true
+    },
+    {
+      "unit": "pederneiras",
+      "width": 390,
+      "file": "module-pederneiras-390.png",
+      "description": "7 telas · Pederneiras",
+      "fresh_navigation_at_each_viewport": true
+    },
+    {
+      "unit": "ribeirao",
+      "width": 1440,
+      "file": "module-ribeirao-1440.png",
+      "description": "7 telas · Ribeirão Preto",
+      "fresh_navigation_at_each_viewport": true
+    },
+    {
+      "unit": "ribeirao",
+      "width": 1024,
+      "file": "module-ribeirao-1024.png",
+      "description": "7 telas · Ribeirão Preto",
+      "fresh_navigation_at_each_viewport": true
+    },
+    {
+      "unit": "ribeirao",
+      "width": 820,
+      "file": "module-ribeirao-820.png",
+      "description": "7 telas · Ribeirão Preto",
+      "fresh_navigation_at_each_viewport": true
+    },
+    {
+      "unit": "ribeirao",
+      "width": 390,
+      "file": "module-ribeirao-390.png",
+      "description": "7 telas · Ribeirão Preto",
+      "fresh_navigation_at_each_viewport": true
+    }
+  ],
+  "production_requests": 0,
+  "new_queries_passed": 14,
+  "all_queries_passed": 67,
+  "new_units_hidden_for_pcp_admin": true
+}

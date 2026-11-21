@@ -1,0 +1,17 @@
+{
+  "homolog_version": "2.1.0",
+  "production_version": "2.0.0",
+  "visual_cases_passed": 56,
+  "matrix_screen_cases_passed": 154,
+  "launch_denials_passed": 28,
+  "new_pools": 0,
+  "new_workers": 0,
+  "old_services_stopped": 0,
+  "gate_pools": "7/7",
+  "gate_final": "7/7",
+  "operator_identity_pending": true,
+  "incomplete_batches_excluded": 8,
+  "production_changes": 0,
+  "push": false,
+  "pr": false
+}

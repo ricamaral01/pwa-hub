@@ -110,7 +110,7 @@
     const toolbar = document.createElement('div');
     toolbar.className = 'module-page-toolbar';
     const quick = document.createElement('nav');
-    quick.className = 'module-page-quick';
+    quick.className = 'module-page-quick' + (['pederneiras','ribeirao'].includes(selectedUnit) ? ' module-page-quick-links' : '');
     quick.setAttribute('aria-label', 'Acesso rápido');
     const quickTitle = document.createElement('span');
     quickTitle.textContent = 'Acesso rápido';

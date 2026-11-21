@@ -1,0 +1,1521 @@
+{
+  "actors": [
+    {
+      "id": "alex",
+      "profile": "GERENCIA/master",
+      "new_units_allowed": true
+    },
+    {
+      "id": "marcelo",
+      "profile": "GERENCIA/master",
+      "new_units_allowed": true
+    },
+    {
+      "id": "philippe",
+      "profile": "GERENCIA/master",
+      "new_units_allowed": true
+    },
+    {
+      "id": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "new_units_allowed": true
+    },
+    {
+      "id": "jgabriel",
+      "profile": "PCP ADMIN",
+      "new_units_allowed": false
+    },
+    {
+      "id": "diegom",
+      "profile": "PCP",
+      "new_units_allowed": false
+    },
+    {
+      "id": "setor1",
+      "profile": "APONTADOR",
+      "new_units_allowed": false
+    },
+    {
+      "id": "jcarlos",
+      "profile": "GESTOR",
+      "new_units_allowed": false
+    },
+    {
+      "id": "alexh",
+      "profile": "MONTADOR",
+      "new_units_allowed": false
+    },
+    {
+      "id": "tv",
+      "profile": "CONVIDADO",
+      "new_units_allowed": false
+    },
+    {
+      "id": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "new_units_allowed": false
+    }
+  ],
+  "cases": [
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "geral",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "etiquetas",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "leitura",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "resultados",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "mes",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "analise",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "relatorio",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "geral",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "etiquetas",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "leitura",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "resultados",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "mes",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "analise",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "alex",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "relatorio",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "geral",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "etiquetas",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "leitura",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "resultados",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "mes",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "analise",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "relatorio",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "geral",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "etiquetas",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "leitura",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "resultados",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "mes",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "analise",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "marcelo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "relatorio",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "geral",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "etiquetas",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "leitura",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "resultados",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "mes",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "analise",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "relatorio",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "geral",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "etiquetas",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "leitura",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "resultados",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "mes",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "analise",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "philippe",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "relatorio",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "geral",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "etiquetas",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "leitura",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "resultados",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "mes",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "analise",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "pederneiras",
+      "screen": "relatorio",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "geral",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "etiquetas",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "leitura",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "resultados",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "mes",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "analise",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "user-ricardo",
+      "profile": "GERENCIA/master",
+      "unit": "ribeirao",
+      "screen": "relatorio",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "pederneiras",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "pederneiras",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "pederneiras",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "pederneiras",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "pederneiras",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "pederneiras",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "pederneiras",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "ribeirao",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "ribeirao",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "ribeirao",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "ribeirao",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "ribeirao",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "ribeirao",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "profile": "PCP ADMIN",
+      "unit": "ribeirao",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "pederneiras",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "pederneiras",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "pederneiras",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "pederneiras",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "pederneiras",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "pederneiras",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "pederneiras",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "ribeirao",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "ribeirao",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "ribeirao",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "ribeirao",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "ribeirao",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "ribeirao",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "profile": "PCP",
+      "unit": "ribeirao",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "pederneiras",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "pederneiras",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "pederneiras",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "pederneiras",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "pederneiras",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "pederneiras",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "pederneiras",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "ribeirao",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "ribeirao",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "ribeirao",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "ribeirao",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "ribeirao",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "ribeirao",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "profile": "APONTADOR",
+      "unit": "ribeirao",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "pederneiras",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "pederneiras",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "pederneiras",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "pederneiras",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "pederneiras",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "pederneiras",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "pederneiras",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "ribeirao",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "ribeirao",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "ribeirao",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "ribeirao",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "ribeirao",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "ribeirao",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "profile": "GESTOR",
+      "unit": "ribeirao",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "pederneiras",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "pederneiras",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "pederneiras",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "pederneiras",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "pederneiras",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "pederneiras",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "pederneiras",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "ribeirao",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "ribeirao",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "ribeirao",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "ribeirao",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "ribeirao",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "ribeirao",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "profile": "MONTADOR",
+      "unit": "ribeirao",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "pederneiras",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "pederneiras",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "pederneiras",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "pederneiras",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "pederneiras",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "pederneiras",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "pederneiras",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "ribeirao",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "ribeirao",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "ribeirao",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "ribeirao",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "ribeirao",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "ribeirao",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "profile": "CONVIDADO",
+      "unit": "ribeirao",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "pederneiras",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "pederneiras",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "pederneiras",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "pederneiras",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "pederneiras",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "pederneiras",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "pederneiras",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "ribeirao",
+      "screen": "geral",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "ribeirao",
+      "screen": "etiquetas",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "ribeirao",
+      "screen": "leitura",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "ribeirao",
+      "screen": "resultados",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "ribeirao",
+      "screen": "mes",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "ribeirao",
+      "screen": "analise",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "profile": "Laboratório sem nova unidade",
+      "unit": "ribeirao",
+      "screen": "relatorio",
+      "status": 403,
+      "expected": 403
+    }
+  ],
+  "expected_denial_writes": [
+    {
+      "actor": "jgabriel",
+      "unit": "pederneiras",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "unit": "pederneiras",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "unit": "ribeirao",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jgabriel",
+      "unit": "ribeirao",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "unit": "pederneiras",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "unit": "pederneiras",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "unit": "ribeirao",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "diegom",
+      "unit": "ribeirao",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "unit": "pederneiras",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "unit": "pederneiras",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "unit": "ribeirao",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "setor1",
+      "unit": "ribeirao",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "unit": "pederneiras",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "unit": "pederneiras",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "unit": "ribeirao",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "jcarlos",
+      "unit": "ribeirao",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "unit": "pederneiras",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "unit": "pederneiras",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "unit": "ribeirao",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "alexh",
+      "unit": "ribeirao",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "unit": "pederneiras",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "unit": "pederneiras",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "unit": "ribeirao",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "tv",
+      "unit": "ribeirao",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "unit": "pederneiras",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "unit": "pederneiras",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "unit": "ribeirao",
+      "operation": "moldagens",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "actor": "e2e-lab-probe",
+      "unit": "ribeirao",
+      "operation": "qrcp",
+      "method": "POST",
+      "status": 403,
+      "expected": 403
+    }
+  ],
+  "business_writes": 0,
+  "production_requests": 0
+}

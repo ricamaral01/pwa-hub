@@ -2,6 +2,7 @@
 import hashlib,json,posixpath,re
 from pathlib import Path
 from lab210_series import transform as preserve_series
+from lab210_module_fixes import desktop as fix_desktop_module, mobile as fix_mobile_module
 
 R=Path(__file__).resolve().parents[1];U=R/'unificado';L=U/'laboratorio/service/server/static';SOURCE=L/'noroeste/cec'
 UNITS={'pederneiras':('Pederneiras','labPedeCec'),'ribeirao':('Ribeirão Preto','labRibCec')}
@@ -72,6 +73,9 @@ def build():
             text=preserve_series(text,rel)
             text=re.sub(r'([\x27\x22])([\w./@-]*assets/[\w./@-]+)(\1)',lambda m:m[1]+asset_url(m[2],rel,unit)+m[1],text)
             text=text.replace('/unificado/laboratorio/noroeste/cec/analise/assets/img/concre.png','/unificado/assets/img/logo-concrefer.png')
+            # The legacy Lab CSS adapter removes font faces and applies the
+            # old font rules only to print. Reuse the existing public icon CSS.
+            text=text.replace('/unificado/laboratorio/noroeste/cec/assets/vendor/bootstrap-icons.min.css','/unificado/vendor/bootstrap-icons/bootstrap-icons.css')
             if source.suffix=='.html':
                 banner=f'<p class="lab-unit-name{ " no-print" if rel.parts[0]=="etiquetas" else ""}">Laboratório · {name}</p>'
                 text=re.sub(r'<body(?:\s[^>]*)?>',lambda m:m[0]+'\n'+banner,text,count=1)
@@ -116,6 +120,8 @@ self.addEventListener('fetch',e=>{{const u=new URL(e.request.url);if(e.request.m
     assert not any(prefix in text for _,prefix in UNITS.values())
     text=patch_once(text,marker,'MENU_CONFIG.laboratorio.groups.push(...'+json.dumps(groups,ensure_ascii=False,indent=2)+');\n\n'+marker);menu.write_text(text,encoding='utf-8')
     module=U/'shell/module-pages.js';text=module.read_text(encoding='utf-8');text=text.replace("code === 'noroeste' ? 'Noroeste' : 'Campinas'","({campinas:'Campinas',noroeste:'Noroeste',pederneiras:'Pederneiras',ribeirao:'Ribeirão Preto'})[code] || code").replace("selectedUnit==='noroeste'?'Noroeste':'Campinas'","({campinas:'Campinas',noroeste:'Noroeste',pederneiras:'Pederneiras',ribeirao:'Ribeirão Preto'})[selectedUnit] || selectedUnit");module.write_text(text,encoding='utf-8')
+    module.write_text(fix_desktop_module(module.read_text(encoding='utf-8')),encoding='utf-8')
+    mobile_module=U/'shell/module-pages-mobile.js';mobile_module.write_text(fix_mobile_module(mobile_module.read_text(encoding='utf-8')),encoding='utf-8')
     catalog=U/'mapa/api/screen_catalog.json';rows=json.loads(catalog.read_text(encoding='utf-8'))
     for unit,(name,prefix) in UNITS.items():
         rows.extend({'id':prefix+suffix,'module':'laboratorio','label':label+' · '+name,'path':'/unificado/laboratorio/'+unit+'/cec/'+path,'query':'','screen':None,'require':None,'ambiente':'homolog'} for suffix,label,path in PAGES)

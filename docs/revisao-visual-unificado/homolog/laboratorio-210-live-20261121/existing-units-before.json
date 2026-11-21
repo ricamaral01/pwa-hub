@@ -1,0 +1,203 @@
+{
+  "captured_at_epoch": 1795266967.990944,
+  "databases": {
+    "cec_campinas_visual_homolog_20261118": [
+      {
+        "table": "cec_massadas_snapshot",
+        "count": 1,
+        "digest_kind": "xmin+ctid",
+        "digest": "b37f329847b1256608df8af28d3fd3f0"
+      },
+      {
+        "table": "faixas_resistencia",
+        "count": 4,
+        "digest_kind": "xmin+ctid",
+        "digest": "b3b65c42d8488f133b155899ca508bf0"
+      },
+      {
+        "table": "rompimentos",
+        "count": 1029,
+        "digest_kind": "xmin+ctid",
+        "digest": "9bd98960eb32684a46eab51509beb4c7"
+      },
+      {
+        "table": "rompimentos_atuais",
+        "count": 981,
+        "digest_kind": "xmin+ctid",
+        "digest": "8db930459b4fefd5ecc1a978dae678e8"
+      },
+      {
+        "table": "rompimentos_grupos",
+        "count": 536,
+        "digest_kind": "xmin+ctid",
+        "digest": "f90cdcec7fec12763cd55aa7993606a9"
+      },
+      {
+        "table": "tbl_massadas",
+        "count": 11580,
+        "digest_kind": "xmin+ctid",
+        "digest": "582115d075ee98855b19bf2e8886b1b0"
+      }
+    ],
+    "cec_campinas_visual_homolog_20261118_history_write_counters": [
+      {
+        "relname": "fila_recalculo",
+        "n_tup_ins": 3268880,
+        "n_tup_upd": 0,
+        "n_tup_del": 0
+      },
+      {
+        "relname": "rompimentos_eventos",
+        "n_tup_ins": 6431842,
+        "n_tup_upd": 0,
+        "n_tup_del": 0
+      }
+    ],
+    "cec_campinas_visual_homolog_20261118_latest_batch": [
+      {
+        "id": 69855,
+        "produto": "Poste",
+        "formula": "M1-C375-A52%-C3+C5-R01",
+        "data": "2026-07-13",
+        "hora": "16:19:17.560787",
+        "numero_serie": 69855
+      }
+    ],
+    "cec_noroeste_visual_homolog_20261118": [
+      {
+        "table": "cec_massadas_snapshot",
+        "count": 0,
+        "digest_kind": "xmin+ctid",
+        "digest": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      {
+        "table": "faixas_resistencia",
+        "count": 0,
+        "digest_kind": "xmin+ctid",
+        "digest": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      {
+        "table": "rompimentos",
+        "count": 0,
+        "digest_kind": "xmin+ctid",
+        "digest": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      {
+        "table": "rompimentos_atuais",
+        "count": 0,
+        "digest_kind": "xmin+ctid",
+        "digest": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      {
+        "table": "rompimentos_grupos",
+        "count": 0,
+        "digest_kind": "xmin+ctid",
+        "digest": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      {
+        "table": "tbl_massadas",
+        "count": 0,
+        "digest_kind": "xmin+ctid",
+        "digest": "d41d8cd98f00b204e9800998ecf8427e"
+      }
+    ],
+    "cec_noroeste_visual_homolog_20261118_history_write_counters": [
+      {
+        "relname": "fila_recalculo",
+        "n_tup_ins": 0,
+        "n_tup_upd": 0,
+        "n_tup_del": 0
+      },
+      {
+        "relname": "rompimentos_eventos",
+        "n_tup_ins": 0,
+        "n_tup_upd": 0,
+        "n_tup_del": 0
+      }
+    ],
+    "cec_noroeste_visual_homolog_20261118_latest_batch": []
+  },
+  "files": {
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/index.html": "877c2ce4a294445cc97ce91aad2f8461f114855f01bdad6753bb1cda288f8c8a",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/etiquetas/index.html": "19ae644a7cd6c4182c1e1a95c9167dd01ad8ede6a92cbd0e92e64d02975a94e6",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/relatorio/index.html": "ff3a52a84a739b84c3e1387992268941c86417752f1b8890b509ac9ad4207dea",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/resultados/index.html": "433b24aaaa8da46a9b5a25c296518809c7b82e7a781b4d7128723e56d888bbb6",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/leitura/sw.js": "fde6ab4e3ee1e5a571cf6921efd221c03b58c8076bb983196c01e7d46c4b6936",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/leitura/index.html": "0d17ec0a59d60d6b59dc028b40435af740009704cccb1c3816db9245777be0b9",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/leitura/manifest.json": "0c28c2192fab8a8b5fd9f7ef34afb48085f0366b0dce324c2adb198a2b0aca94",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/analise/sw.js": "110026344979b8c1f824db04179631ee31f3499393825c316e8095b5a2eb163f",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/analise/resultado-cp.html": "ce8631674b127d3b963c5998922d2283987da8a59e491e358affad2c69521a0b",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/analise/relatorio-icon.svg": "070f29250fdf61711565b57eda773ee824f7d2b1a7644a00538d361b259dc4d5",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/analise/index.html": "4b3d9340961c3926d0bcec336fa3e2c9252e786c469387493fec019a200b272f",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/analise/relatorio.html": "9c081c6531ce8648845118c5d88b67d2d35009c38d8650da5fb39b48286384e6",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/analise/api-client.js": "ee0df962c679605bcd0dbd8133bb6dc670dfcd7e8db3b07c331ead6b27f298f7",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/analise/manifest.json": "7a66a629967ceaf36a6fc267a8cc16e72d7177af5bd0606555ab765d804d53ea",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/rompimentos-mes/index.html": "ac05170fa28ff35c7aa3de37d3f8249e860fb058035f3633849e28a8732d6f25",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/bootstrap-icons.min.css": "3f2358e166c2ca3b5d1e8f321c6036b3659939de02f1c183f45df88ae374df49",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/html5-qrcode.min.js": "660b12437b1d747e3e68b8be0685c08cb728140110ad213f167b14b66f8b1d8e",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/jspdf.umd.min.js": "8b24adad5a45662aa40daf98be05855d89b8a23d0cc757d6530ba3edd682efc5",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/bootstrap.min.css": "f74a91eeb8e720211d784780f1d14b86c2739bcfbc5215132a3c68b2c0702d30",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/chart.umd.min.js": "2e9b205121ed8c6461ff95a80c6d5571f49e6e452002c60282b03c90175bfac1",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/SOURCES.md": "4429d9356e7f8461c7f6cb7abbdd857a5a4333f3f10cd36e977a70f1608711d7",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/montserrat.css": "b64e5d38cb30bee110059acfa86d25f8a296a53f9c98d42caa27fed2700e7c66",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/bootstrap.bundle.min.js": "eb37e4d8bf11df00a045b673a64122ed4602d9b73a7d81888057cd7aac8e5a74",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/qrcode.min.js": "c5144bd3cb29355cd88c490af351d8833d4e44399452a46c94c018dfc02b092e",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/img/logo.png": "5080b039e7465a5e1aaab73a257b10fe2e32b7f6ee02407dc3ad1b28b15ba5d2",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/img/PRINCIPAL@2x.png": "37b5d8cc41cbe8911abb237759dfd6be20bcb08beb2d0ebf0d772b9585789c5e",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/img/icon-192.png": "a59e4a66d10f84316002919a6846c9fbbf0ade04e8f1eec9af558570a176795e",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/img/icon-512.png": "a14b9447f05a16a10042c7183b4f32e205be20d7d1ea350805a5507684f46111",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459WZhyzbi.woff2": "26b2403f995ed65fb49037a6498c074d3ec3c36031a69fc368c4c2180e2c01fa",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/fonts/bootstrap-icons.woff": "bb1de989b83970f6f4e54de1cd974c5cba55b73582da5e1b225a6d0edf029483",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/fonts/bootstrap-icons.woff2": "476adf42b40325098fcfa8b36ab3e769186bb4f6ce6a249753e2e1a9c22bf99e",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2": "0f7f5f2fbb4eae126790fe6f01659ab3ee0806e8038a941908e893020569f51a",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2": "06b16db7a969135d48d38c49183be7fb88d4452e2a3011957c7851941f4e4879",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2": "a187b077090fe8ae3fd2d7496aabbeae604819c718a282e0afc92df72b450766",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459Wdhyzbi.woff2": "54d9a78b7ff60b689ad9f3017ffac8547b5d871afec733f6c1c3ae36577ee504",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/cec/analise/assets/img/concre.png": "7551b563f3699786356f04bcaa0a775944e3d650f9b8126e0f03dcdb4f6d9b22",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/index.html": "5ab64f75b3a16528a27c99aae95ae578d5acb8c0139e9b54f1c72d317d2f56c5",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/usuarios/users.css": "dd7c911d5286e8aa263b306a0dc485c5b485a42a9add6831b1b4a1811792c88a",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/usuarios/index.html": "8885a5b768bcee59f506285b71bb174ee7777749193ade292fb6ca3e058006c4",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/usuarios/users.js": "ec960fd58f5a774653b002152d872ce9ed98779d07f5ec7355b81bc09fe1b130",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/etiquetas/index.html": "0b02729e452fc534e0a2197a8b4f395fae7c63c595beb1443db71e918c84633c",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/relatorio/index.html": "cf344c8934b647f6b5f653e627ff502d7c4b01c6ad609961da1eaa713789a044",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/resultados/index.html": "466110b12b8804974fa0deb094797bc3d5f638266b7bf406f49b61b5d615d0d2",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/leitura/sw.js": "02ed40a6d31436be057135daacaa8ae727357f0c08fe7f5c3ba4841dacf85f75",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/leitura/index.html": "ec6732e9b9252da4ee684840b2bb1dba9011084071e4248b9e535630f22f4d54",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/leitura/manifest.json": "f199b9c174607eb3ca1741727c2925f04e55a1c304cd3a24198990730854b924",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/analise/sw.js": "d007900dd341e3110f6bd3fa354b1dc481505c29081a17c24544818a83b87ba0",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/analise/resultado-cp.html": "ed74c729216d75d0d234650c6cefcf46b1a14f33bb56912d865de6a844ada594",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/analise/relatorio-icon.svg": "070f29250fdf61711565b57eda773ee824f7d2b1a7644a00538d361b259dc4d5",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/analise/index.html": "4dac2808829cdaa69b1803f8d964ea4ca454ce6fc928661c00c9f11280b22b59",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/analise/relatorio.html": "9c74e3cd186834dd66199b83fbd5059ce60bb5d31c1e7a0d3b7d2bbb81c9117e",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/analise/api-client.js": "7e346e35139fe1de2ce52661446fc6ba528df5404276cdfc86cd6054f285f9c3",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/analise/manifest.json": "e117c4c24936d6317511ab7aeee671bb404db48d501c56edcbec61eedfc5a4a4",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/rompimentos-mes/index.html": "ac036ffa34d7f2542df2ee1ea57aa51a788fa3d46986dfe704b72813d5de2e7f",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/bootstrap-icons.min.css": "3f2358e166c2ca3b5d1e8f321c6036b3659939de02f1c183f45df88ae374df49",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/html5-qrcode.min.js": "660b12437b1d747e3e68b8be0685c08cb728140110ad213f167b14b66f8b1d8e",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/jspdf.umd.min.js": "8b24adad5a45662aa40daf98be05855d89b8a23d0cc757d6530ba3edd682efc5",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/bootstrap.min.css": "f74a91eeb8e720211d784780f1d14b86c2739bcfbc5215132a3c68b2c0702d30",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/chart.umd.min.js": "2e9b205121ed8c6461ff95a80c6d5571f49e6e452002c60282b03c90175bfac1",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/SOURCES.md": "4429d9356e7f8461c7f6cb7abbdd857a5a4333f3f10cd36e977a70f1608711d7",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/montserrat.css": "b64e5d38cb30bee110059acfa86d25f8a296a53f9c98d42caa27fed2700e7c66",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/bootstrap.bundle.min.js": "eb37e4d8bf11df00a045b673a64122ed4602d9b73a7d81888057cd7aac8e5a74",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/qrcode.min.js": "c5144bd3cb29355cd88c490af351d8833d4e44399452a46c94c018dfc02b092e",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/img/logo.png": "5080b039e7465a5e1aaab73a257b10fe2e32b7f6ee02407dc3ad1b28b15ba5d2",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/img/PRINCIPAL@2x.png": "37b5d8cc41cbe8911abb237759dfd6be20bcb08beb2d0ebf0d772b9585789c5e",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/img/icon-192.png": "a59e4a66d10f84316002919a6846c9fbbf0ade04e8f1eec9af558570a176795e",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/img/icon-512.png": "a14b9447f05a16a10042c7183b4f32e205be20d7d1ea350805a5507684f46111",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459WZhyzbi.woff2": "26b2403f995ed65fb49037a6498c074d3ec3c36031a69fc368c4c2180e2c01fa",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/fonts/bootstrap-icons.woff": "bb1de989b83970f6f4e54de1cd974c5cba55b73582da5e1b225a6d0edf029483",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/fonts/bootstrap-icons.woff2": "476adf42b40325098fcfa8b36ab3e769186bb4f6ce6a249753e2e1a9c22bf99e",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2": "0f7f5f2fbb4eae126790fe6f01659ab3ee0806e8038a941908e893020569f51a",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2": "06b16db7a969135d48d38c49183be7fb88d4452e2a3011957c7851941f4e4879",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2": "a187b077090fe8ae3fd2d7496aabbeae604819c718a282e0afc92df72b450766",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459Wdhyzbi.woff2": "54d9a78b7ff60b689ad9f3017ffac8547b5d871afec733f6c1c3ae36577ee504",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/analise/assets/img/concre.png": "0fa6c659655ed4f3ee498d8e59921a36038e9bd4e0f338009f0316524d11aabf",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_api.py": "e909145a90a683fee4b3589f51055dbe9c6bc075135f985028b65db197fdcfa7",
+    "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/postes_api.py": "f394b840ffa543ae4a5330c5b161333d414bc740d60b92172c802be5de615831"
+  },
+  "old_moldings": {
+    "count": 0,
+    "digest": "d41d8cd98f00b204e9800998ecf8427e"
+  }
+}

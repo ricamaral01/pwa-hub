@@ -1,0 +1,18 @@
+[
+  {
+    "path": "/unificado/laboratorio/noroeste/cec/assets/vendor/bootstrap-icons.min.css",
+    "status": 200,
+    "has_font_face": false,
+    "has_bootstrap_family": true,
+    "prefix": "@import url(\"/unificado/shell/tokens.css\");\n@media print {\n/*!\n * Bootstrap Icons v1.11.3 (https://icons.getbootstrap.com/)\n * Copyright 2019-2024 The Bootstrap Authors\n * Licensed under MIT (https://github.com/twbs/icons/blob/main/LICENSE)\n */.bi::before,[class*=\" bi-\"]::before,[class^=bi-]::before{display:inline-block;font-family:bootstrap-icons!important;font-style:normal;font-weight:400!important;font-variant:normal;text-transform:none;line-height:1;vertical-align:-.125em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.bi-123::before{content:\"\"}.bi-alarm-fill::before{content:\"\"}.bi-alarm::before{content:\"\"}.bi-ali",
+    "size": 167240
+  },
+  {
+    "path": "/unificado/vendor/bootstrap-icons/bootstrap-icons.css",
+    "status": 200,
+    "has_font_face": true,
+    "has_bootstrap_family": true,
+    "prefix": "/*!\n * Bootstrap Icons v1.11.3 (https://icons.getbootstrap.com/)\n * Copyright 2019-2024 The Bootstrap Authors\n * Licensed under MIT (https://github.com/twbs/icons/blob/main/LICENSE)\n */\n\n@font-face {\n  font-display: block;\n  font-family: \"bootstrap-icons\";\n  src: url(\"./fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6\") format(\"woff2\"),\nurl(\"./fonts/bootstrap-icons.woff?dd67030699838ea613ee6dbda90effa6\") format(\"woff\");\n}\n\n.bi::before,\n[class^=\"bi-\"]::before,\n[class*=\" bi-\"]::before {\n  display: inline-block;\n  font-family: bootstrap-icons !important;\n  font-style: normal;\n  font-weight: normal !important;\n  font-variant: normal;\n",
+    "size": 98255
+  }
+]

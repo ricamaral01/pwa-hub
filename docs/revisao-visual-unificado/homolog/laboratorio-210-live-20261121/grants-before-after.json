@@ -1,0 +1,498 @@
+{
+  "before": [],
+  "after": [
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCec",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecAnalise",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecEtiquetas",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecLeitura",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecRelatorio",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecResultados",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCec",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecAnalise",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecEtiquetas",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecLeitura",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecRelatorio",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecResultados",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCec",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecAnalise",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecEtiquetas",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecLeitura",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecRelatorio",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecResultados",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCec",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecAnalise",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecEtiquetas",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecLeitura",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecRelatorio",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecResultados",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCec",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecAnalise",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecEtiquetas",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecLeitura",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecRelatorio",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecResultados",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCec",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecAnalise",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecEtiquetas",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecLeitura",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecRelatorio",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecResultados",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labPedeCec",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labPedeCecAnalise",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labPedeCecEtiquetas",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labPedeCecLeitura",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labPedeCecRelatorio",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labPedeCecResultados",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labPedeCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labRibCec",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labRibCecAnalise",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labRibCecEtiquetas",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labRibCecLeitura",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labRibCecRelatorio",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labRibCecResultados",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-alex",
+      "screen_id": "labRibCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCec",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecAnalise",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecEtiquetas",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecLeitura",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecRelatorio",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecResultados",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCec",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecAnalise",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecEtiquetas",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecLeitura",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecRelatorio",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecResultados",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "codex-lab210-user-approved",
+      "updated_at": "2026-11-21T13:26:27.460396+00:00"
+    }
+  ],
+  "people": 4,
+  "existing_logins": 5,
+  "no_new_accounts": true
+}

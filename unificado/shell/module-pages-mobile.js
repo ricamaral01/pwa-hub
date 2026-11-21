@@ -33,6 +33,14 @@
     arrow.className = 'module-page-arrow';
     arrow.textContent = '';
     arrow.setAttribute('aria-hidden', 'true');
+    if (item?.id?.startsWith('labPedeCec') || item?.id?.startsWith('labRibCec')) {
+      link.style.setProperty('height','auto','important');
+      link.style.setProperty('min-height','56px','important');
+      link.style.setProperty('padding','8px 14px','important');
+      link.style.setProperty('align-items','center','important');
+      name.style.display='flex';name.style.flexDirection='column';name.style.gap='2px';
+      name.style.setProperty('height','auto','important');
+    }
     link.append(code, name, arrow);
     link.addEventListener('click', event => {
       if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
@@ -74,7 +82,9 @@
     const units = [...new Set(visibleGroups.map(unitFor))];
     const unitKey=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
     const requestedUnit=new URLSearchParams(location.search).get('unit');
-    const initialUnit=units.find(unit=>unitKey(unit)===unitKey(requestedUnit));
+    const cecUnitNames={pederneiras:'Pederneiras',ribeirao:'Ribeirão Preto'};
+    const requestedName=moduleId==='laboratorio' ? (cecUnitNames[requestedUnit]||requestedUnit) : requestedUnit;
+    const initialUnit=units.find(unit=>unitKey(unit)===unitKey(requestedName));
     const active = {unit: initialUnit||units[0], group: 0, query: ''};
     const hasUnits=(isProduction||moduleId==='laboratorio')&&units.length>1;
     const selector = document.createElement('div'); selector.className = 'module-page-selector';
@@ -126,6 +136,7 @@
       return section;
     }
     function render() {
+      quick.classList.toggle('module-page-quick-links', moduleId==='laboratorio' && ['Pederneiras','Ribeirão Preto'].includes(active.unit));
       unitTabs.replaceChildren(); categories.replaceChildren(); content.replaceChildren(); quick.replaceChildren();
       unitTabs.hidden = !hasUnits;
       if (hasUnits) for (const unit of units) {

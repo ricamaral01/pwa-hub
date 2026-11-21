@@ -1,0 +1,160 @@
+{
+  "faces": [
+    {
+      "family": "Geist",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist Mono",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist Mono",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist Mono",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist Mono",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist Mono",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist Mono",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist Mono",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist Mono",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist",
+      "status": "loaded"
+    },
+    {
+      "family": "Geist Mono",
+      "status": "unloaded"
+    },
+    {
+      "family": "Geist Mono",
+      "status": "unloaded"
+    }
+  ],
+  "icons": [
+    {
+      "class": "bi bi-qr-code-scan me-1",
+      "content": "\"\"",
+      "family": "Gotham, Montserrat, \"Segoe UI\", system-ui, sans-serif",
+      "weight": "400"
+    },
+    {
+      "class": "bi bi-download",
+      "content": "\"\"",
+      "family": "Gotham, Montserrat, \"Segoe UI\", system-ui, sans-serif",
+      "weight": "400"
+    },
+    {
+      "class": "bi bi-qr-code-scan",
+      "content": "\"\"",
+      "family": "Gotham, Montserrat, \"Segoe UI\", system-ui, sans-serif",
+      "weight": "400"
+    },
+    {
+      "class": "bi bi-camera-fill",
+      "content": "\"\"",
+      "family": "Gotham, Montserrat, \"Segoe UI\", system-ui, sans-serif",
+      "weight": "400"
+    },
+    {
+      "class": "bi bi-check-circle-fill me-1",
+      "content": "\"\"",
+      "family": "Gotham, Montserrat, \"Segoe UI\", system-ui, sans-serif",
+      "weight": "400"
+    }
+  ],
+  "fontCheck": true,
+  "messages": [
+    "Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://concrefer.concretrack.com.br:18446/unificado/shell/fonts/Geist-SemiBold.woff2",
+    "Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://concrefer.concretrack.com.br:18446/unificado/shell/fonts/Geist-Regular.woff2",
+    "Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://concrefer.concretrack.com.br:18446/unificado/shell/fonts/Geist-Medium.woff2"
+  ],
+  "responses": [
+    {
+      "path": "/unificado/laboratorio/noroeste/cec/assets/vendor/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6",
+      "status": 200,
+      "final_url": "https://concrefer.concretrack.com.br:18446/unificado/laboratorio/noroeste/cec/assets/vendor/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6",
+      "type": "font/woff2",
+      "sha256": "476adf42b40325098fcfa8b36ab3e769186bb4f6ce6a249753e2e1a9c22bf99e",
+      "size": 130396
+    },
+    {
+      "path": "/unificado/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2",
+      "status": 200,
+      "final_url": "https://concrefer.concretrack.com.br:18446/unificado/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2",
+      "type": "font/woff2",
+      "sha256": "476adf42b40325098fcfa8b36ab3e769186bb4f6ce6a249753e2e1a9c22bf99e",
+      "size": 130396
+    }
+  ]
+}

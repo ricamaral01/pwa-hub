@@ -1,0 +1,21 @@
+{
+  "service": "armacao",
+  "opened": true,
+  "http": 200,
+  "frames": [
+    {
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/",
+      "text": "← Voltar à ProduçãoProdução › Armação\nCorte de aço\nUnidade\nCampinas\nPederneiras\nRibeirão\nNoroeste\nMáquina de corte\nDesbobinadeiras e cortadeiras podem cortar barras e gerar feixes.\nNenhuma máquina de corte ativa nesta unidade. Cadastre a desbobinadeira ou cortadeira em Armação › Cadastros › Máquinas de corte.\nRolo\nNovo corte"
+    }
+  ],
+  "js_errors": [],
+  "server_errors": [],
+  "screenshot": "pool-armacao-screen.png",
+  "actor": "user-ricardo",
+  "business_writes_blocked": true,
+  "counts": {
+    "before_total": 78,
+    "after_total": 79,
+    "after_service": 1
+  }
+}

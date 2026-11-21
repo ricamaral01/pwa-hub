@@ -1,0 +1,35 @@
+{
+  "VERSION": {
+    "live_sha256": "c28fcca53637bc88e124af1725df13cb98c69dedefd62fb3cdbe1cdb6b760624",
+    "same_baseline": true
+  },
+  "index.html": {
+    "live_sha256": "f2668a605b38e0eb25711f064406eb8e63d72bb68f16c335a2d5d0321538a794",
+    "same_baseline": false
+  },
+  "login.html": {
+    "live_sha256": "15cf5c947e2caa7e805c8a328c0644ac39800d34c7d5ccaeed32bfc884fbedc3",
+    "same_baseline": false
+  },
+  "sw.js": {
+    "live_sha256": "1a2f041e7999d13b965580612c23d1f68a1604bf15c4daeccb433d5e5ca04ef3",
+    "same_baseline": false
+  },
+  "shell/shell.js": {
+    "live_sha256": "79dc65ead497ce6fe4c19a9a79a39ee3a81643a8a452db83d9fe1f93e42c92c8",
+    "same_baseline": false
+  },
+  "shell/menu.config.js": {
+    "live_sha256": "47754be265fb14c0dc11c9809087492c1bd4bbe50ff7b7299c2cdbaa486ee821",
+    "same_baseline": false
+  },
+  "shell/icons.js": {
+    "live_sha256": "a414546027eb201262030d65b9e10d6b9f30fea1c6bd8948129068ed0803f764",
+    "same_baseline": false
+  },
+  "shell/module-pages.js": {
+    "live_sha256": "bb44be6740f95d49b848fdcebab0d35387e7e86a14e62b81fb4b6ee31b684523",
+    "same_baseline": true
+  },
+  "catalog_same_baseline": true
+}

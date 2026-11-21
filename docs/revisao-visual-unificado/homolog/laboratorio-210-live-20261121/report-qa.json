@@ -1,0 +1,50 @@
+[
+  {
+    "file": "RELATORIO.html",
+    "width": 1440,
+    "page_overflow": false,
+    "missing_links": [],
+    "replacement_characters": false,
+    "screenshot": "relatorio-1440.png"
+  },
+  {
+    "file": "RELATORIO.html",
+    "width": 390,
+    "page_overflow": false,
+    "missing_links": [],
+    "replacement_characters": false,
+    "screenshot": "relatorio-390.png"
+  },
+  {
+    "file": "PLANO_PUBLICACAO.html",
+    "width": 1440,
+    "page_overflow": false,
+    "missing_links": [],
+    "replacement_characters": false,
+    "screenshot": "plano_publicacao-1440.png"
+  },
+  {
+    "file": "PLANO_PUBLICACAO.html",
+    "width": 390,
+    "page_overflow": false,
+    "missing_links": [],
+    "replacement_characters": false,
+    "screenshot": "plano_publicacao-390.png"
+  },
+  {
+    "file": "SERVICOS_ANTIGOS_PROPOSTA.html",
+    "width": 1440,
+    "page_overflow": false,
+    "missing_links": [],
+    "replacement_characters": false,
+    "screenshot": "servicos_antigos_proposta-1440.png"
+  },
+  {
+    "file": "SERVICOS_ANTIGOS_PROPOSTA.html",
+    "width": 390,
+    "page_overflow": false,
+    "missing_links": [],
+    "replacement_characters": false,
+    "screenshot": "servicos_antigos_proposta-390.png"
+  }
+]

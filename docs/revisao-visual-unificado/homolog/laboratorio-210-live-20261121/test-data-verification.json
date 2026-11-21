@@ -1,0 +1,146 @@
+[
+  {
+    "unit": "pederneiras",
+    "massadas": 1614,
+    "source_massadas": 1613,
+    "fixtures": 1,
+    "readings": [
+      {
+        "id": "f35edd82-d90c-49b0-a2ca-bd2e1b7426bf",
+        "numero_serie": "TESTE-LAB-PEDE-001",
+        "cp": "1",
+        "mpa": 10.01,
+        "responsavel_id": "alex",
+        "responsavel": "Alex Zaranello",
+        "data_moldagem": "2026-11-20",
+        "data_ruptura": "2026-11-21"
+      },
+      {
+        "id": "fa480dec-fc8c-47e5-b094-7c3010326fa4",
+        "numero_serie": "TESTE-LAB-PEDE-001",
+        "cp": "2",
+        "mpa": 10.02,
+        "responsavel_id": "alex",
+        "responsavel": "Alex Zaranello",
+        "data_moldagem": "2026-11-20",
+        "data_ruptura": "2026-11-21"
+      }
+    ],
+    "events": 2,
+    "groups": [
+      {
+        "numero_serie": "TESTE-LAB-PEDE-001",
+        "idade_dias": 1,
+        "quantidade_cp": 2,
+        "media_mpa": 10.02,
+        "status_resultado": "OK"
+      }
+    ],
+    "moldings": [
+      {
+        "numero_serie": "TESTE-LAB-PEDE-001",
+        "idade_dias": 1,
+        "responsavel_id": "alex",
+        "responsavel_nome": "Alex Zaranello",
+        "cp1_done": true,
+        "cp2_done": true
+      },
+      {
+        "numero_serie": "TESTE-LAB-PEDE-001",
+        "idade_dias": 3,
+        "responsavel_id": "alex",
+        "responsavel_nome": "Alex Zaranello",
+        "cp1_done": false,
+        "cp2_done": false
+      },
+      {
+        "numero_serie": "TESTE-LAB-PEDE-001",
+        "idade_dias": 7,
+        "responsavel_id": "alex",
+        "responsavel_nome": "Alex Zaranello",
+        "cp1_done": false,
+        "cp2_done": false
+      },
+      {
+        "numero_serie": "TESTE-LAB-PEDE-001",
+        "idade_dias": 28,
+        "responsavel_id": "alex",
+        "responsavel_nome": "Alex Zaranello",
+        "cp1_done": false,
+        "cp2_done": false
+      }
+    ]
+  },
+  {
+    "unit": "ribeirao",
+    "massadas": 830,
+    "source_massadas": 829,
+    "fixtures": 1,
+    "readings": [
+      {
+        "id": "ba63079e-240c-4505-9b70-a2b8b10c270e",
+        "numero_serie": "TESTE-LAB-RIB-001",
+        "cp": "1",
+        "mpa": 10.01,
+        "responsavel_id": "alex",
+        "responsavel": "Alex Zaranello",
+        "data_moldagem": "2026-11-20",
+        "data_ruptura": "2026-11-21"
+      },
+      {
+        "id": "63e6e12c-3125-4dce-b014-507a8f99348c",
+        "numero_serie": "TESTE-LAB-RIB-001",
+        "cp": "2",
+        "mpa": 10.02,
+        "responsavel_id": "alex",
+        "responsavel": "Alex Zaranello",
+        "data_moldagem": "2026-11-20",
+        "data_ruptura": "2026-11-21"
+      }
+    ],
+    "events": 2,
+    "groups": [
+      {
+        "numero_serie": "TESTE-LAB-RIB-001",
+        "idade_dias": 1,
+        "quantidade_cp": 2,
+        "media_mpa": 10.02,
+        "status_resultado": "OK"
+      }
+    ],
+    "moldings": [
+      {
+        "numero_serie": "TESTE-LAB-RIB-001",
+        "idade_dias": 1,
+        "responsavel_id": "alex",
+        "responsavel_nome": "Alex Zaranello",
+        "cp1_done": true,
+        "cp2_done": true
+      },
+      {
+        "numero_serie": "TESTE-LAB-RIB-001",
+        "idade_dias": 3,
+        "responsavel_id": "alex",
+        "responsavel_nome": "Alex Zaranello",
+        "cp1_done": false,
+        "cp2_done": false
+      },
+      {
+        "numero_serie": "TESTE-LAB-RIB-001",
+        "idade_dias": 7,
+        "responsavel_id": "alex",
+        "responsavel_nome": "Alex Zaranello",
+        "cp1_done": false,
+        "cp2_done": false
+      },
+      {
+        "numero_serie": "TESTE-LAB-RIB-001",
+        "idade_dias": 28,
+        "responsavel_id": "alex",
+        "responsavel_nome": "Alex Zaranello",
+        "cp1_done": false,
+        "cp2_done": false
+      }
+    ]
+  }
+]

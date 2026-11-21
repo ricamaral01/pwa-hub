@@ -1,0 +1,24 @@
+{
+  "client_date": "2026-11-21",
+  "environment": "18446 only",
+  "pools": {
+    "armacao": "5+10 ->1+1",
+    "pcp": "2+1 ->1+1"
+  },
+  "backup_and_serial_restarts_required": true,
+  "rollback_if_failure": true,
+  "approved_people": [
+    "alex (alias H user-alex)",
+    "marcelo",
+    "philippe",
+    "user-ricardo"
+  ],
+  "approved_new_units": [
+    "pederneiras",
+    "ribeirao"
+  ],
+  "incomplete_factory_batches": "continue excluding the8 incomplete batches; user will supply correct values later",
+  "old_services_stop_authorized": false,
+  "production_changes_authorized": false,
+  "operator_identity_creation_authorized": false
+}
