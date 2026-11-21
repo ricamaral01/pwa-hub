@@ -271,6 +271,121 @@ MENU_CONFIG.laboratorio.groups.push(
   ]}
 );
 
+MENU_CONFIG.laboratorio.groups.push(...[
+  {
+    "label": "Corpos de Prova",
+    "unitName": "Pederneiras",
+    "unitCode": "pederneiras",
+    "items": [
+      {
+        "id": "labPedeCecEtiquetas",
+        "label": "Etiquetas QR · Pederneiras",
+        "path": "pederneiras/cec/etiquetas/",
+        "ambiente": "homolog"
+      },
+      {
+        "id": "labPedeCecLeitura",
+        "label": "Leitura de CP · Pederneiras",
+        "path": "pederneiras/cec/leitura/",
+        "ambiente": "homolog"
+      },
+      {
+        "id": "labPedeCecResultados",
+        "label": "Resultados dos corpos de prova · Pederneiras",
+        "path": "pederneiras/cec/analise/resultado-cp.html",
+        "ambiente": "homolog"
+      }
+    ]
+  },
+  {
+    "label": "Controle estatístico",
+    "unitName": "Pederneiras",
+    "unitCode": "pederneiras",
+    "items": [
+      {
+        "id": "labPedeCec",
+        "label": "Visão geral · Pederneiras",
+        "path": "pederneiras/cec/",
+        "ambiente": "homolog"
+      },
+      {
+        "id": "labPedeCecRompimentosMes",
+        "label": "Rompimentos por mês · Pederneiras",
+        "path": "pederneiras/cec/rompimentos-mes/",
+        "ambiente": "homolog"
+      },
+      {
+        "id": "labPedeCecAnalise",
+        "label": "Análise estatística · Pederneiras",
+        "path": "pederneiras/cec/analise/",
+        "ambiente": "homolog"
+      },
+      {
+        "id": "labPedeCecRelatorio",
+        "label": "Relatório CEC · Pederneiras",
+        "path": "pederneiras/cec/analise/relatorio.html",
+        "ambiente": "homolog"
+      }
+    ]
+  },
+  {
+    "label": "Corpos de Prova",
+    "unitName": "Ribeirão Preto",
+    "unitCode": "ribeirao",
+    "items": [
+      {
+        "id": "labRibCecEtiquetas",
+        "label": "Etiquetas QR · Ribeirão Preto",
+        "path": "ribeirao/cec/etiquetas/",
+        "ambiente": "homolog"
+      },
+      {
+        "id": "labRibCecLeitura",
+        "label": "Leitura de CP · Ribeirão Preto",
+        "path": "ribeirao/cec/leitura/",
+        "ambiente": "homolog"
+      },
+      {
+        "id": "labRibCecResultados",
+        "label": "Resultados dos corpos de prova · Ribeirão Preto",
+        "path": "ribeirao/cec/analise/resultado-cp.html",
+        "ambiente": "homolog"
+      }
+    ]
+  },
+  {
+    "label": "Controle estatístico",
+    "unitName": "Ribeirão Preto",
+    "unitCode": "ribeirao",
+    "items": [
+      {
+        "id": "labRibCec",
+        "label": "Visão geral · Ribeirão Preto",
+        "path": "ribeirao/cec/",
+        "ambiente": "homolog"
+      },
+      {
+        "id": "labRibCecRompimentosMes",
+        "label": "Rompimentos por mês · Ribeirão Preto",
+        "path": "ribeirao/cec/rompimentos-mes/",
+        "ambiente": "homolog"
+      },
+      {
+        "id": "labRibCecAnalise",
+        "label": "Análise estatística · Ribeirão Preto",
+        "path": "ribeirao/cec/analise/",
+        "ambiente": "homolog"
+      },
+      {
+        "id": "labRibCecRelatorio",
+        "label": "Relatório CEC · Ribeirão Preto",
+        "path": "ribeirao/cec/analise/relatorio.html",
+        "ambiente": "homolog"
+      }
+    ]
+  }
+]);
+
 // Keep test definitions in source, but exclude them from the production catalogue.
 const UNIFICADO_AMBIENTE = UNIFICADO_BASE.port === '18446' ? 'homolog' : 'producao';
 const ambientePorId = new Map(Object.values(MENU_CONFIG).flatMap(module => module.groups.flatMap(group => group.items.filter(item => item.ambiente).map(item => [item.id,item.ambiente]))));

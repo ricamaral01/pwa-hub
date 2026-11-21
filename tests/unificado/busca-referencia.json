@@ -210,5 +210,61 @@
  [
   "fechamento dia campinas armacao",
   "armacao-campinas-banca"
+ ],
+ [
+  "visao geral pederneiras",
+  "labPedeCec"
+ ],
+ [
+  "etiquetas qr pederneiras",
+  "labPedeCecEtiquetas"
+ ],
+ [
+  "leitura cp pederneiras",
+  "labPedeCecLeitura"
+ ],
+ [
+  "resultados corpos prova pederneiras",
+  "labPedeCecResultados"
+ ],
+ [
+  "rompimentos mes pederneiras",
+  "labPedeCecRompimentosMes"
+ ],
+ [
+  "analise estatistica pederneiras",
+  "labPedeCecAnalise"
+ ],
+ [
+  "relatorio cec pederneiras",
+  "labPedeCecRelatorio"
+ ],
+ [
+  "visao geral ribeirao preto",
+  "labRibCec"
+ ],
+ [
+  "etiquetas qr ribeirao preto",
+  "labRibCecEtiquetas"
+ ],
+ [
+  "leitura cp ribeirao preto",
+  "labRibCecLeitura"
+ ],
+ [
+  "resultados corpos prova ribeirao preto",
+  "labRibCecResultados"
+ ],
+ [
+  "rompimentos mes ribeirao preto",
+  "labRibCecRompimentosMes"
+ ],
+ [
+  "analise estatistica ribeirao preto",
+  "labRibCecAnalise"
+ ],
+ [
+  "relatorio cec ribeirao preto",
+  "labRibCecRelatorio"
  ]
 ]

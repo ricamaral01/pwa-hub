@@ -204,3 +204,5 @@
   "ged-calibrations": "Acompanhar as calibrações dos instrumentos"
 });
 })();
+
+Object.assign(window.UnificadoPresentation.descriptions,{"labPedeCec": "Consultar os indicadores do concreto", "labPedeCecEtiquetas": "Emitir etiquetas QR de corpos de prova", "labPedeCecLeitura": "Registrar a ruptura dos corpos de prova", "labPedeCecResultados": "Consultar os resultados dos corpos de prova", "labPedeCecRompimentosMes": "Consultar os rompimentos por mês", "labPedeCecAnalise": "Analisar os resultados de resistência", "labPedeCecRelatorio": "Emitir o relatório estatístico do concreto", "labRibCec": "Consultar os indicadores do concreto", "labRibCecEtiquetas": "Emitir etiquetas QR de corpos de prova", "labRibCecLeitura": "Registrar a ruptura dos corpos de prova", "labRibCecResultados": "Consultar os resultados dos corpos de prova", "labRibCecRompimentosMes": "Consultar os rompimentos por mês", "labRibCecAnalise": "Analisar os resultados de resistência", "labRibCecRelatorio": "Emitir o relatório estatístico do concreto"});

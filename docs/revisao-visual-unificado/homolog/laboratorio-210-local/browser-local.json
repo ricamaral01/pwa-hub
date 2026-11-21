@@ -1,0 +1,1008 @@
+{
+  "status": "local_preview_only",
+  "vps_network_requests": 0,
+  "shared_cluster_connections_added": 0,
+  "captures": [
+    {
+      "type": "module",
+      "mode": "before",
+      "width": 1440,
+      "file": "modulo-before-1440.png",
+      "local_preview": true
+    },
+    {
+      "type": "module",
+      "mode": "before",
+      "width": 1024,
+      "file": "modulo-before-1024.png",
+      "local_preview": true
+    },
+    {
+      "type": "module",
+      "mode": "before",
+      "width": 820,
+      "file": "modulo-before-820.png",
+      "local_preview": true
+    },
+    {
+      "type": "module",
+      "mode": "before",
+      "width": 390,
+      "file": "modulo-before-390.png",
+      "local_preview": true
+    },
+    {
+      "type": "module",
+      "mode": "after",
+      "width": 1440,
+      "file": "modulo-after-1440.png",
+      "local_preview": true
+    },
+    {
+      "type": "module",
+      "mode": "after",
+      "width": 1024,
+      "file": "modulo-after-1024.png",
+      "local_preview": true
+    },
+    {
+      "type": "module",
+      "mode": "after",
+      "width": 820,
+      "file": "modulo-after-820.png",
+      "local_preview": true
+    },
+    {
+      "type": "module",
+      "mode": "after",
+      "width": 390,
+      "file": "modulo-after-390.png",
+      "local_preview": true
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "geral",
+      "width": 1440,
+      "file": "pederneiras-geral-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "geral",
+      "width": 1024,
+      "file": "pederneiras-geral-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "geral",
+      "width": 820,
+      "file": "pederneiras-geral-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "geral",
+      "width": 390,
+      "file": "pederneiras-geral-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "etiquetas",
+      "width": 1440,
+      "file": "pederneiras-etiquetas-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "etiquetas",
+      "width": 1024,
+      "file": "pederneiras-etiquetas-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "etiquetas",
+      "width": 820,
+      "file": "pederneiras-etiquetas-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "etiquetas",
+      "width": 390,
+      "file": "pederneiras-etiquetas-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "leitura",
+      "width": 1440,
+      "file": "pederneiras-leitura-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "leitura",
+      "width": 1024,
+      "file": "pederneiras-leitura-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "leitura",
+      "width": 820,
+      "file": "pederneiras-leitura-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "leitura",
+      "width": 390,
+      "file": "pederneiras-leitura-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "resultados",
+      "width": 1440,
+      "file": "pederneiras-resultados-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "resultados",
+      "width": 1024,
+      "file": "pederneiras-resultados-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "resultados",
+      "width": 820,
+      "file": "pederneiras-resultados-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "resultados",
+      "width": 390,
+      "file": "pederneiras-resultados-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "mes",
+      "width": 1440,
+      "file": "pederneiras-mes-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "mes",
+      "width": 1024,
+      "file": "pederneiras-mes-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "mes",
+      "width": 820,
+      "file": "pederneiras-mes-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "mes",
+      "width": 390,
+      "file": "pederneiras-mes-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "analise",
+      "width": 1440,
+      "file": "pederneiras-analise-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "analise",
+      "width": 1024,
+      "file": "pederneiras-analise-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "analise",
+      "width": 820,
+      "file": "pederneiras-analise-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "analise",
+      "width": 390,
+      "file": "pederneiras-analise-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "relatorio",
+      "width": 1440,
+      "file": "pederneiras-relatorio-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "relatorio",
+      "width": 1024,
+      "file": "pederneiras-relatorio-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "relatorio",
+      "width": 820,
+      "file": "pederneiras-relatorio-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Pederneiras",
+      "page": "relatorio",
+      "width": 390,
+      "file": "pederneiras-relatorio-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "geral",
+      "width": 1440,
+      "file": "ribeirao-geral-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "geral",
+      "width": 1024,
+      "file": "ribeirao-geral-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "geral",
+      "width": 820,
+      "file": "ribeirao-geral-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "geral",
+      "width": 390,
+      "file": "ribeirao-geral-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "etiquetas",
+      "width": 1440,
+      "file": "ribeirao-etiquetas-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "etiquetas",
+      "width": 1024,
+      "file": "ribeirao-etiquetas-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "etiquetas",
+      "width": 820,
+      "file": "ribeirao-etiquetas-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "etiquetas",
+      "width": 390,
+      "file": "ribeirao-etiquetas-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "leitura",
+      "width": 1440,
+      "file": "ribeirao-leitura-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "leitura",
+      "width": 1024,
+      "file": "ribeirao-leitura-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "leitura",
+      "width": 820,
+      "file": "ribeirao-leitura-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "leitura",
+      "width": 390,
+      "file": "ribeirao-leitura-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "resultados",
+      "width": 1440,
+      "file": "ribeirao-resultados-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "resultados",
+      "width": 1024,
+      "file": "ribeirao-resultados-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "resultados",
+      "width": 820,
+      "file": "ribeirao-resultados-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "resultados",
+      "width": 390,
+      "file": "ribeirao-resultados-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "mes",
+      "width": 1440,
+      "file": "ribeirao-mes-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "mes",
+      "width": 1024,
+      "file": "ribeirao-mes-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "mes",
+      "width": 820,
+      "file": "ribeirao-mes-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "mes",
+      "width": 390,
+      "file": "ribeirao-mes-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "analise",
+      "width": 1440,
+      "file": "ribeirao-analise-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "analise",
+      "width": 1024,
+      "file": "ribeirao-analise-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "analise",
+      "width": 820,
+      "file": "ribeirao-analise-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "analise",
+      "width": 390,
+      "file": "ribeirao-analise-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "relatorio",
+      "width": 1440,
+      "file": "ribeirao-relatorio-1440.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "relatorio",
+      "width": 1024,
+      "file": "ribeirao-relatorio-1024.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "relatorio",
+      "width": 820,
+      "file": "ribeirao-relatorio-820.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    },
+    {
+      "unit": "Laboratório · Ribeirão Preto",
+      "page": "relatorio",
+      "width": 390,
+      "file": "ribeirao-relatorio-390.png",
+      "local_preview": true,
+      "pageOverflow": false,
+      "brokenHeaders": [],
+      "images": []
+    }
+  ],
+  "documents": [
+    {
+      "unit": "pederneiras",
+      "file": "pederneiras-etiquetas-local.pdf",
+      "pages": 8,
+      "unit_text": true,
+      "decoded_qrs": [
+        "traco=TRACO|ns=TESTE-LAB-PEDE-001|nome=TESTE-LAB-PEDE|cp=1/2|idade=1|mold=20-11-26|hora=10:00|rupt=21-11-26|unidade=pederneiras",
+        "traco=TRACO|ns=TESTE-LAB-PEDE-001|nome=TESTE-LAB-PEDE|cp=2/2|idade=1|mold=20-11-26|hora=10:00|rupt=21-11-26|unidade=pederneiras",
+        "traco=TRACO|ns=TESTE-LAB-PEDE-001|nome=TESTE-LAB-PEDE|cp=1/2|idade=3|mold=20-11-26|hora=10:00|rupt=23-11-26|unidade=pederneiras",
+        "traco=TRACO|ns=TESTE-LAB-PEDE-001|nome=TESTE-LAB-PEDE|cp=2/2|idade=3|mold=20-11-26|hora=10:00|rupt=23-11-26|unidade=pederneiras",
+        "traco=TRACO|ns=TESTE-LAB-PEDE-001|nome=TESTE-LAB-PEDE|cp=1/2|idade=7|mold=20-11-26|hora=10:00|rupt=27-11-26|unidade=pederneiras",
+        "traco=TRACO|ns=TESTE-LAB-PEDE-001|nome=TESTE-LAB-PEDE|cp=2/2|idade=7|mold=20-11-26|hora=10:00|rupt=27-11-26|unidade=pederneiras",
+        "traco=TRACO|ns=TESTE-LAB-PEDE-001|nome=TESTE-LAB-PEDE|cp=1/2|idade=28|mold=20-11-26|hora=10:00|rupt=18-12-26|unidade=pederneiras",
+        "traco=TRACO|ns=TESTE-LAB-PEDE-001|nome=TESTE-LAB-PEDE|cp=2/2|idade=28|mold=20-11-26|hora=10:00|rupt=18-12-26|unidade=pederneiras"
+      ],
+      "local_only": true
+    },
+    {
+      "unit": "pederneiras",
+      "file": "pederneiras-impressao-local.pdf",
+      "type": "browser-print-preview",
+      "unit_and_series_verified": true,
+      "physical_printer_tested": false,
+      "local_only": true
+    },
+    {
+      "unit": "pederneiras",
+      "file": "pederneiras-relatorio-local.pdf",
+      "type": "browser-report-print",
+      "two_series_verified": true,
+      "local_only": true
+    },
+    {
+      "unit": "ribeirao",
+      "file": "ribeirao-etiquetas-local.pdf",
+      "pages": 8,
+      "unit_text": true,
+      "decoded_qrs": [
+        "traco=TRACO|ns=TESTE-LAB-RIB-001|nome=TESTE-LAB-RIB|cp=1/2|idade=1|mold=20-11-26|hora=10:00|rupt=21-11-26|unidade=ribeirao",
+        "traco=TRACO|ns=TESTE-LAB-RIB-001|nome=TESTE-LAB-RIB|cp=2/2|idade=1|mold=20-11-26|hora=10:00|rupt=21-11-26|unidade=ribeirao",
+        "traco=TRACO|ns=TESTE-LAB-RIB-001|nome=TESTE-LAB-RIB|cp=1/2|idade=3|mold=20-11-26|hora=10:00|rupt=23-11-26|unidade=ribeirao",
+        "traco=TRACO|ns=TESTE-LAB-RIB-001|nome=TESTE-LAB-RIB|cp=2/2|idade=3|mold=20-11-26|hora=10:00|rupt=23-11-26|unidade=ribeirao",
+        "traco=TRACO|ns=TESTE-LAB-RIB-001|nome=TESTE-LAB-RIB|cp=1/2|idade=7|mold=20-11-26|hora=10:00|rupt=27-11-26|unidade=ribeirao",
+        "traco=TRACO|ns=TESTE-LAB-RIB-001|nome=TESTE-LAB-RIB|cp=2/2|idade=7|mold=20-11-26|hora=10:00|rupt=27-11-26|unidade=ribeirao",
+        "traco=TRACO|ns=TESTE-LAB-RIB-001|nome=TESTE-LAB-RIB|cp=1/2|idade=28|mold=20-11-26|hora=10:00|rupt=18-12-26|unidade=ribeirao",
+        "traco=TRACO|ns=TESTE-LAB-RIB-001|nome=TESTE-LAB-RIB|cp=2/2|idade=28|mold=20-11-26|hora=10:00|rupt=18-12-26|unidade=ribeirao"
+      ],
+      "local_only": true
+    },
+    {
+      "unit": "ribeirao",
+      "file": "ribeirao-impressao-local.pdf",
+      "type": "browser-print-preview",
+      "unit_and_series_verified": true,
+      "physical_printer_tested": false,
+      "local_only": true
+    },
+    {
+      "unit": "ribeirao",
+      "file": "ribeirao-relatorio-local.pdf",
+      "type": "browser-report-print",
+      "two_series_verified": true,
+      "local_only": true
+    }
+  ],
+  "api_requests": [
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "massadas",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "massadas",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "POST",
+      "path": "moldagens",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "massadas",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "auth/me",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "POST",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "POST",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "POST",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "POST",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "massadas",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "auth/me",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "rompimentos-grupos",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "rompimentos-grupos",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "rompimentos-grupos",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "pederneiras",
+      "method": "GET",
+      "path": "rompimentos-grupos",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "massadas",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "massadas",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "POST",
+      "path": "moldagens",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "massadas",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "auth/me",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "POST",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "POST",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "POST",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "POST",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "massadas",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "auth/me",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "qrcp",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "rompimentos-grupos",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "rompimentos-grupos",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "rompimentos-grupos",
+      "status": 200,
+      "local_pg": true
+    },
+    {
+      "unit": "ribeirao",
+      "method": "GET",
+      "path": "rompimentos-grupos",
+      "status": 200,
+      "local_pg": true
+    }
+  ],
+  "external_requests_blocked": [],
+  "page_errors": [],
+  "database": {
+    "host": "127.0.0.1",
+    "port": 55421,
+    "rows": [
+      {
+        "unit": "pederneiras",
+        "readings": 4,
+        "authors": [
+          "alex"
+        ]
+      },
+      {
+        "unit": "ribeirao",
+        "readings": 4,
+        "authors": [
+          "alex"
+        ]
+      }
+    ]
+  },
+  "not_live_18446": true
+}

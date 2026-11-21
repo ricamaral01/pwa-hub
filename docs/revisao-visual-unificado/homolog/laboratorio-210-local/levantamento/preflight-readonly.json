@@ -1,0 +1,174 @@
+{
+  "proxy_file": "/etc/nginx/snippets/visual-full-laboratorio-unificado-homolog.conf",
+  "proxy_sha256": "0f222256b9456e44ecfea2db31bd9bc975fc0fb0cbcebbe525efe0b86c1375b5",
+  "proxy_lines": [
+    {
+      "line": 22,
+      "code": "        proxy_pass http://127.0.0.1:14164/certificados/postes/;"
+    },
+    {
+      "line": 34,
+      "code": "        proxy_pass http://127.0.0.1:14152/unified/laboratorio-authorize;"
+    },
+    {
+      "line": 35,
+      "code": "        proxy_pass_request_body off;"
+    },
+    {
+      "line": 38,
+      "code": "        proxy_set_header X-Original-URI $request_uri;"
+    },
+    {
+      "line": 40,
+      "code": "        proxy_set_header X-Original-Method $request_method;"
+    },
+    {
+      "line": 53,
+      "code": "        auth_request /unificado/laboratorio-auth;"
+    },
+    {
+      "line": 54,
+      "code": "        auth_request_set $lab_assertion $upstream_http_x_lab_assertion;"
+    },
+    {
+      "line": 55,
+      "code": "        proxy_pass http://127.0.0.1:14164/noroeste/cec-api/;"
+    },
+    {
+      "line": 59,
+      "code": "        proxy_set_header X-Lab-Assertion $lab_assertion;"
+    },
+    {
+      "line": 69,
+      "code": "        auth_request /unificado/laboratorio-auth;"
+    },
+    {
+      "line": 70,
+      "code": "        auth_request_set $lab_assertion $upstream_http_x_lab_assertion;"
+    },
+    {
+      "line": 71,
+      "code": "        proxy_pass http://127.0.0.1:14164/cec-api/;"
+    },
+    {
+      "line": 75,
+      "code": "        proxy_set_header X-Lab-Assertion $lab_assertion;"
+    },
+    {
+      "line": 95,
+      "code": "        auth_request /unificado/laboratorio-auth;"
+    },
+    {
+      "line": 96,
+      "code": "        auth_request_set $lab_assertion $upstream_http_x_lab_assertion;"
+    },
+    {
+      "line": 97,
+      "code": "        proxy_pass http://127.0.0.1:14175/;"
+    },
+    {
+      "line": 101,
+      "code": "        proxy_set_header X-Lab-Assertion $lab_assertion;"
+    },
+    {
+      "line": 110,
+      "code": "        proxy_pass http://127.0.0.1:14164/v/postes/;"
+    },
+    {
+      "line": 120,
+      "code": "        proxy_pass http://127.0.0.1:14175/v/;"
+    },
+    {
+      "line": 130,
+      "code": "        auth_request /unificado/laboratorio-auth;"
+    },
+    {
+      "line": 131,
+      "code": "        auth_request_set $lab_assertion $upstream_http_x_lab_assertion;"
+    },
+    {
+      "line": 132,
+      "code": "        proxy_pass http://127.0.0.1:14164/;"
+    },
+    {
+      "line": 136,
+      "code": "        proxy_set_header X-Lab-Assertion $lab_assertion;"
+    }
+  ],
+  "source_field_checks": {
+    "pederneiras": {
+      "rows": 1621,
+      "missing_series": 0,
+      "missing_formula": 8,
+      "missing_product": 8,
+      "missing_date": 0,
+      "incomplete_rows": [
+        {
+          "id": 70195,
+          "data": "2026-07-24",
+          "numero_serie": 70195,
+          "formula": "",
+          "produto": ""
+        },
+        {
+          "id": 70990,
+          "data": "2026-10-07",
+          "numero_serie": 70990,
+          "formula": "",
+          "produto": ""
+        },
+        {
+          "id": 70991,
+          "data": "2026-10-07",
+          "numero_serie": 70991,
+          "formula": "",
+          "produto": ""
+        },
+        {
+          "id": 70992,
+          "data": "2026-10-07",
+          "numero_serie": 70992,
+          "formula": "",
+          "produto": ""
+        },
+        {
+          "id": 70993,
+          "data": "2026-10-07",
+          "numero_serie": 70993,
+          "formula": "",
+          "produto": ""
+        },
+        {
+          "id": 70994,
+          "data": "2026-10-07",
+          "numero_serie": 70994,
+          "formula": "",
+          "produto": ""
+        },
+        {
+          "id": 70995,
+          "data": "2026-10-07",
+          "numero_serie": 70995,
+          "formula": "",
+          "produto": ""
+        },
+        {
+          "id": 70996,
+          "data": "2026-10-07",
+          "numero_serie": 70996,
+          "formula": "",
+          "produto": ""
+        }
+      ]
+    },
+    "ribeirao": {
+      "rows": 829,
+      "missing_series": 0,
+      "missing_formula": 0,
+      "missing_product": 0,
+      "missing_date": 0,
+      "incomplete_rows": null
+    }
+  },
+  "changes": 0
+}

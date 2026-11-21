@@ -1,0 +1,43 @@
+{
+  "sources": {
+    "central": {
+      "before_sha256": "d64e3a9ce12efddd4e2ad023ae85e7cc88dd4d35f74693ebe7a561c1b82d4037",
+      "candidate_utf8_sha256": "a57da3de32bb8f0b2dd9469a7135ec5cfb5a2bab06fdddb82b34722629cee463",
+      "syntax_valid": true,
+      "filename": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/app.py"
+    },
+    "laboratory": {
+      "before_sha256": "e7308f565928151c354354c282e07ea8e5e8f80a17af04c9f59be051a0f8273e",
+      "candidate_utf8_sha256": "65c7bb7623476e3ebbb5003655a605e4e3118f4aea2ccb762a6b3a9378d4415b",
+      "syntax_valid": true,
+      "filename": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/app.py"
+    }
+  },
+  "contracts": [
+    {
+      "source": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_api.py",
+      "source_sha256": "e909145a90a683fee4b3589f51055dbe9c6bc075135f985028b65db197fdcfa7",
+      "function": "parse_qr",
+      "ast_sha256": "0d476a6ff6990dec9ffb36a661f6248e144186cc88daf685f4a56fe6c9201de7"
+    },
+    {
+      "source": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_api.py",
+      "source_sha256": "e909145a90a683fee4b3589f51055dbe9c6bc075135f985028b65db197fdcfa7",
+      "function": "parse_date",
+      "ast_sha256": "c33b8b99c0829d086fcef451c89efa360ee8fa5adedf35d4d6a87b75bf367dc9"
+    },
+    {
+      "source": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_api.py",
+      "source_sha256": "e909145a90a683fee4b3589f51055dbe9c6bc075135f985028b65db197fdcfa7",
+      "function": "canonical_cp",
+      "ast_sha256": "0994772e2da66d10f6916dad82c5acc1a6c897d23e03c14209d09ca79065abe7"
+    },
+    {
+      "source": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/postes_api.py",
+      "source_sha256": "f394b840ffa543ae4a5330c5b161333d414bc740d60b92172c802be5de615831",
+      "function": "gateway_user",
+      "ast_sha256": "5b1c7bef0bf7437118b787801574733fe8cee7c56542ed39c7c4584391471569"
+    }
+  ],
+  "applied_to_server": false
+}

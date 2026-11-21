@@ -1,0 +1,11 @@
+{
+  "production_version": "2.0.0",
+  "homolog_version": "2.0.0",
+  "cluster_snapshot": {
+    "max_connections": 100,
+    "reserved": 3,
+    "activity_records": 82,
+    "client_backends": 77
+  },
+  "application_changes": 0
+}

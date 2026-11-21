@@ -1249,5 +1249,145 @@
     "query": "",
     "screen": null,
     "require": null
+  },
+  {
+    "id": "labPedeCec",
+    "module": "laboratorio",
+    "label": "Visão geral · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecEtiquetas",
+    "module": "laboratorio",
+    "label": "Etiquetas QR · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/etiquetas/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecLeitura",
+    "module": "laboratorio",
+    "label": "Leitura de CP · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/leitura/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecResultados",
+    "module": "laboratorio",
+    "label": "Resultados dos corpos de prova · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/analise/resultado-cp.html",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecRompimentosMes",
+    "module": "laboratorio",
+    "label": "Rompimentos por mês · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/rompimentos-mes/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecAnalise",
+    "module": "laboratorio",
+    "label": "Análise estatística · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/analise/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecRelatorio",
+    "module": "laboratorio",
+    "label": "Relatório CEC · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/analise/relatorio.html",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCec",
+    "module": "laboratorio",
+    "label": "Visão geral · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecEtiquetas",
+    "module": "laboratorio",
+    "label": "Etiquetas QR · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/etiquetas/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecLeitura",
+    "module": "laboratorio",
+    "label": "Leitura de CP · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/leitura/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecResultados",
+    "module": "laboratorio",
+    "label": "Resultados dos corpos de prova · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/analise/resultado-cp.html",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecRompimentosMes",
+    "module": "laboratorio",
+    "label": "Rompimentos por mês · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/rompimentos-mes/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecAnalise",
+    "module": "laboratorio",
+    "label": "Análise estatística · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/analise/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecRelatorio",
+    "module": "laboratorio",
+    "label": "Relatório CEC · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/analise/relatorio.html",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
   }
 ]

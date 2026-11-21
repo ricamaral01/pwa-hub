@@ -1,0 +1,487 @@
+{
+  "baseline": "a82741a909766892cb68454f95f6e4966180f53b",
+  "candidate_version": "2.1.0",
+  "installed_homolog_version": "2.0.0",
+  "installed_production_version": "2.0.0",
+  "new_pool_count": 0,
+  "new_worker_count": 0,
+  "production_changes": 0,
+  "homolog_changes": 0,
+  "local_tests_passed": 106,
+  "local_captures": 64,
+  "local_documents": 6,
+  "local_cp_readings": [
+    {
+      "unit": "pederneiras",
+      "readings": 4,
+      "authors": [
+        "alex"
+      ]
+    },
+    {
+      "unit": "ribeirao",
+      "readings": 4,
+      "authors": [
+        "alex"
+      ]
+    }
+  ],
+  "vps_application_changes": 0,
+  "real_gate_7_of_7": "not_run_capacity_and_deployment_pending",
+  "real_profile_matrix": "not_run",
+  "nominal_approval_pending": true,
+  "capacity_approval_pending": true,
+  "incomplete_factory_data_decision_pending": true,
+  "unchanged_existing_lab_files": [
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/index.html",
+      "canonical_sha256": "598fbea21e1dbcaeee096ae1871c41ec3d7e6b5726e526e62692af73a7337e05",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/analise/api-client.js",
+      "canonical_sha256": "bef3aa113ac68735c5479dc9e8d34845434b71413036a76539ff47889d49f518",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/analise/index.html",
+      "canonical_sha256": "de24c22a0f282407c958e62af75adf115087558d5aad798ade21e4e81650b0df",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/analise/manifest.json",
+      "canonical_sha256": "dc6b2084e685b58aeaee03fd575834560cf5c21b4fcb606761995b01c9ba77b0",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/analise/relatorio-icon.svg",
+      "canonical_sha256": "945bda2b273d292190bfa7c759733643f16352e2f268d5542694ec41d2486847",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/analise/relatorio.html",
+      "canonical_sha256": "7c9fa7b7a5d077f13945cafbda58e7002c0282ab866388a09a7c8daee2d6a04f",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/analise/resultado-cp.html",
+      "canonical_sha256": "3472ab72682ce3d3e6a6633ff15926561d12ac4958fa70a5027ac5cc85b02e15",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/analise/sw.js",
+      "canonical_sha256": "6592e0d9b450fdfe4012b1d9d5748030b403ce66085ee086dd2617cafa356a0c",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/etiquetas/index.html",
+      "canonical_sha256": "9ae07820937384ca14ef34aaaa1ca373635e84a8b3567189ab80d56301360000",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/leitura/index.html",
+      "canonical_sha256": "c2bbcdd1efd0467cb96f734854309266448234863f73c2ca5d65ff4afcc691d1",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/leitura/manifest.json",
+      "canonical_sha256": "c147f9222a3cc700ce820719aa3cf689f5e8f63a121fd463c3652ace4a1fe5a4",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/leitura/sw.js",
+      "canonical_sha256": "37c806290cf790739f66c83af2eb6dd4a96e9c967f290aef998202c20444da45",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/relatorio/index.html",
+      "canonical_sha256": "fb0ed36589f1eef47e1a03ea756b6919e1ea326e338a28c336c1e5ee13089443",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/resultados/index.html",
+      "canonical_sha256": "0bff22a5e4cf9e8adaf4ee1d85fe6ca04e6567732d71808e49800629e988dde0",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/rompimentos-mes/index.html",
+      "canonical_sha256": "4a66a318addccf3a592a54511098b68e5889a1ee4a8bb813825d8c6051341983",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/img/icon-192.png",
+      "canonical_sha256": "a59e4a66d10f84316002919a6846c9fbbf0ade04e8f1eec9af558570a176795e",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/img/icon-512.png",
+      "canonical_sha256": "a14b9447f05a16a10042c7183b4f32e205be20d7d1ea350805a5507684f46111",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/img/logo.png",
+      "canonical_sha256": "5080b039e7465a5e1aaab73a257b10fe2e32b7f6ee02407dc3ad1b28b15ba5d2",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/img/PRINCIPAL@2x.png",
+      "canonical_sha256": "37b5d8cc41cbe8911abb237759dfd6be20bcb08beb2d0ebf0d772b9585789c5e",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/bootstrap-icons.min.css",
+      "canonical_sha256": "f643d6fe7e679f9de3e16311600c5ef5cd6b098f7a3a8828fcc29255d2b33e62",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/bootstrap.bundle.min.js",
+      "canonical_sha256": "0833b2e9c3a26c258476c46266e6877fc75218625162e0460be9a3a098a61c6c",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/bootstrap.min.css",
+      "canonical_sha256": "3c8f27e6009ccfd710a905e6dcf12d0ee3c6f2ac7da05b0572d3e0d12e736fc8",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/chart.umd.min.js",
+      "canonical_sha256": "08dfa4730571b23810c34fc39c5101461ecafca56c3f92caf4850509cb158f30",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/html5-qrcode.min.js",
+      "canonical_sha256": "660b12437b1d747e3e68b8be0685c08cb728140110ad213f167b14b66f8b1d8e",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/jspdf.umd.min.js",
+      "canonical_sha256": "98ccf17aa10c20bb1301762618fcc9b6ab3a4e7f26b6071d64d0b41154df3875",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/montserrat.css",
+      "canonical_sha256": "49079bfd1308f051b3f66be93ab628993bbf83cb24d0a7f379523fe55768e624",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/qrcode.min.js",
+      "canonical_sha256": "bb2365e4902f4f84852cf4025e6f6a60325a682aeafa43fb63b7fc8f098d1ef2",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/SOURCES.md",
+      "canonical_sha256": "4429d9356e7f8461c7f6cb7abbdd857a5a4333f3f10cd36e977a70f1608711d7",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/fonts/bootstrap-icons.woff",
+      "canonical_sha256": "bb1de989b83970f6f4e54de1cd974c5cba55b73582da5e1b225a6d0edf029483",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/fonts/bootstrap-icons.woff2",
+      "canonical_sha256": "476adf42b40325098fcfa8b36ab3e769186bb4f6ce6a249753e2e1a9c22bf99e",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2",
+      "canonical_sha256": "a187b077090fe8ae3fd2d7496aabbeae604819c718a282e0afc92df72b450766",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459Wdhyzbi.woff2",
+      "canonical_sha256": "54d9a78b7ff60b689ad9f3017ffac8547b5d871afec733f6c1c3ae36577ee504",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2",
+      "canonical_sha256": "06b16db7a969135d48d38c49183be7fb88d4452e2a3011957c7851941f4e4879",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2",
+      "canonical_sha256": "0f7f5f2fbb4eae126790fe6f01659ab3ee0806e8038a941908e893020569f51a",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459WZhyzbi.woff2",
+      "canonical_sha256": "26b2403f995ed65fb49037a6498c074d3ec3c36031a69fc368c4c2180e2c01fa",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/cec/analise/assets/img/concre.png",
+      "canonical_sha256": "7551b563f3699786356f04bcaa0a775944e3d650f9b8126e0f03dcdb4f6d9b22",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/index.html",
+      "canonical_sha256": "ee1cbbe5d6592bd74258d8db0462b7ef0ce341cd7ac1f8cbeb2f2aaefef43ad7",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/usuarios/index.html",
+      "canonical_sha256": "84c0b80f1e508068d4a60ed5d3fb3fb828217d5c02dc8d5539af696a760137d7",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/usuarios/users.css",
+      "canonical_sha256": "bded4cffdd8b46c0844b18b58f68ee23af8d2c9b2d3955beae90efac2006d39d",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/usuarios/users.js",
+      "canonical_sha256": "590dcbc455a3ccdeaed5855bc2399e1e56f4c47ddb2da850293c9b4f1e3d6a19",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/analise/api-client.js",
+      "canonical_sha256": "341284d67d7bd224a27b5d6ae8c2d23700c33fbcc5533938a1e01ba54562a1b3",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/analise/index.html",
+      "canonical_sha256": "91ce24a86f45bbce5c3f4f013f8192a88446ba4cd51114130bd9472972a2b928",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/analise/manifest.json",
+      "canonical_sha256": "3fc094a6956d70deccbf486c52e32d0fe08e0e8f5a679386984e0414b11d78d2",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/analise/relatorio-icon.svg",
+      "canonical_sha256": "945bda2b273d292190bfa7c759733643f16352e2f268d5542694ec41d2486847",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/analise/relatorio.html",
+      "canonical_sha256": "44edae4251a2bc07a1140fb782c0381272a2929144bc3eb18238a05ea5ea69c4",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/analise/resultado-cp.html",
+      "canonical_sha256": "a960deed22624272e6a4f4db141c14e5030d78be2f34e6d5bbf40191a0598955",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/analise/sw.js",
+      "canonical_sha256": "c2857e408f990977b773d877fcf5e71bb4765f6f29b7899a56ce3f66ad3a6b3c",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/etiquetas/index.html",
+      "canonical_sha256": "abe329d4bec79c593a32b11fc1ab31905ab3a10b03854d8cf9e0a0feeeefeb5f",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/leitura/index.html",
+      "canonical_sha256": "237b04672347797fb31e7633b35d51181edfe5388f8d6e737255c61979ccaf14",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/leitura/manifest.json",
+      "canonical_sha256": "06563516fb1edac24a0e4eeb0dc8e3d2d782b087b5420752ed821838502e131c",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/leitura/sw.js",
+      "canonical_sha256": "82e179db1dd4473ac3a43ae6d8e9bb39b2378f3e9aa96b4454e571f61420ef46",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/relatorio/index.html",
+      "canonical_sha256": "2c882ed384216628ef10142bd1f05cbfa460f24657cd65d02d9276368e893c73",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/resultados/index.html",
+      "canonical_sha256": "4f8022b48faa9a92c329c5d9a5420a6267c00a7a961137195ece15c27fa82c64",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/rompimentos-mes/index.html",
+      "canonical_sha256": "ff099f776d854bc7e067d596ef4cecab27da8873ca51ea3417e9494abb907f42",
+      "binary_byte_identical": false,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/img/icon-192.png",
+      "canonical_sha256": "a59e4a66d10f84316002919a6846c9fbbf0ade04e8f1eec9af558570a176795e",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/img/icon-512.png",
+      "canonical_sha256": "a14b9447f05a16a10042c7183b4f32e205be20d7d1ea350805a5507684f46111",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/img/logo.png",
+      "canonical_sha256": "5080b039e7465a5e1aaab73a257b10fe2e32b7f6ee02407dc3ad1b28b15ba5d2",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/img/PRINCIPAL@2x.png",
+      "canonical_sha256": "37b5d8cc41cbe8911abb237759dfd6be20bcb08beb2d0ebf0d772b9585789c5e",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/bootstrap-icons.min.css",
+      "canonical_sha256": "f643d6fe7e679f9de3e16311600c5ef5cd6b098f7a3a8828fcc29255d2b33e62",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/bootstrap.bundle.min.js",
+      "canonical_sha256": "0833b2e9c3a26c258476c46266e6877fc75218625162e0460be9a3a098a61c6c",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/bootstrap.min.css",
+      "canonical_sha256": "3c8f27e6009ccfd710a905e6dcf12d0ee3c6f2ac7da05b0572d3e0d12e736fc8",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/chart.umd.min.js",
+      "canonical_sha256": "08dfa4730571b23810c34fc39c5101461ecafca56c3f92caf4850509cb158f30",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/html5-qrcode.min.js",
+      "canonical_sha256": "660b12437b1d747e3e68b8be0685c08cb728140110ad213f167b14b66f8b1d8e",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/jspdf.umd.min.js",
+      "canonical_sha256": "98ccf17aa10c20bb1301762618fcc9b6ab3a4e7f26b6071d64d0b41154df3875",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/montserrat.css",
+      "canonical_sha256": "49079bfd1308f051b3f66be93ab628993bbf83cb24d0a7f379523fe55768e624",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/qrcode.min.js",
+      "canonical_sha256": "bb2365e4902f4f84852cf4025e6f6a60325a682aeafa43fb63b7fc8f098d1ef2",
+      "binary_byte_identical": true,
+      "text_eol_normalized": true
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/SOURCES.md",
+      "canonical_sha256": "4429d9356e7f8461c7f6cb7abbdd857a5a4333f3f10cd36e977a70f1608711d7",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/fonts/bootstrap-icons.woff",
+      "canonical_sha256": "bb1de989b83970f6f4e54de1cd974c5cba55b73582da5e1b225a6d0edf029483",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/fonts/bootstrap-icons.woff2",
+      "canonical_sha256": "476adf42b40325098fcfa8b36ab3e769186bb4f6ce6a249753e2e1a9c22bf99e",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2",
+      "canonical_sha256": "a187b077090fe8ae3fd2d7496aabbeae604819c718a282e0afc92df72b450766",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459Wdhyzbi.woff2",
+      "canonical_sha256": "54d9a78b7ff60b689ad9f3017ffac8547b5d871afec733f6c1c3ae36577ee504",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2",
+      "canonical_sha256": "06b16db7a969135d48d38c49183be7fb88d4452e2a3011957c7851941f4e4879",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2",
+      "canonical_sha256": "0f7f5f2fbb4eae126790fe6f01659ab3ee0806e8038a941908e893020569f51a",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459WZhyzbi.woff2",
+      "canonical_sha256": "26b2403f995ed65fb49037a6498c074d3ec3c36031a69fc368c4c2180e2c01fa",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    },
+    {
+      "file": "unificado/laboratorio/service/server/static/noroeste/cec/analise/assets/img/concre.png",
+      "canonical_sha256": "0fa6c659655ed4f3ee498d8e59921a36038e9bd4e0f338009f0316524d11aabf",
+      "binary_byte_identical": true,
+      "text_eol_normalized": false
+    }
+  ]
+}

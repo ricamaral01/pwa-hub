@@ -87,7 +87,7 @@
         for (const code of units) {
           const chip = document.createElement('button');
           chip.type = 'button';
-          chip.textContent = code === 'noroeste' ? 'Noroeste' : 'Campinas';
+          chip.textContent = ({campinas:'Campinas',noroeste:'Noroeste',pederneiras:'Pederneiras',ribeirao:'Ribeirão Preto'})[code] || code;
           chip.className = code === selectedUnit ? 'is-current' : '';
           chip.setAttribute('aria-current', code === selectedUnit ? 'page' : 'false');
           chip.addEventListener('click', () => {
@@ -106,7 +106,7 @@
           label: group.label || (group.items.some(item => item.id === 'labHelp') ? 'Ajuda' : 'Geral'),
           items: group.items.filter(item => canUse(MENU_ITEMS[item.id])),
         }));
-    description.textContent=groups.reduce((sum,group)=>sum+group.items.length,0)+' telas'+(selectedUnit?' \u00b7 '+(selectedUnit==='noroeste'?'Noroeste':'Campinas'):'');
+    description.textContent=groups.reduce((sum,group)=>sum+group.items.length,0)+' telas'+(selectedUnit?' \u00b7 '+(({campinas:'Campinas',noroeste:'Noroeste',pederneiras:'Pederneiras',ribeirao:'Ribeirão Preto'})[selectedUnit] || selectedUnit):'');
     const toolbar = document.createElement('div');
     toolbar.className = 'module-page-toolbar';
     const quick = document.createElement('nav');
