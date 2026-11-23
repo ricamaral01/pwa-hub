@@ -1,0 +1,25 @@
+C:\Users\Admin\AppData\Roaming\Python\Python314\site-packages\fastapi\routing.py:211: DeprecationWarning: 'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16; use inspect.iscoroutinefunction() instead
+  is_coroutine = asyncio.iscoroutinefunction(dependant.call)
+C:\Users\Admin\AppData\Roaming\Python\Python314\site-packages\starlette\_utils.py:42: DeprecationWarning: 'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16; use inspect.iscoroutinefunction() instead
+  return asyncio.iscoroutinefunction(obj) or (
+C:\Users\Admin\AppData\Roaming\Python\Python314\site-packages\starlette\_utils.py:43: DeprecationWarning: 'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16; use inspect.iscoroutinefunction() instead
+  callable(obj) and asyncio.iscoroutinefunction(obj.__call__)
+C:\Users\Admin\AppData\Roaming\Python\Python314\site-packages\httpx\_client.py:690: DeprecationWarning: The 'app' shortcut is now deprecated. Use the explicit style 'transport=WSGITransport(app=...)' instead.
+  warnings.warn(message, DeprecationWarning)
+test_author_is_always_central_and_retry_does_not_duplicate_event (test_lab210_api_local.ApiTests.test_author_is_always_central_and_retry_does_not_duplicate_event) ... ok
+test_batch_confirmation_is_idempotent_and_keeps_campinas_noroeste (test_lab210_api_local.ApiTests.test_batch_confirmation_is_idempotent_and_keeps_campinas_noroeste) ... ok
+test_batch_keeps_quantity_but_canonical_fields_override_source_payload (test_lab210_api_local.ApiTests.test_batch_keeps_quantity_but_canonical_fields_override_source_payload) ... ok
+test_confirm_does_not_accept_another_batch_or_duplicate_ages (test_lab210_api_local.ApiTests.test_confirm_does_not_accept_another_batch_or_duplicate_ages) ... ok
+test_cross_unit_qr_and_session_switch_queue_cannot_launch (test_lab210_api_local.ApiTests.test_cross_unit_qr_and_session_switch_queue_cannot_launch) ... ok
+test_existing_historic_readings_cannot_be_deleted (test_lab210_api_local.ApiTests.test_existing_historic_readings_cannot_be_deleted) ... ok
+test_forged_assertion_and_wrong_unit_method_operation_denied (test_lab210_api_local.ApiTests.test_forged_assertion_and_wrong_unit_method_operation_denied) ... ok
+test_identity_cannot_be_repurposed_for_another_cp (test_lab210_api_local.ApiTests.test_identity_cannot_be_repurposed_for_another_cp) ... ok
+test_pool_timeout_is_capacity_not_visual_or_permission_failure (test_lab210_api_local.ApiTests.test_pool_timeout_is_capacity_not_visual_or_permission_failure) ... ok
+test_signed_actor_and_batches (test_lab210_api_local.ApiTests.test_signed_actor_and_batches) ... ok
+test_units_and_series_do_not_merge_and_single_cp_matches_noroeste (test_lab210_api_local.ApiTests.test_units_and_series_do_not_merge_and_single_cp_matches_noroeste) ... ok
+test_unknown_series_or_conflicting_qr_fields_are_rejected (test_lab210_api_local.ApiTests.test_unknown_series_or_conflicting_qr_fields_are_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 5.505s
+
+OK

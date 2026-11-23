@@ -1,0 +1,6 @@
+[
+  {
+    "conname": "user_screen_permissions_pkey",
+    "definition": "PRIMARY KEY (user_id, screen_id)"
+  }
+]

@@ -1,0 +1,76 @@
+{
+  "test_origin": "https://concrefer.concretrack.com.br:18446",
+  "request_id": "01a1f0a8-be9f-702e-ba84-4f6cc719ea97",
+  "number": "SOL-00084",
+  "label": "HOMOLOG visual fase 3 20261118T215553Z",
+  "final_status": "CONCLUIDA",
+  "existing_roles": [
+    "SOLICITANTE",
+    "APROVADOR nível 1",
+    "APROVADOR nível 2",
+    "ALMOXARIFE"
+  ],
+  "events": [
+    {
+      "method": "GET",
+      "path": "/cadastros/centros-custo?size=100",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/cadastros/unidades-medida?size=100",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/solicitacoes",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/solicitacoes/01a1f0a8-be9f-702e-ba84-4f6cc719ea97/enviar",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/solicitacoes/01a1f0a8-be9f-702e-ba84-4f6cc719ea97",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/solicitacoes/01a1f0a8-be9f-702e-ba84-4f6cc719ea97/aprovar",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/solicitacoes/01a1f0a8-be9f-702e-ba84-4f6cc719ea97",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/solicitacoes/01a1f0a8-be9f-702e-ba84-4f6cc719ea97",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/itens/01a1f0a8-be9f-718f-a4da-e24bc7be8ba5/separar",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/itens/01a1f0a8-be9f-718f-a4da-e24bc7be8ba5/entregar",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/solicitacoes/01a1f0a8-be9f-702e-ba84-4f6cc719ea97/confirmar-recebimento",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/solicitacoes/01a1f0a8-be9f-702e-ba84-4f6cc719ea97",
+      "status": 200
+    }
+  ],
+  "permission_assignments_changed": false
+}

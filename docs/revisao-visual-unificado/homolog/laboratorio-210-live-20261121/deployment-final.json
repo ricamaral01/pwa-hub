@@ -1,0 +1,663 @@
+{
+  "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z",
+  "started_utc": "2026-11-21T13:19:07.524095+00:00",
+  "files": [
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/VERSION",
+      "kind": "public",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/files/opt/concrefer-unificado/homolog-next/public/unificado/VERSION",
+      "before_sha256": "c28fcca53637bc88e124af1725df13cb98c69dedefd62fb3cdbe1cdb6b760624"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/index.html",
+      "kind": "public",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/files/opt/concrefer-unificado/homolog-next/public/unificado/index.html",
+      "before_sha256": "f2668a605b38e0eb25711f064406eb8e63d72bb68f16c335a2d5d0321538a794"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/login.html",
+      "kind": "public",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/files/opt/concrefer-unificado/homolog-next/public/unificado/login.html",
+      "before_sha256": "15cf5c947e2caa7e805c8a328c0644ac39800d34c7d5ccaeed32bfc884fbedc3"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/sw.js",
+      "kind": "public",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/files/opt/concrefer-unificado/homolog-next/public/unificado/sw.js",
+      "before_sha256": "1a2f041e7999d13b965580612c23d1f68a1604bf15c4daeccb433d5e5ca04ef3"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/shell.js",
+      "kind": "public",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/files/opt/concrefer-unificado/homolog-next/public/unificado/shell/shell.js",
+      "before_sha256": "79dc65ead497ce6fe4c19a9a79a39ee3a81643a8a452db83d9fe1f93e42c92c8"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/menu.config.js",
+      "kind": "public",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/files/opt/concrefer-unificado/homolog-next/public/unificado/shell/menu.config.js",
+      "before_sha256": "47754be265fb14c0dc11c9809087492c1bd4bbe50ff7b7299c2cdbaa486ee821"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/icons.js",
+      "kind": "public",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/files/opt/concrefer-unificado/homolog-next/public/unificado/shell/icons.js",
+      "before_sha256": "a414546027eb201262030d65b9e10d6b9f30fea1c6bd8948129068ed0803f764"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/module-pages.js",
+      "kind": "public",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/files/opt/concrefer-unificado/homolog-next/public/unificado/shell/module-pages.js",
+      "before_sha256": "bb44be6740f95d49b848fdcebab0d35387e7e86a14e62b81fb4b6ee31b684523"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/app.py",
+      "kind": "mapa",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/files/opt/concrefer-unificado/homolog-next/visual-full/mapa/app.py",
+      "before_sha256": "d64e3a9ce12efddd4e2ad023ae85e7cc88dd4d35f74693ebe7a561c1b82d4037"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/screen_catalog.json",
+      "kind": "mapa",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/files/opt/concrefer-unificado/homolog-next/visual-full/mapa/screen_catalog.json",
+      "before_sha256": "931b90a7edaeea7e00ed0db37315cfd4352fe1b04cc17061bf1bce0aedbdaefc"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/lab_cec_units.py",
+      "kind": "mapa",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/app.py",
+      "kind": "laboratorio",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/files/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/app.py",
+      "before_sha256": "e7308f565928151c354354c282e07ea8e5e8f80a17af04c9f59be051a0f8273e"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_units.py",
+      "kind": "laboratorio",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/etiquetas/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/relatorio/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/resultados/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/leitura/sw.js",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/leitura/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/leitura/manifest.json",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/sw.js",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/resultado-cp.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/relatorio-icon.svg",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/relatorio.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/api-client.js",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/manifest.json",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/rompimentos-mes/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/etiquetas/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/relatorio/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/resultados/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/leitura/sw.js",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/leitura/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/leitura/manifest.json",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/sw.js",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/resultado-cp.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/relatorio-icon.svg",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/relatorio.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/api-client.js",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/manifest.json",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/rompimentos-mes/index.html",
+      "kind": "laboratorio-static",
+      "existed": false
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/module-pages-mobile.js",
+      "kind": "public",
+      "existed": true,
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-modules-before/shell/module-pages-mobile.js",
+      "before_sha256": "3341bd4ec4a0bb9cf1949770640140198d2eabbe03f319aa79d9d72d8803f6b3"
+    }
+  ],
+  "units": {
+    "mapa": {
+      "MainPID": "1847567",
+      "FragmentPath": "/etc/systemd/system/unificado-visual-homolog-mapa.service",
+      "DropInPaths": "/etc/systemd/system/unificado-visual-homolog-mapa.service.d/50-dautomacao-https.conf"
+    },
+    "laboratorio": {
+      "MainPID": "1890783",
+      "FragmentPath": "/etc/systemd/system/unificado-visual-homolog-laboratorio.service",
+      "DropInPaths": ""
+    }
+  },
+  "version_before": "2.0.0",
+  "version_candidate": "2.1.0",
+  "production_changes": 0,
+  "phase": "published_homolog",
+  "database_backups": [
+    {
+      "database": "laboratorio_visual_homolog_20261118",
+      "dump": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/laboratorio.dump",
+      "sha256": "bf736608916e0385d3facc7e7ae71d58081769e96bcb27efbc8778fcd8c0ce19",
+      "size": 228282
+    },
+    {
+      "database": "mapa_visual_homolog_20261118",
+      "dump": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/iam.dump",
+      "sha256": "c1ffa079aaf15986a6f9ee015cf4e8537e4829896dd7633e53037dfad7c0156e",
+      "size": 115028385
+    }
+  ],
+  "grants_before": [],
+  "manifest": [
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/app.py",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/mapa/app.py",
+      "sha256": "a57da3de32bb8f0b2dd9469a7135ec5cfb5a2bab06fdddb82b34722629cee463"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/app.py",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/app.py",
+      "sha256": "65c7bb7623476e3ebbb5003655a605e4e3118f4aea2ccb762a6b3a9378d4415b"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/VERSION",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/public/unificado/VERSION",
+      "sha256": "c89b87c262e9d5ffd20e73aac74a1772adcc9f5a21682cc33adcf5086e5fef5c"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/public/unificado/index.html",
+      "sha256": "14c937e8934eb70d14095026bbce16fa22bb394b505a23640837fe4296fdfbc5"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/login.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/public/unificado/login.html",
+      "sha256": "ef9412c112024f657df548751c4e46b261c6d50fd41145776d8b5d45f7b1a9ac"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/sw.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/public/unificado/sw.js",
+      "sha256": "922b4327d409c663828604ccab886477ad6fffcc807ae20dda1643a55b3c69b4"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/shell.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/public/unificado/shell/shell.js",
+      "sha256": "46f7ec089c028654d22fe3d76f9e0a029526a2d73aedc951991cc12953785ce7"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/menu.config.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/public/unificado/shell/menu.config.js",
+      "sha256": "8b86a858dd829db66ff800bf64f1b3c835120b576f624995a7b4c15433c08732"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/icons.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/public/unificado/shell/icons.js",
+      "sha256": "0929a026ae342a14808e7271108a7a7ee0339819e4a9a7bd4aa378ebaf9cc385"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/module-pages.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/public/unificado/shell/module-pages.js",
+      "sha256": "db7e3c3431adf91b55211eb5c9f9e73ab5d00424b58ccdd1e32707f50dab5062"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/screen_catalog.json",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/mapa/screen_catalog.json",
+      "sha256": "63c5a220c9209be48a02f33f02a2280e21d64f638fec34254fd23a05510d1be1"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/lab_cec_units.py",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/mapa/lab_cec_units.py",
+      "sha256": "4a7d7abe4499652b96e983747b01f6f42f4fa04efea3e4323919d1f2470c9663"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_units.py",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/cec_units.py",
+      "sha256": "2ff895046597b6595f9b1f1f2863f02c8a31935872d6f3d54b4326e7cf75ad1d"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/index.html",
+      "sha256": "c50ab60f159a0009bf30e059786a003201b0cf50b228572e8271bef01c3f53d9"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/etiquetas/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/etiquetas/index.html",
+      "sha256": "eeb0e91fb66f946b3fc4383c2a35e78d3321f4c21fb1c83021251e20a97d8c70"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/relatorio/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/relatorio/index.html",
+      "sha256": "60626133432f6ae86254f357f51773a6fbdbb62d8eb36ff5509dd8948b452c39"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/resultados/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/resultados/index.html",
+      "sha256": "aa15461f6e6a705f741b9a5f6af8201e4a11d966de7edd24466a12897e00c4b2"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/leitura/sw.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/leitura/sw.js",
+      "sha256": "5327ebc2230a0b03476abd00465fe2fee537a663c76c11f0583a2e503587231f"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/leitura/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/leitura/index.html",
+      "sha256": "b6b41a52668d323659cdfcb9fe04303beda6677c58f1f3de174426eff4a3d0d8"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/leitura/manifest.json",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/leitura/manifest.json",
+      "sha256": "42c196cf75029f3c9fb5df42aa474d92632633e5f8472d14475df91fde21f84e"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/sw.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/analise/sw.js",
+      "sha256": "021fb06ee7411a447791065602a5e750ddb508b3e643a072333675aad343defd"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/resultado-cp.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/analise/resultado-cp.html",
+      "sha256": "c9a623d7033737fa096cabf5421dfaf8d52b3a66d88813f737334f376deb48a0"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/relatorio-icon.svg",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/analise/relatorio-icon.svg",
+      "sha256": "070f29250fdf61711565b57eda773ee824f7d2b1a7644a00538d361b259dc4d5"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/analise/index.html",
+      "sha256": "a707969a917dd51f95e4c63be5254b5e7cb894278504219a032f205a44325dcd"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/relatorio.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/analise/relatorio.html",
+      "sha256": "d98cadee3273db13e7c8c3b68e7a110bca04d8c8c0c15d98885d329422fe00e9"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/api-client.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/analise/api-client.js",
+      "sha256": "84aa0bf0a359b1c3881941011ccb61d12fe53495292f3a9ffb64b259b433297b"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/analise/manifest.json",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/analise/manifest.json",
+      "sha256": "82509f96403c430eb19ef399d59957034963029b31f50a7de29788797557a09d"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/rompimentos-mes/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/pederneiras/cec/rompimentos-mes/index.html",
+      "sha256": "0ace0eb792249052eb9d1a916167170e53e87f6072b1fddf2b4913282afad777"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/index.html",
+      "sha256": "33676394dbfe2388db4f147951d46156e6e47301523ff8ef69c749c069396a2d"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/etiquetas/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/etiquetas/index.html",
+      "sha256": "bd6254fdcd388eabf2936f761c8a590b59c434451959e6e6651558ac86a1a0b0"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/relatorio/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/relatorio/index.html",
+      "sha256": "9f5811dad38e0a031fefde693c8e2a5118de10f2554f0287db312fa6a51f1808"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/resultados/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/resultados/index.html",
+      "sha256": "24ccb4f136dc4af6c92402186089519db15ab2f3bde23941acab1527ee8f2cde"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/leitura/sw.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/leitura/sw.js",
+      "sha256": "21abd0526a8b8c11bf88f0243979b7ae3be84cf4f29e9aa865a79e1e9325a782"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/leitura/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/leitura/index.html",
+      "sha256": "8c9af4c9fbc54005fd6b9c8342bff8a9530f6f01ee236c5c2ab1dc25f88ef63c"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/leitura/manifest.json",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/leitura/manifest.json",
+      "sha256": "7179bebaae821aec222e6c81dd7fc630fd4c7a7497a468310842363ad131872d"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/sw.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/analise/sw.js",
+      "sha256": "33a3851c1bb26417e16553247d6ff15ce01a23714901a6e2c6804bfee4cad609"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/resultado-cp.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/analise/resultado-cp.html",
+      "sha256": "14eca9eb17213809facaa4c734689e3bc446ae85f5b6f939055a9b4c59411684"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/relatorio-icon.svg",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/analise/relatorio-icon.svg",
+      "sha256": "070f29250fdf61711565b57eda773ee824f7d2b1a7644a00538d361b259dc4d5"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/analise/index.html",
+      "sha256": "a683f9c7fc7b3d1bdde7c1cf6c3cf93ea3551342d69c780d65f43fe4348e955e"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/relatorio.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/analise/relatorio.html",
+      "sha256": "97d3f8d6f22e17c3fb1d60249512d18561dfae97d58927f03638f2140be95309"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/api-client.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/analise/api-client.js",
+      "sha256": "8e8d213d9397a299434be41fdaacb6dd469a96180299e395bce8b9012fafd04b"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/analise/manifest.json",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/analise/manifest.json",
+      "sha256": "e7bf35f61b7191b84b9a349ff755cb708187a5c5ff188861d19feef3d721623c"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/rompimentos-mes/index.html",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/visual-full/laboratorio/server/static/ribeirao/cec/rompimentos-mes/index.html",
+      "sha256": "0e977ca180f260400dab52cdf22865aec13a84398bc1ee462d65935548e7adf2"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/module-pages-mobile.js",
+      "candidate": "/opt/concrefer-unificado/homolog-next/staging/laboratorio-210-live-20261121/candidate/public/unificado/shell/module-pages-mobile.js",
+      "sha256": "90d78163ef96b168d0812f0a8cf29f61dd1e1dbd97437386c82fc4a2737122a7"
+    }
+  ],
+  "schema_migration_applied": true,
+  "new_unit_data_preserved": true,
+  "fixtures": [
+    {
+      "unit": "pederneiras",
+      "id": 9002100001,
+      "marker": "TESTE-LAB-PEDE",
+      "series": "TESTE-LAB-PEDE-001",
+      "molded_at": "2026-11-20",
+      "formula_source_id": 71467
+    },
+    {
+      "unit": "ribeirao",
+      "id": 9002100002,
+      "marker": "TESTE-LAB-RIB",
+      "series": "TESTE-LAB-RIB-001",
+      "molded_at": "2026-11-20",
+      "formula_source_id": 829
+    }
+  ],
+  "grants_applied": true,
+  "backend_files_touched": true,
+  "service_http_checks": [
+    {
+      "service": "unificado-visual-homolog-laboratorio.service",
+      "status": 200,
+      "activity_after_restart": 79,
+      "connections_after_restart": 0
+    },
+    {
+      "service": "unificado-visual-homolog-mapa.service",
+      "status": 200,
+      "activity_after_restart": 79,
+      "connections_after_restart": 0
+    }
+  ],
+  "published_utc": "2026-11-21T13:28:15.248301+00:00",
+  "frontend_fixes": [
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/menu.config.js",
+      "reason": "frozen2.0 menu forced production and filtered the new H-only screens",
+      "before_sha256": "ea3bd9af5a75921721c89d8effc89ddca17df217508d262c2a3a020fe55d582e",
+      "after_sha256": "8b86a858dd829db66ff800bf64f1b3c835120b576f624995a7b4c15433c08732"
+    },
+    {
+      "reason": "Lab legacy CSS adapter removed icon font faces; only new unit pages now use existing public Bootstrap icon CSS",
+      "files": [
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/index.html",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-icons-before/pederneiras/cec/index.html",
+          "before_sha256": "e0011f5130cee4995781c3b3df29f7de0bfb6dda130a63b535838089913c2e52",
+          "after_sha256": "c50ab60f159a0009bf30e059786a003201b0cf50b228572e8271bef01c3f53d9"
+        },
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/etiquetas/index.html",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-icons-before/pederneiras/cec/etiquetas/index.html",
+          "before_sha256": "61c353b05e957c423f5b7c2574496a2f10abb3a76a513ce4eb7c130911c4ce92",
+          "after_sha256": "eeb0e91fb66f946b3fc4383c2a35e78d3321f4c21fb1c83021251e20a97d8c70"
+        },
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/leitura/index.html",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-icons-before/pederneiras/cec/leitura/index.html",
+          "before_sha256": "dbd79715c7ce000638b1ff3569852c2a34a25b50b8e304042cb37249dbb75810",
+          "after_sha256": "b6b41a52668d323659cdfcb9fe04303beda6677c58f1f3de174426eff4a3d0d8"
+        },
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/relatorio/index.html",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-icons-before/pederneiras/cec/relatorio/index.html",
+          "before_sha256": "5cee57ed321bcadd59eb0504e86db2105ca4e6e1859864ea0c8ecb5615f77b3f",
+          "after_sha256": "60626133432f6ae86254f357f51773a6fbdbb62d8eb36ff5509dd8948b452c39"
+        },
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/pederneiras/cec/resultados/index.html",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-icons-before/pederneiras/cec/resultados/index.html",
+          "before_sha256": "844ab6f2fa8a138b5a186b0fa0e3cab2606433014f0a29ac2432576096a71e23",
+          "after_sha256": "aa15461f6e6a705f741b9a5f6af8201e4a11d966de7edd24466a12897e00c4b2"
+        },
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/index.html",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-icons-before/ribeirao/cec/index.html",
+          "before_sha256": "0abe1718e0157a3ed772132e6668df51eaf2e334f845b5f6ec8779ba43c29099",
+          "after_sha256": "33676394dbfe2388db4f147951d46156e6e47301523ff8ef69c749c069396a2d"
+        },
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/etiquetas/index.html",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-icons-before/ribeirao/cec/etiquetas/index.html",
+          "before_sha256": "cc6f4b78c86243317524131ffaa258aff3da66f098a798e722b9e3cea55b3aaa",
+          "after_sha256": "bd6254fdcd388eabf2936f761c8a590b59c434451959e6e6651558ac86a1a0b0"
+        },
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/leitura/index.html",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-icons-before/ribeirao/cec/leitura/index.html",
+          "before_sha256": "7f91691f01b99d458dfdb934898ab5f934cd3a1328795841942d55d7814da59a",
+          "after_sha256": "8c9af4c9fbc54005fd6b9c8342bff8a9530f6f01ee236c5c2ab1dc25f88ef63c"
+        },
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/relatorio/index.html",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-icons-before/ribeirao/cec/relatorio/index.html",
+          "before_sha256": "877b910350db6f204317bc0cde3e48102ca7680625deb81e78a61dd38c098779",
+          "after_sha256": "9f5811dad38e0a031fefde693c8e2a5118de10f2554f0287db312fa6a51f1808"
+        },
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/ribeirao/cec/resultados/index.html",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-icons-before/ribeirao/cec/resultados/index.html",
+          "before_sha256": "77ce5bcf6fbc34566cd103de3099e185cf7c1af283cef7e142f908a245a61399",
+          "after_sha256": "24ccb4f136dc4af6c92402186089519db15ab2f3bde23941acab1527ee8f2cde"
+        }
+      ]
+    },
+    {
+      "reason": "new Lab unit shortcuts need explicit spacing; mobile Ribeirao unit-code maps to Ribeirao Preto name",
+      "files": [
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/module-pages.js",
+          "before": "da1ffca05a8f818922741a78f73f7547770f13895d4aa0f005dafe973310cbce",
+          "after": "db7e3c3431adf91b55211eb5c9f9e73ab5d00424b58ccdd1e32707f50dab5062",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-modules-before/shell/module-pages.js"
+        },
+        {
+          "file": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/module-pages-mobile.js",
+          "before": "3341bd4ec4a0bb9cf1949770640140198d2eabbe03f319aa79d9d72d8803f6b3",
+          "after": "58308bb21b7ae0a0a0bb1f29aca4c0499e33dc0205d483a5c39420346cb901b4",
+          "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-modules-before/shell/module-pages-mobile.js"
+        }
+      ]
+    },
+    {
+      "reason": "new unit-qualified mobile card titles need natural height for the description",
+      "file": "/opt/concrefer-unificado/homolog-next/public/unificado/shell/module-pages-mobile.js",
+      "backup": "/opt/concrefer-unificado/backups/lab210-H-20261121T131907Z/frontend-mobile-height-before.js",
+      "sha256": "90d78163ef96b168d0812f0a8cf29f61dd1e1dbd97437386c82fc4a2737122a7"
+    }
+  ],
+  "import_report": [
+    {
+      "unit": "pederneiras",
+      "source_database": "supervisorio_db_pede",
+      "source_captured_at": "2026-11-21T13:23:40.312413+00:00",
+      "source_count": 1621,
+      "imported_count": 1613,
+      "rejected_ids": [
+        70195,
+        70990,
+        70991,
+        70992,
+        70993,
+        70994,
+        70995,
+        70996
+      ]
+    },
+    {
+      "unit": "ribeirao",
+      "source_database": "supervisorio_db_ribe",
+      "source_captured_at": "2026-11-21T13:23:40.470457+00:00",
+      "source_count": 829,
+      "imported_count": 829,
+      "rejected_ids": []
+    }
+  ]
+}

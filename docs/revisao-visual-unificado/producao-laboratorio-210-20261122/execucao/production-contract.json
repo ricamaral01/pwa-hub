@@ -1,0 +1,104 @@
+{
+  "contract_functions": {
+    "parse_qr": {
+      "identical": true
+    },
+    "parse_date": {
+      "identical": true
+    },
+    "canonical_cp": {
+      "identical": true
+    },
+    "gateway_user": {
+      "identical": true
+    }
+  },
+  "molding_table": {
+    "columns": [
+      {
+        "column_name": "id",
+        "data_type": "bigint",
+        "is_nullable": "NO",
+        "column_default": null
+      },
+      {
+        "column_name": "massada_id",
+        "data_type": "bigint",
+        "is_nullable": "NO",
+        "column_default": null
+      },
+      {
+        "column_name": "numero_serie",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null
+      },
+      {
+        "column_name": "traco",
+        "data_type": "character varying",
+        "is_nullable": "NO",
+        "column_default": null
+      },
+      {
+        "column_name": "data_moldagem",
+        "data_type": "date",
+        "is_nullable": "NO",
+        "column_default": null
+      },
+      {
+        "column_name": "idade_dias",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "column_default": null
+      },
+      {
+        "column_name": "data_ruptura",
+        "data_type": "date",
+        "is_nullable": "NO",
+        "column_default": null
+      },
+      {
+        "column_name": "responsavel_id",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": null
+      },
+      {
+        "column_name": "responsavel_nome",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": null
+      },
+      {
+        "column_name": "cp1_resultado_em",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": null
+      },
+      {
+        "column_name": "cp2_resultado_em",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "column_default": null
+      },
+      {
+        "column_name": "criado_em",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "column_default": "now()"
+      },
+      {
+        "column_name": "unidade_codigo",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "column_default": "'campinas'::text"
+      }
+    ],
+    "constraints": [
+      "CHECK (((idade_dias >= 1) AND (idade_dias <= 365)))",
+      "PRIMARY KEY (id)",
+      "UNIQUE (unidade_codigo, massada_id, idade_dias)"
+    ],
+    "new_schema_rows": 0
+  }
+}

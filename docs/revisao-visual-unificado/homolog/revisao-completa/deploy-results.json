@@ -1,0 +1,8 @@
+{
+  "phase": "revisao-completa",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/visual-revisao-completa-20261119T033611Z",
+  "files": 199,
+  "version": "1.4.25",
+  "production_files_pids_nginx_unchanged": true,
+  "api_or_database_changes": false
+}

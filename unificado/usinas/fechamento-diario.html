@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fechamento diário · PCP x Produção</title>
+  <style>@media print {
+
+    :root{font-family:Inter,"Segoe UI",system-ui,sans-serif;color:#10233e;background:#f2f5f9}
+    *{box-sizing:border-box}
+    body{margin:0}
+    .toolbar{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 20px;background:#fff;border-bottom:1px solid #dbe4ee}
+    .toolbar h1{margin:0;font-size:1.2rem}.toolbar p{margin:5px 0 0;color:#53657b;font-size:.84rem}
+    .controls{display:flex;align-items:end;gap:9px;flex-wrap:wrap}
+    label{display:grid;gap:5px;color:#40566d;font-size:.75rem;font-weight:750}
+    select{height:38px;padding:7px 10px;border:1px solid #bdccda;border-radius:8px;font:inherit;color:#10233e;background:#fff}
+    button,.source-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:7px 13px;border:1px solid #0d3b66;border-radius:8px;background:#0d3b66;color:#fff;font:inherit;font-size:.82rem;font-weight:750;text-decoration:none;cursor:pointer}
+    .source-link{background:#fff;color:#0d3b66}
+    .source-link:hover,button:hover{filter:brightness(.92)}
+    #status{margin:0;padding:9px 20px;background:#eaf1f8;color:#40566d;font-size:.8rem}
+    iframe{display:block;width:100%;height:calc(100vh - 123px);min-height:720px;border:0;background:#ececec}
+    @media(max-width:650px){.toolbar{padding:14px}.controls{width:100%}.controls label{flex:1}select{width:100%}#status{padding:9px 14px}iframe{height:calc(100vh - 165px)}}
+  
+}
+@media screen {
+:root{color:var(--c-navy);background:var(--c-bg);}
+*{box-sizing:border-box;}
+body{margin:0;}
+.toolbar{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 20px;background:var(--c-surface);border-bottom:1px solid var(--c-line);}
+.toolbar h1{margin:0;font-size:1.2rem;}
+.toolbar p{margin:5px 0 0;color:var(--c-ink-2);font-size:.84rem;}
+.controls{display:flex;align-items:end;gap:9px;flex-wrap:wrap;}
+label{display:grid;gap:5px;color:var(--c-ink-2);font-size:.75rem;font-weight:750;}
+select{height:38px;padding:7px 10px;border:1px solid var(--c-line);border-radius:var(--r);font:inherit;color:var(--c-navy);background:var(--c-surface);}
+button,.source-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:7px 13px;border:1px solid var(--c-blue);border-radius:var(--r);background:var(--c-blue);color:var(--c-surface);font:inherit;font-size:.82rem;font-weight:750;text-decoration:none;cursor:pointer;}
+.source-link{background:var(--c-surface);color:var(--c-blue);}
+.source-link:hover,button:hover{filter:brightness(.92);}
+#status{margin:0;padding:9px 20px;background:var(--c-line-2);color:var(--c-ink-2);font-size:.8rem;}
+iframe{display:block;width:100%;height:calc(100vh - 123px);min-height:720px;border:0;background:var(--c-line-2);}
+@media (max-width:650px){.toolbar{padding:14px;}
+.controls{width:100%;}
+.controls label{flex:1;}
+select{width:100%;}
+#status{padding:9px 14px;}
+iframe{height:calc(100vh - 165px);}
+}
+
+}
+</style>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.27"><script defer src="/unificado/shell/components.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"><link rel="stylesheet" href="/unificado/shell/native-content.css?v=2.0.0" media="screen">
+</head>
+<body>
+  <div class="toolbar">
+    <div><h1>Fechamento diário · Ribeirão</h1><p>PCP x Produção + Qualidade · relatório gerado na origem</p></div>
+    <form id="filter" class="controls">
+      <label>Relatórios disponíveis<select id="date" name="data" required disabled><option>Carregando datas…</option></select></label>
+      <button type="submit">Abrir relatório</button>
+      <a hidden id="source" class="source-link" target="_blank" rel="noopener noreferrer">Abrir em janela inteira</a>
+    </form>
+  </div>
+  <p id="status" role="status">Carregando relatório…</p>
+  <section id="report-feedback" class="report-feedback" role="status" aria-live="polite"><p id="report-message">Carregando os relatórios disponíveis…</p><button id="report-retry" type="button" hidden>Tentar novamente</button></section>
+  <iframe hidden id="report" title="Relatório PCP x Produção e Qualidade" referrerpolicy="no-referrer"></iframe>
+  <script defer src="/unificado/usinas/fechamento-diario.js?v=1.4.27"></script>
+</body>
+</html>

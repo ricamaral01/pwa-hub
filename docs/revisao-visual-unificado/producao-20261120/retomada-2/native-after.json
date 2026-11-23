@@ -1,0 +1,3149 @@
+{
+  "mode": "after",
+  "rows": [
+    {
+      "origin": "central",
+      "profile": "MONTADOR",
+      "account": "alexh",
+      "module": "planejamento",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "MONTADOR",
+      "account": "alexh",
+      "module": "producao",
+      "selected": {
+        "id": "inspecao",
+        "url": "https://concrefer.concretrack.com.br/unificado/mapa/operacao/?tela=INSPECAO"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/bootstrap.js",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/forma-layout",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/operations/programmed-forms",
+          "status": 403
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/formas_manutencao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        }
+      ],
+      "refusals": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/operations/programmed-forms",
+          "status": 403
+        }
+      ],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "MONTADOR",
+      "account": "alexh",
+      "module": "laboratorio",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/montagem_poste",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/montagem_poste",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/usuarios",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "MONTADOR",
+      "account": "alexh",
+      "module": "qualidade",
+      "selected": {
+        "id": "manutencaoUsina",
+        "url": "https://concrefer.concretrack.com.br/unificado/manutencao-usina/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/tools/manutencao-usina",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 69,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "MONTADOR",
+      "account": "alexh",
+      "module": "usinas",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "MONTADOR",
+      "account": "alexh",
+      "module": "suprimentos",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "MONTADOR",
+      "account": "alexh",
+      "module": "logistica",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "MONTADOR",
+      "account": "alexh",
+      "module": "ged",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GESTOR",
+      "account": "francisco",
+      "module": "planejamento",
+      "selected": {
+        "id": "programacaoSemanal12",
+        "url": "https://concrefer.concretrack.com.br/unificado/pcp/programacao-semanal/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/bootstrap.js",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/programacao-semanal",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-authorize",
+          "status": 204
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GESTOR",
+      "account": "francisco",
+      "module": "producao",
+      "selected": {
+        "id": "pdrApontamento",
+        "url": "https://concrefer.concretrack.com.br/unificado/producao/pederneiras/?tab=apontamento"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/produtos",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/apontamentos/2026-11-20",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/mao-de-obra/2026-11-20",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/apontamentos/2026-11-19",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/mensal",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GESTOR",
+      "account": "francisco",
+      "module": "laboratorio",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/apontamentos/2026-11-20/referencia",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 70,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GESTOR",
+      "account": "francisco",
+      "module": "qualidade",
+      "selected": {
+        "id": "qualidadeTarefas",
+        "url": "https://concrefer.concretrack.com.br/unificado/qualidade/tarefas"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "POST",
+          "path": "/unificado/mapa/api/unified/qualidade-bootstrap",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/contexto",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/notificacoes",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/contadores",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GESTOR",
+      "account": "francisco",
+      "module": "usinas",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/listas",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GESTOR",
+      "account": "francisco",
+      "module": "suprimentos",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GESTOR",
+      "account": "francisco",
+      "module": "logistica",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 70,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GESTOR",
+      "account": "francisco",
+      "module": "ged",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "APONTADOR",
+      "account": "setor1",
+      "module": "planejamento",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "APONTADOR",
+      "account": "setor1",
+      "module": "producao",
+      "selected": {
+        "id": "setor1",
+        "url": "https://concrefer.concretrack.com.br/unificado/mapa/operacao/?tela=LIBERACAO_S1"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/bootstrap.js",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/forma-layout",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/operations/programmed-forms",
+          "status": 403
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/formas_manutencao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        }
+      ],
+      "refusals": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/operations/programmed-forms",
+          "status": 403
+        }
+      ],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "APONTADOR",
+      "account": "setor1",
+      "module": "laboratorio",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/montagem_poste",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/montagem_poste",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/usuarios",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 403
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/vw_formas_status",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 403
+        }
+      ],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "APONTADOR",
+      "account": "setor1",
+      "module": "qualidade",
+      "selected": {
+        "id": "manutencaoUsina",
+        "url": "https://concrefer.concretrack.com.br/unificado/manutencao-usina/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/tools/manutencao-usina",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "APONTADOR",
+      "account": "setor1",
+      "module": "usinas",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "APONTADOR",
+      "account": "setor1",
+      "module": "suprimentos",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 70,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "APONTADOR",
+      "account": "setor1",
+      "module": "logistica",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "APONTADOR",
+      "account": "setor1",
+      "module": "ged",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GERENCIA",
+      "account": "alex",
+      "module": "planejamento",
+      "selected": {
+        "id": "dashboard",
+        "url": "https://concrefer.concretrack.com.br/unificado/pcp/dashboard/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/bootstrap.js",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/dashboard",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-authorize",
+          "status": 204
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 70,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GERENCIA",
+      "account": "alex",
+      "module": "producao",
+      "selected": {
+        "id": "liberacao",
+        "url": "https://concrefer.concretrack.com.br/unificado/mapa/operacao/?tela=LIBERACAO"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/bootstrap.js",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/forma-layout",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/operations/programmed-forms",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/formas_manutencao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/montagem_poste",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GERENCIA",
+      "account": "alex",
+      "module": "laboratorio",
+      "selected": {
+        "id": "labCecEtiquetas",
+        "url": "https://concrefer.concretrack.com.br/unificado/laboratorio/cec/etiquetas/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/pcp/saques-mandril",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/pcp/saques-mandril",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/pcp/saques-mandril",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/pcp/saques-mandril",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/pcp/saques-mandril",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/pcp/saques-mandril",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/pcp/saques-mandril",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/programacao_pcp",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/liberacao_formas",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "POST",
+          "path": "/unificado/mapa/api/unified/laboratorio-bootstrap",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GERENCIA",
+      "account": "alex",
+      "module": "qualidade",
+      "selected": {
+        "id": "qualidadeTarefas",
+        "url": "https://concrefer.concretrack.com.br/unificado/qualidade/tarefas"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "POST",
+          "path": "/unificado/mapa/api/unified/qualidade-bootstrap",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/contexto",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/notificacoes",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/contadores",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/listas",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 69,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GERENCIA",
+      "account": "alex",
+      "module": "usinas",
+      "selected": {
+        "id": "usinasInicio",
+        "url": "https://concrefer.concretrack.com.br/unificado/usinas/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 69,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GERENCIA",
+      "account": "alex",
+      "module": "suprimentos",
+      "selected": {
+        "id": "suprimentosPainel",
+        "url": "https://concrefer.concretrack.com.br/unificado/suprimentos/painel/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/usina/receitas",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "POST",
+          "path": "/unificado/mapa/api/unified/suprimentos-bootstrap",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/suprimentos/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/suprimentos/cadastros/centros-custo",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/suprimentos/solicitacoes",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 70,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GERENCIA",
+      "account": "alex",
+      "module": "logistica",
+      "selected": {
+        "id": "logisticaInicio",
+        "url": "https://concrefer.concretrack.com.br/unificado/logistica/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/api/suprimentos/pwa/inicio",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/suprimentos/compras/resumo",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/logistica/api/contexto",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/logistica/api/meses",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/logistica/api/meses",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/logistica/api/meses",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 69,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "GERENCIA",
+      "account": "alex",
+      "module": "ged",
+      "selected": {
+        "id": "ged-dashboard",
+        "url": "/unificado/ged/dashboard"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/auth/unified-session",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/auth/unified-session",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/documents/stats",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/documents",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/documents/stats/area",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/documents/expiring",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "CONVIDADO",
+      "account": "tv",
+      "module": "planejamento",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "CONVIDADO",
+      "account": "tv",
+      "module": "producao",
+      "selected": {
+        "id": "tvFormas",
+        "url": "https://concrefer.concretrack.com.br/unificado/tv/formas/"
+      },
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        }
+      ],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "CONVIDADO",
+      "account": "tv",
+      "module": "laboratorio",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        }
+      ],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "CONVIDADO",
+      "account": "tv",
+      "module": "qualidade",
+      "selected": {
+        "id": "manutencaoUsina",
+        "url": "https://concrefer.concretrack.com.br/unificado/manutencao-usina/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/tools/manutencao-usina",
+          "status": 200
+        }
+      ],
+      "refusals": [
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        }
+      ],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 69,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "CONVIDADO",
+      "account": "tv",
+      "module": "usinas",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        }
+      ],
+      "refusals": [
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        }
+      ],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "CONVIDADO",
+      "account": "tv",
+      "module": "suprimentos",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        }
+      ],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 70,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "CONVIDADO",
+      "account": "tv",
+      "module": "logistica",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        }
+      ],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "central",
+      "profile": "CONVIDADO",
+      "account": "tv",
+      "module": "ged",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 401
+        }
+      ],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "ADMIN",
+      "account": "Ricardo",
+      "module": "planejamento",
+      "selected": {
+        "id": "dashboard",
+        "url": "https://concrefer.concretrack.com.br/unificado/pcp/dashboard/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/bootstrap.js",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/dashboard",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-authorize",
+          "status": 204
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "ADMIN",
+      "account": "Ricardo",
+      "module": "producao",
+      "selected": {
+        "id": "liberacao",
+        "url": "https://concrefer.concretrack.com.br/unificado/mapa/operacao/?tela=LIBERACAO"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/bootstrap.js",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/forma-layout",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/operations/programmed-forms",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/formas_manutencao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/montagem_poste",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/montagem_poste",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "ADMIN",
+      "account": "Ricardo",
+      "module": "laboratorio",
+      "selected": {
+        "id": "labCecEtiquetas",
+        "url": "https://concrefer.concretrack.com.br/unificado/laboratorio/cec/etiquetas/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/usuarios",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/vw_formas_status",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "POST",
+          "path": "/unificado/mapa/api/unified/laboratorio-bootstrap",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "ADMIN",
+      "account": "Ricardo",
+      "module": "qualidade",
+      "selected": {
+        "id": "qualidadeTarefas",
+        "url": "https://concrefer.concretrack.com.br/unificado/qualidade/tarefas"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "POST",
+          "path": "/unificado/mapa/api/unified/qualidade-bootstrap",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/contexto",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/notificacoes",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/contadores",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/listas",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 70,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "ADMIN",
+      "account": "Ricardo",
+      "module": "usinas",
+      "selected": {
+        "id": "usinasInicio",
+        "url": "https://concrefer.concretrack.com.br/unificado/usinas/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/usina/receitas",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 69,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "ADMIN",
+      "account": "Ricardo",
+      "module": "suprimentos",
+      "selected": {
+        "id": "suprimentosPainel",
+        "url": "https://concrefer.concretrack.com.br/unificado/suprimentos/painel/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "POST",
+          "path": "/unificado/mapa/api/unified/suprimentos-bootstrap",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/suprimentos/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/suprimentos/cadastros/centros-custo",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/suprimentos/solicitacoes",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/suprimentos/pwa/inicio",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/api/suprimentos/compras/resumo",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 69,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "ADMIN",
+      "account": "Ricardo",
+      "module": "logistica",
+      "selected": {
+        "id": "logisticaInicio",
+        "url": "https://concrefer.concretrack.com.br/unificado/logistica/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/api/suprimentos/estoque/saldos",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/logistica/api/contexto",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/logistica/api/meses",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/logistica/api/meses",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/logistica/api/meses",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 70,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "ADMIN",
+      "account": "Ricardo",
+      "module": "ged",
+      "selected": {
+        "id": "ged-dashboard",
+        "url": "/unificado/ged/dashboard"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/auth/unified-session",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/auth/unified-session",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/documents/stats",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/documents",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/documents/stats/area",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/ged/api/documents/expiring",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PCP",
+      "account": "Diego",
+      "module": "planejamento",
+      "selected": {
+        "id": "dashboard",
+        "url": "https://concrefer.concretrack.com.br/unificado/pcp/dashboard/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/bootstrap.js",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/dashboard",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-authorize",
+          "status": 204
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PCP",
+      "account": "Diego",
+      "module": "producao",
+      "selected": {
+        "id": "liberacao",
+        "url": "https://concrefer.concretrack.com.br/unificado/mapa/operacao/?tela=LIBERACAO"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/bootstrap.js",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/forma-layout",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/operations/programmed-forms",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/formas_manutencao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/montagem_poste",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/montagem_poste",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/usuarios",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PCP",
+      "account": "Diego",
+      "module": "laboratorio",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/producao",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/rest/v1/vw_formas_status",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PCP",
+      "account": "Diego",
+      "module": "qualidade",
+      "selected": {
+        "id": "manutencaoUsina",
+        "url": "https://concrefer.concretrack.com.br/unificado/manutencao-usina/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/tools/manutencao-usina",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PCP",
+      "account": "Diego",
+      "module": "usinas",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 69,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PCP",
+      "account": "Diego",
+      "module": "suprimentos",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 69,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PCP",
+      "account": "Diego",
+      "module": "logistica",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PCP",
+      "account": "Diego",
+      "module": "ged",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PRODUCAO",
+      "account": "unif-d2caa82cdb5a0a33f42b8120",
+      "module": "planejamento",
+      "selected": {
+        "id": "programacaoSemanal12",
+        "url": "https://concrefer.concretrack.com.br/unificado/pcp/programacao-semanal/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/bootstrap.js",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/programacao-semanal",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-authorize",
+          "status": 204
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PRODUCAO",
+      "account": "unif-d2caa82cdb5a0a33f42b8120",
+      "module": "producao",
+      "selected": {
+        "id": "pdrApontamento",
+        "url": "https://concrefer.concretrack.com.br/unificado/producao/pederneiras/?tab=apontamento"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/produtos",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/apontamentos/2026-11-20",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/mao-de-obra/2026-11-20",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/apontamentos/2026-11-19",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/mensal",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/producao/pederneiras/apontamentos/2026-11-20/referencia",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PRODUCAO",
+      "account": "unif-d2caa82cdb5a0a33f42b8120",
+      "module": "laboratorio",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PRODUCAO",
+      "account": "unif-d2caa82cdb5a0a33f42b8120",
+      "module": "qualidade",
+      "selected": {
+        "id": "qualidadeTarefas",
+        "url": "https://concrefer.concretrack.com.br/unificado/qualidade/tarefas"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        },
+        {
+          "method": "POST",
+          "path": "/unificado/mapa/api/unified/qualidade-bootstrap",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/contexto",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/notificacoes",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 69,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PRODUCAO",
+      "account": "unif-d2caa82cdb5a0a33f42b8120",
+      "module": "usinas",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/contadores",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas/listas",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/qualidade/api/tarefas",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PRODUCAO",
+      "account": "unif-d2caa82cdb5a0a33f42b8120",
+      "module": "suprimentos",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PRODUCAO",
+      "account": "unif-d2caa82cdb5a0a33f42b8120",
+      "module": "logistica",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "PRODUCAO",
+      "account": "unif-d2caa82cdb5a0a33f42b8120",
+      "module": "ged",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/armacao/api/armacao/unidades",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/quick-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "CONSULTA",
+      "account": "consulta",
+      "module": "planejamento",
+      "selected": {
+        "id": "dashboard",
+        "url": "https://concrefer.concretrack.com.br/unificado/pcp/dashboard/"
+      },
+      "native_displayed": true,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/planning-screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-access/bootstrap.js",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/dashboard",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/planning-screen-access/me",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/screen-authorize",
+          "status": 204
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "CONSULTA",
+      "account": "consulta",
+      "module": "producao",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/planning-screen-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "CONSULTA",
+      "account": "consulta",
+      "module": "laboratorio",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/planning-screen-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "CONSULTA",
+      "account": "consulta",
+      "module": "qualidade",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/planning-screen-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "CONSULTA",
+      "account": "consulta",
+      "module": "usinas",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/planning-screen-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "CONSULTA",
+      "account": "consulta",
+      "module": "suprimentos",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/planning-screen-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "CONSULTA",
+      "account": "consulta",
+      "module": "logistica",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/planning-screen-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    },
+    {
+      "origin": "PCP",
+      "profile": "CONSULTA",
+      "account": "consulta",
+      "module": "ged",
+      "selected": null,
+      "native_displayed": false,
+      "api_responses": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/unified/planning-screen-access/me",
+          "status": 200
+        }
+      ],
+      "refusals": [],
+      "fatal_http": [],
+      "page_errors": [],
+      "blocked_operational_writes": [],
+      "connections": 68,
+      "ok": true
+    }
+  ],
+  "ok": true
+}

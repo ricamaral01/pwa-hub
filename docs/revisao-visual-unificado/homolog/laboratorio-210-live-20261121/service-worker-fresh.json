@@ -1,0 +1,9 @@
+{
+  "worker": "https://concrefer.concretrack.com.br:18446/unificado/sw.js",
+  "cache_name": "concrefer-unificado-shell-v2.1.0",
+  "cached_assets": 37,
+  "new_units_cached": true,
+  "correct_homolog_environment": true,
+  "environment": "fresh H18446 browser context",
+  "upgrade_from_existing_2_0_cache_tested": false
+}

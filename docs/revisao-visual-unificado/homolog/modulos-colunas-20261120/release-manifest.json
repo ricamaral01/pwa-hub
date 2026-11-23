@@ -1,0 +1,20 @@
+{
+  "index.html": "e88a0440b7295d3515b97c2dc873f4ef85aa24a2423c8d69465d7b302e96aed0",
+  "login.html": "5da6ad8511901a952e74c74be96b87027d77b1b8230dcd1bb78e1e2cedfb95f5",
+  "sw.js": "dabfcf9b33fe462eb1ce60c109763308e1de44bfb21330da53412f5df50b4ef4",
+  "VERSION": "5612fda0181af2d910e51a07b024f3b7e7f27885555b4855791cc664e92893ab",
+  "logistica/logistica-native.js": "d359b55430c008dffcd5b1a2a1ffde8f46c89fa305941f7f0f61d83413d7f492",
+  "shell/busca-sinonimos.json": "121815fefc8c70d01bc3bf89ba0be44a48f00e634538db44f09f6b778201cd56",
+  "shell/busca.css": "bf3bccd98577b2497e0a800cacb28b665dfab70950d04ae00c983b8c75f5e57b",
+  "shell/busca.js": "7a25d8bbb4fd5a9df98375b710af4e79ee50f2ba50ad2c4e788541dc45a676d1",
+  "shell/icons.js": "fbf7e9b5a4d9787974877a01945dd10dc84cecd2498db49d019677961bf22739",
+  "shell/menu.config.js": "c9f571eab58065926c83c783ac5976b0763de5e0c022bdb8da7781d301417881",
+  "shell/module-pages-mobile.js": "f571c0e5c12262759ff896445ba763b0d6d60d43a19876dc458974d245821326",
+  "shell/module-pages.js": "23b4de9e40c11a02db6bbc6fec2b8b4234a6f12e9f334503b62f88b8601ed806",
+  "shell/navigation.js": "ca2dee99fa02f6c7376465fee40e88f97c049ff6fa862b27f7eeb8513c9aea6d",
+  "shell/quick-access.js": "905186699f546d80ae7f745d3b4860a9c8faf0a7ea20ea6e224606a79ea60dfa",
+  "shell/shell.js": "901470a863bb1c37816977739f4b5649943441ef1cb5552b59779e53d0cf717d",
+  "shell/modelo-a/menu.css": "f0b65f0c4cfc6bec10386ff1590704c2a3f1689f25607ff080155588bcf5116b",
+  "shell/modelo-a/menu.js": "f8d6b0e3089ea57564ae9345dc2523a0c461fcd002305d0cbb3d7f085358fd82",
+  "shell/module-columns.css": "acea4963e0f7cfbe5c8c30b6de7980bfdaf8ddf84e2a00858016202c4d2434a0"
+}

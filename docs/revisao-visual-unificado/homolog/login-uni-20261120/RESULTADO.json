@@ -1,0 +1,38 @@
+{
+  "version": "1.4.27",
+  "origin": "https://concrefer.concretrack.com.br:18446/unificado/",
+  "date_local": "2026-11-20",
+  "timezone": "America/Sao_Paulo",
+  "gate": "7/7",
+  "widths": [
+    1440,
+    1280,
+    1024,
+    820,
+    390
+  ],
+  "screenshots_states": [
+    "normal",
+    "aviso",
+    "erro",
+    "caps-lock",
+    "lembrar-reaberto"
+  ],
+  "pixel_difference_outside_allowed": 0,
+  "profile_sessions_tested": 9,
+  "login_positive_real_waived_by_user": true,
+  "login_positive_controlled_passed": true,
+  "login_unknown_real_passed": true,
+  "pwa_upgrade_without_cache_clear": true,
+  "windows_shortcut_name_needed_reinstall_in_test": true,
+  "notice_active": false,
+  "production_files_unchanged": true,
+  "production_persistent_services_unchanged": true,
+  "production_timer_activities": 13,
+  "iam_unchanged": true,
+  "push": false,
+  "pr": false,
+  "stock_bridge_activated": false,
+  "armacao_out_of_scope": true,
+  "commit_record": "commit.json"
+}

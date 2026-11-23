@@ -1,0 +1,82 @@
+{
+  "version": "1.4.20",
+  "status": "ok",
+  "profiles": [
+    {
+      "profile": "CONSULTA",
+      "checks": 8,
+      "unique_screens": 8,
+      "allowed_cases": 8,
+      "native_denial_cases": 0,
+      "viewports": 32,
+      "unexpected_failures": 0
+    },
+    {
+      "profile": "GERENCIA",
+      "checks": 139,
+      "unique_screens": 138,
+      "allowed_cases": 139,
+      "native_denial_cases": 0,
+      "viewports": 556,
+      "unexpected_failures": 0
+    },
+    {
+      "profile": "LABORATORIO",
+      "checks": 120,
+      "unique_screens": 119,
+      "allowed_cases": 110,
+      "native_denial_cases": 10,
+      "viewports": 480,
+      "unexpected_failures": 0
+    },
+    {
+      "profile": "PCP",
+      "checks": 48,
+      "unique_screens": 47,
+      "allowed_cases": 48,
+      "native_denial_cases": 0,
+      "viewports": 192,
+      "unexpected_failures": 0
+    },
+    {
+      "profile": "PRODUCAO",
+      "checks": 12,
+      "unique_screens": 12,
+      "allowed_cases": 12,
+      "native_denial_cases": 0,
+      "viewports": 48,
+      "unexpected_failures": 0
+    },
+    {
+      "profile": "QUALIDADE",
+      "checks": 7,
+      "unique_screens": 7,
+      "allowed_cases": 7,
+      "native_denial_cases": 0,
+      "viewports": 28,
+      "unexpected_failures": 0
+    },
+    {
+      "profile": "SUPRIMENTOS",
+      "checks": 4,
+      "unique_screens": 4,
+      "allowed_cases": 4,
+      "native_denial_cases": 0,
+      "viewports": 16,
+      "unexpected_failures": 0
+    }
+  ],
+  "catalog_entries": 139,
+  "unique_screens": 138,
+  "total_checks": 338,
+  "allowed_cases": 328,
+  "native_denial_cases": 10,
+  "viewports": 1352,
+  "javascript_errors": 0,
+  "unexpected_http_errors": 0,
+  "external_browser_requests": 0,
+  "overflow": 0,
+  "unexpected_access_denials": 0,
+  "blank_pages": 0,
+  "additional_final_native_production_captures": 60
+}

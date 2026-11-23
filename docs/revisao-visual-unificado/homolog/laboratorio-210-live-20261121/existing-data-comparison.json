@@ -1,0 +1,8 @@
+{
+  "databases_identical": true,
+  "old_moldings_identical": true,
+  "files_identical": true,
+  "file_count": 77,
+  "history_scope": "active data hashed using row versions; large event/fila histories compared using write counters, not full scans",
+  "passed": true
+}

@@ -1,0 +1,6 @@
+*.tgz
+/snapshot/
+/release/
+/visual_phase05_install.py
+/visual_phase05_migrate.py
+/mark_unificado_homolog.py

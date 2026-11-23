@@ -1,0 +1,16 @@
+{
+  "version": "1.4.31",
+  "release_epoch": 1795203063.700411,
+  "static_files_verified": 348,
+  "files_changed": 311,
+  "archive_sha256": "2bb97309f5396784af37acdbf8cbc8d5a866b20cf94c62fd9408331b67630efa",
+  "manifest_sha256": "b5d59b87d7b4e6138d99335cfeb9caec6e4c8eb04173cd00a7bb0963759d461f",
+  "common_headroom_before": 34,
+  "rollback": "/opt/concrefer-unificado/backups/producao-20261120T170515Z/rollback.sh",
+  "database_changes": 0,
+  "grants": 0,
+  "service_restarts": 0,
+  "nginx_changes": 0,
+  "duration_seconds": 0.135,
+  "observer_pid": 2748166
+}

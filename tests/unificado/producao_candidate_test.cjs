@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const root=path.resolve(__dirname,'../..'),base=process.env.UNIFICADO_CANDIDATE_DIR||path.join(root,'.codex-tmp/producao-1.4.31/candidate/public');
+const c={URL,window:{},location:{origin:'https://concrefer.concretrack.com.br',port:''},document:{currentScript:{src:'https://concrefer.concretrack.com.br/unificado/shell/menu.config.js'}}};vm.createContext(c);
+vm.runInContext(fs.readFileSync(path.join(base,'shell/menu.config.js'),'utf8')+'\nglobalThis.config=MENU_CONFIG;globalThis.items=MENU_ITEMS;',c);vm.runInContext(fs.readFileSync(path.join(base,'shell/icons.js'),'utf8'),c);
+assert.equal(c.items.testeProgramacao,undefined);assert.equal(c.window.UnificadoCatalogEnvironment.name,'producao');assert.equal(c.window.UnificadoCatalogEnvironment.allows('testeProgramacao'),false);assert.ok(c.window.UnificadoCatalogEnvironment.allows('dashboard'));
+const engine=require(path.join(base,'shell/busca.js')),entries=engine.catalog(c.config,c.items,c.window.UnificadoPresentation.descriptions,()=>true),synonyms=JSON.parse(fs.readFileSync(path.join(base,'shell/busca-sinonimos.json'),'utf8')),index=engine.createIndex(engine.mergeCatalog([...entries,...require('./busca_dynamic_fixture.cjs')()]),synonyms);
+const queries=require('./busca-referencia.json');for(const [q,expected] of queries)assert.equal(index.search(q).results[0]?.id??null,expected,q);
+const shell=fs.readFileSync(path.join(base,'shell/shell.js'),'utf8');assert.ok(shell.includes("route.id === 'indicadorGeralProducao' && pcpUser?.nivel_acesso === 'PCP'"));assert.ok(!shell.includes('user-alex'));
+assert.equal(JSON.parse(fs.readFileSync(path.join(base,'shell/aviso.json'),'utf8')).ativo,false);
+console.log(JSON.stringify({reference_queries:queries.length,production_catalogue_excludes_test:true,pcp_indicator_guard:true,test_identity_not_master:true,login_notice_inactive:true,ok:true}));

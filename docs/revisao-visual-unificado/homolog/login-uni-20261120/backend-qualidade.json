@@ -1,0 +1,30 @@
+{
+  "unit": "unificado-visual-homolog-qualidade.service",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-qualidade-20261120T133620Z",
+  "changes": [
+    {
+      "file": "qualidade/quality/outbox.py",
+      "before_sha256": "472d1c603139a52d7289e51ec948b41efc488a89b67bb2d2cd25cee1e16b2264",
+      "after_sha256": "9460468f86bbbd78caccb9d1988a5743b632de49ca37db8df6bac7ec26719784",
+      "patch": "--- qualidade/quality/outbox.py\n+++ qualidade/quality/outbox.py\n@@ -39,7 +39,7 @@\n                 message[\"From\"] = sender\n                 message[\"To\"] = email\n                 message[\"Subject\"] = f\"Qualidade: {item['evento']} — {item['payload'].get('numero') or 'NC'}\"\n-                message.set_content(f\"Há uma pendência da NC {item['payload'].get('numero') or item['payload'].get('nc_id')} no Unificado.\")\n+                message.set_content(f\"Há uma pendência da NC {item['payload'].get('numero') or item['payload'].get('nc_id')} no Uni.\")\n                 try:\n                     smtp_factory = smtplib.SMTP_SSL if secure else smtplib.SMTP\n                     with smtp_factory(host, port, timeout=15) as smtp:\n"
+    },
+    {
+      "file": "qualidade/quality/tasks.py",
+      "before_sha256": "a78ddec1b8c53317935e1a6ef776277edc7d3ad58400b1fea124115d1e5a363b",
+      "after_sha256": "8e4560726f3a0c3de7364113a0c186705192d10a170a373e193e29ade22b087e",
+      "patch": "--- qualidade/quality/tasks.py\n+++ qualidade/quality/tasks.py\n@@ -68,7 +68,7 @@\n     @classmethod\n     def safe_url(cls, value: str | None) -> str | None:\n         if value and (not value.startswith(\"/unificado/\") or value.startswith(\"//\")):\n-            raise ValueError(\"Use uma rota interna do Unificado\")\n+            raise ValueError(\"Use uma rota interna do Uni\")\n         return value\n \n \n"
+    }
+  ],
+  "changed_files": 2,
+  "restarted": true,
+  "responds": true,
+  "connections_before": 70,
+  "connections_after": 70,
+  "database_writes": 0,
+  "business_logic_unchanged_ast": true,
+  "rollback": {
+    "copy_each_file_from": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-qualidade-20261120T133620Z",
+    "copy_to": "/opt/concrefer-unificado/homolog-next/visual-full",
+    "restart_only": "unificado-visual-homolog-qualidade.service"
+  }
+}

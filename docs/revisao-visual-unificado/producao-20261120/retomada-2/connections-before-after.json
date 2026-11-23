@@ -1,0 +1,718 @@
+{
+  "before": {
+    "common_headroom": 34,
+    "sessions": 68,
+    "groups": [
+      {
+        "database": "carta_traco_visual_homolog_20261118",
+        "user": "mapa_api_writer",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-carta.service",
+        "connections": 1
+      },
+      {
+        "database": "concretrack_postes",
+        "user": "postes_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/laboratorio-unificado.service",
+        "connections": 5
+      },
+      {
+        "database": "concretrack_postes",
+        "user": "postes_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/monitor-concreto.service",
+        "connections": 1
+      },
+      {
+        "database": "concretrack_staging",
+        "user": "concretrack_staging_runtime",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concretrack-staging-api.service",
+        "connections": 1
+      },
+      {
+        "database": "concretrack_staging_final",
+        "user": "concretrack_runtime",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concretrack-staging-final-api.service",
+        "connections": 1
+      },
+      {
+        "database": "controle_est_concre_campinas",
+        "user": "cec_campinas_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/cec-campinas-worker.service",
+        "connections": 1
+      },
+      {
+        "database": "controle_est_concre_noroeste",
+        "user": "cec-noroeste",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "client backend",
+        "connections": 1
+      },
+      {
+        "database": "dosagem_visual_homolog_20261118",
+        "user": "visual_dosagem_homolog_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-dosagem.service",
+        "connections": 1
+      },
+      {
+        "database": "laboratorio_visual_homolog_20261118",
+        "user": "postes_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-laboratorio.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_unificado_homolog_20261016",
+        "user": "mapa_api_authenticator",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-4fcb2b7e38d61704f8319bbc03bf4227add72f311b6d1c4b4851f94ce112dc6a.scope",
+        "connections": 1
+      },
+      {
+        "database": "mapa_unificado_homolog_20261016",
+        "user": "mapa_api_login",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-homolog-mapa-realtime.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_unificado_homolog_20261016",
+        "user": "mapa_api_writer",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-8e853a4fc45646022d6474d1347db652a64f04b701e68f1cfc375e7e2ecc7e67.scope",
+        "connections": 1
+      },
+      {
+        "database": "mapa_unificado_teste",
+        "user": "dosagem_native_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concrefer-dosagem-native.service",
+        "connections": 2
+      },
+      {
+        "database": "mapa_unificado_teste",
+        "user": "logistica_iam_login",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concrefer-logistica.service",
+        "connections": 3
+      },
+      {
+        "database": "mapa_unificado_teste",
+        "user": "mapa_api_authenticator",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-0c268d79dbfdec130868fc8e85c90f35b905e4390d78cf572b5f3980ab9ac360.scope",
+        "connections": 2
+      },
+      {
+        "database": "mapa_unificado_teste",
+        "user": "mapa_api_login",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/mapa-unificado-realtime.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_unificado_teste",
+        "user": "mapa_api_writer",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-db506bdd8d3ab0048d094132ee0c82fe1243e347d18a816316ea3f640aacc68c.scope",
+        "connections": 1
+      },
+      {
+        "database": "mapa_visual_homolog_20261118",
+        "user": "mapa_api_authenticator",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-0f5b656f6abb0b5d6a02b31977b987afb03ea952a95d383f5cc32b104f02df59.scope",
+        "connections": 1
+      },
+      {
+        "database": "mapa_visual_homolog_20261118",
+        "user": "mapa_api_login",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-logistica.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_visual_homolog_20261118",
+        "user": "mapa_api_login",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-realtime.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_visual_homolog_20261118",
+        "user": "mapa_api_writer",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-carta.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_visual_homolog_20261118",
+        "user": "mapa_api_writer",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-c969f92586ca5a5f43ee339ad5292714540de88164774848bd8ed731645e856a.scope",
+        "connections": 1
+      },
+      {
+        "database": "pcp_unificado_homolog_20261016",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-homolog-armacao.service",
+        "connections": 1
+      },
+      {
+        "database": "pcp_unificado_homolog_20261016",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-homolog-pcp.service",
+        "connections": 2
+      },
+      {
+        "database": "pcp_unificado_teste",
+        "user": "logistica_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concrefer-logistica.service",
+        "connections": 4
+      },
+      {
+        "database": "pcp_unificado_teste",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concrefer-armacao.service",
+        "connections": 1
+      },
+      {
+        "database": "pcp_unificado_teste",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/pcp-unificado-test.service",
+        "connections": 5
+      },
+      {
+        "database": "pcp_visual_homolog_20261118",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-armacao.service",
+        "connections": 4
+      },
+      {
+        "database": "pcp_visual_homolog_20261118",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-logistica.service",
+        "connections": 1
+      },
+      {
+        "database": "pcp_visual_homolog_20261118",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-pcp.service",
+        "connections": 2
+      },
+      {
+        "database": "postgres",
+        "user": "postgres",
+        "application_name": "psql",
+        "state": "active",
+        "service_or_backend": "client backend",
+        "connections": 1
+      },
+      {
+        "database": "qualidade",
+        "user": "qualidade_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/qualidade-api.service",
+        "connections": 1
+      },
+      {
+        "database": "qualidade_homolog_20261016",
+        "user": "qualidade_homolog_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-homolog-qualidade.service",
+        "connections": 2
+      },
+      {
+        "database": "qualidade_visual_homolog_20261118",
+        "user": "qualidade_homolog_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-qualidade.service",
+        "connections": 1
+      },
+      {
+        "database": "supervisorio_db_pede",
+        "user": "usinaapi_user",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/dashboard-pederneiras.service",
+        "connections": 2
+      },
+      {
+        "database": "supervisorio_db_pede_homolog_20261016",
+        "user": "usinaapi_user",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-carta.service",
+        "connections": 1
+      },
+      {
+        "database": "suprimentos_homolog_20261025",
+        "user": "concrefer_suprimentos_homolog",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/suprimentos-homolog.service",
+        "connections": 2
+      },
+      {
+        "database": "suprimentos_prod",
+        "user": "concrefer_suprimentos_prod",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/suprimentos-prod.service",
+        "connections": 2
+      },
+      {
+        "database": "suprimentos_visual_homolog_20261118",
+        "user": "concrefer_suprimentos_homolog",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-suprimentos.service",
+        "connections": 1
+      },
+      {
+        "database": null,
+        "user": "postgres",
+        "application_name": "",
+        "state": null,
+        "service_or_backend": "logical replication launcher",
+        "connections": 1
+      },
+      {
+        "database": null,
+        "user": null,
+        "application_name": "",
+        "state": null,
+        "service_or_backend": "autovacuum launcher",
+        "connections": 1
+      },
+      {
+        "database": null,
+        "user": null,
+        "application_name": "",
+        "state": null,
+        "service_or_backend": "background writer",
+        "connections": 1
+      },
+      {
+        "database": null,
+        "user": null,
+        "application_name": "",
+        "state": null,
+        "service_or_backend": "checkpointer",
+        "connections": 1
+      },
+      {
+        "database": null,
+        "user": null,
+        "application_name": "",
+        "state": null,
+        "service_or_backend": "walwriter",
+        "connections": 1
+      }
+    ]
+  },
+  "after": {
+    "common_headroom": 34,
+    "sessions": 68,
+    "groups": [
+      {
+        "database": "carta_traco_visual_homolog_20261118",
+        "user": "mapa_api_writer",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-carta.service",
+        "connections": 1
+      },
+      {
+        "database": "concretrack_postes",
+        "user": "postes_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/laboratorio-unificado.service",
+        "connections": 5
+      },
+      {
+        "database": "concretrack_postes",
+        "user": "postes_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/monitor-concreto.service",
+        "connections": 1
+      },
+      {
+        "database": "concretrack_staging",
+        "user": "concretrack_staging_runtime",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concretrack-staging-api.service",
+        "connections": 1
+      },
+      {
+        "database": "concretrack_staging_final",
+        "user": "concretrack_runtime",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concretrack-staging-final-api.service",
+        "connections": 1
+      },
+      {
+        "database": "controle_est_concre_campinas",
+        "user": "cec_campinas_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/cec-campinas-worker.service",
+        "connections": 1
+      },
+      {
+        "database": "controle_est_concre_noroeste",
+        "user": "cec-noroeste",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "client backend",
+        "connections": 1
+      },
+      {
+        "database": "dosagem_visual_homolog_20261118",
+        "user": "visual_dosagem_homolog_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-dosagem.service",
+        "connections": 1
+      },
+      {
+        "database": "laboratorio_visual_homolog_20261118",
+        "user": "postes_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-laboratorio.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_unificado_homolog_20261016",
+        "user": "mapa_api_authenticator",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-4fcb2b7e38d61704f8319bbc03bf4227add72f311b6d1c4b4851f94ce112dc6a.scope",
+        "connections": 1
+      },
+      {
+        "database": "mapa_unificado_homolog_20261016",
+        "user": "mapa_api_login",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-homolog-mapa-realtime.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_unificado_homolog_20261016",
+        "user": "mapa_api_writer",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-8e853a4fc45646022d6474d1347db652a64f04b701e68f1cfc375e7e2ecc7e67.scope",
+        "connections": 1
+      },
+      {
+        "database": "mapa_unificado_teste",
+        "user": "dosagem_native_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concrefer-dosagem-native.service",
+        "connections": 2
+      },
+      {
+        "database": "mapa_unificado_teste",
+        "user": "logistica_iam_login",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concrefer-logistica.service",
+        "connections": 3
+      },
+      {
+        "database": "mapa_unificado_teste",
+        "user": "mapa_api_authenticator",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-0c268d79dbfdec130868fc8e85c90f35b905e4390d78cf572b5f3980ab9ac360.scope",
+        "connections": 2
+      },
+      {
+        "database": "mapa_unificado_teste",
+        "user": "mapa_api_login",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/mapa-unificado-realtime.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_unificado_teste",
+        "user": "mapa_api_writer",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-db506bdd8d3ab0048d094132ee0c82fe1243e347d18a816316ea3f640aacc68c.scope",
+        "connections": 1
+      },
+      {
+        "database": "mapa_visual_homolog_20261118",
+        "user": "mapa_api_authenticator",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-0f5b656f6abb0b5d6a02b31977b987afb03ea952a95d383f5cc32b104f02df59.scope",
+        "connections": 1
+      },
+      {
+        "database": "mapa_visual_homolog_20261118",
+        "user": "mapa_api_login",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-logistica.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_visual_homolog_20261118",
+        "user": "mapa_api_login",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-realtime.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_visual_homolog_20261118",
+        "user": "mapa_api_writer",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-carta.service",
+        "connections": 1
+      },
+      {
+        "database": "mapa_visual_homolog_20261118",
+        "user": "mapa_api_writer",
+        "application_name": "PostgREST 16.3",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/docker-c969f92586ca5a5f43ee339ad5292714540de88164774848bd8ed731645e856a.scope",
+        "connections": 1
+      },
+      {
+        "database": "pcp_unificado_homolog_20261016",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-homolog-armacao.service",
+        "connections": 1
+      },
+      {
+        "database": "pcp_unificado_homolog_20261016",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-homolog-pcp.service",
+        "connections": 2
+      },
+      {
+        "database": "pcp_unificado_teste",
+        "user": "logistica_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concrefer-logistica.service",
+        "connections": 4
+      },
+      {
+        "database": "pcp_unificado_teste",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/concrefer-armacao.service",
+        "connections": 1
+      },
+      {
+        "database": "pcp_unificado_teste",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/pcp-unificado-test.service",
+        "connections": 5
+      },
+      {
+        "database": "pcp_visual_homolog_20261118",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-armacao.service",
+        "connections": 4
+      },
+      {
+        "database": "pcp_visual_homolog_20261118",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-logistica.service",
+        "connections": 1
+      },
+      {
+        "database": "pcp_visual_homolog_20261118",
+        "user": "pcp_unificado_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-pcp.service",
+        "connections": 2
+      },
+      {
+        "database": "postgres",
+        "user": "postgres",
+        "application_name": "psql",
+        "state": "active",
+        "service_or_backend": "client backend",
+        "connections": 1
+      },
+      {
+        "database": "qualidade",
+        "user": "qualidade_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/qualidade-api.service",
+        "connections": 1
+      },
+      {
+        "database": "qualidade_homolog_20261016",
+        "user": "qualidade_homolog_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-homolog-qualidade.service",
+        "connections": 2
+      },
+      {
+        "database": "qualidade_visual_homolog_20261118",
+        "user": "qualidade_homolog_app",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-qualidade.service",
+        "connections": 1
+      },
+      {
+        "database": "supervisorio_db_pede",
+        "user": "usinaapi_user",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/dashboard-pederneiras.service",
+        "connections": 2
+      },
+      {
+        "database": "supervisorio_db_pede_homolog_20261016",
+        "user": "usinaapi_user",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-carta.service",
+        "connections": 1
+      },
+      {
+        "database": "suprimentos_homolog_20261025",
+        "user": "concrefer_suprimentos_homolog",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/suprimentos-homolog.service",
+        "connections": 2
+      },
+      {
+        "database": "suprimentos_prod",
+        "user": "concrefer_suprimentos_prod",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/suprimentos-prod.service",
+        "connections": 2
+      },
+      {
+        "database": "suprimentos_visual_homolog_20261118",
+        "user": "concrefer_suprimentos_homolog",
+        "application_name": "",
+        "state": "idle",
+        "service_or_backend": "0::/system.slice/unificado-visual-homolog-suprimentos.service",
+        "connections": 1
+      },
+      {
+        "database": null,
+        "user": "postgres",
+        "application_name": "",
+        "state": null,
+        "service_or_backend": "logical replication launcher",
+        "connections": 1
+      },
+      {
+        "database": null,
+        "user": null,
+        "application_name": "",
+        "state": null,
+        "service_or_backend": "autovacuum launcher",
+        "connections": 1
+      },
+      {
+        "database": null,
+        "user": null,
+        "application_name": "",
+        "state": null,
+        "service_or_backend": "background writer",
+        "connections": 1
+      },
+      {
+        "database": null,
+        "user": null,
+        "application_name": "",
+        "state": null,
+        "service_or_backend": "checkpointer",
+        "connections": 1
+      },
+      {
+        "database": null,
+        "user": null,
+        "application_name": "",
+        "state": null,
+        "service_or_backend": "walwriter",
+        "connections": 1
+      }
+    ]
+  }
+}

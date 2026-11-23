@@ -1,0 +1,11 @@
+{
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/login-uni-manual-20261120T135605Z",
+  "file": "/opt/concrefer-unificado/homolog-next/visual-full/carta-static/manual/manual-carta-traco.pdf",
+  "before_sha256": "070e4e4c30837ddecf3678e4703646a091e7300ad49ff97222c3cfcf2dc7215d",
+  "after_sha256": "2c668d308e9edf069aba473b217455db58c9d7cbe66d79c9bb47b20ab48c3210",
+  "services_restarted": false,
+  "only_cover_header_changed": true,
+  "body_preserved": true,
+  "rollback": "cp --preserve=all /opt/concrefer-unificado/homolog-next/backups/login-uni-manual-20261120T135605Z/manual-carta-traco.pdf /opt/concrefer-unificado/homolog-next/visual-full/carta-static/manual/manual-carta-traco.pdf",
+  "production_changed": false
+}

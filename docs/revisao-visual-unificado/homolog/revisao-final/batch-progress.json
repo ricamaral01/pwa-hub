@@ -1,0 +1,124 @@
+[
+  {
+    "profile": "GERENCIA",
+    "batch": 1,
+    "exit_code": 1,
+    "log": "batch-gerencia-01.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 2,
+    "exit_code": 1,
+    "log": "batch-gerencia-02.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 3,
+    "exit_code": 1,
+    "log": "batch-gerencia-03.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 4,
+    "exit_code": 1,
+    "log": "batch-gerencia-04.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 5,
+    "exit_code": 1,
+    "log": "batch-gerencia-05.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 6,
+    "exit_code": 1,
+    "log": "batch-gerencia-06.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 7,
+    "exit_code": 1,
+    "log": "batch-gerencia-07.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 8,
+    "exit_code": 1,
+    "log": "batch-gerencia-08.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 9,
+    "exit_code": 1,
+    "log": "batch-gerencia-09.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 10,
+    "exit_code": 1,
+    "log": "batch-gerencia-10.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 11,
+    "exit_code": 1,
+    "log": "batch-gerencia-11.log"
+  },
+  {
+    "profile": "GERENCIA",
+    "batch": 12,
+    "exit_code": 1,
+    "log": "batch-gerencia-12.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 1,
+    "exit_code": 1,
+    "log": "batch-laboratorio-01.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 2,
+    "exit_code": 1,
+    "log": "batch-laboratorio-02.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 3,
+    "exit_code": 1,
+    "log": "batch-laboratorio-03.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 4,
+    "exit_code": 1,
+    "log": "batch-laboratorio-04.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 5,
+    "exit_code": 1,
+    "log": "batch-laboratorio-05.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 6,
+    "exit_code": 1,
+    "log": "batch-laboratorio-06.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 7,
+    "exit_code": 1,
+    "log": "batch-laboratorio-07.log"
+  },
+  {
+    "profile": "LABORATORIO",
+    "batch": 8,
+    "exit_code": null,
+    "observed_completion": true,
+    "log": "batch-laboratorio-08.log",
+    "note": "Child completed after runner stopped; summary retained. Exit code was not collected."
+  }
+]

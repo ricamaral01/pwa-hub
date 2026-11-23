@@ -1,0 +1,11 @@
+{
+  "source": "/var/backups/concretrack/phase0-20260829T002551Z/supervisorio_db.dump",
+  "subset_tables": [
+    "tbl_massadas",
+    "tbl_nao_conformidades_apontadas",
+    "tbl_paradas_apontadas"
+  ],
+  "sha256": "42b2f043845a1a0176bf6ca608b5947a733a6c1731312a8baa691695cd250c95",
+  "bytes": 411026,
+  "production_database_connections": 0
+}

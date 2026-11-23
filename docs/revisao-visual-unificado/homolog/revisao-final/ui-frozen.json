@@ -1,0 +1,17 @@
+{
+  "version": "1.4.26",
+  "files": {
+    "unificado/shell/review-complete.css": "f63f173d22aa590b8c8f478862f8ada23dede36c3afb8f8026bd942fe11dfc01",
+    "unificado/shell/components.js": "1b495075381840255a402ef2bbeb8689adde1155b6617d9cf9fb3d536cd10173",
+    "unificado/shell/router.js": "7239f4497836c4d8db5047f53cab48ac6decfc953da443ec6688ad731b22ffa3",
+    "unificado/shell/login-desktop.css": "e52d6ba94a55109b6f5ba531abd14f0039ead1ba27531f553c5ffef46fb8ac17",
+    "unificado/qualidade/index.html": "81d003b3741075dffb6f160f7b2ad1e08626635a73334033139938501b6f37c1",
+    "unificado/usinas/noroeste/noro-native.js": "38b472b5ab668addf4dba6dfb4bdc1456d116ecdcb952ab0e86ace956da7d9a9",
+    "unificado/producao/indicadores-gerais/overview.js": "f05ce0954fbfd20331258ec36c28ffc42c61dc76d9dbe66b9f62ea0ee1ad02f4",
+    "unificado/relatorios/fechamento-diario/index.html": "76493c92a85b2ca539048f8866f1481574f323ba4fa8f80a0f8380262bea1fe8",
+    "unificado/usinas/fechamento-diario.js": "d6934911251f5083238f25c61a62fd4d5d85fd34c4664ef0336dda12a415c762",
+    "unificado/usinas/fechamento-diario.html": "7ae37c5c8973628113431b32aa34f1458dd2a68b85b174afbc0c83369c8a822b"
+  },
+  "status": "UI checkpoint with Shadow DOM presentation and audit; blocked global validation, no publication",
+  "known_external_dependency": "external-report/RELATORIO.md"
+}

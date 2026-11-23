@@ -1,0 +1,65 @@
+[
+  {
+    "view": "pcp/numeros-serie/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Planejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nRelatórios de Programação\nArmaduras\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nEtiquet"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "PLANEJAMENTO · SETOR 3\n\nNúmeros de série dos postes\n\nSequência única por modelo e ano. Histórico confirmado e previsão da programação.\n\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdu"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/programacao-semanal/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Planejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Setor 4\nProgramação Final\nRelatórios de Programação\nA"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "SETORES 1 E 2 · CAMPINAS\n\nProgramação da semana\n\nDistribua a produção de segunda a sexta dentro da capacidade das formas.\n\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nCriar ra"
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "pcp/etiquetas-sc/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-sc%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Planejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Setor 4\nProgramação Final\nRelatórios de Programação\nA"
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Selecione os postes, gere as etiquetas e depois marque quais deseja imprimir."
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  }
+]

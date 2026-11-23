@@ -1,0 +1,19 @@
+{
+  "narrow_login": [
+    {
+      "width": 1024,
+      "identical_except_version_footer": true
+    },
+    {
+      "width": 820,
+      "identical_except_version_footer": true
+    },
+    {
+      "width": 390,
+      "identical_except_version_footer": true
+    }
+  ],
+  "javascript_syntax": 4,
+  "build": "npm run build: tsc + vite passed",
+  "local_font": "Geist; no Google font requests in after capture"
+}

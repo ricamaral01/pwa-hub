@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <style>@media print {
+@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}
+}
+@media screen{@media screen{html{background:var(--c-navy);}
+}
+@media screen and (min-width:1025px){body{background:var(--c-navy)!important;}
+}
+}
+</style>
+  <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.27"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.27"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.27"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mão de Obra — PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=1.4.27" />
+  <link rel="stylesheet" media="(max-width: 600px)" href="/unificado/pcp/static/css/maodeobra-mobile.css?v=1.4.27" />
+  <style>@media print {
+
+    .modo-card {
+      border: 1px solid rgba(21, 65, 111, .12);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fff;
+      height: 100%;
+    }
+    .modo-hint {
+      font-size: .78rem;
+      color: #64748b;
+      margin-top: 4px;
+    }
+    .mdo-table th {
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: #64748b;
+      white-space: nowrap;
+    }
+    .mdo-table td {
+      vertical-align: middle;
+    }
+    .mdo-qtd {
+      max-width: 120px;
+      min-height: 44px;
+      text-align: right;
+      font-weight: 700;
+    }
+    .mdo-grupo-opcoes { display: flex; gap: 8px; flex-wrap: wrap; }
+    .mdo-grupo-opcoes input { position: absolute; opacity: 0; }
+    .mdo-grupo-opcoes label { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 8px 18px; border: 1px solid #cbd5e1; border-radius: 10px; cursor: pointer; font-weight: 700; }
+    .mdo-grupo-opcoes input:checked + label { background: #15416f; color: #fff; border-color: #15416f; }
+    .mdo-grupo-opcoes input:focus-visible + label { outline: 3px solid #f97316; outline-offset: 2px; }
+    .mdo-secao td { background: #f1f5f9; color: #15416f; font-weight: 700; padding-top: 12px; }
+    .mdo-subtotal td { background: #f8fafc; font-weight: 700; }
+    .mdo-total td { background: #e8f2fb; font-size: 1rem; font-weight: 800; }
+    .mdo-meta { display: block; font-size: .76rem; color: #64748b; }
+    .mdo-status { color: #475569; font-size: .82rem; }
+    .mdo-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+    .mdo-actions button { min-height: 44px; }
+    .mdo-cadastro { border-top: 1px solid #e2e8f0; margin-top: 18px; padding-top: 14px; }
+    .mdo-cadastro summary { color: #15416f; font-weight: 700; cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+    .mdo-cadastro .form-control, .mdo-cadastro .form-select, .mdo-cadastro button { min-height: 44px; }
+    .mdo-cadastro-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px solid #e2e8f0; }
+    .mdo-cadastro-item > span { min-width: 0; overflow-wrap: anywhere; }
+    .mdo-cadastro-item .btn { flex: 0 0 auto; }
+    .mdo-empty {
+      color: #94a3b8;
+      text-align: center;
+      padding: 22px;
+    }
+  
+}
+@media screen{.modo-card{border:1px solid rgba(21, 65, 111, .12);border-radius:var(--r);padding:14px;background:var(--c-surface);height:100%;}
+.modo-hint{font-size:.78rem;color:var(--c-ink-2);margin-top:4px;}
+.mdo-table th{font-size:.78rem;text-transform:none;letter-spacing:.04em;color:var(--c-ink-2);white-space:nowrap;}
+.mdo-table td{vertical-align:middle;}
+.mdo-qtd{max-width:120px;min-height:44px;text-align:right;font-weight:700;}
+.mdo-grupo-opcoes{display:flex;gap:8px;flex-wrap:wrap;}
+.mdo-grupo-opcoes input{position:absolute;opacity:0;}
+.mdo-grupo-opcoes label{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:8px 18px;border:1px solid var(--c-line);border-radius:var(--r);cursor:pointer;font-weight:700;}
+.mdo-grupo-opcoes input:checked + label{background:var(--c-blue);color:var(--c-surface);border-color:var(--c-blue);}
+.mdo-grupo-opcoes input:focus-visible + label{outline:3px solid var(--c-orange);outline-offset:2px;}
+.mdo-secao td{background:var(--c-bg);color:var(--c-blue);font-weight:700;padding-top:12px;}
+.mdo-subtotal td{background:var(--c-bg);font-weight:700;}
+.mdo-total td{background:var(--c-line-2);font-size:1rem;font-weight:800;}
+.mdo-meta{display:block;font-size:.76rem;color:var(--c-ink-2);}
+.mdo-status{color:var(--c-ink-2);font-size:.82rem;}
+.mdo-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;}
+.mdo-actions button{min-height:44px;}
+.mdo-cadastro{border-top:1px solid var(--c-line);margin-top:18px;padding-top:14px;}
+.mdo-cadastro summary{color:var(--c-blue);font-weight:700;cursor:pointer;min-height:44px;display:flex;align-items:center;}
+.mdo-cadastro .form-control, .mdo-cadastro .form-select, .mdo-cadastro button{min-height:44px;}
+.mdo-cadastro-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--c-line);}
+.mdo-cadastro-item > span{min-width:0;overflow-wrap:anywhere;}
+.mdo-cadastro-item .btn{flex:0 0 auto;}
+.mdo-empty{color:var(--c-ink-3);text-align:center;padding:22px;}
+}
+</style>
+  
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27">
+<script defer src="/unificado/shell/components.js?v=1.4.27"></script>
+<link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"></head>
+<body>
+
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <!-- Concrefer Logo: Σ (Sigma - concrete/construction symbol) -->
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" data-visual-print="a2b9161cfe6a" style="color:var(--c-orange);"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra-rateio/" data-page="maodeobra-rateio" data-require="PRODUCAO"><i class="bi bi-distribute-horizontal"></i> Rateio MOI</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">Mão de Obra</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="section-card mb-4">
+      <div class="section-title"><i class="bi bi-table me-2"></i>Registro em Tabela</div>
+      <div class="row g-3 mb-3">
+        <div class="col-12 col-md-3">
+          <label class="form-label" style="font-size:.8rem;font-weight:600">Data</label>
+          <input type="date" id="mdo-data" class="form-control form-control-sm" required />
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="form-label" style="font-size:.8rem;font-weight:600">Grupo</div>
+          <div class="mdo-grupo-opcoes" role="radiogroup" aria-label="Grupo de setores">
+            <input type="radio" name="mdo-grupo" id="mdo-grupo-12" value="12" checked />
+            <label for="mdo-grupo-12">S1 / S2</label>
+            <input type="radio" name="mdo-grupo" id="mdo-grupo-34" value="34" />
+            <label for="mdo-grupo-34">S3 / S4</label>
+          </div>
+        </div>
+        <div class="col-12 col-md-5 d-flex align-items-end">
+          <div class="modo-card w-100">
+            <div class="fw-semibold" id="mdo-modo-titulo">Mão de obra S1 / S2</div>
+            <div class="modo-hint" id="mdo-modo-hint">Direta e indireta no mesmo lançamento.</div>
+            <div class="mdo-status" id="mdo-dia-estado" aria-live="polite">Carregando dia…</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mdo-table mb-0">
+          <thead id="thead-mdo-grid"><tr><th>Atividade</th><th>Tipo</th><th class="text-end">Pessoas</th></tr></thead>
+          <tbody id="tbody-mdo-grid">
+            <tr><td colspan="3" class="mdo-empty">Carregando atividades…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3">
+        <small class="text-muted" id="mdo-grid-resumo">Nenhuma atividade carregada.</small>
+        <div class="mdo-actions">
+          <button type="button" class="btn btn-outline-primary btn-sm" id="btn-confirmar-lote" disabled>Confirmar mão de obra</button>
+          <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-sem-producao">Sem produção no dia</button>
+          <button type="button" class="btn btn-accent btn-sm" id="btn-salvar-lote">
+            <i class="bi bi-check-circle me-1"></i>Salvar lançamentos
+          </button>
+        </div>
+      </div>
+      <details id="mdo-cadastro" class="mdo-cadastro" hidden>
+        <summary>Cadastro de atividades do grupo</summary>
+        <div class="row g-2 mt-1">
+          <div class="col-12 col-md-4"><label class="form-label" for="cad-nome">Atividade</label><input id="cad-nome" class="form-control" maxlength="255" /></div>
+          <div class="col-6 col-md-2"><label class="form-label" for="cad-tipo">Tipo</label><select id="cad-tipo" class="form-select"><option value="MOD">MOD</option><option value="MOI">MOI</option></select></div>
+          <div class="col-6 col-md-2"><label class="form-label" for="cad-setor">Setor MOD</label><select id="cad-setor" class="form-select"><option value="">Grupo</option></select></div>
+          <div class="col-6 col-md-1"><label class="form-label" for="cad-ordem">Ordem</label><input id="cad-ordem" type="number" min="1" class="form-control" value="100" /></div>
+          <div class="col-6 col-md-2"><label class="form-label" for="cad-responsavel">Responsável</label><input id="cad-responsavel" class="form-control" maxlength="120" /></div>
+          <div class="col-6 col-md-1"><label class="form-label" for="cad-fator">Fator</label><input id="cad-fator" inputmode="decimal" class="form-control" placeholder="0,50" /></div>
+        </div>
+        <div class="d-flex gap-2 flex-wrap mt-2">
+          <button type="button" class="btn btn-primary-pcp" id="cad-salvar">Adicionar atividade</button>
+          <button type="button" class="btn btn-outline-secondary" id="cad-cancelar" hidden>Cancelar edição</button>
+        </div>
+        <small class="text-muted">O fator identifica o rateio do responsável. A quantidade do dia já deve refletir as pessoas lançadas.</small>
+        <div id="cad-lista" class="mt-3" aria-live="polite"></div>
+      </details>
+    </div>
+
+    <!-- Resumo hoje -->
+    <div class="row g-3 mb-4" id="resumo-hoje"></div>
+
+    <!-- Filtros + tabela -->
+    <div class="section-card mb-3">
+      <div class="d-flex flex-wrap gap-2 align-items-end">
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Tipo</label>
+          <select id="f-tipo" class="form-select form-select-sm" style="width:120px">
+            <option value="">Todos</option>
+            <option value="MOI">MOI - Indireta</option>
+            <option value="MOD">MOD - Direta</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Início</label>
+          <input type="date" id="f-inicio" class="form-control form-control-sm" style="width:150px" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Fim</label>
+          <input type="date" id="f-fim" class="form-control form-control-sm" style="width:150px" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Setor</label>
+          <select id="f-setor" class="form-select form-select-sm" style="width:170px">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <button class="btn btn-primary-pcp btn-sm" id="btn-buscar">
+          <i class="bi bi-search me-1"></i>Buscar
+        </button>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">Histórico de Mão de Obra</div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Tipo</th>
+              <th>Atividade</th>
+              <th>Setor</th>
+              <th class="text-end">Pessoas</th>
+              <th class="text-center desktop-only">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-mdo">
+            <tr><td colspan="6" class="text-center py-3"><div class="spinner-border spinner-border-sm"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<div id="mdo-mobile" aria-live="polite"></div>
+<script src="/unificado/pcp/static/js/app.js?v=1.4.27"></script>
+<script src="/unificado/pcp/static/js/maodeobra-core.js?v=1.4.27"></script>
+<script src="/unificado/pcp/static/js/maodeobra-grupos.js?v=1.4.27"></script>
+<script src="/unificado/pcp/static/js/maodeobra-mobile.js?v=1.4.27"></script>
+</body>
+</html>

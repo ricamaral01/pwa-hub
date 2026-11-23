@@ -1,0 +1,11 @@
+{
+  "real_api_response": {
+    "enabled": false,
+    "home": false,
+    "items": []
+  },
+  "preview_only": true,
+  "database_changed": false,
+  "destinations_filtered_by_real_iam": true,
+  "items": 8
+}

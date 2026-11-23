@@ -1,0 +1,158 @@
+[
+  {
+    "profile": "GERENCIA",
+    "screen": "pdrProdutos",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "GERENCIA",
+    "screen": "rbrProdutos",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "GERENCIA",
+    "screen": "fechamentoDiario",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "PRODUCAO",
+    "screen": "programacaoSemanal12",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "PRODUCAO",
+    "screen": "dashboard",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "PRODUCAO",
+    "screen": "comparacao",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "PRODUCAO",
+    "screen": "armadurasProgramacao",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "PRODUCAO",
+    "screen": "postesNumerosSerie",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "PRODUCAO",
+    "screen": "armadurasRelatorio",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "suprimentosSolicitacoes",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "suprimentosPainel",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "manutencaoUsina",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "suprimentosNova",
+    "version": "1.4.25",
+    "widths": [
+      1440,
+      1024,
+      820,
+      390
+    ],
+    "status": "passed"
+  }
+]

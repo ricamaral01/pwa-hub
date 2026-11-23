@@ -1,0 +1,87 @@
+--- 1.4.6/services/laboratorio/server/static/noroeste/cec/rompimentos-mes/index.html
++++ 1.4.31/services/laboratorio/server/static/noroeste/cec/rompimentos-mes/index.html
+@@ -4,7 +4,8 @@
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>Rompimentos por mês • Controle Estatístico</title>
+-  <style>
++  <style>@media print {
++
+     :root{font-family:Montserrat,"Segoe UI",Arial,sans-serif;color:#343b43;background:#f2f3f5}
+     *{box-sizing:border-box}body{margin:0}button,input{font:inherit}
+     .topbar{background:#343b43;color:#fff;border-bottom:3px solid #e07a3a}
+@@ -32,8 +33,72 @@
+     .note{font-size:11px;color:#5a6270;margin-top:12px}
+     @media(max-width:600px){.topbar-inner{padding:12px}.topbar strong{font-size:14px}.print{margin-left:0}main{padding:15px 8px}}
+     @media print{.topbar,.toolbar,.summary,#status,.note,.weekday{display:none!important}body{background:#fff}main{padding:0}.table-wrap{overflow:visible;border:0;box-shadow:none}table{min-width:0;font-size:7px}th,td{padding:2px;white-space:normal}.trace{min-width:0;max-width:none}h1{font-size:14px}}
+-  </style>
+-</head>
++  
++}
++@media screen {
++:root{color:var(--c-blue);background:var(--c-bg);}
++*{box-sizing:border-box;}
++body{margin:0;}
++button,input{font:inherit;}
++.topbar{background:var(--c-blue);color:var(--c-surface);border-bottom:3px solid var(--c-orange);}
++.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:13px 18px;}
++.topbar strong{font-size:17px;}
++.topbar a{color:var(--c-surface);text-decoration:none;border:1px solid var(--c-ink-3);border-radius:var(--r);padding:9px 14px;font-size:12px;}
++main{padding:18px 12px 30px;}
++h1{font-size:20px;margin:0 0 5px;}
++h1 span{color:var(--c-orange);}
++.subtitle{font-size:12px;color:var(--c-ink-2);margin:0 0 16px;}
++.toolbar{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
++.toolbar label{display:grid;gap:5px;font-size:11px;font-weight:700;}
++.toolbar input{border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);padding:7px 10px;font-size:12px;}
++button{border:0;border-radius:var(--r);background:var(--c-orange);color:var(--c-surface);padding:8px 17px;font-size:12px;font-weight:700;cursor:pointer;}
++button:disabled{opacity:.6;cursor:wait;}
++.print{background:var(--c-ok);margin-left:auto;}
++#status{font-size:12px;color:var(--c-ink-2);min-height:18px;margin:8px 0 14px;}
++#status.error{color:var(--c-crit);}
++.summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
++.summary span{background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--r);padding:8px 11px;font-size:11px;}
++.summary strong{font-size:14px;margin-left:5px;color:var(--c-blue);}
++.table-wrap{overflow-x:auto;background:var(--c-surface);border-radius:var(--r);border:1px solid var(--c-line);box-shadow:none;}
++table{border-collapse:collapse;width:100%;min-width:1450px;font-size:11px;}
++th,td{border:1px solid var(--c-line);text-align:center;padding:6px 5px;white-space:nowrap;}
++thead{color:var(--c-surface);}
++thead tr:first-child th{padding:8px 6px;font-size:11px;}
++.id-main,.id-head{background:var(--c-blue);}
++.res-main{background:var(--c-blue);}
++.age-head{font-size:11px;font-weight:800;}
++.age-1{background:var(--c-ink-2);}
++.age-3{background:var(--c-ok);}
++.age-7{background:var(--c-orange);}
++.age-28{background:var(--c-ink-2);}
++.age-other{background:var(--c-ink-2);}
++.sub-head th{font-size:9px;}
++.sub-head .age-1{background:var(--c-ink-2);}
++.sub-head .age-3{background:var(--c-ink-2);}
++.sub-head .age-7{background:var(--c-orange);}
++.sub-head .age-28{background:var(--c-ink-2);}
++.sub-head .age-other{background:var(--c-ink-3);}
++tbody td{font-size:11px;}
++tbody tr:nth-child(even){background:var(--c-bg);}
++tbody tr:hover{background:var(--c-bg);}
++.trace{text-align:left;min-width:260px;max-width:330px;white-space:normal;font-weight:600;}
++.ok{color:var(--c-ok);font-weight:800;}
++.nok{color:var(--c-crit);font-weight:800;}
++.empty{color:var(--c-ink-3);}
++.day-yes{background:var(--c-line-2);color:var(--c-ok);font-weight:800;}
++.day-no{background:var(--c-bg);color:var(--c-warn);font-weight:800;}
++.weekend{background:var(--c-line-2);color:var(--c-ink-2);font-weight:800;}
++.note{font-size:11px;color:var(--c-ink-2);margin-top:12px;}
++@media (max-width:600px){.topbar-inner{padding:12px;}
++.topbar strong{font-size:14px;}
++.print{margin-left:0;}
++main{padding:15px 8px;}
++}
++@media print{.topbar,.toolbar,.summary,#status,.note,.weekday{display:none!important}body{background:#fff}main{padding:0}.table-wrap{overflow:visible;border:0;box-shadow:none}table{min-width:0;font-size:7px}th,td{padding:2px;white-space:normal}.trace{min-width:0;max-width:none}h1{font-size:14px}}
++
++}
++</style>
++<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.26"><script defer src="/unificado/shell/components.js?v=1.4.26"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
+ <body>
+   <header class="topbar"><div class="topbar-inner"><strong>Concrefer • Controle Estatístico</strong><a href="/unificado/laboratorio/noroeste/cec/">← Voltar ao CEC</a></div></header>
+   <main>

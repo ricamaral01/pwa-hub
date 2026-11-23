@@ -1,0 +1,22 @@
+{
+  "phase": "prepared",
+  "files_match_original_2_0_0": true,
+  "permissions_match_before": true,
+  "new_data_preserved": {
+    "pederneiras_readings": 0,
+    "ribeirao_readings": 0,
+    "pederneiras_massadas": 1613,
+    "ribeirao_massadas": 829
+  },
+  "retry_backup": {
+    "path": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/laboratorio-before-retry.dump",
+    "sha256": "7836557b26b201171610bdea6deb85864d07ccece85e09a100003ab4ae2cd335",
+    "size": 485087,
+    "lab_state_preserved": {
+      "pederneiras_readings": 0,
+      "ribeirao_readings": 0,
+      "pederneiras_massadas": 1613,
+      "ribeirao_massadas": 829
+    }
+  }
+}

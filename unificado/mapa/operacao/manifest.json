@@ -1,0 +1,21 @@
+{
+  "name": "Uni",
+  "short_name": "Uni",
+  "description": "Painel de Planejamento, Liberação e Controle de Concretagem",
+  "start_url": "/unificado/",
+  "scope": "/unificado/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f1e3c",
+  "theme_color": "#0f1e3c",
+  "icons": [
+    {"src":"/unificado/assets/img/unificado-pwa-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"},
+    {
+      "src": "/unificado/mapa/operacao/unificado-icon.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "id": "/unificado/mapa/operacao/index.html"
+}

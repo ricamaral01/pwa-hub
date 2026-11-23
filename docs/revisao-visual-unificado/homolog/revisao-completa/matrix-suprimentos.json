@@ -1,0 +1,2750 @@
+[
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "manutencaoUsina",
+    "path": "/unificado/manutencao-usina/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nExpandir tudo\nRecolher tudo\nManutenção usina\nAtualizar\nVersão 1.4.25\nAjuda\nT\nTeste Suprimentos · SOLICITANTE\nSair\nQualid",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Manutenção Usina",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Manutenção usina",
+                  "icon": null,
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom alerta\n1\nBuscar ativ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nQualidade\n›\nManutenção Usina",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Manutenção Usina",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom alerta\n1\nBuscar ativ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nQualidade\n›\nManutenção Usina",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Manutenção Usina",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom alerta\n1\nBuscar ativ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nManutenção Usina\nManutenção usina\nInício\nTelas\nRecentes\nConta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Manutenção Usina",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Manutenção usina",
+                  "icon": null,
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom alerta\n1\nBuscar ativ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "suprimentosPainel",
+    "path": "/unificado/suprimentos/painel/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAtualizar\nVersão 1.4.25\nAjuda\nT\nTeste Su",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Painel",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Painel",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 30
+                },
+                {
+                  "text": "Nova solicitação",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Painel de suprimentos\n+\nNova solicitação\nAguardando sua aprovação\n0\nNenhuma há mais de 24 h\nEm atendimento\n3\n1 urgente · parou produção\nFila de trabalho\nVer todas →\nNº\tSolicitante ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nSuprimentos\n›\nSolicitações\n›\nPainel",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Painel",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Painel de suprimentos\n+\nNova solicitação\nAguardando sua aprovação\n0\nNenhuma há mais de 24 h\nEm atendimento\n3\n1 urgente · parou produção\nFila de trabalho\nVer todas →\nNº\tSolicitante ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nSuprimentos\n›\nSolicitações\n›\nPainel",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Painel",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "+\nNova solicitação\nAguardando sua aprovação\n0\nNenhuma há mais de 24 h\nEm atendimento\n3\n1 urgente · parou produção\nFila de trabalho\nVer todas →\nHOMOLOG visual fase 3 20261118T215553",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nPainel\nPainel\nSolicitações\nNova solicitação\nInício\nTelas\nRecentes\nConta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Painel",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Painel",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 44
+                },
+                {
+                  "text": "Solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 44
+                },
+                {
+                  "text": "Nova solicitação",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "+\nNova solicitação\nAguardando sua aprovação\n0\nNenhuma há mais de 24 h\nEm atendimento\n3\n1 urgente · parou produção\nFila de trabalho\nVer todas →\nHOMOLOG visual fase 3 20261118T215553",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "suprimentosSolicitacoes",
+    "path": "/unificado/suprimentos/solicitacoes/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAtualizar\nVersão 1.4.25\nAjuda\nT\nTeste Su",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Solicitações",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Painel",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 30
+                },
+                {
+                  "text": "Nova solicitação",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Solicitações\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (4)\nConcluídas (65)\nCanceladas / reprovadas (1)\nBuscar\nSetor / CC\nTodos\nProd",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nSuprimentos\n›\nSolicitações\n›\nSolicitações",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Solicitações",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Solicitações\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (4)\nConcluídas (65)\nCanceladas / reprovadas (1)\nBuscar\nSetor / CC\nTodos\nProd",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nSuprimentos\n›\nSolicitações\n›\nSolicitações",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Solicitações",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Solicitações\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (4)\nConcluídas (65)\nCanceladas / reprovadas (1)\nBuscar\nSetor / CC\nTodos\nProd",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nSolicitações\nPainel\nSolicitações\nNova solicitação\nInício\nTelas\nRecentes\nConta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Solicitações",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Painel",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 44
+                },
+                {
+                  "text": "Solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 44
+                },
+                {
+                  "text": "Nova solicitação",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Solicitações\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (4)\nConcluídas (65)\nCanceladas / reprovadas (1)\nBuscar\nSetor / CC\nTodos\nProd",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "suprimentosNova",
+    "path": "/unificado/suprimentos/nova/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAtualizar\nVersão 1.4.25\nAjuda\nT\nTeste Su",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Nova solicitação",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Painel",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 30
+                },
+                {
+                  "text": "Nova solicitação",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← Solicitações\nNova solicitação\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\npar\nkg\nt\ng\nm\nm²\nm³\nL\nmL\ntb\ncx\nrl\npc\njg\nAdicionar\n+ ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nSuprimentos\n›\nSolicitações\n›\nNova solicitação",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Nova solicitação",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← Solicitações\nNova solicitação\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\npar\nkg\nt\ng\nm\nm²\nm³\nL\nmL\ntb\ncx\nrl\npc\njg\nAdicionar\n+ ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nSuprimentos\n›\nSolicitações\n›\nNova solicitação",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Nova solicitação",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← Solicitações\nNova solicitação\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\npar\nkg\nt\ng\nm\nm²\nm³\nL\nmL\ntb\ncx\nrl\npc\njg\nAdicionar\n+ ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nNova solicitação\nPainel\nSolicitações\nNova solicitação\nInício\nTelas\nRecentes\nConta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Nova solicitação",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Painel",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 44
+                },
+                {
+                  "text": "Solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 44
+                },
+                {
+                  "text": "Nova solicitação",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← Solicitações\nNova solicitação\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\npar\nkg\nt\ng\nm\nm²\nm³\nL\nmL\ntb\ncx\nrl\npc\njg\nAdicionar\n+ ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "shell-login",
+    "path": "/unificado/login.html",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/login.html",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/login.html",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas\nPederneiras\nRibeirão Preto\nNoroeste\nEntrar\nUsuário\nSenha\nMostrar\nEntrar\n\nv1.4.25",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/login.html",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nBem-vindo de volta\n\nEntre com seu usuário e senha para acessar o sistema.\n\nUsuário\nSenha\nMostrar\nEntrar\n\nPlanejamento e Produção e",
+            "audit": {
+              "issues": [],
+              "preserved_exception": "frozen narrow login; pixel comparison separately"
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/login.html",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nBem-vindo de volta\n\nEntre com seu usuário e senha para acessar o sistema.\n\nUsuário\nSenha\nMostrar\nEntrar\n\nPlanejamento e Produção e",
+            "audit": {
+              "issues": [],
+              "preserved_exception": "frozen narrow login; pixel comparison separately"
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/login.html",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nBem-vindo de volta\n\nEntre com seu usuário e senha para acessar o sistema.\n\nUsuário\nSenha\nMostrar\nEntrar\n\nPlanejamento e Produção e",
+            "audit": {
+              "issues": [],
+              "preserved_exception": "frozen narrow login; pixel comparison separately"
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "shell-inicio",
+    "path": "/unificado/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAtualizar\nVersão 1.4.25\nAjuda\nT\nTeste Su",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Painel",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 30
+                },
+                {
+                  "text": "Nova solicitação",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 30
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n—\nPCP · setores 1",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n—\nPCP · setores 1",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nUnificado\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n—\nPCP · setores 1 a 4\nReali",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "shell-testar",
+    "path": "/unificado/testar/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/testar/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/testar/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acompanhamento e suporte\nSuporte do sistema unificado\n\nFotografia dos dados: 13/10/2026, 18:42. Use sua conta ativa do sistema unificado para acessar esta página.\n\nAbrir Produção\nA",
+            "audit": {
+              "issues": [],
+              "images": 3,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/testar/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acompanhamento e suporte\nSuporte do sistema unificado\n\nFotografia dos dados: 13/10/2026, 18:42. Use sua conta ativa do sistema unificado para acessar esta página.\n\nAbrir Produção\nA",
+            "audit": {
+              "issues": [],
+              "images": 3,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/testar/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acompanhamento e suporte\nSuporte do sistema unificado\n\nFotografia dos dados: 13/10/2026, 18:42. Use sua conta ativa do sistema unificado para acessar esta página.\n\nAbrir Produção\nA",
+            "audit": {
+              "issues": [],
+              "images": 3,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/testar/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acompanhamento e suporte\nSuporte do sistema unificado\n\nFotografia dos dados: 13/10/2026, 18:42. Use sua conta ativa do sistema unificado para acessar esta página.\n\nAbrir Produção\nA",
+            "audit": {
+              "issues": [],
+              "images": 3,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "shell-atualizar",
+    "path": "/unificado/atualizar.html",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/index.html?atualizar=1.4.25",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/index.html?atualizar=1.4.25",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAtualizar\nVersão 1.4.25\nAjuda\nT\nTeste Su",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Painel",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 30
+                },
+                {
+                  "text": "Nova solicitação",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 30
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/index.html?atualizar=1.4.25",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n—\nPCP · setores 1",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/index.html?atualizar=1.4.25",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n—\nPCP · setores 1",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/index.html?atualizar=1.4.25",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nUnificado\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n—\nPCP · setores 1 a 4\nReali",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "module-suprimentos",
+    "path": "/unificado/?module=suprimentos",
+    "review_version": "1.4.25",
+    "status": 200,
+    "module_states": [
+      {
+        "width": 1440,
+        "description": "3 telas",
+        "units": []
+      },
+      {
+        "width": 1024,
+        "description": "3 telas",
+        "units": []
+      },
+      {
+        "width": 820,
+        "description": "3 telas",
+        "units": []
+      },
+      {
+        "width": 390,
+        "description": "3 telas",
+        "units": []
+      }
+    ],
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/?module=suprimentos",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?module=suprimentos",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nAtualizar\nVersão 1.4.25\nAjuda\nT\nTeste Suprimentos · SOLICITANTE\nSair\nConcrefe",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Suprimentos",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": [
+                    40,
+                    40,
+                    40
+                  ]
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "PainelAprovar e acompanhar solicitações",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 40
+                },
+                {
+                  "text": "SolicitaçõesConsultar e filtrar solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 40
+                },
+                {
+                  "text": "Nova solicitaçãoSolicitar materiais e serviços",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 40
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?module=suprimentos",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nSuprimentos\nSuprimentos\n\n3 telas\n\nSolicitações · Painel\nSolicitações\nPainel\nAprovar e acompanhar solicitações\n",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Suprimentos",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": [
+                    40,
+                    40,
+                    40
+                  ]
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "PainelAprovar e acompanhar solicitações",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 40
+                },
+                {
+                  "text": "SolicitaçõesConsultar e filtrar solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 40
+                },
+                {
+                  "text": "Nova solicitaçãoSolicitar materiais e serviços",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 40
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?module=suprimentos",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nSuprimentos\nSuprimentos\n\n3 telas\n\nSolicitações · Painel\nSolicitações\nPainel\nAprovar e acompanhar solicitações\n",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Suprimentos",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": [
+                    40,
+                    40,
+                    40
+                  ]
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "PainelAprovar e acompanhar solicitações",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 40
+                },
+                {
+                  "text": "SolicitaçõesConsultar e filtrar solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 40
+                },
+                {
+                  "text": "Nova solicitaçãoSolicitar materiais e serviços",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 40
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?module=suprimentos",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nConcrefer\nSuprimentos\nSuprimentos\n\n3 telas\n\nSolicitações\nSolicitações\nPainel\nAprovar e acompanhar solicitações\nSolicitações\nConsul",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Suprimentos",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": [
+                    44,
+                    44,
+                    44
+                  ]
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "PainelAprovar e acompanhar solicitações",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 44
+                },
+                {
+                  "text": "SolicitaçõesConsultar e filtrar solicitações",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 44
+                },
+                {
+                  "text": "Nova solicitaçãoSolicitar materiais e serviços",
+                  "icon": "M4 4h2l2 11h10l2-8H7 M9 19h.01 M17 19h.01",
+                  "height": 44
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  }
+]

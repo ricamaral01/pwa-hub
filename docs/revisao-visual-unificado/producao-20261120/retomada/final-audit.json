@@ -1,0 +1,22 @@
+{
+  "production_version": "1.4.6",
+  "changed_application_roots": [],
+  "production_files_unchanged": 1100,
+  "nginx_unchanged": true,
+  "systemd_configs_unchanged": true,
+  "production_armacao_rows_unchanged": true,
+  "production_cq_row_and_default_unchanged": true,
+  "homolog_armacao_enabled": true,
+  "homolog_cq_value": 25.0,
+  "homolog_cq_default": "25",
+  "original_backup_sha256_unchanged": true,
+  "frozen_static_bytes": {
+    "static_files_verified": 348,
+    "manifest_files": 384,
+    "archive_sha256": "899286028563d1ca2a5911cd8f163d340dcfbb7a06d25e36ecd4bb8b1b9cbedc"
+  },
+  "cluster_client_backends": 65,
+  "cluster_common_headroom": 32,
+  "max_connections": 100,
+  "production_mutations": 0
+}

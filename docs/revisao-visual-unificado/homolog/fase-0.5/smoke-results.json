@@ -1,0 +1,54 @@
+{
+  "base": "https://concrefer.concretrack.com.br:18446",
+  "session": {
+    "status": 200,
+    "role": "ADMIN"
+  },
+  "api_statuses": {
+    "series": 200,
+    "semana": 200,
+    "armaduras": 200
+  },
+  "screens": [
+    {
+      "screen": "series",
+      "status": "ok"
+    },
+    {
+      "screen": "semana",
+      "status": "ok"
+    },
+    {
+      "screen": "armaduras",
+      "status": "ok"
+    }
+  ],
+  "errors": [],
+  "http_errors": [
+    {
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+      "status": 404
+    },
+    {
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/unified/quick-access/me",
+      "status": 404
+    },
+    {
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+      "status": 404
+    },
+    {
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/unified/quick-access/me",
+      "status": 404
+    },
+    {
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/armacao/api/armacao/unidades",
+      "status": 404
+    },
+    {
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/unified/quick-access/me",
+      "status": 404
+    }
+  ],
+  "blocked_origins": []
+}

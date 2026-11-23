@@ -16,10 +16,10 @@ export const capabilities: AppCapabilities = {
   adminAuthentication: 'real',
   adminSession: 'httpOnlyCookie',
   deviceActivation: 'local',
-  operatorAuthentication: isDemoMode ? 'demo' : 'real',
-  productionData: isDemoMode ? 'demo' : 'real',
-  productionPersistence: 'real',
-  offlineOperationalSync: 'local',
+  operatorAuthentication: isDemoMode ? 'demo' : 'unavailable',
+  productionData: isDemoMode ? 'demo' : 'unavailable',
+  productionPersistence: 'unavailable',
+  offlineOperationalSync: 'unavailable',
 };
 
 export function assertCapabilityAvailable(

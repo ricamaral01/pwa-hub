@@ -1,0 +1,12 @@
+{
+  "version": "1.4.29",
+  "previous_version": "1.4.27",
+  "module_version_1_4_28_reserved_separately": true,
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/busca-20261120T143159Z",
+  "files": 15,
+  "connections_before": 65,
+  "services_restarted": false,
+  "database_writes": 0,
+  "production_changed": false,
+  "rollback": "python3 /opt/concrefer-unificado/homolog-next/staging/busca-20261120/busca_rollback.py /opt/concrefer-unificado/homolog-next/backups/busca-20261120T143159Z"
+}

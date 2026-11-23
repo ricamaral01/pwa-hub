@@ -1,0 +1,117 @@
+{
+  "status": "ok",
+  "base": "https://concrefer.concretrack.com.br:18446",
+  "test_week": "2030-03-11",
+  "programming_week_id": 4,
+  "published_posts": 1,
+  "armaduras_emission": {
+    "id": 3,
+    "revisao": 1,
+    "responsavel": "Ricardo Do Amaral",
+    "criado_em": "2026-11-18T22:05:48+00:00"
+  },
+  "armaduras_pdf_sha256": "d47788c5923dd5b504926382ea23e98608f34d85b0e6624e8e8fb29cd87ebff7",
+  "series_emission": {
+    "id": 2,
+    "revisao": 1,
+    "responsavel": "Ricardo Do Amaral",
+    "criado_em": "2026-11-18T19:05:50.864264-03:00"
+  },
+  "series_pdf_sha256": "7676d45c9c13ba57b219a8af713362ceadbb8d715b88857d671507b531204867",
+  "reprints_byte_identical": true,
+  "series_sync": {
+    "not_executed": "Existing historical data preserved during visual test"
+  },
+  "test_form": {
+    "codigo_forma": "SC01",
+    "modelo": "9X200"
+  },
+  "trace": [
+    {
+      "method": "GET",
+      "path": "/programacao-semanal?semana=2030-03-11",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/programacao-semana",
+      "status": 201
+    },
+    {
+      "method": "PUT",
+      "path": "/programacao-semana/4/itens",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/programacao-semanal?semana=2030-03-11",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/programacao-semana/4/validar",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/programacao-semana/4/publicar",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/armaduras/relatorio?semana=2030-03-11&grupo=12",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/armaduras/emissoes",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/armaduras/emissoes/3/pdf",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/armaduras/emissoes/3/pdf",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/programacao-circular-s3/catalogo",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/programacao-circular-s3?data_inicio=2030-03-11&dias=1",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/programacao-circular-s3/periodo",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/postes-series/relatorio?semana=2030-03-11&escopo=semana&modo=previsao",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/postes-series/emissoes",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/postes-series/emissoes/2/pdf",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/postes-series/emissoes/2/pdf",
+      "status": 200
+    }
+  ],
+  "external_write_calls": 0
+}

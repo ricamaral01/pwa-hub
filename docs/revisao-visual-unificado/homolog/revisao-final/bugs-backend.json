@@ -1,0 +1,60 @@
+[
+  {
+    "id": "CQ-HIST-001",
+    "status": "corrigido em etapa separada autorizada",
+    "route": "/unificado/laboratorio/certificados-qualidade/?tab=historico",
+    "request": "GET /unificado/laboratorio/certificados-qualidade/api/certificados?q=",
+    "http_status": 500,
+    "cause": "A consulta do serviço CQ espera a coluna liberacao_excepcional_por em cq_certificados; o esquema isolado não a contém.",
+    "evidence": "journalctl do unificado-visual-homolog-cq.service: psycopg.errors.UndefinedColumn: column liberacao_excepcional_por does not exist.",
+    "proposal": "Após decisão do usuário, comparar as colunas esperadas pela versão instalada com o esquema de homologação e aplicar somente a migração oficial necessária, com dump prévio e verificação do IAM. Não substituir campos, criar dados artificiais nem ocultar o erro no frontend.",
+    "reference_schema": "Na outra worktree, unificado/laboratorio/certificados-qualidade/migrations/001_schema.sql declara liberacao_excepcional_por text e liberacao_excepcional_nome text. Esse arquivo é referência para diagnóstico, não foi executado.",
+    "database_writes": "Somente DDL oficial da 006, conforme autorização posterior; nenhum dado existente alterado.",
+    "api_changes": 0,
+    "correction": "Migração oficial 006 aplicada somente em laboratorio_visual_homolog_20261118, com dump verificado, cinco colunas confirmadas e dados/permissões existentes preservados.",
+    "commit": "6a8cf383",
+    "evidence_after": "../cq-migracao-006/aplicacao.json",
+    "history_after": "../cq-migracao-006/historico-perfis.json"
+  },
+  {
+    "id": "LAB-SUP-001",
+    "status": "decisão do usuário pendente, preservado da revisão anterior",
+    "identity": "user-alex",
+    "cause": "O catálogo central inclui Suprimentos, mas a autoridade nativa não autoriza o acesso.",
+    "evidence": "Consulta isolada: /unificado/mapa/api/me 200, /unificado/suprimentos/session-renew 200, /api/suprimentos/me 403.",
+    "proposal": "O usuário decide entre conceder acesso nativo adequado ou retirar o destino do catálogo dessa conta. Nenhuma permissão foi alterada nesta rodada.",
+    "permission_writes": 0
+  },
+  {
+    "id": "INFRA-CONN-001",
+    "status": "bloqueia matriz completa",
+    "cause": "O cluster PostgreSQL compartilhado apresentou 96 conexões para max_connections=100; serviços isolados falham ao abrir conexões comuns. A contagem sozinha não atribui a origem ao teste.",
+    "evidence": "journalctl dos serviços unificado-visual-homolog-mapa e pcp, 19/11/2026 11:25–11:38 UTC: psycopg.OperationalError: FATAL: remaining connection slots are reserved for roles with the SUPERUSER attribute.",
+    "proposal": "Investigar capacidade e ciclo de vida dos pools em etapa de infraestrutura autorizada. Não aumentar limites, encerrar sessões ou reiniciar serviços nesta rodada. Reexecutar matriz após estabilização.",
+    "action_taken": "Matriz repetida com uma tela e uma chamada de API por vez; falhas reais permanecem registradas. Nenhum serviço ou limite do banco foi alterado."
+  },
+  {
+    "id": "USINAS-AUTH-001",
+    "status": "bloqueia validação das subrotas de estoque",
+    "cause": "As subrotas nativas exigem conta antiga do ERP além da sessão central; retornam 401 e exibem Conta antiga.",
+    "evidence": "Capturas e respostas HTTP das subrotas usinas estoque na matriz GERENCIA/LABORATORIO.",
+    "proposal": "Validar o acesso com identidade de homologação já autorizada no ERP; qualquer mudança de integração ou permissão exige decisão separada.",
+    "permission_writes": 0
+  },
+  {
+    "id": "IG-CALENDAR-001",
+    "status": "lacuna de dados para o texto solicitado",
+    "cause": "As consultas atuais expõem dias com produção, sem calendário de dias úteis.",
+    "evidence": "As respostas de produção mensal, dashboard e maodeobra/resumo não expõem calendário útil nem feriados.",
+    "proposal": "Confirmar uma fonte existente para dias úteis. A candidata mostra travessão no campo sem fonte, preservando os cálculos atuais e os dias com produção na tabela.",
+    "api_changes": 0
+  },
+  {
+    "id": "USINAS-REL-001",
+    "status": "dependência permitida; prova real bloqueada pela saída de rede do serviço",
+    "cause": "O serviço Mapa de homologação permite somente loopback por IPAddressAllow/IPAddressDeny. Manifesto e relatório retornam 503; a origem pública responde 200 fora desse serviço.",
+    "proposal": "Manter a decisão atual sem cópias, mudanças de constantes ou reinícios. Abertura real e troca de data ficam pendentes; cenários controlados e mensagem de falha estão comprovados em external-report/RELATORIO.md.",
+    "evidence": "external-report/live.json",
+    "services_restarted": false
+  }
+]

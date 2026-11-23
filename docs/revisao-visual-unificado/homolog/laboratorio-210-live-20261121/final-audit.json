@@ -1,0 +1,19 @@
+{
+  "captured_at_epoch": 1795271868.920168,
+  "production_unchanged": {
+    "version": "2.0.0",
+    "static_hashes": 350,
+    "prior_configuration_hashes": 211,
+    "carta_main_pid": "1516790",
+    "current_inventory_config_hashes_unchanged": true,
+    "passed": true
+  },
+  "production_version": "2.0.0",
+  "homolog_version": "2.1.0",
+  "max_connections_changed": false,
+  "reserved_connections_changed": false,
+  "old_services_stopped": 0,
+  "new_services": 0,
+  "new_workers": 0,
+  "new_pools": 0
+}

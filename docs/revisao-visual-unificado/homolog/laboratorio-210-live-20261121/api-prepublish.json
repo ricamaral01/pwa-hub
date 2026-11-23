@@ -1,0 +1,50 @@
+[
+  {
+    "user": "alex",
+    "unit": "pederneiras",
+    "status": 200,
+    "returned_id": "alex"
+  },
+  {
+    "user": "alex",
+    "unit": "ribeirao",
+    "status": 200,
+    "returned_id": "alex"
+  },
+  {
+    "user": "marcelo",
+    "unit": "pederneiras",
+    "status": 200,
+    "returned_id": "marcelo"
+  },
+  {
+    "user": "marcelo",
+    "unit": "ribeirao",
+    "status": 200,
+    "returned_id": "marcelo"
+  },
+  {
+    "user": "philippe",
+    "unit": "pederneiras",
+    "status": 200,
+    "returned_id": "philippe"
+  },
+  {
+    "user": "philippe",
+    "unit": "ribeirao",
+    "status": 200,
+    "returned_id": "philippe"
+  },
+  {
+    "user": "user-ricardo",
+    "unit": "pederneiras",
+    "status": 200,
+    "returned_id": "user-ricardo"
+  },
+  {
+    "user": "user-ricardo",
+    "unit": "ribeirao",
+    "status": 200,
+    "returned_id": "user-ricardo"
+  }
+]

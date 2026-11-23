@@ -1,0 +1,220 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Comparação de Traços • Custos do Concreto</title>
+  <link href="/unificado/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  
+  <script src="/unificado/vendor/published/chart.umd.min-bd19dbbb83.js"></script>
+  
+  <style>@media print {
+
+    :root{--o:#e07a3a;--n:#0d3b66;--g:#343b43;--bg:#f2f3f5;--b:#1976d2;--line:#e7e9ed;--muted:#68717d;--ok:#15803d;--warn:#b45309;--bad:#be123c}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Montserrat,"Segoe UI",sans-serif;color:var(--g)}
+    header{background:#343b43;color:#fff;border-bottom:3px solid var(--o)}.top{max-width:1400px;margin:auto;padding:14px 22px;display:flex;align-items:center;gap:13px}.top img{width:42px}.top h1{font-size:18px;margin:0;font-weight:800}.top small{color:#cbd5e1}.top-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}.top a{color:#fff;text-decoration:none;border:1px solid #ffffff30;padding:8px 13px;border-radius:9px;font-weight:700;font-size:12px}
+    .wrap{max-width:1400px;margin:auto;padding:24px}.hero{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px}.hero h2{font-weight:800;margin:0}.hero p{color:var(--muted);margin:5px 0 0;font-size:13px}.btnx{border:0;background:var(--o);color:#fff;border-radius:8px;padding:9px 13px;font-weight:800}.btnx.secondary{background:var(--n)}.btnx:disabled{opacity:.65}.panel,.cardx{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:0 3px 12px #00000008}.selector-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.field label{display:block;font-size:11px;font-weight:800;color:#64748b;margin-bottom:6px;text-transform:uppercase}.select{width:100%;padding:10px;border:1px solid #d8dde4;border-radius:8px;background:#fff;color:var(--g)}.actions{display:flex;gap:8px;margin-top:14px;align-items:center;flex-wrap:wrap}.muted{color:#77808c;font-size:12px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}.cardx small{display:block;color:#6b7280;font-weight:800;text-transform:uppercase;font-size:10px}.cardx strong{display:block;font-size:22px;color:var(--n);margin-top:7px}.cardx .delta{font-size:12px;font-weight:700;margin-top:4px;color:#64748b}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.chart{height:360px;position:relative}.wide{grid-column:1/-1}.panel h3{font-size:16px;font-weight:800;margin:0 0 6px}.analysis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.analysis-card{border:1px solid #e2e8f0;border-radius:10px;padding:14px;background:#f8fafc}.analysis-card h4{font-size:13px;font-weight:800;margin:0 0 8px}.analysis-card p{margin:0;color:#475569;font-size:12px;line-height:1.45}.table-wrap{overflow:auto;max-height:460px}table{width:100%;border-collapse:collapse}th,td{padding:10px 9px;border-bottom:1px solid #edf0f3;font-size:12px;text-align:left}th{color:#64748b;text-transform:uppercase;font-size:10px;position:sticky;top:0;background:#fff}.money{font-weight:800;color:var(--n);white-space:nowrap}.pill{display:inline-flex;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:800}.pill.ok{background:#dcfce7;color:#166534}.pill.warn{background:#fef3c7;color:#92400e}.state{padding:18px;color:#64748b;font-weight:700}.hidden{display:none!important}@media(max-width:980px){.selector-grid,.cards,.grid,.analysis{grid-template-columns:1fr}.wrap{padding:15px}.hero{display:block}.top{align-items:flex-start}.top-actions{margin-left:0}}
+  
+}
+@media screen {
+:root{--o:var(--c-orange);--n:var(--c-blue);--g:var(--c-blue);--bg:var(--c-bg);--b:var(--c-ink-2);--line:var(--c-line);--muted:var(--c-ink-2);--ok:var(--c-ok);--warn:var(--c-warn);--bad:var(--c-crit);}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--g);}
+header{background:var(--c-blue);color:var(--c-surface);border-bottom:3px solid var(--o);}
+.top{max-width:1400px;margin:auto;padding:14px 22px;display:flex;align-items:center;gap:13px;}
+.top img{width:42px;}
+.top h1{font-size:18px;margin:0;font-weight:800;}
+.top small{color:var(--c-line);}
+.top-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+.top a{color:var(--c-surface);text-decoration:none;border:1px solid color-mix(in srgb, var(--c-surface) 18.82%, transparent);padding:8px 13px;border-radius:var(--r);font-weight:700;font-size:12px;}
+.wrap{max-width:1400px;margin:auto;padding:24px;}
+.hero{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px;}
+.hero h2{font-weight:800;margin:0;}
+.hero p{color:var(--muted);margin:5px 0 0;font-size:13px;}
+.btnx{border:0;background:var(--o);color:var(--c-surface);border-radius:var(--r);padding:9px 13px;font-weight:800;}
+.btnx.secondary{background:var(--n);}
+.btnx:disabled{opacity:.65;}
+.panel,.cardx{background:var(--c-surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:none;}
+.selector-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.field label{display:block;font-size:11px;font-weight:800;color:var(--c-ink-2);margin-bottom:6px;text-transform:none;}
+.select{width:100%;padding:10px;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);color:var(--g);}
+.actions{display:flex;gap:8px;margin-top:14px;align-items:center;flex-wrap:wrap;}
+.muted{color:var(--c-ink-3);font-size:12px;}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0;}
+.cardx small{display:block;color:var(--c-ink-2);font-weight:800;text-transform:none;font-size:10px;}
+.cardx strong{display:block;font-size:22px;color:var(--n);margin-top:7px;}
+.cardx .delta{font-size:12px;font-weight:700;margin-top:4px;color:var(--c-ink-2);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+.chart{height:360px;position:relative;}
+.wide{grid-column:1/-1;}
+.panel h3{font-size:16px;font-weight:800;margin:0 0 6px;}
+.analysis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.analysis-card{border:1px solid var(--c-line);border-radius:var(--r);padding:14px;background:var(--c-bg);}
+.analysis-card h4{font-size:13px;font-weight:800;margin:0 0 8px;}
+.analysis-card p{margin:0;color:var(--c-ink-2);font-size:12px;line-height:1.45;}
+.table-wrap{overflow:auto;max-height:460px;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:10px 9px;border-bottom:1px solid var(--c-line-2);font-size:12px;text-align:left;}
+th{color:var(--c-ink-2);text-transform:none;font-size:10px;position:sticky;top:0;background:var(--c-surface);}
+.money{font-weight:800;color:var(--n);white-space:nowrap;}
+.pill{display:inline-flex;border-radius:var(--r);padding:4px 8px;font-size:10px;font-weight:800;}
+.pill.ok{background:var(--c-line);color:var(--c-ok);}
+.pill.warn{background:var(--c-line-2);color:var(--c-warn);}
+.state{padding:18px;color:var(--c-ink-2);font-weight:700;}
+.hidden{display:none!important;}
+@media (max-width:980px){.selector-grid,.cards,.grid,.analysis{grid-template-columns:1fr;}
+.wrap{padding:15px;}
+.hero{display:block;}
+.top{align-items:flex-start;}
+.top-actions{margin-left:0;}
+}
+
+}
+</style>
+<script>
+    // Acesso direto volta à casca autenticada; no iframe preserva o layout original.
+    if (top === self) {
+      const params = new URLSearchParams({area:'relatorios'});
+      if ('comparar') params.set('app', 'comparar');
+      for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+      location.replace('/unificado/?view=' + encodeURIComponent('usinas/?' + params));
+    } else {
+      const syncShell = () => {
+        if (parent !== top || top.location.pathname !== '/unificado/') return;
+        const params = new URLSearchParams({area:'relatorios'});
+        if ('comparar') params.set('app', 'comparar');
+        for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+        const view = 'usinas/?' + params;
+        top.history.replaceState({view}, '', '/unificado/?view=' + encodeURIComponent(view));
+      };
+      addEventListener('DOMContentLoaded', syncShell);
+      const originalReplace = history.replaceState.bind(history);
+      history.replaceState = (...args) => { originalReplace(...args); syncShell(); };
+    }
+    function concretrackLogout() {
+      if (top.UnificadoAuth?.logout) top.UnificadoAuth.logout();
+      else top.location.assign('/unificado/login.html');
+    }
+    </script>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.27"><script defer src="/unificado/shell/components.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"><link rel="stylesheet" href="/unificado/shell/native-content.css?v=2.0.0" media="screen">
+</head>
+<body>
+  <header><div class="top"><img src="/unificado/usinas/relatorios/assets/PRINCIPAL@2x.png" alt="Logo"><div><h1><i class="bi bi-bar-chart-steps"></i> Comparação de Traços</h1><small>Custos do Concreto • Relatório Gerencial</small></div><div class="top-actions"><a href="/unificado/usinas/relatorios/custos/"><i class="bi bi-cash-coin"></i> Custos</a><a href="/unificado/usinas/relatorios/"><i class="bi bi-arrow-left"></i> Relatórios</a></div></div></header>
+  <main class="wrap">
+    <div class="hero"><div><h2>Comparar custos entre 2 ou 3 traços</h2><p>Selecione as cartas de traço para comparar custo total, composição por material e principais diferenças.</p></div><button class="btnx secondary" onclick="loadAll()"><i class="bi bi-arrow-clockwise"></i> Atualizar dados</button></div>
+    <section class="panel">
+      <div class="selector-grid">
+        <div class="field"><label>Traço 1</label><select id="sel1" class="select"></select></div>
+        <div class="field"><label>Traço 2</label><select id="sel2" class="select"></select></div>
+        <div class="field"><label>Traço 3 opcional</label><select id="sel3" class="select"></select></div>
+      </div>
+      <div class="actions"><button class="btnx" onclick="compare()"><i class="bi bi-play-fill"></i> Comparar</button><span id="state" class="muted">Carregando cartas de traço...</span></div>
+    </section>
+    <section id="result" class="hidden">
+      <div class="cards" id="cards"></div>
+      <div class="grid">
+        <div class="panel"><h3>Custo total por traço</h3><p class="muted">Valor calculado com os custos vigentes dos materiais mapeados.</p><div class="chart"><canvas id="totalChart"></canvas></div></div>
+        <div class="panel"><h3>Participação percentual</h3><p class="muted">Peso de cada material dentro do custo total da carta selecionada.</p><div class="chart"><canvas id="shareChart"></canvas></div></div>
+        <div class="panel wide"><h3>Composição de custos por material</h3><p class="muted">Barras empilhadas mostram onde cada traço consome mais custo.</p><div class="chart"><canvas id="stackChart"></canvas></div></div>
+        <div class="panel wide"><h3>Projeção de impacto financeiro</h3><p class="muted">Estimativa baseada no volume mensal registrado para os traços selecionados.</p><div id="projection" class="analysis"></div></div>
+        <div class="panel wide"><h3>Análise automática</h3><div id="analysis" class="analysis"></div></div>
+        <div class="panel wide"><h3>Detalhamento comparativo</h3><div class="table-wrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div></div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const API='/unificado/mapa/api/usina/reporting';
+    let cartas=[], totalChart, stackChart, shareChart;
+    const colors=['#0d3b66','#e07a3a','#1976d2','#10b981','#f59e0b','#8b5cf6','#ef4444','#64748b','#14b8a6','#a855f7','#f97316'];
+    const money=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:2,maximumFractionDigits:2});
+    const num=v=>Number(v||0).toLocaleString('pt-BR',{maximumFractionDigits:2});
+    const pct=v=>`${Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})}%`;
+    const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function normName(m){return m.material_nome||m.label||m.campo||'Material'}
+    function usefulMaterials(c){return (c.materiais||[]).filter(m=>Number(m.quantidade||0)>0 || Number(m.custo_total||0)>0)}
+    async function loadAll(){
+      state.textContent='Carregando cartas de traço...';
+      try{
+        const r=await fetch(API+'/relatorios/cartas-traco?ativas=true',{credentials:'same-origin',cache:'no-store'});
+        if(!r.ok) throw new Error('Falha ao consultar cartas de traço.');
+        const data=await r.json(); cartas=(data.cartas||[]).sort((a,b)=>String(a.nome_traco||a.nome).localeCompare(String(b.nome_traco||b.nome),'pt-BR'));
+        fillSelects(); state.textContent=`${cartas.length} cartas disponíveis.`;
+      }catch(e){state.textContent=e.message;}
+    }
+    function fillSelects(){
+      const options='<option value="">Selecione</option>'+cartas.map(c=>`<option value="${c.id}">${esc(c.nome_traco||c.nome)} — ${money(c.custo_total)}</option>`).join('');
+      sel1.innerHTML=options; sel2.innerHTML=options; sel3.innerHTML='<option value="">Opcional</option>'+options.replace('<option value="">Selecione</option>','');
+    }
+    function selected(){
+      const ids=[sel1.value,sel2.value,sel3.value].filter(Boolean);
+      const unique=[...new Set(ids)];
+      return unique.map(id=>cartas.find(c=>String(c.id)===String(id))).filter(Boolean);
+    }
+    function compare(){
+      const items=selected();
+      if(items.length<2){state.textContent='Selecione pelo menos dois traços diferentes.';return}
+      state.textContent=`Comparando ${items.length} traços.`; result.classList.remove('hidden');
+      renderCards(items); renderCharts(items); renderProjection(items); renderAnalysis(items); renderTable(items);
+    }
+    function renderCards(items){
+      const cheapest=[...items].sort((a,b)=>Number(a.custo_total||0)-Number(b.custo_total||0))[0];
+      cards.innerHTML=items.map(c=>{
+        const cost=Number(c.custo_total||0), base=Number(cheapest.custo_total||0);
+        const delta=cost-base, deltaPct=base?delta/base*100:0;
+        return `<div class="cardx"><small>${esc(c.nome_traco||c.nome)}</small><strong>${money(cost)}</strong><div class="delta">${delta===0?'menor custo':`${money(delta)} acima do menor • ${pct(deltaPct)}`}</div></div>`;
+      }).join('')+`<div class="cardx"><small>Amplitude</small><strong>${money(Math.max(...items.map(c=>c.custo_total||0))-Math.min(...items.map(c=>c.custo_total||0)))}</strong><div class="delta">${pct((Math.max(...items.map(c=>c.custo_total||0))-Math.min(...items.map(c=>c.custo_total||0)))/(Number(cheapest.custo_total||0)||1)*100)} entre maior e menor custo</div></div>`;
+    }
+    function projectionVolume(items){
+      const volumes=items.map(c=>Number(c.volume_periodo||0)).filter(v=>v>0);
+      if(!volumes.length) return 0;
+      return volumes.reduce((a,b)=>a+b,0)/volumes.length;
+    }
+    function renderProjection(items){
+      const sorted=[...items].sort((a,b)=>Number(a.custo_total||0)-Number(b.custo_total||0));
+      const base=sorted[0], volume=projectionVolume(items);
+      if(!volume){
+        projection.innerHTML='<div class="analysis-card"><h4><i class="bi bi-info-circle"></i> Sem volume de referência</h4><p>Não há volume mensal registrado no período para projetar economia ou aumento. Os custos unitários continuam comparáveis nos gráficos acima.</p></div>';
+        return;
+      }
+      projection.innerHTML=items.map(c=>{
+        const delta=Number(c.custo_total||0)-Number(base.custo_total||0);
+        const oneMonth=delta*volume;
+        const twelveMonths=oneMonth*12;
+        const kind=delta>0?'aumento':delta<0?'economia':'referência';
+        const cls=delta>0?'warn':'ok';
+        return `<div class="analysis-card"><h4><i class="bi bi-calculator"></i> ${esc(c.nome_traco||c.nome)}</h4><p><span class="pill ${cls}">${kind}</span><br>Variação unitária: <b>${delta>=0?'+':''}${money(delta)}</b> (${pct(Number(base.custo_total||0)?delta/Number(base.custo_total||0)*100:0)})<br>1 mês: <b>${oneMonth>=0?'+':''}${money(oneMonth)}</b><br>12 meses: <b>${twelveMonths>=0?'+':''}${money(twelveMonths)}</b><br><span class="muted">Base: ${num(volume)} m³/mês e menor custo ${esc(base.nome_traco||base.nome)}.</span></p></div>`;
+      }).join('');
+    }
+    function materialKeys(items){
+      return [...new Set(items.flatMap(c=>usefulMaterials(c).map(normName)))];
+    }
+    function costByMaterial(c,key){const m=usefulMaterials(c).find(x=>normName(x)===key);return Number(m?.custo_total||0)}
+    function renderCharts(items){
+      totalChart?.destroy(); stackChart?.destroy(); shareChart?.destroy();
+      const labels=items.map(c=>c.nome_traco||c.nome);
+      totalChart=new Chart(document.getElementById('totalChart'),{type:'bar',data:{labels,datasets:[{label:'Custo total',data:items.map(c=>c.custo_total||0),backgroundColor:colors}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:x=>money(x.raw)}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>money(v)}}}}});
+      const keys=materialKeys(items).sort((a,b)=>Math.max(...items.map(c=>costByMaterial(c,b)))-Math.max(...items.map(c=>costByMaterial(c,a)))).slice(0,10);
+      stackChart=new Chart(document.getElementById('stackChart'),{type:'bar',data:{labels,datasets:keys.map((k,i)=>({label:k,data:items.map(c=>costByMaterial(c,k)),backgroundColor:colors[i%colors.length]}))},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true,ticks:{callback:v=>money(v)}}},plugins:{tooltip:{callbacks:{label:x=>`${x.dataset.label}: ${money(x.raw)}`}}}}});
+      const base=items[0], mats=usefulMaterials(base).sort((a,b)=>(b.custo_total||0)-(a.custo_total||0)).slice(0,8);
+      shareChart=new Chart(document.getElementById('shareChart'),{type:'doughnut',data:{labels:mats.map(normName),datasets:[{data:mats.map(m=>m.custo_total||0),backgroundColor:colors}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:base.nome_traco||base.nome},legend:{position:'bottom'},tooltip:{callbacks:{label:x=>`${x.label}: ${money(x.raw)}`}}}}});
+    }
+    function renderAnalysis(items){
+      const sorted=[...items].sort((a,b)=>Number(a.custo_total||0)-Number(b.custo_total||0));
+      const low=sorted[0], high=sorted[sorted.length-1], diff=Number(high.custo_total||0)-Number(low.custo_total||0), diffPct=low.custo_total?diff/low.custo_total*100:0;
+      const keys=materialKeys(items); let drivers=[];
+      if(items.length>=2){const a=low,b=high;drivers=keys.map(k=>({k,d:costByMaterial(b,k)-costByMaterial(a,k),p:costByMaterial(a,k)?(costByMaterial(b,k)-costByMaterial(a,k))/costByMaterial(a,k)*100:0})).sort((x,y)=>Math.abs(y.d)-Math.abs(x.d)).slice(0,3)}
+      const missing=items.flatMap(c=>usefulMaterials(c).filter(m=>m.material_id && Number(m.custo_unitario||0)<=0).map(m=>`${c.nome_traco||c.nome}: ${normName(m)}`));
+      analysis.innerHTML=`<div class="analysis-card"><h4><i class="bi bi-trophy"></i> Menor custo</h4><p><b>${esc(low.nome_traco||low.nome)}</b> é o menor custo da comparação, com ${money(low.custo_total)}.</p></div><div class="analysis-card"><h4><i class="bi bi-arrow-left-right"></i> Diferença</h4><p>O maior custo é <b>${esc(high.nome_traco||high.nome)}</b>. A diferença é de <b>${money(diff)}</b>, equivalente a <b>${pct(diffPct)}</b> sobre o menor custo.</p></div><div class="analysis-card"><h4><i class="bi bi-search"></i> Principais vetores</h4><p>${drivers.length?drivers.map(x=>`${esc(x.k)} (${x.d>=0?'+':''}${money(x.d)} • ${pct(x.p)})`).join('<br>'):'Sem diferença relevante de composição.'}</p></div><div class="analysis-card"><h4><i class="bi bi-activity"></i> Uso no período</h4><p>${items.map(c=>`${esc(c.nome_traco||c.nome)}: ${c.usos_periodo||0} usos / ${num(c.volume_periodo)} m³`).join('<br>')}</p></div><div class="analysis-card"><h4><i class="bi bi-shield-check"></i> Qualidade do cadastro</h4><p>${missing.length?`Há materiais sem custo definido:<br>${missing.slice(0,5).map(esc).join('<br>')}`:'Os traços selecionados não apresentam material mapeado com custo unitário zerado.'}</p></div><div class="analysis-card"><h4><i class="bi bi-clipboard-data"></i> Leitura gerencial</h4><p>Use a variação percentual e a projeção para priorizar revisão de consumo, negociação dos insumos de maior impacto e padronização do traço mais econômico.</p></div>`;
+    }
+    function renderTable(items){
+      const keys=materialKeys(items).sort();
+      const base=[...items].sort((a,b)=>Number(a.custo_total||0)-Number(b.custo_total||0))[0];
+      thead.innerHTML=`<tr><th>Material</th>${items.map(c=>`<th>${esc(c.nome_traco||c.nome)}</th>`).join('')}<th>Maior diferença</th><th>Variação máx.</th></tr>`;
+      tbody.innerHTML=keys.map(k=>{const vals=items.map(c=>costByMaterial(c,k));const min=Math.min(...vals),max=Math.max(...vals),spread=max-min,spreadPct=min?spread/min*100:0;return `<tr><td><b>${esc(k)}</b></td>${vals.map(v=>`<td class="money">${money(v)}</td>`).join('')}<td>${money(spread)}</td><td>${pct(spreadPct)}</td></tr>`}).join('')+`<tr><td><b>Total</b></td>${items.map(c=>{const delta=Number(c.custo_total||0)-Number(base.custo_total||0);const p=base.custo_total?delta/base.custo_total*100:0;return `<td class="money">${money(c.custo_total)}<div class="muted">${delta===0?'base':`${delta>=0?'+':''}${pct(p)}`}</div></td>`}).join('')}<td class="money">${money(Math.max(...items.map(c=>c.custo_total||0))-Math.min(...items.map(c=>c.custo_total||0)))}</td><td>${pct((Math.max(...items.map(c=>c.custo_total||0))-Math.min(...items.map(c=>c.custo_total||0)))/(Number(base.custo_total||0)||1)*100)}</td></tr>`;
+    }
+    loadAll();
+  </script>
+</body>
+</html>

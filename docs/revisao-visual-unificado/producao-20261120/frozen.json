@@ -1,0 +1,15 @@
+{
+  "version": "1.4.30",
+  "tag": "candidata-producao-1.4.30",
+  "archive": "candidate.tgz",
+  "archive_bytes": 7743045,
+  "archive_sha256": "899286028563d1ca2a5911cd8f163d340dcfbb7a06d25e36ecd4bb8b1b9cbedc",
+  "manifest_sha256": "94bfb07b5e5bc353ce79e1e67e78e99a12c2d8ea2b88330a41442825d4fb1867",
+  "verification": {
+    "static_files_verified": 348,
+    "manifest_files": 384,
+    "archive_sha256": "899286028563d1ca2a5911cd8f163d340dcfbb7a06d25e36ecd4bb8b1b9cbedc"
+  },
+  "source": "live 18446 source capture, explicit production exclusions tested on 18446",
+  "no_further_candidate_changes": true
+}

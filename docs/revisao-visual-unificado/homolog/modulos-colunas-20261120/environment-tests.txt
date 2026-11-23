@@ -1,0 +1,13 @@
+✔ homolog mantém a tela de teste marcada e pesquisável (8.3868ms)
+✔ produção exclui o teste do catálogo e nega destinos salvos antigos (4.7755ms)
+✔ ensaios de postes são uma função real mantida em produção (2.3444ms)
+✔ todos os itens de todos os módulos possuem ícone e descrição (6.6226ms)
+✔ descrições novas são curtas e não sobrescrevem as existentes (3.8836ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 149.3023

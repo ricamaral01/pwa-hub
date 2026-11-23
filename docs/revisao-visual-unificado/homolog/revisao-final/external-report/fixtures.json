@@ -1,0 +1,63 @@
+[
+  {
+    "mode": "normal",
+    "synthetic": true,
+    "ok": true,
+    "external_gets": [
+      "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-30.html",
+      "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-30.html",
+      "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-29.html",
+      "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-29.html"
+    ],
+    "dates_count": 2,
+    "date_change": true,
+    "iframe_url": "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-29.html"
+  },
+  {
+    "mode": "missing",
+    "synthetic": true,
+    "ok": true,
+    "external_gets": [],
+    "message": "Não há relatório disponível para esta data. Selecione outra data ou tente novamente.",
+    "retry_visible": true,
+    "iframe_hidden": true
+  },
+  {
+    "mode": "offline",
+    "synthetic": true,
+    "ok": true,
+    "external_gets": [],
+    "message": "Não foi possível carregar o relatório. Tente novamente.",
+    "retry_visible": true,
+    "iframe_hidden": true
+  },
+  {
+    "mode": "browser-offline",
+    "synthetic": true,
+    "ok": true,
+    "external_gets": [
+      "https://dautomacao.com/concretrack/relatorios/reports-diarios/generated/pcp-producao/relatorio_pcp_producao_2026-10-30.html"
+    ],
+    "message": "Não foi possível carregar o relatório. Tente novamente.",
+    "retry_visible": true,
+    "iframe_hidden": true
+  },
+  {
+    "mode": "manifest-offline",
+    "synthetic": true,
+    "ok": true,
+    "external_gets": [],
+    "message": "Não foi possível carregar a lista de relatórios. Tente novamente.",
+    "retry_visible": true,
+    "iframe_hidden": true
+  },
+  {
+    "mode": "empty",
+    "synthetic": true,
+    "ok": true,
+    "external_gets": [],
+    "message": "Nenhum relatório está disponível na origem.",
+    "retry_visible": true,
+    "iframe_hidden": true
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "passed": false,
+  "production_publish_started": false,
+  "checks": {
+    "six_dumps_list_and_full_decode": true,
+    "rollback_rehearsal": true,
+    "non_additive_migrations_required": false,
+    "schema_differences": false,
+    "cluster_common_headroom_at_inventory": 34,
+    "minimum_common_headroom": 15,
+    "scope_matches_expected_production_state": false,
+    "homolog_configuration_matches_production": false
+  },
+  "stop_reason": "All four production Arma??o units have enabled:true, whereas the release decision requires Arma??o to remain disabled. Correcting these four records is a production data change absent from the frozen deployment delta. Stop before production mutation as requested.",
+  "proposal": {
+    "database": "pcp_unificado_teste",
+    "table": "armacao.configuracao_unidade",
+    "unit_ids": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "before": true,
+    "proposed_after": false,
+    "activation": "Only after the user resolves this discrepancy; export the four exact rows, prepare a transaction and exact row rollback, reconcile the delta and backups, repeat checkpoint. No changes applied."
+  },
+  "application_changes": 0,
+  "database_changes": 0,
+  "version_still": "1.4.6",
+  "additional_stop_reason": "CQ public.cq_parametros.fck_mpa: homolog live value/default 35, production live value/default 25; reference SQL 001/007 specifies 25. Reconcile the test environment and revalidate without changing production FCK.",
+  "proposal_cq": "Keep production FCK 25. After the user resolves the discrepancy, align homolog to the authoritative production/reference configuration and repeat certificate/PDF tests and the full deployment checkpoint."
+}

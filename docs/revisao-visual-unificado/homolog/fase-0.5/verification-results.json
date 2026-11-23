@@ -1,0 +1,60 @@
+{
+  "status": "ok",
+  "production_files_and_pids_unchanged": true,
+  "published_files_verified": 205,
+  "only_html_difference": "official homologation banner",
+  "business_permissions_checks": [
+    {
+      "database": "pcp_unificado_homolog_20261016",
+      "table": "usuarios",
+      "rows": 24,
+      "unchanged": true
+    },
+    {
+      "database": "mapa_unificado_homolog_20261016",
+      "table": "usuarios",
+      "rows": 64,
+      "unchanged": true
+    },
+    {
+      "database": "mapa_unificado_homolog_20261016",
+      "table": "user_screen_permissions",
+      "rows": 667,
+      "unchanged": true
+    },
+    {
+      "database": "mapa_unificado_homolog_20261016",
+      "table": "user_action_permissions",
+      "rows": 21,
+      "unchanged": true
+    },
+    {
+      "database": "mapa_unificado_homolog_20261016",
+      "table": "identity_links",
+      "rows": 17,
+      "unchanged": true
+    }
+  ],
+  "migration_head": "20261111_04",
+  "dependencies_verified": {
+    "et_xmlfile": "2.0.0",
+    "openpyxl": "3.1.5",
+    "mako": "1.4.3",
+    "markupsafe": "3.0.4",
+    "reportlab": "4.4.4",
+    "pillow": "12.3.0",
+    "alembic": "1.14.1"
+  },
+  "dumps": {
+    "mapa.dump": {
+      "bytes": 114547061,
+      "sha256": "a308b5fa919e01fcb348bb03985d719a7d84b8112dddb32ae7efb1d3d85d42d0"
+    },
+    "pcp.dump": {
+      "bytes": 445832,
+      "sha256": "70458ac8148523ead6100f1f90000ae794e9eb29e6cd092ba7efc9c156276b02"
+    }
+  },
+  "nginx_changed": false,
+  "phase1_started": false
+}

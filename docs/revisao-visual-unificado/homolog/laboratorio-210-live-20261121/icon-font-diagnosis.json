@@ -1,0 +1,16 @@
+[
+  {
+    "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/static/noroeste/cec/assets/vendor/fonts/bootstrap-icons.woff2",
+    "exists": true,
+    "size": 130396,
+    "sha256": "476adf42b40325098fcfa8b36ab3e769186bb4f6ce6a249753e2e1a9c22bf99e",
+    "header": "774f463200010000"
+  },
+  {
+    "file": "/opt/concrefer-unificado/homolog-next/public/unificado/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2",
+    "exists": true,
+    "size": 130396,
+    "sha256": "476adf42b40325098fcfa8b36ab3e769186bb4f6ce6a249753e2e1a9c22bf99e",
+    "header": "774f463200010000"
+  }
+]

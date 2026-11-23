@@ -1,0 +1,216 @@
+--- 1.4.6/services/laboratorio/server/static/cec/analise/relatorio.html
++++ 1.4.31/services/laboratorio/server/static/cec/analise/relatorio.html
+@@ -12,8 +12,9 @@
+   <meta http-equiv="Pragma" content="no-cache" />
+   <meta http-equiv="Expires" content="0" />
+   <script src="/unificado/laboratorio/cec/assets/vendor/chart.umd.min.js"></script>
+-  <script src="./api-client.js?v=3"></script>
+-  <style>
++  <script src="./api-client.js?v=1.4.26"></script>
++  <style>@media print {
++
+     /* ══ LIGHT THEME BASE ══ */
+     :root {
+       --primary:       #1a3a5c;
+@@ -26,7 +27,7 @@
+       --radius:        18px;
+       --shadow:        0 8px 28px rgba(0,0,0,0.12);
+     }
+-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
++    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", system-ui, -apple-system, sans-serif; }
+     body {
+       background: linear-gradient(160deg, #f0f4f8 0%, #ffffff 60%, #eef2f7 100%);
+       color: var(--text); min-height: 100vh; display: flex; flex-direction: column;
+@@ -129,7 +130,7 @@
+     @media (max-width: 768px) {
+       .chart-box { cursor: pointer; position: relative; }
+       .chart-box::after {
+-        content: '⛶ toque para expandir';
++        content: "⛶ toque para expandir";
+         position: absolute; bottom: 8px; right: 10px;
+         font-size: .58rem; color: var(--muted); opacity: .65; pointer-events: none;
+       }
+@@ -169,8 +170,117 @@
+       box-shadow: 0 3px 14px rgba(0,0,0,0.35);
+     }
+     .chart-close-btn.visible { display: flex; }
+-  </style>
+-</head>
++  
++}
++@media screen{/* ══ LIGHT THEME BASE ══ */
++:root{--primary:var(--c-blue);--primary-light:var(--c-blue);--accent:var(--c-orange);--card-bg:rgba(0,0,0,0.04);--card-border:rgba(0,0,0,0.10);--text:var(--c-navy);--muted:var(--c-ink-2);--radius:var(--r);--shadow:0 8px 28px rgba(0,0,0,0.12);}
++*{margin:0;padding:0;box-sizing:border-box;}
++body{background:var(--c-surface);color:var(--text);min-height:100vh;display:flex;flex-direction:column;padding-bottom:60px;}
++/* ── TOP BAR ── */
++.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(255,255,255,0.92);border-bottom:1px solid var(--card-border);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;}
++.topbar-brand{display:flex;align-items:center;gap:14px;}
++.topbar-brand img{height:40px;width:40px;object-fit:contain;border-radius:var(--r);}
++.topbar-brand .brand-name{font-size:1rem;font-weight:900;letter-spacing:.04em;line-height:1.1;}
++.topbar-brand .brand-name span{color:var(--accent);}
++.topbar-brand .brand-sub{font-size:.65rem;color:var(--muted);text-transform:none;letter-spacing:.06em;margin-top:2px;}
++.btn-back{display:inline-flex;align-items:center;gap:6px;background:rgba(0,0,0,0.07);border:1px solid rgba(0,0,0,0.18);border-radius:var(--r);color:var(--text);font-size:.85rem;font-weight:700;padding:8px 16px;text-decoration:none;transition:background .15s, transform .1s;}
++.btn-back:hover{background:rgba(0,0,0,0.12);transform:none;}
++/* ── HERO ── */
++.hero{text-align:center;padding:36px 20px 24px;}
++.hero-icon{font-size:2.4rem;display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:var(--r);background:var(--c-surface);box-shadow:none;margin-bottom:14px;}
++.hero h1{font-size:1.45rem;font-weight:900;margin-bottom:6px;}
++.hero h1 span{color:var(--accent);}
++.hero p{font-size:.85rem;color:var(--muted);line-height:1.5;}
++.accent-line{width:60px;height:3px;background:var(--accent);border-radius:var(--r);margin:14px auto 0;}
++/* ── LAYOUT ── */
++.rpt-wrap{max-width:none;padding:16px 20px;}
++/* ── PRINT BUTTON ── */
++.btn-print{background:var(--c-ok);color:var(--c-surface);border:none;border-radius:var(--r);padding:8px 16px;font-size:.82rem;font-weight:700;cursor:pointer;}
++.btn-print:hover{background:var(--c-ok);}
++/* ── FILTER BAR ── */
++.filter-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px;}
++.filter-bar label{font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:5px;}
++.filter-bar select, .filter-bar input[type="number"]{background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.15);border-radius:var(--r);color:var(--text);padding:5px 9px;font-size:.78rem;}
++.btn-filter{background:rgba(232,118,42,0.12);border:1px solid rgba(232,118,42,.35);color:var(--accent);border-radius:var(--r);padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;}
++/* ── KPI ── */
++.kpi-group-title{font-size:.68rem;text-transform:none;letter-spacing:.09em;color:var(--muted);font-weight:700;margin:18px 0 8px;}
++.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));gap:10px;margin-bottom:6px;}
++.kpi-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--r);padding:14px 14px 12px;}
++.kpi-card .kpi-label{font-size:.64rem;text-transform:none;letter-spacing:.08em;color:var(--muted);margin-bottom:6px;}
++.kpi-card .kpi-val{font-size:1.55rem;font-weight:800;line-height:1;margin-bottom:2px;}
++.kpi-card .kpi-sub{font-size:.68rem;color:var(--muted);}
++.kpi-ok{border-left:3px solid var(--c-ok);}
++.kpi-warn{border-left:3px solid var(--c-orange);}
++.kpi-fail{border-left:3px solid var(--c-orange);}
++.kpi-neu{border-left:3px solid var(--c-ink-3);}
++/* ── AGE HEADER BADGE ── */
++.age-hdr{display:inline-block;border-radius:var(--r);padding:4px 12px;font-size:.72rem;font-weight:800;margin-bottom:10px;}
++.hdr-1{background:rgba(30,58,138,.12);color:var(--c-blue);border:1px solid rgba(59,130,246,.4);}
++.hdr-3{background:rgba(20,83,45,.10);color:var(--c-ok);border:1px solid rgba(34,197,94,.4);}
++.hdr-7{background:rgba(124,45,18,.10);color:var(--c-crit);border:1px solid rgba(249,115,22,.4);}
++.hdr-28{background:rgba(76,29,149,.10);color:var(--c-ink-3);border:1px solid rgba(168,85,247,.4);}
++/* ── SECTION CARDS ── */
++.section-card{background:rgba(255,255,255,.85);border:1px solid var(--card-border);border-radius:var(--r);padding:18px;margin-bottom:14px;}
++.section-title{font-size:.80rem;font-weight:800;text-transform:none;letter-spacing:.07em;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
++.section-title span{font-size:1rem;}
++/* ── CHARTS ── */
++.chart-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:14px;margin-bottom:14px;}
++.chart-stack{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:14px;}
++.chart-box{background:rgba(255,255,255,.6);border:1px solid var(--card-border);border-radius:var(--r);padding:14px;}
++.chart-box h4{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:none;letter-spacing:.06em;margin-bottom:10px;}
++.chart-box canvas{max-height:240px;}
++/* ── TABLES ── */
++.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--card-border);}
++table{border-collapse:collapse;white-space:nowrap;font-size:.73rem;width:100%;}
++thead th{padding:8px 12px;font-size:.66rem;text-transform:none;letter-spacing:.06em;font-weight:800;text-align:center;color:var(--c-surface);background:var(--c-blue);border:1px solid rgba(255,255,255,.15);}
++thead th.th-mold{background:var(--c-blue);}
++thead th.th-1{background:var(--c-blue);}
++thead th.th-3{background:var(--c-ok);}
++thead th.th-7{background:var(--c-crit);}
++thead th.th-28{background:var(--c-blue);}
++thead th.th-stat{background:var(--c-blue);}
++tbody tr{border-bottom:1px solid rgba(0,0,0,.06);}
++tbody tr:nth-child(even){background:rgba(0,0,0,.02);}
++tbody tr:hover{background:rgba(0,0,0,.04);}
++tbody td{padding:5px 10px;text-align:center;color:var(--text);font-size:.72rem;border-right:1px solid rgba(0,0,0,.05);}
++tbody td.lft{text-align:left;}
++.v-ok{color:var(--c-ok);font-weight:700;}
++.v-fail{color:var(--c-crit);font-weight:700;}
++.v-warn{color:var(--c-orange);font-weight:700;}
++.v-pend{color:var(--muted);}
++.rbadge{display:inline-block;border-radius:var(--r);padding:1px 6px;font-size:.63rem;font-weight:700;}
++.b-ok{background:rgba(16,185,129,.12);color:var(--c-ok);border:1px solid var(--c-ok);}
++.b-fail{background:rgba(239,68,68,.12);color:var(--c-crit);border:1px solid var(--c-orange);}
++.b-warn{background:rgba(245,158,11,.12);color:var(--c-orange);border:1px solid var(--c-orange);}
++.b-pend{background:rgba(107,114,128,.08);color:var(--c-ink-2);border:1px solid var(--c-ink-3);}
++/* ── STAT TABLE ── */
++.stat-tbl td{font-size:.71rem;padding:6px 10px;}
++.stat-tbl tr.hdr-row td{background:var(--c-bg);color:var(--muted);font-weight:700;font-size:.66rem;text-transform:none;letter-spacing:.05em;}
++/* ── STATE BOX ── */
++.state-box{text-align:center;padding:48px 20px;color:var(--muted);}
++.state-box .sico{font-size:2.8rem;margin-bottom:12px;}
++.state-box p{font-size:.85rem;line-height:1.55;margin:6px 0;}
++/* ── FOOTER INFO ── */
++.rpt-footer{font-size:.68rem;color:var(--muted);text-align:right;margin-top:18px;}
++@media print {
++      .topbar, .btn-print, .btn-back, .filter-bar, .hero, .accent-line { display: none !important; }
++      body { background: #fff; color: #000; padding: 0; }
++      .section-card, .kpi-card, .chart-box { background: #fff; border-color: #ccc; }
++      td, th { color: #000 !important; border-color: #999 !important; background: #f8f8f8 !important; }
++      canvas { max-height: 180px !important; }
++    }
++/* ── TAP-TO-EXPAND (mobile) ── */
++@media (max-width: 768px){.chart-box{cursor:pointer;position:relative;}
++.chart-box::after{content:"⛶ toque para expandir";position:absolute;bottom:8px;right:10px;font-size:.58rem;color:var(--muted);opacity:.65;pointer-events:none;}
++.chart-box.chart-expanded::after{display:none;}
++}
++.chart-box.chart-expanded{position:fixed!important;inset:0!important;z-index:9999!important;border-radius:var(--r)!important;overflow:auto!important;background:var(--c-bg)!important;padding:56px 16px 24px!important;margin:0!important;width:100vw!important;height:100dvh!important;display:flex!important;flex-direction:column!important;}
++.chart-box.chart-expanded canvas{max-height:none!important;flex:1!important;width:100%!important;}
++.chart-close-btn{display:none;position:fixed;top:12px;right:12px;z-index:10000;background:var(--primary);color:var(--c-surface);border:none;border-radius:50%;width:40px;height:40px;font-size:1.1rem;cursor:pointer;align-items:center;justify-content:center;box-shadow:none;}
++.chart-close-btn.visible{display:flex;}
++}
++</style>
++<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.26"><script defer src="/unificado/shell/components.js?v=1.4.26"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
+ <body>
+ <!-- CHART EXPAND CLOSE BUTTON -->
+ <button class="chart-close-btn" id="chartCloseBtn" aria-label="Fechar gráfico">&#x2715;</button>
+@@ -184,13 +294,13 @@
+     </div>
+   </div>
+   <div style="display:flex;align-items:center;gap:8px;">
+-    <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
++    <button class="btn-print" onclick="window.print()"> Imprimir</button>
+     <a class="btn-back" href="./index.html">← Voltar</a>
+   </div>
+ </div>
+ <!-- HERO -->
+ <div class="hero">
+-  <div class="hero-icon">📊</div>
++  <div class="hero-icon"></div>
+   <h1>Relatório Controle <span>Estatístico</span></h1>
+   <p>Análise estatística de resistência à compressão (MPa) por idade</p>
+   <div class="accent-line"></div>
+@@ -201,11 +311,18 @@
+   <div id="renderProgress" style="display:none; font-size:.78rem; color:var(--muted); padding:8px 12px; background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.3); border-radius:8px; margin-bottom:10px; animation:pulse 1s infinite;">
+     ⏳ Carregando...
+   </div>
+-  <style>
++  <style>@media print {
++
+     @keyframes pulse {
+       0%,100%{ opacity:.7; } 50%{ opacity:1; }
+     }
+-  </style>
++  
++}
++@media screen{@keyframes pulse{0%,100%{opacity:.7;}
++50%{opacity:1;}
++}
++}
++</style>
+ 
+   <!-- Filtros -->
+   <div class="filter-bar">
+@@ -536,7 +653,7 @@
+     html+='<div class="kpi-card kpi-neu"><div class="kpi-label">Amostras</div><div class="kpi-val">'+k.n+'</div><div class="kpi-sub">moldagens analisadas</div></div>';
+     html+='<div class="kpi-card '+meanCls+'"><div class="kpi-label">M&#233;dia MPa</div><div class="kpi-val">'+(k.mean!==null?k.mean:'--')+'</div><div class="kpi-sub">faixa: '+(k.meta?k.meta.min+' &ndash; '+k.meta.max:'--')+' MPa</div></div>';
+     html+='<div class="kpi-card kpi-neu"><div class="kpi-label">Sd estimado</div><div class="kpi-val">'+(k.stddev!==null?k.stddev:'--')+'</div><div class="kpi-sub">desvio padr&#227;o (MPa)</div></div>';
+-    html+='<div class="kpi-card kpi-neu"><div class="kpi-label">fck,est</div><div class="kpi-val" style="color:#7c3aed;">'+(k.fckEst!==null?k.fckEst:'--')+'</div><div class="kpi-sub">MPa (&#956; &minus; 1,65&sigma;)</div></div>';
++    html+='<div class="kpi-card kpi-neu"><div class="kpi-label">fck,est</div><div class="kpi-val" data-visual-print="a3659ce6378d" style="color:var(--c-ink-3);">'+(k.fckEst!==null?k.fckEst:'--')+'</div><div class="kpi-sub">MPa (&#956; &minus; 1,65&sigma;)</div></div>';
+     html+='</div>';
+   });
+   document.getElementById('kpiSection').innerHTML=html;
+@@ -986,7 +1103,7 @@
+ function showStaleCacheWarning(err){
+   var footer=document.getElementById('rptFooter');
+   if(!footer) return;
+-  footer.innerHTML='<span style="color:#b45309;font-weight:700;">Modo offline - exibindo dados armazenados localmente.</span>'
++  footer.innerHTML='<span data-visual-print="42589bb0bae1" style="color:var(--c-warn);font-weight:700;">Modo offline - exibindo dados armazenados localmente.</span>'
+     +' <code>'+(err&&err.message?err.message:String(err||''))+'</code>';
+ }
+ 
+@@ -1030,7 +1147,7 @@
+ });
+ 
+ (async function(){
+-  try{ if('serviceWorker' in navigator){ var registration=await navigator.serviceWorker.register('./sw.js?v=11',{scope:'./',updateViaCache:'none'}); registration.update().catch(function(){}); } }catch(e){}
++  try{ if('serviceWorker' in navigator){ var registration=await navigator.serviceWorker.register('./sw.js?v=1.4.26',{scope:'./',updateViaCache:'none'}); registration.update().catch(function(){}); } }catch(e){}
+ 
+   // SW version badge and force update
+   function initSWVersionBadge() {

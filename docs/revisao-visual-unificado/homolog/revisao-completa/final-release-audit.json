@@ -1,0 +1,9 @@
+{
+  "status": "ok",
+  "version": "1.4.25",
+  "cumulative_public_files_verified": 199,
+  "isolated_service_assets_verified": 66,
+  "marked_shell_login_exact": true,
+  "source_manifest": "final-public-manifest.json",
+  "production_database_connections": 0
+}

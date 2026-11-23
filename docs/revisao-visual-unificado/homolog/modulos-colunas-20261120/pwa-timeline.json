@@ -1,0 +1,192 @@
+[
+  {
+    "registration": [
+      {
+        "active": "activated",
+        "installing": null,
+        "waiting": null
+      }
+    ],
+    "caches": [
+      {
+        "key": "concrefer-unificado-shell-v1.4.30",
+        "count": 35
+      }
+    ],
+    "seconds": 2,
+    "workers": [
+      "concrefer-unificado-shell-v1.4.30"
+    ]
+  },
+  {
+    "registration": [
+      {
+        "active": "activated",
+        "installing": null,
+        "waiting": null
+      }
+    ],
+    "caches": [
+      {
+        "key": "concrefer-unificado-shell-v1.4.30",
+        "count": 35
+      }
+    ],
+    "seconds": 4,
+    "workers": [
+      "concrefer-unificado-shell-v1.4.30"
+    ]
+  },
+  {
+    "registration": [
+      {
+        "active": "activated",
+        "installing": null,
+        "waiting": null
+      }
+    ],
+    "caches": [
+      {
+        "key": "concrefer-unificado-shell-v1.4.30",
+        "count": 35
+      }
+    ],
+    "seconds": 6,
+    "workers": [
+      "concrefer-unificado-shell-v1.4.30"
+    ]
+  },
+  {
+    "registration": [
+      {
+        "active": "activated",
+        "installing": null,
+        "waiting": null
+      }
+    ],
+    "caches": [
+      {
+        "key": "concrefer-unificado-shell-v1.4.30",
+        "count": 35
+      }
+    ],
+    "seconds": 8,
+    "workers": [
+      "concrefer-unificado-shell-v1.4.30"
+    ]
+  },
+  {
+    "registration": [
+      {
+        "active": "activated",
+        "installing": null,
+        "waiting": null
+      }
+    ],
+    "caches": [
+      {
+        "key": "concrefer-unificado-shell-v1.4.30",
+        "count": 35
+      }
+    ],
+    "seconds": 10,
+    "workers": [
+      "concrefer-unificado-shell-v1.4.30"
+    ]
+  },
+  {
+    "registration": [
+      {
+        "active": "activated",
+        "installing": null,
+        "waiting": null
+      }
+    ],
+    "caches": [
+      {
+        "key": "concrefer-unificado-shell-v1.4.30",
+        "count": 35
+      }
+    ],
+    "seconds": 12,
+    "workers": [
+      "concrefer-unificado-shell-v1.4.30"
+    ]
+  },
+  {
+    "registration": [
+      {
+        "active": "activated",
+        "installing": null,
+        "waiting": null
+      }
+    ],
+    "caches": [
+      {
+        "key": "concrefer-unificado-shell-v1.4.30",
+        "count": 35
+      }
+    ],
+    "seconds": 14,
+    "workers": [
+      "concrefer-unificado-shell-v1.4.30"
+    ]
+  },
+  {
+    "registration": [
+      {
+        "active": "activated",
+        "installing": null,
+        "waiting": null
+      }
+    ],
+    "caches": [
+      {
+        "key": "concrefer-unificado-shell-v1.4.30",
+        "count": 35
+      }
+    ],
+    "seconds": 16,
+    "workers": [
+      "concrefer-unificado-shell-v1.4.30"
+    ]
+  },
+  {
+    "registration": [
+      {
+        "active": "activated",
+        "installing": null,
+        "waiting": null
+      }
+    ],
+    "caches": [
+      {
+        "key": "concrefer-unificado-shell-v1.4.30",
+        "count": 35
+      }
+    ],
+    "seconds": 18,
+    "workers": [
+      "concrefer-unificado-shell-v1.4.30"
+    ]
+  },
+  {
+    "registration": [
+      {
+        "active": "activated",
+        "installing": null,
+        "waiting": null
+      }
+    ],
+    "caches": [
+      {
+        "key": "concrefer-unificado-shell-v1.4.30",
+        "count": 35
+      }
+    ],
+    "seconds": 20,
+    "workers": [
+      "concrefer-unificado-shell-v1.4.30"
+    ]
+  }
+]

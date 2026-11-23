@@ -1,0 +1,25 @@
+{
+  "directory": "/opt/concrefer-unificado/backups/producao-20261120T170515Z",
+  "bundle": "/opt/concrefer-unificado/backups/producao-20261120T170515Z-revisado.tar.gz",
+  "bytes": 201907995,
+  "sha256": "aac15ae0ce988f6535bfec2e77d94a170a19c7163070a00fc59aa3010d8eee3c",
+  "directory_mode": "0o700",
+  "bundle_mode": "0o600",
+  "retain_until": "2026-12-20T17:05:15.813549+00:00",
+  "dumps_verified": 6,
+  "rollback_verify_only": {
+    "apply": false,
+    "version_restored": null,
+    "original_files_verified": 286,
+    "files_restored": 0,
+    "new_assets_quarantined": 0,
+    "sql_changes": 0,
+    "configuration_changes": 0,
+    "service_restarts": 0,
+    "homolog_next_changes": 0
+  },
+  "production_application_mutations": 0,
+  "production_database_mutations": 0,
+  "includes_completed_checkpoint": true,
+  "initial_bundle_retained": "/opt/concrefer-unificado/backups/producao-20261120T170515Z.tar.gz"
+}

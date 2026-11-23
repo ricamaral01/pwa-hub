@@ -1,0 +1,14 @@
+[
+  {
+    "kind": "armaduras",
+    "sha256": "d47788c5923dd5b504926382ea23e98608f34d85b0e6624e8e8fb29cd87ebff7",
+    "baseline_sha256": "d47788c5923dd5b504926382ea23e98608f34d85b0e6624e8e8fb29cd87ebff7",
+    "identical": true
+  },
+  {
+    "kind": "series",
+    "sha256": "7676d45c9c13ba57b219a8af713362ceadbb8d715b88857d671507b531204867",
+    "baseline_sha256": "7676d45c9c13ba57b219a8af713362ceadbb8d715b88857d671507b531204867",
+    "identical": true
+  }
+]

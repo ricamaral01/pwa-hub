@@ -1,0 +1,404 @@
+{
+  "version": "1.4.26",
+  "inventory": 239,
+  "profiles": [
+    {
+      "profile": "GERENCIA",
+      "cases": 170,
+      "expected": 236,
+      "missing": 66,
+      "failed": 28,
+      "widths": 668
+    },
+    {
+      "profile": "LABORATORIO",
+      "cases": 176,
+      "expected": 192,
+      "missing": 16,
+      "failed": 32,
+      "widths": 700
+    },
+    {
+      "profile": "PCP",
+      "cases": 62,
+      "expected": 64,
+      "missing": 2,
+      "failed": 11,
+      "widths": 248
+    },
+    {
+      "profile": "PRODUCAO",
+      "cases": 21,
+      "expected": 21,
+      "missing": 0,
+      "failed": 3,
+      "widths": 80
+    },
+    {
+      "profile": "QUALIDADE",
+      "cases": 17,
+      "expected": 17,
+      "missing": 0,
+      "failed": 4,
+      "widths": 68
+    },
+    {
+      "profile": "SUPRIMENTOS",
+      "cases": 9,
+      "expected": 9,
+      "missing": 0,
+      "failed": 1,
+      "widths": 36
+    },
+    {
+      "profile": "CONSULTA",
+      "cases": 17,
+      "expected": 17,
+      "missing": 0,
+      "failed": 1,
+      "widths": 68
+    }
+  ],
+  "cases": 472,
+  "viewports": 1868,
+  "failures": 80,
+  "missing": [
+    {
+      "profile": "GERENCIA",
+      "screen": "acompMensal"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "acompMensal34"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "apontamentoMega"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "armadurasProgramacao"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "armadurasRelatorio"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "circular3"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "cronoanalise.simular-tab-1"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "cronoanalise.simular-tab-2"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "cronoanalise.simular-tab-3"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "cronoanalise.simular-tab-4"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "dt4"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "etiquetas"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "etiquetasArmaduras"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "etiquetasSc"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "etiquetasSetor4"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "fechamentoDiario"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "fechamentoDiarioPcp"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "inspecao-tab-postes"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "inspecao-tab-producao"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "labHistory"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "labMonitor"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "labNoroUsuarios"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "layoutFormasS4"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "logisticaAjudantes"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "logisticaCadastros"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "logisticaCobli"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "logisticaCorrecoes"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "logisticaFechamento"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "logisticaInicio"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "logisticaMeses"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "logisticaMetas"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "logisticaMotoristas"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "logisticaPainel"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "logisticaPremiacao"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "modelo-labAbsorption"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "norProdutos"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "pcpDiario"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "postesNumerosSerie"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "postesNumerosSerie-tab-1"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "postesNumerosSerie-tab-2"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "producaoPcp"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "programacao12"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "programacao34"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "programacaoFinal"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "programacaoSemanal12"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "relatorio12"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "relatorio3"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "relatorio4"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "shell-inicio"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "suprimentosAlmoxarifado"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "suprimentosCadastros"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "suprimentosCotacoes"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "suprimentosFornecedores"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "suprimentosIndicadores"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "suprimentosInventario"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "suprimentosNova"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "suprimentosPainel"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "suprimentosRecebimento"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "suprimentosSolicitacoes"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "usinasNoroCartas"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "usinasNoroCec"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "usinasNoroCustos"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "usinasNoroEstoque"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "usinasNoroMassadas"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "usinasNoroPainel"
+    },
+    {
+      "profile": "GERENCIA",
+      "screen": "usinasNoroRelatorios"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "fechamentoDiario"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "fechamentoDiarioPcp"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "labHistory"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "labMonitor"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "norApontamento"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "norIndicadores"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "norMaoDeObra"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "norMensal"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "norProdutos"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "pdrIndicadores"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "pdrProdutos"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "rbrApontamento"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "rbrIndicadores"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "rbrMaoDeObra"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "rbrMensal"
+    },
+    {
+      "profile": "LABORATORIO",
+      "screen": "rbrProdutos"
+    },
+    {
+      "profile": "PCP",
+      "screen": "formasPorSetor-variant-2"
+    },
+    {
+      "profile": "PCP",
+      "screen": "manutencaoUsina"
+    }
+  ],
+  "candidate_assets": true
+}

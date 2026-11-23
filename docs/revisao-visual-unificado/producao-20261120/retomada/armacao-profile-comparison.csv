@@ -1,0 +1,10 @@
+﻿origin,profile,production_account,homolog_account,menu_production,menu_homolog,module_production,module_homolog,search_production,search_homolog,menu_matches,module_matches,search_matches
+central,MONTADOR,alexh,alexh,0,0,0,0,0,0,True,True,True
+central,GESTOR,francisco,josue,0,0,0,0,0,0,True,True,True
+central,APONTADOR,setor1,setor1,0,0,0,0,0,0,True,True,True
+central,GERENCIA,alex,alex,24,24,20,20,24,0,True,True,False
+central,CONVIDADO,tv,e2e-suprimentos-almox,0,0,0,0,0,0,True,True,True
+PCP,ADMIN,Ricardo,Ricardo,24,24,20,20,24,0,True,True,False
+PCP,PCP,Diego,Diego,0,0,0,0,0,0,True,True,True
+PCP,PRODUCAO,unif-d2caa82cdb5a0a33f42b8120,producao,0,0,0,0,0,0,True,True,True
+PCP,CONSULTA,consulta,e2e-pcp-quality-link-probe,0,0,0,0,0,0,True,True,True

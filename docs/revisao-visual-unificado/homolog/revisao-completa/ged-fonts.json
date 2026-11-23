@@ -1,0 +1,14 @@
+[
+  {
+    "container": "visual-homolog-ged-frontend",
+    "image_unchanged": "sha256:6ffbcd60b74a6d0f0b043e13a9a7e5600c0a792bf66402753f033b10b67ba4fb",
+    "static_css": "/app/.next/static/chunks/093z5y43x6r0-.css",
+    "backup": "/opt/concrefer-unificado/homolog-next/backups/ged-font-20261119T021237Z/093z5y43x6r0-.css",
+    "before_sha256": "8b0767016261c40eabb1a42711497446ec684f75e44f23cf427f81908ba5129e",
+    "after_sha256": "931ad53a1a227eae7ad75c54d807246975a0b1faa9412fe1ba99aa762a4cca0e",
+    "import_removed_only": true,
+    "api_changes": 0,
+    "restarts": 0,
+    "production_static_css_unchanged": true
+  }
+]

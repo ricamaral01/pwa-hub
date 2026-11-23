@@ -1,0 +1,267 @@
+[
+  {
+    "q": "producao",
+    "expected": "labDosagemProducao",
+    "actual": "labDosagemProducao"
+  },
+  {
+    "q": "produção",
+    "expected": "labDosagemProducao",
+    "actual": "labDosagemProducao"
+  },
+  {
+    "q": "dashboard",
+    "expected": "dashboard",
+    "actual": "dashboard"
+  },
+  {
+    "q": "dashboard montagem",
+    "expected": "dashMontagem",
+    "actual": "dashMontagem"
+  },
+  {
+    "q": "indicador geral",
+    "expected": "indicadorGeralProducao",
+    "actual": "indicadorGeralProducao"
+  },
+  {
+    "q": "programacao diaria",
+    "expected": "programacao12",
+    "actual": "programacao12"
+  },
+  {
+    "q": "programacao setr 3",
+    "expected": "programacao34",
+    "actual": "programacao34"
+  },
+  {
+    "q": "programacao semanal",
+    "expected": "armadurasProgramacao",
+    "actual": "armadurasProgramacao"
+  },
+  {
+    "q": "acompanhamento mensal",
+    "expected": "acompMensal",
+    "actual": "acompMensal"
+  },
+  {
+    "q": "mensal acompanhamento",
+    "expected": "acompMensal",
+    "actual": "acompMensal"
+  },
+  {
+    "q": "etiqeta",
+    "expected": "etiquetas",
+    "actual": "etiquetas"
+  },
+  {
+    "q": "etiqeta 3",
+    "expected": "etiquetasSc",
+    "actual": "etiquetasSc"
+  },
+  {
+    "q": "etiqueta setor 3",
+    "expected": "etiquetasSc",
+    "actual": "etiquetasSc"
+  },
+  {
+    "q": "setor 3 etiqueta",
+    "expected": "etiquetasSc",
+    "actual": "etiquetasSc"
+  },
+  {
+    "q": "rotulo setor 3",
+    "expected": "etiquetasSc",
+    "actual": "etiquetasSc"
+  },
+  {
+    "q": "rotulos setor 4",
+    "expected": "etiquetasSetor4",
+    "actual": "etiquetasSetor4"
+  },
+  {
+    "q": "etiquetas qr",
+    "expected": "labCecEtiquetas",
+    "actual": "labCecEtiquetas"
+  },
+  {
+    "q": "QR",
+    "expected": "labCecEtiquetas",
+    "actual": "labCecEtiquetas"
+  },
+  {
+    "q": "CP",
+    "expected": "labCecLeitura",
+    "actual": "labCecLeitura"
+  },
+  {
+    "q": "leitura cp",
+    "expected": "labCecLeitura",
+    "actual": "labCecLeitura"
+  },
+  {
+    "q": "noroeste CP",
+    "expected": "labNoroCecLeitura",
+    "actual": "labNoroCecLeitura"
+  },
+  {
+    "q": "corpos de prova",
+    "expected": "labCecResultados",
+    "actual": "labCecResultados"
+  },
+  {
+    "q": "corpo prova",
+    "expected": "labCecResultados",
+    "actual": "labCecResultados"
+  },
+  {
+    "q": "noroeste rompimento",
+    "expected": "labNoroCecRompimentosMes",
+    "actual": "labNoroCecRompimentosMes"
+  },
+  {
+    "q": "rompimento noroeste",
+    "expected": "labNoroCecRompimentosMes",
+    "actual": "labNoroCecRompimentosMes"
+  },
+  {
+    "q": "rompimentos",
+    "expected": "labCecRompimentosMes",
+    "actual": "labCecRompimentosMes"
+  },
+  {
+    "q": "compressao",
+    "expected": "labCecRompimentosMes",
+    "actual": "labCecRompimentosMes"
+  },
+  {
+    "q": "compressão noroeste",
+    "expected": "labNoroCecRompimentosMes",
+    "actual": "labNoroCecRompimentosMes"
+  },
+  {
+    "q": "slump",
+    "expected": "labSlump",
+    "actual": "labSlump"
+  },
+  {
+    "q": "slmup",
+    "expected": "labSlump",
+    "actual": "labSlump"
+  },
+  {
+    "q": "abatimento",
+    "expected": "labSlump",
+    "actual": "labSlump"
+  },
+  {
+    "q": "cartas traco",
+    "expected": "usinasInicio",
+    "actual": "usinasInicio"
+  },
+  {
+    "q": "traco cartas",
+    "expected": "usinasInicio",
+    "actual": "usinasInicio"
+  },
+  {
+    "q": "inventario",
+    "expected": "suprimentosInventario",
+    "actual": "suprimentosInventario"
+  },
+  {
+    "q": "inventário",
+    "expected": "suprimentosInventario",
+    "actual": "suprimentosInventario"
+  },
+  {
+    "q": "almoxarifado",
+    "expected": "suprimentosAlmoxarifado",
+    "actual": "suprimentosAlmoxarifado"
+  },
+  {
+    "q": "motoristas",
+    "expected": "logisticaMotoristas",
+    "actual": "logisticaMotoristas"
+  },
+  {
+    "q": "motorista",
+    "expected": "logisticaMotoristas",
+    "actual": "logisticaMotoristas"
+  },
+  {
+    "q": "ajudantes",
+    "expected": "logisticaAjudantes",
+    "actual": "logisticaAjudantes"
+  },
+  {
+    "q": "km evento",
+    "expected": "logisticaPainel",
+    "actual": "logisticaPainel"
+  },
+  {
+    "q": "mapeamento cobli",
+    "expected": "logisticaCobli",
+    "actual": "logisticaCobli"
+  },
+  {
+    "q": "premiacao",
+    "expected": "logisticaPremiacao",
+    "actual": "logisticaPremiacao"
+  },
+  {
+    "q": "fechamento trimestral",
+    "expected": "logisticaFechamento",
+    "actual": "logisticaFechamento"
+  },
+  {
+    "q": "NF",
+    "expected": null,
+    "actual": null
+  },
+  {
+    "q": "nota fiscal",
+    "expected": null,
+    "actual": null
+  },
+  {
+    "q": "Cq",
+    "expected": null,
+    "actual": null
+  },
+  {
+    "q": "etiqeta 9",
+    "expected": null,
+    "actual": null
+  },
+  {
+    "q": "zzzzxyz",
+    "expected": null,
+    "actual": null
+  },
+  {
+    "q": "armação campinas",
+    "expected": "armacao-campinas-corte",
+    "actual": "armacao-campinas-corte"
+  },
+  {
+    "q": "armacao pederneiras banca",
+    "expected": "armacao-pederneiras-banca",
+    "actual": "armacao-pederneiras-banca"
+  },
+  {
+    "q": "armacoa ribeirao",
+    "expected": "armacao-ribeirao-corte",
+    "actual": "armacao-ribeirao-corte"
+  },
+  {
+    "q": "corte noroeste armacao",
+    "expected": "armacao-noroeste-corte",
+    "actual": "armacao-noroeste-corte"
+  },
+  {
+    "q": "fechamento dia campinas armacao",
+    "expected": "armacao-campinas-banca",
+    "actual": "armacao-campinas-banca"
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "before": [
+    "concrefer-unificado-shell-v1.4.7"
+  ],
+  "after": [
+    "concrefer-unificado-shell-v1.4.7",
+    "concrefer-unificado-shell-v1.4.8"
+  ],
+  "manual_cache_clear": false,
+  "status": "ok"
+}

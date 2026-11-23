@@ -1,0 +1,80 @@
+[
+  {
+    "service": "unificado-homolog-mapa-realtime.service",
+    "MainPID": "1516968",
+    "PartOf": "",
+    "RequiredBy": "",
+    "RequisiteOf": "",
+    "WantedBy": "",
+    "BoundBy": "",
+    "ConsistsOf": "",
+    "PropagatesStopTo": "",
+    "StopPropagatedFrom": "",
+    "ActiveState": "active"
+  },
+  {
+    "service": "unificado-homolog-mapa.service",
+    "MainPID": "3700473",
+    "PartOf": "",
+    "RequiredBy": "",
+    "RequisiteOf": "",
+    "WantedBy": "",
+    "BoundBy": "",
+    "ConsistsOf": "",
+    "PropagatesStopTo": "",
+    "StopPropagatedFrom": "",
+    "ActiveState": "active"
+  },
+  {
+    "service": "unificado-homolog-pcp.service",
+    "MainPID": "3616455",
+    "PartOf": "",
+    "RequiredBy": "",
+    "RequisiteOf": "",
+    "WantedBy": "",
+    "BoundBy": "",
+    "ConsistsOf": "",
+    "PropagatesStopTo": "",
+    "StopPropagatedFrom": "",
+    "ActiveState": "active"
+  },
+  {
+    "service": "unificado-homolog-armacao.service",
+    "MainPID": "3700470",
+    "PartOf": "",
+    "RequiredBy": "",
+    "RequisiteOf": "",
+    "WantedBy": "multi-user.target",
+    "BoundBy": "",
+    "ConsistsOf": "",
+    "PropagatesStopTo": "",
+    "StopPropagatedFrom": "",
+    "ActiveState": "active"
+  },
+  {
+    "service": "unificado-homolog-qualidade.service",
+    "MainPID": "1516668",
+    "PartOf": "",
+    "RequiredBy": "",
+    "RequisiteOf": "",
+    "WantedBy": "",
+    "BoundBy": "",
+    "ConsistsOf": "",
+    "PropagatesStopTo": "",
+    "StopPropagatedFrom": "",
+    "ActiveState": "active"
+  },
+  {
+    "service": "suprimentos-homolog.service",
+    "MainPID": "1941400",
+    "PartOf": "",
+    "RequiredBy": "",
+    "RequisiteOf": "",
+    "WantedBy": "multi-user.target",
+    "BoundBy": "",
+    "ConsistsOf": "",
+    "PropagatesStopTo": "",
+    "StopPropagatedFrom": "",
+    "ActiveState": "active"
+  }
+]

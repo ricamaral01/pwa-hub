@@ -1,0 +1,65 @@
+{
+  "activity": null,
+  "relations": [
+    {
+      "relname": "cec_massadas_snapshot",
+      "reltuples": 1,
+      "relpages": 1,
+      "relkind": "r"
+    },
+    {
+      "relname": "estatistica_diaria",
+      "reltuples": 528,
+      "relpages": 9,
+      "relkind": "r"
+    },
+    {
+      "relname": "estatistica_mensal",
+      "reltuples": 408,
+      "relpages": 7,
+      "relkind": "r"
+    },
+    {
+      "relname": "faixas_resistencia",
+      "reltuples": 4,
+      "relpages": 1,
+      "relkind": "r"
+    },
+    {
+      "relname": "fila_recalculo",
+      "reltuples": 3268494.0,
+      "relpages": 40560,
+      "relkind": "r"
+    },
+    {
+      "relname": "rompimentos",
+      "reltuples": 1024,
+      "relpages": 136,
+      "relkind": "r"
+    },
+    {
+      "relname": "rompimentos_atuais",
+      "reltuples": 980,
+      "relpages": 136,
+      "relkind": "r"
+    },
+    {
+      "relname": "rompimentos_eventos",
+      "reltuples": 6432554.0,
+      "relpages": 805896,
+      "relkind": "r"
+    },
+    {
+      "relname": "rompimentos_grupos",
+      "reltuples": 536,
+      "relpages": 16,
+      "relkind": "r"
+    },
+    {
+      "relname": "tbl_massadas",
+      "reltuples": 11580,
+      "relpages": 528,
+      "relkind": "r"
+    }
+  ]
+}

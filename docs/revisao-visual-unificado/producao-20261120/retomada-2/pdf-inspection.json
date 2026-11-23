@@ -1,0 +1,56 @@
+[
+  {
+    "file": "production-labels-armaduras.pdf",
+    "pages": 8,
+    "first_page_mm": [
+      90.0,
+      39.12
+    ],
+    "text_characters": 1200
+  },
+  {
+    "file": "production-cq-after-issued-pdf.pdf",
+    "pages": 1,
+    "first_page_mm": [
+      210.0,
+      297.0
+    ],
+    "text_characters": 1737
+  },
+  {
+    "file": "production-cq-after-draft-preview.pdf",
+    "pages": 1,
+    "first_page_mm": [
+      210.0,
+      297.0
+    ],
+    "text_characters": 1254
+  },
+  {
+    "file": "production-labels-etiquetas.pdf",
+    "pages": 6,
+    "first_page_mm": [
+      94.91,
+      39.88
+    ],
+    "text_characters": 33
+  },
+  {
+    "file": "production-labels-etiquetas-sc.pdf",
+    "pages": 2,
+    "first_page_mm": [
+      94.91,
+      39.88
+    ],
+    "text_characters": 15
+  },
+  {
+    "file": "production-labels-etiquetas-setor4.pdf",
+    "pages": 2,
+    "first_page_mm": [
+      94.91,
+      39.88
+    ],
+    "text_characters": 17
+  }
+]

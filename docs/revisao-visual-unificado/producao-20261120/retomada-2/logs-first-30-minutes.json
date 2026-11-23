@@ -1,0 +1,34 @@
+{
+  "start_epoch": 1795203063.700411,
+  "end_epoch": 1795204863.700411,
+  "seconds": 1800,
+  "journal_reader_returncode": 0,
+  "journal_messages": 520,
+  "messages_by_unit": {
+    "concrefer-usinas-prod.service": 30,
+    "cq-laboratorio.service": 8,
+    "suprimentos-prod.service": 146,
+    "laboratorio-unificado.service": 57,
+    "concrefer-armacao.service": 184,
+    "mapa-unificado-auth.service": 6,
+    "pcp-unificado-test.service": 52,
+    "qualidade-api.service": 25,
+    "concrefer-logistica.service": 12
+  },
+  "http_status_counts": {
+    "200": 467,
+    "401": 17
+  },
+  "critical_events": [],
+  "priority_error_metadata": [],
+  "docker": [
+    {
+      "container": "ged_backend",
+      "lines": 1,
+      "critical_http_errors": 0,
+      "reader_returncode": 0
+    }
+  ],
+  "raw_log_messages_exported": false,
+  "ok": true
+}

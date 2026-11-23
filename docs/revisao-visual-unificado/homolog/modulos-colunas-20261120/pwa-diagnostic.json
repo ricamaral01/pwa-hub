@@ -1,0 +1,79 @@
+{
+  "controller": "https://concrefer.concretrack.com.br:18446/unificado/sw.js",
+  "registration": [
+    {
+      "scope": "https://concrefer.concretrack.com.br:18446/unificado/",
+      "active": "activated",
+      "installing": "installing",
+      "waiting": null
+    }
+  ],
+  "caches": [
+    {
+      "key": "concrefer-unificado-shell-v1.4.27",
+      "assets": [
+        "/unificado/shell/modelo-a/menu.js?v=1.4.27",
+        "/unificado/shell/embedded.css?v=1.4.27",
+        "/unificado/index.html",
+        "/unificado/shell/module-pages-a.css?v=1.4.27",
+        "/unificado/shell/module-cards.css?v=1.4.27",
+        "/unificado/shell/shared-menu.css?v=1.4.27",
+        "/unificado/shell/modelo-a/menu.css?v=1.4.27",
+        "/unificado/shell/modelo-a-host.css?v=1.4.27",
+        "/unificado/shell/home-header-compact.css?v=1.4.27",
+        "/unificado/shell/navigation.css?v=1.4.27",
+        "/unificado/shell/quick-access.css?v=1.4.27",
+        "/unificado/shell/visual-shell.css?v=1.4.27",
+        "/unificado/shell/icons.js?v=1.4.27",
+        "/unificado/shell/module-theme.js?v=1.4.27",
+        "/unificado/shell/menu.config.js?v=1.4.27",
+        "/unificado/shell/shell.js?v=1.4.27",
+        "/unificado/shell/home-header-compact.js?v=1.4.27",
+        "/unificado/shell/router.js?v=1.4.27",
+        "/unificado/shell/module-pages-mobile.js?v=1.4.27",
+        "/unificado/shell/module-pages.js?v=1.4.27",
+        "/unificado/shell/modelo-a-loader.js?v=1.4.27",
+        "/unificado/shell/navigation.js?v=1.4.27",
+        "/unificado/shell/components.js?v=1.4.27",
+        "/unificado/shell/shell.css?v=1.4.27",
+        "/unificado/shell/password-visibility.css?v=1.4.27",
+        "/unificado/shell/login-original.css?v=1.4.27",
+        "/unificado/shell/login-uni.css?v=1.4.27",
+        "/unificado/shell/auth.js?v=1.4.27",
+        "/unificado/shell/password-visibility.js?v=1.4.27",
+        "/unificado/shell/login-uni.js?v=1.4.27",
+        "/unificado/shell/tokens.css?v=1.4.27",
+        "/unificado/shell/login-desktop.css?v=1.4.27",
+        "/unificado/shell/quick-access.js?v=1.4.27",
+        "/unificado/shell/shell.css?v=1.4.30",
+        "/unificado/shell/password-visibility.css?v=1.4.30",
+        "/unificado/shell/login-uni.css?v=1.4.30",
+        "/unificado/shell/tokens.css?v=1.4.30",
+        "/unificado/shell/login-desktop.css?v=1.4.30",
+        "/unificado/shell/auth.js?v=1.4.30",
+        "/unificado/shell/password-visibility.js?v=1.4.30",
+        "/unificado/shell/login-uni.js?v=1.4.30",
+        "/unificado/shell/login-original.css?v=1.4.30",
+        "/unificado/shell/review-complete.css?v=1.4.27",
+        "/unificado/shell/fonts/Geist-SemiBold.woff2",
+        "/unificado/shell/fonts/Geist-Medium.woff2",
+        "/unificado/shell/fonts/Geist-Regular.woff2",
+        "/unificado/shell/aviso.json"
+      ]
+    },
+    {
+      "key": "concrefer-unificado-shell-v1.4.30",
+      "assets": []
+    }
+  ],
+  "worker_globals": [
+    {
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/sw.js",
+      "cache": "concrefer-unificado-shell-v1.4.27"
+    },
+    {
+      "url": "https://concrefer.concretrack.com.br:18446/unificado/sw.js",
+      "cache": "concrefer-unificado-shell-v1.4.30"
+    }
+  ]
+}

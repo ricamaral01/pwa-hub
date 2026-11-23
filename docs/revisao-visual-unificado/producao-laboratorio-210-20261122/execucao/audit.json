@@ -1,0 +1,198 @@
+{
+  "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z",
+  "before": {
+    "total_activity": 78,
+    "client_connections": 73,
+    "common_headroom_excluding_collector": 25,
+    "by_service": {
+      "mapa-unificado-realtime.service": 1,
+      "unificado-homolog-mapa-realtime.service": 1,
+      "monitor-concreto.service": 1,
+      "concretrack-staging-api.service": 1,
+      "docker:mapa-homolog-postgrest-reader": 1,
+      "cec-noroeste-worker.service": 1,
+      "docker:mapa-unificado-postgrest": 1,
+      "concretrack-staging-final-api.service": 1,
+      "cec-campinas-worker.service": 1,
+      "pcp-unificado-test.service": 5,
+      "unificado-visual-homolog-carta.service": 3,
+      "docker:mapa-homolog-postgrest-writer": 1,
+      "suprimentos-homolog.service": 2,
+      "docker:mapa-unificado-postgrest-writer": 1,
+      "laboratorio-unificado.service": 5,
+      "suprimentos-prod.service": 2,
+      "unificado-visual-homolog-logistica.service": 2,
+      "concrefer-logistica.service": 7,
+      "concrefer-armacao.service": 1,
+      "unificado-visual-homolog-laboratorio.service": 1,
+      "unificado-homolog-pcp.service": 2,
+      "qualidade-api.service": 1,
+      "unificado-visual-homolog-realtime.service": 1,
+      "dashboard-pederneiras.service": 2,
+      "unificado-homolog-armacao.service": 1,
+      "unificado-homolog-qualidade.service": 2,
+      "docker:visual-homolog-postgrest-writer": 1,
+      "docker:visual-homolog-postgrest-reader": 1,
+      "unificado-visual-homolog-armacao.service": 1,
+      "unificado-visual-homolog-qualidade.service": 1,
+      "unificado-visual-homolog-dosagem.service": 1,
+      "carta-traco-staging.service": 15,
+      "unificado-visual-homolog-suprimentos.service": 1,
+      "unificado-visual-homolog-pcp.service": 1,
+      "collector/read-only": 1,
+      "concrefer-dosagem-native.service": 2
+    }
+  },
+  "production_integrity_before": {
+    "version": "2.0.0",
+    "static_hashes": 350,
+    "prior_configuration_hashes": 211,
+    "carta_main_pid": "1516790",
+    "current_inventory_config_hashes_unchanged": true,
+    "passed": true
+  },
+  "services": [
+    {
+      "service": "unificado-homolog-mapa-realtime.service",
+      "before_connections": 1,
+      "before_state": {
+        "MainPID": "1516968",
+        "EnvironmentFiles": "/etc/concrefer-unificado/homolog/mapa-writer.env (ignore_errors=no)",
+        "RequiredBy": "",
+        "RequisiteOf": "",
+        "BoundBy": "",
+        "ConsistsOf": "",
+        "PropagatesStopTo": "",
+        "ActiveState": "active",
+        "SubState": "running",
+        "FragmentPath": "/etc/systemd/system/unificado-homolog-mapa-realtime.service",
+        "DropInPaths": ""
+      },
+      "recent_log_lines": 0,
+      "busy": false
+    },
+    {
+      "service": "unificado-homolog-mapa.service",
+      "before_connections": 0,
+      "before_state": {
+        "MainPID": "3700473",
+        "EnvironmentFiles": "/etc/concrefer-unificado/homolog/suprimentos-gateway.env (ignore_errors=no)",
+        "RequiredBy": "",
+        "RequisiteOf": "",
+        "BoundBy": "",
+        "ConsistsOf": "",
+        "PropagatesStopTo": "",
+        "ActiveState": "active",
+        "SubState": "running",
+        "FragmentPath": "/etc/systemd/system/unificado-homolog-mapa.service",
+        "DropInPaths": "/etc/systemd/system/unificado-homolog-mapa.service.d/suprimentos.conf"
+      },
+      "recent_log_lines": 0,
+      "busy": false
+    },
+    {
+      "service": "unificado-homolog-pcp.service",
+      "before_connections": 2,
+      "before_state": {
+        "MainPID": "3616455",
+        "EnvironmentFiles": "/etc/concrefer-unificado/homolog/pcp.env (ignore_errors=no)",
+        "RequiredBy": "",
+        "RequisiteOf": "",
+        "BoundBy": "",
+        "ConsistsOf": "",
+        "PropagatesStopTo": "",
+        "ActiveState": "active",
+        "SubState": "running",
+        "FragmentPath": "/etc/systemd/system/unificado-homolog-pcp.service",
+        "DropInPaths": ""
+      },
+      "recent_log_lines": 0,
+      "busy": false
+    },
+    {
+      "service": "unificado-homolog-armacao.service",
+      "before_connections": 1,
+      "before_state": {
+        "MainPID": "3700470",
+        "EnvironmentFiles": "/etc/concrefer-unificado/homolog/armacao.env (ignore_errors=no)",
+        "RequiredBy": "",
+        "RequisiteOf": "",
+        "BoundBy": "",
+        "ConsistsOf": "",
+        "PropagatesStopTo": "",
+        "ActiveState": "active",
+        "SubState": "running",
+        "FragmentPath": "/etc/systemd/system/unificado-homolog-armacao.service",
+        "DropInPaths": ""
+      },
+      "recent_log_lines": 0,
+      "busy": false
+    },
+    {
+      "service": "unificado-homolog-qualidade.service",
+      "before_connections": 2,
+      "before_state": {
+        "MainPID": "1516668",
+        "EnvironmentFiles": "/etc/concrefer-unificado/homolog/quality-gateway.env (ignore_errors=no)",
+        "RequiredBy": "",
+        "RequisiteOf": "",
+        "BoundBy": "",
+        "ConsistsOf": "",
+        "PropagatesStopTo": "",
+        "ActiveState": "active",
+        "SubState": "running",
+        "FragmentPath": "/etc/systemd/system/unificado-homolog-qualidade.service",
+        "DropInPaths": ""
+      },
+      "recent_log_lines": 0,
+      "busy": false
+    },
+    {
+      "service": "suprimentos-homolog.service",
+      "before_connections": 2,
+      "before_state": {
+        "MainPID": "1941400",
+        "EnvironmentFiles": "/etc/concrefer-unificado/homolog/suprimentos.env (ignore_errors=no)",
+        "RequiredBy": "",
+        "RequisiteOf": "",
+        "BoundBy": "",
+        "ConsistsOf": "",
+        "PropagatesStopTo": "",
+        "ActiveState": "active",
+        "SubState": "running",
+        "FragmentPath": "/etc/systemd/system/suprimentos-homolog.service",
+        "DropInPaths": ""
+      },
+      "recent_log_lines": 30,
+      "busy": true,
+      "skip_reason": "Recent activity, an established old-stack socket, or active scheduled Suprimentos caller; user required preservation."
+    },
+    {
+      "service": "docker:mapa-homolog-postgrest-reader",
+      "before_connections": 1,
+      "before_state": {
+        "Running": true,
+        "Status": "running",
+        "Pid": 1892,
+        "StartedAt": "2026-10-17T09:07:46.762011651Z"
+      },
+      "recent_log_lines": 0,
+      "busy": false
+    },
+    {
+      "service": "docker:mapa-homolog-postgrest-writer",
+      "before_connections": 1,
+      "before_state": {
+        "Running": true,
+        "Status": "running",
+        "Pid": 2057,
+        "StartedAt": "2026-10-17T09:07:46.981600083Z"
+      },
+      "recent_log_lines": 0,
+      "busy": false
+    }
+  ],
+  "stopped": [],
+  "old_stack_established_sockets": [],
+  "phase": "audited"
+}

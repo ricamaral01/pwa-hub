@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Custo da carta de traço</title>
+
+<style>@media print {
+
+  /* ============================================================
+     DASHBOARD: Custo da carta de traço
+     Formato: slide 4:3 · 1024 x 768 · SEM SCROLL
+     Stack: HTML/CSS/JS puros
+     ============================================================ */
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --azul-primario: #1e3a5f;
+    --laranja-accent: #f97316;
+    --texto-forte: #1e3a5f;
+    --texto-medio: #334155;
+    --texto-fraco: #64748b;
+    --texto-mudo: #94a3b8;
+    --bg-suave: #f8fafc;
+    --bg-cabecalho-tabela: #f1f5f9;
+    --linha: #e2e8f0;
+    --linha-forte: #cbd5e1;
+
+    /* Cores dos materiais — DEVEM bater com o donut */
+    --cor-cimento:  #1e3a5f;
+    --cor-areia-m:  #f97316;
+    --cor-areia-f:  #38bdf8;
+    --cor-brita:    #10b981;
+    --cor-aditivo:  #f59e0b;
+    --cor-agua:     #8b5cf6;
+  }
+
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #e5e7eb;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+    color: var(--texto-medio);
+  }
+
+  /* ---------- SLIDE ---------- */
+  .slide {
+    width: 1024px;
+    height: 768px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    display: grid;
+    grid-template-rows: 56px 72px 92px 1fr 28px;
+    padding: 24px 32px;
+    gap: 14px;
+  }
+
+  /* ---------- HEADER ---------- */
+  .header {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 3px solid var(--laranja-accent);
+    padding-bottom: 10px;
+  }
+  .logo {
+    width: 44px; height: 44px;
+    background: var(--azul-primario);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 20px;
+  }
+  .header-title .kicker {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--laranja-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .header-title h1 {
+    font-size: 20px;
+    color: var(--azul-primario);
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  .header-meta {
+    text-align: right;
+    font-size: 11px;
+    color: var(--texto-fraco);
+    line-height: 1.4;
+  }
+  .header-meta strong { color: var(--azul-primario); }
+
+  /* ---------- CARTA SELECIONADA ---------- */
+  .carta-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 4px;
+  }
+  .carta-label {
+    font-size: 11px;
+    color: var(--texto-fraco);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .carta-nome {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--azul-primario);
+    letter-spacing: -0.3px;
+  }
+
+  /* ---------- KPI STRIP (4 cards compactos) ---------- */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .kpi {
+    background: var(--bg-suave);
+    border-left: 3px solid var(--azul-primario);
+    padding: 12px 16px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .kpi.accent { border-left-color: var(--laranja-accent); }
+  .kpi-label {
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    color: var(--texto-fraco);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .kpi-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--azul-primario);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi-sub {
+    font-size: 10px;
+    color: var(--texto-mudo);
+    margin-top: 3px;
+  }
+
+  /* ---------- MAIN: tabela + donut lado a lado ---------- */
+  .main {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 16px;
+    min-height: 0;
+  }
+
+  /* Tabela */
+  .tabela-wrapper {
+    background: #fff;
+    border: 1px solid var(--linha);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .tabela-header {
+    background: var(--azul-primario);
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    flex: 1;
+  }
+  thead th {
+    background: var(--bg-cabecalho-tabela);
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #475569;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-bottom: 1px solid var(--linha-forte);
+  }
+  thead th.num { text-align: right; }
+  tbody td {
+    padding: 10px;
+    border-bottom: 1px solid var(--bg-cabecalho-tabela);
+    color: var(--texto-medio);
+  }
+  tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody td.material {
+    font-weight: 600;
+    color: var(--azul-primario);
+    border-left: 3px solid transparent;
+    padding-left: 12px;
+  }
+  tbody tr.total {
+    background: var(--bg-suave);
+    font-weight: 700;
+  }
+  tbody tr.total td {
+    border-top: 2px solid var(--azul-primario);
+    color: var(--azul-primario);
+  }
+
+  /* Painel do donut */
+  .donut-wrapper {
+    background: var(--bg-suave);
+    border-radius: 4px;
+    border: 1px solid var(--linha);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .donut-title {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--texto-fraco);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .donut-body {
+    display: grid;
+    grid-template-columns: 1fr 130px;
+    gap: 12px;
+    flex: 1;
+    align-items: center;
+  }
+  .donut-svg {
+    width: 100%;
+    height: auto;
+    max-height: 240px;
+  }
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 10.5px;
+  }
+  .legend-item {
+    display: grid;
+    grid-template-columns: 10px 1fr auto;
+    gap: 6px;
+    align-items: center;
+  }
+  .legend-swatch { width: 10px; height: 10px; border-radius: 2px; }
+  .legend-name { color: var(--texto-medio); }
+  .legend-pct {
+    color: var(--texto-fraco);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Grupos (aglomerante / agregados / aditivo) */
+  .grupos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--linha);
+  }
+  .grupo { text-align: center; padding: 4px; }
+  .grupo-label {
+    font-size: 8.5px;
+    color: var(--texto-fraco);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .grupo-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--azul-primario);
+    margin-top: 2px;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9.5px;
+    color: var(--texto-mudo);
+    border-top: 1px solid var(--linha);
+    padding-top: 6px;
+  }
+
+}
+@media screen {
+/* ============================================================
+     DASHBOARD: Custo da carta de traço
+     Formato: slide 4:3 · 1024 x 768 · SEM SCROLL
+     Stack: HTML/CSS/JS puros
+     ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--azul-primario:var(--c-blue);--laranja-accent:var(--c-orange);--texto-forte:var(--c-blue);--texto-medio:var(--c-blue);--texto-fraco:var(--c-ink-2);--texto-mudo:var(--c-ink-3);--bg-suave:var(--c-bg);--bg-cabecalho-tabela:var(--c-bg);--linha:var(--c-line);--linha-forte:var(--c-line);/* Cores dos materiais — DEVEM bater com o donut */--cor-cimento:var(--c-blue);--cor-areia-m:var(--c-orange);--cor-areia-f:var(--c-ink-3);--cor-brita:var(--c-ok);--cor-aditivo:var(--c-orange);--cor-agua:var(--c-ink-3);}
+body{background:var(--c-line);padding:24px;display:flex;justify-content:center;color:var(--texto-medio);}
+/* ---------- SLIDE ---------- */
+.slide{width:1024px;height:768px;background:var(--c-surface);box-shadow:none;display:grid;grid-template-rows:56px 72px 92px 1fr 28px;padding:24px 32px;gap:14px;}
+/* ---------- HEADER ---------- */
+.header{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:16px;border-bottom:3px solid var(--laranja-accent);padding-bottom:10px;}
+.logo{width:44px;height:44px;background:var(--azul-primario);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--c-surface);font-weight:800;font-size:20px;}
+.header-title .kicker{font-size:10px;letter-spacing:2px;color:var(--laranja-accent);font-weight:700;text-transform:none;}
+.header-title h1{font-size:20px;color:var(--azul-primario);font-weight:700;margin-top:2px;}
+.header-meta{text-align:right;font-size:11px;color:var(--texto-fraco);line-height:1.4;}
+.header-meta strong{color:var(--azul-primario);}
+/* ---------- CARTA SELECIONADA ---------- */
+.carta-block{display:flex;flex-direction:column;justify-content:center;padding-left:4px;}
+.carta-label{font-size:11px;color:var(--texto-fraco);letter-spacing:0.5px;text-transform:none;margin-bottom:4px;}
+.carta-nome{font-size:26px;font-weight:800;color:var(--azul-primario);letter-spacing:-0.3px;}
+/* ---------- KPI STRIP (4 cards compactos) ---------- */
+.kpi-strip{display:grid;grid-template-columns:repeat(4, 1fr);gap:12px;}
+.kpi{background:var(--bg-suave);border-left:3px solid var(--azul-primario);padding:12px 16px;border-radius:var(--r-sm);display:flex;flex-direction:column;justify-content:center;}
+.kpi.accent{border-left-color:var(--laranja-accent);}
+.kpi-label{font-size:9px;letter-spacing:1.2px;color:var(--texto-fraco);text-transform:none;font-weight:600;margin-bottom:4px;}
+.kpi-value{font-size:22px;font-weight:800;color:var(--azul-primario);line-height:1;font-variant-numeric:tabular-nums;}
+.kpi-sub{font-size:10px;color:var(--texto-mudo);margin-top:3px;}
+/* ---------- MAIN: tabela + donut lado a lado ---------- */
+.main{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;min-height:0;}
+/* Tabela */
+.tabela-wrapper{background:var(--c-surface);border:1px solid var(--linha);border-radius:var(--r-sm);overflow:hidden;display:flex;flex-direction:column;}
+.tabela-header{background:var(--azul-primario);color:var(--c-surface);padding:8px 12px;font-size:10px;letter-spacing:1.2px;text-transform:none;font-weight:600;}
+table{width:100%;border-collapse:collapse;font-size:12px;flex:1;}
+thead th{background:var(--bg-cabecalho-tabela);padding:8px 10px;text-align:left;font-size:9px;letter-spacing:1px;color:var(--c-ink-2);text-transform:none;font-weight:700;border-bottom:1px solid var(--linha-forte);}
+thead th.num{text-align:right;}
+tbody td{padding:10px;border-bottom:1px solid var(--bg-cabecalho-tabela);color:var(--texto-medio);}
+tbody td.num{text-align:right;font-variant-numeric:tabular-nums;}
+tbody td.material{font-weight:600;color:var(--azul-primario);border-left:3px solid transparent;padding-left:12px;}
+tbody tr.total{background:var(--bg-suave);font-weight:700;}
+tbody tr.total td{border-top:2px solid var(--azul-primario);color:var(--azul-primario);}
+/* Painel do donut */
+.donut-wrapper{background:var(--bg-suave);border-radius:var(--r-sm);border:1px solid var(--linha);padding:16px;display:flex;flex-direction:column;}
+.donut-title{font-size:10px;letter-spacing:1.2px;text-transform:none;color:var(--texto-fraco);font-weight:700;margin-bottom:8px;}
+.donut-body{display:grid;grid-template-columns:1fr 130px;gap:12px;flex:1;align-items:center;}
+.donut-svg{width:100%;height:auto;max-height:240px;}
+.legend{display:flex;flex-direction:column;gap:7px;font-size:10.5px;}
+.legend-item{display:grid;grid-template-columns:10px 1fr auto;gap:6px;align-items:center;}
+.legend-swatch{width:10px;height:10px;border-radius:var(--r-sm);}
+.legend-name{color:var(--texto-medio);}
+.legend-pct{color:var(--texto-fraco);font-weight:600;font-variant-numeric:tabular-nums;}
+/* Grupos (aglomerante / agregados / aditivo) */
+.grupos{display:grid;grid-template-columns:repeat(3, 1fr);gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--linha);}
+.grupo{text-align:center;padding:4px;}
+.grupo-label{font-size:8.5px;color:var(--texto-fraco);text-transform:none;letter-spacing:0.5px;}
+.grupo-value{font-size:14px;font-weight:700;color:var(--azul-primario);margin-top:2px;}
+/* ---------- FOOTER ---------- */
+.footer{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;color:var(--texto-mudo);border-top:1px solid var(--linha);padding-top:6px;}
+
+}
+</style>
+<script>
+    // Acesso direto volta à casca autenticada; no iframe preserva o layout original.
+    if (top === self) {
+      const params = new URLSearchParams({area:'relatorios'});
+      if ('carta-slide') params.set('app', 'carta-slide');
+      for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+      location.replace('/unificado/?view=' + encodeURIComponent('usinas/?' + params));
+    } else {
+      const syncShell = () => {
+        if (parent !== top || top.location.pathname !== '/unificado/') return;
+        const params = new URLSearchParams({area:'relatorios'});
+        if ('carta-slide') params.set('app', 'carta-slide');
+        for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+        const view = 'usinas/?' + params;
+        top.history.replaceState({view}, '', '/unificado/?view=' + encodeURIComponent(view));
+      };
+      addEventListener('DOMContentLoaded', syncShell);
+      const originalReplace = history.replaceState.bind(history);
+      history.replaceState = (...args) => { originalReplace(...args); syncShell(); };
+    }
+    function concretrackLogout() {
+      if (top.UnificadoAuth?.logout) top.UnificadoAuth.logout();
+      else top.location.assign('/unificado/login.html');
+    }
+    </script>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.27"><script defer src="/unificado/shell/components.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"><link rel="stylesheet" href="/unificado/shell/native-content.css?v=2.0.0" media="screen">
+</head>
+<body>
+
+<div class="slide" id="slide">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">C</div>
+    <div class="header-title">
+      <div class="kicker">Apresentação de Fechamento</div>
+      <h1>Custo da carta de traço</h1>
+    </div>
+    <div class="header-meta">
+      <div>Custos vigentes</div>
+      <div><strong id="data-vigencia">—</strong></div>
+    </div>
+  </div>
+
+  <!-- CARTA SELECIONADA -->
+  <div class="carta-block">
+    <div class="carta-label">Carta selecionada</div>
+    <div class="carta-nome" id="carta-nome">—</div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip" id="kpi-strip"></div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TABELA -->
+    <div class="tabela-wrapper">
+      <div class="tabela-header">Composição por material</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th class="num">Qtd.</th>
+            <th class="num">Custo un.</th>
+            <th class="num">Custo total</th>
+            <th class="num">%</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-body"></tbody>
+      </table>
+    </div>
+
+    <!-- DONUT -->
+    <div class="donut-wrapper">
+      <div class="donut-title">Distribuição do custo</div>
+      <div class="donut-body">
+        <svg class="donut-svg" viewBox="0 0 100 100" id="donut-svg"></svg>
+        <div class="legend" id="donut-legend"></div>
+      </div>
+      <div class="grupos" id="grupos"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>Valores calculados com os custos vigentes dos materiais mapeados.</div>
+    <div>Concrefer</div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   FONTE DE DADOS REAL
+   A carta é identificada pelo seletor da aplicação e carregada pelo
+   backend autenticado, que consolida cartas, preços e fornecedores.
+   ============================================================ */
+const API_CARTAS = "/unificado/mapa/api/usina/reporting/relatorios/cartas-traco";
+const GRUPOS_VALIDOS = new Set(["aglomerante", "agregado", "aditivo", "agua"]);
+const CORES_FALLBACK = ["#1e3a5f", "#f97316", "#38bdf8", "#10b981", "#f59e0b", "#8b5cf6", "#ef4444", "#64748b"];
+
+function seletorCartaOrigem() {
+  const documentos = [];
+  try { if (window.opener && !window.opener.closed) documentos.push(window.opener.document); } catch (_) {}
+  try { if (window.parent && window.parent !== window) documentos.push(window.parent.document); } catch (_) {}
+  documentos.push(document);
+  for (const doc of documentos) {
+    const seletor = doc.getElementById("selCarta");
+    if (seletor && seletor.value) return seletor;
+  }
+  return null;
+}
+
+function cartaSelecionadaId() {
+  const queryId = new URLSearchParams(window.location.search).get("carta_id");
+  return queryId || seletorCartaOrigem()?.value || sessionStorage.getItem("concretrack_carta_selecionada") || "";
+}
+
+function nomeCartaSelecionada(carta) {
+  const seletor = seletorCartaOrigem();
+  const texto = seletor?.selectedOptions?.[0]?.textContent?.trim();
+  return (texto ? texto.replace(/\s+—\s+R\$.*$/, "") : "") || carta.nome_traco || carta.nome || "Carta de traço";
+}
+
+function dataBR(valor) {
+  if (!valor) return "—";
+  const [ano, mes, dia] = String(valor).slice(0, 10).split("-");
+  return dia && mes && ano ? `${dia}/${mes}/${ano}` : String(valor);
+}
+
+function grupoMaterial(material) {
+  if (GRUPOS_VALIDOS.has(material.grupo)) return material.grupo;
+  const campo = String(material.campo || "").toLowerCase();
+  const categoria = String(material.material_categoria || "").toLowerCase();
+  if (campo === "agua" || categoria.includes("água") || categoria.includes("agua")) return "agua";
+  if (campo.startsWith("agregado") || ["areia", "brita", "agregado"].includes(categoria)) return "agregado";
+  if (campo.startsWith("aditivo") || categoria.includes("aditivo")) return "aditivo";
+  return "aglomerante";
+}
+
+async function carregarDadosCarta() {
+  const id = cartaSelecionadaId();
+  if (!id) throw new Error("Selecione uma carta de traço na aplicação antes de abrir o slide.");
+
+  const response = await fetch(API_CARTAS, { credentials: "include", cache: "no-store" });
+  if (!response.ok) throw new Error(response.status === 401 ? "Sessão expirada. Entre novamente no ConcreTrack." : "Não foi possível consultar a carta de traço.");
+
+  const payload = await response.json();
+  const carta = (payload.cartas || []).find(item => String(item.id) === String(id));
+  if (!carta) throw new Error("A carta selecionada não foi encontrada ou não está ativa.");
+
+  return {
+    dataVigencia: dataBR(carta.data_vigencia_precos),
+    nomeCarta: nomeCartaSelecionada(carta),
+    materiais: (carta.materiais || []).filter(material => Number(material.quantidade || 0) !== 0).map((material, index) => ({
+      nome: material.material_nome || material.label || material.campo,
+      qtd: Number(material.quantidade || 0),
+      un: material.material_unidade_carta || material.material_unidade || "kg",
+      custoUn: Number(material.custo_unitario || 0),
+      grupo: grupoMaterial(material),
+      cor: /^#[0-9a-f]{6}$/i.test(material.cor || "") ? material.cor : CORES_FALLBACK[index % CORES_FALLBACK.length],
+      fornecedores: material.fornecedor_aplicado
+        ? [material.fornecedor_aplicado]
+        : (Array.isArray(material.fornecedores) ? material.fornecedores.filter(Boolean).slice(0, 1) : [])
+    }))
+  };
+}
+
+/* ============================================================
+   FORMATADORES
+   ============================================================ */
+const fmtBRL   = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const fmtNum4  = v => v.toLocaleString("pt-BR", { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+const fmtQtd   = v => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+const fmtPct   = v => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function render(dados) {
+  // ---- Cálculos ----
+  const materiais = dados.materiais.map(m => ({
+    ...m,
+    custoTotal: m.qtd * m.custoUn
+  }));
+  const total = materiais.reduce((s, m) => s + m.custoTotal, 0);
+  materiais.forEach(m => m.pct = total > 0 ? (m.custoTotal / total) * 100 : 0);
+
+  const somaGrupo = grupo => materiais
+    .filter(m => m.grupo === grupo)
+    .reduce((s, m) => s + m.custoTotal, 0);
+
+  const custoAglomerante = somaGrupo("aglomerante");
+  const custoAgregados   = somaGrupo("agregado");
+  const custoAditivos    = somaGrupo("aditivo");
+
+  const pctGrupo = valor => total > 0 ? (valor / total) * 100 : 0;
+
+  // ---- Header ----
+  document.getElementById("data-vigencia").textContent = dados.dataVigencia;
+  document.getElementById("carta-nome").textContent   = dados.nomeCarta;
+
+  // ---- KPIs ----
+  const kpis = [
+    { label: "Custo total / m³",     valor: fmtBRL(total),            sub: `${materiais.length} materiais mapeados`, accent: true },
+    { label: "Custo do aglomerante", valor: fmtBRL(custoAglomerante), sub: fmtPct(pctGrupo(custoAglomerante)) + " do total" },
+    { label: "Custo dos agregados",  valor: fmtBRL(custoAgregados),   sub: fmtPct(pctGrupo(custoAgregados))   + " do total" },
+    { label: "Custo dos aditivos",   valor: fmtBRL(custoAditivos),    sub: fmtPct(pctGrupo(custoAditivos))    + " do total" }
+  ];
+  document.getElementById("kpi-strip").innerHTML = kpis.map(k => `
+    <div class="kpi ${k.accent ? "accent" : ""}">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value">${k.valor}</div>
+      <div class="kpi-sub">${k.sub}</div>
+    </div>
+  `).join("");
+
+  // ---- Tabela ----
+  const linhas = materiais.map(m => `
+    <tr>
+      <td class="material" style="border-left-color:${m.cor}">${m.nome}</td>
+      <td class="num">${fmtQtd(m.qtd)} ${m.un}</td>
+      <td class="num">${fmtBRL(m.custoUn).replace("R$", "R$ ")}</td>
+      <td class="num"><strong>${fmtBRL(m.custoTotal)}</strong></td>
+      <td class="num">${fmtPct(m.pct)}</td>
+    </tr>
+  `).join("");
+  const linhaTotal = `
+    <tr class="total">
+      <td class="material">Total</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+      <td class="num"><strong>${fmtBRL(total)}</strong></td>
+      <td class="num">100,0%</td>
+    </tr>
+  `;
+  document.getElementById("tabela-body").innerHTML = linhas + linhaTotal;
+
+  // ---- Donut (SVG com stroke-dasharray) ----
+  const R = 35;
+  const circ = 2 * Math.PI * R; // ≈ 219.9
+  let offset = 0;
+  const arcs = materiais.map(m => {
+    const len = (m.pct / 100) * circ;
+    const svg = `<circle cx="50" cy="50" r="${R}" fill="none"
+                         stroke="${m.cor}" stroke-width="18"
+                         stroke-dasharray="${len.toFixed(2)} ${(circ - len).toFixed(2)}"
+                         stroke-dashoffset="${(-offset).toFixed(2)}"
+                         transform="rotate(-90 50 50)"/>`;
+    offset += len;
+    return svg;
+  }).join("");
+  document.getElementById("donut-svg").innerHTML = arcs + `
+    <text x="50" y="48" text-anchor="middle" font-size="6"  fill="#64748b" font-weight="600">TOTAL</text>
+    <text x="50" y="57" text-anchor="middle" font-size="9"  fill="#1e3a5f" font-weight="800">${fmtBRL(total).replace(",", ".")}</text>
+  `;
+
+  // ---- Legenda ----
+  document.getElementById("donut-legend").innerHTML = materiais.map(m => `
+    <div class="legend-item">
+      <span class="legend-swatch" style="background:${m.cor}"></span>
+      <span class="legend-name">${m.nome.split(" — ")[0].split(" ").slice(0, 2).join(" ")}</span>
+      <span class="legend-pct">${fmtPct(m.pct)}</span>
+    </div>
+  `).join("");
+
+  // ---- Grupos ----
+  const grupos = [
+    { label: "Aglomerante", pct: pctGrupo(custoAglomerante) },
+    { label: "Agregados",   pct: pctGrupo(custoAgregados)   },
+    { label: "Aditivo",     pct: pctGrupo(custoAditivos)    }
+  ];
+  document.getElementById("grupos").innerHTML = grupos.map(g => `
+    <div class="grupo">
+      <div class="grupo-label">${g.label}</div>
+      <div class="grupo-value">${fmtPct(g.pct)}</div>
+    </div>
+  `).join("");
+}
+
+function adicionarFornecedoresAgregados(dados) {
+  const linhas = document.querySelectorAll("#tabela-body tr:not(.total)");
+  dados.materiais.forEach((material, index) => {
+    if (material.grupo !== "agregado") return;
+    const celula = linhas[index]?.querySelector("td.material");
+    if (!celula) return;
+    const fornecedores = material.fornecedores.length ? material.fornecedores.join(" · ") : "não informado";
+    celula.append(document.createElement("br"));
+    const detalhe = document.createElement("small");
+    detalhe.textContent = `Fornecedores: ${fornecedores}`;
+    celula.append(detalhe);
+  });
+}
+
+function ajustarTabelaParaQuantidade(materiais) {
+  const tabela = document.querySelector(".tabela-wrapper table");
+  if (tabela && materiais.length > 8) tabela.style.fontSize = "11px";
+}
+
+async function iniciar() {
+  try {
+    if (new URLSearchParams(window.location.search).get("embed") === "1") {
+      document.body.style.padding = "0";
+      document.body.style.background = "#fff";
+    }
+    const dadosCarta = await carregarDadosCarta();
+    render(dadosCarta);
+    adicionarFornecedoresAgregados(dadosCarta);
+    ajustarTabelaParaQuantidade(dadosCarta.materiais);
+  } catch (erro) {
+    document.getElementById("carta-nome").textContent = erro.message;
+    console.error("Falha ao carregar slide da carta de traço:", erro);
+  }
+}
+
+iniciar();
+</script>
+
+</body>
+</html>

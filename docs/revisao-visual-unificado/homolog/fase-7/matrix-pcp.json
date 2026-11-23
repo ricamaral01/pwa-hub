@@ -1,0 +1,4274 @@
+[
+  {
+    "profile": "PCP",
+    "screen": "programacao12",
+    "path": "/unificado/pcp/programacao-alex/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-alex%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-alex/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Importar arquivo Mega - Setor 1 e 2\nImporte o relatório Mega em XLSX, XLS ou CSV. O saldo considera estoque, reserva e carteira. Produção Diária é o ritmo informado pelo Mega; conf"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-alex%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nSetor 1 e 2"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-alex/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Importar arquivo Mega - Setor 1 e 2\nImporte o relatório Mega em XLSX, XLS ou CSV. O saldo considera estoque, reserva e carteira. Produção Diária é o ritmo informado pelo Mega; conf"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-alex%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nSetor 1 e 2"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-alex/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Importar arquivo Mega - Setor 1 e 2\nImporte o relatório Mega em XLSX, XLS ou CSV. O saldo considera estoque, reserva e carteira. Produção Diária é o ritmo informado pelo Mega; conf"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-alex%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProgramação\nSetor 1 e 2\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Setor 4\nProgramação Final\nInício\nTelas\nRecente"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-alex/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Importar arquivo Mega - Setor 1 e 2\nImporte o relatório Mega em XLSX, XLS ou CSV. O saldo considera estoque, reserva e carteira. Produção Diária é o ritmo informado pelo Mega; conf"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "comparacao",
+    "path": "/unificado/pcp/comparacao/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fcomparacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nRelatórios de Programação\nArmaduras\nEtiquet"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/comparacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nAtualizar\nProgramado Geral\n0,0 m³\nm³ no período\nRealizado Geral\n0,4 m³\nm³ no período\nEficiência Geral\n0.0%\n% de aproveitamento\nPostes Programados\n0\nSetor 1 + S"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fcomparacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramado vs Realizado"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/comparacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nAtualizar\nProgramado Geral\n0,0 m³\nm³ no período\nRealizado Geral\n0,4 m³\nm³ no período\nEficiência Geral\n0.0%\n% de aproveitamento\nPostes Programados\n0\nSetor 1 + S"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fcomparacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramado vs Realizado"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/comparacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nAtualizar\nProgramado Geral\n0,0 m³\nm³ no período\nRealizado Geral\n0,4 m³\nm³ no período\nEficiência Geral\n0.0%\n% de aproveitamento\nPostes Programados\n0\nSetor 1 + S"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fcomparacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nProgramado vs Realizado\nDashboard\nProgramado vs Realizado\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/comparacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nAtualizar\nProgramado Geral\n0,0 m³\nm³ no período\nRealizado Geral\n0,4 m³\nm³ no período\nEficiência Geral\n0.0%\n% de aproveitamento\nPostes Programados\n0\nSetor 1 + S"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "dashboard",
+    "path": "/unificado/pcp/dashboard/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fdashboard%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nRelatórios de Programação\nArmaduras\nEtiquet"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/dashboard/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nFiltrar\nGERAL\nVolumes consolidados no período\nProgramado\n0,000 m³\nRealizado\n0,375 m³\nAtingimento\n0.0%\nSETOR 1 + SETOR 2\nPostes consolidados no período\nPostes p"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fdashboard%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nDashboard"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/dashboard/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nFiltrar\nGERAL\nVolumes consolidados no período\nProgramado\n0,000 m³\nRealizado\n0,375 m³\nAtingimento\n0.0%\nSETOR 1 + SETOR 2\nPostes consolidados no período\nPostes p"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fdashboard%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nDashboard"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/dashboard/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nFiltrar\nGERAL\nVolumes consolidados no período\nProgramado\n0,000 m³\nRealizado\n0,375 m³\nAtingimento\n0.0%\nSETOR 1 + SETOR 2\nPostes consolidados no período\nPostes p"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fdashboard%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nDashboard\nDashboard\nProgramado vs Realizado\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/dashboard/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nFiltrar\nGERAL\nVolumes consolidados no período\nProgramado\n0,000 m³\nRealizado\n0,375 m³\nAtingimento\n0.0%\nSETOR 1 + SETOR 2\nPostes consolidados no período\nPostes p"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "programacaoSemanal12",
+    "path": "/unificado/pcp/programacao-semanal/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Programação da semana\n\nDistribua a produção de segunda a sexta dentro da capacidade das formas.\n\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nCriar rascunho"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nSemanal S1 e S2"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Programação da semana\n\nDistribua a produção de segunda a sexta dentro da capacidade das formas.\n\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nCriar rascunho"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nSemanal S1 e S2"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Programação da semana\n\nDistribua a produção de segunda a sexta dentro da capacidade das formas.\n\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nCriar rascunho"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProgramação\nSemanal S1 e S2\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Setor 4\nProgramação Final\nInício\nTelas\nRec"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Programação da semana\n\nDistribua a produção de segunda a sexta dentro da capacidade das formas.\n\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nCriar rascunho"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "circular3",
+    "path": "/unificado/pcp/programacao-circular-s3/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-circular-s3%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s3/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data de início\nDias seguidos\nCarregar período\nSalvar período\nImprimir programação\nCada forma selecionada produz uma peça por dia. Escolha um modelo abaixo da forma e salve para rep"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-circular-s3%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nCircular Setor 3"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s3/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data de início\nDias seguidos\nCarregar período\nSalvar período\nImprimir programação\nCada forma selecionada produz uma peça por dia. Escolha um modelo abaixo da forma e salve para rep"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-circular-s3%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nCircular Setor 3"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s3/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data de início\nDias seguidos\nCarregar período\nSalvar período\nImprimir programação\nCada forma selecionada produz uma peça por dia. Escolha um modelo abaixo da forma e salve para rep"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-circular-s3%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProgramação\nCircular Setor 3\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Setor 4\nProgramação Final\nInício\nTelas\nRe"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s3/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data de início\nDias seguidos\nCarregar período\nSalvar período\nImprimir programação\nCada forma selecionada produz uma peça por dia. Escolha um modelo abaixo da forma e salve para rep"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "programacao34",
+    "path": "/unificado/pcp/programacao/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Nova Programação Setor 3 e 4\nData\nSetor\nSelecione...\nSetor 3\nSetor 4\nProduto / Tipo Poste\nSelecione o setor primeiro\nQtd Programada\nVolume m³ (calculado)\nAdicionar\nProgramação do S"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nSetor 3 e 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Nova Programação Setor 3 e 4\nData\nSetor\nSelecione...\nSetor 3\nSetor 4\nProduto / Tipo Poste\nSelecione o setor primeiro\nQtd Programada\nVolume m³ (calculado)\nAdicionar\nProgramação do S"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nSetor 3 e 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Nova Programação Setor 3 e 4\nData\nSetor\nSelecione...\nSetor 3\nSetor 4\nProduto / Tipo Poste\nSelecione o setor primeiro\nQtd Programada\nVolume m³ (calculado)\nAdicionar\nProgramação do S"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProgramação\nSetor 3 e 4\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Setor 4\nProgramação Final\nInício\nTelas\nRecente"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Nova Programação Setor 3 e 4\nData\nSetor\nSelecione...\nSetor 3\nSetor 4\nProduto / Tipo Poste\nSelecione o setor primeiro\nQtd Programada\nVolume m³ (calculado)\nAdicionar\nProgramação do S"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "dt4",
+    "path": "/unificado/pcp/programacao-circular-s4/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-circular-s4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data de início\nDias seguidos\nCarregar período\nSalvar período\nImprimir programação\nCada forma selecionada produz uma peça por dia. Escolha um modelo abaixo da forma e salve para rep"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-circular-s4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nDT Setor 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data de início\nDias seguidos\nCarregar período\nSalvar período\nImprimir programação\nCada forma selecionada produz uma peça por dia. Escolha um modelo abaixo da forma e salve para rep"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-circular-s4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nDT Setor 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data de início\nDias seguidos\nCarregar período\nSalvar período\nImprimir programação\nCada forma selecionada produz uma peça por dia. Escolha um modelo abaixo da forma e salve para rep"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-circular-s4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProgramação\nDT Setor 4\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Setor 4\nProgramação Final\nInício\nTelas\nRecentes"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-circular-s4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data de início\nDias seguidos\nCarregar período\nSalvar período\nImprimir programação\nCada forma selecionada produz uma peça por dia. Escolha um modelo abaixo da forma e salve para rep"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "relatorio3",
+    "path": "/unificado/pcp/relatorio-programacao-s3/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-programacao-s3%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s3/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetor 3 Circular\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setor 3 Circular"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-programacao-s3%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nRelatórios de Programação\n›\nSetor 3"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s3/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetor 3 Circular\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setor 3 Circular"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-programacao-s3%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nRelatórios de Programação\n›\nSetor 3"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s3/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetor 3 Circular\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setor 3 Circular"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-programacao-s3%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nRelatórios de Programação\nSetor 3\nSetor 1 e 2\nSetor 3\nSetor 4\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s3/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetor 3 Circular\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setor 3 Circular"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "relatorio12",
+    "path": "/unificado/pcp/relatorio-producao/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-producao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-producao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetores 1 e 2\nSetor 1\nSetor 2\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Set"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-producao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nRelatórios de Programação\n›\nSetor 1 e 2"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-producao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetores 1 e 2\nSetor 1\nSetor 2\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Set"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-producao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nRelatórios de Programação\n›\nSetor 1 e 2"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-producao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetores 1 e 2\nSetor 1\nSetor 2\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Set"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-producao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nRelatórios de Programação\nSetor 1 e 2\nSetor 1 e 2\nSetor 3\nSetor 4\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-producao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetores 1 e 2\nSetor 1\nSetor 2\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Set"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "programacaoFinal",
+    "path": "/unificado/pcp/programacao-final/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-final%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-final/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Início\nFim\nSetor\nTodos os setores\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nBuscar\nTotal Geral\n0\n0,000 m³\nProgramação Oficial por Data\n0 registros\nData Programada\tSetor\tForma\tProduto\tCód\tQtd"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-final%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nProgramação Final"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-final/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Início\nFim\nSetor\nTodos os setores\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nBuscar\nTotal Geral\n0\n0,000 m³\nProgramação Oficial por Data\n0 registros\nData Programada\tSetor\tForma\tProduto\tCód\tQtd"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-final%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProgramação\n›\nProgramação Final"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-final/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Início\nFim\nSetor\nTodos os setores\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nBuscar\nTotal Geral\n0\n0,000 m³\nProgramação Oficial por Data\n0 registros\nData Programada\tSetor\tForma\tProduto\tCód\tQtd"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-final%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProgramação\nProgramação Final\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCircular Setor 3\nDT Setor 4\nProgramação Final\nInício\nTelas\nR"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-final/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Início\nFim\nSetor\nTodos os setores\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nBuscar\nTotal Geral\n0\n0,000 m³\nProgramação Oficial por Data\n0 registros\nNenhum registro encontrado"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "etiquetasSc",
+    "path": "/unificado/pcp/etiquetas-sc/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-sc%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Setor 3\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 3 na data selecionada. Gera uma etiqueta de data e outra com o modelo na ho"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-sc%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nEtiquetas\n›\nSetor 3"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Setor 3\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 3 na data selecionada. Gera uma etiqueta de data e outra com o modelo na ho"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-sc%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nEtiquetas\n›\nSetor 3"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Setor 3\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 3 na data selecionada. Gera uma etiqueta de data e outra com o modelo na ho"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-sc%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nEtiquetas\nSetor 3\nPadrão\nSetor 3\nSetor 4\nArmaduras\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-sc/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Setor 3\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 3 na data selecionada. Gera uma etiqueta de data e outra com o modelo na ho"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "relatorio4",
+    "path": "/unificado/pcp/relatorio-programacao-s4/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-programacao-s4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetor 4 DT\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setor 4 DT\n\tCódigo:\tno"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-programacao-s4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nRelatórios de Programação\n›\nSetor 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetor 4 DT\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setor 4 DT\n\tCódigo:\tno"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-programacao-s4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nRelatórios de Programação\n›\nSetor 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetor 4 DT\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setor 4 DT\n\tCódigo:\tno"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Frelatorio-programacao-s4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nRelatórios de Programação\nSetor 4\nSetor 1 e 2\nSetor 3\nSetor 4\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/relatorio-programacao-s4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias para imprimir\nSetor\nSetor 4 DT\nOcultar itens sem produção na semana\nResponsável\nCarregar\nImprimir / PDF\n1 página(s) • 16/11/26 a 21/11/26 • Setor 4 DT\n\tCódigo:\tno"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "etiquetas",
+    "path": "/unificado/pcp/etiquetas/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Padrão\nFormato inicial 95 x 40 mm para Zebra / Argox. Gera uma etiqueta com a data de produção e outra com o tipo ou modelo do poste para cada peça programad"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nEtiquetas\n›\nPadrão"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Padrão\nFormato inicial 95 x 40 mm para Zebra / Argox. Gera uma etiqueta com a data de produção e outra com o tipo ou modelo do poste para cada peça programad"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nEtiquetas\n›\nPadrão"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Padrão\nFormato inicial 95 x 40 mm para Zebra / Argox. Gera uma etiqueta com a data de produção e outra com o tipo ou modelo do poste para cada peça programad"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nEtiquetas\nPadrão\nPadrão\nSetor 3\nSetor 4\nArmaduras\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Padrão\nFormato inicial 95 x 40 mm para Zebra / Argox. Gera uma etiqueta com a data de produção e outra com o tipo ou modelo do poste para cada peça programad"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "etiquetasSetor4",
+    "path": "/unificado/pcp/etiquetas-setor4/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-setor4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-setor4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Setor 4\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 4, incluindo formas padrão e DT. Gera uma etiqueta de data e outra com o mo"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-setor4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nEtiquetas\n›\nSetor 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-setor4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Setor 4\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 4, incluindo formas padrão e DT. Gera uma etiqueta de data e outra com o mo"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-setor4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nEtiquetas\n›\nSetor 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-setor4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Setor 4\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 4, incluindo formas padrão e DT. Gera uma etiqueta de data e outra com o mo"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-setor4%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nEtiquetas\nSetor 4\nPadrão\nSetor 3\nSetor 4\nArmaduras\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-setor4/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Impressão de Etiquetas Setor 4\nFormato 95 x 40 mm para Zebra / Argox. Lista a produção apontada no Setor 4, incluindo formas padrão e DT. Gera uma etiqueta de data e outra com o mo"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "acompMensal",
+    "path": "/unificado/pcp/acompanhamento-mensal/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Facompanhamento-mensal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mês\nBuscar\n0 itens\n\t\t\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\t\nDescrição Poste Duplo T\tSETOR\tCód. Pro.\t02/11\t03/11\t"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Facompanhamento-mensal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nAcompanhamento\n›\nAcompanhamento Mensal"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mês\nBuscar\n0 itens\n\t\t\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\t\nDescrição Poste Duplo T\tSETOR\tCód. Pro.\t02/11\t03/11\t"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Facompanhamento-mensal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nAcompanhamento\n›\nAcompanhamento Mensal"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mês\nBuscar\n0 itens\n\t\t\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\t\nDescrição Poste Duplo T\tSETOR\tCód. Pro.\t02/11\t03/11\t"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Facompanhamento-mensal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nAcompanhamento\nAcompanhamento Mensal\nPCP Diário\nAcompanhamento Mensal\nAcompanhamento Mensal Setor 3 e 4\nApontamento Mega\nFechament"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mês\nBuscar\n0 itens\nNenhuma programação encontrada no mês."
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "etiquetasArmaduras",
+    "path": "/unificado/pcp/etiquetas-armaduras/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-armaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Etiquetas Armaduras - Postes SC\nFichas do modelo Word, disponíveis conforme a programação circular do Setor 3. Se houver mais de uma ficha para o mesmo poste, escolha a versão ante"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-armaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nEtiquetas\n›\nArmaduras"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Etiquetas Armaduras - Postes SC\nFichas do modelo Word, disponíveis conforme a programação circular do Setor 3. Se houver mais de uma ficha para o mesmo poste, escolha a versão ante"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-armaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nEtiquetas\n›\nArmaduras"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Etiquetas Armaduras - Postes SC\nFichas do modelo Word, disponíveis conforme a programação circular do Setor 3. Se houver mais de uma ficha para o mesmo poste, escolha a versão ante"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fetiquetas-armaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nEtiquetas\nArmaduras\nPadrão\nSetor 3\nSetor 4\nArmaduras\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/etiquetas-armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Etiquetas Armaduras - Postes SC\nFichas do modelo Word, disponíveis conforme a programação circular do Setor 3. Se houver mais de uma ficha para o mesmo poste, escolha a versão ante"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "pcpDiario",
+    "path": "/unificado/pcp/pcp-diario/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fpcp-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/pcp-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias\n5 dias\n7 dias\n10 dias\n14 dias\nMês todo\nSetor\nTodos\nBuscar\nCarregar\n0 linhas exibidas de 0 no período 2026-11-17 a 2026-11-21\nCÓDIGO\nPRODUÇÃO\tCÓDIGO\nMONTAGEM\tDESCR"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fpcp-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nAcompanhamento\n›\nPCP Diário"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/pcp-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias\n5 dias\n7 dias\n10 dias\n14 dias\nMês todo\nSetor\nTodos\nBuscar\nCarregar\n0 linhas exibidas de 0 no período 2026-11-17 a 2026-11-21\nCÓDIGO\nPRODUÇÃO\tCÓDIGO\nMONTAGEM\tDESCR"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fpcp-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nAcompanhamento\n›\nPCP Diário"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/pcp-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias\n5 dias\n7 dias\n10 dias\n14 dias\nMês todo\nSetor\nTodos\nBuscar\nCarregar\n0 linhas exibidas de 0 no período 2026-11-17 a 2026-11-21\nCÓDIGO\nPRODUÇÃO\tCÓDIGO\nMONTAGEM\tDESCR"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fpcp-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nAcompanhamento\nPCP Diário\nPCP Diário\nAcompanhamento Mensal\nAcompanhamento Mensal Setor 3 e 4\nApontamento Mega\nFechamento Diário\nIn"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/pcp-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data inicial\nDias\n5 dias\n7 dias\n10 dias\n14 dias\nMês todo\nSetor\nTodos\nBuscar\nCarregar\n0 linhas exibidas de 0 no período 2026-11-17 a 2026-11-21\nCÓDIGO\nPRODUÇÃO\tCÓDIGO\nMONTAGEM\tDESCR"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "producaoPcp",
+    "path": "/unificado/pcp/producao/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fproducao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/producao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Filtro de Produção\nUse a data para atualizar resumo, formas e produção realizada.\nInício\nFim\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nBuscar\nResumo\nSetor 1\n100%\nRealizado\n1 de 0"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fproducao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProdução e apoio\n›\nProdução PCP"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/producao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Filtro de Produção\nUse a data para atualizar resumo, formas e produção realizada.\nInício\nFim\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nBuscar\nResumo\nSetor 1\n100%\nRealizado\n1 de 0"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fproducao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProdução e apoio\n›\nProdução PCP"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/producao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Filtro de Produção\nUse a data para atualizar resumo, formas e produção realizada.\nInício\nFim\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nBuscar\nResumo\nSetor 1\n100%\nRealizado\n1 de 0"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fproducao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução e apoio\nProdução PCP\nProdução PCP\nMão de Obra\nRateio de Mão de Obra\nFormas por Setor\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/producao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Filtro de Produção\nUse a data para atualizar resumo, formas e produção realizada.\nInício\nFim\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nBuscar\nResumo\nSetor 1\n100%\nRealizado\n1 de 0"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "apontamentoMega",
+    "path": "/unificado/pcp/apontamento-mega/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fapontamento-mega%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/apontamento-mega/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dia\nNome de quem aponta\nSetor\nTodos\nCódigo\nTodos\nCarregar dia\nProgramado: 0\nRealizado: 0\nSetor 1 e 2\nSetor\tForma\tCódigo\tDescrição\tProgramado\tRealizado\tStatus\tCheck\nNenhum item do S"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fapontamento-mega%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nAcompanhamento\n›\nApontamento Mega"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/apontamento-mega/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dia\nNome de quem aponta\nSetor\nTodos\nCódigo\nTodos\nCarregar dia\nProgramado: 0\nRealizado: 0\nSetor 1 e 2\nSetor\tForma\tCódigo\tDescrição\tProgramado\tRealizado\tStatus\tCheck\nNenhum item do S"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fapontamento-mega%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nAcompanhamento\n›\nApontamento Mega"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/apontamento-mega/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dia\nNome de quem aponta\nSetor\nTodos\nCódigo\nTodos\nCarregar dia\nProgramado: 0\nRealizado: 0\nSetor 1 e 2\nSetor\tForma\tCódigo\tDescrição\tProgramado\tRealizado\tStatus\tCheck\nNenhum item do S"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fapontamento-mega%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nAcompanhamento\nApontamento Mega\nPCP Diário\nAcompanhamento Mensal\nAcompanhamento Mensal Setor 3 e 4\nApontamento Mega\nFechamento Diá"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/apontamento-mega/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dia\nNome de quem aponta\nSetor\nTodos\nCódigo\nTodos\nCarregar dia\nProgramado: 0\nRealizado: 0\nSetor 1 e 2\nNenhum item do Setor 1/2\nSetor 3 e 4\nNenhum item do Setor 3/4\nConsulta por perí"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "acompMensal34",
+    "path": "/unificado/pcp/acompanhamento-mensal-setor-34/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Facompanhamento-mensal-setor-34%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal-setor-34/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mês\nMostrar somente\nSetor 3 e 4\nSetor 3\nSetor 4\nBuscar\n0 itens\n\t\t\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\t\nDescriçã"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Facompanhamento-mensal-setor-34%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nAcompanhamento\n›\nAcompanhamento Mensal Setor 3 e 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal-setor-34/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mês\nMostrar somente\nSetor 3 e 4\nSetor 3\nSetor 4\nBuscar\n0 itens\n\t\t\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\t\nDescriçã"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Facompanhamento-mensal-setor-34%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nAcompanhamento\n›\nAcompanhamento Mensal Setor 3 e 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal-setor-34/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mês\nMostrar somente\nSetor 3 e 4\nSetor 3\nSetor 4\nBuscar\n0 itens\n\t\t\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\tter.\tqua.\tqui.\tsex.\tseg.\t\nDescriçã"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Facompanhamento-mensal-setor-34%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nAcompanhamento\nAcompanhamento Mensal Setor 3 e 4\nPCP Diário\nAcompanhamento Mensal\nAcompanhamento Mensal Setor 3 e 4\nApontamento Me"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/acompanhamento-mensal-setor-34/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mês\nMostrar somente\nSetor 3 e 4\nSetor 3\nSetor 4\nBuscar\n0 itens\nNenhuma programação encontrada no mês."
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "maodeobra",
+    "path": "/unificado/pcp/maodeobra/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Registro em Tabela\nData\nGrupo\nS1 / S2\nS3 / S4\nMão de obra S1 / S2\nDireta e indireta no mesmo lançamento.\nAinda não lançado neste dia.\nAtividade\tTipo\tPessoas\nMão de obra direta\nProd"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProdução e apoio\n›\nMão de Obra"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Registro em Tabela\nData\nGrupo\nS1 / S2\nS3 / S4\nMão de obra S1 / S2\nDireta e indireta no mesmo lançamento.\nAinda não lançado neste dia.\nAtividade\tTipo\tPessoas\nMão de obra direta\nProd"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProdução e apoio\n›\nMão de Obra"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Registro em Tabela\nData\nGrupo\nS1 / S2\nS3 / S4\nMão de obra S1 / S2\nDireta e indireta no mesmo lançamento.\nAinda não lançado neste dia.\nAtividade\tTipo\tPessoas\nMão de obra direta\nProd"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução e apoio\nMão de Obra\nProdução PCP\nMão de Obra\nRateio de Mão de Obra\nFormas por Setor\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Registro em Tabela\nData\nGrupo\nS1 / S2\nS3 / S4\nMão de obra S1 / S2\nDireta e indireta no mesmo lançamento.\nAinda não lançado neste dia.\nMão de obra direta\nProdução Setor 1 e 2\nMOD\nSu"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "formasPorSetor",
+    "path": "/unificado/pcp/formas-por-setor/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fformas-por-setor%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/formas-por-setor/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Formas por Setor\n\nConsulte o que cada forma produz e sua situação no PCP e na manutenção.\n\n Exportar CSV\n Imprimir\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nSituação\nAtivas\nInati"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fformas-por-setor%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProdução e apoio\n›\nFormas por Setor"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/formas-por-setor/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Formas por Setor\n\nConsulte o que cada forma produz e sua situação no PCP e na manutenção.\n\n Exportar CSV\n Imprimir\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nSituação\nAtivas\nInati"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fformas-por-setor%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProdução e apoio\n›\nFormas por Setor"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/formas-por-setor/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Formas por Setor\n\nConsulte o que cada forma produz e sua situação no PCP e na manutenção.\n\n Exportar CSV\n Imprimir\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nSituação\nAtivas\nInati"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fformas-por-setor%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução e apoio\nFormas por Setor\nProdução PCP\nMão de Obra\nRateio de Mão de Obra\nFormas por Setor\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/formas-por-setor/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Formas por Setor\n\nConsulte o que cada forma produz e sua situação no PCP e na manutenção.\n\n Exportar CSV\n Imprimir\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nSituação\nAtivas\nInati"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "maodeobraRateio",
+    "path": "/unificado/pcp/maodeobra-rateio/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra-rateio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra-rateio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Registrar Rateio de MOI\nData\nGrupo de Setores\nSelecione...\nSetor 1 + 2\nSetor 3 + 4\nAtividade\nSelecione grupo...\nDistribuir Pessoas por Setor\nTotal de Pessoas\nStatus\nSetor\tPessoas\nS"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra-rateio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProdução e apoio\n›\nRateio de Mão de Obra"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra-rateio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Registrar Rateio de MOI\nData\nGrupo de Setores\nSelecione...\nSetor 1 + 2\nSetor 3 + 4\nAtividade\nSelecione grupo...\nDistribuir Pessoas por Setor\nTotal de Pessoas\nStatus\nSetor\tPessoas\nS"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra-rateio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nPlanejamento\n›\nProdução e apoio\n›\nRateio de Mão de Obra"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra-rateio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Registrar Rateio de MOI\nData\nGrupo de Setores\nSelecione...\nSetor 1 + 2\nSetor 3 + 4\nAtividade\nSelecione grupo...\nDistribuir Pessoas por Setor\nTotal de Pessoas\nStatus\nSetor\tPessoas\nS"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fmaodeobra-rateio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução e apoio\nRateio de Mão de Obra\nProdução PCP\nMão de Obra\nRateio de Mão de Obra\nFormas por Setor\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/maodeobra-rateio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Registrar Rateio de MOI\nData\nGrupo de Setores\nSelecione...\nSetor 1 + 2\nSetor 3 + 4\nAtividade\nSelecione grupo...\nDistribuir Pessoas por Setor\nTotal de Pessoas\nStatus\nSelecione o gru"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "setor2",
+    "path": "/unificado/mapa/operacao/?tela=LIBERACAO_S2",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S2",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S2",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 2\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S2",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nSetor 2"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S2",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 2\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S2",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nSetor 2"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S2",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 2\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S2",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Produção\nSetor 2\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S2",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 2\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "setor1",
+    "path": "/unificado/mapa/operacao/?tela=LIBERACAO_S1",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S1",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S1",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 1\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S1",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nSetor 1"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S1",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 1\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S1",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nSetor 1"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S1",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 1\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S1",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Produção\nSetor 1\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S1",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 1\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "liberacao",
+    "path": "/unificado/mapa/operacao/?tela=LIBERACAO",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção\nData de fabricação\nColaborador\nSelecione um operador\nJeferson\nElizeu\nMario\nLeonardo\nJose Carlos\nTiago\nSetor 1\nP: 0 | L: 0 | C: 1 / 98\nIE-01\nConcreto Padrão\n✓\nBD-01\nBD-02\nB"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nProdução / Liberação"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção\nData de fabricação\nColaborador\nSelecione um operador\nJeferson\nElizeu\nMario\nLeonardo\nJose Carlos\nTiago\nSetor 1\nP: 0 | L: 0 | C: 1 / 98\nIE-01\nConcreto Padrão\n✓\nBD-01\nBD-02\nB"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nProdução / Liberação"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção\nVoltar\nData de fabricação\nColaborador\nSelecione um operador\nJeferson\nElizeu\nMario\nLeonardo\nJose Carlos\nTiago\nSetor 1\nP: 0 | L: 0 | C: 1 / 98\nIE-01\nConcreto Padrão\n✓\nBD-01\n"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Produção\nProdução / Liberação\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nInício\nTelas\nRecent"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção\nVoltar\nData de fabricação\nColaborador\nSelecione um operador\nJeferson\nElizeu\nMario\nLeonardo\nJose Carlos\nTiago\nSetor 1\nP: 0 | L: 0 | C: 1 / 98\nIE-01\nConcreto Padrão\n✓\nBD-01\n"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "setor3",
+    "path": "/unificado/mapa/operacao/?tela=LIBERACAO_S3",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 3\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nSetor 3"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 3\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nSetor 3"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 3\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Produção\nSetor 3\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 3\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "mandril",
+    "path": "/unificado/mapa/operacao/?tela=MANDRIL_CIRCULAR",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMANDRIL_CIRCULAR",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MANDRIL_CIRCULAR",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mandril Circular - Controle de Saque\nFiltrar Data\nAtualizar saques\nRelatório de saques\nSaques sincronizados às 21:13\nRelação de Formas e Controle de Saque (Setor 3)\nTotal Concretad"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMANDRIL_CIRCULAR",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nMandril Circular"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MANDRIL_CIRCULAR",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mandril Circular - Controle de Saque\nFiltrar Data\nAtualizar saques\nRelatório de saques\nSaques sincronizados às 21:13\nRelação de Formas e Controle de Saque (Setor 3)\nTotal Concretad"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMANDRIL_CIRCULAR",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nMandril Circular"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MANDRIL_CIRCULAR",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mandril Circular - Controle de Saque\nVoltar\nFiltrar Data\nAtualizar saques\nRelatório de saques\nSaques sincronizados às 21:13\nRelação de Formas e Controle de Saque (Setor 3)\nTotal Co"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMANDRIL_CIRCULAR",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Produção\nMandril Circular\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nInício\nTelas\nRecentes\nC"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MANDRIL_CIRCULAR",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Mandril Circular - Controle de Saque\nVoltar\nFiltrar Data\nAtualizar saques\nRelatório de saques\nSaques sincronizados às 21:13\nRelação de Formas e Controle de Saque (Setor 3)\nTotal Co"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "setor4",
+    "path": "/unificado/mapa/operacao/?tela=LIBERACAO_S4",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S4",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S4",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 4\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S4",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nSetor 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S4",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 4\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S4",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nProdução\n›\nSetor 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S4",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 4\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO_S4",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Produção\nSetor 4\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO_S4",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "ÁREA OPERACIONAL QUIOSQUE\nProdução Setor 4\nProgramar Formas\nTocar nas formas para planejar\nModo Liberação\nTocar nas formas para liberar (azul)\nModo Manutenção\nParar ou liberar form"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "inspecao",
+    "path": "/unificado/mapa/operacao/?tela=INSPECAO",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DINSPECAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=INSPECAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Inspeção Setor 3 e 4\nRegistrar\nAnálise\nPostes\nProdução\nLevantamento de defeitos\nSetores 3 e 4 · Base, meio e topo\nSetor\nSetor 3\nSetor 4\nNº de série\nData da desforma\nNº da forma\nSel"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DINSPECAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nMontagem\n›\nInspeção Setor 3 e 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=INSPECAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Inspeção Setor 3 e 4\nRegistrar\nAnálise\nPostes\nProdução\nLevantamento de defeitos\nSetores 3 e 4 · Base, meio e topo\nSetor\nSetor 3\nSetor 4\nNº de série\nData da desforma\nNº da forma\nSel"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DINSPECAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nMontagem\n›\nInspeção Setor 3 e 4"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=INSPECAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Inspeção Setor 3 e 4\nVoltar\nRegistrar\nAnálise\nPostes\nProdução\nLevantamento de defeitos\nSetores 3 e 4 · Base, meio e topo\nSetor\nSetor 3\nSetor 4\nNº de série\nData da desforma\nNº da fo"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DINSPECAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Montagem\nInspeção Setor 3 e 4\nInspeção Setor 3 e 4\nMontagem Postes\nSequência Setor 3\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=INSPECAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Inspeção Setor 3 e 4\nVoltar\nRegistrar\nAnálise\nPostes\nProdução\nLevantamento de defeitos\nSetores 3 e 4 · Base, meio e topo\nSetor\nSetor 3\nSetor 4\nNº de série\nData da desforma\nNº da fo"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "sequencia",
+    "path": "/unificado/mapa/operacao/?tela=SEQUENCIA_S3",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DSEQUENCIA_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=SEQUENCIA_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Sequência Setor 3\nData da Programação\nPesquisar Fôrma\nFôrmas do Setor 3\nItens: 52\nSC01\nSem Produção (Vazio)\n9x200\n8x200\n7x200\n6x200\n7x400\n6x400\n5x400\n8x300\n7x300\n9x150\n▼\nSC02\nSem P"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DSEQUENCIA_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nMontagem\n›\nSequência Setor 3"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=SEQUENCIA_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Sequência Setor 3\nData da Programação\nPesquisar Fôrma\nFôrmas do Setor 3\nItens: 52\nSC01\nSem Produção (Vazio)\n9x200\n8x200\n7x200\n6x200\n7x400\n6x400\n5x400\n8x300\n7x300\n9x150\n▼\nSC02\nSem P"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DSEQUENCIA_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nMontagem\n›\nSequência Setor 3"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=SEQUENCIA_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Sequência Setor 3\nVoltar\nData da Programação\nPesquisar Fôrma\nFôrmas do Setor 3\nItens: 52\nSC01\nSem Produção (Vazio)\n9x200\n8x200\n7x200\n6x200\n7x400\n6x400\n5x400\n8x300\n7x300\n9x150\n▼\nSC0"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DSEQUENCIA_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Montagem\nSequência Setor 3\nInspeção Setor 3 e 4\nMontagem Postes\nSequência Setor 3\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=SEQUENCIA_S3",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Sequência Setor 3\nVoltar\nData da Programação\nPesquisar Fôrma\nFôrmas do Setor 3\nItens: 52\nSC01\nSem Produção (Vazio)\n9x200\n8x200\n7x200\n6x200\n7x400\n6x400\n5x400\n8x300\n7x300\n9x150\n▼\nSC0"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "montagem",
+    "path": "/unificado/mapa/operacao/?tela=MONTAGEM_POSTES",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMONTAGEM_POSTES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_POSTES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Montagem Postes\nFiltrar data\nModo de carga\nProdução da data\nProduzidos não montados\nSetor\nTodos (1 e 2)\nSetor 1\nSetor 2\nStatus\nTodos\nAprovado\nReprovado\nAprovado e Retrabalhado\nPend"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMONTAGEM_POSTES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nMontagem\n›\nMontagem Postes"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_POSTES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Montagem Postes\nFiltrar data\nModo de carga\nProdução da data\nProduzidos não montados\nSetor\nTodos (1 e 2)\nSetor 1\nSetor 2\nStatus\nTodos\nAprovado\nReprovado\nAprovado e Retrabalhado\nPend"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMONTAGEM_POSTES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nMontagem\n›\nMontagem Postes"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_POSTES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Montagem Postes\nVoltar\nFiltrar data\nModo de carga\nProdução da data\nProduzidos não montados\nSetor\nTodos (1 e 2)\nSetor 1\nSetor 2\nStatus\nTodos\nAprovado\nReprovado\nAprovado e Retrabalha"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMONTAGEM_POSTES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Montagem\nMontagem Postes\nInspeção Setor 3 e 4\nMontagem Postes\nSequência Setor 3\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_POSTES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Montagem Postes\nVoltar\nFiltrar data\nModo de carga\nProdução da data\nProduzidos não montados\nSetor\nTodos (1 e 2)\nSetor 1\nSetor 2\nStatus\nTodos\nAprovado\nReprovado\nAprovado e Retrabalha"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "acmpConcretagem",
+    "path": "/unificado/relatorios/acmp-concretagem/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Facmp-concretagem%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/acmp-concretagem/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acmp. Concretagem\nProdução · Campinas\nVoltar\nAcompanhamento da concretagem\n\nConferência das formas na sequência física e contagem final da produção.\n\nData de produção\nSetor\nTodos o"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Facmp-concretagem%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nAcmp. Concretagem"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/acmp-concretagem/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acmp. Concretagem\nProdução · Campinas\nVoltar\nAcompanhamento da concretagem\n\nConferência das formas na sequência física e contagem final da produção.\n\nData de produção\nSetor\nTodos o"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Facmp-concretagem%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nAcmp. Concretagem"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/acmp-concretagem/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acmp. Concretagem\nProdução · Campinas\nVoltar\nAcompanhamento da concretagem\n\nConferência das formas na sequência física e contagem final da produção.\n\nData de produção\nSetor\nTodos o"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Facmp-concretagem%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Controle\nAcmp. Concretagem\nRelatório Enc. Produção\nHistórico\nAcmp. Concretagem\nManutenção Formas\nTratativa Defeitos\nFec"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/acmp-concretagem/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acmp. Concretagem\nProdução · Campinas\nVoltar\nAcompanhamento da concretagem\n\nConferência das formas na sequência física e contagem final da produção.\n\nData de produção\nSetor\nTodos o"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "historico",
+    "path": "/unificado/mapa/operacao/?tela=HISTORICO",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DHISTORICO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=HISTORICO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Histórico de Lançamentos\nData\nTipo\nTodos\nProdução\nInspeção\nForma\nFiltrar\n\nSem eventos para o filtro informado."
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DHISTORICO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nHistórico"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=HISTORICO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Histórico de Lançamentos\nData\nTipo\nTodos\nProdução\nInspeção\nForma\nFiltrar\n\nSem eventos para o filtro informado."
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DHISTORICO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nHistórico"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=HISTORICO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Histórico de Lançamentos\n← Voltar\nData\nTipo\nTodos\nProdução\nInspeção\nForma\nFiltrar\n\nSem eventos para o filtro informado."
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DHISTORICO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Controle\nHistórico\nRelatório Enc. Produção\nHistórico\nAcmp. Concretagem\nManutenção Formas\nTratativa Defeitos\nFechamento "
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=HISTORICO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Histórico de Lançamentos\n← Voltar\nData\nTipo\nTodos\nProdução\nInspeção\nForma\nFiltrar\n\nSem eventos para o filtro informado."
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "relatorioMapa",
+    "path": "/unificado/mapa/operacao/?tela=RELATORIO",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DRELATORIO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório Enc. Produção\nData de produção\nSetor\nSelecione\nTodos os Setores\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nSelecione\nTodos os Setores\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nEncarregado\nGer"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DRELATORIO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nRelatório Enc. Produção"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório Enc. Produção\nData de produção\nSetor\nSelecione\nTodos os Setores\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nEncarregado\nGerar Relatório\nPDF / Imprimir\nWhatsApp"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DRELATORIO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nRelatório Enc. Produção"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório Enc. Produção\n← Voltar\nData de produção\nSetor\nSelecione\nTodos os Setores\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nEncarregado\nGerar Relatório\nPDF / Imprimir\nWhatsApp"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DRELATORIO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Controle\nRelatório Enc. Produção\nRelatório Enc. Produção\nHistórico\nAcmp. Concretagem\nManutenção Formas\nTratativa Defeit"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório Enc. Produção\n← Voltar\nData de produção\nSetor\nSelecione\nTodos os Setores\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nEncarregado\nGerar Relatório\nPDF / Imprimir\nWhatsApp"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "manutencao",
+    "path": "/unificado/mapa/operacao/?tela=RELATORIO_MANUTENCAO",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DRELATORIO_MANUTENCAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO_MANUTENCAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório de Manutenção de Formas\n\nHistórico e Formas Paradas\n\nImprimir PDF Manutenção\nStatus\nTodos\nApenas paradas\nApenas liberadas\nDe\nAté\nLimpar filtros\nFormas em Manutenção e His"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DRELATORIO_MANUTENCAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nManutenção Formas"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO_MANUTENCAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório de Manutenção de Formas\n\nHistórico e Formas Paradas\n\nImprimir PDF Manutenção\nStatus\nTodos\nApenas paradas\nApenas liberadas\nDe\nAté\nLimpar filtros\nFormas em Manutenção e His"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DRELATORIO_MANUTENCAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nManutenção Formas"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO_MANUTENCAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório de Manutenção de Formas\n\nHistórico e Formas Paradas\n\nImprimir PDF Manutenção\nVoltar\nStatus\nTodos\nApenas paradas\nApenas liberadas\nDe\nAté\nLimpar filtros\nFormas em Manutençã"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DRELATORIO_MANUTENCAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Controle\nManutenção Formas\nRelatório Enc. Produção\nHistórico\nAcmp. Concretagem\nManutenção Formas\nTratativa Defeitos\nFec"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=RELATORIO_MANUTENCAO",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório de Manutenção de Formas\n\nHistórico e Formas Paradas\n\nImprimir PDF Manutenção\nVoltar\nStatus\nTodos\nApenas paradas\nApenas liberadas\nDe\nAté\nLimpar filtros\nFormas em Manutençã"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "dashMontagem",
+    "path": "/unificado/mapa/operacao/?tela=MONTAGEM_INDICADORES",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMONTAGEM_INDICADORES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_INDICADORES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dashboard Montagem\n\n01/11/2026 a 18/11/2026 - Todos os setores - Todos os status\n\nExportar XLSX\nAtualizar\nConcretagem\nMontagem\nDefeitos\n⚲ Filtros\nSalvar filtro\nInício:\nFim:\nHoje\n7 "
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMONTAGEM_INDICADORES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nIndicadores\n›\nDashboard Montagem"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_INDICADORES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dashboard Montagem\n\n01/11/2026 a 18/11/2026 - Todos os setores - Todos os status\n\nExportar XLSX\nAtualizar\nConcretagem\nMontagem\nDefeitos\n⚲ Filtros\nSalvar filtro\nInício:\nFim:\nHoje\n7 "
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMONTAGEM_INDICADORES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nIndicadores\n›\nDashboard Montagem"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_INDICADORES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dashboard Montagem\n\n01/11/2026 a 18/11/2026 - Todos os setores - Todos os status\n\nExportar XLSX\nAtualizar\nConcretagem\nMontagem\nDefeitos\n⚲ Filtros\nSalvar filtro\nInício:\nFim:\nHoje\n7 "
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DMONTAGEM_INDICADORES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Indicadores\nDashboard Montagem\nCampinas Unificado · S1+2+3+4\nDashboard Montagem\nDashboard Defeitos\nDashboard Concretage"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=MONTAGEM_INDICADORES",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dashboard Montagem\n\n01/11/2026 a 18/11/2026 - Todos os setores - Todos os status\n\nExportar XLSX\nAtualizar\nConcretagem\nMontagem\nDefeitos\n⚲ Filtros\nSalvar filtro\n▦ Período\nInício:\nFi"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "tratativa",
+    "path": "/unificado/mapa/operacao/?tela=TRATATIVA_DEFEITOS",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DTRATATIVA_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=TRATATIVA_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório de Defeitos & Tratativa de Qualidade\n\nFonte: montagem e inspeção de defeitos do servidor · tratativas compartilhadas\n\nAtualizar dados\nNova Ocorrência\nImprimir PDF Defeito"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DTRATATIVA_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nTratativa Defeitos"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=TRATATIVA_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório de Defeitos & Tratativa de Qualidade\n\nFonte: montagem e inspeção de defeitos do servidor · tratativas compartilhadas\n\nAtualizar dados\nNova Ocorrência\nImprimir PDF Defeito"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DTRATATIVA_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nTratativa Defeitos"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=TRATATIVA_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório de Defeitos & Tratativa de Qualidade\n\nFonte: montagem e inspeção de defeitos do servidor · tratativas compartilhadas\n\nAtualizar dados\nNova Ocorrência\nImprimir PDF Defeito"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DTRATATIVA_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Controle\nTratativa Defeitos\nRelatório Enc. Produção\nHistórico\nAcmp. Concretagem\nManutenção Formas\nTratativa Defeitos\nFe"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=TRATATIVA_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Relatório de Defeitos & Tratativa de Qualidade\n\nFonte: montagem e inspeção de defeitos do servidor · tratativas compartilhadas\n\nAtualizar dados\nNova Ocorrência\nImprimir PDF Defeito"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "dashDefeitos",
+    "path": "/unificado/mapa/operacao/?tela=DASHBOARD_DEFEITOS",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DDASHBOARD_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=DASHBOARD_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "CT\nConcreTrack - Indicadores Industriais\nQualidade, montagem e produtividade em uma unica central\nOnline\nAtualizado 21:14\nDashboard Defeitos\n\n18/11/2026 - Todos os setores\n\nApresen"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DDASHBOARD_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nIndicadores\n›\nDashboard Defeitos"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=DASHBOARD_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "CT\nConcreTrack - Indicadores Industriais\nQualidade, montagem e produtividade em uma unica central\nOnline\nAtualizado 21:14\nDashboard Defeitos\n\n18/11/2026 - Todos os setores\n\nApresen"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DDASHBOARD_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nIndicadores\n›\nDashboard Defeitos"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=DASHBOARD_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "CT\nConcreTrack - Indicadores Industriais\nQualidade, montagem e produtividade em uma unica central\nOnline\nAtualizado 21:14\nDashboard Defeitos\n\n18/11/2026 - Todos os setores\n\nApresen"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DDASHBOARD_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Indicadores\nDashboard Defeitos\nCampinas Unificado · S1+2+3+4\nDashboard Montagem\nDashboard Defeitos\nDashboard Concretage"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=DASHBOARD_DEFEITOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "CT\nConcreTrack - Indicadores Industriais\nQualidade, montagem e produtividade em uma unica central\nOnline\nAtualizado 21:14\nDashboard Defeitos\n\n18/11/2026 - Todos os setores\n\nApresen"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "fechamentoDiarioPcp",
+    "path": "/unificado/pcp/fechamento-diario/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nPlanejamento\n›\nAcompanhamento\n›\nFechamento Diário"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nPlanejamento\n›\nAcompanhamento\n›\nFechamento Diário"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nAcompanhamento\nFechamento Diário\nPCP Diário\nAcompanhamento Mensal\nAcompanhamento Mensal Setor 3 e 4\nApontamento Mega\nFechamento Di"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "fechamentoDiario",
+    "path": "/unificado/relatorios/fechamento-diario/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nFechamento diário"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nControle\n›\nFechamento diário"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Controle\nFechamento diário\nRelatório Enc. Produção\nHistórico\nAcmp. Concretagem\nManutenção Formas\nTratativa Defeitos\nFec"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento Diario\n\nConsolidado executivo de producao, produtividade, ocorrencias e armacoes.\n\nData base\nAtualizar\nPDF\nWhatsApp\nTelegr"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "formasPorSetor",
+    "path": "/unificado/pcp/formas-por-setor/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fformas-por-setor%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/formas-por-setor/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Formas por Setor\n\nConsulte o que cada forma produz e sua situação no PCP e na manutenção.\n\n Exportar CSV\n Imprimir\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nSituação\nAtivas\nInati"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fformas-por-setor%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nPlanejamento\n›\nProdução e apoio\n›\nFormas por Setor"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/formas-por-setor/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Formas por Setor\n\nConsulte o que cada forma produz e sua situação no PCP e na manutenção.\n\n Exportar CSV\n Imprimir\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nSituação\nAtivas\nInati"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fformas-por-setor%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nPlanejamento\n›\nProdução e apoio\n›\nFormas por Setor"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/formas-por-setor/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Formas por Setor\n\nConsulte o que cada forma produz e sua situação no PCP e na manutenção.\n\n Exportar CSV\n Imprimir\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nSituação\nAtivas\nInati"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fformas-por-setor%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução e apoio\nFormas por Setor\nProdução PCP\nMão de Obra\nRateio de Mão de Obra\nFormas por Setor\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/formas-por-setor/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Formas por Setor\n\nConsulte o que cada forma produz e sua situação no PCP e na manutenção.\n\n Exportar CSV\n Imprimir\nSetor\nTodos\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nSituação\nAtivas\nInati"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "produtividade",
+    "path": "/unificado/mapa/operacao/?tela=PROD_ANALISE",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DPROD_ANALISE",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMonta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=PROD_ANALISE",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dashboard Concretagem Matriz\n\n18/11/2026 - Todos os setores - Meta 15 min\n\nAtualizar\nConcretagem\nMontagem\nDefeitos\nFiltros\nSalvar filtro\nInício\nFim\nHoje\n7 dias\n30 dias\nMês atual\nMê"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DPROD_ANALISE",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nIndicadores\n›\nDashboard Concretagem Matriz"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=PROD_ANALISE",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dashboard Concretagem Matriz\n\n18/11/2026 - Todos os setores - Meta 15 min\n\nAtualizar\nVoltar\nConcretagem\nMontagem\nDefeitos\nFiltros\nSalvar filtro\nInício\nFim\nHoje\n7 dias\n30 dias\nMês a"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DPROD_ANALISE",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n›\nCampinas\n›\nIndicadores\n›\nDashboard Concretagem Matriz"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=PROD_ANALISE",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dashboard Concretagem Matriz\n\n18/11/2026 - Todos os setores - Meta 15 min\n\nAtualizar\nVoltar\nConcretagem\nMontagem\nDefeitos\nFiltros\nSalvar filtro\nInício\nFim\nHoje\n7 dias\n30 dias\nMês a"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DPROD_ANALISE",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Indicadores\nDashboard Concretagem Matriz\nCampinas Unificado · S1+2+3+4\nDashboard Montagem\nDashboard Defeitos\nDashboard "
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=PROD_ANALISE",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Dashboard Concretagem Matriz\n\n18/11/2026 - Todos os setores - Meta 15 min\n\nAtualizar\nVoltar\nConcretagem\nMontagem\nDefeitos\nFiltros\nSalvar filtro\n▦ Período\nInício\nFim\nHoje\n7 dias\n30 "
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "manutencaoUsina",
+    "path": "/unificado/manutencao-usina/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nExpandir tudo\nRecolher tudo\nManutenção Usina\nAtualizar\nVersão 1.4.18\nAjuda\nUsuários\nD\nDiego\nSair\nQualidade\n›\nManutenção "
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nManutenção Usina"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nQualidade\n›\nManutenção Usina"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nManutenção Usina\nManutenção Usina\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "armadurasProgramacao",
+    "path": "/unificado/pcp/armaduras/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nPlanejamento\n›\nArmaduras\n›\nProgramação semanal"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nPlanejamento\n›\nArmaduras\n›\nProgramação semanal"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nArmaduras\nProgramação semanal\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "armadurasRelatorio",
+    "path": "/unificado/pcp/armaduras-relatorio/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nPlanejamento\n›\nArmaduras\n›\nRelatório de produção"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nPlanejamento\n›\nArmaduras\n›\nRelatório de produção"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nArmaduras\nRelatório de produção\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\n\nDemanda da programação de postes, antecipada para o último dia de trabalho anterior.\n\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "prodUsuarios",
+    "path": "/unificado/mapa/operacao/?tela=USUARIOS",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DUSUARIOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=USUARIOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Gerenciar Usuários\nUsuários de todos os módulos\nUsuário\tPerfis por módulo\tAlçada\tUnidade\tSituação\tAções\n\nadmin\n@user-admin\n\tPL · ADMINPR · GerênciaLB · admin\tGestão\tCampinas\tInativ"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DUSUARIOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n/\nUsuários"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=USUARIOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Gerenciar Usuários\nUsuários de todos os módulos\nUsuário\tPerfis por módulo\tAlçada\tUnidade\tSituação\tAções\n\nadmin\n@user-admin\n\tPL · ADMINPR · GerênciaLB · admin\tGestão\tCampinas\tInativ"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DUSUARIOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nProdução\n/\nUsuários"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=USUARIOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Gerenciar Usuários\n← Voltar\nUsuários de todos os módulos\nUsuário\tPerfis por módulo\tAlçada\tUnidade\tSituação\tAções\n\nadmin\n@user-admin\n\tPL · ADMINPR · GerênciaLB · admin\tGestão\tCampin"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DUSUARIOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nUnificado\nInício\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=USUARIOS",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Gerenciar Usuários\n← Voltar\nUsuários de todos os módulos\nadmin\n@user-admin\nPL · ADMIN\nPR · Gerência\nLB · admin\nGestão\nCampinas\nInativa\nEditarAcesso rápidoRedefinir senhaReativarExc"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "PCP",
+    "screen": "postesNumerosSerie",
+    "path": "/unificado/pcp/numeros-serie/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado vs Realizado\nProgramação\nSetor 1 e 2\nSemanal S1 e S2\nSetor 3 e 4\nCir"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Números de série dos postes\n\nSequência única por modelo e ano. Histórico confirmado e previsão da programação.\n\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução "
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nPlanejamento\n›\nArmaduras\n›\nNúmeros de série dos postes"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Números de série dos postes\n\nSequência única por modelo e ano. Histórico confirmado e previsão da programação.\n\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução "
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.18\nPlanejamento\n›\nArmaduras\n›\nNúmeros de série dos postes"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Números de série dos postes\n\nSequência única por modelo e ano. Histórico confirmado e previsão da programação.\n\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução "
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nArmaduras\nNúmeros de série dos postes\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nInício\nTelas\nRecentes\n"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Números de série dos postes\n\nSequência única por modelo e ano. Histórico confirmado e previsão da programação.\n\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução "
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  }
+]

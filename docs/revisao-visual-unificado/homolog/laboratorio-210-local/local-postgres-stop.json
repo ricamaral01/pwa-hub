@@ -1,0 +1,10 @@
+{
+  "stopped": true,
+  "timestamp_utc": "2026-11-21T03:04:27.450941+00:00",
+  "environment": "own local Windows test cluster only",
+  "port": 55421,
+  "data_directory": "C:\\Users\\Admin\\Documents\\pwa-hub-padrao-visual\\.codex-tmp\\lab210-local-postgres\\data",
+  "active_client_count_before_stop_excluding_audit": 0,
+  "vps_service_or_session_changes": 0,
+  "output": "waiting for server to shut down.... done\nserver stopped"
+}

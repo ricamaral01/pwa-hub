@@ -1,0 +1,20 @@
+{
+  "id": "/unificado/mapa/operacao/index.html",
+  "name": "Uni",
+  "short_name": "Uni",
+  "start_url": "/unificado/",
+  "scope": "/unificado/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0B1730",
+  "theme_color": "#0B1730",
+  "icons": [
+    {"src":"/unificado/assets/img/unificado-pwa-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"},
+    {
+      "src": "/unificado/mapa/operacao/unificado-icon.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

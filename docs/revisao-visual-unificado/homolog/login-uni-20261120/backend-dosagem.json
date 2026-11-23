@@ -1,0 +1,24 @@
+{
+  "unit": "unificado-visual-homolog-dosagem.service",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-dosagem-20261120T135308Z",
+  "changes": [
+    {
+      "file": "dosagem/app/unified_gateway.py",
+      "before_sha256": "d94108ee2305d65714690d9c87a4df6c1251f0d5cb68272fbe0800c0cecbbdb3",
+      "after_sha256": "3b6fed92907028e71b03995e491a63db2d0a7ec507d4ae5ddc592f67461f116c",
+      "patch": "--- dosagem/app/unified_gateway.py\n+++ dosagem/app/unified_gateway.py\n@@ -37,7 +37,7 @@\n         if not int(time.time()) <= int(claims[\"exp\"]) <= int(time.time()) + 30:\n             raise ValueError(\"expiry\")\n     except (ValueError, KeyError, TypeError, OverflowError, binascii.Error):\n-        raise ErroAPI(\"NAO_AUTENTICADO\", \"Sessão do Unificado inválida ou expirada.\") from None\n+        raise ErroAPI(\"NAO_AUTENTICADO\", \"Sessão do Uni inválida ou expirada.\") from None\n     email = f\"unificado-{claims['id']}@concretrack.local\"\n     user = session.get(Usuario, email)\n     if user is None:\n"
+    }
+  ],
+  "changed_files": 1,
+  "restarted": true,
+  "responds": true,
+  "connections_before": 67,
+  "connections_after": 67,
+  "database_writes": 0,
+  "business_logic_unchanged_ast": true,
+  "rollback": {
+    "copy_each_file_from": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-dosagem-20261120T135308Z",
+    "copy_to": "/opt/concrefer-unificado/homolog-next/visual-full",
+    "restart_only": "unificado-visual-homolog-dosagem.service"
+  }
+}

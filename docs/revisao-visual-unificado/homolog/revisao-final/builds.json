@@ -1,0 +1,36 @@
+[
+  {
+    "target": "modelo-a",
+    "command": "npm run build",
+    "exit_code": 0
+  },
+  {
+    "target": "qualidade",
+    "command": "npm run build",
+    "exit_code": 0
+  },
+  {
+    "target": "qualidade-tasks",
+    "command": "npm run build:tasks",
+    "exit_code": 0
+  },
+  {
+    "target": "logistica",
+    "command": "npm run build",
+    "exit_code": 0
+  },
+  {
+    "target": "laboratorio",
+    "command": "npm run build",
+    "exit_code": 0
+  },
+  {
+    "target": "laboratorio-novo",
+    "command": "npm run build:novo",
+    "exit_code": 0
+  },
+  {
+    "target": "cronoanalise",
+    "exit_code": 0
+  }
+]

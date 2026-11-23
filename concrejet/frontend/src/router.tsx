@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import CadastrosPage from '@/pages/admin/CadastrosPage';
 import { AdminGuard, DeviceActivationGuard, OperatorGuard } from './router/guards';
 
 const ActivationPage = lazy(() => import('@/pages/activation/ActivationPage'));
@@ -8,12 +7,6 @@ const AdminHomePage = lazy(() => import('@/pages/admin/AdminHomePage'));
 const ChangePasswordPage = lazy(() => import('@/pages/admin/ChangePasswordPage'));
 const LoginPage = lazy(() => import('@/pages/login/LoginPage'));
 const OperationPage = lazy(() => import('@/pages/operation/OperationPage'));
-const StopPage = lazy(() => import('@/pages/operation/StopPage'));
-const SyncConflictsPage = lazy(() => import('@/pages/admin/SyncConflictsPage'));
-const StockPage = lazy(() => import('@/pages/admin/StockPage'));
-const BlendsPage = lazy(() => import('@/pages/admin/BlendsPage'));
-const AnalyticsPage = lazy(() => import('@/pages/admin/AnalyticsPage'));
-const ImportsPage = lazy(() => import('@/pages/admin/ImportsPage'));
 
 export const router = createBrowserRouter([
   {
@@ -34,15 +27,11 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <RootEntry />,
-  },
-  {
-    path: '/stop',
     element: (
       <DeviceActivationGuard>
         <OperatorGuard>
           <Suspense fallback={<PageLoader />}>
-            <StopPage />
+            <OperationPage />
           </Suspense>
         </OperatorGuard>
       </DeviceActivationGuard>
@@ -54,96 +43,6 @@ export const router = createBrowserRouter([
       <AdminGuard>
         <Suspense fallback={<PageLoader />}>
           <AdminHomePage />
-        </Suspense>
-      </AdminGuard>
-    ),
-  },
-  {
-    path: '/admin/cadastros/:resource?',
-    element: (
-      <AdminGuard>
-        <Suspense fallback={<PageLoader />}>
-          <CadastrosPage />
-        </Suspense>
-      </AdminGuard>
-    ),
-  },
-  {
-    path: '/admin/sync-conflicts',
-    element: (
-      <AdminGuard>
-        <Suspense fallback={<PageLoader />}>
-          <SyncConflictsPage />
-        </Suspense>
-      </AdminGuard>
-    ),
-  },
-  {
-    path: '/admin/stock',
-    element: (
-      <AdminGuard>
-        <Suspense fallback={<PageLoader />}>
-          <StockPage />
-        </Suspense>
-      </AdminGuard>
-    ),
-  },
-  {
-    path: '/admin/blends',
-    element: (
-      <AdminGuard>
-        <Suspense fallback={<PageLoader />}>
-          <BlendsPage />
-        </Suspense>
-      </AdminGuard>
-    ),
-  },
-  ...(
-    [
-      'dashboard',
-      'analytics/production',
-      'analytics/losses',
-      'analytics/stops',
-      'analytics/oee',
-      'analytics/stock',
-      'traceability',
-      'history/production',
-      'history/occurrences',
-      'history/stock',
-      'history/blends',
-    ] as const
-  ).map((path) => ({
-    path: `/admin/${path}`,
-    element: (
-      <AdminGuard>
-        <Suspense fallback={<PageLoader />}>
-          <AnalyticsPage
-            kind={
-              path.includes('losses')
-                ? 'losses'
-                : path.includes('stops')
-                  ? 'stops'
-                  : path.includes('oee')
-                    ? 'oee'
-                    : path.includes('traceability')
-                      ? 'traceability'
-                      : path.includes('stock')
-                        ? 'stock'
-                        : path === 'dashboard'
-                          ? 'overview'
-                          : 'production'
-            }
-          />
-        </Suspense>
-      </AdminGuard>
-    ),
-  })),
-  {
-    path: '/admin/imports/*',
-    element: (
-      <AdminGuard>
-        <Suspense fallback={<PageLoader />}>
-          <ImportsPage />
         </Suspense>
       </AdminGuard>
     ),
@@ -180,25 +79,5 @@ function PageLoader() {
       <div className="spinner spinner-lg" />
       <span style={{ color: 'var(--text-muted)', fontSize: 'var(--text-lg)' }}>Carregando…</span>
     </div>
-  );
-}
-
-// eslint-disable-next-line react-refresh/only-export-components
-function RootEntry() {
-  const host = window.location.hostname;
-  const desktopHost = host === 'localhost' || host === '127.0.0.1' || host === '::1';
-
-  if (desktopHost) {
-    return <Navigate to="/admin/dashboard" replace />;
-  }
-
-  return (
-    <DeviceActivationGuard>
-      <OperatorGuard>
-        <Suspense fallback={<PageLoader />}>
-          <OperationPage />
-        </Suspense>
-      </OperatorGuard>
-    </DeviceActivationGuard>
   );
 }

@@ -1,0 +1,38 @@
+{
+  "passed": false,
+  "production_published": false,
+  "production_version": "1.4.6",
+  "homolog_version": "1.4.30",
+  "authorized_production_armacao_enabled": true,
+  "authorized_production_fck": 25,
+  "homolog_alignment_passed": true,
+  "gate": "7/7",
+  "matrix_profiles": 9,
+  "matrix_module_cases": 72,
+  "reference_queries": 48,
+  "production_unchanged": true,
+  "backup_reused": "/opt/concrefer-unificado/backups/producao-20261120T170515Z",
+  "frozen_candidate_changed": false,
+  "blockers": [
+    {
+      "category": "frontend / busca",
+      "reason": "Dynamic Armação screens are missing from the candidate search index",
+      "profiles": [
+        "central/GERENCIA (alex)",
+        "PCP/ADMIN (Ricardo)"
+      ],
+      "production_search_results": 24,
+      "candidate_search_results": 0
+    },
+    {
+      "category": "API / fonte de dados de CPs",
+      "reason": "CQ draft detail and FCK25 PDF preview cannot read the configured CP source",
+      "detail_status": 503,
+      "pdf_status": 503,
+      "error": {
+        "detail": "Fonte de CPs indisponível. Emissão bloqueada."
+      }
+    }
+  ],
+  "source_of_stop": "PROMPT_CODEX_PRODUCAO_RETOMADA.md: Se algo falhar, pare antes de tocar a produção e me explique."
+}

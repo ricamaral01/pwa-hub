@@ -1,0 +1,44 @@
+{
+  "criteria_decimal_display": "5,0",
+  "decimal_edit_display": "5,1",
+  "criteria_saved": false,
+  "compact_mobile_list_excluded_from_print": true,
+  "status": "ok",
+  "version": "1.4.25",
+  "home_totals": "Programado hoje\n20\nPCP · setores 1 a 4\nRealizado\n5\nLançamentos do Mapa\nAderência\n25%\nFalta produzir\n15",
+  "home_sectors": [
+    {
+      "programado": "20",
+      "realizado": "5",
+      "falta": "15",
+      "aderencia": "25%"
+    },
+    {
+      "programado": "0",
+      "realizado": "0",
+      "falta": "0",
+      "aderencia": "—"
+    },
+    {
+      "programado": "0",
+      "realizado": "0",
+      "falta": "0",
+      "aderencia": "—"
+    },
+    {
+      "programado": "0",
+      "realizado": "0",
+      "falta": "0",
+      "aderencia": "—"
+    }
+  ],
+  "quick_access_items": 8,
+  "all_destinations_allowed_by_iam": true,
+  "mocked_responses": 0,
+  "mobile_parameter_title": "Números de série dos postes",
+  "account_help_inline": true,
+  "js_errors": [],
+  "date_label": "quinta-feira, 19 de novembro de 2026",
+  "requested_test_date": "2026-11-18",
+  "timezone": "America/Sao_Paulo"
+}

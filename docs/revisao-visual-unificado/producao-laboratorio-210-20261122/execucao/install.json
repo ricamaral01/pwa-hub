@@ -1,0 +1,13 @@
+{
+  "phase": "backend_ready",
+  "health": [
+    {
+      "service": "laboratorio-unificado.service",
+      "health": 200
+    },
+    {
+      "service": "mapa-unificado-auth.service",
+      "health": 200
+    }
+  ]
+}

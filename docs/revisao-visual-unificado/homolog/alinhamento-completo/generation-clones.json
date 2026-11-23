@@ -1,0 +1,45 @@
+[
+  {
+    "database": "mapa_visual_homolog_20261118",
+    "source_homolog_database": "mapa_unificado_homolog_20261016",
+    "source_homolog_dump_sha256": "25cff79839f084824e4cc3016ad4c1416b6b0ac3f1a6862e44f55aa984765663",
+    "production_database_connections": 0,
+    "original_database_modified": false,
+    "archived_schema": "estoque_carta_arquivo"
+  },
+  {
+    "database": "pcp_visual_homolog_20261118",
+    "source_homolog_database": "pcp_unificado_homolog_20261016",
+    "source_homolog_dump_sha256": "554f763248a01086f16ef70a19e09426fb8e531007e16d04841ea9ac191ecb6c",
+    "production_database_connections": 0,
+    "original_database_modified": false
+  },
+  {
+    "database": "qualidade_visual_homolog_20261118",
+    "source_homolog_database": "qualidade_homolog_20261016",
+    "source_homolog_dump_sha256": "c9c704f727681b1b4c67565925d7f37e4ccde0561ff42470778a79a39f277e1a",
+    "production_database_connections": 0,
+    "original_database_modified": false
+  },
+  {
+    "database": "laboratorio_visual_homolog_20261118",
+    "source_homolog_database": "concretrack_postes_homolog",
+    "source_homolog_dump_sha256": "b5f5552c7dc7349e5825e2285ceb24c221023161fbbdcd14eef135daa381d41c",
+    "production_database_connections": 0,
+    "original_database_modified": false
+  },
+  {
+    "database": "suprimentos_visual_homolog_20261118",
+    "source_homolog_database": "suprimentos_homolog_20261025",
+    "source_homolog_dump_sha256": "8195f1e15a4d6941e3ebe7cf35e75d2164b0cfba99126688ea0f176a98146b4f",
+    "production_database_connections": 0,
+    "original_database_modified": false
+  },
+  {
+    "database": "carta_traco_visual_homolog_20261118",
+    "source_homolog_database": "mapa_unificado_homolog_20261016",
+    "source_homolog_dump_sha256": "25cff79839f084824e4cc3016ad4c1416b6b0ac3f1a6862e44f55aa984765663",
+    "production_database_connections": 0,
+    "original_database_modified": false
+  }
+]

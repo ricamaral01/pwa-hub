@@ -1,0 +1,9 @@
+[
+  {
+    "module": "suprimentos",
+    "native_authority": "/api/suprimentos/me",
+    "status": 403,
+    "expected": "existing account is not authorized in the native module",
+    "permission_writes": 0
+  }
+]

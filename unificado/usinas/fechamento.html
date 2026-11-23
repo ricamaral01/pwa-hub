@@ -1,0 +1,324 @@
+<!doctype html>
+<!-- Layout do relatório gerencial de /concretrack/relatorios/fechamento/ adaptado para a API de leitura do Unificado. -->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <title>Fechamento - Relatório Gerencial - ConcreTrack</title>
+  <link href="/unificado/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  
+  <style>@media print {
+
+    .container{width:100%;margin:0 auto;padding:0 20px;max-width:1320px}
+    :root{--ct-orange:#E07A3A;--ct-gray:#343B43;--ct-gray-lt:#5A6270;--ct-blue:#1976D2;--ct-navy:#0D3B66;--ct-silver:#BFC5CC;--ct-bg:#F2F3F5;--ct-red:#9f1239}
+    *{font-family:"Gotham","Montserrat","Segoe UI",system-ui,sans-serif;box-sizing:border-box}
+    body{margin:0;background:var(--ct-bg);color:var(--ct-gray)}
+    .app-topbar{background:var(--ct-gray);color:#fff}.topbar-inner{display:flex;align-items:center;padding:12px 0;gap:12px}.topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:6px}.topbar-title{font-size:18px;font-weight:800}.topbar-title span{color:var(--ct-orange)}.topbar-sub{font-size:10px;color:var(--ct-silver)}.topbar-right{margin-left:auto;display:flex;gap:10px}.btn-back,.btn-logout{border-radius:10px;height:36px;font-weight:700;font-size:12px;border:1px solid rgba(255,255,255,.18);color:#fff;background:rgba(255,255,255,.06);display:inline-flex;align-items:center;gap:6px;padding:0 14px;text-decoration:none}.btn-logout{background:rgba(224,122,58,.25)}.topbar-accent{height:3px;background:linear-gradient(90deg,var(--ct-orange),var(--ct-navy))}
+    .page-header{padding:26px 0 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px}.page-header h1{margin:0;color:var(--ct-red);font-size:34px;font-weight:800;letter-spacing:0}.page-header p{margin:6px 0 0;color:var(--ct-gray-lt);font-size:13px}.actions{display:flex;gap:10px;align-items:flex-end}.month-filter{display:flex;flex-direction:column;gap:5px;color:var(--ct-gray-lt);font-size:10px;font-weight:800;text-transform:uppercase}.month-filter input{height:40px;min-width:172px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:var(--ct-gray);font-size:14px;font-weight:700;padding:0 11px}.month-filter input:focus{border-color:var(--ct-blue);box-shadow:0 0 0 3px rgba(25,118,210,.12);outline:0}.btn-main{height:40px;border:0;border-radius:10px;background:var(--ct-blue);color:#fff;font-weight:800;padding:10px 16px}
+    .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}.kpi{background:#fff;border:1px solid rgba(15,23,42,.07);border-radius:12px;padding:14px}.kpi span{display:block;color:var(--ct-gray-lt);font-size:11px;font-weight:800;text-transform:uppercase}.kpi strong{font-size:22px;color:var(--ct-navy)}
+    .info-section{background:#fff;border:1px solid rgba(15,23,42,.07);border-radius:14px;padding:20px;margin-bottom:18px;overflow:hidden}.info-title{color:red;text-align:center;font-weight:400;font-size:34px;margin:0 0 20px}.mix-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}.mix-card{position:relative;min-height:126px;border-radius:12px;color:#fff;padding:18px 52px 16px 18px;box-shadow:0 10px 22px rgba(15,23,42,.12)}.mix-card small{display:block;text-transform:uppercase;font-size:11px;opacity:.85}.mix-card h3{margin:8px 0 10px;color:#fff;font-size:24px;font-weight:800;line-height:1.05}.mix-card strong{font-size:18px}.mix-card p{margin:8px 0 0;color:#fff;font-size:11px}.mix-icon{position:absolute;right:16px;top:16px;font-size:28px;opacity:.95}.mix-normal{background:linear-gradient(135deg,#16a34a,#12803a)}.mix-especial{background:linear-gradient(135deg,#315f84,#2d536f)}.mix-obra{background:linear-gradient(135deg,#ff8617,#f04b0b)}.comparison-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.comparison-card{background:linear-gradient(135deg,#368fc6,#27465e);border-radius:12px;color:#fff;min-height:172px;padding:22px}.comparison-card h3{color:#fff;font-size:21px;font-weight:800;margin:0 0 18px;display:flex;gap:8px;align-items:center}.comparison-card .headline{font-size:30px;font-weight:800;line-height:1.15;margin-bottom:8px}.pill-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.value-pill{background:#fff;color:#1f2937;border-radius:6px;padding:4px 10px;font-size:15px;font-weight:800}.delta-pill{background:#22c55e;color:#fff;border-radius:7px;padding:6px 14px;font-size:20px;font-weight:900}.metric-pill{background:#fff;color:#16a34a;border-radius:7px;padding:7px 12px;font-size:13px;font-weight:800}.days-line{font-size:16px;font-weight:800;margin:18px 0;color:#fff}.indicators{background:#dfe8f4;border-radius:12px;padding:14px 14px 8px}.indicator-head{display:grid;grid-template-columns:1fr 150px 1fr;align-items:center;text-align:center;font-size:16px;font-weight:900;margin:0 0 10px}.head-global{color:#089f92}.head-junho{color:#ef4444}.head-maio{color:#7c3aed}.head-pink{color:#e7298a}.indicator-row{display:grid;grid-template-columns:1fr 150px 1fr;gap:10px;align-items:center;margin-bottom:9px}.indicator-bar{height:56px;border-radius:8px;color:#fff;display:flex;align-items:center;padding:0 18px;font-size:17px;font-weight:900}.bar-teal{background:#109f94}.bar-red{background:#ef444f}.bar-purple{background:#7c3aed}.bar-pink{background:#e7298a}.indicator-mid{text-align:center;color:#1f2937;font-size:12px;font-weight:900}.indicator-mid span{display:inline-block;margin-top:7px;border-radius:999px;padding:5px 10px;color:#fff;font-size:12px}.ok{background:#22c55e}.bad{background:#ef4444}
+    .delta-pill.is-negative{background:#ef4444}
+    .obra-detail{display:none;margin:-2px 0 18px;border:1px solid #fed7aa;border-radius:12px;background:#fff7ed;padding:14px 16px}.obra-detail.is-visible{display:block}.obra-detail-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.obra-detail-head strong{color:#9a3412;font-size:15px}.obra-detail-total{color:#c2410c;font-weight:900}.obra-detail-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.obra-detail-item{background:#fff;border:1px solid #ffedd5;border-radius:9px;padding:10px}.obra-detail-item span{display:block;color:#9a3412;font-size:11px;font-weight:800}.obra-detail-item strong{display:block;color:#431407;font-size:16px;margin-top:3px}.obra-detail-item small{display:block;color:#7c2d12;font-size:10px;margin-top:3px}.stops-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}.stops-kpi{border:1px solid #fecdd3;background:#fff1f2;border-radius:10px;padding:12px}.stops-kpi span{display:block;color:#9f1239;font-size:10px;font-weight:800;text-transform:uppercase}.stops-kpi strong{display:block;color:#4c0519;font-size:20px;margin-top:3px}.stops-causes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.stops-cause{border-radius:999px;background:#e2e8f0;color:#334155;padding:7px 11px;font-size:11px;font-weight:800}.stops-table-wrap{overflow-x:auto}.stops-table{width:100%;border-collapse:collapse;min-width:820px}.stops-table th{background:#343b43;color:#fff;text-align:left;font-size:11px;text-transform:uppercase;padding:9px}.stops-table td{border-bottom:1px solid #e2e8f0;padding:9px;font-size:12px;vertical-align:top}.stops-table td.num{text-align:right;font-weight:800}.chart-card{background:#fff;border:1px solid rgba(15,23,42,.07);border-radius:14px;padding:20px;margin-bottom:18px;overflow:hidden}.chart-title{color:var(--ct-red);font-size:34px;font-weight:800;margin:0 0 4px}.chart-average-note{color:#64748b;font-size:14px;font-weight:800;margin:0 0 10px}.chart-card svg{display:block;min-width:0;width:100%;height:auto;background:#fff}.grid-line{stroke:#e5e7eb}.axis{fill:#64748b;font-size:13px;font-weight:700}.axis.daily{font-size:10px}.avg-line{stroke:#ef6a5b;stroke-width:3;stroke-dasharray:10 8}.bar{fill:#67a9cf}.bar.strong{fill:#0f4c8a}.value{fill:#475569;font-size:12px;font-weight:800}.value.daily{font-size:9px}.loading{padding:24px;color:var(--ct-gray-lt);font-weight:700}.app-footer{text-align:center;padding:20px;font-size:11px;color:var(--ct-silver)}.app-footer span{color:var(--ct-orange);font-weight:700}
+    .section-lead{max-width:780px;margin:-12px auto 20px;text-align:center;color:#64748b;font-size:13px}.stops-executive{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 18px}.stop-insight{border:1px solid #dbe4ec;border-left:5px solid var(--ct-blue);border-radius:11px;background:#f8fafc;padding:14px}.stop-insight.warning{border-left-color:#e11d48}.stop-insight.attention{border-left-color:#f59e0b}.stop-insight span{display:block;color:#64748b;font-size:10px;font-weight:900;text-transform:uppercase}.stop-insight strong{display:block;margin-top:5px;color:#172033;font-size:16px;line-height:1.25}.stop-insight small{display:block;margin-top:5px;color:#64748b;font-size:11px}.stops-block-title{margin:18px 0 10px;color:#172033;font-size:15px;font-weight:900}.problem-name{min-width:230px}.problem-name strong{display:block;color:#172033}.problem-name small{display:block;margin-top:3px;color:#64748b;font-weight:700}.problem-rank{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#e2e8f0;color:#334155;font-weight:900}.problem-share{height:6px;margin-top:6px;border-radius:999px;background:#e2e8f0;overflow:hidden}.problem-share span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#e11d48,#f59e0b)}.problem-descriptions{margin-top:7px;color:#64748b}.problem-descriptions summary{cursor:pointer;font-size:10px;font-weight:800}.problem-descriptions ul{margin:6px 0 0;padding-left:17px;font-size:10px}.stops-records{margin-top:16px;border:1px solid #dbe4ec;border-radius:10px;background:#f8fafc}.stops-records>summary{cursor:pointer;padding:13px 15px;color:#334155;font-size:12px;font-weight:900}.stops-records .stops-table-wrap{border-top:1px solid #dbe4ec;background:#fff}.empty-stops{padding:24px;border:1px dashed #cbd5e1;border-radius:10px;text-align:center;color:#64748b;font-weight:700}
+    @media(max-width:900px){.page-header{display:block}.actions{margin-top:16px;flex-wrap:wrap}.month-filter{flex:1}.month-filter input{width:100%}.kpi-row,.mix-grid,.comparison-grid,.obra-detail-grid,.stops-kpis,.stops-executive{grid-template-columns:1fr}.chart-title,.info-title{font-size:26px}.indicator-head,.indicator-row{grid-template-columns:1fr}.indicator-mid{padding:8px 0}}
+  
+}
+@media screen {
+.container{width:100%;margin:0 auto;padding:0 20px;max-width:1320px;}
+:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-blue:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);--ct-red:var(--c-crit);}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--ct-bg);color:var(--ct-gray);}
+.app-topbar{background:var(--ct-gray);color:var(--c-surface);}
+.topbar-inner{display:flex;align-items:center;padding:12px 0;gap:12px;}
+.topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:var(--r);}
+.topbar-title{font-size:18px;font-weight:800;}
+.topbar-title span{color:var(--ct-orange);}
+.topbar-sub{font-size:10px;color:var(--ct-silver);}
+.topbar-right{margin-left:auto;display:flex;gap:10px;}
+.btn-back,.btn-logout{border-radius:var(--r);height:36px;font-weight:700;font-size:12px;border:1px solid rgba(255,255,255,.18);color:var(--c-surface);background:rgba(255,255,255,.06);display:inline-flex;align-items:center;gap:6px;padding:0 14px;text-decoration:none;}
+.btn-logout{background:rgba(224,122,58,.25);}
+.topbar-accent{height:3px;background:var(--c-surface);}
+.page-header{padding:26px 0 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;}
+.page-header h1{margin:0;color:var(--ct-red);font-size:34px;font-weight:800;letter-spacing:0;}
+.page-header p{margin:6px 0 0;color:var(--ct-gray-lt);font-size:13px;}
+.actions{display:flex;gap:10px;align-items:flex-end;}
+.month-filter{display:flex;flex-direction:column;gap:5px;color:var(--ct-gray-lt);font-size:10px;font-weight:800;text-transform:none;}
+.month-filter input{height:40px;min-width:172px;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);color:var(--ct-gray);font-size:14px;font-weight:700;padding:0 11px;}
+.month-filter input:focus{border-color:var(--ct-blue);box-shadow:none;outline:0;}
+.btn-main{height:40px;border:0;border-radius:var(--r);background:var(--ct-blue);color:var(--c-surface);font-weight:800;padding:10px 16px;}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px;}
+.kpi{background:var(--c-surface);border:1px solid rgba(15,23,42,.07);border-radius:var(--r);padding:14px;}
+.kpi span{display:block;color:var(--ct-gray-lt);font-size:11px;font-weight:800;text-transform:none;}
+.kpi strong{font-size:22px;color:var(--ct-navy);}
+.info-section{background:var(--c-surface);border:1px solid rgba(15,23,42,.07);border-radius:var(--r);padding:20px;margin-bottom:18px;overflow:hidden;}
+.info-title{color:red;text-align:center;font-weight:400;font-size:34px;margin:0 0 20px;}
+.mix-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px;}
+.mix-card{position:relative;min-height:126px;border-radius:var(--r);color:var(--c-surface);padding:18px 52px 16px 18px;box-shadow:none;}
+.mix-card small{display:block;text-transform:none;font-size:11px;opacity:.85;}
+.mix-card h3{margin:8px 0 10px;color:var(--c-surface);font-size:24px;font-weight:800;line-height:1.05;}
+.mix-card strong{font-size:18px;}
+.mix-card p{margin:8px 0 0;color:var(--c-surface);font-size:11px;}
+.mix-icon{position:absolute;right:16px;top:16px;font-size:28px;opacity:.95;}
+.mix-normal{background:var(--c-surface);}
+.mix-especial{background:var(--c-surface);}
+.mix-obra{background:var(--c-surface);}
+.comparison-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.comparison-card{background:var(--c-surface);border-radius:var(--r);color:var(--c-surface);min-height:172px;padding:22px;}
+.comparison-card h3{color:var(--c-surface);font-size:21px;font-weight:800;margin:0 0 18px;display:flex;gap:8px;align-items:center;}
+.comparison-card .headline{font-size:30px;font-weight:800;line-height:1.15;margin-bottom:8px;}
+.pill-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.value-pill{background:var(--c-surface);color:var(--c-navy);border-radius:var(--r);padding:4px 10px;font-size:15px;font-weight:800;}
+.delta-pill{background:var(--c-ok);color:var(--c-surface);border-radius:var(--r);padding:6px 14px;font-size:20px;font-weight:900;}
+.metric-pill{background:var(--c-surface);color:var(--c-ok);border-radius:var(--r);padding:7px 12px;font-size:13px;font-weight:800;}
+.days-line{font-size:16px;font-weight:800;margin:18px 0;color:var(--c-surface);}
+.indicators{background:var(--c-line);border-radius:var(--r);padding:14px 14px 8px;}
+.indicator-head{display:grid;grid-template-columns:1fr 150px 1fr;align-items:center;text-align:center;font-size:16px;font-weight:900;margin:0 0 10px;}
+.head-global{color:var(--c-ok);}
+.head-junho{color:var(--c-orange);}
+.head-maio{color:var(--c-ink-3);}
+.head-pink{color:var(--c-orange);}
+.indicator-row{display:grid;grid-template-columns:1fr 150px 1fr;gap:10px;align-items:center;margin-bottom:9px;}
+.indicator-bar{height:56px;border-radius:var(--r);color:var(--c-surface);display:flex;align-items:center;padding:0 18px;font-size:17px;font-weight:900;}
+.bar-teal{background:var(--c-ok);}
+.bar-red{background:var(--c-orange);}
+.bar-purple{background:var(--c-ink-3);}
+.bar-pink{background:var(--c-orange);}
+.indicator-mid{text-align:center;color:var(--c-navy);font-size:12px;font-weight:900;}
+.indicator-mid span{display:inline-block;margin-top:7px;border-radius:var(--r);padding:5px 10px;color:var(--c-surface);font-size:12px;}
+.ok{background:var(--c-ok);}
+.bad{background:var(--c-orange);}
+.delta-pill.is-negative{background:var(--c-orange);}
+.obra-detail{display:none;margin:-2px 0 18px;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-bg);padding:14px 16px;}
+.obra-detail.is-visible{display:block;}
+.obra-detail-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;}
+.obra-detail-head strong{color:var(--c-crit);font-size:15px;}
+.obra-detail-total{color:var(--c-crit);font-weight:900;}
+.obra-detail-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}
+.obra-detail-item{background:var(--c-surface);border:1px solid var(--c-line-2);border-radius:var(--r);padding:10px;}
+.obra-detail-item span{display:block;color:var(--c-crit);font-size:11px;font-weight:800;}
+.obra-detail-item strong{display:block;color:var(--c-navy);font-size:16px;margin-top:3px;}
+.obra-detail-item small{display:block;color:var(--c-crit);font-size:10px;margin-top:3px;}
+.stops-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+.stops-kpi{border:1px solid var(--c-line);background:var(--c-bg);border-radius:var(--r);padding:12px;}
+.stops-kpi span{display:block;color:var(--c-crit);font-size:10px;font-weight:800;text-transform:none;}
+.stops-kpi strong{display:block;color:var(--c-navy);font-size:20px;margin-top:3px;}
+.stops-causes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.stops-cause{border-radius:var(--r);background:var(--c-line);color:var(--c-blue);padding:7px 11px;font-size:11px;font-weight:800;}
+.stops-table-wrap{overflow-x:auto;}
+.stops-table{width:100%;border-collapse:collapse;min-width:820px;}
+.stops-table th{background:var(--c-blue);color:var(--c-surface);text-align:left;font-size:11px;text-transform:none;padding:9px;}
+.stops-table td{border-bottom:1px solid var(--c-line);padding:9px;font-size:12px;vertical-align:top;}
+.stops-table td.num{text-align:right;font-weight:800;}
+.chart-card{background:var(--c-surface);border:1px solid rgba(15,23,42,.07);border-radius:var(--r);padding:20px;margin-bottom:18px;overflow:hidden;}
+.chart-title{color:var(--ct-red);font-size:34px;font-weight:800;margin:0 0 4px;}
+.chart-average-note{color:var(--c-ink-2);font-size:14px;font-weight:800;margin:0 0 10px;}
+.chart-card svg{display:block;min-width:0;width:100%;height:auto;background:var(--c-surface);}
+.grid-line{stroke:var(--c-line);}
+.axis{fill:var(--c-ink-2);font-size:13px;font-weight:700;}
+.axis.daily{font-size:10px;}
+.avg-line{stroke:var(--c-orange);stroke-width:3;stroke-dasharray:10 8;}
+.bar{fill:var(--c-ink-3);}
+.bar.strong{fill:var(--c-blue);}
+.value{fill:var(--c-ink-2);font-size:12px;font-weight:800;}
+.value.daily{font-size:9px;}
+.loading{padding:24px;color:var(--ct-gray-lt);font-weight:700;}
+.app-footer{text-align:center;padding:20px;font-size:11px;color:var(--ct-silver);}
+.app-footer span{color:var(--ct-orange);font-weight:700;}
+.section-lead{max-width:780px;margin:-12px auto 20px;text-align:center;color:var(--c-ink-2);font-size:13px;}
+.stops-executive{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 18px;}
+.stop-insight{border:1px solid var(--c-line);border-left:5px solid var(--ct-blue);border-radius:var(--r);background:var(--c-bg);padding:14px;}
+.stop-insight.warning{border-left-color:var(--c-crit);}
+.stop-insight.attention{border-left-color:var(--c-orange);}
+.stop-insight span{display:block;color:var(--c-ink-2);font-size:10px;font-weight:900;text-transform:none;}
+.stop-insight strong{display:block;margin-top:5px;color:var(--c-navy);font-size:16px;line-height:1.25;}
+.stop-insight small{display:block;margin-top:5px;color:var(--c-ink-2);font-size:11px;}
+.stops-block-title{margin:18px 0 10px;color:var(--c-navy);font-size:15px;font-weight:900;}
+.problem-name{min-width:230px;}
+.problem-name strong{display:block;color:var(--c-navy);}
+.problem-name small{display:block;margin-top:3px;color:var(--c-ink-2);font-weight:700;}
+.problem-rank{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--c-line);color:var(--c-blue);font-weight:900;}
+.problem-share{height:6px;margin-top:6px;border-radius:var(--r);background:var(--c-line);overflow:hidden;}
+.problem-share span{display:block;height:100%;border-radius:var(--r);background:var(--c-surface);}
+.problem-descriptions{margin-top:7px;color:var(--c-ink-2);}
+.problem-descriptions summary{cursor:pointer;font-size:10px;font-weight:800;}
+.problem-descriptions ul{margin:6px 0 0;padding-left:17px;font-size:10px;}
+.stops-records{margin-top:16px;border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-bg);}
+.stops-records>summary{cursor:pointer;padding:13px 15px;color:var(--c-blue);font-size:12px;font-weight:900;}
+.stops-records .stops-table-wrap{border-top:1px solid var(--c-line);background:var(--c-surface);}
+.empty-stops{padding:24px;border:1px dashed var(--c-line);border-radius:var(--r);text-align:center;color:var(--c-ink-2);font-weight:700;}
+@media (max-width:900px){.page-header{display:block;}
+.actions{margin-top:16px;flex-wrap:wrap;}
+.month-filter{flex:1;}
+.month-filter input{width:100%;}
+.kpi-row,.mix-grid,.comparison-grid,.obra-detail-grid,.stops-kpis,.stops-executive{grid-template-columns:1fr;}
+.chart-title,.info-title{font-size:26px;}
+.indicator-head,.indicator-row{grid-template-columns:1fr;}
+.indicator-mid{padding:8px 0;}
+}
+
+}
+</style>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.27"><script defer src="/unificado/shell/components.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"><link rel="stylesheet" href="/unificado/shell/native-content.css?v=2.0.0" media="screen">
+</head>
+<body>
+  <main class="container">
+      <div class="page-header">
+        <div><h1>Fechamento</h1><p id="analysisMonthLabel">Usina Campinas &bull; mês de análise: Agosto de 2026</p></div>
+        <div class="actions">
+          <label class="month-filter" for="analysisMonth"><span>Mês de análise</span><input type="month" id="analysisMonth" onchange="loadReport()"></label>
+          <button class="btn-main" onclick="loadReport()"><i class="bi bi-arrow-clockwise me-1"></i>Atualizar</button>
+        </div>
+    </div>
+    <div id="state" class="loading">Carregando relatório...</div>
+    <section id="report" style="display:none">
+      <div class="kpi-row">
+        <div class="kpi"><span>Unidade</span><strong id="kpiUnidade">-</strong></div>
+        <div class="kpi"><span>Mês</span><strong id="kpiMes">-</strong></div>
+        <div class="kpi"><span>Volume total</span><strong id="kpiTotal">-</strong></div>
+        <div class="kpi"><span>Média mensal</span><strong id="kpiMensal">-</strong></div>
+        <div class="kpi"><span>Média diária</span><strong id="kpiDiaria">-</strong></div>
+      </div>
+      <div id="monthlyChart" class="chart-card"></div>
+      <div id="dailyChart" class="chart-card daily"></div>
+      <section class="info-section">
+        <h2 class="info-title">Volume de Concreto - Campinas</h2>
+        <div class="mix-grid">
+          <div class="mix-card mix-normal"><i class="bi bi-box-seam mix-icon"></i><small class="mix-month">-</small><h3>Concreto<br>Normal</h3><strong id="mixNormal">-</strong><p>Demais fórmulas</p></div>
+          <div class="mix-card mix-especial"><i class="bi bi-star-fill mix-icon"></i><small class="mix-month">-</small><h3>Concreto<br>Especial</h3><strong id="mixEspecial">-</strong><p>Fórmulas iniciando em 7.1</p></div>
+          <div class="mix-card mix-obra"><i class="bi bi-cone-striped mix-icon"></i><small class="mix-month">-</small><h3>Concreto Obra</h3><strong id="mixObra">-</strong><p>ERP + volumes informados para obra</p></div>
+        </div>
+        <div id="obraDetail" class="obra-detail"></div>
+        <div class="comparison-grid">
+          <div class="comparison-card"><h3><i class="bi bi-scales"></i>Comparativo Mês a Mês</h3><div class="headline" id="monthHeadline">-</div><div class="pill-row"><span class="value-pill" id="monthLeft">-</span><span class="value-pill" id="monthRight">-</span><span class="delta-pill" id="monthDelta">-</span><span class="metric-pill"><i class="bi bi-graph-up"></i> variação</span></div></div>
+          <div class="comparison-card"><h3><i class="bi bi-calendar3"></i>Comparativo Anual</h3><div class="headline" id="annualHeadline">-</div><div class="pill-row"><span class="value-pill" id="annualLeft">-</span><span class="value-pill" id="annualRight">-</span><span class="delta-pill" id="annualDelta">-</span><span class="metric-pill"><i class="bi bi-graph-up"></i> variação</span></div></div>
+          <div class="comparison-card"><h3><i class="bi bi-briefcase-fill"></i>Dias Trabalhados</h3><div class="headline" id="daysHeadline">-</div><div class="days-line" id="daysLine">-</div><div class="pill-row"><span class="delta-pill" id="daysDelta">-</span><span class="metric-pill"><i class="bi bi-graph-up"></i> diferença</span></div></div>
+        </div>
+      </section>
+      <section class="info-section">
+        <h2 class="info-title">Resumo de paradas e problemas</h2>
+        <p class="section-lead">Ocorrências equivalentes foram agrupadas para destacar os problemas mais frequentes e o impacto acumulado no período.</p>
+        <div id="stopsReport"></div>
+      </section>
+      <section class="info-section">
+        <h2 class="info-title">INDICADORES USINA</h2>
+        <div class="indicators">
+          <div class="indicator-head"><div class="head-global" id="globalLeftTitle">-</div><div></div><div class="head-junho" id="globalRightTitle">-</div></div>
+          <div id="globalIndicators"></div>
+        </div>
+      </section>
+      <section class="info-section">
+        <h2 class="info-title">INDICADORES USINA</h2>
+        <div class="indicators">
+          <div class="indicator-head"><div class="head-maio" id="previousLeftTitle">-</div><div></div><div class="head-pink" id="previousRightTitle">-</div></div>
+          <div id="previousIndicators"></div>
+        </div>
+      </section>
+    </section>
+  </main>
+    <script>
+      const monthInput=document.getElementById('analysisMonth');
+      const requestedMonth=new URLSearchParams(window.location.search).get('mes');
+      const lastClosedMonth=new Date();lastClosedMonth.setDate(1);lastClosedMonth.setMonth(lastClosedMonth.getMonth()-1);
+      const defaultMonth=`${lastClosedMonth.getFullYear()}-${String(lastClosedMonth.getMonth()+1).padStart(2,'0')}`;
+      monthInput.value=/^\d{4}-(0[1-9]|1[0-2])$/.test(requestedMonth||'')?requestedMonth:defaultMonth;
+      function selectedPeriod(){
+        const value=/^\d{4}-(0[1-9]|1[0-2])$/.test(monthInput.value)?monthInput.value:defaultMonth;
+        const [ano,mes]=value.split('-').map(Number);
+        return {value,ano,mes};
+      }
+    function fmt(value){return Number(value||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+    function esc(value){return String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]))}
+    function signed(value, suffix){const n=Number(value||0);return `${n>=0?'+':''}${n.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})}${suffix||''}`}
+    function setText(id,value){document.getElementById(id).textContent=value}
+    function setDelta(id,value,suffix){const el=document.getElementById(id),n=Number(value||0);el.textContent=signed(n,suffix);el.classList.toggle('is-negative',n<0)}
+    function chart(el,title,yLabel,data,average,averageLabel,compact){
+      const w=compact?1120:1120,h=compact?430:450,l=compact?58:74,r=compact?96:120,t=compact?78:82,b=compact?54:64,cw=w-l-r,ch=h-t-b;
+      const max=Math.max(1,average,...data.map(x=>x.value))*1.24,gap=compact?4:10,bw=data.length?Math.max(9,(cw-gap*(data.length-1))/data.length):0,ay=t+ch-(average/max)*ch;
+      const ticks=[0,.25,.5,.75,1].map(v=>{const y=t+ch-v*ch;return `<g><line x1="${l}" x2="${w-r}" y1="${y}" y2="${y}" class="grid-line"/><text x="${l-10}" y="${y+5}" class="axis${compact?' daily':''}" text-anchor="end">${fmt(max*v)}</text></g>`}).join('');
+      const bars=data.map((item,i)=>{const x=l+i*(bw+gap),bh=(item.value/max)*ch,y=t+ch-bh,strong=item.value>=average?' strong':'',offset=compact?(i%2===0?8:20):10,valueClass=compact?'value daily':'value',axisClass=compact?'axis daily':'axis';return `<g><rect x="${x}" y="${y}" width="${bw}" height="${bh}" class="bar${strong}"/><text x="${x+bw/2}" y="${Math.max(t+10,y-offset)}" class="${valueClass}" text-anchor="middle">${fmt(item.value)}</text><text x="${x+bw/2}" y="${h-22}" class="${axisClass}" text-anchor="middle">${item.label}</text></g>`}).join('');
+      el.innerHTML=`<h2 class="chart-title">${title}</h2><div class="chart-average-note">${averageLabel}</div><svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${title}">${ticks}${bars}<line x1="${l}" x2="${w-r}" y1="${ay}" y2="${ay}" class="avg-line"/></svg>`;
+    }
+    function indicatorRows(target,rows,leftClass,rightClass){
+      document.getElementById(target).innerHTML=rows.map(row=>`<div class="indicator-row"><div class="indicator-bar ${leftClass}">${fmt(row.left)} ${row.unit}</div><div class="indicator-mid">${row.name}<br><span class="${row.better?'ok':'bad'}">${row.arrow} ${Math.abs(row.change).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})}%</span></div><div class="indicator-bar ${rightClass}">${fmt(row.right)} ${row.unit}</div></div>`).join('');
+    }
+    function renderObraDetail(obra){
+      const el=document.getElementById('obraDetail'),ajustes=Array.isArray(obra.ajustes)?obra.ajustes:[];
+      if(!ajustes.length){el.classList.remove('is-visible');el.innerHTML='';return}
+      const items=ajustes.map(item=>`<div class="obra-detail-item"><span>${item.data?item.data.split('-').reverse().join('/'):'Data não informada'}</span>${Number(item.massadas||0)>0?`<strong>${item.massadas} massadas</strong>`:''}<small>${fmt(item.volume)} m³ • ${item.descricao}</small></div>`).join('');
+      const massadas=Number(obra.massadas_ajuste||0)>0?`${obra.massadas_ajuste} massadas • `:'';
+      el.innerHTML=`<div class="obra-detail-head"><strong><i class="bi bi-cone-striped me-1"></i>Detalhamento do concreto para obra</strong><span class="obra-detail-total">${massadas}${fmt(obra.volume_ajuste)} m³</span></div><div class="obra-detail-grid">${items}</div>`;
+      el.classList.add('is-visible');
+    }
+    function fmtDuration(minutes){
+      const total=Math.round(Number(minutes||0)),hours=Math.floor(total/60),mins=total%60;
+      return hours?`${hours}h${String(mins).padStart(2,'0')}`:`${mins} min`;
+    }
+    function renderStops(paradas){
+      const el=document.getElementById('stopsReport'),rows=Array.isArray(paradas?.registros)?paradas.registros:[],causas=Array.isArray(paradas?.por_causa)?paradas.por_causa:[],problemas=Array.isArray(paradas?.por_problema)?paradas.por_problema:[],resumo=paradas?.resumo_gerencial||{};
+      const kpis=`<div class="stops-kpis"><div class="stops-kpi"><span>Ocorrências</span><strong>${paradas?.quantidade||0}</strong></div><div class="stops-kpi"><span>Tempo parado</span><strong>${fmtDuration(paradas?.minutos_total)}</strong></div><div class="stops-kpi"><span>Dias afetados</span><strong>${paradas?.dias_com_parada||0}</strong></div><div class="stops-kpi"><span>Média por parada</span><strong>${fmt(paradas?.media_minutos)} min</strong></div><div class="stops-kpi"><span>Concreto perdido</span><strong>${fmt(paradas?.m3_perdido)} m³</strong></div></div>`;
+      if(!rows.length){el.innerHTML=`${kpis}<div class="empty-stops"><i class="bi bi-check-circle me-1"></i>Nenhuma parada informada no período.</div>`;return}
+      const frequente=resumo.mais_frequente||{},impacto=resumo.maior_impacto||{};
+      const insights=`<div class="stops-executive"><div class="stop-insight warning"><span>Problema mais frequente</span><strong>${esc(frequente.problema||'-')}</strong><small>${frequente.ocorrencias||0} ocorrência(s) • ${fmt(frequente.percentual_ocorrencias)}% do total</small></div><div class="stop-insight attention"><span>Maior impacto em tempo</span><strong>${esc(impacto.problema||'-')}</strong><small>${fmtDuration(impacto.minutos)} • ${fmt(impacto.percentual_tempo)}% do tempo parado</small></div><div class="stop-insight"><span>Concentração dos problemas</span><strong>Top 3 = ${fmt(resumo.top_3_percentual)}% das ocorrências</strong><small>${resumo.problemas_distintos||0} problema(s) consolidado(s) • ${resumo.problemas_recorrentes||0} recorrente(s)</small></div></div>`;
+      const causeHtml=causas.map(item=>`<span class="stops-cause">${esc(item.causa)}: ${item.ocorrencias} ocorrência(s) • ${fmtDuration(item.minutos)}</span>`).join('');
+      const problemBody=problemas.map((item,index)=>{
+        const descricoes=Array.isArray(item.descricoes)?item.descricoes:[];
+        const detalhe=descricoes.length?`<details class="problem-descriptions"><summary>${descricoes.length} descrição(ões) agrupada(s)</summary><ul>${descricoes.map(desc=>`<li>${esc(desc.texto)}${desc.ocorrencias>1?` (${desc.ocorrencias}x)`:''}</li>`).join('')}</ul></details>`:'';
+        return `<tr><td><span class="problem-rank">${index+1}</span></td><td class="problem-name"><strong>${esc(item.problema)}</strong><small>${esc(item.categoria)} • ${item.dias_afetados} dia(s) afetado(s)</small>${detalhe}</td><td class="num">${item.ocorrencias}<div class="problem-share"><span style="width:${Math.min(100,Number(item.percentual_ocorrencias||0))}%"></span></div><small>${fmt(item.percentual_ocorrencias)}%</small></td><td class="num">${fmtDuration(item.minutos)}<div class="problem-share"><span style="width:${Math.min(100,Number(item.percentual_tempo||0))}%"></span></div><small>${fmt(item.percentual_tempo)}%</small></td><td class="num">${fmt(item.media_minutos)} min</td><td class="num">${fmt(item.m3_perdido)} m³</td></tr>`;
+      }).join('');
+      const recordBody=rows.map(row=>`<tr><td>${esc(String(row.data||'').split('-').reverse().join('/'))}</td><td>${esc(String(row.hora_apontamento||'').slice(0,5)||'-')}</td><td>${esc(row.turno||'-')}</td><td>${esc(row.motivo||'Parada apontada')}</td><td class="num">${fmt(row.minutos)} min</td><td class="num">${fmt(row.m3_perdido)} m³</td></tr>`).join('');
+      const ranking=`<h3 class="stops-block-title">Ranking consolidado de todos os problemas</h3><div class="stops-table-wrap"><table class="stops-table"><thead><tr><th>#</th><th>Problema consolidado</th><th>Ocorrências</th><th>Tempo parado</th><th>Média</th><th>Perda</th></tr></thead><tbody>${problemBody}</tbody></table></div>`;
+      const records=`<details class="stops-records"><summary><i class="bi bi-list-ul me-1"></i>Ver todos os ${rows.length} registros individuais</summary><div class="stops-table-wrap"><table class="stops-table"><thead><tr><th>Data</th><th>Apontamento</th><th>Turno</th><th>Motivo informado</th><th>Minutos</th><th>Perda</th></tr></thead><tbody>${recordBody}</tbody></table></div></details>`;
+      el.innerHTML=`${kpis}${insights}<h3 class="stops-block-title">Categorias de ocorrência</h3><div class="stops-causes">${causeHtml}</div>${ranking}${records}`;
+    }
+    function renderCalculated(data){
+      document.querySelectorAll('.mix-month').forEach(el=>{el.textContent=data.mes_nome});
+      setText('mixNormal',`${fmt(data.mix.normal.volume)} m³ • ${fmt(data.mix.normal.percent)}%`);
+      setText('mixEspecial',`${fmt(data.mix.especial.volume)} m³ • ${fmt(data.mix.especial.percent)}%`);
+      setText('mixObra',`${fmt(data.mix.obra.volume)} m³ • ${fmt(data.mix.obra.percent)}%`);
+      renderObraDetail(data.mix.obra);
+      renderStops(data.paradas);
+      const month=data.comparisons.month, annual=data.comparisons.annual, days=data.comparisons.days;
+      setText('monthHeadline',`${month.left_label} vs\n${month.right_label}`);
+      document.getElementById('monthHeadline').innerHTML=`${month.left_label} vs<br>${month.right_label}`;
+      setText('monthLeft',`${fmt(month.left_volume)} m³`); setText('monthRight',`${fmt(month.right_volume)} m³`); setDelta('monthDelta',month.variation,'%');
+      document.getElementById('annualHeadline').innerHTML=`${annual.left_label} vs<br>${annual.right_label}`;
+      setText('annualLeft',`${fmt(annual.left_volume)} m³`); setText('annualRight',`${fmt(annual.right_volume)} m³`); setDelta('annualDelta',annual.variation,'%');
+      document.getElementById('daysHeadline').innerHTML=`${days.left_label} vs<br>${days.right_label}`;
+      setText('daysLine',`${days.left_label}: ${days.left_days} dias     ${days.right_label}: ${days.right_days} dias`);
+      setDelta('daysDelta',days.difference,'');
+      setText('globalLeftTitle',data.indicator_panels.global.left_title); setText('globalRightTitle',data.indicator_panels.global.right_title);
+      setText('previousLeftTitle',data.indicator_panels.previous.left_title); setText('previousRightTitle',data.indicator_panels.previous.right_title);
+      indicatorRows('globalIndicators',data.indicator_panels.global.rows,'bar-teal','bar-red');
+      indicatorRows('previousIndicators',data.indicator_panels.previous.rows,'bar-purple','bar-pink');
+    }
+      async function loadReport(){
+        const state=document.getElementById('state'),report=document.getElementById('report');
+        state.style.display='block';state.textContent='Carregando relatório...';report.style.display='none';
+        try{
+          const period=selectedPeriod();
+          const url=new URL(window.location.href);url.searchParams.set('mes',period.value);history.replaceState({},'',url);
+          const res=await fetch(`/unificado/mapa/api/usina/reporting/relatorios/fechamento?ano=${period.ano}&mes=${period.mes}`,{credentials:'same-origin',cache:'no-store'});
+          if(res.status===401)throw new Error('Sua sessão do Uni expirou. Entre novamente.');
+          if(res.status===403)throw new Error('Seu acesso não permite consultar o fechamento.');
+          if(!res.ok)throw new Error('Falha ao carregar o relatório');
+          const data=await res.json();
+          document.getElementById('analysisMonthLabel').textContent=`Usina Campinas • mês de análise: ${data.mes_nome} de ${data.ano}`;
+        document.getElementById('kpiUnidade').textContent=data.unidade;
+        document.getElementById('kpiMes').textContent=`${data.mes_nome}/${data.ano}`;
+        document.getElementById('kpiTotal').textContent=`${fmt(data.volume_total)} m³`;
+        document.getElementById('kpiMensal').textContent=`${fmt(data.averages.monthly)} m³`;
+        document.getElementById('kpiDiaria').textContent=`${fmt(data.averages.daily)} m³`;
+        chart(document.getElementById('monthlyChart'),`Volume de Concreto - ${data.unidade}`,'Volume de Concreto (m³)',data.monthly.map(x=>({label:x.label,value:x.volume})),data.averages.monthly,`Média: ${fmt(data.averages.monthly)} m³`,false);
+        chart(document.getElementById('dailyChart'),`Volume de Concreto - ${data.unidade} - ${data.mes_nome}`,'Consumo (m³)',data.daily.map(x=>({label:String(x.dia).padStart(2,'0'),value:x.volume})),data.averages.daily,`Média: ${fmt(data.averages.daily)} m³`,true);
+        renderCalculated(data);
+        state.style.display='none';report.style.display='block';
+      }catch(err){state.textContent=err.message||'Erro ao carregar relatório';}
+    }
+    loadReport();
+    new ResizeObserver(()=>parent.postMessage({type:'usinas-fechamento-height',height:document.documentElement.scrollHeight},location.origin)).observe(document.body);
+  </script>
+</body>
+</html>

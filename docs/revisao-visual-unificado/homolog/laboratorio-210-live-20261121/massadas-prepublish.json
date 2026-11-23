@@ -1,0 +1,18 @@
+[
+  {
+    "unit": "pederneiras",
+    "status": 200,
+    "rows": 1614,
+    "fixtures": [
+      "TESTE-LAB-PEDE-001"
+    ]
+  },
+  {
+    "unit": "ribeirao",
+    "status": 200,
+    "rows": 830,
+    "fixtures": [
+      "TESTE-LAB-RIB-001"
+    ]
+  }
+]

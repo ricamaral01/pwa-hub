@@ -1,0 +1,15 @@
+{
+  "version": "1.4.31",
+  "tag": "candidata-producao-1.4.31",
+  "archive": "candidate.tgz",
+  "archive_bytes": 7743787,
+  "archive_sha256": "2bb97309f5396784af37acdbf8cbc8d5a866b20cf94c62fd9408331b67630efa",
+  "manifest_sha256": "b5d59b87d7b4e6138d99335cfeb9caec6e4c8eb04173cd00a7bb0963759d461f",
+  "manifest_files": 384,
+  "verification": {
+    "static_files": 348,
+    "all_hashes_verified": true
+  },
+  "source": "immutable 1.4.30 plus authorized frontend-only dynamic menu/search correction and version stamps",
+  "no_more_frontend_changes": true
+}

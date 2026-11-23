@@ -1,0 +1,5066 @@
+[
+  {
+    "profile": "CONSULTA",
+    "screen": "comparacao",
+    "path": "/unificado/pcp/comparacao/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/pcp/comparacao/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fcomparacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado × realizado\nProgramação\nArmaduras\nAtualizar\nVersão 1.4.25\nAjuda\nC\nCo",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Programado vs Realizado",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/comparacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nAtualizar\nProgramado Geral\n4,9 m³\nm³ no período\nRealizado Geral\n1,2 m³\nm³ no período\nEficiência Geral\n25,0%\n% de aproveitamento\nPostes Programados\n20\nSetor 1 +",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fcomparacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nProgramado vs Realizado",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Programado vs Realizado",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/comparacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nAtualizar\nProgramado Geral\n4,9 m³\nm³ no período\nRealizado Geral\n1,2 m³\nm³ no período\nEficiência Geral\n25,0%\n% de aproveitamento\nPostes Programados\n20\nSetor 1 +",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fcomparacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nProgramado vs Realizado",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Programado vs Realizado",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/comparacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nAtualizar\nProgramado Geral\n4,9 m³\nm³ no período\nRealizado Geral\n1,2 m³\nm³ no período\nEficiência Geral\n25,0%\n% de aproveitamento\nPostes Programados\n20\nSetor 1 +",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fcomparacao%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nProgramado vs Realizado\nDashboard\nProgramado × realizado\nInício\nTelas\nRecentes\nConta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Programado vs Realizado",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 44
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/comparacao/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nAtualizar\nProgramado Geral\n4,9 m³\nm³ no período\nRealizado Geral\n1,2 m³\nm³ no período\nEficiência Geral\n25,0%\n% de aproveitamento\nPostes Programados\n20\nSetor 1 +",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "dashboard",
+    "path": "/unificado/pcp/dashboard/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/pcp/dashboard/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fdashboard%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado × realizado\nProgramação\nArmaduras\nAtualizar\nVersão 1.4.25\nAjuda\nC\nCo",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Dashboard",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/dashboard/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nFiltrar\nGeral\nProgramado\n4,900 m³\nRealizado\n1,225 m³\nAtingimento\n25,0%\nSetor 1 + setor 2\nPostes programados\n20\nPostes realizados\n5\nAtingimento\n25,0%\nSetor 3 + ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fdashboard%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nDashboard",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Dashboard",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/dashboard/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nFiltrar\nGeral\nProgramado\n4,900 m³\nRealizado\n1,225 m³\nAtingimento\n25,0%\nSetor 1 + setor 2\nPostes programados\n20\nPostes realizados\n5\nAtingimento\n25,0%\nSetor 3 + ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fdashboard%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nDashboard",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Dashboard",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/dashboard/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nFiltrar\nGeral\nProgramado\n4,900 m³\nRealizado\n1,225 m³\nAtingimento\n25,0%\nSetor 1 + setor 2\nPostes programados\n20\nPostes realizados\n5\nAtingimento\n25,0%\nSetor 3 + ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fdashboard%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nDashboard\nDashboard\nProgramado × realizado\nInício\nTelas\nRecentes\nConta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Dashboard",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 44
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/dashboard/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Data início\nData fim\nFiltrar\nGeral\nProgramado\n4,900 m³\nRealizado\n1,225 m³\nAtingimento\n25,0%\nSetor 1 + setor 2\nPostes programados\n20\nPostes realizados\n5\nAtingimento\n25,0%\nSetor 3 + ",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "fechamentoDiario",
+    "path": "/unificado/relatorios/fechamento-diario/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nControle\nFechamento diário\nAtualizar\nVersão 1.4.25\nAjuda\nC\nConta Sintética PCP para ",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Fechamento diário",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Fechamento diário",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento diario\nData base\nAtualizar\nPDF\nWhatsApp\nTelegram\nImprimir\nFechamento diario\n\nUnidade Campinas\n\nData de producao\n19/11/26\nU",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nProdução\n›\nCampinas\n›\nControle\n›\nFechamento diário",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Fechamento diário",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento diario\nData base\nAtualizar\nPDF\nWhatsApp\nTelegram\nImprimir\nFechamento diario\n\nUnidade Campinas\n\nData de producao\n19/11/26\nU",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nProdução\n›\nCampinas\n›\nControle\n›\nFechamento diário",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Fechamento diário",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento diario\nData base\nAtualizar\nPDF\nWhatsApp\nTelegram\nImprimir\nFechamento diario\n\nUnidade Campinas\n\nData de producao\n19/11/26\nU",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=relatorios%2Ffechamento-diario%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Controle\nFechamento diário\nFechamento diário\nInício\nTelas\nRecentes\nConta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Fechamento diário",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Fechamento diário",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/relatorios/fechamento-diario/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Fechamento Diario\nUnidade Campinas\nVoltar\nSair\nFechamento diario\nData base\nAtualizar\nPDF\nWhatsApp\nTelegram\nImprimir\nFechamento diario\n\nUnidade Campinas\n\nData de producao\n19/11/26\nU",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "programacaoSemanal12",
+    "path": "/unificado/pcp/programacao-semanal/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado × realizado\nProgramação\nSemanal S1 e S2\nArmaduras\nAtualizar\nVersão 1",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Semanal S1 e S2",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 30
+                },
+                {
+                  "text": "Semanal S1 e S2",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Modo de consulta: esta conta pode acompanhar a programação, sem alterar ou publicar.\nProgramação da semana\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nBase",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nProgramação\n›\nSemanal S1 e S2",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Semanal S1 e S2",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Modo de consulta: esta conta pode acompanhar a programação, sem alterar ou publicar.\nProgramação da semana\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nBase",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nProgramação\n›\nSemanal S1 e S2",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Semanal S1 e S2",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Modo de consulta: esta conta pode acompanhar a programação, sem alterar ou publicar.\nProgramação da semana\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nBase",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fprogramacao-semanal%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProgramação\nSemanal S1 e S2\nSemanal S1 e S2\nInício\nTelas\nRecentes\nConta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Semanal S1 e S2",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Semanal S1 e S2",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/programacao-semanal/?semana=2026-11-16",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Modo de consulta: esta conta pode acompanhar a programação, sem alterar ou publicar.\nProgramação da semana\nSem programação\nÚltima publicada: —\n‹\nSem. 47 · 16/11 a 20/11/2026\n›\nBase",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "armadurasProgramacao",
+    "path": "/unificado/pcp/armaduras/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado × realizado\nProgramação\nSemanal S1 e S2\nArmaduras\nNúmeros de série d",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Programação semanal",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                    "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 30
+                },
+                {
+                  "text": "Semanal S1 e S2",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Números de série dos postes",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 30
+                },
+                {
+                  "text": "Programação semanal",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Relatório de produção",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de série dos postes\nSemana dos postes\nGrupo de setores\nSetor 1 e 2\nSetor",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nArmaduras\n›\nProgramação semanal",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Programação semanal",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de série dos postes\nSemana dos postes\nGrupo de setores\nSetor 1 e 2\nSetor",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nArmaduras\n›\nProgramação semanal",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Programação semanal",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de série dos postes\nSemana dos postes\nGrupo de setores\nSetor 1 e 2\nSetor",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nArmaduras\nProgramação semanal\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nInício\nTelas\nRecentes\nConta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Programação semanal",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Números de série dos postes",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 44
+                },
+                {
+                  "text": "Programação semanal",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 44
+                },
+                {
+                  "text": "Relatório de produção",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de série dos postes\nSemana dos postes\nGrupo de setores\nSetor 1 e 2\nSetor",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "manutencaoUsina",
+    "path": "/unificado/manutencao-usina/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nExpandir tudo\nRecolher tudo\nManutenção usina\nAtualizar\nVersão 1.4.25\nAjuda\nC\nConta Sintética PCP para Qualidade\nSair\nQua",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Manutenção Usina",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Manutenção usina",
+                  "icon": null,
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nQualidade\n›\nManutenção Usina",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Manutenção Usina",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nQualidade\n›\nManutenção Usina",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Manutenção Usina",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nManutenção Usina\nManutenção usina\nInício\nTelas\nRecentes\nConta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Manutenção Usina",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Manutenção usina",
+                  "icon": null,
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\n+ Nova atividade\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom ale",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "postesNumerosSerie",
+    "path": "/unificado/pcp/numeros-serie/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado × realizado\nProgramação\nSemanal S1 e S2\nArmaduras\nNúmeros de série d",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Números de série dos postes",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                    "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 30
+                },
+                {
+                  "text": "Semanal S1 e S2",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Números de série dos postes",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 39
+                },
+                {
+                  "text": "Programação semanal",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Relatório de produção",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Números de série dos postes\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução e rastreabilidade\nSaldos anuais\nSemana dos postes\nAno do registro\nAtualizar consulta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nArmaduras\n›\nNúmeros de série dos postes",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Números de série dos postes",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Números de série dos postes\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução e rastreabilidade\nSaldos anuais\nSemana dos postes\nAno do registro\nAtualizar consulta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nArmaduras\n›\nNúmeros de série dos postes",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Números de série dos postes",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Números de série dos postes\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução e rastreabilidade\nSaldos anuais\nSemana dos postes\nAno do registro\nAtualizar consulta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Fnumeros-serie%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nArmaduras\nNúmeros de série dos postes\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nInício\nTelas\nRecentes\n",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Números de série dos postes",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Números de série dos postes",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 44
+                },
+                {
+                  "text": "Programação semanal",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 44
+                },
+                {
+                  "text": "Relatório de produção",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/numeros-serie/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Números de série dos postes\nJaneiro: contador 0 · primeiro poste 1\nSéries do dia e PDF\nProdução e rastreabilidade\nSaldos anuais\nSemana dos postes\nAno do registro\nAtualizar consulta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "armadurasRelatorio",
+    "path": "/unificado/pcp/armaduras-relatorio/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado × realizado\nProgramação\nSemanal S1 e S2\nArmaduras\nNúmeros de série d",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Relatório de produção",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                    "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 30
+                },
+                {
+                  "text": "Semanal S1 e S2",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Números de série dos postes",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 30
+                },
+                {
+                  "text": "Programação semanal",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Relatório de produção",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 30
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de série dos postes\nSemana dos postes\nGrupo de setores\nSetor 1 e 2\nSetor",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nArmaduras\n›\nRelatório de produção",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Relatório de produção",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de série dos postes\nSemana dos postes\nGrupo de setores\nSetor 1 e 2\nSetor",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nPlanejamento\n›\nArmaduras\n›\nRelatório de produção",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Relatório de produção",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de série dos postes\nSemana dos postes\nGrupo de setores\nSetor 1 e 2\nSetor",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=pcp%2Farmaduras-relatorio%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nArmaduras\nRelatório de produção\nNúmeros de série dos postes\nProgramação semanal\nRelatório de produção\nInício\nTelas\nRecentes\nConta",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Relatório de produção",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Números de série dos postes",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 44
+                },
+                {
+                  "text": "Programação semanal",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 44
+                },
+                {
+                  "text": "Relatório de produção",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 44
+                }
+              ]
+            }
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/pcp/armaduras-relatorio/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Produção de armaduras\nCalendário de trabalho\nProgramação semanal\nConferência diária\nRelatório / PDF\nNúmeros de série dos postes\nSemana dos postes\nGrupo de setores\nSetor 1 e 2\nSetor",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "shell-login",
+    "path": "/unificado/login.html",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/login.html",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/login.html",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas\nPederneiras\nRibeirão Preto\nNoroeste\nEntrar\nUsuário\nSenha\nMostrar\nEntrar\n\nv1.4.25",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/login.html",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nBem-vindo de volta\n\nEntre com seu usuário e senha para acessar o sistema.\n\nUsuário\nSenha\nMostrar\nEntrar\n\nPlanejamento e Produção e",
+            "audit": {
+              "issues": [],
+              "preserved_exception": "frozen narrow login; pixel comparison separately"
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/login.html",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nBem-vindo de volta\n\nEntre com seu usuário e senha para acessar o sistema.\n\nUsuário\nSenha\nMostrar\nEntrar\n\nPlanejamento e Produção e",
+            "audit": {
+              "issues": [],
+              "preserved_exception": "frozen narrow login; pixel comparison separately"
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/login.html",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nBem-vindo de volta\n\nEntre com seu usuário e senha para acessar o sistema.\n\nUsuário\nSenha\nMostrar\nEntrar\n\nPlanejamento e Produção e",
+            "audit": {
+              "issues": [],
+              "preserved_exception": "frozen narrow login; pixel comparison separately"
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "shell-inicio",
+    "path": "/unificado/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado × realizado\nProgramação\nSemanal S1 e S2\nArmaduras\nNúmeros de série d",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                    "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 30
+                },
+                {
+                  "text": "Semanal S1 e S2",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Números de série dos postes",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 30
+                },
+                {
+                  "text": "Programação semanal",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Relatório de produção",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 30
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n20\nPCP · setores ",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n20\nPCP · setores ",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nUnificado\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n20\nPCP · setores 1 a 4\nReal",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "shell-testar",
+    "path": "/unificado/testar/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/testar/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/testar/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acompanhamento e suporte\nSuporte do sistema unificado\n\nFotografia dos dados: 13/10/2026, 18:42. Use sua conta ativa do sistema unificado para acessar esta página.\n\nAbrir Produção\nA",
+            "audit": {
+              "issues": [],
+              "images": 3,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/testar/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acompanhamento e suporte\nSuporte do sistema unificado\n\nFotografia dos dados: 13/10/2026, 18:42. Use sua conta ativa do sistema unificado para acessar esta página.\n\nAbrir Produção\nA",
+            "audit": {
+              "issues": [],
+              "images": 3,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/testar/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acompanhamento e suporte\nSuporte do sistema unificado\n\nFotografia dos dados: 13/10/2026, 18:42. Use sua conta ativa do sistema unificado para acessar esta página.\n\nAbrir Produção\nA",
+            "audit": {
+              "issues": [],
+              "images": 3,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/testar/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Acompanhamento e suporte\nSuporte do sistema unificado\n\nFotografia dos dados: 13/10/2026, 18:42. Use sua conta ativa do sistema unificado para acessar esta página.\n\nAbrir Produção\nA",
+            "audit": {
+              "issues": [],
+              "images": 3,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": null,
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "shell-atualizar",
+    "path": "/unificado/atualizar.html",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/index.html?atualizar=1.4.25",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/index.html?atualizar=1.4.25",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado × realizado\nProgramação\nSemanal S1 e S2\nArmaduras\nNúmeros de série d",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                    "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 30
+                },
+                {
+                  "text": "Semanal S1 e S2",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Números de série dos postes",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 30
+                },
+                {
+                  "text": "Programação semanal",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Relatório de produção",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 30
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/index.html?atualizar=1.4.25",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n20\nPCP · setores ",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/index.html?atualizar=1.4.25",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n20\nPCP · setores ",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/index.html?atualizar=1.4.25",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nUnificado\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n20\nPCP · setores 1 a 4\nReal",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "mobile-conta",
+    "path": "/unificado/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado × realizado\nProgramação\nSemanal S1 e S2\nArmaduras\nNúmeros de série d",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                    "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 30
+                },
+                {
+                  "text": "Semanal S1 e S2",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Números de série dos postes",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 30
+                },
+                {
+                  "text": "Programação semanal",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Relatório de produção",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 30
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n20\nPCP · setores ",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n20\nPCP · setores ",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nConta\nConta Sintética PCP para Qualidade\n\nCONSULTA / GERENCIA\n\nAtualizar\nVersão 1.4.25\nRelatar problema\nSair da conta\nAtualizar\nVe",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "mobile-recentes",
+    "path": "/unificado/",
+    "review_version": "1.4.25",
+    "status": 200,
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado × realizado\nProgramação\nSemanal S1 e S2\nArmaduras\nNúmeros de série d",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                    "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 30
+                },
+                {
+                  "text": "Semanal S1 e S2",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Números de série dos postes",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 30
+                },
+                {
+                  "text": "Programação semanal",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 30
+                },
+                {
+                  "text": "Relatório de produção",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 30
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n20\nPCP · setores ",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nInício\nInício\n\nquinta-feira, 19 de novembro de 2026 · Campinas · PCP e Mapa\n\nProgramado hoje\n20\nPCP · setores ",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": []
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nRecentes\nRelatório de produção\nPlanejamento › Armaduras\nNúmeros de série dos postes\nPlanejamento › Armaduras\nManutenção usina\nQual",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Início",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                    "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": []
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Relatório de produção",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 44
+                },
+                {
+                  "text": "Números de série dos postes",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 44
+                },
+                {
+                  "text": "Manutenção usina",
+                  "icon": null,
+                  "height": 44
+                },
+                {
+                  "text": "Programação semanal",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 44
+                },
+                {
+                  "text": "Fechamento diário",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 44
+                },
+                {
+                  "text": "Semanal S1 e S2",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 44
+                },
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 44
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 44
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  },
+  {
+    "profile": "CONSULTA",
+    "screen": "module-planejamento",
+    "path": "/unificado/?module=planejamento",
+    "review_version": "1.4.25",
+    "status": 200,
+    "module_states": [
+      {
+        "width": 1440,
+        "description": "6 telas",
+        "units": []
+      },
+      {
+        "width": 1024,
+        "description": "6 telas",
+        "units": []
+      },
+      {
+        "width": 820,
+        "description": "6 telas",
+        "units": []
+      },
+      {
+        "width": 390,
+        "description": "6 telas",
+        "units": []
+      }
+    ],
+    "last_stage": "DOM audit 390 https://concrefer.concretrack.com.br:18446/unificado/?module=planejamento",
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?module=planejamento",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nPlanejamento\nExpandir tudo\nRecolher tudo\nDashboard\nProgramado × realizado\nProgramação\nArmaduras\nAtualizar\nVersão 1.4.25\nAjuda\nC\nCo",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Planejamento",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                    "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": [
+                    40,
+                    40,
+                    40,
+                    40,
+                    40,
+                    40
+                  ]
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "Dashboard",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 30
+                },
+                {
+                  "text": "Programado × realizado",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 30
+                },
+                {
+                  "text": "DashboardProgramado e realizado por período",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 40
+                },
+                {
+                  "text": "Programado × realizadoPCP contra apontamentos do Mapa",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 40
+                },
+                {
+                  "text": "Semanal S1 e S2Distribuir a semana nas formas",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 40
+                },
+                {
+                  "text": "Números de série dos postesConsultar séries e emitir PDF",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 40
+                },
+                {
+                  "text": "Programação semanalProgramar armaduras por dia",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 40
+                },
+                {
+                  "text": "Relatório de produçãoEmitir relatório de armaduras",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 40
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?module=planejamento",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nPlanejamento\nPlanejamento\n\n6 telas\n\nDashboard\nProgramação · Semanal S1 e S2\nArmaduras · Números de série dos p",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Planejamento",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                    "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": [
+                    40,
+                    40,
+                    40,
+                    40,
+                    40,
+                    40
+                  ]
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "DashboardProgramado e realizado por período",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 40
+                },
+                {
+                  "text": "Programado × realizadoPCP contra apontamentos do Mapa",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 40
+                },
+                {
+                  "text": "Semanal S1 e S2Distribuir a semana nas formas",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 40
+                },
+                {
+                  "text": "Números de série dos postesConsultar séries e emitir PDF",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 40
+                },
+                {
+                  "text": "Programação semanalProgramar armaduras por dia",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 40
+                },
+                {
+                  "text": "Relatório de produçãoEmitir relatório de armaduras",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 40
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?module=planejamento",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.25\nConcrefer\n/\nPlanejamento\nPlanejamento\n\n6 telas\n\nDashboard\nProgramação · Semanal S1 e S2\nArmaduras · Números de série dos p",
+            "audit": {
+              "issues": [],
+              "images": 1,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Planejamento",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": [
+                    "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                    "M4 19h16 M4 16l5-7 4 3 7-9",
+                    "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                    "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                    "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6"
+                  ]
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": [
+                    40,
+                    40,
+                    40,
+                    40,
+                    40,
+                    40
+                  ]
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "DashboardProgramado e realizado por período",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 40
+                },
+                {
+                  "text": "Programado × realizadoPCP contra apontamentos do Mapa",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 40
+                },
+                {
+                  "text": "Semanal S1 e S2Distribuir a semana nas formas",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 40
+                },
+                {
+                  "text": "Números de série dos postesConsultar séries e emitir PDF",
+                  "icon": "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+                  "height": 40
+                },
+                {
+                  "text": "Programação semanalProgramar armaduras por dia",
+                  "icon": "M4 5h16v15H4z M4 10h16 M8 3v4 M16 3v4",
+                  "height": 40
+                },
+                {
+                  "text": "Relatório de produçãoEmitir relatório de armaduras",
+                  "icon": "M14 3H6v18h12V7z M14 3v5h4 M9 12h6 M9 16h6",
+                  "height": 40
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?module=planejamento",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nConcrefer\nPlanejamento\nPlanejamento\n\n6 telas\n\nGeral\nProgramação\nArmaduras\nGeral\nDashboard\nProgramado e realizado por período\nProgr",
+            "audit": {
+              "issues": [],
+              "images": 0,
+              "body_font": "Geist, system-ui, sans-serif",
+              "mobile_title": "Planejamento",
+              "criteria": {
+                "typed_icons": {
+                  "visible_paths": []
+                },
+                "filler": {
+                  "forbidden_phrases_found": 0
+                },
+                "descriptions": {
+                  "over_limit": 0
+                },
+                "tabs": {
+                  "duplicate_labels": 0
+                },
+                "sentence_case": {
+                  "uppercase_css": 0
+                },
+                "density": {
+                  "module_row_heights": [
+                    44,
+                    44
+                  ]
+                },
+                "surfaces": {
+                  "nested_cards": 0
+                },
+                "states": {
+                  "normal_pills": 0
+                },
+                "redundancies": {
+                  "open_buttons": 0
+                }
+              },
+              "review_items": [
+                {
+                  "text": "DashboardProgramado e realizado por período",
+                  "icon": "M4 19h16 M7 16V9 M12 16V5 M17 16v-4",
+                  "height": 44
+                },
+                {
+                  "text": "Programado × realizadoPCP contra apontamentos do Mapa",
+                  "icon": "M4 19h16 M4 16l5-7 4 3 7-9",
+                  "height": 44
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "expected_native_module_denials": [],
+    "authorization_expectation": "allowed",
+    "external_attempts": [],
+    "standard_issues": 0,
+    "ok": true
+  }
+]

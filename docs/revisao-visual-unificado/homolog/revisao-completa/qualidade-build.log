@@ -1,0 +1,13 @@
+
+> concretrack-qualidade@0.1.0 build
+> tsc -b && vite build
+
+vite v6.4.4 building for production...
+transforming...
+✓ 33 modules transformed.
+rendering chunks...
+computing gzip size...
+../dist/index.html                   0.41 kB │ gzip:  0.29 kB
+../dist/assets/index-P0t7-g3M.css   90.97 kB │ gzip: 13.01 kB
+../dist/assets/index-Bn4z2eAt.js   241.27 kB │ gzip: 71.00 kB
+✓ built in 1.40s

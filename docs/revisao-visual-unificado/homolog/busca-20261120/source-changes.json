@@ -1,0 +1,26 @@
+{
+  "changed_files": [
+    "unificado/index.html",
+    "unificado/sw.js",
+    "unificado/VERSION",
+    "unificado/shell/shell.js",
+    "unificado/shell/menu.config.js",
+    "unificado/shell/navigation.js",
+    "unificado/shell/module-pages.js",
+    "unificado/shell/module-pages-mobile.js",
+    "unificado/shell/modelo-a/menu.js",
+    "unificado/sidebar-modelo-a/src/components/sidebar/Sidebar.tsx",
+    "unificado/logistica/frontend/src/structure.tsx",
+    "unificado/logistica/logistica-native.js",
+    "unificado/login.html"
+  ],
+  "partial_files_excluding_prior_work": [
+    "unificado/shell/shell.js",
+    "unificado/logistica/frontend/src/structure.tsx",
+    "unificado/logistica/logistica-native.js"
+  ],
+  "native_artifact": "Index rebuilt from HEAD plus this task only. Deployed worktree retains previously authorized IAM/master changes.",
+  "prior_work_preserved": true,
+  "push": false,
+  "pr": false
+}

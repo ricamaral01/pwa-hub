@@ -1,0 +1,179 @@
+--- 1.4.6/services/laboratorio/server/static/cec/analise/resultado-cp.html
++++ 1.4.31/services/laboratorio/server/static/cec/analise/resultado-cp.html
+@@ -11,8 +11,9 @@
+   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+   <meta http-equiv="Pragma" content="no-cache" />
+   <meta http-equiv="Expires" content="0" />
+-  <script src="./api-client.js?v=3"></script>
+-  <style>
++  <script src="./api-client.js?v=1.4.26"></script>
++  <style>@media print {
++
+     /* ══ LIGHT THEME BASE ══ */
+     :root {
+       --primary:       #1a3a5c;
+@@ -25,7 +26,7 @@
+       --radius:        18px;
+       --shadow:        0 8px 28px rgba(0,0,0,0.12);
+     }
+-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
++    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", system-ui, -apple-system, sans-serif; }
+     body {
+       background: linear-gradient(160deg, #f0f4f8 0%, #ffffff 60%, #eef2f7 100%);
+       color: var(--text); min-height: 100vh; display: flex; flex-direction: column;
+@@ -95,8 +96,79 @@
+       .tbl-wrap { overflow: visible; border: none; }
+       td, th { color: #000 !important; border-color: #999 !important; background: #fff !important; }
+     }
+-  </style>
+-</head>
++  
++}
++@media screen{/* ══ LIGHT THEME BASE ══ */
++:root{--primary:var(--c-blue);--primary-light:var(--c-blue);--accent:var(--c-orange);--card-bg:rgba(0,0,0,0.04);--card-border:rgba(0,0,0,0.10);--text:var(--c-navy);--muted:var(--c-ink-2);--radius:var(--r);--shadow:0 8px 28px rgba(0,0,0,0.12);}
++*{margin:0;padding:0;box-sizing:border-box;}
++body{background:var(--c-surface);color:var(--text);min-height:100vh;display:flex;flex-direction:column;padding-bottom:60px;}
++/* ── TOP BAR ── */
++.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(255,255,255,0.92);border-bottom:1px solid var(--card-border);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;}
++.topbar-brand{display:flex;align-items:center;gap:14px;}
++.topbar-brand img{height:40px;width:40px;object-fit:contain;border-radius:var(--r);}
++.topbar-brand .brand-name{font-size:1rem;font-weight:900;letter-spacing:.04em;line-height:1.1;}
++.topbar-brand .brand-name span{color:var(--accent);}
++.topbar-brand .brand-sub{font-size:.65rem;color:var(--muted);text-transform:none;letter-spacing:.06em;margin-top:2px;}
++.btn-back{display:inline-flex;align-items:center;gap:6px;background:rgba(0,0,0,0.07);border:1px solid rgba(0,0,0,0.18);border-radius:var(--r);color:var(--text);font-size:.85rem;font-weight:700;padding:8px 16px;text-decoration:none;transition:background .15s, transform .1s;}
++.btn-back:hover{background:rgba(0,0,0,0.12);transform:none;}
++/* ── HERO ── */
++.hero{text-align:center;padding:36px 20px 24px;}
++.hero-icon{font-size:2.4rem;display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:var(--r);background:var(--c-surface);box-shadow:none;margin-bottom:14px;}
++.hero h1{font-size:1.45rem;font-weight:900;margin-bottom:6px;}
++.hero h1 span{color:var(--accent);}
++.hero p{font-size:.85rem;color:var(--muted);line-height:1.5;}
++.accent-line{width:60px;height:3px;background:var(--accent);border-radius:var(--r);margin:14px auto 0;}
++/* ── LAYOUT ── */
++.cp-wrap{max-width:none;padding:16px 20px;}
++/* ── PRINT BUTTON ── */
++.btn-print{background:var(--c-ok);color:var(--c-surface);border:none;border-radius:var(--r);padding:8px 16px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;}
++.btn-print:hover{background:var(--c-ok);}
++/* ── FILTER BAR ── */
++.filter-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
++.filter-bar label{font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:5px;}
++.filter-bar select, .filter-bar input[type="number"], .filter-bar input[type="text"]{background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.15);border-radius:var(--r);color:var(--text);padding:5px 9px;font-size:.78rem;}
++.filter-bar input[type="text"]{flex:1;min-width:150px;}
++.filter-bar input::placeholder{color:var(--muted);}
++.btn-filter{background:rgba(232,118,42,0.12);border:1px solid rgba(232,118,42,.35);color:var(--accent);border-radius:var(--r);padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;}
++/* ── TABLE ── */
++.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--card-border);}
++table{border-collapse:collapse;white-space:nowrap;font-size:.75rem;width:100%;}
++thead th{padding:8px 12px;font-size:.70rem;text-transform:none;letter-spacing:.06em;font-weight:800;text-align:center;color:var(--c-surface);background:var(--c-blue);border:1px solid rgba(255,255,255,.15);}
++thead th.th-mold{background:var(--c-blue);}
++thead th.th-rupt{background:var(--c-ok);}
++thead th.th-idade{background:var(--c-blue);}
++thead th.th-cp{background:var(--c-blue);}
++thead th.th-mpa{background:var(--c-navy);}
++thead th.th-med{background:var(--c-navy);}
++tbody tr{border-bottom:1px solid rgba(0,0,0,.06);}
++tbody tr:nth-child(even){background:rgba(0,0,0,.02);}
++tbody tr:hover{background:rgba(0,0,0,.04);}
++tbody td{padding:6px 10px;text-align:center;color:var(--text);font-size:.74rem;border-right:1px solid rgba(0,0,0,.05);}
++tbody td.lft{text-align:left;}
++.v-ok{color:var(--c-ok);font-weight:700;}
++.v-fail{color:var(--c-crit);font-weight:700;}
++.v-warn{color:var(--c-orange);font-weight:700;}
++.v-pend{color:var(--muted);}
++.v-med{color:var(--c-blue);font-weight:700;}
++.age-badge{display:inline-block;border-radius:var(--r);padding:1px 7px;font-size:.67rem;font-weight:700;}
++.age-1{background:rgba(30,58,138,.12);color:var(--c-blue);border:1px solid rgba(59,130,246,.4);}
++.age-3{background:rgba(20,83,45,.10);color:var(--c-ok);border:1px solid rgba(34,197,94,.4);}
++.age-7{background:rgba(124,45,18,.10);color:var(--c-crit);border:1px solid rgba(249,115,22,.4);}
++.age-28{background:rgba(76,29,149,.10);color:var(--c-ink-3);border:1px solid rgba(168,85,247,.4);}
++.age-x{background:rgba(107,114,128,.08);color:var(--c-ink-2);border:1px solid var(--c-ink-3);}
++.state-box{text-align:center;padding:48px 20px;color:var(--muted);}
++.state-box .sico{font-size:2.8rem;margin-bottom:12px;}
++.state-box p{font-size:.85rem;line-height:1.55;margin:6px 0;}
++.tbl-footer{text-align:right;font-size:.72rem;color:var(--muted);margin-top:8px;}
++@media print {
++      .topbar, .btn-print, .btn-back, .filter-bar, .hero, .accent-line { display: none !important; }
++      body { background: #fff; color: #000; padding: 0; }
++      .tbl-wrap { overflow: visible; border: none; }
++      td, th { color: #000 !important; border-color: #999 !important; background: #fff !important; }
++    }
++}
++</style>
++<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.26"><script defer src="/unificado/shell/components.js?v=1.4.26"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
+ <body>
+ <!-- TOP BAR -->
+ <div class="topbar">
+@@ -108,13 +180,13 @@
+     </div>
+   </div>
+   <div style="display:flex;align-items:center;gap:8px;">
+-    <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
++    <button class="btn-print" onclick="window.print()"> Imprimir</button>
+     <a class="btn-back" href="./index.html">← Voltar</a>
+   </div>
+ </div>
+ <!-- HERO -->
+ <div class="hero">
+-  <div class="hero-icon">🧱</div>
++  <div class="hero-icon"></div>
+   <h1>Resultado Corpos de <span>Prova</span></h1>
+   <p>Resistência à compressão — MPa por corpo de prova</p>
+   <div class="accent-line"></div>
+@@ -122,15 +194,22 @@
+ <div class="cp-wrap">
+ 
+   <!-- Progress Indicator -->
+-  <div id="renderProgress" style="display:none; text-align:center; padding:12px; background:rgba(245,158,11,.1); border-radius:8px; margin-bottom:14px; color:#f59e0b; font-size:.85rem; font-weight:600; animation:pulse 1.5s infinite;">
++  <div id="renderProgress" data-visual-print="cfb7309d8cfe" style="display:none;text-align:center;padding:12px;background:rgba(245,158,11,.1);border-radius:var(--r);margin-bottom:14px;color:var(--c-orange);font-size:.85rem;font-weight:600;animation:pulse 1.5s infinite;">
+     ⏳ Carregando...
+   </div>
+-  <style>
++  <style>@media print {
++
+     @keyframes pulse {
+       0%, 100% { opacity:.7; }
+       50% { opacity:1; }
+     }
+-  </style>
++  
++}
++@media screen{@keyframes pulse{0%, 100%{opacity:.7;}
++50%{opacity:1;}
++}
++}
++</style>
+ 
+   <div class="filter-bar">
+     <label>Mês:
+@@ -273,10 +352,10 @@
+   var vals=[mpa1,mpa2].map(function(v){return r1(v);}).filter(function(v){return v!==null;});
+   if(!vals.length)return'<span class="age-badge age-x">PEND</span>';
+   if(vals.some(function(v){return v<meta.min;}))
+-    return'<span class="age-badge" style="background:rgba(239,68,68,.1);color:#dc2626;border:1px solid #ef4444;">NOK</span>';
++    return'<span class="age-badge" data-visual-print="27ade025a8c0" style="background:rgba(239,68,68,.1);color:var(--c-crit);border:1px solid var(--c-orange);">NOK</span>';
+   if(vals.some(function(v){return v>meta.max;}))
+-    return'<span class="age-badge" style="background:rgba(245,158,11,.1);color:#b45309;border:1px solid #f59e0b;">AMP</span>';
+-  return'<span class="age-badge" style="background:rgba(16,185,129,.1);color:#059669;border:1px solid #10b981;">OK</span>';
++    return'<span class="age-badge" data-visual-print="f54b55e0648b" style="background:rgba(245,158,11,.1);color:var(--c-warn);border:1px solid var(--c-orange);">AMP</span>';
++  return'<span class="age-badge" data-visual-print="49dedd9adf7d" style="background:rgba(16,185,129,.1);color:var(--c-ok);border:1px solid var(--c-ok);">OK</span>';
+ }
+ 
+ function groupRows(rawRows){
+@@ -409,7 +488,7 @@
+ }
+ 
+ function showStaleCacheWarning(err){
+-  _dataStatusHtml='<span style="color:#b45309;font-weight:700;">Modo offline - exibindo dados armazenados localmente.</span>'
++  _dataStatusHtml='<span data-visual-print="42589bb0bae1" style="color:var(--c-warn);font-weight:700;">Modo offline - exibindo dados armazenados localmente.</span>'
+     +' <code>'+(err&&err.message?err.message:String(err||''))+'</code>';
+   renderTable();
+ }
+@@ -468,7 +547,7 @@
+ });
+ 
+ (async function(){
+-  try{ if('serviceWorker' in navigator){ var registration=await navigator.serviceWorker.register('./sw.js?v=11',{scope:'./',updateViaCache:'none'}); registration.update().catch(function(){}); } }catch(e){}
++  try{ if('serviceWorker' in navigator){ var registration=await navigator.serviceWorker.register('./sw.js?v=1.4.26',{scope:'./',updateViaCache:'none'}); registration.update().catch(function(){}); } }catch(e){}
+ 
+   // SW version badge and force update
+   function initSWVersionBadge() {

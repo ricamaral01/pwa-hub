@@ -1,0 +1,8 @@
+{
+  "phase": "revisao-completa",
+  "static_files": 66,
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/visual-service-revisao-completa-20261119T022541Z",
+  "production_untouched": true,
+  "services_restarted": false,
+  "api_code_changed": false
+}

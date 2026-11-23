@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "stdout": "casca: 200/200\r\nlogin: 200/200\r\nPCP protegido: 401/401\r\nMapa saúde: 200/200\r\nLaboratório requer sessão: 302/302\r\nQualidade protegida: 401/401\r\nGED QR público: 200/200\r\nGate Modelo A: 7/7\r\n",
+  "stderr": "",
+  "pcp_anonymous_expected": "401"
+}

@@ -1,0 +1,97 @@
+{
+  "authorized_exception": "User explicitly authorized 006 on homolog without proof of production execution.",
+  "database": "laboratorio_visual_homolog_20261118",
+  "production_database_connections": 0,
+  "migration_file": "/opt/concrefer-unificado/cq/migrations/006_liberacao_excepcional.sql",
+  "migration_sha256": "c95fb280c2be0a16f6467b67c87be9f78f8e88bd19e03a73c106449b39d16799",
+  "production_execution_confirmed": false,
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/cq-006-20261119T121847Z/laboratorio_visual_homolog_20261118-before-006.dump",
+  "backup_bytes": 218265,
+  "backup_sha256": "cb9f80b81b23e79c1c0fbbbe376c966bb9d6c462a36975c7b4b14cde348fee03",
+  "backup_verified_toc_and_full_archive_decode": true,
+  "before": {
+    "tables": {
+      "cq_certificados": {
+        "sha256_existing_data": "877df3282aca312f8ac71031b2f8bc6ed4ba436a0705844a89cc585a3f5a66fc",
+        "rows": 34
+      },
+      "cq_itens": {
+        "sha256_existing_data": "f78961e8acf1c4903cfeeb8e8e3948ea548314534c60a2506d2a87eb36f72923",
+        "rows": 148
+      },
+      "cq_modelos_poste": {
+        "sha256_existing_data": "79c7902ae546158564c640cd3f5c53dee66f060d990fd91d5770e1669bebbf4c",
+        "rows": 100
+      },
+      "cq_parametros": {
+        "sha256_existing_data": "5a6850e2f10ca577da57b2f2f5e2d298324174fdfa64d71e08e3f54a7e931205",
+        "rows": 1
+      },
+      "cq_prensas": {
+        "sha256_existing_data": "7d1d1cf32385eb2e3db0a11f073bc8eef8e175c4d11ab98db392d16d2b2078bb",
+        "rows": 5
+      },
+      "cq_resultados_data": {
+        "sha256_existing_data": "c1dded01df01b5a5f0fb36568274c3ee1e8ec325ea1e3ca4e78d6268d71b3c6e",
+        "rows": 80
+      },
+      "cq_sequencias": {
+        "sha256_existing_data": "56fde629cf4f65a96709ff4501b2776e61d907f9ed2cdebc60fdbfe1d55b9305",
+        "rows": 1
+      },
+      "laboratorio_cp_moldagem": {
+        "sha256_existing_data": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "rows": 0
+      }
+    },
+    "object_ownership_permissions_sha256": "2fce0de9f2249e484881ac3a11f95db1d2c4495d2bbc93d243e0d65b51053735"
+  },
+  "columns_before": [],
+  "after": {
+    "tables": {
+      "cq_certificados": {
+        "sha256_existing_data": "877df3282aca312f8ac71031b2f8bc6ed4ba436a0705844a89cc585a3f5a66fc",
+        "rows": 34
+      },
+      "cq_itens": {
+        "sha256_existing_data": "f78961e8acf1c4903cfeeb8e8e3948ea548314534c60a2506d2a87eb36f72923",
+        "rows": 148
+      },
+      "cq_modelos_poste": {
+        "sha256_existing_data": "79c7902ae546158564c640cd3f5c53dee66f060d990fd91d5770e1669bebbf4c",
+        "rows": 100
+      },
+      "cq_parametros": {
+        "sha256_existing_data": "5a6850e2f10ca577da57b2f2f5e2d298324174fdfa64d71e08e3f54a7e931205",
+        "rows": 1
+      },
+      "cq_prensas": {
+        "sha256_existing_data": "7d1d1cf32385eb2e3db0a11f073bc8eef8e175c4d11ab98db392d16d2b2078bb",
+        "rows": 5
+      },
+      "cq_resultados_data": {
+        "sha256_existing_data": "c1dded01df01b5a5f0fb36568274c3ee1e8ec325ea1e3ca4e78d6268d71b3c6e",
+        "rows": 80
+      },
+      "cq_sequencias": {
+        "sha256_existing_data": "56fde629cf4f65a96709ff4501b2776e61d907f9ed2cdebc60fdbfe1d55b9305",
+        "rows": 1
+      },
+      "laboratorio_cp_moldagem": {
+        "sha256_existing_data": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "rows": 0
+      }
+    },
+    "object_ownership_permissions_sha256": "2fce0de9f2249e484881ac3a11f95db1d2c4495d2bbc93d243e0d65b51053735"
+  },
+  "columns_after": [
+    "cq_certificados|liberacao_excepcional_em|timestamp with time zone",
+    "cq_certificados|liberacao_excepcional_motivo|text",
+    "cq_certificados|liberacao_excepcional_nome|text",
+    "cq_certificados|liberacao_excepcional_por|text",
+    "cq_resultados_data|resultado_origem|text"
+  ],
+  "existing_data_and_permissions_unchanged": true,
+  "five_columns_verified": true,
+  "migration_applied": true
+}

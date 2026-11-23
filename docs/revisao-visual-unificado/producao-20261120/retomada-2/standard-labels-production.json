@@ -1,0 +1,65 @@
+{
+  "rows": [
+    {
+      "screen": "etiquetas",
+      "route": "etiquetas",
+      "existing_date": "2026-11-27",
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/unificado/pcp/api/etiquetas-padrao/programacao?data=2026-11-27",
+          "status": 200
+        }
+      ],
+      "labels": 6,
+      "print_handler_called": true,
+      "pdf_from_real_dom": true,
+      "ok": true
+    },
+    {
+      "screen": "etiquetasSc",
+      "route": "etiquetas-sc",
+      "existing_date": "2026-11-19",
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/operations/production-labels?data=2026-11-20&setor=Setor%203",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/operations/production-labels?data=2026-11-19&setor=Setor%203",
+          "status": 200
+        }
+      ],
+      "labels": 2,
+      "print_handler_called": true,
+      "pdf_from_real_dom": true,
+      "ok": true
+    },
+    {
+      "screen": "etiquetasSetor4",
+      "route": "etiquetas-setor4",
+      "existing_date": "2026-11-19",
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/operations/production-labels?data=2026-11-20&setor=Setor%204",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/unificado/mapa/api/operations/production-labels?data=2026-11-19&setor=Setor%204",
+          "status": 200
+        }
+      ],
+      "labels": 2,
+      "print_handler_called": true,
+      "pdf_from_real_dom": true,
+      "ok": true
+    }
+  ],
+  "operational_writes": 0,
+  "physical_printer_tested": false,
+  "ok": true
+}

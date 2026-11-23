@@ -1,0 +1,26 @@
+[
+  {
+    "source": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_api.py",
+    "source_sha256": "e909145a90a683fee4b3589f51055dbe9c6bc075135f985028b65db197fdcfa7",
+    "function": "parse_qr",
+    "ast_sha256": "0d476a6ff6990dec9ffb36a661f6248e144186cc88daf685f4a56fe6c9201de7"
+  },
+  {
+    "source": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_api.py",
+    "source_sha256": "e909145a90a683fee4b3589f51055dbe9c6bc075135f985028b65db197fdcfa7",
+    "function": "parse_date",
+    "ast_sha256": "c33b8b99c0829d086fcef451c89efa360ee8fa5adedf35d4d6a87b75bf367dc9"
+  },
+  {
+    "source": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/cec_api.py",
+    "source_sha256": "e909145a90a683fee4b3589f51055dbe9c6bc075135f985028b65db197fdcfa7",
+    "function": "canonical_cp",
+    "ast_sha256": "0994772e2da66d10f6916dad82c5acc1a6c897d23e03c14209d09ca79065abe7"
+  },
+  {
+    "source": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/postes_api.py",
+    "source_sha256": "f394b840ffa543ae4a5330c5b161333d414bc740d60b92172c802be5de615831",
+    "function": "gateway_user",
+    "ast_sha256": "5b1c7bef0bf7437118b787801574733fe8cee7c56542ed39c7c4584391471569"
+  }
+]

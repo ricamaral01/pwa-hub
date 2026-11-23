@@ -1,0 +1,17 @@
+{
+  "id": "/unificado/suprimentos/pwa/",
+  "name": "Suprimentos Concrefer",
+  "short_name": "Suprimentos",
+  "description": "Solicitações do almoxarifado geral da Concrefer",
+  "start_url": "/unificado/suprimentos/pwa/",
+  "scope": "/unificado/suprimentos/pwa/",
+  "display": "standalone",
+  "background_color": "#F3F7F7",
+  "theme_color": "#0F766E",
+  "lang": "pt-BR",
+  "icons": [
+    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"icons/maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+  ]
+}

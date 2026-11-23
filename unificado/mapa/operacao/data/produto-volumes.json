@@ -1,0 +1,2528 @@
+{
+  "origem": "cadastro_produtos_por_setor_peso_volume.xlsx",
+  "criterio_volume": "volume_m3 = peso_kg / 2400",
+  "gerado_em": "2026-08-28",
+  "total": 315,
+  "registros": [
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "13285",
+      "produto": "20x3000",
+      "tipo": "Circular",
+      "peso_kg": 6100.0,
+      "volume_m3": 2.5416666666666665
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "13284",
+      "produto": "19x3000",
+      "tipo": "Circular",
+      "peso_kg": 5668.0,
+      "volume_m3": 2.361666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "10768",
+      "produto": "18x3000",
+      "tipo": "Circular",
+      "peso_kg": 5241.0,
+      "volume_m3": 2.18375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "850",
+      "produto": "20x2000",
+      "tipo": "Circular",
+      "peso_kg": 4100.0,
+      "volume_m3": 1.7083333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "13389",
+      "produto": "19x2000",
+      "tipo": "Circular",
+      "peso_kg": 4995.0,
+      "volume_m3": 2.08125
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "846",
+      "produto": "18x2000",
+      "tipo": "Circular",
+      "peso_kg": 4620.0,
+      "volume_m3": 1.925
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "838",
+      "produto": "16x2000",
+      "tipo": "Circular",
+      "peso_kg": 3950.0,
+      "volume_m3": 1.6458333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "834",
+      "produto": "15x2000",
+      "tipo": "Circular",
+      "peso_kg": 3580.0,
+      "volume_m3": 1.4916666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "821",
+      "produto": "13x2000",
+      "tipo": "Circular",
+      "peso_kg": 3130.0,
+      "volume_m3": 1.3041666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "1717",
+      "produto": "12x2000",
+      "tipo": "Circular",
+      "peso_kg": 2819.0,
+      "volume_m3": 1.1745833333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "7445",
+      "produto": "21x1500",
+      "tipo": "Circular",
+      "peso_kg": 5568.0,
+      "volume_m3": 2.32
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "2572",
+      "produto": "20x1500",
+      "tipo": "Circular",
+      "peso_kg": 4845.0,
+      "volume_m3": 2.01875
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "13388",
+      "produto": "19x1500",
+      "tipo": "Circular",
+      "peso_kg": 4784.0,
+      "volume_m3": 1.9933333333333334
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "6152",
+      "produto": "18x1500",
+      "tipo": "Circular",
+      "peso_kg": 4150.0,
+      "volume_m3": 1.7291666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "15159",
+      "produto": "17x1500",
+      "tipo": "Circular",
+      "peso_kg": 3823.0,
+      "volume_m3": 1.5929166666666668
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "1945",
+      "produto": "16x1500",
+      "tipo": "Circular",
+      "peso_kg": 3510.0,
+      "volume_m3": 1.4625
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "833",
+      "produto": "15x1500",
+      "tipo": "Circular",
+      "peso_kg": 3200.0,
+      "volume_m3": 1.3333333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "827",
+      "produto": "14x1500",
+      "tipo": "Circular",
+      "peso_kg": 3099.0,
+      "volume_m3": 1.29125
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "813",
+      "produto": "12x1500",
+      "tipo": "Circular",
+      "peso_kg": 2495.0,
+      "volume_m3": 1.0395833333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "804",
+      "produto": "11x1500",
+      "tipo": "Circular",
+      "peso_kg": 2205.0,
+      "volume_m3": 0.91875
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "856",
+      "produto": "23x1200 T23",
+      "tipo": "Circular",
+      "peso_kg": 5190.0,
+      "volume_m3": 2.1625
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "2209",
+      "produto": "21x1200 T23",
+      "tipo": "Circular",
+      "peso_kg": 4502.0,
+      "volume_m3": 1.8758333333333332
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "6300",
+      "produto": "20x1200 T23",
+      "tipo": "Circular",
+      "peso_kg": 4200.0,
+      "volume_m3": 1.75
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "845",
+      "produto": "18x1200 T23",
+      "tipo": "Circular",
+      "peso_kg": 3558.0,
+      "volume_m3": 1.4825
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "5695",
+      "produto": "17x1200 T23",
+      "tipo": "Circular",
+      "peso_kg": 3492.0,
+      "volume_m3": 1.455
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "14953",
+      "produto": "15x1200 T23",
+      "tipo": "Circular",
+      "peso_kg": 2894.0,
+      "volume_m3": 1.2058333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "3384",
+      "produto": "14x1200 T23",
+      "tipo": "Circular",
+      "peso_kg": 2446.0,
+      "volume_m3": 1.0191666666666668
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "2270",
+      "produto": "12x1200 T23",
+      "tipo": "Circular",
+      "peso_kg": 1951.0,
+      "volume_m3": 0.8129166666666666
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "826",
+      "produto": "14x1200",
+      "tipo": "Circular",
+      "peso_kg": 2830.0,
+      "volume_m3": 1.1791666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "812",
+      "produto": "12x1200",
+      "tipo": "Circular",
+      "peso_kg": 2450.0,
+      "volume_m3": 1.0208333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": null,
+      "produto": "12x1200 AAT",
+      "tipo": "Circular",
+      "peso_kg": 2450.0,
+      "volume_m3": 1.0208333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "803",
+      "produto": "11X1200",
+      "tipo": "Circular",
+      "peso_kg": 2169.0,
+      "volume_m3": 0.90375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": null,
+      "produto": "12x1200 DME",
+      "tipo": "Circular",
+      "peso_kg": 2450.0,
+      "volume_m3": 1.0208333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "858",
+      "produto": "25x1000",
+      "tipo": "Circular",
+      "peso_kg": 5800.0,
+      "volume_m3": 2.4166666666666665
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "857",
+      "produto": "24x1000",
+      "tipo": "Circular",
+      "peso_kg": 5440.0,
+      "volume_m3": 2.2666666666666666
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "855",
+      "produto": "23x1000",
+      "tipo": "Circular",
+      "peso_kg": 5120.0,
+      "volume_m3": 2.1333333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "854",
+      "produto": "22x1000",
+      "tipo": "Circular",
+      "peso_kg": 4751.0,
+      "volume_m3": 1.9795833333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "853",
+      "produto": "21x1000",
+      "tipo": "Circular",
+      "peso_kg": 4400.0,
+      "volume_m3": 1.8333333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "850",
+      "produto": "20x1000",
+      "tipo": "Circular",
+      "peso_kg": 4100.0,
+      "volume_m3": 1.7083333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "847",
+      "produto": "19X1000",
+      "tipo": "Circular",
+      "peso_kg": 3790.0,
+      "volume_m3": 1.5791666666666666
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "844",
+      "produto": "18x1000",
+      "tipo": "Circular",
+      "peso_kg": 3433.0,
+      "volume_m3": 1.4304166666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "841",
+      "produto": "17x1000",
+      "tipo": "Circular",
+      "peso_kg": 3196.0,
+      "volume_m3": 1.3316666666666668
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "837",
+      "produto": "16x1000",
+      "tipo": "Circular",
+      "peso_kg": 2921.0,
+      "volume_m3": 1.2170833333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": null,
+      "produto": "15x1000 AAT",
+      "tipo": "Circular",
+      "peso_kg": 2670.0,
+      "volume_m3": 1.1125
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "831",
+      "produto": "15x1000",
+      "tipo": "Circular",
+      "peso_kg": 2670.0,
+      "volume_m3": 1.1125
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "825",
+      "produto": "14x1000",
+      "tipo": "Circular",
+      "peso_kg": 2410.0,
+      "volume_m3": 1.0041666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": null,
+      "produto": "13x1000 AAT",
+      "tipo": "Circular",
+      "peso_kg": 2160.0,
+      "volume_m3": 0.9
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "819",
+      "produto": "13x1000",
+      "tipo": "Circular",
+      "peso_kg": 2160.0,
+      "volume_m3": 0.9
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "867",
+      "produto": "12x1000 AAT",
+      "tipo": "Circular",
+      "peso_kg": 2010.0,
+      "volume_m3": 0.8375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "811",
+      "produto": "12x1000",
+      "tipo": "Circular",
+      "peso_kg": 2010.0,
+      "volume_m3": 0.8375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "11594",
+      "produto": "12x1000 DME",
+      "tipo": "Circular",
+      "peso_kg": 2010.0,
+      "volume_m3": 0.8375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "4627",
+      "produto": "11x1000 AAT",
+      "tipo": "Circular",
+      "peso_kg": 1564.0,
+      "volume_m3": 0.6516666666666666
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "802",
+      "produto": "11x1000",
+      "tipo": "Circular",
+      "peso_kg": 1564.0,
+      "volume_m3": 0.6516666666666666
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "11733",
+      "produto": "11x1000 DME",
+      "tipo": "Circular",
+      "peso_kg": 1564.0,
+      "volume_m3": 0.6516666666666666
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "11491",
+      "produto": "10,5x1000 AAT",
+      "tipo": "Circular",
+      "peso_kg": 1585.0,
+      "volume_m3": 0.6604166666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "690",
+      "produto": "10,5x1000",
+      "tipo": "Circular",
+      "peso_kg": 1585.0,
+      "volume_m3": 0.6604166666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "683",
+      "produto": "10x1000",
+      "tipo": "Circular",
+      "peso_kg": 1495.0,
+      "volume_m3": 0.6229166666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "11460",
+      "produto": "10x1000 AAT",
+      "tipo": "Circular",
+      "peso_kg": 1495.0,
+      "volume_m3": 0.6229166666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "677",
+      "produto": "9x1000",
+      "tipo": "Circular",
+      "peso_kg": 1222.0,
+      "volume_m3": 0.5091666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "671",
+      "produto": "8x1000",
+      "tipo": "Circular",
+      "peso_kg": 1013.0,
+      "volume_m3": 0.4220833333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "852",
+      "produto": "20x800",
+      "tipo": "Circular",
+      "peso_kg": 3830.0,
+      "volume_m3": 1.5958333333333334
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "849",
+      "produto": "19X800",
+      "tipo": "Circular",
+      "peso_kg": 3540.0,
+      "volume_m3": 1.475
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "843",
+      "produto": "18X800",
+      "tipo": "Circular",
+      "peso_kg": 3433.0,
+      "volume_m3": 1.4304166666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "842",
+      "produto": "17x800",
+      "tipo": "Circular",
+      "peso_kg": 2975.0,
+      "volume_m3": 1.2395833333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "840",
+      "produto": "16x800",
+      "tipo": "Circular",
+      "peso_kg": 2712.0,
+      "volume_m3": 1.13
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "836",
+      "produto": "15x800",
+      "tipo": "Circular",
+      "peso_kg": 2460.0,
+      "volume_m3": 1.025
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "830",
+      "produto": "14x800",
+      "tipo": "Circular",
+      "peso_kg": 2220.0,
+      "volume_m3": 0.925
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "10976",
+      "produto": "14x800 DME",
+      "tipo": "Circular",
+      "peso_kg": 2220.0,
+      "volume_m3": 0.925
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "818",
+      "produto": "12x800",
+      "tipo": "Circular",
+      "peso_kg": 1785.0,
+      "volume_m3": 0.74375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "11455",
+      "produto": "12 X 800 DME",
+      "tipo": "Circular",
+      "peso_kg": 1785.0,
+      "volume_m3": 0.74375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "11454",
+      "produto": "11x800 DME",
+      "tipo": "Circular",
+      "peso_kg": 1570.0,
+      "volume_m3": 0.6541666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "810",
+      "produto": "11x800",
+      "tipo": "Circular",
+      "peso_kg": 1570.0,
+      "volume_m3": 0.6541666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "689",
+      "produto": "10x800",
+      "tipo": "Circular",
+      "peso_kg": 1365.0,
+      "volume_m3": 0.56875
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "682",
+      "produto": "9x800",
+      "tipo": "Circular",
+      "peso_kg": 1178.0,
+      "volume_m3": 0.49083333333333334
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "676",
+      "produto": "8x800",
+      "tipo": "Circular",
+      "peso_kg": 1004.0,
+      "volume_m3": 0.41833333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "839",
+      "produto": "16x600",
+      "tipo": "Circular",
+      "peso_kg": 2250.0,
+      "volume_m3": 0.9375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "835",
+      "produto": "15x600",
+      "tipo": "Circular",
+      "peso_kg": 2020.0,
+      "volume_m3": 0.8416666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "13155",
+      "produto": "15x600 DME",
+      "tipo": "Circular",
+      "peso_kg": 2020.0,
+      "volume_m3": 0.8416666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "829",
+      "produto": "14x600",
+      "tipo": "Circular",
+      "peso_kg": 1792.0,
+      "volume_m3": 0.7466666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": null,
+      "produto": "14x600 DME",
+      "tipo": "Circular",
+      "peso_kg": 1792.0,
+      "volume_m3": 0.7466666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "4629",
+      "produto": "13x600 AAT",
+      "tipo": "Circular",
+      "peso_kg": 1640.0,
+      "volume_m3": 0.6833333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "823",
+      "produto": "13x600",
+      "tipo": "Circular",
+      "peso_kg": 1640.0,
+      "volume_m3": 0.6833333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "10975",
+      "produto": "13x600 DME",
+      "tipo": "Circular",
+      "peso_kg": 1640.0,
+      "volume_m3": 0.6833333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "869",
+      "produto": "12x600 AAT",
+      "tipo": "Circular",
+      "peso_kg": 1480.0,
+      "volume_m3": 0.6166666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "817",
+      "produto": "12x600",
+      "tipo": "Circular",
+      "peso_kg": 1480.0,
+      "volume_m3": 0.6166666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "10973",
+      "produto": "12x600 DME",
+      "tipo": "Circular",
+      "peso_kg": 1480.0,
+      "volume_m3": 0.6166666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "866",
+      "produto": "11x600 AAT",
+      "tipo": "Circular",
+      "peso_kg": 1304.0,
+      "volume_m3": 0.5433333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "809",
+      "produto": "11x600",
+      "tipo": "Circular",
+      "peso_kg": 1304.0,
+      "volume_m3": 0.5433333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "10972",
+      "produto": "11x600 DME",
+      "tipo": "Circular",
+      "peso_kg": 1304.0,
+      "volume_m3": 0.5433333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "801",
+      "produto": "10,5x600",
+      "tipo": "Circular",
+      "peso_kg": 1142.0,
+      "volume_m3": 0.47583333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "688",
+      "produto": "10x600",
+      "tipo": "Circular",
+      "peso_kg": 1080.0,
+      "volume_m3": 0.45
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "862",
+      "produto": "9x600 AAT",
+      "tipo": "Circular",
+      "peso_kg": 950.0,
+      "volume_m3": 0.3958333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "681",
+      "produto": "9x600",
+      "tipo": "Circular",
+      "peso_kg": 950.0,
+      "volume_m3": 0.3958333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "675",
+      "produto": "8x600",
+      "tipo": "Circular",
+      "peso_kg": 855.0,
+      "volume_m3": 0.35625
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "670",
+      "produto": "7x600",
+      "tipo": "Circular",
+      "peso_kg": 633.0,
+      "volume_m3": 0.26375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "822",
+      "produto": "13x400",
+      "tipo": "Circular",
+      "peso_kg": 1481.0,
+      "volume_m3": 0.6170833333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "11736",
+      "produto": "13x400 DME",
+      "tipo": "Circular",
+      "peso_kg": 1481.0,
+      "volume_m3": 0.6170833333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "868",
+      "produto": "12x400 AAT",
+      "tipo": "Circular",
+      "peso_kg": 1346.0,
+      "volume_m3": 0.5608333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "816",
+      "produto": "12x400",
+      "tipo": "Circular",
+      "peso_kg": 1346.0,
+      "volume_m3": 0.5608333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "11734",
+      "produto": "12x400 DME",
+      "tipo": "Circular",
+      "peso_kg": 1346.0,
+      "volume_m3": 0.5608333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "865",
+      "produto": "11x400 AAT",
+      "tipo": "Circular",
+      "peso_kg": 1170.0,
+      "volume_m3": 0.4875
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "10971",
+      "produto": "11x400 DME",
+      "tipo": "Circular",
+      "peso_kg": 1170.0,
+      "volume_m3": 0.4875
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "808",
+      "produto": "11x400",
+      "tipo": "Circular",
+      "peso_kg": 1170.0,
+      "volume_m3": 0.4875
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "800",
+      "produto": "10,5x400",
+      "tipo": "Circular",
+      "peso_kg": 1067.0,
+      "volume_m3": 0.44458333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "687",
+      "produto": "10x400",
+      "tipo": "Circular",
+      "peso_kg": 1020.0,
+      "volume_m3": 0.425
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "861",
+      "produto": "9x400 AAT",
+      "tipo": "Circular",
+      "peso_kg": 852.0,
+      "volume_m3": 0.355
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "680",
+      "produto": "9x400",
+      "tipo": "Circular",
+      "peso_kg": 852.0,
+      "volume_m3": 0.355
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "674",
+      "produto": "8x400",
+      "tipo": "Circular",
+      "peso_kg": 688.0,
+      "volume_m3": 0.2866666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "10661",
+      "produto": "8x400 AAT",
+      "tipo": "Circular",
+      "peso_kg": 688.0,
+      "volume_m3": 0.2866666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "669",
+      "produto": "7x400",
+      "tipo": "Circular",
+      "peso_kg": 570.0,
+      "volume_m3": 0.2375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "10659",
+      "produto": "7x400 AAT",
+      "tipo": "Circular",
+      "peso_kg": 570.0,
+      "volume_m3": 0.2375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "665",
+      "produto": "6x400",
+      "tipo": "Circular",
+      "peso_kg": 461.0,
+      "volume_m3": 0.19208333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "5850",
+      "produto": "5x400",
+      "tipo": "Circular",
+      "peso_kg": 408.0,
+      "volume_m3": 0.17
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "815",
+      "produto": "12x300",
+      "tipo": "Circular",
+      "peso_kg": 1098.0,
+      "volume_m3": 0.4575
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "807",
+      "produto": "11x300",
+      "tipo": "Circular",
+      "peso_kg": 982.0,
+      "volume_m3": 0.4091666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "692",
+      "produto": "10,5x300",
+      "tipo": "Circular",
+      "peso_kg": 950.0,
+      "volume_m3": 0.3958333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "686",
+      "produto": "10x300",
+      "tipo": "Circular",
+      "peso_kg": 830.0,
+      "volume_m3": 0.3458333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "679",
+      "produto": "9x300",
+      "tipo": "Circular",
+      "peso_kg": 761.0,
+      "volume_m3": 0.31708333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "673",
+      "produto": "8x300",
+      "tipo": "Circular",
+      "peso_kg": 573.0,
+      "volume_m3": 0.23875
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "668",
+      "produto": "7x300",
+      "tipo": "Circular",
+      "peso_kg": 533.0,
+      "volume_m3": 0.22208333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "6504",
+      "produto": "5x300",
+      "tipo": "Circular",
+      "peso_kg": 302.0,
+      "volume_m3": 0.12583333333333332
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "814",
+      "produto": "12x200",
+      "tipo": "Circular",
+      "peso_kg": 1006.0,
+      "volume_m3": 0.4191666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "863",
+      "produto": "11x200 AAT",
+      "tipo": "Circular",
+      "peso_kg": 881.0,
+      "volume_m3": 0.3670833333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "806",
+      "produto": "11x200",
+      "tipo": "Circular",
+      "peso_kg": 881.0,
+      "volume_m3": 0.3670833333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "685",
+      "produto": "10x200",
+      "tipo": "Circular",
+      "peso_kg": 777.0,
+      "volume_m3": 0.32375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "860",
+      "produto": "9x200 AAT",
+      "tipo": "Circular",
+      "peso_kg": 648.0,
+      "volume_m3": 0.27
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "678",
+      "produto": "9x200",
+      "tipo": "Circular",
+      "peso_kg": 648.0,
+      "volume_m3": 0.27
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "672",
+      "produto": "8x200",
+      "tipo": "Circular",
+      "peso_kg": 551.0,
+      "volume_m3": 0.22958333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "10660",
+      "produto": "8x200 AAT",
+      "tipo": "Circular",
+      "peso_kg": 551.0,
+      "volume_m3": 0.22958333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "667",
+      "produto": "7x200",
+      "tipo": "Circular",
+      "peso_kg": 448.0,
+      "volume_m3": 0.18666666666666668
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "10724",
+      "produto": "7x200 AAT",
+      "tipo": "Circular",
+      "peso_kg": 448.0,
+      "volume_m3": 0.18666666666666668
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "664",
+      "produto": "6x200",
+      "tipo": "Circular",
+      "peso_kg": 375.0,
+      "volume_m3": 0.15625
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "13683",
+      "produto": "9X150",
+      "tipo": "Circular",
+      "peso_kg": 611.0,
+      "volume_m3": 0.25458333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "13881",
+      "produto": "13,5x150 CR",
+      "tipo": "Circular",
+      "peso_kg": 886.0,
+      "volume_m3": 0.36916666666666664
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "870",
+      "produto": "7x200 CR",
+      "tipo": "Circular",
+      "peso_kg": 315.0,
+      "volume_m3": 0.13125
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "872",
+      "produto": "9x200 CR",
+      "tipo": "Circular",
+      "peso_kg": 450.0,
+      "volume_m3": 0.1875
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "873",
+      "produto": "10x200 CR",
+      "tipo": "Circular",
+      "peso_kg": 521.0,
+      "volume_m3": 0.21708333333333332
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "874",
+      "produto": "11x200 CR",
+      "tipo": "Circular",
+      "peso_kg": 600.0,
+      "volume_m3": 0.25
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "876",
+      "produto": "13x200 CR",
+      "tipo": "Circular",
+      "peso_kg": 775.0,
+      "volume_m3": 0.3229166666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "877",
+      "produto": "14x200 CR",
+      "tipo": "Circular",
+      "peso_kg": 872.0,
+      "volume_m3": 0.36333333333333334
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "878",
+      "produto": "15x200 CR",
+      "tipo": "Circular",
+      "peso_kg": 970.0,
+      "volume_m3": 0.4041666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "875",
+      "produto": "12x200 CR",
+      "tipo": "Circular",
+      "peso_kg": 683.0,
+      "volume_m3": 0.28458333333333335
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "4847",
+      "produto": "15x400 CR",
+      "tipo": "Circular",
+      "peso_kg": 1300.0,
+      "volume_m3": 0.5416666666666666
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "2446",
+      "produto": "14x400 CR",
+      "tipo": "Circular",
+      "peso_kg": 1180.0,
+      "volume_m3": 0.49166666666666664
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "881",
+      "produto": "18x400 CR",
+      "tipo": "Circular",
+      "peso_kg": 1700.0,
+      "volume_m3": 0.7083333333333334
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "887",
+      "produto": "6x90 DT",
+      "tipo": "Comum",
+      "peso_kg": 175.0,
+      "volume_m3": 0.07291666666666667
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "888",
+      "produto": "7,5x90 DT",
+      "tipo": "Comum",
+      "peso_kg": 354.0,
+      "volume_m3": 0.1475
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "889",
+      "produto": "7,5x200 DT",
+      "tipo": "Comum",
+      "peso_kg": 349.0,
+      "volume_m3": 0.14541666666666667
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "890",
+      "produto": "7,5x300 DT",
+      "tipo": "Comum",
+      "peso_kg": 601.0,
+      "volume_m3": 0.2504166666666667
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "891",
+      "produto": "7,5x400 DT",
+      "tipo": "Comum",
+      "peso_kg": 605.0,
+      "volume_m3": 0.2520833333333333
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "892",
+      "produto": "7,5x600 DT",
+      "tipo": "Comum",
+      "peso_kg": 609.0,
+      "volume_m3": 0.25375
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "893",
+      "produto": "7,5x700 DT",
+      "tipo": "Comum",
+      "peso_kg": 610.0,
+      "volume_m3": 0.25416666666666665
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "2517",
+      "produto": "7,5x800 DT",
+      "tipo": "Comum",
+      "peso_kg": 630.0,
+      "volume_m3": 0.2625
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "886",
+      "produto": "Cemig DT  7,0x150",
+      "tipo": "Comum",
+      "peso_kg": 399.0,
+      "volume_m3": 0.16625
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "2017",
+      "produto": "P Coluna 25x25-7,5x300",
+      "tipo": "Coluna",
+      "peso_kg": 1125.0,
+      "volume_m3": 0.46875
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "4450",
+      "produto": "P Coluna 25x30-7,5x200 1CX VL",
+      "tipo": "Coluna",
+      "peso_kg": 1350.0,
+      "volume_m3": 0.5625
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": null,
+      "produto": "Caixa passagem s/fundo c/ tampa",
+      "tipo": null,
+      "peso_kg": 92.0,
+      "volume_m3": 0.03833333333333333
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": null,
+      "produto": "Placa Estai 20x10 x 100",
+      "tipo": null,
+      "peso_kg": 48.0,
+      "volume_m3": 0.02
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": null,
+      "produto": "Placa Estai 20x20 x 140",
+      "tipo": null,
+      "peso_kg": 135.0,
+      "volume_m3": 0.05625
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": null,
+      "produto": "Chápeu Sub 100",
+      "tipo": null,
+      "peso_kg": 20.0,
+      "volume_m3": 0.008333333333333333
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": null,
+      "produto": "Chápeu Sub 200",
+      "tipo": null,
+      "peso_kg": 24.0,
+      "volume_m3": 0.01
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": null,
+      "produto": "Chápeu Sub 200 TC",
+      "tipo": null,
+      "peso_kg": 24.0,
+      "volume_m3": 0.01
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": null,
+      "produto": "Pedestal Caixa Sabesp",
+      "tipo": null,
+      "peso_kg": 120.0,
+      "volume_m3": 0.05
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "13068",
+      "produto": "12X1500 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 2086.0,
+      "volume_m3": 0.8691666666666666
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "13068",
+      "produto": "12X1500 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 2086.0,
+      "volume_m3": 0.8691666666666666
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "14336",
+      "produto": "21x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 3936.0,
+      "volume_m3": 1.64
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "14336",
+      "produto": "21x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 3936.0,
+      "volume_m3": 1.64
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "13808",
+      "produto": "17x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 2763.0,
+      "volume_m3": 1.15125
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "13808",
+      "produto": "17x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 2763.0,
+      "volume_m3": 1.15125
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "13695",
+      "produto": "13x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1852.0,
+      "volume_m3": 0.7716666666666666
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "13695",
+      "produto": "13x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1852.0,
+      "volume_m3": 0.7716666666666666
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "12599",
+      "produto": "12x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1656.0,
+      "volume_m3": 0.69
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "12599",
+      "produto": "12x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1656.0,
+      "volume_m3": 0.69
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "10751",
+      "produto": "11x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1381.0,
+      "volume_m3": 0.5754166666666667
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "10751",
+      "produto": "11x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1381.0,
+      "volume_m3": 0.5754166666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "12598",
+      "produto": "9x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1137.0,
+      "volume_m3": 0.47375
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "12598",
+      "produto": "9x1000 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1137.0,
+      "volume_m3": 0.47375
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "929",
+      "produto": "25x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 4560.0,
+      "volume_m3": 1.9
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "929",
+      "produto": "25x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 4560.0,
+      "volume_m3": 1.9
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "928",
+      "produto": "24x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 4267.0,
+      "volume_m3": 1.7779166666666666
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "928",
+      "produto": "24x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 4267.0,
+      "volume_m3": 1.7779166666666666
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "927",
+      "produto": "23x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 3950.0,
+      "volume_m3": 1.6458333333333333
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "927",
+      "produto": "23x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 3950.0,
+      "volume_m3": 1.6458333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "926",
+      "produto": "22x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 3645.0,
+      "volume_m3": 1.51875
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "926",
+      "produto": "22x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 3645.0,
+      "volume_m3": 1.51875
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "925",
+      "produto": "21x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 3355.0,
+      "volume_m3": 1.3979166666666667
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "925",
+      "produto": "21x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 3355.0,
+      "volume_m3": 1.3979166666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "924",
+      "produto": "20x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 3078.0,
+      "volume_m3": 1.2825
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "924",
+      "produto": "20x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 3078.0,
+      "volume_m3": 1.2825
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "922",
+      "produto": "18x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 2567.0,
+      "volume_m3": 1.0695833333333333
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "922",
+      "produto": "18x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 2567.0,
+      "volume_m3": 1.0695833333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "921",
+      "produto": "17x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 2331.0,
+      "volume_m3": 0.97125
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "921",
+      "produto": "17x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 2331.0,
+      "volume_m3": 0.97125
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "920",
+      "produto": "16x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 2107.0,
+      "volume_m3": 0.8779166666666667
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "920",
+      "produto": "16x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 2107.0,
+      "volume_m3": 0.8779166666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "919",
+      "produto": "15x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1897.0,
+      "volume_m3": 0.7904166666666667
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "919",
+      "produto": "15x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1897.0,
+      "volume_m3": 0.7904166666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "918",
+      "produto": "14x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1698.0,
+      "volume_m3": 0.7075
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "918",
+      "produto": "14x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1698.0,
+      "volume_m3": 0.7075
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "917",
+      "produto": "13x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1400.0,
+      "volume_m3": 0.5833333333333334
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "917",
+      "produto": "13x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1400.0,
+      "volume_m3": 0.5833333333333334
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "914",
+      "produto": "12x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1360.0,
+      "volume_m3": 0.5666666666666667
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "914",
+      "produto": "12x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1360.0,
+      "volume_m3": 0.5666666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "910",
+      "produto": "11x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1200.0,
+      "volume_m3": 0.5
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "910",
+      "produto": "11x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1200.0,
+      "volume_m3": 0.5
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "906",
+      "produto": "10x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 950.0,
+      "volume_m3": 0.3958333333333333
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "906",
+      "produto": "10x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 950.0,
+      "volume_m3": 0.3958333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "902",
+      "produto": "9x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 884.0,
+      "volume_m3": 0.36833333333333335
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "902",
+      "produto": "9x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 884.0,
+      "volume_m3": 0.36833333333333335
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "897",
+      "produto": "8x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 703.0,
+      "volume_m3": 0.29291666666666666
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "897",
+      "produto": "8x600 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 703.0,
+      "volume_m3": 0.29291666666666666
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "916",
+      "produto": "13x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1370.0,
+      "volume_m3": 0.5708333333333333
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "916",
+      "produto": "13x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1370.0,
+      "volume_m3": 0.5708333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "913",
+      "produto": "12x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1360.0,
+      "volume_m3": 0.5666666666666667
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "913",
+      "produto": "12x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1360.0,
+      "volume_m3": 0.5666666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "909",
+      "produto": "11x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1190.0,
+      "volume_m3": 0.49583333333333335
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "909",
+      "produto": "11x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1190.0,
+      "volume_m3": 0.49583333333333335
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "905",
+      "produto": "10x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 930.0,
+      "volume_m3": 0.3875
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "905",
+      "produto": "10x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 930.0,
+      "volume_m3": 0.3875
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "901",
+      "produto": "9x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 867.0,
+      "volume_m3": 0.36125
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "901",
+      "produto": "9x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 867.0,
+      "volume_m3": 0.36125
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "896",
+      "produto": "8x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 698.0,
+      "volume_m3": 0.29083333333333333
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "896",
+      "produto": "8x400 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 698.0,
+      "volume_m3": 0.29083333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "915",
+      "produto": "13x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1360.0,
+      "volume_m3": 0.5666666666666667
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "915",
+      "produto": "13x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1360.0,
+      "volume_m3": 0.5666666666666667
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "912",
+      "produto": "12x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1350.0,
+      "volume_m3": 0.5625
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "912",
+      "produto": "12x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1350.0,
+      "volume_m3": 0.5625
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "908",
+      "produto": "11x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1180.0,
+      "volume_m3": 0.49166666666666664
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "908",
+      "produto": "11x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 1180.0,
+      "volume_m3": 0.49166666666666664
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "904",
+      "produto": "10x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 920.0,
+      "volume_m3": 0.38333333333333336
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "904",
+      "produto": "10x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 920.0,
+      "volume_m3": 0.38333333333333336
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "900",
+      "produto": "9x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 848.0,
+      "volume_m3": 0.35333333333333333
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "900",
+      "produto": "9x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 848.0,
+      "volume_m3": 0.35333333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "895",
+      "produto": "8x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 677.0,
+      "volume_m3": 0.28208333333333335
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "895",
+      "produto": "8x300 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 677.0,
+      "volume_m3": 0.28208333333333335
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "911",
+      "produto": "12x200 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 702.0,
+      "volume_m3": 0.2925
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "911",
+      "produto": "12x200 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 702.0,
+      "volume_m3": 0.2925
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "907",
+      "produto": "11x200 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 620.0,
+      "volume_m3": 0.25833333333333336
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "907",
+      "produto": "11x200 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 620.0,
+      "volume_m3": 0.25833333333333336
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "903",
+      "produto": "10x200 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 540.0,
+      "volume_m3": 0.225
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "903",
+      "produto": "10x200 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 540.0,
+      "volume_m3": 0.225
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "899",
+      "produto": "9x200 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 468.0,
+      "volume_m3": 0.195
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "899",
+      "produto": "9x200 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 468.0,
+      "volume_m3": 0.195
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "894",
+      "produto": "8x200 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 395.0,
+      "volume_m3": 0.16458333333333333
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "894",
+      "produto": "8x200 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 395.0,
+      "volume_m3": 0.16458333333333333
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "11373",
+      "produto": "10x150 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 532.0,
+      "volume_m3": 0.22166666666666668
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "11373",
+      "produto": "10x150 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 532.0,
+      "volume_m3": 0.22166666666666668
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "898",
+      "produto": "9x150 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 460.0,
+      "volume_m3": 0.19166666666666668
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "898",
+      "produto": "9x150 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 460.0,
+      "volume_m3": 0.19166666666666668
+    },
+    {
+      "setor": "Setor 3",
+      "codigo_produto": "3756",
+      "produto": "8x150 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 392.0,
+      "volume_m3": 0.16333333333333333
+    },
+    {
+      "setor": "Setor 4",
+      "codigo_produto": "3756",
+      "produto": "8x150 DT",
+      "tipo": "Duplo T",
+      "peso_kg": 392.0,
+      "volume_m3": 0.16333333333333333
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "943",
+      "produto": "Padrão Completo 2 cx VR",
+      "tipo": "P. Completo",
+      "peso_kg": 595.0,
+      "volume_m3": 0.24791666666666667
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "943",
+      "produto": "Padrão Completo 2 cx VR",
+      "tipo": "P. Completo",
+      "peso_kg": 595.0,
+      "volume_m3": 0.24791666666666667
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "941",
+      "produto": "Padrão Completo 2 cx VL",
+      "tipo": "P. Completo",
+      "peso_kg": 606.0,
+      "volume_m3": 0.2525
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "941",
+      "produto": "Padrão Completo 2 cx VL",
+      "tipo": "P. Completo",
+      "peso_kg": 606.0,
+      "volume_m3": 0.2525
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "938",
+      "produto": "Padrão Completo 1 cx VR",
+      "tipo": "P. Completo",
+      "peso_kg": 559.0,
+      "volume_m3": 0.23291666666666666
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "938",
+      "produto": "Padrão Completo 1 cx VR",
+      "tipo": "P. Completo",
+      "peso_kg": 559.0,
+      "volume_m3": 0.23291666666666666
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "935",
+      "produto": "Padrão Completo 1 cx VL",
+      "tipo": "P. Completo",
+      "peso_kg": 551.0,
+      "volume_m3": 0.22958333333333333
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "935",
+      "produto": "Padrão Completo 1 cx VL",
+      "tipo": "P. Completo",
+      "peso_kg": 551.0,
+      "volume_m3": 0.22958333333333333
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "957",
+      "produto": "Padrão Completo 1 cx VL (EDP)",
+      "tipo": "P. Completo",
+      "peso_kg": 539.0,
+      "volume_m3": 0.22458333333333333
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "957",
+      "produto": "Padrão Completo 1 cx VL (EDP)",
+      "tipo": "P. Completo",
+      "peso_kg": 539.0,
+      "volume_m3": 0.22458333333333333
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "4032",
+      "produto": "Padrão Completo 2 cx VR Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 609.0,
+      "volume_m3": 0.25375
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "4032",
+      "produto": "Padrão Completo 2 cx VR Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 609.0,
+      "volume_m3": 0.25375
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "4765",
+      "produto": "Padrão Completo 2 cx VL Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 605.0,
+      "volume_m3": 0.2520833333333333
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "4765",
+      "produto": "Padrão Completo 2 cx VL Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 605.0,
+      "volume_m3": 0.2520833333333333
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "4031",
+      "produto": "Padrão Completo 1 cx VR Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 559.0,
+      "volume_m3": 0.23291666666666666
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "4031",
+      "produto": "Padrão Completo 1 cx VR Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 559.0,
+      "volume_m3": 0.23291666666666666
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "4764",
+      "produto": "Padrão Completo 1 cx VL Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 555.0,
+      "volume_m3": 0.23125
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "4764",
+      "produto": "Padrão Completo 1 cx VL Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 555.0,
+      "volume_m3": 0.23125
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "4929",
+      "produto": "Padrão Completo 3cxs VL Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 900.0,
+      "volume_m3": 0.375
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "4929",
+      "produto": "Padrão Completo 3cxs VL Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 900.0,
+      "volume_m3": 0.375
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "948",
+      "produto": "Padrão Completo 4 cx VR",
+      "tipo": "P. Completo",
+      "peso_kg": 1103.0,
+      "volume_m3": 0.45958333333333334
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "948",
+      "produto": "Padrão Completo 4 cx VR",
+      "tipo": "P. Completo",
+      "peso_kg": 1103.0,
+      "volume_m3": 0.45958333333333334
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "947",
+      "produto": "Padrão Completo 4 cx VL",
+      "tipo": "P. Completo",
+      "peso_kg": 1102.0,
+      "volume_m3": 0.45916666666666667
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "947",
+      "produto": "Padrão Completo 4 cx VL",
+      "tipo": "P. Completo",
+      "peso_kg": 1102.0,
+      "volume_m3": 0.45916666666666667
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "946",
+      "produto": "Padrão Completo 3 cx VR",
+      "tipo": "P. Completo",
+      "peso_kg": 972.0,
+      "volume_m3": 0.405
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "946",
+      "produto": "Padrão Completo 3 cx VR",
+      "tipo": "P. Completo",
+      "peso_kg": 972.0,
+      "volume_m3": 0.405
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "945",
+      "produto": "Padrão Completo 3 cx VL",
+      "tipo": "P. Completo",
+      "peso_kg": 929.0,
+      "volume_m3": 0.38708333333333333
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "945",
+      "produto": "Padrão Completo 3 cx VL",
+      "tipo": "P. Completo",
+      "peso_kg": 929.0,
+      "volume_m3": 0.38708333333333333
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "944",
+      "produto": "Poste 2 cx VR (7,5 x 300)",
+      "tipo": "P. Completo",
+      "peso_kg": 593.0,
+      "volume_m3": 0.24708333333333332
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "944",
+      "produto": "Poste 2 cx VR (7,5 x 300)",
+      "tipo": "P. Completo",
+      "peso_kg": 593.0,
+      "volume_m3": 0.24708333333333332
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "942",
+      "produto": "Poste 2 cx VL (7,5 x 300)",
+      "tipo": "P. Completo",
+      "peso_kg": 579.0,
+      "volume_m3": 0.24125
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "942",
+      "produto": "Poste 2 cx VL (7,5 x 300)",
+      "tipo": "P. Completo",
+      "peso_kg": 579.0,
+      "volume_m3": 0.24125
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "936",
+      "produto": "Poste 7,5 x 600 VL",
+      "tipo": "P. Completo",
+      "peso_kg": 821.0,
+      "volume_m3": 0.34208333333333335
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "936",
+      "produto": "Poste 7,5 x 600 VL",
+      "tipo": "P. Completo",
+      "peso_kg": 821.0,
+      "volume_m3": 0.34208333333333335
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "939",
+      "produto": "Poste 7,5 x 600 VR",
+      "tipo": "P. Completo",
+      "peso_kg": 820.0,
+      "volume_m3": 0.3416666666666667
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "939",
+      "produto": "Poste 7,5 x 600 VR",
+      "tipo": "P. Completo",
+      "peso_kg": 820.0,
+      "volume_m3": 0.3416666666666667
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "937",
+      "produto": "Poste 7,5 x 600 VL c/ TC",
+      "tipo": "P. Completo",
+      "peso_kg": 1104.0,
+      "volume_m3": 0.46
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "937",
+      "produto": "Poste 7,5 x 600 VL c/ TC",
+      "tipo": "P. Completo",
+      "peso_kg": 1104.0,
+      "volume_m3": 0.46
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "940",
+      "produto": "Poste 7,5 x 600 VR c/ TC",
+      "tipo": "P. Completo",
+      "peso_kg": 1135.0,
+      "volume_m3": 0.47291666666666665
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "940",
+      "produto": "Poste 7,5 x 600 VR c/ TC",
+      "tipo": "P. Completo",
+      "peso_kg": 1135.0,
+      "volume_m3": 0.47291666666666665
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "949",
+      "produto": "Poste Subterrâneo 100 A",
+      "tipo": "P. Completo",
+      "peso_kg": 391.0,
+      "volume_m3": 0.16291666666666665
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "949",
+      "produto": "Poste Subterrâneo 100 A",
+      "tipo": "P. Completo",
+      "peso_kg": 391.0,
+      "volume_m3": 0.16291666666666665
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "4848",
+      "produto": "Poste Subterrâneo 100 A - Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 335.0,
+      "volume_m3": 0.13958333333333334
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "4848",
+      "produto": "Poste Subterrâneo 100 A - Elektro",
+      "tipo": "P. Completo",
+      "peso_kg": 335.0,
+      "volume_m3": 0.13958333333333334
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "5017",
+      "produto": "Poste Subterrâneo 200 A - TC",
+      "tipo": "P. Completo",
+      "peso_kg": 691.0,
+      "volume_m3": 0.28791666666666665
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "5017",
+      "produto": "Poste Subterrâneo 200 A - TC",
+      "tipo": "P. Completo",
+      "peso_kg": 691.0,
+      "volume_m3": 0.28791666666666665
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "13570",
+      "produto": "Poste Totem",
+      "tipo": "P. Completo",
+      "peso_kg": 860.0,
+      "volume_m3": 0.35833333333333334
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "13570",
+      "produto": "Poste Totem",
+      "tipo": "P. Completo",
+      "peso_kg": 860.0,
+      "volume_m3": 0.35833333333333334
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "934",
+      "produto": "Poste Visor Aéreo 1 cx VL (7,5x300)",
+      "tipo": "P. Completo",
+      "peso_kg": 1029.0,
+      "volume_m3": 0.42875
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "934",
+      "produto": "Poste Visor Aéreo 1 cx VL (7,5x300)",
+      "tipo": "P. Completo",
+      "peso_kg": 1029.0,
+      "volume_m3": 0.42875
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "952",
+      "produto": "Padrão Cemig 1CX - 5,0 x 150",
+      "tipo": "P. Completo",
+      "peso_kg": 304.0,
+      "volume_m3": 0.12666666666666668
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "952",
+      "produto": "Padrão Cemig 1CX - 5,0 x 150",
+      "tipo": "P. Completo",
+      "peso_kg": 304.0,
+      "volume_m3": 0.12666666666666668
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "953",
+      "produto": "Padrão Cemig 1 cx VL - 7,0 x 150",
+      "tipo": "P. Completo",
+      "peso_kg": 566.0,
+      "volume_m3": 0.23583333333333334
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "953",
+      "produto": "Padrão Cemig 1 cx VL - 7,0 x 150",
+      "tipo": "P. Completo",
+      "peso_kg": 566.0,
+      "volume_m3": 0.23583333333333334
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "954",
+      "produto": "Padrão Cemig 2 cx VL - 7,0 x 150",
+      "tipo": "P. Completo",
+      "peso_kg": 566.0,
+      "volume_m3": 0.23583333333333334
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "954",
+      "produto": "Padrão Cemig 2 cx VL - 7,0 x 150",
+      "tipo": "P. Completo",
+      "peso_kg": 566.0,
+      "volume_m3": 0.23583333333333334
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "931",
+      "produto": "Poste Econômico 1CX VR",
+      "tipo": "P. Completo",
+      "peso_kg": 333.0,
+      "volume_m3": 0.13875
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "931",
+      "produto": "Poste Econômico 1CX VR",
+      "tipo": "P. Completo",
+      "peso_kg": 333.0,
+      "volume_m3": 0.13875
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "930",
+      "produto": "Poste Econômico 1CX VL",
+      "tipo": "P. Completo",
+      "peso_kg": 309.0,
+      "volume_m3": 0.12875
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "930",
+      "produto": "Poste Econômico 1CX VL",
+      "tipo": "P. Completo",
+      "peso_kg": 309.0,
+      "volume_m3": 0.12875
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "932",
+      "produto": "Poste Econômico 2CX VR",
+      "tipo": "P. Completo",
+      "peso_kg": 361.0,
+      "volume_m3": 0.15041666666666667
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "932",
+      "produto": "Poste Econômico 2CX VR",
+      "tipo": "P. Completo",
+      "peso_kg": 361.0,
+      "volume_m3": 0.15041666666666667
+    },
+    {
+      "setor": "Setor 1",
+      "codigo_produto": "933",
+      "produto": "Poste Econômico 3CX VR",
+      "tipo": "P. Completo",
+      "peso_kg": 563.0,
+      "volume_m3": 0.23458333333333334
+    },
+    {
+      "setor": "Setor 2",
+      "codigo_produto": "933",
+      "produto": "Poste Econômico 3CX VR",
+      "tipo": "P. Completo",
+      "peso_kg": 563.0,
+      "volume_m3": 0.23458333333333334
+    }
+  ]
+}

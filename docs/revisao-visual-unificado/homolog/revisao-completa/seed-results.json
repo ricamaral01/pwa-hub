@@ -1,0 +1,40 @@
+{
+  "test_date": "2026-11-18",
+  "timezone": "America/Sao_Paulo",
+  "tag": "TESTE-REVISAO-COMPLETA-20261118",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/revisao-completa-seed-20261119T011727Z",
+  "dumps": {
+    "pcp_unificado_homolog_20261016": {
+      "path": "/opt/concrefer-unificado/homolog-next/backups/revisao-completa-seed-20261119T011727Z/pcp_unificado_homolog_20261016.dump",
+      "sha256": "7f595006c336a2c083a80c4ee522b58c9834da7c5b0801d074b8bee64291c930"
+    },
+    "mapa_unificado_homolog_20261016": {
+      "path": "/opt/concrefer-unificado/homolog-next/backups/revisao-completa-seed-20261119T011727Z/mapa_unificado_homolog_20261016.dump",
+      "sha256": "33c4ae328ded7b93d1c012e0ac665c2b9a1dc0da2c34b0675df8e71d0c41f62a"
+    }
+  },
+  "pcp_programming_id": "7338",
+  "mapa_production_ids": [
+    "904eccb9-871a-4863-82de-8092aaf71f38",
+    "e85445b9-c819-41fd-9447-30644aa00978",
+    "1f7be6b5-8a9d-40bb-81a3-38e75fd40028",
+    "240d0044-6fff-49b2-84c7-df891eedd89a",
+    "7f8ff5ba-32d3-4f81-bc76-4f3ac4c7072c"
+  ],
+  "planned_added": 20,
+  "produced_added": 5,
+  "quick_access_account": "user-ricardo",
+  "quick_access_items": [
+    "etiquetas-circular",
+    "etiquetas-setor4",
+    "armaduras",
+    "numeros-serie",
+    "programacao-semanal",
+    "relatorios-producao",
+    "acmp-concretagem",
+    "manutencao-formas"
+  ],
+  "quick_access_home": false,
+  "permission_changes": 0,
+  "origin_validation_changed": false
+}

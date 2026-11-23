@@ -1,0 +1,202 @@
+[
+  {
+    "view": "mapa/operacao/?tela=LIBERACAO",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nProdução\nExpandir tudo\nRecolher tudo\nCampinas\nProdução\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nMontagem\nControle\nIndicad",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção\nModo ODIN\nData de fabricação\nColaborador\nSelecione um operador\nJeferson\nElizeu\nMario\nLeonardo\nJose Carlos\nTiago\nRicardo\nSetor 1\nP: 0 | L: 0 | C: 1 / 98\nIE-01\nConcreto Padrão\n✓\nBD-01\nBD-02\nBD-",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "mapa/operacao/?tela=LIBERACAO",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.20\nProdução\n›\nCampinas\n›\nProdução\n›\nProdução / Liberação",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção\nModo ODIN\nData de fabricação\nColaborador\nSelecione um operador\nJeferson\nElizeu\nMario\nLeonardo\nJose Carlos\nTiago\nRicardo\nSetor 1\nP: 0 | L: 0 | C: 1 / 98\nIE-01\nConcreto Padrão\n✓\nBD-01\nBD-02\nBD-",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "mapa/operacao/?tela=LIBERACAO",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.20\nProdução\n›\nCampinas\n›\nProdução\n›\nProdução / Liberação",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção\nModo ODIN\nVoltar\nData de fabricação\nColaborador\nSelecione um operador\nJeferson\nElizeu\nMario\nLeonardo\nJose Carlos\nTiago\nRicardo\nSetor 1\nP: 0 | L: 0 | C: 1 / 98\nIE-01\nConcreto Padrão\n✓\nBD-01\nBD",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "mapa/operacao/?tela=LIBERACAO",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nCampinas · Produção\nProdução / Liberação\nProdução / Liberação\nSetor 1\nSetor 2\nSetor 3\nSetor 4\nMandril Circular\nInício\nTelas\nRecentes\nConta",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/mapa/operacao/?tela=LIBERACAO",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Produção\nModo ODIN\nVoltar\nData de fabricação\nColaborador\nSelecione um operador\nJeferson\nElizeu\nMario\nLeonardo\nJose Carlos\nTiago\nRicardo\nSetor 1\nP: 0 | L: 0 | C: 1 / 98\nIE-01\nConcreto Padrão\n✓\nBD-01\nBD",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/almoxarifado/",
+    "width": 1440,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Falmoxarifado%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nCompras\nAdministração\nAtualizar\nVers",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/almoxarifado/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Almoxarifado geral\n\nSaldos, reservas e entregas do estoque de Campinas.\n\nVoltar ao painel\nValor em estoque\nR$ 1.090,00\nMateriais ativos\n6\nAbaixo do ponto de pedido\n1\nReservas ativas\n1\nSaldos\nMovimento",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/almoxarifado/",
+    "width": 1024,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Falmoxarifado%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.20\nSuprimentos\n›\nSolicitações\n›\nAlmoxarifado",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/almoxarifado/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Almoxarifado geral\n\nSaldos, reservas e entregas do estoque de Campinas.\n\nVoltar ao painel\nValor em estoque\nR$ 1.090,00\nMateriais ativos\n6\nAbaixo do ponto de pedido\n1\nReservas ativas\n1\nSaldos\nMovimento",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/almoxarifado/",
+    "width": 820,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Falmoxarifado%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.20\nSuprimentos\n›\nSolicitações\n›\nAlmoxarifado",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/almoxarifado/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Almoxarifado geral\n\nSaldos, reservas e entregas do estoque de Campinas.\n\nVoltar ao painel\nValor em estoque\nR$ 1.090,00\nMateriais ativos\n6\nAbaixo do ponto de pedido\n1\nReservas ativas\n1\nSaldos\nMovimento",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  },
+  {
+    "view": "suprimentos/almoxarifado/",
+    "width": 390,
+    "frames": [
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Falmoxarifado%2F",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nAlmoxarifado\nPainel\nSolicitações\nNova solicitação\nAlmoxarifado\nInventário\nInício\nTelas\nRecentes\nConta",
+        "access_denied": false,
+        "blank": false
+      },
+      {
+        "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/almoxarifado/",
+        "overflow": false,
+        "font": "Geist, system-ui, sans-serif",
+        "text": "Almoxarifado geral\n\nSaldos, reservas e entregas do estoque de Campinas.\n\nVoltar ao painel\nValor em estoque\nR$ 1.090,00\nMateriais ativos\n6\nAbaixo do ponto de pedido\n1\nReservas ativas\n1\nSaldos\nMovimento",
+        "access_denied": false,
+        "blank": false
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "external_attempts": []
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "version": "1.4.26",
+  "published": false,
+  "source_commits": [
+    "8c1a1a9b",
+    "dbd1b11d"
+  ],
+  "cases": 472,
+  "failed": 80,
+  "missing": 84,
+  "all_visual_reviews_approved": false,
+  "execution": "Broad runner stopped; its last child completed. Focused checks completed afterwards. No matrix processes remain.",
+  "known_blockers": [
+    "External report proxy returns 503 because service egress allows only loopback. No infrastructure change authorized.",
+    "Existing public report references a stylesheet outside the exact permitted prefix; no extra exception added.",
+    "Unexpected central login redirects and 401/500 remain failures.",
+    "Old Dosagem captures lack fragment and Shadow DOM proof; marked unverified."
+  ],
+  "gate_scope": "7/7 against published homologation 1.4.25; candidate not deployed",
+  "production_database_connections": 0,
+  "services_restarted": false
+}

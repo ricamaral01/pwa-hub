@@ -1,0 +1,549 @@
+<title>Revisão visual do Unificado</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: coluna de leitura de 1080px; cada achado vira um par "hoje / proposta" lado a lado, empilhado no celular. */
+:root{
+  --bg:#f3f4f6; --surface:#ffffff; --ink:#0b1730; --ink-2:#4a566a; --line:#dde2ea;
+  --accent:#e2702a; --accent-soft:#fbe9dc; --bad:#b42318; --bad-soft:#fde8e6; --good:#1d7a4a; --good-soft:#e3f3ea;
+  --f-sans:"Geist",ui-sans-serif,system-ui,"Segoe UI",sans-serif; --f-mono:"Geist Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1220; --surface:#141c2e; --ink:#e7ebf2; --ink-2:#a3adbf; --line:#273248;
+  --accent:#f08a46; --accent-soft:#3a2516; --bad:#f2786b; --bad-soft:#3a1b18; --good:#5cc68d; --good-soft:#14301f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1220; --surface:#141c2e; --ink:#e7ebf2; --ink-2:#a3adbf; --line:#273248;
+  --accent:#f08a46; --accent-soft:#3a2516; --bad:#f2786b; --bad-soft:#3a1b18; --good:#5cc68d; --good-soft:#14301f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--f-sans);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.2;letter-spacing:-.015em}
+h1{font-size:34px;font-weight:600}
+h2{font-size:24px;font-weight:600}
+h3{font-size:17px;font-weight:600}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+code{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+a{color:var(--accent)}
+.muted{color:var(--ink-2)}
+section{display:flex;flex-direction:column;gap:20px}
+header.top{display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--line);padding-bottom:28px}
+.meta{font-size:13px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px 18px}
+
+/* Números do levantamento */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.fact{padding:18px 18px 18px 0;display:flex;flex-direction:column;gap:4px}
+.fact+.fact{padding-left:18px;border-left:1px solid var(--line)}
+.fact b{font:600 30px/1 var(--f-mono);font-variant-numeric:tabular-nums}
+.fact span{font-size:13px;color:var(--ink-2)}
+@media (max-width:620px){.fact+.fact{border-left:0;padding-left:0;border-top:1px solid var(--line)}}
+
+/* Sinais */
+.signals{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--line)}
+.sig{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:8px 28px;padding:16px 0;border-bottom:1px solid var(--line)}
+.sig h3{font-size:15px}
+.sig p{font-size:14px;color:var(--ink-2)}
+.sig .where{font-size:12.5px;color:var(--ink-2);margin-top:4px}
+.sig .fix{font-size:14px}
+.sig .fix::before{content:"Trocar por: ";font-weight:600;color:var(--good)}
+.sev{display:inline-block;font:600 11px var(--f-mono);padding:1px 6px;border-radius:3px;margin-right:8px;vertical-align:2px}
+.sev.alta{background:var(--bad-soft);color:var(--bad)}
+.sev.media{background:var(--accent-soft);color:var(--accent)}
+@media (max-width:720px){.sig{grid-template-columns:1fr}}
+
+/* Matriz */
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:860px;font-size:13.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;font-size:12px;color:var(--ink-2);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
+.sw{display:inline-block;width:11px;height:11px;border-radius:2px;vertical-align:-1px;margin-right:4px;border:1px solid rgba(0,0,0,.12)}
+.ok{color:var(--good);font-weight:600}.no{color:var(--bad);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 12.5px var(--f-mono);border:1px solid var(--line);background:var(--surface);padding:4px 8px;border-radius:4px}
+
+/* Pares antes/depois */
+.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+@media (max-width:860px){.pair{grid-template-columns:1fr}}
+.side{display:flex;flex-direction:column;gap:8px;min-width:0}
+.side>.lbl{font:600 12px var(--f-mono);display:flex;gap:8px;align-items:center}
+.side.before>.lbl{color:var(--bad)} .side.after>.lbl{color:var(--good)}
+.side>.lbl::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.note{font-size:13.5px;color:var(--ink-2)}
+.note li{margin:2px 0}
+.note ul{margin:0;padding-left:18px}
+
+/* ---------- Telas simuladas: sempre claras, como o app real ---------- */
+.frame{--a-bg:#f4f5f7;--a-s:#fff;--a-ink:#0b1730;--a-2:#5b6779;--a-line:#e1e5eb;--a-or:#e2702a;--a-nv:#15416f;
+  background:var(--a-bg);color:var(--a-ink);border:1px solid var(--line);border-radius:8px;padding:18px;font-family:"Geist",system-ui,sans-serif;font-size:13px;line-height:1.45;overflow:hidden;min-width:0;color-scheme:light}
+.frame *{box-sizing:border-box}
+.frame p{max-width:none}
+
+/* Antes: KPIs da home */
+.b-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.b-kpi{position:relative;overflow:hidden;border-radius:14px;color:#fff;padding:14px 16px;box-shadow:0 10px 24px rgba(14,26,47,.18);display:flex;flex-direction:column;gap:8px}
+.b-kpi::after{content:"";position:absolute;right:-26px;top:-26px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.16)}
+.b-kpi .l{font-size:12px;font-weight:600;display:flex;gap:7px;align-items:center}
+.b-kpi .l i{width:22px;height:22px;border-radius:7px;background:rgba(255,255,255,.25)}
+.b-kpi b{font-size:28px;line-height:1;font-weight:700}
+.g1{background:linear-gradient(135deg,#15416F,#3a78b8)}.g2{background:linear-gradient(135deg,#0f8f5f,#3fc796)}
+.g3{background:linear-gradient(135deg,#D90429,#ff5a6e)}.g4{background:linear-gradient(135deg,#FB8500,#ffb347)}
+/* Depois: KPIs */
+.a-kpis{background:var(--a-s);border:1px solid var(--a-line);border-radius:6px;display:grid;grid-template-columns:1fr 1fr}
+.a-kpi{padding:12px 14px;display:flex;flex-direction:column;gap:3px;border-color:var(--a-line);border-style:solid;border-width:0}
+.a-kpi:nth-child(2n){border-left-width:1px}.a-kpi:nth-child(n+3){border-top-width:1px}
+.a-kpi .l{font-size:12px;color:var(--a-2)}
+.a-kpi b{font:600 24px/1.1 "Geist Mono",monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.a-kpi small{font-size:11.5px;color:var(--a-2)}
+.a-kpi .dn{color:#b42318;font-weight:600}.a-kpi .up{color:#1d7a4a;font-weight:600}
+.a-bar{height:4px;background:#e9ecf1;border-radius:2px;margin-top:4px;overflow:hidden}.a-bar i{display:block;height:100%;background:var(--a-nv)}
+
+/* Antes: cabeçalho de página */
+.b-head{background:#fff;border:1px solid #e3e8f0;border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;box-shadow:0 4px 14px rgba(14,26,47,.06)}
+.b-eye{font-size:10.5px;font-weight:600;letter-spacing:.16em;color:#1659b7}
+.b-head h4{margin:0;font-size:22px;font-weight:600}
+.b-head p{color:#5b6779;font-size:12.5px}
+.b-pill{align-self:flex-start;background:#e8efff;color:#1659b7;border-radius:999px;padding:4px 10px;font-size:11.5px}
+.b-tabs{display:flex;gap:16px;margin-top:12px;border-bottom:1px solid #dfe5ee;font-size:12.5px;color:#5b6779}
+.b-tabs span{padding:8px 2px}.b-tabs .on{color:#1659b7;font-weight:600;border-bottom:2px solid #1659b7}
+/* Depois: cabeçalho */
+.a-crumb{font-size:12px;color:var(--a-2);display:flex;gap:6px}
+.a-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:6px}
+.a-head h4{margin:0;font-size:21px;font-weight:600;letter-spacing:-.015em}
+.a-sub{font-size:12px;color:var(--a-2);margin-top:2px}
+.a-btn{font:500 12.5px "Geist",sans-serif;border-radius:5px;padding:7px 12px;border:1px solid var(--a-line);background:var(--a-s);color:var(--a-ink);white-space:nowrap}
+.a-btn.pri{background:var(--a-nv);border-color:var(--a-nv);color:#fff}
+.a-acts{display:flex;gap:8px}
+.a-tabs{display:flex;gap:18px;margin-top:14px;border-bottom:1px solid var(--a-line);font-size:12.5px;color:var(--a-2)}
+.a-tabs span{padding:7px 0}.a-tabs .on{color:var(--a-ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--a-or)}
+
+/* Antes: grade de telas do módulo */
+.b-hero{background:#f2b300;border-radius:14px;padding:14px 16px;position:relative;overflow:hidden}
+.b-hero::after{content:"";position:absolute;right:-30px;top:-40px;width:130px;height:130px;border-radius:50%;border:16px solid rgba(0,0,0,.08)}
+.b-hero small{font-size:9.5px;letter-spacing:.18em;font-weight:600}
+.b-hero b{display:block;font-size:22px;font-weight:600}
+.b-grp{display:flex;align-items:center;gap:8px;margin:14px 0 8px;font-size:15px;font-weight:500}
+.b-grp::before{content:"";width:3px;height:18px;background:#f2b300;border-radius:2px}
+.b-grp em{font-style:normal;font-size:10.5px;background:#eceff4;border-radius:999px;padding:1px 7px;color:#5b6779}
+.b-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.b-card{background:#fff;border:1px solid #e3e8f0;border-radius:12px;padding:10px;display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:start}
+.b-card .s{width:30px;height:30px;border-radius:8px;background:#fdf1d3;color:#8a6300;font-size:10px;font-weight:700;display:grid;place-items:center}
+.b-card b{font-size:12.5px;font-weight:600;display:block}
+.b-card span{font-size:11px;color:#5b6779}
+.b-card i{font-style:normal;color:#8a6300}
+/* Depois: lista de telas */
+.a-list{background:var(--a-s);border:1px solid var(--a-line);border-radius:6px}
+.a-gh{font-size:11.5px;font-weight:600;color:var(--a-2);padding:10px 12px 4px;display:flex;justify-content:space-between}
+.a-row{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 12px;border-top:1px solid var(--a-line)}
+.a-row svg{width:16px;height:16px;stroke:var(--a-nv);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.a-row b{font-weight:500;display:block}
+.a-row span{font-size:11.5px;color:var(--a-2)}
+.a-row time{font:11px "Geist Mono",monospace;color:var(--a-2);white-space:nowrap}
+.a-gh+.a-row{border-top:0}
+.a-sep{border-top:1px solid var(--a-line)}
+
+/* Antes: tabela com pílulas */
+.t{width:100%;border-collapse:collapse;font-size:12px;min-width:0}
+.t th{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#5b6779;background:#f7f9fb;font-weight:600;padding:7px 8px;border-bottom:1px solid #e3e8f0;text-align:left}
+.t td{padding:8px;border-bottom:1px solid #edf0f4;text-align:left;vertical-align:middle}
+.t .id{color:#0f766e;font-weight:600}
+.pl{display:inline-block;border-radius:999px;padding:2px 8px;font-size:10.5px;font-weight:600}
+.pl.n{background:#dcf3ea;color:#0f6a4f}.pl.c{background:#dcf3ea;color:#0f6a4f}
+.b-tw{background:#fff;border:1px solid #e3e8f0;border-radius:14px;padding:12px}
+.b-tw .in{border:1px solid #e3e8f0;border-radius:10px;overflow:hidden}
+/* Depois: tabela */
+.a-tw{background:var(--a-s);border:1px solid var(--a-line);border-radius:6px;overflow:hidden}
+.a-t{width:100%;border-collapse:collapse;font-size:12px;min-width:0}
+.a-t th{font-size:11px;color:var(--a-2);font-weight:500;padding:7px 8px;border-bottom:1px solid var(--a-line);text-align:left}
+.a-t td{padding:7px 8px;border-bottom:1px solid #eef1f4;text-align:left}
+.a-t tr:last-child td{border-bottom:0}
+.a-t .id{font-family:"Geist Mono",monospace;font-size:11.5px;color:var(--a-nv)}
+.a-t .r{text-align:right;font-family:"Geist Mono",monospace;font-variant-numeric:tabular-nums}
+.urg{color:#b42318;font-weight:600}
+.st{display:inline-flex;align-items:center;gap:6px}.st::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c)}
+.a-t .dim td{color:var(--a-2)}
+
+/* Antes: login */
+.b-login{background:#0b1730;border-radius:6px;padding:22px;display:grid;place-items:center}
+.b-lc{background:#fff;border-radius:16px;padding:18px;width:100%;max-width:260px;display:flex;flex-direction:column;gap:8px}
+.b-lc h5{margin:0;font-size:18px}
+.b-lc p{font-size:11px;color:#5b6779}
+.inp{height:30px;border-radius:8px;background:#eff1f5;border:1px solid #e1e5eb}
+.b-lc .go{height:30px;border-radius:8px;background:#e8762a;color:#111;display:grid;place-items:center;font-size:12px;font-weight:600}
+/* Depois: login */
+.a-login{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--a-line);border-radius:6px;overflow:hidden;background:var(--a-s);min-height:220px}
+.a-lside{background:#0b1730;color:#c7d0de;padding:16px;display:flex;flex-direction:column;justify-content:space-between;font-size:11px}
+.a-lside b{color:#fff;font-size:14px;font-weight:600;display:block}
+.a-lside .unit{font-family:"Geist Mono",monospace;font-size:10.5px;line-height:1.7}
+.a-lform{padding:16px;display:flex;flex-direction:column;gap:7px}
+.a-lform h5{margin:0;font-size:16px;font-weight:600}
+.a-lform label{font-size:11px;color:var(--a-2);margin-top:4px}
+.a-lform .inp{border-radius:5px;background:#fff;border-color:#cfd6e0;height:28px}
+.a-lform .go{height:30px;border-radius:5px;background:var(--a-nv);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:500;margin-top:6px}
+.a-lform small{font-size:10.5px;color:var(--a-2)}
+
+/* Antes: sidebar */
+.sbx{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.b-sb,.a-sb{border-radius:6px;padding:12px;font-size:12px}
+.b-sb{background:#102b49;color:#dbe4f0}
+.b-sb .mod{display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:8px}
+.b-sb .mod i{font-style:normal;width:28px;height:28px;border-radius:8px;background:#3b82c4;color:#fff;font-size:10px;font-weight:800;display:grid;place-items:center}
+.b-sb .mod small{display:block;font-size:9px;letter-spacing:.14em;color:#9fb0c6}
+.b-sb .g{display:flex;align-items:center;gap:7px;font-size:10.5px;letter-spacing:.12em;font-weight:600;margin-top:12px;color:#fff}
+.b-sb .g::before{content:"";width:6px;height:6px;border-radius:50%;background:#5b8def}
+.b-sb .g em{margin-left:auto;font-style:normal}
+.a-sb{background:#0b1730;color:#b9c3d3}
+.a-sb .mod{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-radius:5px;background:rgba(255,255,255,.05);color:#fff;font-weight:600}
+.a-sb .mod span{font-weight:400;color:#8e9ab5;font-size:11px}
+.a-sb .g{font-size:11px;color:#7f8ba3;margin:12px 8px 4px}
+.a-sb .lk{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:4px}
+.a-sb .lk svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.a-sb .lk.on{background:rgba(226,112,42,.16);color:#fff;box-shadow:inset 2px 0 0 #e2702a}
+
+/* Tokens propostos */
+.tok{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+.tok h3{margin-bottom:8px}
+.tok ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.tok li{display:flex;align-items:center;gap:8px}
+.tok li code{margin-left:auto}
+pre{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto;font:12.5px/1.6 var(--f-mono);color:var(--ink)}
+
+/* Plano */
+ol.plan{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+ol.plan li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+ol.plan .when{font:600 12px var(--f-mono);color:var(--accent);padding-top:2px}
+ol.plan p{font-size:14px}
+ol.plan ul{margin:6px 0 0;padding-left:18px;font-size:13.5px;color:var(--ink-2)}
+@media (max-width:620px){ol.plan li{grid-template-columns:1fr;gap:4px}.sbx{grid-template-columns:1fr}.a-login{grid-template-columns:1fr}.b-cards{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <h1>Revisão visual do Unificado</h1>
+  <p class="muted">O que dá ao sistema a aparência de "gerado por IA", onde as telas fogem de um padrão comum e como corrigir, com exemplos de antes e depois.</p>
+  <div class="meta">
+    <span>18/11/2026</span>
+    <span>Base: código em <code>unificado/</code> e capturas em <code>docs/</code></span>
+    <span>Não navegado logado: telas com dados reais podem ter detalhes a mais</span>
+  </div>
+</header>
+
+<section>
+  <h2>O levantamento em números</h2>
+  <p class="muted">Contagem feita nos arquivos CSS, HTML e JS próprios de cada módulo, sem <code>vendor/</code>, <code>node_modules</code> e builds.</p>
+  <div class="facts">
+    <div class="fact"><b>9</b><span>famílias de fonte: Geist, Inter, IBM Plex Sans, Montserrat, Manrope, DM Sans, Sora, Gotham, Arial</span></div>
+    <div class="fact"><b>7</b><span>tons de laranja "da marca" (#e8762a, #e97832, #f47d20, #f97316, #FB8500, #E07A3A, #e98034)</span></div>
+    <div class="fact"><b>15+</b><span>valores de arredondamento; os mais usados são 10, 8, 12, 9 e 999px</span></div>
+    <div class="fact"><b>368</b><span>declarações de sombra (<code>box-shadow</code>)</span></div>
+    <div class="fact"><b>154</b><span>textos em caixa alta via CSS, mais 34 "eyebrows" acima de títulos</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Sinais de "feito com IA"</h2>
+  <p class="muted">Cada item abaixo, sozinho, é inofensivo. Juntos, e repetidos em todas as telas, formam a estética padrão que geradores de interface entregam. A coluna da direita diz o que colocar no lugar.</p>
+  <div class="signals">
+    <div class="sig">
+      <div><h3><span class="sev alta">alta</span>Eyebrow em caixa alta acima de todo título</h3>
+        <p>"MEU ACESSO RÁPIDO", "PLANEJAMENTO · SETOR 3", "CAMPINAS · SUPRIMENTOS", "VISÃO GERAL", "MÓDULO". É o tique mais reconhecível.</p>
+        <p class="where">34 ocorrências de <code>class="eyebrow"</code>, mais <code>.sb-eyebrow</code> no menu</p></div>
+      <p class="fix">Breadcrumb discreto em caixa normal (Planejamento › Setor 3) só quando ajuda a navegar. Se o título já diz onde a pessoa está, não coloque nada acima dele.</p>
+    </div>
+    <div class="sig">
+      <div><h3><span class="sev alta">alta</span>Ponto final colorido no título</h3>
+        <p>"Sistema unificado<span style="color:var(--accent)">.</span>", "Bem-vindo ao Unificado<span style="color:var(--accent)">.</span>", "Bem-vindo<span style="color:var(--accent)">.</span>"</p>
+        <p class="where"><code>.accent-mark</code> em <code>index.html</code> (7 usos)</p></div>
+      <p class="fix">Título sem pontuação decorativa. Remover <code>.accent-mark</code>.</p>
+    </div>
+    <div class="sig">
+      <div><h3><span class="sev alta">alta</span>KPIs em cartões com gradiente, bolha decorativa e "pulo" no hover</h3>
+        <p>Quatro cartões, quatro gradientes (azul, verde, vermelho, laranja), círculo translúcido no canto, sombra colorida e <code>translateY(-3px)</code>. O número fica em segundo plano, atrás da decoração.</p>
+        <p class="where"><code>shell/home-v2.css</code> linhas 22 a 32; 22 <code>translateY(-n)</code> no projeto</p></div>
+      <p class="fix">Uma faixa única com divisórias finas, número grande em fonte mono, comparação com a meta e cor só quando há desvio.</p>
+    </div>
+    <div class="sig">
+      <div><h3><span class="sev alta">alta</span>Cada módulo com uma cor de arco-íris</h3>
+        <p>Qualidade em roxo (#6a4cff), Laboratório em turquesa, GED em amarelo, cada ícone com gradiente e sombra da própria cor. Nenhuma dessas cores existe na marca Concrefer.</p>
+        <p class="where"><code>home-v2.css</code> linhas 52 a 60; <code>--mod</code> no menu</p></div>
+      <p class="fix">A marca tem azul-marinho e laranja; os módulos se diferenciam pelo nome e pelo ícone. Se precisar de cor por módulo, só um traço de 2px, nunca o fundo.</p>
+    </div>
+    <div class="sig">
+      <div><h3><span class="sev alta">alta</span>Siglas de duas letras no lugar de ícones</h3>
+        <p>PL, PR, QL, EC, E4, AR, NS, VG, LD, RD… Em Laboratório, "VG" aparece duas vezes (Visão geral de Controle e de Dosagem), e "E" vale para Empacotamento e para Ensaios.</p>
+        <p class="where"><code>.sb-mod-tile</code>, <code>.sb-menu-sigla</code>, <code>module-pages.js</code></p></div>
+      <p class="fix">Ícones de traço (o projeto já tem Bootstrap Icons em <code>vendor/</code>) ou nenhum ícone. Lista com texto já se lê bem.</p>
+    </div>
+    <div class="sig">
+      <div><h3><span class="sev alta">alta</span>Texto genérico repetido</h3>
+        <p>Todo cartão de módulo diz "Abrir tela e consultar os dados." Também aparecem "As funções da sua rotina, em um só lugar", "As rotinas mais usadas em um só lugar" e "Sua fila de trabalho e as solicitações da unidade".</p>
+        <p class="where">Valor padrão em <code>shell/module-pages.js:51</code> e <code>shell/module-cards-overlay.js:54</code>; "em um só lugar" 5×</p></div>
+      <p class="fix">Descrição real de cada tela ("Ler QR do corpo de prova e lançar ruptura") ou nenhuma descrição. Texto vazio é melhor do que texto que serve para qualquer tela.</p>
+    </div>
+    <div class="sig">
+      <div><h3><span class="sev media">média</span>Cartão dentro de cartão</h3>
+        <p>No painel de Suprimentos, o cabeçalho é um cartão, os KPIs são cartões com barra colorida no topo e a tabela é um cartão com outra tabela de borda arredondada dentro. São três camadas de borda, raio e sombra.</p>
+        <p class="where">Suprimentos, Planejamento (Números de série), Laboratório</p></div>
+      <p class="fix">Página em fundo cinza, conteúdo direto nela; só a tabela ganha superfície branca. Uma borda, um raio (6px), sem sombra.</p>
+    </div>
+    <div class="sig">
+      <div><h3><span class="sev media">média</span>Barra colorida no topo ou na lateral do cartão</h3>
+        <p>Setores com <code>border-top:4px</code> de cores diferentes, KPIs de Suprimentos com barra verde e laranja, Logística com tracinhos coloridos sobre cada número, grupos de Laboratório com barra amarela.</p></div>
+      <p class="fix">Cor só para estado (atrasado, abaixo da meta), nunca para enfeitar.</p>
+    </div>
+    <div class="sig">
+      <div><h3><span class="sev media">média</span>Pílula para tudo, inclusive o que é normal</h3>
+        <p>Urgência "Normal" e situação "Concluída" ganham a mesma pílula verde. Quando tudo é destacado, nada é.</p></div>
+      <p class="fix">Estado normal em texto simples. Destaque apenas para urgente e para pendências.</p>
+    </div>
+    <div class="sig">
+      <div><h3><span class="sev media">média</span>Saudações e boas-vindas</h3>
+        <p>"Bem-vindo de volta", "Olá, Osmar.", "Bem-vindo ao Unificado". Em ferramenta de chão de fábrica, a pessoa quer chegar no trabalho.</p></div>
+      <p class="fix">Título funcional ("Início", "Entrar") com a informação útil: unidade, data, turno.</p>
+    </div>
+    <div class="sig">
+      <div><h3><span class="sev media">média</span>Emoji como ícone</h3>
+        <p>Medalhas 🥇🥈🥉 no ranking de Logística; 📊 🧱 🖨 ⚙ ✅ no Laboratório; ☰ desenhado como texto em vários menus.</p></div>
+      <p class="fix">Posição em número (1º, 2º) e ícones SVG do mesmo conjunto.</p>
+    </div>
+    <div class="sig">
+      <div><h3><span class="sev media">média</span>Seta ↗ e "Ver todas →" em todo lugar</h3>
+        <p>Cada cartão de tela em Laboratório tem uma seta ↗, sendo que o cartão inteiro já é clicável.</p></div>
+      <p class="fix">Tirar a seta. Hover discreto (fundo levemente mais escuro) já indica o clique.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>As telas seguem o mesmo padrão?</h2>
+  <p class="muted">Não. Cada módulo foi feito numa rodada diferente e trouxe a própria fonte, a própria paleta e o próprio jeito de montar o topo da página. O menu lateral unifica a moldura, mas o conteúdo dentro dela muda de sistema a cada clique.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Módulo</th><th>Fonte principal</th><th>Cor de destaque</th><th class="num">Cores hex distintas</th><th>Topo da página</th><th>Moldura</th></tr></thead>
+      <tbody>
+        <tr><td>Início / shell</td><td>Geist</td><td><span class="sw" style="background:#0b1730"></span>#0b1730 + <span class="sw" style="background:#FB8500"></span>#FB8500</td><td class="num">186</td><td>Eyebrow + título com ponto</td><td class="ok">Menu A</td></tr>
+        <tr><td>Menu lateral (modelo A)</td><td>IBM Plex Sans, via Google Fonts</td><td><span class="sw" style="background:#F2B705"></span>muda por módulo</td><td class="num">16</td><td>—</td><td>—</td></tr>
+        <tr><td>Planejamento (pcp)</td><td>Inter, Geist e Arial</td><td><span class="sw" style="background:#15416f"></span>#15416f + <span class="sw" style="background:#f97316"></span>#f97316</td><td class="num">304</td><td>Cartão com eyebrow azul</td><td class="ok">Menu A</td></tr>
+        <tr><td>Produção</td><td>Inter</td><td><span class="sw" style="background:#164d77"></span>#164d77 + <span class="sw" style="background:#277057"></span>#277057</td><td class="num">151</td><td>Variável por unidade</td><td class="ok">Menu A</td></tr>
+        <tr><td>Qualidade</td><td>IBM Plex Sans + Sora</td><td><span class="sw" style="background:#0062cc"></span>#0062cc (cinzas do iOS)</td><td class="num">127</td><td>Próprio</td><td class="ok">Menu A</td></tr>
+        <tr><td>Laboratório</td><td>Geist</td><td><span class="sw" style="background:#f2b300"></span>#f2b300 + <span class="sw" style="background:#a50d26"></span>#a50d26</td><td class="num">473</td><td>Faixa amarela com círculo</td><td class="ok">Menu A</td></tr>
+        <tr><td>Suprimentos</td><td>DM Sans + Manrope</td><td><span class="sw" style="background:#0f766e"></span>#0f766e</td><td class="num">138</td><td>Eyebrow verde + botão verde</td><td class="ok">Menu A</td></tr>
+        <tr><td>Logística</td><td>Geist</td><td><span class="sw" style="background:#17a6b6"></span>#17a6b6 + <span class="sw" style="background:#f47d20"></span>#f47d20</td><td class="num">85</td><td>Abas + filtros de unidade</td><td class="no">Menu próprio</td></tr>
+        <tr><td>Usinas / Carta-traço</td><td>Gotham, Montserrat</td><td><span class="sw" style="background:#0d3b66"></span>#0d3b66 + <span class="sw" style="background:#087f8c"></span>#087f8c</td><td class="num">262</td><td>Barra escura com 4 botões coloridos</td><td class="no">Cabeçalho próprio</td></tr>
+        <tr><td>Mapa</td><td>Geist</td><td><span class="sw" style="background:#e8762a"></span>#e8762a</td><td class="num">136</td><td>Próprio</td><td class="ok">Menu A</td></tr>
+        <tr><td>Manutenção usina</td><td>Inter</td><td><span class="sw" style="background:#155db2"></span>#155db2</td><td class="num">134</td><td>Próprio</td><td>—</td></tr>
+        <tr><td>Relatórios</td><td>Montserrat</td><td><span class="sw" style="background:#12385a"></span>#12385a</td><td class="num">81</td><td>Próprio</td><td>—</td></tr>
+        <tr><td>Mobile (inspeção, mão de obra)</td><td>IBM Plex Sans</td><td><span class="sw" style="background:#0f2c4c"></span>#0f2c4c</td><td class="num">40</td><td>Próprio</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">Doze tons de azul-marinho diferentes fazem o papel da cor principal: #0b1730, #0f1b2d, #0D1934, #102b49, #15416f, #143453, #123453, #12385a, #164d77, #0f2c4c, #0d3b66, #18314c. Para o olho, a troca de tom entre módulos parece descuido, não variação.</p>
+  <h3>Divergências mais visíveis ao navegar</h3>
+  <ul class="note">
+    <li><b>Fonte muda entre menu e conteúdo.</b> O menu carrega IBM Plex Sans do Google Fonts, e o conteúdo usa Geist local. Em Suprimentos, a terceira fonte é DM Sans.</li>
+    <li><b>Botão principal muda de cor por módulo:</b> azul em Planejamento, verde-petróleo em Suprimentos, laranja na Carta-traço e no login, azul-marinho em Logística.</li>
+    <li><b>Carta-traço (Usinas) parece outro produto:</b> tem cabeçalho escuro próprio, quatro botões de cores diferentes no topo, rótulos em caixa alta e rodapé "© 2026 ConcreTrack — DAutomação".</li>
+    <li><b>Logística tem menu próprio</b>, com bolinhas coloridas por módulo, diferente do menu A do restante.</li>
+    <li><b>Laboratório mostra logos quebrados</b> no topo do menu (texto "Concrefer" e "Conc" com ícone de imagem faltando), visível em <code>docs/porting/layout-modulos/depois-homolog-laboratorio-1440.png</code>.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Exemplos de antes e depois</h2>
+  <p class="muted">As telas à esquerda reproduzem o CSS atual; as da direita aplicam a proposta. Todas usam os dados das capturas existentes.</p>
+
+  <h3>1. Indicadores da página inicial</h3>
+  <div class="pair">
+    <div class="side before"><span class="lbl">Hoje · home-v2.css</span>
+      <div class="frame"><div class="b-kpis">
+        <div class="b-kpi g1"><span class="l"><i></i>Programado</span><b>412</b></div>
+        <div class="b-kpi g2"><span class="l"><i></i>Realizado</span><b>356</b></div>
+        <div class="b-kpi g3"><span class="l"><i></i>Aderência</span><b>86%</b></div>
+        <div class="b-kpi g4"><span class="l"><i></i>Saldo</span><b>56</b></div>
+      </div></div>
+    </div>
+    <div class="side after"><span class="lbl">Proposta</span>
+      <div class="frame"><div class="a-kpis">
+        <div class="a-kpi"><span class="l">Programado hoje</span><b>412</b><small>peças · 4 setores</small></div>
+        <div class="a-kpi"><span class="l">Realizado (Mapa)</span><b>356</b><small>até 14:20</small></div>
+        <div class="a-kpi"><span class="l">Aderência</span><b>86%</b><small><span class="dn">−4 pp</span> da meta de 90%</small><div class="a-bar"><i style="width:86%"></i></div></div>
+        <div class="a-kpi"><span class="l">Saldo a produzir</span><b>56</b><small>Setor 3 concentra 31</small></div>
+      </div></div>
+    </div>
+  </div>
+  <ul class="note"><li>O número é o que se lê primeiro. Cor só aparece no desvio (−4 pp em vermelho).</li><li>Cada indicador diz de onde vem e até quando: "até 14:20", "Mapa", "4 setores". É o tipo de detalhe que um gerador não inventa.</li></ul>
+
+  <h3>2. Topo de página</h3>
+  <div class="pair">
+    <div class="side before"><span class="lbl">Hoje · Planejamento › Números de série</span>
+      <div class="frame">
+        <div class="b-head"><span class="b-eye">PLANEJAMENTO · SETOR 3</span><h4>Números de série dos postes</h4><p>Sequência única por modelo e ano. Histórico confirmado e previsão da programação.</p><span class="b-pill">Janeiro: contador 0 · primeiro poste 1</span></div>
+        <div class="b-tabs"><span class="on">Previsão semanal</span><span>Produção e rastreabilidade</span><span>Saldos anuais</span></div>
+      </div>
+    </div>
+    <div class="side after"><span class="lbl">Proposta</span>
+      <div class="frame">
+        <div class="a-crumb"><span>Planejamento</span><span>›</span><span>Setor 3</span></div>
+        <div class="a-head"><div><h4>Números de série dos postes</h4><div class="a-sub">Atualizado 11/11/2026 08:45 · 19 modelos na semana · 95 aguardando conferência</div></div>
+          <div class="a-acts"><span class="a-btn">Atualizar</span><span class="a-btn pri">Sincronizar com o Mapa</span></div></div>
+        <div class="a-tabs"><span class="on">Previsão semanal</span><span>Rastreabilidade</span><span>Saldos anuais</span></div>
+      </div>
+    </div>
+  </div>
+  <ul class="note"><li>Sai o cartão em volta do título, o eyebrow e a pílula. A frase que explica a tela vai para a ajuda ou some.</li><li>A linha abaixo do título traz o estado real dos dados, que hoje está espalhado em três blocos mais abaixo.</li><li>As ações ficam alinhadas ao título, no mesmo lugar em todas as telas.</li></ul>
+
+  <h3>3. Lista de telas de um módulo</h3>
+  <div class="pair">
+    <div class="side before"><span class="lbl">Hoje · Laboratório</span>
+      <div class="frame">
+        <div class="b-hero"><small>MÓDULO</small><b>Laboratório</b></div>
+        <div class="b-grp">Corpos de Prova <em>3</em></div>
+        <div class="b-cards">
+          <div class="b-card"><span class="s">EQ</span><div><b>Etiquetas QR</b><span>Abrir tela e consultar os dados.</span></div><i>↗</i></div>
+          <div class="b-card"><span class="s">LD</span><div><b>Leitura de CP</b><span>Abrir tela e consultar os dados.</span></div><i>↗</i></div>
+          <div class="b-card"><span class="s">VG</span><div><b>Visão geral</b><span>Abrir tela e consultar os dados.</span></div><i>↗</i></div>
+          <div class="b-card"><span class="s">E</span><div><b>Ensaios</b><span>Abrir tela e consultar os dados.</span></div><i>↗</i></div>
+        </div>
+      </div>
+    </div>
+    <div class="side after"><span class="lbl">Proposta</span>
+      <div class="frame"><div class="a-list">
+        <div class="a-gh"><span>Corpos de prova</span></div>
+        <div class="a-row"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><path d="M14 14h2v2h-2zM18 18h2v2h-2z"/></svg><div><b>Etiquetas QR</b><span>Gerar e imprimir etiquetas dos CPs moldados</span></div><time>hoje 07:12</time></div>
+        <div class="a-row"><svg viewBox="0 0 24 24"><path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M20 17v2a1 1 0 0 1-1 1h-2M7 20H5a1 1 0 0 1-1-1v-2M7 12h10"/></svg><div><b>Leitura de CP</b><span>Ler o QR e lançar a carga de ruptura</span></div><time>ontem</time></div>
+        <div class="a-row"><svg viewBox="0 0 24 24"><path d="M4 19h16M7 16V9M12 16V5M17 16v-4"/></svg><div><b>Resultados</b><span>fck por traço, 7 e 28 dias</span></div><time>—</time></div>
+        <div class="a-gh a-sep"><span>Controle estatístico</span></div>
+        <div class="a-row"><svg viewBox="0 0 24 24"><path d="M4 18l5-6 4 3 7-9"/></svg><div><b>Visão geral do CEC</b><span>Desvio-padrão e fck,est por família</span></div><time>12/11</time></div>
+      </div></div>
+    </div>
+  </div>
+  <ul class="note"><li>Lista em vez de grade de cartões: cabem mais telas na altura e o olho percorre uma coluna só.</li><li>Cada tela tem uma descrição que só ela teria. Se ninguém escrever, a linha fica só com o nome.</li><li>"Último uso" ajuda quem abre as mesmas três telas todo dia.</li></ul>
+
+  <h3>4. Tabela com estados</h3>
+  <div class="pair">
+    <div class="side before"><span class="lbl">Hoje · Suprimentos › Painel</span>
+      <div class="frame"><div class="b-tw"><div class="in" style="overflow-x:auto">
+        <table class="t"><thead><tr><th>Nº</th><th>Itens</th><th>Urgência</th><th>Situação</th><th>Idade</th></tr></thead>
+        <tbody>
+          <tr><td class="id">SOL-00005</td><td>Luva E7</td><td><span class="pl n">Normal</span></td><td><span class="pl c">Concluída</span></td><td>0 h</td></tr>
+          <tr><td class="id">SOL-00004</td><td>Disco de corte</td><td><span class="pl n">Normal</span></td><td><span class="pl c">Concluída</span></td><td>3 h</td></tr>
+          <tr><td class="id">SOL-00003</td><td>Vibrador 45mm</td><td><span class="pl n">Normal</span></td><td><span class="pl c">Concluída</span></td><td>3 h</td></tr>
+        </tbody></table>
+      </div></div></div>
+    </div>
+    <div class="side after"><span class="lbl">Proposta</span>
+      <div class="frame"><div class="a-tw" style="overflow-x:auto">
+        <table class="a-t"><thead><tr><th>Nº</th><th>Itens</th><th>Situação</th><th style="text-align:right">Idade</th></tr></thead>
+        <tbody>
+          <tr><td class="id">SOL-00006</td><td>Vibrador 45mm <span class="urg">· parou produção</span></td><td><span class="st" style="--c:#b42318">Aguardando aprovação</span></td><td class="r">26 h</td></tr>
+          <tr><td class="id">SOL-00005</td><td>Disco de corte</td><td><span class="st" style="--c:#e2702a">Em cotação</span></td><td class="r">3 h</td></tr>
+          <tr class="dim"><td class="id">SOL-00004</td><td>Luva E7</td><td><span class="st" style="--c:#9aa4b2">Concluída</span></td><td class="r">5 h</td></tr>
+        </tbody></table>
+      </div></div>
+    </div>
+  </div>
+  <ul class="note"><li>A coluna "Urgência" sai: só o urgente aparece, junto do item.</li><li>Situação com bolinha e texto, sem pílula. Concluída fica em cinza, e o que pede ação chama atenção sozinho.</li><li>Uma superfície só: sem cartão em volta da tabela e sem borda arredondada dentro dele.</li></ul>
+
+  <h3>5. Menu lateral</h3>
+  <div class="pair">
+    <div class="side before"><span class="lbl">Hoje · menu A</span>
+      <div class="frame" style="padding:0;background:#102b49"><div class="b-sb">
+        <div class="mod"><i>PL</i><div><small>MÓDULO</small><b>Planejamento</b></div></div>
+        <div class="g">PROGRAMAÇÃO <em>6</em></div>
+        <div class="g">RELATÓRIOS DE PROGRAMAÇÃO <em>3</em></div>
+        <div class="g">ARMADURAS <em>3</em></div>
+        <div class="g">ETIQUETAS <em>4</em></div>
+      </div></div>
+    </div>
+    <div class="side after"><span class="lbl">Proposta</span>
+      <div class="frame" style="padding:0;background:#0b1730"><div class="a-sb">
+        <div class="mod">Planejamento <span>trocar</span></div>
+        <div class="g">Programação</div>
+        <div class="lk"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="1"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Setores 1 e 2</div>
+        <div class="lk on"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="1"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Setor 3</div>
+        <div class="g">Etiquetas</div>
+        <div class="lk"><svg viewBox="0 0 24 24"><path d="M4 4h8l8 8-8 8-8-8z"/><circle cx="9" cy="9" r="1.5"/></svg>Circular · Setor 3</div>
+      </div></div>
+    </div>
+  </div>
+  <ul class="note"><li>Grupos em caixa normal, cinza, sem bolinha e sem contador. O número de itens se vê abrindo o grupo.</li><li>Seletor de módulo como texto simples, sem "MÓDULO" e sem sigla colorida.</li><li>Item ativo com um traço laranja, a única cor de destaque do menu.</li></ul>
+
+  <h3>6. Login</h3>
+  <div class="pair">
+    <div class="side before"><span class="lbl">Hoje · login.html</span>
+      <div class="frame" style="padding:0"><div class="b-login"><div class="b-lc">
+        <h5>Bem-vindo de volta</h5><p>Entre com seu usuário e senha para acessar o sistema.</p>
+        <div class="inp"></div><div class="inp"></div><div class="go">Entrar</div>
+      </div></div></div>
+    </div>
+    <div class="side after"><span class="lbl">Proposta</span>
+      <div class="frame" style="padding:0"><div class="a-login">
+        <div class="a-lside"><b>Concrefer</b><div class="unit">Campinas · Pederneiras<br>Ribeirão · Noroeste</div><span>Unificado v1.4.6</span></div>
+        <div class="a-lform"><h5>Entrar</h5><label>Usuário</label><div class="inp"></div><label>Senha</label><div class="inp"></div><div class="go">Entrar</div><small>Sem acesso? Fale com o PCP da sua unidade.</small></div>
+      </div></div>
+    </div>
+  </div>
+  <ul class="note"><li>Título é a ação, sem "Bem-vindo de volta".</li><li>Botão no azul-marinho da marca, o mesmo dos botões principais do resto do sistema. Hoje o login usa laranja, e cada módulo usa uma cor.</li><li>O lado escuro traz algo que só a Concrefer tem: as unidades.</li></ul>
+</section>
+
+<section>
+  <h2>Um padrão único para todos os módulos</h2>
+  <p class="muted">A base já está no repositório: Geist em <code>shell/fonts/</code>, o azul #0b1730 do shell e o laranja dos logos. A proposta é parar de criar valores novos em cada módulo e todos lerem um único arquivo de variáveis.</p>
+  <div class="tok">
+    <div><h3>Cor</h3><ul>
+      <li><span class="sw" style="background:#0b1730"></span>Marinho (menu, botão principal)<code>#0b1730</code></li>
+      <li><span class="sw" style="background:#15416f"></span>Azul (links, foco)<code>#15416f</code></li>
+      <li><span class="sw" style="background:#e2702a"></span>Laranja (item ativo, destaque raro)<code>#e2702a</code></li>
+      <li><span class="sw" style="background:#f4f5f7"></span>Fundo de página<code>#f4f5f7</code></li>
+      <li><span class="sw" style="background:#e1e5eb"></span>Linha<code>#e1e5eb</code></li>
+      <li><span class="sw" style="background:#5b6779"></span>Texto secundário<code>#5b6779</code></li>
+      <li><span class="sw" style="background:#b42318"></span>Crítico · <span class="sw" style="background:#b26b00"></span>Atenção · <span class="sw" style="background:#1d7a4a"></span>OK</li>
+    </ul></div>
+    <div><h3>Tipo</h3><ul>
+      <li>Geist 400, 500 e 600 para tudo</li>
+      <li>Geist Mono para códigos (SOL-00005, 10X2500), números de indicador e datas em tabela</li>
+      <li>Escala: 12 · 13 · 14 · 16 · 20 · 26</li>
+      <li>Caixa alta: nenhuma, exceto siglas reais (CP, CEC, PCP)</li>
+    </ul></div>
+    <div><h3>Forma</h3><ul>
+      <li>Raio: 4px (pílula, campo pequeno) e 6px (tudo o mais)</li>
+      <li>Sombra: só em menus suspensos e diálogos</li>
+      <li>Sem gradiente, sem <code>translateY</code> no hover</li>
+      <li>Superfície branca só para tabela, formulário e lista</li>
+    </ul></div>
+  </div>
+<pre>/* unificado/shell/tokens.css — importado por shell.css e por cada módulo */
+:root{
+  --c-navy:#0b1730; --c-blue:#15416f; --c-orange:#e2702a;
+  --c-bg:#f4f5f7; --c-surface:#fff; --c-line:#e1e5eb; --c-ink:#0b1730; --c-ink-2:#5b6779;
+  --c-crit:#b42318; --c-warn:#b26b00; --c-ok:#1d7a4a;
+  --f-sans:"Geist",system-ui,"Segoe UI",sans-serif; --f-mono:"Geist Mono",ui-monospace,Consolas,monospace;
+  --r-sm:4px; --r:6px; --shadow-pop:0 8px 24px rgba(11,23,48,.16);
+}</pre>
+</section>
+
+<section>
+  <h2>Ordem sugerida</h2>
+  <ol class="plan">
+    <li><span class="when">1 dia</span><div><p><b>Só CSS e texto, sem mexer em lógica.</b></p><ul>
+      <li>Remover <code>.eyebrow</code>, <code>.accent-mark</code> e "Bem-vindo".</li>
+      <li>Trocar os KPIs com gradiente de <code>home-v2.css</code> pela faixa simples.</li>
+      <li>Apagar o texto padrão "Abrir tela e consultar os dados." em <code>module-pages.js</code> e <code>module-cards-overlay.js</code>.</li>
+      <li>Trocar emoji por ícone SVG ou número.</li>
+      <li>Corrigir os logos quebrados do menu no Laboratório.</li></ul></div></li>
+    <li><span class="when">1 semana</span><div><p><b>Criar <code>shell/tokens.css</code> e apontar o menu A para Geist</b>, tirando o <code>@import</code> do IBM Plex Sans do Google Fonts em <code>shell/modelo-a/menu.css</code>. Unificar a cor do botão principal em todos os módulos.</p></div></li>
+    <li><span class="when">por módulo</span><div><p><b>Migrar um módulo por vez para os tokens</b>, começando pelos que mais destoam:</p><ul>
+      <li>Suprimentos: DM Sans, Manrope e verde-petróleo.</li>
+      <li>Qualidade: Plex, Sora e paleta iOS.</li>
+      <li>Usinas/Carta-traço: cabeçalho próprio, Gotham e quatro cores de botão.</li>
+      <li>Logística: menu próprio.</li></ul>
+      <p class="muted" style="margin-top:6px">Em cada um, trocar hex solto por variável e reduzir os raios para 4 e 6px.</p></div></li>
+    <li><span class="when">contínuo</span><div><p><b>Uma regra no lint:</b> falhar o build quando aparecer <code>font-family</code> fora de <code>tokens.css</code>, hex fora da lista ou <code>linear-gradient</code> em componente. É o que impede o próximo módulo, gerado ou não, de trazer a própria paleta.</p></div></li>
+  </ol>
+</section>
+
+</div>

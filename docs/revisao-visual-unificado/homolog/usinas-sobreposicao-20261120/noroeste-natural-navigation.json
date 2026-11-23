@@ -1,0 +1,2966 @@
+{
+  "cases": 10,
+  "rows": [
+    {
+      "url": "/unificado/?view=usinas%2Fnoroeste%2F%3Farea%3Dcec",
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "pageOverflow": false,
+      "links": [],
+      "headers": [
+        {
+          "text": "Registro",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 167.15625
+        },
+        {
+          "text": "Traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 292.53125
+        },
+        {
+          "text": "Série",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 77.46875
+        },
+        {
+          "text": "CP",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 54.5625
+        },
+        {
+          "text": "Idade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 61.984375
+        },
+        {
+          "text": "Moldagem",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 121.875
+        },
+        {
+          "text": "Ruptura",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 121.84375
+        },
+        {
+          "text": "MPa",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 72.265625
+        },
+        {
+          "text": "Fonte",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 82.15625
+        },
+        {
+          "text": "Ações",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 66.15625
+        },
+        {
+          "text": "Traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 389.1875
+        },
+        {
+          "text": "Idade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 82.46875
+        },
+        {
+          "text": "N",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 57.875
+        },
+        {
+          "text": "Média MPa",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 126.796875
+        },
+        {
+          "text": "Mínimo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 96.9375
+        },
+        {
+          "text": "Máximo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 101.5
+        },
+        {
+          "text": "Desvio amostral",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 169.140625
+        },
+        {
+          "text": "Cv %",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 94.09375
+        }
+      ],
+      "tables": [
+        {
+          "width": 1118,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1118,
+            "clientWidth": 1118
+          }
+        },
+        {
+          "width": 1118,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1118,
+            "clientWidth": 1118
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "area": "cec",
+      "width": 1440,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/?view=usinas%2Fnoroeste%2F%3Farea%3Dcec",
+      "viewport": 1280,
+      "pageWidth": 1280,
+      "pageOverflow": false,
+      "links": [],
+      "headers": [
+        {
+          "text": "Registro",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 156.34375
+        },
+        {
+          "text": "Traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 273.609375
+        },
+        {
+          "text": "Série",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 72.46875
+        },
+        {
+          "text": "CP",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 51.03125
+        },
+        {
+          "text": "Idade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 57.984375
+        },
+        {
+          "text": "Moldagem",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 114
+        },
+        {
+          "text": "Ruptura",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 113.96875
+        },
+        {
+          "text": "MPa",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 67.59375
+        },
+        {
+          "text": "Fonte",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 76.84375
+        },
+        {
+          "text": "Ações",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 61.796875
+        },
+        {
+          "text": "Traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 333.5
+        },
+        {
+          "text": "Idade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 70.671875
+        },
+        {
+          "text": "N",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 49.59375
+        },
+        {
+          "text": "Média MPa",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 108.640625
+        },
+        {
+          "text": "Mínimo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 83.0625
+        },
+        {
+          "text": "Máximo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 86.96875
+        },
+        {
+          "text": "Desvio amostral",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 144.921875
+        },
+        {
+          "text": "Cv %",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 80.640625
+        }
+      ],
+      "tables": [
+        {
+          "width": 1045.640625,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1046,
+            "clientWidth": 958
+          }
+        },
+        {
+          "width": 958,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 958,
+            "clientWidth": 958
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "area": "cec",
+      "width": 1280,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/?view=usinas%2Fnoroeste%2F%3Farea%3Dcec",
+      "viewport": 1024,
+      "pageWidth": 1024,
+      "pageOverflow": false,
+      "links": [],
+      "headers": [
+        {
+          "text": "Registro",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 156.34375
+        },
+        {
+          "text": "Traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 273.609375
+        },
+        {
+          "text": "Série",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 72.46875
+        },
+        {
+          "text": "CP",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 51.03125
+        },
+        {
+          "text": "Idade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 57.984375
+        },
+        {
+          "text": "Moldagem",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 114
+        },
+        {
+          "text": "Ruptura",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 113.96875
+        },
+        {
+          "text": "MPa",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 67.59375
+        },
+        {
+          "text": "Fonte",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 76.84375
+        },
+        {
+          "text": "Ações",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 61.796875
+        },
+        {
+          "text": "Traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 311.21875
+        },
+        {
+          "text": "Idade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 65.953125
+        },
+        {
+          "text": "N",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 46.265625
+        },
+        {
+          "text": "Média MPa",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 101.390625
+        },
+        {
+          "text": "Mínimo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 77.515625
+        },
+        {
+          "text": "Máximo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 81.15625
+        },
+        {
+          "text": "Desvio amostral",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 135.25
+        },
+        {
+          "text": "Cv %",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 75.25
+        }
+      ],
+      "tables": [
+        {
+          "width": 1045.640625,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1046,
+            "clientWidth": 894
+          }
+        },
+        {
+          "width": 894,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 894,
+            "clientWidth": 894
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "area": "cec",
+      "width": 1024,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/?view=usinas%2Fnoroeste%2F%3Farea%3Dcec",
+      "viewport": 820,
+      "pageWidth": 820,
+      "pageOverflow": false,
+      "links": [],
+      "headers": [
+        {
+          "text": "Registro",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 156.34375
+        },
+        {
+          "text": "Traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 273.609375
+        },
+        {
+          "text": "Série",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 72.46875
+        },
+        {
+          "text": "CP",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 51.03125
+        },
+        {
+          "text": "Idade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 57.984375
+        },
+        {
+          "text": "Moldagem",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 114
+        },
+        {
+          "text": "Ruptura",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 113.96875
+        },
+        {
+          "text": "MPa",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 67.59375
+        },
+        {
+          "text": "Fonte",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 76.84375
+        },
+        {
+          "text": "Ações",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 61.796875
+        },
+        {
+          "text": "Traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 273.609375
+        },
+        {
+          "text": "Idade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 57.984375
+        },
+        {
+          "text": "N",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 40.6875
+        },
+        {
+          "text": "Média MPa",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 66.015625
+        },
+        {
+          "text": "Mínimo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 68.15625
+        },
+        {
+          "text": "Máximo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 71.359375
+        },
+        {
+          "text": "Desvio amostral",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 76.953125
+        },
+        {
+          "text": "Cv %",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 66.109375
+        }
+      ],
+      "tables": [
+        {
+          "width": 1045.640625,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1046,
+            "clientWidth": 690
+          }
+        },
+        {
+          "width": 720.875,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 721,
+            "clientWidth": 690
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "area": "cec",
+      "width": 820,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/?view=usinas%2Fnoroeste%2F%3Farea%3Dcec",
+      "viewport": 390,
+      "pageWidth": 390,
+      "pageOverflow": false,
+      "links": [],
+      "headers": [
+        {
+          "text": "Registro",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Série",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "CP",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Idade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Moldagem",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Ruptura",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "MPa",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Fonte",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Ações",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Idade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "N",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Média MPa",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Mínimo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Máximo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Desvio amostral",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Cv %",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        }
+      ],
+      "tables": [
+        {
+          "width": 356,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 432,
+            "clientWidth": 356
+          }
+        },
+        {
+          "width": 356,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 356,
+            "clientWidth": 356
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "area": "cec",
+      "width": 390,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/?view=usinas%2Fnoroeste%2F%3Farea%3Destoque",
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "pageOverflow": false,
+      "links": [],
+      "headers": [
+        {
+          "text": "Código",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 171.015625
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 304.859375
+        },
+        {
+          "text": "Saldo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 83.8125
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 104.171875
+        },
+        {
+          "text": "Contábil",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 105.796875
+        },
+        {
+          "text": "Déficit silo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 124.03125
+        },
+        {
+          "text": "Entradas",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 110.203125
+        },
+        {
+          "text": "Consumo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 114.109375
+        },
+        {
+          "text": "Código",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 209.65625
+        },
+        {
+          "text": "Nome",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 373.734375
+        },
+        {
+          "text": "Categoria",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 143.015625
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 127.703125
+        },
+        {
+          "text": "Saldo inicial",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 166.78125
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 97.109375
+        },
+        {
+          "text": "Nome",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 304.28125
+        },
+        {
+          "text": "Capacidade nominal",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 316.546875
+        },
+        {
+          "text": "Operacional",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 211.328125
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 162.390625
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 123.453125
+        },
+        {
+          "text": "Coluna",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 322.90625
+        },
+        {
+          "text": "Rótulo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 330
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 175.859375
+        },
+        {
+          "text": "Fator",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 155.34375
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 133.890625
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 122.625
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 169.421875
+        },
+        {
+          "text": "Tipo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 117.234375
+        },
+        {
+          "text": "Quantidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 214.578125
+        },
+        {
+          "text": "Origem",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 157.15625
+        },
+        {
+          "text": "Nota",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 124.46875
+        },
+        {
+          "text": "Fornecedor",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 212.515625
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 138.671875
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 191.578125
+        },
+        {
+          "text": "Tipo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 132.578125
+        },
+        {
+          "text": "Quantidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 242.65625
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 191.875
+        },
+        {
+          "text": "Criado em",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 220.640625
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 150.25
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 207.578125
+        },
+        {
+          "text": "Coluna",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 188.46875
+        },
+        {
+          "text": "Consumo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 227.625
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 207.890625
+        },
+        {
+          "text": "Silo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 136.1875
+        }
+      ],
+      "tables": [
+        {
+          "width": 1118,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1118,
+            "clientWidth": 1118
+          }
+        },
+        {
+          "width": 1118,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1118,
+            "clientWidth": 1118
+          }
+        },
+        {
+          "width": 1118,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1118,
+            "clientWidth": 1118
+          }
+        },
+        {
+          "width": 1118,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1118,
+            "clientWidth": 1118
+          }
+        },
+        {
+          "width": 1118,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1118,
+            "clientWidth": 1118
+          }
+        },
+        {
+          "width": 1118,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1118,
+            "clientWidth": 1118
+          }
+        },
+        {
+          "width": 1118,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 1118,
+            "clientWidth": 1118
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "area": "estoque",
+      "width": 1440,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/?view=usinas%2Fnoroeste%2F%3Farea%3Destoque",
+      "viewport": 1280,
+      "pageWidth": 1280,
+      "pageOverflow": false,
+      "links": [],
+      "headers": [
+        {
+          "text": "Código",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 146.546875
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 261.21875
+        },
+        {
+          "text": "Saldo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 71.8125
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 89.265625
+        },
+        {
+          "text": "Contábil",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 90.640625
+        },
+        {
+          "text": "Déficit silo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 106.28125
+        },
+        {
+          "text": "Entradas",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 94.4375
+        },
+        {
+          "text": "Consumo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 97.796875
+        },
+        {
+          "text": "Código",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 179.65625
+        },
+        {
+          "text": "Nome",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 320.25
+        },
+        {
+          "text": "Categoria",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 122.546875
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 109.421875
+        },
+        {
+          "text": "Saldo inicial",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 142.921875
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 83.203125
+        },
+        {
+          "text": "Nome",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 260.734375
+        },
+        {
+          "text": "Capacidade nominal",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 271.234375
+        },
+        {
+          "text": "Operacional",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 181.078125
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 139.140625
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 105.8125
+        },
+        {
+          "text": "Coluna",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 276.6875
+        },
+        {
+          "text": "Rótulo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 282.78125
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 150.6875
+        },
+        {
+          "text": "Fator",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 133.109375
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 114.734375
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 105.078125
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 145.171875
+        },
+        {
+          "text": "Tipo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 100.453125
+        },
+        {
+          "text": "Quantidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 183.875
+        },
+        {
+          "text": "Origem",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 134.65625
+        },
+        {
+          "text": "Nota",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 106.65625
+        },
+        {
+          "text": "Fornecedor",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 182.109375
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 118.828125
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 164.171875
+        },
+        {
+          "text": "Tipo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 113.59375
+        },
+        {
+          "text": "Quantidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 207.921875
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 164.40625
+        },
+        {
+          "text": "Criado em",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 189.078125
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 128.75
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 177.875
+        },
+        {
+          "text": "Coluna",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 161.5
+        },
+        {
+          "text": "Consumo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 195.046875
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 178.140625
+        },
+        {
+          "text": "Silo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 116.6875
+        }
+      ],
+      "tables": [
+        {
+          "width": 958,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 958,
+            "clientWidth": 958
+          }
+        },
+        {
+          "width": 958,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 958,
+            "clientWidth": 958
+          }
+        },
+        {
+          "width": 958,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 958,
+            "clientWidth": 958
+          }
+        },
+        {
+          "width": 958,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 958,
+            "clientWidth": 958
+          }
+        },
+        {
+          "width": 958,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 958,
+            "clientWidth": 958
+          }
+        },
+        {
+          "width": 958,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 958,
+            "clientWidth": 958
+          }
+        },
+        {
+          "width": 958,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 958,
+            "clientWidth": 958
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "area": "estoque",
+      "width": 1280,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/?view=usinas%2Fnoroeste%2F%3Farea%3Destoque",
+      "viewport": 1024,
+      "pageWidth": 1024,
+      "pageOverflow": false,
+      "links": [],
+      "headers": [
+        {
+          "text": "Código",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 136.75
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 243.765625
+        },
+        {
+          "text": "Saldo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 67.015625
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 83.296875
+        },
+        {
+          "text": "Contábil",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 84.59375
+        },
+        {
+          "text": "Déficit silo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 99.171875
+        },
+        {
+          "text": "Entradas",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 88.125
+        },
+        {
+          "text": "Consumo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 91.28125
+        },
+        {
+          "text": "Código",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 167.65625
+        },
+        {
+          "text": "Nome",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 298.84375
+        },
+        {
+          "text": "Categoria",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 114.359375
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 102.109375
+        },
+        {
+          "text": "Saldo inicial",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 133.375
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 77.65625
+        },
+        {
+          "text": "Nome",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 243.3125
+        },
+        {
+          "text": "Capacidade nominal",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 253.125
+        },
+        {
+          "text": "Operacional",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 168.984375
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 129.84375
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 98.734375
+        },
+        {
+          "text": "Coluna",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 258.203125
+        },
+        {
+          "text": "Rótulo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 263.875
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 140.625
+        },
+        {
+          "text": "Fator",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 124.21875
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 107.078125
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 98.0625
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 135.46875
+        },
+        {
+          "text": "Tipo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 93.75
+        },
+        {
+          "text": "Quantidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 171.59375
+        },
+        {
+          "text": "Origem",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 125.671875
+        },
+        {
+          "text": "Nota",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 99.53125
+        },
+        {
+          "text": "Fornecedor",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 169.921875
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 110.890625
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 153.203125
+        },
+        {
+          "text": "Tipo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 106.015625
+        },
+        {
+          "text": "Quantidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 194.03125
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 153.421875
+        },
+        {
+          "text": "Criado em",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 176.4375
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 120.140625
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 165.984375
+        },
+        {
+          "text": "Coluna",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 150.703125
+        },
+        {
+          "text": "Consumo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 182.015625
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 166.234375
+        },
+        {
+          "text": "Silo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 108.921875
+        }
+      ],
+      "tables": [
+        {
+          "width": 894,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 894,
+            "clientWidth": 894
+          }
+        },
+        {
+          "width": 894,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 894,
+            "clientWidth": 894
+          }
+        },
+        {
+          "width": 894,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 894,
+            "clientWidth": 894
+          }
+        },
+        {
+          "width": 894,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 894,
+            "clientWidth": 894
+          }
+        },
+        {
+          "width": 894,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 894,
+            "clientWidth": 894
+          }
+        },
+        {
+          "width": 894,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 894,
+            "clientWidth": 894
+          }
+        },
+        {
+          "width": 894,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 894,
+            "clientWidth": 894
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "area": "estoque",
+      "width": 1024,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/?view=usinas%2Fnoroeste%2F%3Farea%3Destoque",
+      "viewport": 820,
+      "pageWidth": 820,
+      "pageOverflow": false,
+      "links": [],
+      "headers": [
+        {
+          "text": "Código",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 120.28125
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 214.40625
+        },
+        {
+          "text": "Saldo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 58.953125
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 73.265625
+        },
+        {
+          "text": "Contábil",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 74.40625
+        },
+        {
+          "text": "Déficit silo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 64.03125
+        },
+        {
+          "text": "Entradas",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 77.515625
+        },
+        {
+          "text": "Consumo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 80.21875
+        },
+        {
+          "text": "Código",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 129.390625
+        },
+        {
+          "text": "Nome",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 230.65625
+        },
+        {
+          "text": "Categoria",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 88.265625
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 78.8125
+        },
+        {
+          "text": "Saldo inicial",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 102.9375
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 59.9375
+        },
+        {
+          "text": "Nome",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 187.796875
+        },
+        {
+          "text": "Capacidade nominal",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 195.359375
+        },
+        {
+          "text": "Operacional",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 130.421875
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 100.21875
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 76.203125
+        },
+        {
+          "text": "Coluna",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 199.28125
+        },
+        {
+          "text": "Rótulo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 203.671875
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 108.53125
+        },
+        {
+          "text": "Fator",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 95.875
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 82.640625
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 75.6875
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 104.5625
+        },
+        {
+          "text": "Tipo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 72.359375
+        },
+        {
+          "text": "Quantidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 132.4375
+        },
+        {
+          "text": "Origem",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 96.984375
+        },
+        {
+          "text": "Nota",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 76.8125
+        },
+        {
+          "text": "Fornecedor",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 131.15625
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 85.578125
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 118.234375
+        },
+        {
+          "text": "Tipo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 81.8125
+        },
+        {
+          "text": "Quantidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 149.75
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 118.421875
+        },
+        {
+          "text": "Criado em",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 136.203125
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 92.734375
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 128.109375
+        },
+        {
+          "text": "Coluna",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 116.3125
+        },
+        {
+          "text": "Consumo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 140.484375
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 128.296875
+        },
+        {
+          "text": "Silo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 84.0625
+        }
+      ],
+      "tables": [
+        {
+          "width": 763.078125,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 763,
+            "clientWidth": 690
+          }
+        },
+        {
+          "width": 690,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 690,
+            "clientWidth": 690
+          }
+        },
+        {
+          "width": 690,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 690,
+            "clientWidth": 690
+          }
+        },
+        {
+          "width": 690,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 690,
+            "clientWidth": 690
+          }
+        },
+        {
+          "width": 690,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 690,
+            "clientWidth": 690
+          }
+        },
+        {
+          "width": 690,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 690,
+            "clientWidth": 690
+          }
+        },
+        {
+          "width": 690,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 690,
+            "clientWidth": 690
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "area": "estoque",
+      "width": 820,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/?view=usinas%2Fnoroeste%2F%3Farea%3Destoque",
+      "viewport": 390,
+      "pageWidth": 390,
+      "pageOverflow": false,
+      "links": [],
+      "headers": [
+        {
+          "text": "Código",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Saldo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Contábil",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Déficit silo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Entradas",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Consumo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Código",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Nome",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Categoria",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Saldo inicial",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Nome",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Capacidade nominal",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Operacional",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Coluna",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Rótulo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Fator",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Ativo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Tipo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Quantidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Origem",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Nota",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Fornecedor",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Tipo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Quantidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Criado em",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Data",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Material",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Coluna",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Consumo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Unidade",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        },
+        {
+          "text": "Silo",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 172
+        }
+      ],
+      "tables": [
+        {
+          "width": 356,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 372,
+            "clientWidth": 356
+          }
+        },
+        {
+          "width": 356,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 372,
+            "clientWidth": 356
+          }
+        },
+        {
+          "width": 356,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 356,
+            "clientWidth": 356
+          }
+        },
+        {
+          "width": 356,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 356,
+            "clientWidth": 356
+          }
+        },
+        {
+          "width": 356,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 356,
+            "clientWidth": 356
+          }
+        },
+        {
+          "width": 356,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 356,
+            "clientWidth": 356
+          }
+        },
+        {
+          "width": 356,
+          "scrollParent": {
+            "className": "noro-table-wrap",
+            "scrollWidth": 356,
+            "clientWidth": 356
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "area": "estoque",
+      "width": 390,
+      "connections": 67
+    }
+  ],
+  "ok": true
+}

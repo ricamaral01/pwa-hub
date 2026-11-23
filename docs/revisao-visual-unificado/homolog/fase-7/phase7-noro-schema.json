@@ -1,0 +1,43 @@
+{
+  "database": "cec_noroeste_visual_homolog_20261118",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/paridade-completa-20261118T204523Z/cec_noroeste_visual_homolog_20261118-before-serial-keys.dump",
+  "aligned_with": "published cec-noroeste/src/repositories and analytics_service.js",
+  "changes": [
+    {
+      "table": "rompimentos_atuais",
+      "serial_type": "text NOT NULL DEFAULT empty",
+      "conflict_key": [
+        "data_moldagem",
+        "traco_id",
+        "numero_serie",
+        "idade_dias",
+        "cp"
+      ],
+      "existing_rows": 0
+    },
+    {
+      "table": "rompimentos_grupos",
+      "serial_type": "text NOT NULL DEFAULT empty",
+      "conflict_key": [
+        "data_moldagem",
+        "traco_id",
+        "numero_serie",
+        "idade_dias"
+      ],
+      "existing_rows": 0
+    },
+    {
+      "table": "fila_recalculo",
+      "serial_type": "text NOT NULL DEFAULT empty",
+      "conflict_key": [
+        "data_moldagem",
+        "traco_id",
+        "numero_serie",
+        "idade_dias"
+      ],
+      "existing_rows": 0
+    }
+  ],
+  "production_database_connections": 0,
+  "application_permissions_changed": false
+}

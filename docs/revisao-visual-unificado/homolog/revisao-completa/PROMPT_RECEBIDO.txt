@@ -1,0 +1,144 @@
+Situação de partida
+A branch está na 1.4.15, com as fases 1 a 6 publicadas na homologação (https://concrefer.concretrack.com.br:18446/unificado/) e a fase 7 em andamento.
+A matriz da fase 7 (docs/revisao-visual-unificado/homolog/fase-7/matrix-*.json) registra 13 telas com falha:
+GERENCIA: pdrProdutos, rbrProdutos, fechamentoDiario;
+PRODUCAO: programacaoSemanal12, dashboard, comparacao, armadurasProgramacao, postesNumerosSerie, armadurasRelatorio;
+SUPRIMENTOS: suprimentosSolicitacoes, suprimentosPainel, manutencaoUsina, suprimentosNova.
+As capturas mostram que várias telas internas ainda têm restos do visual antigo:
+títulos em caixa alta ("GERAL");
+ícone dentro de quadrado colorido;
+cartão dentro de cartão;
+pílula "Normal";
+subtítulos genéricos.
+Também aparecem bugs: "1 urgentes", "Atingimento 0.0%" em vermelho quando o programado é zero, e decimal com ponto em vez de vírgula.
+Tudo abaixo acontece somente na homologação. As regras do prompt original continuam valendo:
+
+produção e Nginx de produção intocados;
+dados só em bancos de homologação, com dump antes;
+login no celular e no tablet idêntico ao atual;
+sem push nem PR.
+Referência visual atualizada: docs/revisao-visual-unificado/telas/ (arquivos f2-*.html), com as capturas em img/f2/. Esses mockups mostram como cada tela deve ficar depois deste trabalho.
+
+A. Dados para validar de verdade (só homologação, com dump antes)
+Início com números reais.
+Crie programação e lançamentos de teste para a data de hoje no PCP e no Mapa de homologação, identificados como teste.
+O Início precisa mostrar números diferentes de zero, um setor abaixo de 85% e um saldo positivo.
+Meu acesso rápido real.
+Habilite numa conta de teste, direto no banco de homologação, com 6 a 8 atalhos permitidos pelo IAM.
+Valide sem cenário simulado.
+Não altere a validação de Origin.
+B. Remover o que ainda parece gerado por IA, em TODAS as telas (casca e módulos)
+Ícones: um por tipo de tela, nunca o mesmo para todas (menu, páginas de módulo, acesso rápido). Mapa:
+
+Tipo de tela	Ícone
+Dashboard / indicadores	gráfico
+Programação	calendário
+Relatório / PDF	documento
+Etiquetas	etiqueta
+Leitura de CP	leitor
+QR	QR
+Números de série	lista
+Cadastros	pasta
+Estoque / almoxarifado / inventário	caixa
+Compras / cotações	carrinho
+Fornecedores / recebimento	caminhão
+Estatística / CEC	linha de tendência
+Usuários	pessoa
+Sem ícone que faça sentido, a tela fica sem ícone. Remova ícones dentro de quadrados coloridos ao lado de títulos de bloco.
+
+Textos de enchimento.
+
+Remova:
+"Entre com seu usuário e senha para acessar o sistema."
+"Planejamento e Produção em um só acesso."
+"Telas disponíveis para seu perfil."
+"Realizado ÷ programado"
+"Saldo dos setores"
+"Programado no PCP e realizado no Mapa."
+"Sua fila de trabalho e as solicitações da unidade."
+"Volumes consolidados no período"
+os subtítulos genéricos de módulo e de bloco.
+Linha de apoio só com informação real (horário dos dados, unidade, contagem, pendência) ou nenhuma.
+Descrições das telas. Curtas (até 50 caracteres) e reais nas telas de Planejamento, Laboratório e Suprimentos, dizendo o que a pessoa faz ali. Se não souber, deixe sem descrição. Liste no relatório os textos que escrever.
+
+Atalhos e abas.
+
+Nenhum rótulo repetido; inclua o grupo ("Programação · Setor 1 e 2", "CEC · Visão geral").
+Sem rótulo "Acesso rápido" e sem pílulas.
+No celular, as pílulas de navegação no topo das telas internas (ex.: Painel / Solicitações / Nova solicitação; Dashboard / Programado vs Realizado) viram uma linha de abas com traço laranja e rolagem horizontal.
+Maiúsculas.
+
+Só a primeira palavra com inicial maiúscula em títulos de grupo, tela, bloco e coluna ("Corpos de prova", "Programado × realizado", "Geral", "Fila de trabalho").
+Nada de caixa alta por CSS, exceto siglas (CP, CEC, PCP, MOD, DT).
+Ajuste só a exibição, sem mudar ids, chaves ou dados.
+Densidade e superfícies.
+
+Linhas de lista com 40px (44px no celular).
+Sem cartão dentro de cartão: bloco de filtros, indicadores e tabelas ficam direto no fundo da página. Só a tabela ou a lista ganha superfície branca.
+Indicadores na faixa .strip.
+Estados.
+
+Urgência "Normal" e situação "Concluída" em texto simples, sem pílula.
+Destaque só para urgente e pendente.
+No celular, tabelas viram lista compacta como em telas/m-suprimentos.html: item em destaque, número e solicitante numa linha, situação à direita. Não use pares "rótulo: valor" empilhados.
+Redundâncias. Remova:
+
+o botão "Abrir" nas linhas do acesso rápido (a linha é o link);
+o "← Menu principal";
+o botão grande "Ver início geral".
+Login no computador (a partir de 1025px).
+
+O painel escuro fica só com o logo e os nomes das unidades.
+O formulário fica só com "Entrar", os campos e o botão.
+Abaixo de 1025px, nada muda.
+C. Revisão de todas as telas
+Inventário.
+Monte a lista completa a partir de unificado/mapa/api/screen_catalog.json (139 entradas), mais as rotas fora do catálogo: login, atualizar, testar, Armação por unidade, TV e as subtelas abertas por abas e parâmetros.
+Salve em docs/revisao-visual-unificado/homolog/revisao-completa/inventario.json.
+Matriz de revisão. Para cada tela, abra com cada perfil que tem acesso (gerência/admin, PCP, produção, laboratório, qualidade, suprimentos e consulta), nas larguras 1440, 1024, 820 e 390. Registre em revisao-completa/matriz.json:
+Carregamento: HTTP ≥ 400, erro de JavaScript no console, tela em branco ou carregando para sempre, "Você não tem acesso" indevido.
+Layout: texto cortado, elemento sobreposto, rolagem lateral do corpo, imagem ou logo quebrado.
+Padrão: fonte diferente de Geist (estilo computado), gradiente, raio fora de 4/6px (exceto pontos e avatar), caixa alta por CSS, pílula de estado normal, cartão dentro de cartão.
+Itens 3 a 11: cada um conferido na tela.
+Texto: plural e concordância ("1 urgentes"), decimal com vírgula, datas no formato dd/mm/aaaa, porcentagem sem divisor (programado 0 deve mostrar "—", não "0,0%" vermelho).
+Título: a barra superior do celular mostra o nome da tela aberta, não "Início".
+Captura de prova: uma por tela e largura, em revisao-completa/capturas/. Gere revisao-completa/galeria.html com filtro por módulo, perfil e problema.
+D. Correção de bugs
+Classifique cada problema encontrado na revisão:
+Visual ou de texto: corrija.
+Lógica de interface (erro de JS, título errado, link errado, menu sobreposto, formatação de número, plural, divisão por zero na tela): corrija no frontend e, quando possível, crie teste em tests/unificado/.
+Exige mudar API, banco, regra de negócio ou permissão: não corrija. Registre com evidência, causa provável e proposta de correção, e me pergunte.
+Bugs já conhecidos (corrija e prove):
+As 13 telas com falha na matriz da fase 7. Diagnostique cada uma e informe a causa.
+Título "Início" na barra do celular com tela aberta. Em shell/navigation.js, activeEntry() só compara o view exato com o endereço do menu; telas abertas por atalho ou com parâmetros (ex.: Números de série) não batem.
+Faça o roteador expor o id da tela resolvida (ex.: window.UnificadoActiveItem, definido em updateModelAPath a partir de activeItem).
+Em activeEntry(), use esse id como segunda tentativa e o caminho sem parâmetros como terceira, só para itens sem parâmetros no menu.
+Sem tela identificada, use o rótulo da trilha, nunca "Início".
+Menu de Ajuda sobre o perfil na tela Conta do celular. .nav-help-menu é position:absolute; bottom:100% e abre por cima do nome. Na tela Conta (renderAccount), mostre "Como funciona" e "Relatar problema" como itens normais da lista, sem menu suspenso. O menu suspenso continua só no rodapé do menu lateral.
+Logos quebrados no topo do menu do Laboratório.
+Textos: "1 urgentes" e "0 há mais de 24 h" (escreva "Nenhuma há mais de 24 h" e "1 urgente").
+Dashboard de Planejamento: "Atingimento 0.0%" em vermelho com programado zero (mostre "—"), e decimais com ponto.
+Pendências da fase 0.5 e da fase 2, se ainda existirem.
+Depois de cada correção, reabra a tela na matriz e marque o resultado.
+E. Validação e entrega
+Incremente versão, URLs ?v= e cache do service worker. Rode node --check nos JS alterados, recompile o Modelo A, Qualidade, Logística e Laboratório a partir das fontes quando tocar neles, e rode os testes de tests/ ligados aos arquivos alterados mais a trava da fase 7.
+Critério de pronto:
+matriz com zero falhas de carregamento e layout;
+zero itens de padrão em aberto;
+impressões e PDFs iguais aos de antes;
+login de celular e tablet idêntico;
+gate 7/7;
+service worker atualizando sozinho;
+auditoria de produção sem diferença.
+Commit na branch com mensagem própria.
+Me entregue:
+
+versão;
+arquivos alterados;
+resumo da matriz: telas × perfis × larguras revisados, problemas encontrados, corrigidos e pendentes;
+lista de bugs com causa e correção;
+bugs que exigem backend, com proposta;
+textos de descrição escritos;
+link da galeria;
+roteiro do que eu devo conferir na 18446.
+Pare e aguarde meu ok. A produção só recebe a entrega quando eu escrever "aprovado, publicar em produção".

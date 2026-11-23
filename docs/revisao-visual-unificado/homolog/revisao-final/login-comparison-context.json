@@ -1,0 +1,23 @@
+{
+  "candidate_version": "1.4.26",
+  "baseline_version": "1.4.25",
+  "displayed_version_in_both_captures": "1.4.25",
+  "reason": "O endpoint VERSION permanece publicado em 1.4.25. A comparação controla o texto variável da versão para verificar somente o layout congelado até 1024px. Os arquivos locais de HTML/CSS são da candidata.",
+  "results": [
+    {
+      "width": 1024,
+      "pixels_changed": 0,
+      "identical": true
+    },
+    {
+      "width": 820,
+      "pixels_changed": 0,
+      "identical": true
+    },
+    {
+      "width": 390,
+      "pixels_changed": 0,
+      "identical": true
+    }
+  ]
+}

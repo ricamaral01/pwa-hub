@@ -1,0 +1,358 @@
+[
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "manutencaoUsina",
+    "path": "/unificado/manutencao-usina/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nExpandir tudo\nRecolher tudo\nManutenção Usina\nAtualizar\nVersão 1.4.17\nAjuda\nS\nSUPRIMENTOS\nSair\nQualidade\n›\nManutenção Usi"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom alerta\n1\nBuscar ativ"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nQualidade\n›\nManutenção Usina"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom alerta\n1\nBuscar ativ"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nQualidade\n›\nManutenção Usina"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom alerta\n1\nBuscar ativ"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=manutencao-usina%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nQualidade\nManutenção Usina\nManutenção Usina\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/manutencao-usina/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Manutenção Usina\n\nCorreções dos misturadores M1, M2 e áreas comuns da usina.\n\nAtualizar\nAbertas\n35\nConcluídas\n1\nPendentes de compra\n0\nAguardando material\n0\nCom alerta\n1\nBuscar ativ"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "suprimentosSolicitacoes",
+    "path": "/unificado/suprimentos/solicitacoes/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAtualizar\nVersão 1.4.17\nAjuda\nS\nSUPRIMEN"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Solicitações\n\nAcompanhe pedidos, alçadas e atendimento.\n\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (4)\nConcluídas (65)\nCanceladas /"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nSuprimentos\n›\nSolicitações\n›\nSolicitações"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Solicitações\n\nAcompanhe pedidos, alçadas e atendimento.\n\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (4)\nConcluídas (65)\nCanceladas /"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nSuprimentos\n›\nSolicitações\n›\nSolicitações"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Solicitações\n\nAcompanhe pedidos, alçadas e atendimento.\n\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (4)\nConcluídas (65)\nCanceladas /"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fsolicitacoes%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nSolicitações\nPainel\nSolicitações\nNova solicitação\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/solicitacoes/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Solicitações\n\nAcompanhe pedidos, alçadas e atendimento.\n\n+\nNova solicitação\nTodas\nEm aprovação (2)\nDevolvidas (1)\nAprovadas / separar (9)\nEntregues (4)\nConcluídas (65)\nCanceladas /"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "suprimentosPainel",
+    "path": "/unificado/suprimentos/painel/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAtualizar\nVersão 1.4.17\nAjuda\nS\nSUPRIMEN"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Painel de suprimentos\n\nSua fila de trabalho e as solicitações da unidade.\n\n+\nNova solicitação\nAguardando sua aprovação\n0\n0 há mais de 24 h\nEm atendimento\n3\n1 urgentes / parou produ"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nSuprimentos\n›\nSolicitações\n›\nPainel"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Painel de suprimentos\n\nSua fila de trabalho e as solicitações da unidade.\n\n+\nNova solicitação\nAguardando sua aprovação\n0\n0 há mais de 24 h\nEm atendimento\n3\n1 urgentes / parou produ"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nSuprimentos\n›\nSolicitações\n›\nPainel"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Painel de suprimentos\n\nSua fila de trabalho e as solicitações da unidade.\n\n+\nNova solicitação\nAguardando sua aprovação\n0\n0 há mais de 24 h\nEm atendimento\n3\n1 urgentes / parou produ"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fpainel%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nPainel\nPainel\nSolicitações\nNova solicitação\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/painel/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "Painel de suprimentos\n\nSua fila de trabalho e as solicitações da unidade.\n\n+\nNova solicitação\nAguardando sua aprovação\n0\n0 há mais de 24 h\nEm atendimento\n3\n1 urgentes / parou produ"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "screen": "suprimentosNova",
+    "path": "/unificado/suprimentos/nova/",
+    "status": 200,
+    "layout": [
+      {
+        "width": 1440,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSuprimentos\nExpandir tudo\nRecolher tudo\nSolicitações\nPainel\nSolicitações\nNova solicitação\nAtualizar\nVersão 1.4.17\nAjuda\nS\nSUPRIMEN"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← Solicitações\nNova solicitação\n\nEscolha os itens e informe quando precisa deles.\n\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\n"
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nSuprimentos\n›\nSolicitações\n›\nNova solicitação"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← Solicitações\nNova solicitação\n\nEscolha os itens e informe quando precisa deles.\n\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\n"
+          }
+        ]
+      },
+      {
+        "width": 820,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nv1.4.17\nSuprimentos\n›\nSolicitações\n›\nNova solicitação"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← Solicitações\nNova solicitação\n\nEscolha os itens e informe quando precisa deles.\n\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\n"
+          }
+        ]
+      },
+      {
+        "width": 390,
+        "frames": [
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/?view=suprimentos%2Fnova%2F",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "AMBIENTE DE TESTE · dados isolados de homologação\nSolicitações\nNova solicitação\nPainel\nSolicitações\nNova solicitação\nInício\nTelas\nRecentes\nConta"
+          },
+          {
+            "url": "https://concrefer.concretrack.com.br:18446/unificado/suprimentos/nova/",
+            "overflow": false,
+            "access_denied": false,
+            "blank": false,
+            "text": "← Solicitações\nNova solicitação\n\nEscolha os itens e informe quando precisa deles.\n\n1\nItens\n2\nDetalhes e envio\nO que você precisa?\nMaterial por nome ou código\nQuantidade\nUnidade\nun\n"
+          }
+        ]
+      }
+    ],
+    "js_errors": [],
+    "http_errors": [],
+    "expected_capability_denials": [],
+    "external_attempts": [],
+    "ok": true
+  }
+]

@@ -1,0 +1,76 @@
+{
+  "timers": [
+    {
+      "timer": "unificado-homolog-tarefas-ged.timer",
+      "service": "unificado-homolog-tarefas-ged.service",
+      "before": {
+        "Unit": "unificado-homolog-tarefas-ged.service",
+        "NextElapseUSecRealtime": "Mon 2026-11-23 00:25:00 UTC",
+        "LastTriggerUSec": "Mon 2026-11-23 00:24:00 UTC",
+        "ActiveState": "active",
+        "FragmentPath": "/etc/systemd/system/unificado-homolog-tarefas-ged.timer"
+      },
+      "target_database": "qualidade_homolog_20261016",
+      "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/timers",
+      "authorized_by": "SERVICOS_ANTIGOS_PROPOSTA.html: Parar primeiro os timers unificado-homolog-tarefas-* (ged, notify, outbox, suprimentos), aguardando as execuções em curso concluírem naturalmente.",
+      "timer_stopped_at_utc": "2026-11-23T00:24:17.330380+00:00"
+    },
+    {
+      "timer": "unificado-homolog-tarefas-notify.timer",
+      "service": "unificado-homolog-tarefas-notify.service",
+      "before": {
+        "Unit": "unificado-homolog-tarefas-notify.service",
+        "NextElapseUSecRealtime": "Mon 2026-11-23 00:25:00 UTC",
+        "LastTriggerUSec": "Mon 2026-11-23 00:24:00 UTC",
+        "ActiveState": "active",
+        "FragmentPath": "/etc/systemd/system/unificado-homolog-tarefas-notify.timer"
+      },
+      "target_database": "qualidade_homolog_20261016",
+      "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/timers",
+      "authorized_by": "SERVICOS_ANTIGOS_PROPOSTA.html: Parar primeiro os timers unificado-homolog-tarefas-* (ged, notify, outbox, suprimentos), aguardando as execuções em curso concluírem naturalmente.",
+      "timer_stopped_at_utc": "2026-11-23T00:24:17.347230+00:00"
+    },
+    {
+      "timer": "unificado-homolog-tarefas-outbox.timer",
+      "service": "unificado-homolog-tarefas-outbox.service",
+      "before": {
+        "Unit": "unificado-homolog-tarefas-outbox.service",
+        "NextElapseUSecRealtime": "Mon 2026-11-23 00:25:00 UTC",
+        "LastTriggerUSec": "Mon 2026-11-23 00:24:00 UTC",
+        "ActiveState": "active",
+        "FragmentPath": "/etc/systemd/system/unificado-homolog-tarefas-outbox.timer"
+      },
+      "target_database": "qualidade_homolog_20261016",
+      "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/timers",
+      "authorized_by": "SERVICOS_ANTIGOS_PROPOSTA.html: Parar primeiro os timers unificado-homolog-tarefas-* (ged, notify, outbox, suprimentos), aguardando as execuções em curso concluírem naturalmente.",
+      "timer_stopped_at_utc": "2026-11-23T00:24:17.362938+00:00"
+    },
+    {
+      "timer": "unificado-homolog-tarefas-suprimentos.timer",
+      "service": "unificado-homolog-tarefas-suprimentos.service",
+      "before": {
+        "Unit": "unificado-homolog-tarefas-suprimentos.service",
+        "NextElapseUSecRealtime": "Mon 2026-11-23 00:25:00 UTC",
+        "LastTriggerUSec": "Mon 2026-11-23 00:24:00 UTC",
+        "ActiveState": "active",
+        "FragmentPath": "/etc/systemd/system/unificado-homolog-tarefas-suprimentos.timer"
+      },
+      "target_database": "qualidade_homolog_20261016",
+      "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/timers",
+      "authorized_by": "SERVICOS_ANTIGOS_PROPOSTA.html: Parar primeiro os timers unificado-homolog-tarefas-* (ged, notify, outbox, suprimentos), aguardando as execuções em curso concluírem naturalmente.",
+      "timer_stopped_at_utc": "2026-11-23T00:24:17.380137+00:00"
+    }
+  ],
+  "oneshots_finished_naturally": true,
+  "production_timer_changes": 0,
+  "visual_homolog_timer_changes": 0,
+  "disabled": false,
+  "sql_termination": false,
+  "suprimentos_old_kept_running": true,
+  "rollback_commands": [
+    "systemctl start unificado-homolog-tarefas-ged.timer",
+    "systemctl start unificado-homolog-tarefas-notify.timer",
+    "systemctl start unificado-homolog-tarefas-outbox.timer",
+    "systemctl start unificado-homolog-tarefas-suprimentos.timer"
+  ]
+}

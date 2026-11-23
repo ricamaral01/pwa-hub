@@ -8,15 +8,6 @@ import { Permissao } from '../modules/usuarios/entities/permissao.entity';
 import { Maquina } from '../modules/producao-base/entities/maquina.entity';
 import { Dispositivo } from '../modules/producao-base/entities/dispositivo.entity';
 import { Auditoria } from '../modules/auditoria/entities/auditoria.entity';
-import { CADASTRO_ENTITIES } from '../modules/cadastros/entities';
-import { Apontamento } from '../modules/producao/entities/apontamento.entity';
-import { Ocorrencia } from '../modules/ocorrencias/entities/ocorrencia.entity';
-import {
-  Blenda,
-  BlendaComponente,
-  CalendarioTurno,
-  EstoqueMovimento,
-} from '../modules/estoque/entities';
 
 export function buildTypeOrmOptions(config: ConfigService): TypeOrmModuleOptions {
   return {
@@ -27,23 +18,7 @@ export function buildTypeOrmOptions(config: ConfigService): TypeOrmModuleOptions
     password: config.get<string>('DATABASE_PASSWORD'),
     database: config.get<string>('DATABASE_NAME'),
     ssl: config.get<boolean>('DATABASE_SSL'),
-    entities: [
-      Empresa,
-      Unidade,
-      Usuario,
-      Perfil,
-      Permissao,
-      Maquina,
-      Dispositivo,
-      Auditoria,
-      ...CADASTRO_ENTITIES,
-      Apontamento,
-      Ocorrencia,
-      EstoqueMovimento,
-      Blenda,
-      BlendaComponente,
-      CalendarioTurno,
-    ],
+    entities: [Empresa, Unidade, Usuario, Perfil, Permissao, Maquina, Dispositivo, Auditoria],
     migrations: ['dist/database/migrations/*.js'],
     migrationsRun: false,
     synchronize: false,

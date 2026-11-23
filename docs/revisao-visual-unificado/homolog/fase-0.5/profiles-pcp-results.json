@@ -1,0 +1,40 @@
+{
+  "role": "PCP",
+  "paired_mapa_account": true,
+  "read": [
+    {
+      "name": "series",
+      "status": 200,
+      "detail": null
+    },
+    {
+      "name": "semana",
+      "status": 200,
+      "detail": null
+    },
+    {
+      "name": "armaduras",
+      "status": 200,
+      "detail": null
+    }
+  ],
+  "positive_write_checks": [
+    {
+      "operation": "create",
+      "status": 201,
+      "week_id": 2,
+      "test_week": "2030-01-14"
+    },
+    {
+      "operation": "save",
+      "status": 200
+    }
+  ],
+  "write_denials": [],
+  "opened": [
+    "pcp/numeros-serie/",
+    "pcp/programacao-semanal/",
+    "pcp/armaduras/"
+  ],
+  "errors": []
+}

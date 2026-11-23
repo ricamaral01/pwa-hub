@@ -1,0 +1,52 @@
+[
+  {
+    "profile": "GERENCIA",
+    "screen": "labSlump",
+    "sizes": [
+      1,
+      1,
+      2,
+      2
+    ]
+  },
+  {
+    "profile": "GERENCIA",
+    "screen": "labNoroCecResultados",
+    "sizes": [
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  {
+    "profile": "LABORATORIO",
+    "screen": "labDevice",
+    "sizes": [
+      1,
+      2,
+      2,
+      2
+    ]
+  },
+  {
+    "profile": "LABORATORIO",
+    "screen": "labNoroCecResultados",
+    "sizes": [
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  {
+    "profile": "LABORATORIO",
+    "screen": "labCriteria",
+    "sizes": [
+      2,
+      2,
+      2,
+      2
+    ]
+  }
+]

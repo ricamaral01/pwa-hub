@@ -1,0 +1,125 @@
+--- 1.4.6/services/laboratorio/server/static/cronoanalise/assets/absorcao-historico.js
++++ 1.4.31/services/laboratorio/server/static/cronoanalise/assets/absorcao-historico.js
+@@ -0,0 +1,122 @@
++/* Compatibility panel for published Laboratório builds that predate AbsorptionHistory.tsx. */
++(() => {
++  let rowsPromise;
++  let scheduled = false;
++  const headers = [
++    'Data Produção', 'Corpo de Prova', 'Data do Ensaio', 'Absorção por Imersão (%)',
++    'NBR 8451-1 (Individual ≤ 7)', 'Média', 'NBR 8451-1 (Média ≤ 5,5)'
++  ];
++  const fields = [
++    'data_producao', 'corpo_prova', 'data_ensaio', 'absorcao_pct',
++    'resultado_individual', 'media_pct', 'resultado_media'
++  ];
++  const getRows = () => rowsPromise ||= fetch('/api/absorcao/historico', {credentials: 'same-origin'})
++    .then(response => { if (!response.ok) throw new Error('Não foi possível carregar o histórico.'); return response.json(); });
++
++  function mount() {
++    const host = document.querySelector('.abs-module');
++    if (!host || host.querySelector('.absorption-history')) return;
++    const panel = document.createElement('section');
++    panel.className = 'panel absorption-history';
++    panel.setAttribute('aria-label', 'Histórico de absorção por imersão');
++    const heading = document.createElement('div');
++    heading.className = 'panelHead';
++    heading.innerHTML = '<div><div class="eyebrow">Resultados históricos informados</div><h2>Absorção por imersão</h2></div>';
++    const print = document.createElement('a');
++    print.className = 'btn';
++    print.textContent = 'Versão para impressão ↗';
++    print.href = '/api/absorcao/historico/relatorio';
++    print.target = '_blank';
++    print.rel = 'noopener';
++    heading.append(print);
++    panel.append(heading);
++    const note = document.createElement('p');
++    note.className = 'note';
++    note.textContent = 'Registros de 2024 a 2026. Os percentuais e as médias foram transcritos dos dados fornecidos; não há pesagens originais para recalcular estes ensaios.';
++    panel.append(note);
++    const filters = document.createElement('div');
++    filters.className = 'abs-history-filters';
++    const inputs = [];
++    for (const labelText of ['Produção de', 'Produção até']) {
++      const label = document.createElement('label');
++      label.className = 'field';
++      const text = document.createElement('span');
++      text.textContent = labelText;
++      const input = document.createElement('input');
++      input.className = 'input';
++      input.type = 'date';
++      label.append(text, input);
++      filters.append(label);
++      inputs.push(input);
++    }
++    const count = document.createElement('strong');
++    filters.append(count);
++    panel.append(filters);
++    const message = document.createElement('p');
++    message.className = 'note';
++    message.textContent = 'Carregando histórico…';
++    panel.append(message);
++    const wrap = document.createElement('div');
++    wrap.className = 'abs-history-table-wrap';
++    const table = document.createElement('table');
++    table.className = 'abs-history-table';
++    const thead = document.createElement('thead');
++    const headRow = document.createElement('tr');
++    for (const title of headers) {
++      const th = document.createElement('th');
++      th.textContent = title;
++      headRow.append(th);
++    }
++    thead.append(headRow);
++    const tbody = document.createElement('tbody');
++    table.append(thead, tbody);
++    wrap.append(table);
++    panel.append(wrap);
++    const foot = document.createElement('p');
++    foot.className = 'note';
++    foot.textContent = 'Campos vazios e datas sem ano foram preservados como enviados. Confira o critério normativo vigente antes de emitir laudo oficial.';
++    panel.append(foot);
++    host.insertBefore(panel, host.lastElementChild);
++
++    function show(rows) {
++      const de = inputs[0].value;
++      const ate = inputs[1].value;
++      const invalid = Boolean(de && ate && de > ate);
++      const visible = invalid ? [] : rows.filter(row => (!de || row.data_producao_iso >= de) && (!ate || row.data_producao_iso <= ate));
++      count.textContent = `${new Set(visible.map(row => row.grupo)).size} grupos · ${visible.length} corpos de prova`;
++      print.href = '/api/absorcao/historico/relatorio' + (de || ate ? `?${new URLSearchParams({...(de ? {de} : {}), ...(ate ? {ate} : {})})}` : '');
++      print.setAttribute('aria-disabled', String(invalid));
++      print.onclick = event => { if (invalid) event.preventDefault(); };
++      message.textContent = invalid ? 'A data inicial deve ser anterior à data final.' : visible.length ? '' : 'Nenhum registro no período selecionado.';
++      tbody.replaceChildren();
++      const fragment = document.createDocumentFragment();
++      for (const row of visible) {
++        const tr = document.createElement('tr');
++        if (row.media_pct) tr.className = 'abs-group-start';
++        for (const field of fields) {
++          const td = document.createElement('td');
++          td.textContent = row[field] || '';
++          tr.append(td);
++        }
++        fragment.append(tr);
++      }
++      tbody.append(fragment);
++    }
++    getRows().then(data => {
++      if (!panel.isConnected) return;
++      for (const input of inputs) input.addEventListener('change', () => show(data.linhas));
++      show(data.linhas);
++    }).catch(error => { if (panel.isConnected) message.textContent = error.message; });
++  }
++  function schedule() {
++    if (scheduled) return;
++    scheduled = true;
++    requestAnimationFrame(() => { scheduled = false; mount(); });
++  }
++  const start = () => {
++    new MutationObserver(schedule).observe(document.getElementById('root') || document.body, {childList: true, subtree: true});
++    schedule();
++  };
++  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once: true});
++  else start();
++})();

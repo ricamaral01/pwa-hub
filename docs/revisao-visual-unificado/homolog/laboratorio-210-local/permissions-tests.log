@@ -1,0 +1,15 @@
+test_absent_scope_does_not_grant_new_unit_even_to_pcp_admin (test_lab210_permissions.AccessTests.test_absent_scope_does_not_grant_new_unit_even_to_pcp_admin) ... ok
+test_alex_explicit_master_access (test_lab210_permissions.AccessTests.test_alex_explicit_master_access) ... ok
+test_assertion_carries_exact_unit_method_and_operation (test_lab210_permissions.AccessTests.test_assertion_carries_exact_unit_method_and_operation) ... ok
+test_central_primary_scope_still_limits_an_explicit_screen_grant (test_lab210_permissions.AccessTests.test_central_primary_scope_still_limits_an_explicit_screen_grant) ... ok
+test_explicit_extra_unit_is_honored (test_lab210_permissions.AccessTests.test_explicit_extra_unit_is_honored) ... ok
+test_explicit_grant_is_unit_scoped_and_preserves_old_screens (test_lab210_permissions.AccessTests.test_explicit_grant_is_unit_scoped_and_preserves_old_screens) ... ok
+test_homolog_alias_is_never_a_production_master (test_lab210_permissions.AccessTests.test_homolog_alias_is_never_a_production_master) ... ok
+test_master_without_approved_nominal_grant_gets_no_new_unit (test_lab210_permissions.AccessTests.test_master_without_approved_nominal_grant_gets_no_new_unit) ... ok
+test_other_modules_and_existing_unit_catalogue_are_preserved (test_lab210_permissions.AccessTests.test_other_modules_and_existing_unit_catalogue_are_preserved) ... ok
+test_read_and_launch_have_distinct_screens (test_lab210_permissions.AccessTests.test_read_and_launch_have_distinct_screens) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.000s
+
+OK

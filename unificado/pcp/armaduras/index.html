@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Armaduras - Planejamento Concrefer</title>
+  <script>if(top===self&&!['localhost','127.0.0.1'].includes(location.hostname))location.replace('/unificado/?view='+encodeURIComponent(location.pathname.slice('/unificado/'.length).replace(/index\.html$/,'')+location.search));</script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=1.4.27"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=1.4.27"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=1.4.27"></script>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css">
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css">
+  <link rel="stylesheet" href="/unificado/pcp/armaduras/armaduras.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27">
+<script defer src="/unificado/shell/components.js?v=1.4.27"></script>
+<link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"></head>
+<body>
+<div id="sidebar-overlay"></div>
+<aside id="sidebar"><div class="sidebar-brand">PCP Concrefer</div><nav>
+  <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard">Dashboard</a>
+  <a class="nav-link" href="/unificado/pcp/armaduras/" data-page="armaduras">Armaduras - Programação semanal</a>
+  <a class="nav-link" href="/unificado/pcp/armaduras-relatorio/" data-page="armaduras-relatorio">Armaduras - Relatório de produção</a>
+</nav><div class="sidebar-footer"><div id="user-nome"></div><button type="button" id="btn-logout">Sair</button></div></aside>
+<div id="main-content">
+  <header class="topbar"><div><button id="sidebar-toggle" type="button" aria-label="Abrir menu">☰</button> Planejamento / Armaduras</div><div><span id="user-nome-top"></span> <span id="user-nivel"></span></div></header>
+  <main class="ar-page">
+    <section class="ar-heading"><div><p class="legacy-print-title">PLANEJAMENTO · CAMPINAS</p><h1>Produção de armaduras</h1><p>Demanda da programação de postes, antecipada para o último dia de trabalho anterior.</p></div><button type="button" id="calendar-open" class="ar-button">Calendário de trabalho</button></section>
+    <nav class="ar-tabs" aria-label="Consulta de armaduras"><button type="button" data-view="semana" aria-pressed="true">Programação semanal</button><button type="button" data-view="dia" aria-pressed="false">Conferência diária</button><button type="button" data-view="relatorio" aria-pressed="false">Relatório / PDF</button><a href="/unificado/pcp/numeros-serie/" class="ar-button">Números de série dos postes</a></nav>
+    <section class="ar-filters" aria-label="Filtros"><label id="week-label">Semana dos postes<input id="week" type="date" required></label><label id="day-label" hidden>Produzir armaduras em<input id="arm-day" type="date"></label><label>Grupo de setores<select id="group"><option value="12">Setor 1 e 2</option><option value="34">Setor 3 e 4</option><option value="todos" hidden>Ambos os grupos</option></select></label><button type="button" id="refresh" class="ar-button">Atualizar</button><button type="button" id="issue" class="ar-button ar-primary" hidden disabled>Gerar PDF para impressão</button></section>
+    <p id="status" role="status" aria-live="polite"></p><div id="error" role="alert" hidden></div>
+    <section class="ar-rule"><strong>D-1</strong><span>Segunda a sexta, exceto feriados e paralisações. Sábados e exceções seguem o calendário de trabalho cadastrado.</span></section>
+    <div id="results" aria-busy="false"></div>
+    <section id="history-section" class="ar-panel" hidden><h2>Emissões e reimpressões</h2><p>O PDF de cada emissão preserva a programação e o calendário daquele momento.</p><div class="ar-scroll"><table class="ar-table"><thead><tr><th>Emissão</th><th>Revisão</th><th>Emitido em</th><th>Responsável</th><th>Origem atual</th><th>Ação</th></tr></thead><tbody id="history"></tbody></table></div></section>
+  </main>
+</div>
+<dialog id="calendar-dialog" aria-labelledby="calendar-title"><div class="ar-dialog-head"><h2 id="calendar-title">Calendário das armaduras · Campinas</h2><button type="button" id="calendar-close" class="ar-button">Fechar</button></div><p>Os ajustes recalculam o D-1 das consultas futuras. PDFs já emitidos permanecem preservados.</p><p id="calendar-meta"></p><form id="calendar-form"><fieldset id="calendar-weekdays"><legend>Dias regulares de trabalho</legend><div id="weekdays" class="ar-weekdays"></div></fieldset><button type="submit" id="calendar-save" class="ar-button ar-primary">Salvar dias regulares</button></form><hr><form id="exception-form"><h3>Ajustar feriado, sábado ou paralisação</h3><div class="ar-filters"><label>Data<input id="exception-day" type="date" required></label><label>Funcionamento<select id="exception-open"><option value="false">Sem trabalho</option><option value="true">Com trabalho</option></select></label><label>Motivo<input id="exception-reason" maxlength="200" minlength="3" required placeholder="Ex.: sábado de compensação"></label><button type="submit" id="exception-save" class="ar-button ar-primary">Salvar exceção</button></div></form><p id="calendar-error" role="alert"></p><div class="ar-filters"><label>Ano das exceções<input id="calendar-year" type="number" min="2025" max="2100"></label></div><div class="ar-scroll"><table class="ar-table"><thead><tr><th>Data</th><th>Funcionamento</th><th>Motivo</th><th>Ação</th></tr></thead><tbody id="calendar-exceptions"></tbody></table></div></dialog>
+<script src="/unificado/pcp/static/js/app.js"></script>
+<script src="/unificado/pcp/armaduras/armaduras.js?v=1.4.27"></script>
+</body></html>

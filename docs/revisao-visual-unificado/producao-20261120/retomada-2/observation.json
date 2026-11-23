@@ -1,0 +1,1805 @@
+{
+  "version": "1.4.31",
+  "started_epoch": 1795203063.700411,
+  "elapsed_seconds": 1800.0,
+  "required_seconds": 1800,
+  "complete": true,
+  "rolled_back": false,
+  "latest_sample": {
+    "total": 68,
+    "clients": 63,
+    "max": 100,
+    "super_reserved": 3,
+    "reserved": 0,
+    "idle_in_transaction": 0,
+    "at_epoch": 1795204859.3404071,
+    "common_headroom": 34
+  },
+  "samples": [
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203063.9510694,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203074.5400503,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203084.6593792,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203094.7849197,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203104.9117317,
+      "common_headroom": 33
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203115.0440707,
+      "common_headroom": 33
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203125.1723304,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203135.3126166,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203145.4437273,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203155.5815573,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203165.7130167,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795203175.8379145,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203185.9789808,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203196.1128554,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203206.2438328,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203216.37109,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203226.5015345,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203236.6467214,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203246.7769156,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203256.8987784,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203267.0312335,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203277.1643498,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203287.2890213,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203297.4245203,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203307.5692136,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203317.6999125,
+      "common_headroom": 34
+    },
+    {
+      "total": 70,
+      "clients": 65,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203327.838746,
+      "common_headroom": 32
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203337.9690654,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203348.0908382,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203358.2103357,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203368.33816,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795203378.4774623,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203388.6047812,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203398.7239397,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203408.8439047,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203418.9678473,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203429.106245,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203439.2347255,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203449.3694773,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203459.4876802,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203469.6205702,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203479.745213,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203489.873717,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203500.0054407,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203510.1520112,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203520.2809076,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203530.4281998,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203540.6148565,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203550.7584467,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203560.8784215,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203571.0257359,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795203581.1707625,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203591.3048317,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203601.500546,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203612.1721764,
+      "common_headroom": 34
+    },
+    {
+      "total": 70,
+      "clients": 65,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 2,
+      "at_epoch": 1795203622.3160334,
+      "common_headroom": 32
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203632.4586778,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203642.6157591,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203652.7557294,
+      "common_headroom": 34
+    },
+    {
+      "total": 72,
+      "clients": 67,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795203662.955651,
+      "common_headroom": 30
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203673.1306942,
+      "common_headroom": 34
+    },
+    {
+      "total": 70,
+      "clients": 65,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 2,
+      "at_epoch": 1795203683.2610676,
+      "common_headroom": 32
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203693.3894677,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203703.5123112,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795203713.6380978,
+      "common_headroom": 33
+    },
+    {
+      "total": 71,
+      "clients": 66,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203723.8330605,
+      "common_headroom": 31
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203733.982976,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795203744.1088083,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203754.23536,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203764.3660765,
+      "common_headroom": 33
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203774.499389,
+      "common_headroom": 33
+    },
+    {
+      "total": 70,
+      "clients": 65,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795203784.6392007,
+      "common_headroom": 32
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203794.790256,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203804.9262164,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203815.0609334,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203825.1827865,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203835.3238692,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203845.482577,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203855.61371,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203865.7627423,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203875.907051,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203886.0377476,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203896.1667333,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203906.3123028,
+      "common_headroom": 33
+    },
+    {
+      "total": 70,
+      "clients": 65,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795203916.4483647,
+      "common_headroom": 32
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203926.5710669,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203936.6955185,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203946.833839,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203956.9620059,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203967.0876489,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203977.2099102,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203987.3338978,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795203997.4612186,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204007.5960016,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204017.7277033,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204027.853628,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204037.9740937,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204048.102021,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204058.2369907,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204068.3624716,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204078.4929311,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204088.6173332,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204098.743268,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204108.8666492,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795204118.9845495,
+      "common_headroom": 33
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204129.124936,
+      "common_headroom": 33
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204139.2483304,
+      "common_headroom": 33
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204149.375312,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204159.4961798,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204169.6250155,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204179.7609992,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795204189.895703,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204200.0922184,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204210.2653675,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204220.4178517,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204230.5444186,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204240.6787922,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204250.823657,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204260.995325,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204271.2081842,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795204281.3441224,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204291.4720054,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204301.5969615,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204311.7296388,
+      "common_headroom": 34
+    },
+    {
+      "total": 72,
+      "clients": 67,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 2,
+      "at_epoch": 1795204321.927239,
+      "common_headroom": 30
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204332.147687,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795204342.2723196,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204352.4024155,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204362.5326295,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204372.6879404,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204382.8267572,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204392.9875178,
+      "common_headroom": 34
+    },
+    {
+      "total": 70,
+      "clients": 65,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 2,
+      "at_epoch": 1795204403.1164064,
+      "common_headroom": 32
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204413.2331846,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204423.3618612,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204433.501473,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204443.638254,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204453.7791479,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795204463.9212108,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204474.0397658,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204484.1652455,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204494.3205452,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204504.456841,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204514.622091,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204524.7616043,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795204534.9129436,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204545.0390928,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204555.176176,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204565.3187404,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204575.4552772,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204585.605985,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204595.7409813,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204605.867524,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204616.0113575,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204626.1397507,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204636.258537,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204646.3799193,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204656.496828,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204666.6184642,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795204676.7514756,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204686.882445,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204697.010565,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204707.1473067,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204717.274891,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204727.3961449,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204737.532398,
+      "common_headroom": 34
+    },
+    {
+      "total": 69,
+      "clients": 64,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 1,
+      "at_epoch": 1795204747.6576078,
+      "common_headroom": 33
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204757.7777843,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204767.8997936,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204778.0447128,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204788.174201,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204798.3201087,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204808.5083992,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204818.6771095,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204828.8472493,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204839.019407,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204849.1702902,
+      "common_headroom": 34
+    },
+    {
+      "total": 68,
+      "clients": 63,
+      "max": 100,
+      "super_reserved": 3,
+      "reserved": 0,
+      "idle_in_transaction": 0,
+      "at_epoch": 1795204859.3404071,
+      "common_headroom": 34
+    }
+  ],
+  "events": [],
+  "critical_events": 0,
+  "journal_messages_examined": 518,
+  "docker_log_lines_examined": 178,
+  "monitor_error": null
+}

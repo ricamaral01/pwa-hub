@@ -1,0 +1,28 @@
+{
+  "phase": "backed_up",
+  "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z",
+  "database_backups": [
+    {
+      "database": "concretrack_postes",
+      "path": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/laboratorio.dump",
+      "sha256": "acbf27b9487742bc42a2a924ce05a6cf67f5adf991a0dfad30b2b47a2af7e240",
+      "size": 260840
+    },
+    {
+      "database": "mapa_unificado_teste",
+      "path": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/central.dump",
+      "sha256": "b4774fcf472705163399ae0319b4d17f78288ea541becf17552b46e9973bd574",
+      "size": 116159213
+    },
+    {
+      "database": "mapa_visual_homolog_20261118",
+      "path": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/central-homolog.dump",
+      "sha256": "3dd5db5c511d8704b44829b456a5891e66fa9e9d09e23bacdfa69dcc339807f6",
+      "size": 115028746
+    }
+  ],
+  "release_tar": {
+    "path": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/release-2.0.0.tar.gz",
+    "sha256": "44c6ee05f720f332c95a6d6ad52d68120cbe309b2d73b683b59231001bdebaf1"
+  }
+}

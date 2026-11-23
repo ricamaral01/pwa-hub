@@ -1,0 +1,8 @@
+{
+  "phase": "fase-4",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/visual-fase-4-20261118T220902Z",
+  "files": 100,
+  "version": "1.4.10",
+  "production_files_pids_nginx_unchanged": true,
+  "api_or_database_changes": false
+}

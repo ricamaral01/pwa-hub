@@ -1,0 +1,8 @@
+{
+  "phase": "fase-7",
+  "static_files": 65,
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/visual-service-fase-7-20261119T010511Z",
+  "production_untouched": true,
+  "services_restarted": false,
+  "api_code_changed": false
+}

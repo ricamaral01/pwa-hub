@@ -1,0 +1,38 @@
+{
+  "role": "CONSULTA",
+  "modules": [
+    "planejamento",
+    "producao",
+    "qualidade",
+    "ged"
+  ],
+  "allowed_items": 12,
+  "navigation_links_checked": 6,
+  "unauthorized_links": [],
+  "search": "ok",
+  "read": [
+    {
+      "screen": "postesNumerosSerie",
+      "status": 200
+    },
+    {
+      "screen": "programacaoSemanal12",
+      "status": 200
+    },
+    {
+      "screen": "armadurasProgramacao",
+      "status": 200
+    }
+  ],
+  "write_denials": [
+    {
+      "path": "programacao-semana",
+      "status": 403
+    },
+    {
+      "path": "armaduras/calendario",
+      "status": 403
+    }
+  ],
+  "js_errors": []
+}

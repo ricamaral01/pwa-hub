@@ -1,0 +1,73 @@
+[
+  {
+    "path": "/unificado/mapa/api/unified/quick-access/me",
+    "status": 200,
+    "data": {
+      "enabled": false,
+      "home": false,
+      "items": []
+    }
+  },
+  {
+    "path": "/unificado/armacao/api/armacao/unidades",
+    "status": 200,
+    "data": [
+      {
+        "id": 1,
+        "codigo": "campinas",
+        "nome": "Campinas",
+        "enabled": false,
+        "actions": [
+          "armacao.banca",
+          "armacao.cadastros",
+          "armacao.consulta",
+          "armacao.corte",
+          "armacao.supervisor"
+        ],
+        "master": true
+      },
+      {
+        "id": 2,
+        "codigo": "pederneiras",
+        "nome": "Pederneiras",
+        "enabled": false,
+        "actions": [
+          "armacao.banca",
+          "armacao.cadastros",
+          "armacao.consulta",
+          "armacao.corte",
+          "armacao.supervisor"
+        ],
+        "master": true
+      },
+      {
+        "id": 3,
+        "codigo": "ribeirao",
+        "nome": "Ribeirão",
+        "enabled": false,
+        "actions": [
+          "armacao.banca",
+          "armacao.cadastros",
+          "armacao.consulta",
+          "armacao.corte",
+          "armacao.supervisor"
+        ],
+        "master": true
+      },
+      {
+        "id": 4,
+        "codigo": "noroeste",
+        "nome": "Noroeste",
+        "enabled": false,
+        "actions": [
+          "armacao.banca",
+          "armacao.cadastros",
+          "armacao.consulta",
+          "armacao.corte",
+          "armacao.supervisor"
+        ],
+        "master": true
+      }
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+/* Keep the previous print surface and its chart unchanged. */
+.indicator-overview{display:none}
+@media screen{
+ body:has(.indicator-overview) .indicator-legacy{display:none}
+ .indicator-overview{display:block}
+ .overview-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px}
+ .overview-head h1{margin:0 0 6px;font-size:22px;font-weight:600}
+ .overview-status,.overview-note{font-size:12px;color:var(--c-ink-2)}
+ .overview-actions{display:flex;align-items:center;gap:8px}
+ .overview-actions input,.overview-actions button{height:36px;border:1px solid var(--c-line);border-radius:var(--r-sm);background:var(--c-surface);color:var(--c-navy);padding:0 12px;font:inherit}
+ .indicator-overview .overview-strip{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));border-block:1px solid var(--c-line);margin-bottom:20px}
+ .overview-stat{padding:16px 20px;border-right:1px solid var(--c-line)}
+ .overview-stat:first-child{padding-left:0}.overview-stat:last-child{border-right:0}
+ .overview-stat span,.overview-stat small{display:block;font-size:12px;color:var(--c-ink-2)}
+ .overview-stat strong{display:block;font-size:28px;font-weight:600;line-height:1.5;color:var(--c-navy)}
+ .overview-section{background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--r);margin-bottom:16px;overflow:hidden}
+ .overview-section-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 14px}
+ .overview-section h2{font-size:14px;font-weight:600;margin:0}
+ .overview-section a{font-size:12px;color:var(--c-blue);text-decoration:none}
+ .overview-table{width:100%;border-collapse:collapse;table-layout:auto}
+ .overview-table th,.overview-table td{padding:11px 14px;border-top:1px solid var(--c-line);text-align:right;font-size:13px;white-space:normal;overflow:visible;text-overflow:clip}
+ .overview-table th{font-size:12px;font-weight:500;color:var(--c-ink-2)}
+ .overview-table th:first-child,.overview-table td:first-child,.overview-table th:last-child,.overview-table td:last-child{text-align:left}
+ .overview-table tfoot{background:var(--c-bg);font-weight:600}
+ .overview-unit-list{display:none}
+ .overview-chart{padding:0 14px 10px}.overview-chart svg{width:100%;display:block}
+ @media(max-width:600px){
+  .overview-head{display:block;margin-bottom:14px}.overview-head h1{display:none}
+  .overview-status{margin-bottom:12px}.overview-actions{display:grid;grid-template-columns:1fr auto}
+  .overview-actions input{min-width:0;width:100%}
+  .indicator-overview .overview-strip{grid-template-columns:1fr 1fr;margin-bottom:16px}
+  .overview-stat{padding:12px}.overview-stat:nth-child(n+3){display:none}.overview-stat:nth-child(2){border:0}
+  .overview-stat strong{font-size:26px}.indicator-overview .overview-table{display:none!important}
+  .overview-unit-list{display:block}.overview-unit-row{display:grid;grid-template-columns:1fr auto;gap:3px 12px;padding:10px 12px;border-top:1px solid var(--c-line);font-size:13px}
+  .overview-unit-row small{font-size:12px;color:var(--c-ink-2)}.overview-unit-row strong{text-align:right;font-weight:600}
+  .overview-section-head{align-items:flex-start}.overview-section-head a{max-width:115px;text-align:right}
+ }
+}

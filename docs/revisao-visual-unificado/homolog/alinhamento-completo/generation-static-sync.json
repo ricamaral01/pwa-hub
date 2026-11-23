@@ -1,0 +1,589 @@
+{
+  "files": [
+    {
+      "file": "atualizar.html",
+      "sha256": "fb1bad5f3e0afef4f18c06bd3f27b3fec24d2ba9f8288c9ba23411fc772ec4d4"
+    },
+    {
+      "file": "armacao/sw.js",
+      "sha256": "4f555695c27e190372be9e6b91ad489d7aa18323aa4f074fefc5fa6d74f35c53"
+    },
+    {
+      "file": "armacao/manifest.webmanifest",
+      "sha256": "654da2a640b55df392e55f0cfd6d7f5ddee37a98bb754aa987799597f7dde9f8"
+    },
+    {
+      "file": "usinas/native-areas.css",
+      "sha256": "dbcbca1012cd85d87c207335bea24ab4a8d6574293df4c1a4d0f4f896e12c405"
+    },
+    {
+      "file": "usinas/cec-native.css",
+      "sha256": "1ff7704d6b63139ac0f3c1525ad524f41fd0a267b793e83286544fea42f830d4"
+    },
+    {
+      "file": "usinas/native-areas.js",
+      "sha256": "885dbff24d3c78683b17d0702a2b0c5744ad03a6c11c03bace89fecea16c05c3"
+    },
+    {
+      "file": "usinas/cec-native.js",
+      "sha256": "c92c9088889ae3a8ef07f208ac2e0e75cdcd8862bbea52f4912234349eadc7c5"
+    },
+    {
+      "file": "manutencao-usina/styles.css",
+      "sha256": "68ada63fa484a3094361103c5832002ab3104c3b102dafcb4bc487a9e2fbf583"
+    },
+    {
+      "file": "manutencao-usina/photos.js",
+      "sha256": "ad86ba27ffa25cd0242442157917910b525e966d3951047a92ab38415546fe1c"
+    },
+    {
+      "file": "manutencao-usina/app.js",
+      "sha256": "77ef7a47647c68137246ace94ed16bf323d558a1a24bf3c8a77dc1eebdc040f0"
+    },
+    {
+      "file": "manutencao-usina/Gantt_Correcoes_Usina_M1_M2.xlsx",
+      "sha256": "2df3a94926162a7e708fb2e27e98a6338e10039ab3da6cee4b53fc264963f81d"
+    },
+    {
+      "file": "manutencao-usina/dashboard.js",
+      "sha256": "2295b956bd0741654dee32dc0236654ef925395f1e6756c7b364e3ad6ae7f183"
+    },
+    {
+      "file": "logistica/index.html",
+      "sha256": "03cf9a8695884c31d94845d59ad2920fa1dc13bd78799f1a0e31b871ca607e6b"
+    },
+    {
+      "file": "logistica/logistica-native.js",
+      "sha256": "80e163e8c4e4a482a2ded9fa8898e5a9ad633480b787030253ff4298f5871d0d"
+    },
+    {
+      "file": "logistica/logistica-native.css",
+      "sha256": "68a56aed6772044375655be17063b6f225d8abb03d5870b40e58ac3fc12a499b"
+    },
+    {
+      "file": "mapa/operacao/dashboards-v6.css",
+      "sha256": "6e675112fa1790e28bd139e3273c1eef21e890f8bbeb1c937f0a2175939845d5"
+    },
+    {
+      "file": "mapa/operacao/screen-context.js",
+      "sha256": "d9a7711211c7221dc58387172e5ae31c6b2c0fb0226c7f07c467c01047f656cc"
+    },
+    {
+      "file": "mapa/operacao/sw.js",
+      "sha256": "394d7ad38f568dadcd5b6b69a5ceb5f9621df07fed621f488d266a40f478bb18"
+    },
+    {
+      "file": "mapa/operacao/styles.css",
+      "sha256": "b9962e87ba141f0b1382ed370776af4051259e0e647dc9d12fc8a90909ff7841"
+    },
+    {
+      "file": "mapa/operacao/unificado-bridge.js",
+      "sha256": "fd769cc8eac68c0ffa07b1a2d7a1ed72ce2e77ca4d1db8ce3d01607d9596c5c9"
+    },
+    {
+      "file": "mapa/operacao/users-unificado.js",
+      "sha256": "fdc97abde7963f87a08b1bdb326c31acce7e8b228ad509b421ae3ab75d874a8d"
+    },
+    {
+      "file": "mapa/operacao/dashboards-v7.js",
+      "sha256": "5d737a30393ed24dc93c68bc00d8d70e499a00ef4ff1c8461499be1b1fc7906a"
+    },
+    {
+      "file": "mapa/operacao/users-unificado.css",
+      "sha256": "68b8f9dc56127014fda26e21e59655e47c3e1848984c656bbe42f8117a3c3a27"
+    },
+    {
+      "file": "mapa/operacao/montagem-taxa.js",
+      "sha256": "2fe804f85aef13f1322b621bf409c0636e6d8039b255d702a0fe82193677f49e"
+    },
+    {
+      "file": "mapa/operacao/bridge.js",
+      "sha256": "e4d6f69632d0425372ed32d06b088342690011096ef5d51e4525e1076482d6b4"
+    },
+    {
+      "file": "mapa/operacao/mandril-report.js",
+      "sha256": "0158ec6cd982b93628839d9f49e1152ca41cc545f7fef8ec17dc2ffc51176af6"
+    },
+    {
+      "file": "mapa/operacao/app.js",
+      "sha256": "cfe80578d8a1f21e65296e92c03b46b9a926432a69bfc9c36f6dbb8f50dd6b9e"
+    },
+    {
+      "file": "mapa/operacao/inspecao-defeitos.css",
+      "sha256": "75ebfec6e257a2c43a6fa535ebe9e89c4cf7ebc83072dc56d40ad8df9e762a54"
+    },
+    {
+      "file": "mapa/operacao/odin-mode.js",
+      "sha256": "323bcf2833d510bb7f30dc35929f3897e62856773b1d3cde92ce3e063f0d409b"
+    },
+    {
+      "file": "mapa/operacao/dashboards-v7.css",
+      "sha256": "ec11190d6135d48f9a25ac3818586001c70b7aa0cffd75a675ee934d8f8bb051"
+    },
+    {
+      "file": "mapa/operacao/inspecao-defeitos.js",
+      "sha256": "a6d17a58ca2b83c089b637c90761b5b9c57fd9e0e9ef1784e9fb90617c658836"
+    },
+    {
+      "file": "mapa/operacao/unificado-bridge.css",
+      "sha256": "8e2f1aff415ef1d95b3ea465446d21ba6bb1ec01db1c4d601ee36bcbfbf8c64f"
+    },
+    {
+      "file": "mapa/operacao/manifest.json",
+      "sha256": "d4ee8f236bacf3340daae6cd6b05758deaa9aa3b9f06382ed5385db680c1800c"
+    },
+    {
+      "file": "mapa/operacao/produtividade-refactor.css",
+      "sha256": "190f9dfa1a4e6fd415e38e8a8a17b80998779f4722d9fb574b6c088890d70809"
+    },
+    {
+      "file": "mapa/operacao/montagem-taxa.css",
+      "sha256": "450ed3ddd6f5255f6a0b65f659b676ebb6008dfdb57d1f0b782d5b8c713f78ae"
+    },
+    {
+      "file": "tv/formas/tv.js",
+      "sha256": "cb9f353d0c09096ef04c061f7afc75f816c8ab2665c6e846e9db2785f008d111"
+    },
+    {
+      "file": "armacao/assets/index-DomCy1hk.js",
+      "sha256": "30f7a4665fc6ef682e65401ea95c10111bf19566b50ac53b78f39b69fcb406f3"
+    },
+    {
+      "file": "armacao/assets/index-DcyYP1me.js",
+      "sha256": "0b7efe46c68698ac2ef91b7d69b1cc8cb01afd55f8849e73c32f9dfaeaab40ef"
+    },
+    {
+      "file": "armacao/assets/index-BIbeRNm0.js",
+      "sha256": "f9b111dc1bd3594c866b96bd28ffcec6abb9c8a4deb5d9b84b3f6f318483a3c8"
+    },
+    {
+      "file": "armacao/assets/index-BwQPAO2w.css",
+      "sha256": "294f78b38ad8294f82e30b243afb91c8b73dd446332f3735f11ed1b1b3cf6e9d"
+    },
+    {
+      "file": "armacao/assets/index-DFWedojd.js",
+      "sha256": "4072dc82206a7ee97c3a0d3fe29f1a903c17635ef0536bc226e2d203da35bbb6"
+    },
+    {
+      "file": "armacao/assets/index-BThqZWwn.js",
+      "sha256": "058550ea1bd45b1ce5a60a6fc380f0fca5fb870ebc691afab8d1270bc7754d57"
+    },
+    {
+      "file": "armacao/assets/index-njBvld8C.css",
+      "sha256": "c4877795fb8204a0eb18b980ec5aa077f4bbb1f09221cd6b40c6d461b80b412b"
+    },
+    {
+      "file": "armacao/assets/index-C6GgpBe4.js",
+      "sha256": "37aacdcd7e713819fc85ea5519f34f06c1180d3caa96a1d763af3d1c383ea31c"
+    },
+    {
+      "file": "armacao/assets/index-n7oju6R3.js",
+      "sha256": "d0657159228214b87c1c39853175676c2599bf6ee2327dee72911a1eb5d715a0"
+    },
+    {
+      "file": "armacao/assets/index-Cn511sG8.js",
+      "sha256": "32fca784465c33c042e44dc1a31167fb2bffb4e291c75fd2dc4fed9398654eaf"
+    },
+    {
+      "file": "armacao/assets/index-nmiFFBM-.js",
+      "sha256": "c661b7f63e0b05aefceb18db0ba8f4c0bec9d9f7a9c7acc60dfafffc92643bc6"
+    },
+    {
+      "file": "armacao/assets/index-fGcdAgMb.js",
+      "sha256": "6b125646953ccf65261813d5dddc9ae3dc07374c9e81a20d3ed5063db3c59678"
+    },
+    {
+      "file": "producao/indicadores-gerais/app.js",
+      "sha256": "86b4a4765de40a15d8b674768866348e812e9960045b3b0e3e28fab916b7a1bf"
+    },
+    {
+      "file": "producao/indicadores-gerais/style.css",
+      "sha256": "d35254d6c02b3a3ac627f5f742dd9c23470ea65836f46c574c36d93f1311fdfd"
+    },
+    {
+      "file": "producao/pederneiras/assets/index-Bsklk0xx.css",
+      "sha256": "83527a66d346e1f880a5a7e2ca6aa6728025d1c549ff4f184d253858f02a867d"
+    },
+    {
+      "file": "producao/pederneiras/assets/index-CTiry0ss.js",
+      "sha256": "e8984e10b40f0498e0dc058f442c72132fef464a2ed9df11bf99aa08c1742a3b"
+    },
+    {
+      "file": "producao/pederneiras/assets/index-BRkl5F9M.css",
+      "sha256": "f35638a401ac38a39ba3979b1c9a88f379bc6e92fe53033ce5902ee7b1e67b6d"
+    },
+    {
+      "file": "producao/pederneiras/assets/index-CaIDlRlX.js",
+      "sha256": "4aaba8b70d00365901f1d29a31960fcdb1650ba8c0f56a0923f160b44de2e7bf"
+    },
+    {
+      "file": "producao/pederneiras/assets/index-C35RZCtw.js",
+      "sha256": "851ecaf5ea6e554d81ba85b43cf6d83911b0cb179b6ab41acb3d968f0e8f87a5"
+    },
+    {
+      "file": "producao/pederneiras/assets/index-Cpqn24-7.js",
+      "sha256": "58e86e028db9dec72bc312b5d36fcd790ea661232915ea238815b71c1fea9789"
+    },
+    {
+      "file": "producao/pederneiras/assets/index-CycMmn5j.js",
+      "sha256": "ce552a379cb9193aef1813c59b50d3eccfa2426b9c5f071ab9156abd9d875ca1"
+    },
+    {
+      "file": "producao/pederneiras/app/sw.js",
+      "sha256": "9d52991ce3fc1812f40f9c1615302267064e3ca3db820c42d20ea8dc3a8b86fe"
+    },
+    {
+      "file": "producao/pederneiras/app/manifest.webmanifest",
+      "sha256": "ff4c9f89765f4a19b9ef00a8dc39802f43825cb4245202887841bc70e9b4eb58"
+    },
+    {
+      "file": "producao/pederneiras/mao-de-obra/app/sw.js",
+      "sha256": "f7461c47683ccc1f8e91b073940aeaf1577ec909a215c9265966a9128624f0fd"
+    },
+    {
+      "file": "producao/pederneiras/mao-de-obra/app/manifest.webmanifest",
+      "sha256": "233dc8f3b3ca3e281bfe8d890018d9c98d9c20a826cf264b2476cd03d708ed2c"
+    },
+    {
+      "file": "producao/pederneiras/mao-de-obra/app/assets/index-ZNPs0INq.css",
+      "sha256": "3b0e2a32550757e524c6c00449c1146b8f806325983dfafa2037b377e39b1e45"
+    },
+    {
+      "file": "producao/pederneiras/mao-de-obra/app/assets/index-CbCEpemD.js",
+      "sha256": "f0016121d594db5ecbc4414c2443ceb14a311a71aebe38273ba18b3ec58b37bf"
+    },
+    {
+      "file": "producao/pederneiras/mao-de-obra/app/assets/index-DAh29eab.js",
+      "sha256": "f0016121d594db5ecbc4414c2443ceb14a311a71aebe38273ba18b3ec58b37bf"
+    },
+    {
+      "file": "producao/pederneiras/mao-de-obra/app/assets/index-skh9mcAt.js",
+      "sha256": "1a16ae5331c8ef851c461c10abc47a5afaae8d0454deac185c7e5be957622383"
+    },
+    {
+      "file": "producao/pederneiras/mao-de-obra/app/assets/index-Bog3E3rd.css",
+      "sha256": "8bdbb33b4ba654b7f1c3a05fc1174acc8df94d96275498c9541160e40d4c3779"
+    },
+    {
+      "file": "producao/pederneiras/app/assets/index-ZNPs0INq.css",
+      "sha256": "3b0e2a32550757e524c6c00449c1146b8f806325983dfafa2037b377e39b1e45"
+    },
+    {
+      "file": "producao/pederneiras/app/assets/index-BTRrW5W4.js",
+      "sha256": "43f1cb8ee282cd4f5d296a22b8e37bc8e8bfca033d908f7aa7557d6e04f49cb8"
+    },
+    {
+      "file": "producao/pederneiras/app/assets/index-Bog3E3rd.css",
+      "sha256": "8bdbb33b4ba654b7f1c3a05fc1174acc8df94d96275498c9541160e40d4c3779"
+    },
+    {
+      "file": "producao/pederneiras/app/assets/index-DUlpgCcX.js",
+      "sha256": "43f1cb8ee282cd4f5d296a22b8e37bc8e8bfca033d908f7aa7557d6e04f49cb8"
+    },
+    {
+      "file": "producao/noroeste/assets/index-CUQqH2B3.js",
+      "sha256": "2f0ed9d64de945936c5256ad74dc94ab2cd1d26bef87572e7ca73e9f9b25ba1f"
+    },
+    {
+      "file": "producao/noroeste/assets/index-Bu2FJmBZ.js",
+      "sha256": "a9e22ae54d8b0ea1f1fcf9f84c4fc6f477c2bbd3c150712abbe959ca6f878fe9"
+    },
+    {
+      "file": "producao/noroeste/assets/index-C0WlXiEj.js",
+      "sha256": "2f0ed9d64de945936c5256ad74dc94ab2cd1d26bef87572e7ca73e9f9b25ba1f"
+    },
+    {
+      "file": "producao/noroeste/assets/index-Bsklk0xx.css",
+      "sha256": "83527a66d346e1f880a5a7e2ca6aa6728025d1c549ff4f184d253858f02a867d"
+    },
+    {
+      "file": "producao/noroeste/assets/index-CuXaPxgO.js",
+      "sha256": "73403abc88d280630c1314300849a8da2c5e9b55346393afeefa7ca50af292cc"
+    },
+    {
+      "file": "producao/noroeste/assets/index-Bz0oT3Al.js",
+      "sha256": "80530cb9291ca2949a0b2e816fa9abb211f2e2f8be9b58ea4aefc5cfa66bdb27"
+    },
+    {
+      "file": "producao/noroeste/assets/index-BIaI3kaq.css",
+      "sha256": "433a7ba9f2c142171054f820cdb241752f0294f9aa413f07fd09b2b6eb764f94"
+    },
+    {
+      "file": "producao/noroeste/assets/index-TXq_5frg.css",
+      "sha256": "766124a819bdef4551a37be1dda87a0e203483c330b25c538579e5839c53a06e"
+    },
+    {
+      "file": "producao/noroeste/assets/index-4JUTD9X5.js",
+      "sha256": "2f0ed9d64de945936c5256ad74dc94ab2cd1d26bef87572e7ca73e9f9b25ba1f"
+    },
+    {
+      "file": "producao/noroeste/mao-de-obra/app/sw.js",
+      "sha256": "12e89ca2a4f2b2c79e49358cf522a4ddd546854559ee9cd558afb67b9dedfc13"
+    },
+    {
+      "file": "producao/noroeste/mao-de-obra/app/assets/index-ZNPs0INq.css",
+      "sha256": "3b0e2a32550757e524c6c00449c1146b8f806325983dfafa2037b377e39b1e45"
+    },
+    {
+      "file": "producao/noroeste/mao-de-obra/app/assets/index-DIUklCDY.js",
+      "sha256": "ada402144cb18ebf8cc78bcb53fe6e8bdcf4e88903a7b1e7254ab63c503817b4"
+    },
+    {
+      "file": "producao/noroeste/mao-de-obra/app/assets/index-3im5PDJx.css",
+      "sha256": "475689793223970f0a44d8f2bc822b01525e7a2735f837f845f2da6fe72d19be"
+    },
+    {
+      "file": "producao/noroeste/mao-de-obra/app/assets/index-BAifU1SU.js",
+      "sha256": "ada402144cb18ebf8cc78bcb53fe6e8bdcf4e88903a7b1e7254ab63c503817b4"
+    },
+    {
+      "file": "producao/noroeste/mao-de-obra/app/assets/index-B0xWdfFb.js",
+      "sha256": "ada402144cb18ebf8cc78bcb53fe6e8bdcf4e88903a7b1e7254ab63c503817b4"
+    },
+    {
+      "file": "producao/noroeste/mao-de-obra/app/assets/index-CiCei0_A.css",
+      "sha256": "19e85b7ab9d411d9d014caeadf908913ece2ff0ab76a6dd9c55fb47c46a1555d"
+    },
+    {
+      "file": "producao/noroeste/mao-de-obra/app/assets/index-BiaWUJom.js",
+      "sha256": "f7ac466a3d4258280f244b117d9faef81120d4b2af8fcf2cee957cab92bd6193"
+    },
+    {
+      "file": "producao/noroeste/app/assets/index-ZNPs0INq.css",
+      "sha256": "3b0e2a32550757e524c6c00449c1146b8f806325983dfafa2037b377e39b1e45"
+    },
+    {
+      "file": "producao/noroeste/app/assets/index-CArqVUoa.js",
+      "sha256": "c49dda1aa46d0849bc798dd4ef90526a87c5c095235df501af9038f696106706"
+    },
+    {
+      "file": "producao/noroeste/app/assets/index-3im5PDJx.css",
+      "sha256": "475689793223970f0a44d8f2bc822b01525e7a2735f837f845f2da6fe72d19be"
+    },
+    {
+      "file": "producao/noroeste/app/assets/index-DlkuS9Rb.js",
+      "sha256": "a124977172e973aa96bdbc446a86e79ed8f0805e0d8849f2827981f3a9d7fb34"
+    },
+    {
+      "file": "producao/noroeste/app/assets/index-BzSOAE9P.js",
+      "sha256": "a124977172e973aa96bdbc446a86e79ed8f0805e0d8849f2827981f3a9d7fb34"
+    },
+    {
+      "file": "producao/noroeste/app/assets/index-CiCei0_A.css",
+      "sha256": "19e85b7ab9d411d9d014caeadf908913ece2ff0ab76a6dd9c55fb47c46a1555d"
+    },
+    {
+      "file": "producao/noroeste/app/assets/index-Crsp9z9S.js",
+      "sha256": "a124977172e973aa96bdbc446a86e79ed8f0805e0d8849f2827981f3a9d7fb34"
+    },
+    {
+      "file": "producao/ribeirao/assets/index-D3b2QIj0.js",
+      "sha256": "b549558d9cc255a2d0a986b530761c23327435587ac0cba0667638739fe2dda7"
+    },
+    {
+      "file": "producao/ribeirao/assets/index-Bsklk0xx.css",
+      "sha256": "83527a66d346e1f880a5a7e2ca6aa6728025d1c549ff4f184d253858f02a867d"
+    },
+    {
+      "file": "producao/ribeirao/assets/index-CxqP1cvB.js",
+      "sha256": "54cb8d20689b471e3566090958d7ac90a8ac1f95bdc9c8e49834ab1657e49b76"
+    },
+    {
+      "file": "producao/ribeirao/assets/index-BuFMQs-0.js",
+      "sha256": "818600e23cb248e4d3bc282e3fb761295f971c92d8ec91e41472d6eca2ec64ef"
+    },
+    {
+      "file": "producao/ribeirao/assets/index-C7wLqVhh.js",
+      "sha256": "61b8c26781a4dc5dbd6e4595cb8d69bb74bf2178845f2602ec240ac401406e85"
+    },
+    {
+      "file": "producao/ribeirao/assets/index-CpQLzG6V.js",
+      "sha256": "6a012e4cb81022186f682b009254afb33a2ef74cfb1cf919fffc4f466dc91792"
+    },
+    {
+      "file": "producao/ribeirao/mao-de-obra/app/sw.js",
+      "sha256": "8e34fc80e73a3d149b9d59bc9351fa6d4ad3ab673b3ee75abb28d897e0034e85"
+    },
+    {
+      "file": "producao/ribeirao/mao-de-obra/app/assets/index-ZNPs0INq.css",
+      "sha256": "3b0e2a32550757e524c6c00449c1146b8f806325983dfafa2037b377e39b1e45"
+    },
+    {
+      "file": "producao/ribeirao/mao-de-obra/app/assets/index-CbjU4Vdf.js",
+      "sha256": "1ab37b8a419c49933a1dc0fce1a5f3673875dce159a5ac39d6257a1e01a509b6"
+    },
+    {
+      "file": "producao/ribeirao/mao-de-obra/app/assets/index-6mMWXdr7.js",
+      "sha256": "163e92ec05b934a50bbb22b740af4f23bbd3083586116176c6661d9a0b3f5114"
+    },
+    {
+      "file": "producao/ribeirao/app/assets/index-ZNPs0INq.css",
+      "sha256": "3b0e2a32550757e524c6c00449c1146b8f806325983dfafa2037b377e39b1e45"
+    },
+    {
+      "file": "producao/ribeirao/app/assets/index-DC6BoCJF.js",
+      "sha256": "1356990ff58a6130c07d7a99e192192b88a47b7a68ffafedfa686a41dd571234"
+    },
+    {
+      "file": "producao/ribeirao/app/assets/index-DBXy9XAU.js",
+      "sha256": "128725de1689c8bcb01945ed02a526dfc72af628030f4d1ef8eecac3de1e9880"
+    },
+    {
+      "file": "m/maodeobra/entry.js",
+      "sha256": "edaa314ef5bb8812ce9dd2deacc808f515574f16c602ad00cc00e972047ae567"
+    },
+    {
+      "file": "m/maodeobra/sw.js",
+      "sha256": "f1000a707b20cfb450444f5aa88f20c260a31b4b572dab61d8223347af152b0f"
+    },
+    {
+      "file": "m/maodeobra/manifest.webmanifest",
+      "sha256": "1273f1d45832ab0386dd4493343d0ffc425ec5bb22e40f1e65f6f4d6c1c7ea75"
+    },
+    {
+      "file": "m/maodeobra/entry.css",
+      "sha256": "2a40e733d9c5246243cea818660b78d61a58fe3ebc8c9f7daa9e3c86d30512d0"
+    },
+    {
+      "file": "m/inspecao/app.css",
+      "sha256": "fe7689170178577060f8f5298604b7000bd51a3a47d9f3948c0b7976e07859ad"
+    },
+    {
+      "file": "m/inspecao/sw.js",
+      "sha256": "33d69a6cdfc0650842f0bba660c2d7de1fa37702fe56a92ea62023d462263fd2"
+    },
+    {
+      "file": "m/inspecao/manifest.webmanifest",
+      "sha256": "83b975325f91ef32de97e333f59fc359231fda8d5a4b674e50cab28f06718bd4"
+    },
+    {
+      "file": "m/inspecao/menu.js",
+      "sha256": "7a04f375b68ff1a05dac5de14e512de23aec15e195da7036f04dff09b0b466c3"
+    },
+    {
+      "file": "m/inspecao/app.js",
+      "sha256": "381aa81cdeb484c681b0dd2a4acca4a70940d65647511cad087e33768a667809"
+    },
+    {
+      "file": "m/inspecao/api.js",
+      "sha256": "5d84845cd6f2c8e38f293d4f2ccea6212630bab563e5f435d7ce3cc60af062d3"
+    },
+    {
+      "file": "usinas/relatorios/README.md",
+      "sha256": "4a78e4c60449f2e36a35d6f7ecc16f9112f98fb9d50ef301d5382b35ebfccf55"
+    },
+    {
+      "file": "usinas/noroeste/noro-native.css",
+      "sha256": "3d9a5d3392e1f5a7dbf91a2ed796314c40e8cd59030b813c15deba1c778f2707"
+    },
+    {
+      "file": "usinas/noroeste/noro-native.js",
+      "sha256": "fafe664c3eed6cbc840cee6194647ee7d53ad1de655f8a22d36cce56c38860d2"
+    },
+    {
+      "file": "usinas/noroeste/noro-cec.js",
+      "sha256": "bd18682dc9af0ec21211ce9cac84ec5fc3d4bd6022c1f097a67c1fc961aa17d2"
+    },
+    {
+      "file": "relatorios/acmp-concretagem/confirmacao.css",
+      "sha256": "5bb3240eabc07d2c760a0f719cae198eb21f8043a9eee5541dafc4b1e68e9021"
+    },
+    {
+      "file": "relatorios/acmp-concretagem/impressao.js",
+      "sha256": "cdadc127d735b7541332fda3bc0128bfa9c16eb1710bfa4f321f9a6506c3a82a"
+    },
+    {
+      "file": "relatorios/acmp-concretagem/confirmacao.js",
+      "sha256": "30d6d54f454850fd7d7efc5eb0b777cfa09e861bf37927f05b98c56ad4711682"
+    },
+    {
+      "file": "qualidade/assets/tasks-DIImpmDG.js",
+      "sha256": "4cc7a39f4d7d97c069332f9f3233505bcba967062c417a3d37dc7c22bd8e842b"
+    },
+    {
+      "file": "qualidade/assets/tasks-router-274ea3190b48.js",
+      "sha256": "0309ecef61fd391d4b8a217b81832c674bfc2ea28bdc89113066f1122acf72b0"
+    },
+    {
+      "file": "qualidade/assets/index-CI1pdTnl.js",
+      "sha256": "32c9fed3eea7dee17828fad4673114d18ad9be0449cbdb8db1bebe52592aadb8"
+    },
+    {
+      "file": "qualidade/assets/index-DG3K2uWx.css",
+      "sha256": "dafd9fbb38cde86deb4d0fb87ed9da5c26a6a6c48f1948d6f1bc3ea3249c7640"
+    },
+    {
+      "file": "qualidade/assets/tasks-5Ycax9rJ.css",
+      "sha256": "20314fc451daa372e30c59c483fd26d283a285baec2cae5be559e47535350ff4"
+    },
+    {
+      "file": "suprimentos/pwa/app.css",
+      "sha256": "9160244fb419cb110cc6944d4cd8833ae1b82f28b61ca3c00638c243c065e870"
+    },
+    {
+      "file": "suprimentos/pwa/sw.js",
+      "sha256": "a728bb845615f71e0f56f1cfdd04f75fcde55504e68be6a08c4cf6b50ca63998"
+    },
+    {
+      "file": "suprimentos/pwa/receber.js",
+      "sha256": "da89221be7ebba6bbec38f2ef6fee09c4de525bf3d36ed68e59cfd98e4714a44"
+    },
+    {
+      "file": "suprimentos/pwa/app.js",
+      "sha256": "3e8a680d3e16627ce7248f24debed87b773c73ca675d2e1ab0eb34343b9c53e9"
+    },
+    {
+      "file": "suprimentos/frontend/recebimento-acompanhamento.js",
+      "sha256": "f4e989aa9046f32ba08f7f442f5d41c8f5495cd1646635c9200f9f47978f8c57"
+    },
+    {
+      "file": "suprimentos/frontend/recebimento-pedido.js",
+      "sha256": "52e35f9983b356f52ff155e8981a192da14b733ef420ebf799a2d318894a71de"
+    },
+    {
+      "file": "suprimentos/frontend/estoque.js",
+      "sha256": "55cd952a645cd98bb9c9c2a4b2b07db5e6fe7b7c403262cd8fa552abe2927d9f"
+    },
+    {
+      "file": "suprimentos/frontend/recebimento-excecao.js",
+      "sha256": "b9f7be4eb5b3437a4c25463c7834174df6fc8883f2c192bcdfcab0a01eca7ab7"
+    },
+    {
+      "file": "suprimentos/frontend/recebimento.js",
+      "sha256": "aa26ee1d85d24a9d784d97b559f3185d53df3a15a689bc4f779b27b42ebb51fa"
+    },
+    {
+      "file": "suprimentos/frontend/compras.js",
+      "sha256": "b9bdaf4179cf7e860d5fe269b1bfbe72bde46fe1e65871341d82c9c5062f8818"
+    },
+    {
+      "file": "suprimentos/frontend/dialog.css",
+      "sha256": "71817b8911f17b16b39a7f2264041beb2c3f1edf594c32addee45b521085c82a"
+    },
+    {
+      "file": "suprimentos/frontend/recebimento-entry.js",
+      "sha256": "57503f66ee65c08ab7465c79c23b6a4f7144a1e37ff2f51ced029a2eedef8c55"
+    },
+    {
+      "file": "suprimentos/frontend/dialog.js",
+      "sha256": "9468f641686023984409893e92b080a10b1ddb9aebf9582f07112d142719468a"
+    },
+    {
+      "file": "suprimentos/frontend/recebimento-financeiro.js",
+      "sha256": "528706d94c007abc57a27afa7732f611ee3d5dc1edeb74a20ed46216dbc25259"
+    },
+    {
+      "file": "suprimentos/frontend/app.js",
+      "sha256": "da396bd086e4bf83edda4142e6e49ecf968c4acc2ea633f180714c0955de1b49"
+    },
+    {
+      "file": "suprimentos/frontend/analises.js",
+      "sha256": "064f84d2dd3face8b0763fab85610894ebb1f00ed4bd68e20237ffed53c41f2d"
+    },
+    {
+      "file": "suprimentos/frontend/compras.css",
+      "sha256": "fa9c6781ddd94f0f956f5b7b2ea673657a00a2fdae08ed39cfa95560503a521a"
+    }
+  ],
+  "phase_1_2_files_preserved": true
+}

@@ -1,0 +1,28 @@
+{
+  "backup": "/opt/concrefer-unificado/backups/producao-20261120T170515Z",
+  "units": [
+    "concrefer-armacao.service",
+    "concrefer-dosagem-native.service",
+    "concrefer-logistica.service",
+    "concrefer-usinas-prod.service",
+    "cq-laboratorio.service",
+    "laboratorio-homolog.service",
+    "laboratorio-unificado.service",
+    "mapa-unificado-auth.service",
+    "mapa-unificado-realtime.service",
+    "pcp-unificado-test.service",
+    "qualidade-api.service",
+    "suprimentos-prod.service",
+    "unificado-tv.service",
+    "usinas-reporting.service"
+  ],
+  "docker_containers": [
+    "ged_backend"
+  ],
+  "cq_successful_paths": [
+    "/api/certificados",
+    "/api/certificados/25/pdf",
+    "/api/certificados/9/pdf"
+  ],
+  "required_seconds": 1800
+}

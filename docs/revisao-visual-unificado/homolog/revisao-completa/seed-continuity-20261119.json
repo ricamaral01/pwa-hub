@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-19",
+  "tag": "TESTE-REVISAO-COMPLETA-20261119",
+  "purpose": "Continuity of the requested 18/11 test scenario after application midnight; no simulated responses",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/revisao-continuidade-20261119T030111Z",
+  "dumps": {
+    "pcp_visual_homolog_20261118": {
+      "path": "/opt/concrefer-unificado/homolog-next/backups/revisao-continuidade-20261119T030111Z/pcp_visual_homolog_20261118.dump",
+      "sha256": "ffaa3c7adbdb229fef23da1e3fff83f428f426c418b812e462074c800c227edb"
+    },
+    "mapa_visual_homolog_20261118": {
+      "path": "/opt/concrefer-unificado/homolog-next/backups/revisao-continuidade-20261119T030111Z/mapa_visual_homolog_20261118.dump",
+      "sha256": "9fee50c8f40602d081abae248f35ca293d85a91bf147b11e0a099c45c7743750"
+    }
+  },
+  "pcp_programming_id": "7341",
+  "production_ids": [
+    "3e3d5b42-3368-4d7b-bb64-d23d4ec9829b",
+    "600f47cd-7832-42bc-936e-09d6387a8c3e",
+    "7e72c6c4-68d3-46d4-bfd4-6267c67e0103",
+    "1639744b-e898-4063-98f5-efbcd529bb66",
+    "1726ce1c-8395-4707-8126-953796e6d320"
+  ],
+  "planned_added": 20,
+  "produced_added": 5,
+  "quick_access_changes": 0,
+  "permission_changes": 0,
+  "production_database_connections": 0
+}

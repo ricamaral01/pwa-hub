@@ -1,0 +1,122 @@
+[
+  {
+    "profile": "GERENCIA",
+    "has_central_identity": true,
+    "expected_access": true,
+    "permission_writes": 0,
+    "history_http_status": 200,
+    "response_shape": "list",
+    "captures": [
+      {
+        "width": 1440,
+        "file": "historico-gerencia-1440.png",
+        "page_status": 200,
+        "history_status": 200,
+        "visible": true
+      },
+      {
+        "width": 1024,
+        "file": "historico-gerencia-1024.png",
+        "page_status": 200,
+        "history_status": 200,
+        "visible": true
+      },
+      {
+        "width": 820,
+        "file": "historico-gerencia-820.png",
+        "page_status": 200,
+        "history_status": 200,
+        "visible": true
+      },
+      {
+        "width": 390,
+        "file": "historico-gerencia-390.png",
+        "page_status": 200,
+        "history_status": 200,
+        "visible": true
+      }
+    ],
+    "js_errors": [],
+    "blocked_write_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "LABORATORIO",
+    "has_central_identity": true,
+    "expected_access": true,
+    "permission_writes": 0,
+    "history_http_status": 200,
+    "response_shape": "list",
+    "captures": [
+      {
+        "width": 1440,
+        "file": "historico-laboratorio-1440.png",
+        "page_status": 200,
+        "history_status": 200,
+        "visible": true
+      },
+      {
+        "width": 1024,
+        "file": "historico-laboratorio-1024.png",
+        "page_status": 200,
+        "history_status": 200,
+        "visible": true
+      },
+      {
+        "width": 820,
+        "file": "historico-laboratorio-820.png",
+        "page_status": 200,
+        "history_status": 200,
+        "visible": true
+      },
+      {
+        "width": 390,
+        "file": "historico-laboratorio-390.png",
+        "page_status": 200,
+        "history_status": 200,
+        "visible": true
+      }
+    ],
+    "js_errors": [],
+    "blocked_write_attempts": [],
+    "ok": true
+  },
+  {
+    "profile": "QUALIDADE",
+    "has_central_identity": true,
+    "expected_access": false,
+    "permission_writes": 0,
+    "history_http_status": 403,
+    "boundary_preserved": true
+  },
+  {
+    "profile": "SUPRIMENTOS",
+    "has_central_identity": true,
+    "expected_access": false,
+    "permission_writes": 0,
+    "history_http_status": 403,
+    "boundary_preserved": true
+  },
+  {
+    "profile": "PCP",
+    "has_central_identity": true,
+    "expected_access": false,
+    "permission_writes": 0,
+    "history_http_status": 403,
+    "boundary_preserved": true
+  },
+  {
+    "profile": "PRODUCAO",
+    "has_central_identity": false,
+    "expected_access": false,
+    "reason": "Existing planning-only identity; no central CQ grant. No permissions changed."
+  },
+  {
+    "profile": "CONSULTA",
+    "has_central_identity": true,
+    "expected_access": false,
+    "permission_writes": 0,
+    "history_http_status": 403,
+    "boundary_preserved": true
+  }
+]

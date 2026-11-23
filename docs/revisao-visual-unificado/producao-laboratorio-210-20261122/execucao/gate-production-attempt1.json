@@ -1,0 +1,5 @@
+{
+  "passed": false,
+  "stdout": "casca: 200/200\r\nlogin: 200/200\r\nPCP protegido: 403/401\r\n",
+  "stderr": "Gate failed: PCP protegido\r\n"
+}

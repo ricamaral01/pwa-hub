@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B1730">
+  <link rel="manifest" href="manifest.webmanifest?v=2.1.0">
+  <link rel="icon" href="data:,">
+  <title>Entrar · Uni</title>
+  <link rel="stylesheet" href="shell/shell.css?v=2.1.0">
+  <link rel="stylesheet" href="shell/password-visibility.css?v=2.1.0">
+  <link rel="stylesheet" href="shell/login-original.css?v=2.1.0" media="(max-width:1024px)">
+  <script defer src="shell/auth.js?v=2.1.0"></script>
+  <script defer src="shell/password-visibility.js?v=2.1.0"></script>
+  <script defer src="shell/login-uni.js?v=2.1.0"></script>
+  <link rel="stylesheet" href="shell/login-uni.css?v=2.1.0">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=2.1.0" media="(min-width:1025px)">
+<link rel="stylesheet" href="shell/login-desktop.css?v=2.1.0" media="(min-width:1025px)">
+<style>.login-desktop-story,.login-desktop-heading,.login-official-logo,.login-desktop-foot{display:none}</style>
+</head>
+<body>
+  <aside class="login-desktop-story" aria-label="Uni Concrefer">
+    <svg class="login-story-mark" viewBox="0 0 880 874" preserveAspectRatio="xMinYMin slice" aria-hidden="true"><g fill="#fff" opacity=".10"><rect x="96" y="0" width="34" height="874"/><rect x="64" y="160" width="816" height="7"/><rect x="64" y="200" width="816" height="7"/><rect x="64" y="240" width="816" height="7"/><rect x="64" y="280" width="816" height="7"/></g></svg>
+    <div class="login-story-name">Uni</div>
+    <div class="login-story-what">Sistema de gestão da Concrefer</div>
+    <div class="login-story-app">Planejamento, produção, laboratório, qualidade, usinas, suprimentos, logística e documentos.</div>
+    <div class="login-story-units"><span>Campinas</span><span>Pederneiras</span><span>Ribeirão Preto</span><span>Noroeste</span></div>
+  </aside>
+  <main class="login-layout">
+    <section class="login-card" aria-labelledby="login-title">
+      <div class="login-brand" aria-label="Concrefer e ConcreTrack">
+        <img class="login-logo-concrefer" src="assets/img/logo-concrefer.png" alt="Concrefer" width="190" height="50">
+        <span class="login-brand-divider" aria-hidden="true"></span>
+        <img class="login-logo-concretrack" src="assets/img/logo-concretrack.png" alt="ConcreTrack" width="76" height="76">
+      </div>
+      <img class="login-official-logo" src="assets/img/logo-concrefer-oficial.png" alt="Concrefer" width="300" height="81">
+      <div id="login-notice" class="login-system-notice" role="note" hidden><strong></strong><span></span></div>
+      <h1 id="login-title"><span class="login-current-heading">Entrar no Uni</span><span class="login-desktop-heading">Entrar no Uni</span></h1>
+      <p>Entre com seu usuário e senha para acessar o sistema.</p>
+      <p id="login-feedback" role="alert" aria-live="assertive" hidden></p>
+      <form id="unificado-login-form">
+        <label class="login-field"><span>Usuário</span><input type="text" name="username" autocomplete="username" required></label>
+        <label class="login-field"><span>Senha</span><input type="password" name="password" autocomplete="current-password" aria-describedby="login-caps-lock" required><small id="login-caps-lock" class="login-caps-lock" hidden>Caps Lock está ativado.</small></label>
+        <label class="login-remember"><input type="checkbox" id="login-remember-username">Lembrar meu usuário neste aparelho</label>
+        <button class="button button-primary login-submit" type="submit">Entrar</button>
+      </form>
+      <form id="first-access-form" hidden>
+        <label class="login-field"><span>Nova senha</span><input type="password" name="newPassword" autocomplete="new-password" minlength="6" required></label>
+        <label class="login-field"><span>Confirmar nova senha</span><input type="password" name="confirmPassword" autocomplete="new-password" minlength="6" required></label>
+        <button class="button button-primary login-submit" type="submit">Definir senha e entrar</button>
+      </form>
+      <small class="login-note">Sem acesso ou esqueceu a senha? Fale com o PCP da sua unidade.</small>
+      <div class="login-desktop-foot"><span>Sem acesso ou esqueceu a senha? Fale com o PCP da sua unidade.</span><span id="login-desktop-version">Uni 2.1.0</span></div>
+    </section>
+  </main>
+  <small id="unificado-version" style="position:fixed;right:10px;bottom:8px;color:#acb8ca;font:11px monospace">Uni 2.1.0</small>
+  <script>fetch('/unificado/VERSION',{cache:'no-store'}).then(r=>r.ok?r.text():'').then(v=>{
+    if(!/^\d+\.\d+\.\d+$/.test(v.trim()))return;
+    document.getElementById('unificado-version').textContent='Uni '+v.trim();
+    document.getElementById('login-desktop-version').textContent='Uni '+v.trim();
+  }).catch(()=>{});</script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+{
+  "files_checked": 2001,
+  "rows": [
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/usinas_noro.py",
+      "line": 1,
+      "phrase_candidates": [
+        "scoped read API for the active Unificado shell."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/usinas_cec.py",
+      "line": 1,
+      "phrase_candidates": [
+        " protected by the Unificado session."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/mapa/usinas_legacy_read.py",
+      "line": 1,
+      "phrase_candidates": [
+        "only Campinas ERP bridge under the Unificado session."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/dosagem/app/unified_gateway.py",
+      "line": 1,
+      "phrase_candidates": [
+        "Validated identity passed by the Unificado"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/dosagem/app/unified_gateway.py",
+      "line": 40,
+      "phrase_candidates": [
+        "Sessão do Unificado inválida ou expirada."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/armacao/armacao/auth.py",
+      "line": 42,
+      "phrase_candidates": [
+        "Sessão do Unificado necessária"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/server/postes_certificates.py",
+      "line": 32,
+      "phrase_candidates": [
+        "eway signs this assertion after checking the Unificado session."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio/cronoanalise/api.py",
+      "line": 46,
+      "phrase_candidates": [
+        "Entre novamente no Unificado."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/erp/api/routers/relatorios.py",
+      "line": 359,
+      "phrase_candidates": [
+        "Chave de integracao do Mapa Unificado nao configurada"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/erp/api/routers/relatorios.py",
+      "line": 374,
+      "phrase_candidates": [
+        "Resposta invalida do Mapa Unificado"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/erp/api/routers/relatorios.py",
+      "line": 546,
+      "phrase_candidates": [
+        "Resposta invalida do PCP Unificado"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/erp/api/routers/relatorios.py",
+      "line": 549,
+      "phrase_candidates": [
+        "Grupos MOD incompletos no PCP Unificado"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/reporting/reporting_service/legacy_reports.py",
+      "line": 359,
+      "phrase_candidates": [
+        "Chave de integracao do Mapa Unificado nao configurada"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/reporting/reporting_service/legacy_reports.py",
+      "line": 374,
+      "phrase_candidates": [
+        "Resposta invalida do Mapa Unificado"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/reporting/reporting_service/legacy_reports.py",
+      "line": 546,
+      "phrase_candidates": [
+        "Resposta invalida do PCP Unificado"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/reporting/reporting_service/legacy_reports.py",
+      "line": 549,
+      "phrase_candidates": [
+        "Grupos MOD incompletos no PCP Unificado"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/carta-static/manual/manual-carta-traco.html",
+      "line": 6,
+      "phrase_candidates": [
+        "Unificado "
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/carta-static/manual/manual-carta-traco.html",
+      "line": 8,
+      "phrase_candidates": [
+        " automático no Unificado. ",
+        " O Unificado recalcula MCC e mostra a conferência"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/carta-static/manual/manual-carta-traco.html",
+      "line": 9,
+      "phrase_candidates": [
+        "Unificado"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/logistica/logistica/auth.py",
+      "line": 10,
+      "phrase_candidates": [
+        "Entre no Unificado para continuar."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/qualidade/quality/auth.py",
+      "line": 1,
+      "phrase_candidates": [
+        "only verification of the short lived Unificado assertion."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/qualidade/quality/db.py",
+      "line": 1,
+      "phrase_candidates": [
+        " no connection to another Unificado database."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/dosagem-static/direct-entry.html",
+      "line": 13,
+      "phrase_candidates": [
+        "Ir ao Unificado"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/suprimentos/suprimentos/__init__.py",
+      "line": 1,
+      "phrase_candidates": [
+        "Suprimentos nativo do Unificado."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/cq/app.py",
+      "line": 1,
+      "phrase_candidates": [
+        "Isolated CQ service behind the Unificado laboratory auth"
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/cq/app.py",
+      "line": 43,
+      "phrase_candidates": [
+        "Acesso somente pelo Unificado."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/cq/source.py",
+      "line": 1,
+      "phrase_candidates": [
+        " The new Campinas CEC is local to the Unificado VPS."
+      ]
+    },
+    {
+      "file": "/opt/concrefer-unificado/homolog-next/visual-full/cq/deploy/patch_gateway.py",
+      "line": 1,
+      "phrase_candidates": [
+        "idempotent CQ integration patch for the live Unificado gateway tree."
+      ]
+    }
+  ],
+  "mode": "read only; after the first label patches; includes remaining isolated service roots"
+}

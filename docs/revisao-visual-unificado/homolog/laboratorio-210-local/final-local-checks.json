@@ -1,0 +1,16 @@
+{
+  "local_only": true,
+  "cleanup_markers_only": true,
+  "unmarked_reading_preserved": true,
+  "campinas_noroeste_sentinels_preserved": true,
+  "cleanup_transaction_rolled_back": true,
+  "readings_after": {
+    "pederneiras": 4,
+    "ribeirao": 4
+  },
+  "javascript_inline_and_files_checked": 24,
+  "python_syntax_valid": true,
+  "new_files_replacement_characters": 0,
+  "git_diff_check_passed": true,
+  "vps_connections_opened": 0
+}

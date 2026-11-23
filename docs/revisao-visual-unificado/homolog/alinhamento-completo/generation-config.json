@@ -1,0 +1,16 @@
+{
+  "flags_match_published": {
+    "USINAS_NOROESTE_ENABLED": "1",
+    "USINAS_NOROESTE_ESTOQUE_WRITE_ENABLED": "0"
+  },
+  "internal_keys_paired": [
+    "QUALIDADE_PCP_CATALOG_KEY",
+    "LAB_TASK_SYNC_KEY",
+    "SUPRIMENTOS_TASK_SYNC_KEY",
+    "MAPA_USINA_INTEGRATION_KEY"
+  ],
+  "ports": "141xx only",
+  "realtime_port": 14160,
+  "production_services_changed": false,
+  "secret_values_logged": false
+}

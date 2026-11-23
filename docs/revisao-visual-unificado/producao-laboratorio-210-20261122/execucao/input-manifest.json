@@ -1,0 +1,166 @@
+{
+  "approved_base": "53f77c6cd4026418ca33a09cb81dc0d6f4312e13",
+  "files": [
+    {
+      "path": "scripts/lab210_server_patch.py",
+      "sha256": "c8db8917d6670bd53a4e4a8a31fe9a1787be1946b0d17a8c8e9042c9a55dde2c"
+    },
+    {
+      "path": "scripts/lab210_module_fixes.py",
+      "sha256": "185428fb7fe5ec6b9fd1b07abc27bc0f6e7424dedb2fb2a573a4893bef3b1999"
+    },
+    {
+      "path": "scripts/lab210_production_patch.py",
+      "sha256": "1f1bbd0e711f543ad97cfb97bf29a4651c3be4574c2223e303a870464d659514"
+    },
+    {
+      "path": "scripts/lab210_migration.py",
+      "sha256": "7ea72278bdbc10e27964f02025c3b3cc83632b4a370832f9c32d9e717fffea15"
+    },
+    {
+      "path": "scripts/lab210_snapshot.py",
+      "sha256": "4a9922daa45b341393035337de561e7e9e1a0967f8e5cc8c5f4db95f32ad2867"
+    },
+    {
+      "path": "unificado/mapa/api/screen_catalog.json",
+      "sha256": "ca9c7804ce04ada6b25ff610cc91be3bfc950b91820871c871f8007b241ae8c4"
+    },
+    {
+      "path": "unificado/mapa/api/lab_cec_units.py",
+      "sha256": "f340d5633eface60f5aa7876a2fb59a50d25e07eef2fd6131147558a82898da1"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/cec_units.py",
+      "sha256": "90a7771a48104e910f1db88dabb4e068ef0ede169ea6ea45d4fe9e441d104e45"
+    },
+    {
+      "path": "unificado/shell/menu.config.js",
+      "sha256": "a5b7b3358126eecdf8553de86a8527d7375f4085fb97787f4e4c8aee4c1c912d"
+    },
+    {
+      "path": "unificado/shell/icons.js",
+      "sha256": "6f7491772368fc7fdb2c0d54f8b240ca22aa3402e4f74a2bc683ee50231d767f"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/index.html",
+      "sha256": "c50ab60f159a0009bf30e059786a003201b0cf50b228572e8271bef01c3f53d9"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/analise/api-client.js",
+      "sha256": "84aa0bf0a359b1c3881941011ccb61d12fe53495292f3a9ffb64b259b433297b"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/analise/index.html",
+      "sha256": "a707969a917dd51f95e4c63be5254b5e7cb894278504219a032f205a44325dcd"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/analise/manifest.json",
+      "sha256": "82509f96403c430eb19ef399d59957034963029b31f50a7de29788797557a09d"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/analise/relatorio-icon.svg",
+      "sha256": "070f29250fdf61711565b57eda773ee824f7d2b1a7644a00538d361b259dc4d5"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/analise/relatorio.html",
+      "sha256": "d98cadee3273db13e7c8c3b68e7a110bca04d8c8c0c15d98885d329422fe00e9"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/analise/resultado-cp.html",
+      "sha256": "c9a623d7033737fa096cabf5421dfaf8d52b3a66d88813f737334f376deb48a0"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/analise/sw.js",
+      "sha256": "021fb06ee7411a447791065602a5e750ddb508b3e643a072333675aad343defd"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/etiquetas/index.html",
+      "sha256": "eeb0e91fb66f946b3fc4383c2a35e78d3321f4c21fb1c83021251e20a97d8c70"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/leitura/index.html",
+      "sha256": "b6b41a52668d323659cdfcb9fe04303beda6677c58f1f3de174426eff4a3d0d8"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/leitura/manifest.json",
+      "sha256": "42c196cf75029f3c9fb5df42aa474d92632633e5f8472d14475df91fde21f84e"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/leitura/sw.js",
+      "sha256": "5327ebc2230a0b03476abd00465fe2fee537a663c76c11f0583a2e503587231f"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/relatorio/index.html",
+      "sha256": "60626133432f6ae86254f357f51773a6fbdbb62d8eb36ff5509dd8948b452c39"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/resultados/index.html",
+      "sha256": "aa15461f6e6a705f741b9a5f6af8201e4a11d966de7edd24466a12897e00c4b2"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/pederneiras/cec/rompimentos-mes/index.html",
+      "sha256": "0ace0eb792249052eb9d1a916167170e53e87f6072b1fddf2b4913282afad777"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/index.html",
+      "sha256": "33676394dbfe2388db4f147951d46156e6e47301523ff8ef69c749c069396a2d"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/analise/api-client.js",
+      "sha256": "8e8d213d9397a299434be41fdaacb6dd469a96180299e395bce8b9012fafd04b"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/analise/index.html",
+      "sha256": "a683f9c7fc7b3d1bdde7c1cf6c3cf93ea3551342d69c780d65f43fe4348e955e"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/analise/manifest.json",
+      "sha256": "e7bf35f61b7191b84b9a349ff755cb708187a5c5ff188861d19feef3d721623c"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/analise/relatorio-icon.svg",
+      "sha256": "070f29250fdf61711565b57eda773ee824f7d2b1a7644a00538d361b259dc4d5"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/analise/relatorio.html",
+      "sha256": "97d3f8d6f22e17c3fb1d60249512d18561dfae97d58927f03638f2140be95309"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/analise/resultado-cp.html",
+      "sha256": "14eca9eb17213809facaa4c734689e3bc446ae85f5b6f939055a9b4c59411684"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/analise/sw.js",
+      "sha256": "33a3851c1bb26417e16553247d6ff15ce01a23714901a6e2c6804bfee4cad609"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/etiquetas/index.html",
+      "sha256": "bd6254fdcd388eabf2936f761c8a590b59c434451959e6e6651558ac86a1a0b0"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/leitura/index.html",
+      "sha256": "8c9af4c9fbc54005fd6b9c8342bff8a9530f6f01ee236c5c2ab1dc25f88ef63c"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/leitura/manifest.json",
+      "sha256": "7179bebaae821aec222e6c81dd7fc630fd4c7a7497a468310842363ad131872d"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/leitura/sw.js",
+      "sha256": "21abd0526a8b8c11bf88f0243979b7ae3be84cf4f29e9aa865a79e1e9325a782"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/relatorio/index.html",
+      "sha256": "9f5811dad38e0a031fefde693c8e2a5118de10f2554f0287db312fa6a51f1808"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/resultados/index.html",
+      "sha256": "24ccb4f136dc4af6c92402186089519db15ab2f3bde23941acab1527ee8f2cde"
+    },
+    {
+      "path": "unificado/laboratorio/service/server/static/ribeirao/cec/rompimentos-mes/index.html",
+      "sha256": "0e977ca180f260400dab52cdf22865aec13a84398bc1ee462d65935548e7adf2"
+    }
+  ],
+  "package_sha256": "bb3b30ddc0c43739e9cb1df4db1d75de15dcaaa66ad100a4421cb6baf1b285c6"
+}

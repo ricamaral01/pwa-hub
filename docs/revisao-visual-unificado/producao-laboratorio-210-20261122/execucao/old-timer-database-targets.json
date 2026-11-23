@@ -1,0 +1,14 @@
+{
+  "/etc/concrefer-unificado/homolog/qualidade.env": {
+    "QUALIDADE_DATABASE_URL": {
+      "database": "/qualidade_homolog_20261016",
+      "host": "127.0.0.1"
+    }
+  },
+  "/etc/concrefer-unificado/homolog/visual-qualidade.env": {
+    "QUALIDADE_DATABASE_URL": {
+      "database": "/qualidade_visual_homolog_20261118",
+      "host": "127.0.0.1"
+    }
+  }
+}

@@ -1,0 +1,151 @@
+[
+  {
+    "module": "mapa",
+    "service": "unificado-visual-homolog-mapa.service",
+    "port": 14152,
+    "source": "/opt/concrefer-unificado/mapa-api",
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/mapa",
+    "python": "3.12",
+    "isolation_adapted_files": [
+      "noro_mirror.py",
+      "fechamento_producao.py",
+      "unified_auth.py",
+      "quick_access.py",
+      "usinas_cec.py",
+      "app.py",
+      "realtime_bridge.py",
+      "manutencao_usina.py",
+      "usinas_reporting.py",
+      "logistica_access.py",
+      "usina_integration.py",
+      "noro_parity.py"
+    ],
+    "production_service_restarted": false
+  },
+  {
+    "module": "pcp",
+    "service": "unificado-visual-homolog-pcp.service",
+    "port": 14154,
+    "source": "/opt/concrefer-unificado/pcp-api",
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/pcp",
+    "python": "3.10",
+    "isolation_adapted_files": [],
+    "production_service_restarted": false
+  },
+  {
+    "module": "qualidade",
+    "service": "unificado-visual-homolog-qualidade.service",
+    "port": 14166,
+    "source": "/opt/qualidade/service",
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/qualidade",
+    "python": "3.12",
+    "isolation_adapted_files": [
+      "quality/pcp_catalog.py"
+    ],
+    "production_service_restarted": false
+  },
+  {
+    "module": "laboratorio",
+    "service": "unificado-visual-homolog-laboratorio.service",
+    "port": 14164,
+    "source": "/opt/concrefer-unificado/laboratorio/service",
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/laboratorio",
+    "python": "3.12",
+    "isolation_adapted_files": [
+      "server/cec_api.py",
+      "server/postes_public.py",
+      "server/postes_certificates.py"
+    ],
+    "production_service_restarted": false
+  },
+  {
+    "module": "cq",
+    "service": "unificado-visual-homolog-cq.service",
+    "port": 14175,
+    "source": "/opt/concrefer-unificado/cq",
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/cq",
+    "python": "3.12",
+    "isolation_adapted_files": [
+      "report.py",
+      "app.py",
+      "source.py",
+      "tests/test_source.py"
+    ],
+    "production_service_restarted": false
+  },
+  {
+    "module": "suprimentos",
+    "service": "unificado-visual-homolog-suprimentos.service",
+    "port": 14167,
+    "source": "/opt/concrefer-unificado/suprimentos/service",
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/suprimentos",
+    "python": "3.12",
+    "isolation_adapted_files": [],
+    "production_service_restarted": false
+  },
+  {
+    "module": "logistica",
+    "service": "unificado-visual-homolog-logistica.service",
+    "port": 14179,
+    "source": "/opt/concrefer-unificado/logistica-api",
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/logistica",
+    "python": "3.12",
+    "isolation_adapted_files": [
+      "logistica/main.py"
+    ],
+    "production_service_restarted": false
+  },
+  {
+    "module": "dosagem",
+    "service": "unificado-visual-homolog-dosagem.service",
+    "port": 14169,
+    "source": "/opt/concrefer-unificado/dosagem-native/api",
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/dosagem",
+    "python": "3.12",
+    "isolation_adapted_files": [
+      "app/main.py"
+    ],
+    "production_service_restarted": false
+  },
+  {
+    "module": "armacao",
+    "service": "unificado-visual-homolog-armacao.service",
+    "port": 14168,
+    "source": "/opt/concrefer-unificado/armacao-api",
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/armacao",
+    "python": "3.12",
+    "isolation_adapted_files": [
+      "armacao/auth.py",
+      "armacao/main.py"
+    ],
+    "production_service_restarted": false
+  },
+  {
+    "module": "reporting",
+    "service": "unificado-visual-homolog-reporting.service",
+    "port": 14187,
+    "source": "/opt/concrefer-unificado/usinas",
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/reporting",
+    "python": "3.12",
+    "isolation_adapted_files": [
+      "sync_reporting.py",
+      "sync_receitas.py",
+      "tests/verify_real_mirror.py",
+      "reporting_service/legacy_reports.py",
+      "reporting_service/provision.py"
+    ],
+    "production_service_restarted": false
+  },
+  {
+    "module": "carta",
+    "service": "unificado-visual-homolog-carta.service",
+    "port": 14188,
+    "source": "/opt/concrefer-unificado/homolog/laboratorio/carta_traco_api",
+    "destination": "/opt/concrefer-unificado/homolog-next/visual-full/carta",
+    "python": "3.12",
+    "isolation_adapted_files": [
+      "reporting_service/carta_traco/deps.py"
+    ],
+    "production_service_restarted": false
+  }
+]

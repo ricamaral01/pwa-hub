@@ -1,0 +1,1364 @@
+[
+  {
+    "file": "public/armacao/index.html",
+    "source_sha256": "45911c1caa454f0d9398f57ab2380bf405f3ce7dabf934e0f171edf3d973b34b",
+    "production_sha256": "23161a6d44febe7695601087591fd515f072385d30671af8b449a47e4b330b83",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/atualizar.html",
+    "source_sha256": "6d678bfcbc468d9ff7748764d68db06052c00898768626f43896157fda8559f2",
+    "production_sha256": "8a4b88bc05874fcaf501dc0b33b7cd05bccff9efe02636983f1fc5be18a64e2c",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/index.html",
+    "source_sha256": "e88a0440b7295d3515b97c2dc873f4ef85aa24a2423c8d69465d7b302e96aed0",
+    "production_sha256": "11a887a41a8df7130e2f93e3bb7c5e14783c71a4345ce04a2ce82e97d6463ce4",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/login.html",
+    "source_sha256": "5da6ad8511901a952e74c74be96b87027d77b1b8230dcd1bb78e1e2cedfb95f5",
+    "production_sha256": "20096330eebf1d62b577c1fb78ae6590623663eaf4f4d905767e3f7f08f8f49a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/logistica/dist/logistica-native.js",
+    "source_sha256": "14402c7b4463f1f54d90df7f5e8f296e8d908a07ebaccf82f4a8d252fe843d47",
+    "production_sha256": "9a2e7c22d573c39c37611faf67b4dd2a88d3587da1e129fe647ccd6ab93f7b34",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/logistica/logistica-native.js",
+    "source_sha256": "d359b55430c008dffcd5b1a2a1ffde8f46c89fa305941f7f0f61d83413d7f492",
+    "production_sha256": "d5577f002da4629b798db3f440adb48f29a3a7c1eb1bb7336557eb3089f9e5b6",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/m/inspecao/app.css",
+    "source_sha256": "cd2c55c3bfdd3a9ae6cb11b3e609bbdcc8b59605be2a1e634a2e4ebcfcae799f",
+    "production_sha256": "3c6df2230032b86ebe3b0b0e3829685d843d0277d372da7ee9e46c37de47ecfe",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/m/inspecao/index.html",
+    "source_sha256": "56c4382942190f21e482f80bba71b770c8c4a23b15943e3c444d6773fc26b9e2",
+    "production_sha256": "224573741d32e7c957f4383f52957d5cedd5f29b74a1e15c6c88d4cc6bb6bae1",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/m/inspecao/login.html",
+    "source_sha256": "f0edaca798f37ac5df518ba45b1670b78a568851bfca8193ddfd365cd953f85a",
+    "production_sha256": "523f2a1c6e9c1e38ac8d42f92c68631426d9f691653d4ee93bb048f77c25864f",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/m/inspecao/menu.html",
+    "source_sha256": "c8a3ea7708cdabe71a0827875b885fbde16c1ca0d148e68ef364b7421faacb59",
+    "production_sha256": "2c021e7e9bfa8e62a02704dade4c42cbc2b5135b1046678dfc882e4f5d2608d4",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/m/maodeobra/entry.css",
+    "source_sha256": "688b72187240599c8acf776f2e9f1bcb0c67b1b00329d9c28957b3ac40b31920",
+    "production_sha256": "181b77978106fd4fe48679a94ab58d79a4520573c3efb9adc58119d6aba10467",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/m/maodeobra/index.html",
+    "source_sha256": "b63699bf4fc05ff95eead7ddecf19e194f702689b9cdc6c0812e419a4542af54",
+    "production_sha256": "f33da24348b9125e1f4d3f6ad5a1de3ebae361784b9622dbc3a1e34d3e75e9cb",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/m/maodeobra/login.html",
+    "source_sha256": "1d326ef985975b117381565bf7eaa72de69976bf5e487c13183b0264436137bf",
+    "production_sha256": "5f4253efa4fbcdc6713925e41a101f19e81e0b40b3dec2eac9511a80e6b53ef9",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/manifest.webmanifest",
+    "source_sha256": "887cd82daea7caac2d4211096d3b10727c5f3f97066ee2d3047a27baf03c0829",
+    "production_sha256": "b9a107ffd090e2d22259cb79000bdb4ae21e67c2365e5b25ed17daf74e001750",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/manutencao-usina/app.js",
+    "source_sha256": "84ce46945d5ab0ad78299d47f37ffc2bde156eaa54b6cd41cf01f8b353e04303",
+    "production_sha256": "b86e437d5f2f9fbec0893eb995c538e3446045518f089fdd51afaf0226c60f89",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/manutencao-usina/index.html",
+    "source_sha256": "a1a9031af63a88668693ef0e1a2fb9610ec919633773838993b61c3a5f9be6fb",
+    "production_sha256": "73220ccd315eb37dcecd70c9d5a4c3a2beb384b6371eb012f5d7267acb7d8ffb",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/manutencao-usina/styles.css",
+    "source_sha256": "77f5ed0996dc515e30ffea6f18b70b0a990ac7f90628e5ca293a2aa04f6dd395",
+    "production_sha256": "3b44fe955385b0fb9fedebfd5f9b8b3cad8c60dc568d5cf6eb6388f3c7016b87",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/index.html",
+    "source_sha256": "84bf260179af9988cc2cb732f54ba3d7f66e4af52956669452bafe2f776c821e",
+    "production_sha256": "fae6621fac01a1f1dc6c2fa6026040dcd00b7d7059a62c7d6959742c2233bd08",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/app.js",
+    "source_sha256": "757d411417169bde5bc8ecc051815e11b9807d718a93c63deb54a1d997415a36",
+    "production_sha256": "45f962c7c4843de13605ab2e4798fe2431ad7d64b9c3b9d6913a0f8880def51f",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/bridge.js",
+    "source_sha256": "28e8860269fb42b85729cccd2cbc785b19bacdc2b7819e61d2cd14f81b77a25e",
+    "production_sha256": "a3fe0cd9e2d81afc8de1d718922c3fb41b13f40ae2fc82a81a7a9ab14da85ec8",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/dashboard-defeitos-v4.css",
+    "source_sha256": "f941aa4f888f4d7349567d1a9b452644f4080dd63e8679a50ad586eb84b880ef",
+    "production_sha256": "9ea48c170b4b324e096f8e297b068379037d1692e004dc7c7368da954e4a3674",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/dashboard-defeitos-v5.css",
+    "source_sha256": "6c07e39e3700a564a2c1601fc1fa81477814ff06d48d03d6422c52c45e8e16c0",
+    "production_sha256": "43a327692cbef9a1c4a203789b5b82bafeef9cd0ee9684441204a5534637aa9e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/dashboard-defeitos-v5.js",
+    "source_sha256": "f105c11a8d952e7f8b0b3ec7ee2fa272936b76e4616e512088b0f4362ae528aa",
+    "production_sha256": "032674345f98313317821c42aca7f6510261a811510f84cce7850a538122d45a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/dashboard-reference-layout.css",
+    "source_sha256": "9ea5ec047abb97e197308725090a074cb548f1833d40e58277a3a9accae7b734",
+    "production_sha256": "f6f29026f9f730884a37b0965f993bb38cb1eae6f198e93da16a4a1088077394",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/dashboards-v6.css",
+    "source_sha256": "392a8a442eba6cdecc162bff10154401fe5df8075282ad05300d975d33bb394f",
+    "production_sha256": "342598ff4205c3362fc525795ddabf1844c8631e04bf2da585bfecc873fd6be1",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/dashboards-v7.css",
+    "source_sha256": "1960fdbc5f38af1a8e0418871ad252f817cd8074ac86b30c88c780126080f573",
+    "production_sha256": "262d858b80d518092f17f53d9549ef10f2171aac340a47561aad607804a2d654",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/index.html",
+    "source_sha256": "fa88a19c183515e11f62fce0e52ec2519d520af9a20c382a1c105c80da0d4a83",
+    "production_sha256": "a5eb6beb298c7d3eb7dd711cc260574ac8346bb43bafae7cee04a85a402ed840",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/inspecao-defeitos.css",
+    "source_sha256": "b4154ccedce62a7ccd95542cc7827cffdd75e229d58b5f0e8f07179c8bdc099d",
+    "production_sha256": "8174edc86706a76ffcce214ba1b0fdf85f217819b041275da8cc4b5dce4ff89a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/manifest.json",
+    "source_sha256": "ec920e1b99445e34a4295b242e9983bd59fdf5eeba17eba9d51ac34bd36b8005",
+    "production_sha256": "0fd559bb37089830af19f94b01c3b7e1ee24ced7dd8962a2f2fe382ff4367261",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/montagem-taxa.css",
+    "source_sha256": "45ba80d1d3e5ae805cf2cd75575f15bf3fdf45139da1357abd17358bdd73d509",
+    "production_sha256": "65fb9e5090ae20470dbb37c3d38c118b218bfa058395c31a595804d87d88215f",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/odin-mode.js",
+    "source_sha256": "37f37466a528864b732ebe4812d522502cd3bd7030639a7ab639add9fa4bd11a",
+    "production_sha256": "848a709b0fadee856c7933b1e18cd5b3032481af312c68e6f711a66cf7908e14",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/produtividade-refactor.css",
+    "source_sha256": "1ea656aa8358c7eb511ae49912954ce600bd09ee2e2c000dcc5788d76a9f71f4",
+    "production_sha256": "54ca7900d8a4baecc130379c9ec383119e965d7b9b5d4c205ced1c570088937d",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/screen-context.js",
+    "source_sha256": "aec66484a38606bc88f817f450ca8a6b79378ae0a137b30e9d9b92cbd2e1826c",
+    "production_sha256": "8264dcda4c721ba69bdb72f35b4c8b0e381f70af820a2bf31abb5f5607b8d444",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/styles.css",
+    "source_sha256": "97c62ee430bd2ba06a8603707e0bb85f08b682b9ef1570548c0ccd8ba5d103a0",
+    "production_sha256": "98296a9a77bdf6aa5103019f7e601f21d6d4d73d3588303cb157209b1a20d07d",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/supabase.js",
+    "source_sha256": "ab428bb0289605ea041e5cf261879d37f5d72f8dfdc436be03730db496ee6e1a",
+    "production_sha256": "5e685d5bb2d0450cc2508f4f26d87706f4ce81262e6917f1ba030373f04a6696",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/unificado-bridge.css",
+    "source_sha256": "a317d8c839444f92024b892e5f5fc097754737f7b8a9a89f7815c84ce9430217",
+    "production_sha256": "643c88e50342953964c45bdf0b498232264b765327bbb263d689cc6599029bcb",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/unificado-bridge.js",
+    "source_sha256": "3f53c9088aae20c88a730bfed96a3ac964626ed91bc9503e21f7eba30b6cba0f",
+    "production_sha256": "fff6c92ee2d0b1ad3caac3a130f4262852fe5dcd0aa0a98c2d34006a7e3b554a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/mapa/operacao/users-unificado.css",
+    "source_sha256": "4825cbbe2e4fb5b64d9f719e1b0e424498764817ca805019909812a8276bb5d9",
+    "production_sha256": "644df87230356ac1c8fb4534e98d16081b69d5a5c182eb677be0f65ac0d40b73",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/acompanhamento-mensal/index.html",
+    "source_sha256": "a87ddb157efb75ac31f0f49893c55554d3c8bc0d549b23d8306689e72398cfd6",
+    "production_sha256": "d77d74310454fbe873c311196645f589e3f17929673895d715e2e4fb2534f9e0",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/acompanhamento-mensal-setor-34/index.html",
+    "source_sha256": "9793c0c1ba0eda94bc07ef27acf94fef96c29c2f2986b1b31400e6cebbfe1d1d",
+    "production_sha256": "f294ee5bbdcc62c63543857ec3f66841ae5297820fcb353ae932ee25c34ecc50",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/apontamento-mega/index.html",
+    "source_sha256": "c94a66c632f2c788f6fcc950e9a756e2ccb363e4c2d705d4493a06f52f0606c8",
+    "production_sha256": "58141bc643abb69b3e1de10432046b7bd7e9328f3fdb1d659dfba84ad89d1eed",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/armaduras/armaduras.css",
+    "source_sha256": "c9ea5f2d7ad699334909fb20582046ace407d0c08411d0c5ae9d06e11af9be5c",
+    "production_sha256": "143000b222672a0e8e0b6531efac9bec8ea510e5fd4bc6327af3f44202bccf02",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/armaduras/index.html",
+    "source_sha256": "9c281361092310695c0396fc53772d9bd63a740bebef1ffee732263d2194c5bc",
+    "production_sha256": "395c0173f23cd05efb5153a6648fc676595d5c7cb4d67f25a161925149656c94",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/armaduras-relatorio/index.html",
+    "source_sha256": "9c281361092310695c0396fc53772d9bd63a740bebef1ffee732263d2194c5bc",
+    "production_sha256": "395c0173f23cd05efb5153a6648fc676595d5c7cb4d67f25a161925149656c94",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/comparacao/index.html",
+    "source_sha256": "cc18785dfa4963e5bd7cf1823227be6811ac1bea22a15e65b33c2051f944af6b",
+    "production_sha256": "1b44657f71d5072fece6b8063486a1e652832f5154d795b87c3b6c03f57d2d3b",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/dashboard/index.html",
+    "source_sha256": "d12a3c614f753e05111abe34ecad5c09c2401b242c9968e75031199ea8ebb155",
+    "production_sha256": "7f77ae0ac3c89c73fe96228e9a480da9c18afaf58af22d99e49e43cb0199b61e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/etiquetas/index.html",
+    "source_sha256": "ba48148676c047976d6b00313a91f4a7d71d57c3b384efd78f6e9e4608103bc6",
+    "production_sha256": "35ea8c3e1905de9302ab666e28c260fecdbd116e6e422c7c4e7c8ca9354a60f8",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/etiquetas-armaduras/index.html",
+    "source_sha256": "7914c2bd5ab0ba5201a4975e47204d26ee59adc00a1a462ff02160519cfacea1",
+    "production_sha256": "96dc5806ce097f1a0cb264a74defde8814619491421367c5c88e8991547b9001",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/etiquetas-sc/index.html",
+    "source_sha256": "939504f2b2f339dd13b16a0fe6462300a411a19d744834a125b9c3fa86d15cac",
+    "production_sha256": "42c73fd228ea1ab6aa32a943c57f36bc715ae32c777ffeceb83bb1a07598b05a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/etiquetas-setor4/index.html",
+    "source_sha256": "840ef9a5824a118fb1c2142ad5b0ee9db0339e033b2307512c6f583dde98971c",
+    "production_sha256": "74c6e0dd76885186b80d3c2db917ce9ce5c57afe1fc31b35c33bb8e7ae9a4403",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/fechamento-diario/index.html",
+    "source_sha256": "6e868572b22288df2b47cfae273169d110fa342cc3dca3408a2893962150bc52",
+    "production_sha256": "ee8bd50336ee84699352cbfd95a3e13b95de09cab22ffc86f37782fe206325a8",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/formas-por-setor/index.html",
+    "source_sha256": "d8ed0937fe47ca327354aebe8a3a1169a2f45fcfb59767b5fb21cd0e99f838cc",
+    "production_sha256": "0e8a2b8d6963f8817558ce7e6a0400d1eaf1f3ca7e3af52d52023a83d32b3c45",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/maodeobra/index.html",
+    "source_sha256": "a86e701d217493dcc69ef2cd063e4dd385732a700d9530acf321e15cea22de25",
+    "production_sha256": "9ad10d4e4d1dd9d587db2989953f27e0fff9a0b15d1e9e2c90867e340d7e1ad4",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/maodeobra-rateio/index.html",
+    "source_sha256": "9b8c06afeec921bd70f0117e00ced6b5f0fbd848c746e7f6166a2b016f311c05",
+    "production_sha256": "8f9a3b73cbe53e055e401c410be035c977af90e0bacaf3caae4b594504a59cac",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/numeros-serie/index.html",
+    "source_sha256": "aa19486cc0e7b00ffa631127f915849c0d89a9e857a33cc286bf15584e76c248",
+    "production_sha256": "baed7ec66d9f6b26fe0df667b440ab376405b7a30ab7abca52f83c5cbdb3b7ae",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/numeros-serie/series.css",
+    "source_sha256": "b26041721a10757e4cdfd6018c783b1157995e3c0469db258347b5fdd01b3982",
+    "production_sha256": "66e628fa1df6d70885b694adcd7a0340035a49cdb951f2f5576995c88dc60f62",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/pcp-diario/index.html",
+    "source_sha256": "2ba3925fa055290beb32c9a37e5506d10abb9454ce3759765a6cd121c16e016f",
+    "production_sha256": "324f98576790896e371664e0be7b59a4dde67fa2997d6d397f958e0b84dfd6a3",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/primeiro-acesso/index.html",
+    "source_sha256": "7524c19336650f2d7261b561fd4af49ef9dedca0e12ee06be1e943d8f78943c6",
+    "production_sha256": "c3739ef8718dcf808d2758f6bbf0ece7ad6bbd8b26080812490b95b49866ed2e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/producao/index.html",
+    "source_sha256": "cc29ccb537d8bebb60546b828605760bfc8dc20a82f51abe9552090a49cec52a",
+    "production_sha256": "ae4a4e6168f8d6cf4e563c835fc5a697cae48fdeb1e0f835da6d243b623bc659",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/programacao/index.html",
+    "source_sha256": "0a7b45ec2f53865b846bae003a052f9c6f28fd30573533a0fda20db02deb4c73",
+    "production_sha256": "711c07327f1e67ec9758bde9a1b2c2c32af4be383e13d2f1fc24d85bc2b8a50e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/programacao-alex/index.html",
+    "source_sha256": "ead272b8b4810445bb800b3d2a8af7096ac42a89e236d2c031372a4fd34f348a",
+    "production_sha256": "39e9315864d779c72c3a900af34d929775dba5b9bfda97e308304ac5a231249e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/programacao-circular-s3/index.html",
+    "source_sha256": "7906f6672a35bc940511f8933dacac961b943498d77b5312a95e06ec311fdbf8",
+    "production_sha256": "c5e658d3f341fc4009807ad9a925adab6bfda0511435538ca292223046386216",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/programacao-circular-s4/index.html",
+    "source_sha256": "21c1f20d462d53975088cbc6d9a0001c6b834ff97faa288f29ede27f11106022",
+    "production_sha256": "7c98f7fec519e598928145f67f337a9d29cc3d4fc1b307092336a57696460bdf",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/programacao-final/index.html",
+    "source_sha256": "8a94c8f088d7dcb70a109e90fe7e36ce5eebe3ad6f7075ec450c634d7c518bd0",
+    "production_sha256": "cc803b2550bb8912654227d620ae62166f2f12977488c104469b21f81149a49d",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/programacao-semanal/index.html",
+    "source_sha256": "fc0511d9011a87ed967d5876e53c3dfc4bbf68d1f104dac181b3d1cc3af36938",
+    "production_sha256": "22bcf685603ac28fd5409c2f9fa43ff863e31840ebfdae240a106669d9687d5f",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/programacao-semanal/semana.css",
+    "source_sha256": "c15846bc36a548bd6747a521203b9c217516006c2930acc1c4d922f87ef8a52b",
+    "production_sha256": "8c077abc254a83da9a71b1ccae1e8abbcae11c2effaf9d6609d1f0d96648417c",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/programacao-semanal/semana.js",
+    "source_sha256": "20a0c625657deeed768c9db8a816be13a19d3223e785596b8cf795f3d392f54f",
+    "production_sha256": "a060f2c039a97885dc9c18208639e9cf5bea52b1572dfa8aca425e0506fa5b5e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/relatorio-producao/index.html",
+    "source_sha256": "7ef522b7ab2b6c110de93ece339f56498c20a2279b873bab456f80992e5f2eeb",
+    "production_sha256": "5e0b1d62ee1e99b0107f4da5b0b180a7a615237e4e10a0490db9a7e3dee56cb9",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/relatorio-programacao-s3/index.html",
+    "source_sha256": "27fedc7c870552c181d389ec1643ecf6d49bb739e2239e1977f8304b7b76519e",
+    "production_sha256": "1ce4f752b9835b88eecbfba8e07c1cd112ce205739053d323cf336fd1aad839a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/relatorio-programacao-s4/index.html",
+    "source_sha256": "c10fa75df6e4245cfb9b8dcdad6d10eef10d3038103d4bd5cf0898ffffc24521",
+    "production_sha256": "be21a8d3b324791c99457fb752473ae36eb88d91e47e709f52a5eb69213589d9",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/css/app.css",
+    "source_sha256": "3c944218e23a3c310e85cdba2db3125ef69b1e03a9c6b349b10c8bc4057e87a6",
+    "production_sha256": "4745bad4a690366afbcc906bf7157282fa7da0fb91004cef89466b04d83aba21",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/css/formas-por-setor.css",
+    "source_sha256": "5b3faafbe5c1f5878b76e75e1b5b103fac620be8eefee85f6bec6f6e612d5e78",
+    "production_sha256": "d797ac3e8f1d8df830f673eb88bb05a0e2d7c0618d018e7adbb672f40af77cc0",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/css/inter-original.css",
+    "source_sha256": "e6906d21bb8b14d8ddbafbf6502a21986e9d558b6bd7c452be15770dac73ffc0",
+    "production_sha256": "fb7ebc33ef563849b1bdea0f503603682fdffd8ee43e8ee6109a8ea0a4b49a32",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/css/maodeobra-mobile.css",
+    "source_sha256": "d26ba19fd54b5742c0e89f446295d741a662390e52c1f2ce3879a3d8e0b546d8",
+    "production_sha256": "1670ea42a6e697bbc8e52def5fe677b923c1db4254511c100f4f79f8007d74b9",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/js/app.js",
+    "source_sha256": "b63a5dec8983cf48f2e210ff11b14f769914b470c549fe8203652b6633391279",
+    "production_sha256": "6caedeac748b15e18a331fb35939e3cbc2f7a0bd148e6c83bdce208a228019ab",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/js/etiquetas-armaduras.js",
+    "source_sha256": "3cc852d0227a10e7c2c39a218bf0e169811680db07ca2e33d353a7770724cb4a",
+    "production_sha256": "36e820cb545ec8ff5497d15888d201051a3d14887a35f0283d400edb36972c9e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/js/etiquetas.js",
+    "source_sha256": "cde29d5e95c0748e6dff52a7c6e418f74dcff8b31335d30501f098a204292241",
+    "production_sha256": "a38ef003ba187a6156ff698f2dc5525d30086f42ae5d76fa78af663bb0d8f0ff",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/js/formas-por-setor.js",
+    "source_sha256": "0d85de45f7dfa503572c004fb148466c5a2d7de022f5511ff0bb17c171e4cf6a",
+    "production_sha256": "5d178b3dd9eb574cec5ba89bc48462586beebeaef3b12e3e2f753417af2abe28",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/js/maodeobra-core.js",
+    "source_sha256": "de95822cc7d5aef5e86ae1604c9c811be290b77384783029ea4666d5f5304234",
+    "production_sha256": "a667df701964d6018f4634b360d14b9b5e955715680d35c86cc15cb43354e48e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/js/maodeobra-grupos.js",
+    "source_sha256": "7f7968950b98705b2cd78151264d529dfe73a47df9e77ba22ac9365bed01c9a7",
+    "production_sha256": "59457f57f6e4702e0936e487e54739043d847a442aba9d850fdce3c8a7def4c8",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/js/maodeobra-mobile.js",
+    "source_sha256": "ed989cb7a922c646d2c8e94d6a5ef9798735863148d0d03efa8a17b0e6484695",
+    "production_sha256": "c00a018c9127843e0ce78c2fd092226fdae742822af5c6c338e5e6c56706ef60",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/js/programacao-circular-s3.js",
+    "source_sha256": "5690e3eca1038ec701cf4cba3703014ae89531c26dace1c3738a1092d8494c43",
+    "production_sha256": "dc21ed300b22af439609483d67f80b9729bc57f2551490c983c26c604f52d764",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/js/programacao-formas.js",
+    "source_sha256": "19e73595757956753f8a4cccecc88c912848b31e6c105519bc73c62d062199ea",
+    "production_sha256": "228b41b3ebeb30c8987be942295da297f627406faf8328c63cc8b40ae4a6123d",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/static/js/relatorio-producao.js",
+    "source_sha256": "6b3ea4eb549644bec8ccf0299c86ad428acb0cddbf0ff0d71bd3fa07ebf47932",
+    "production_sha256": "f75f3d8a98c91f83cfb85ca7ac9756e6873363a18af1d04887b752e41792fe7d",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/unificado-bridge.js",
+    "source_sha256": "4272a8cc436a2538d2312a14351d13aeafc891bb08647c6033dcc48262e7b5aa",
+    "production_sha256": "cd258ab51fd453f60ee3e269f6fce7235c4c2dfb8266a35a495108ff7891f83c",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/unificado-screen-context.js",
+    "source_sha256": "517f496a4ef0fb989b07aa32f1b53fcd74a38ddfaa7068fa202d8013f8be004c",
+    "production_sha256": "b835f3e290d390abf6ab07d404816b3ab5a4572ecb681007290b268bbbee9fe5",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/unificado-shell.css",
+    "source_sha256": "e830d4c34cf4ab387b38ddd2ebd73c88e65b91a354f3365ad5cd15127e2cba61",
+    "production_sha256": "5282068b99245884319d4bbf6bb03e6c6376a9b11262baad8668029db65b71b2",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/unificado-shell.js",
+    "source_sha256": "dffe2bc9b5fc3d97a255b61db8ddbfbfbb119075b04b612d52c1a44de5de9526",
+    "production_sha256": "e0bee85665a1dde67aabe0016ae41cedc9abb06bb00fbf2669b86f5172dfe752",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/users-unificado-planning.css",
+    "source_sha256": "c4ea0a245f1da01f38775e761a242165c965af082264ef1f15a8bf0bcf63e67a",
+    "production_sha256": "7f25e5e605acac8d464d757b14370717d8517d4dadff039d1406d4fc79aab7d3",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/pcp/usuarios/index.html",
+    "source_sha256": "e06ea5fd410cf574153edac35663b40d702a8943a7fa81cb6bbfdc761bd579b9",
+    "production_sha256": "b4b4ce249c342e26dbf51c8f9d511d0a529192a4513754be6136ffb737d3d674",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/campinas-unificado/index.html",
+    "source_sha256": "0d7327eb319aa719dc28a3b3a96a9a4b966833f550fddc56d530975160cf904a",
+    "production_sha256": "ab5db0eac7cee32035d308c18dba6fdf5d93dae06ce37066c12d4920a14251cf",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/indicadores-gerais/app.js",
+    "source_sha256": "3b63f99dc2453b190809817ee698cc77e564464cb24395c8d85261c8028d1031",
+    "production_sha256": "861b414a4af65635252f6688aaa62d1565428391a86af726e66d0b17744e90e1",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/indicadores-gerais/index.html",
+    "source_sha256": "421113259f2338d57aff8e3810cc1db3c8ef6a63b9ababe85c69066450621372",
+    "production_sha256": "d381f14f520d168f44d5ffe2e99b592e676908a72758efea0e1cc53436ab5ff2",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/indicadores-gerais/style.css",
+    "source_sha256": "97b427016409d586f25be2196647d3e64adee0b0725edbe45f2a1293b8ee08ea",
+    "production_sha256": "7c7113d08a6587791ac0a632fc04e45a214672bd93b313ca9b21ecef7baf0b98",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/noroeste/app/index.html",
+    "source_sha256": "1e9af19e15516bc60bf64d41c8acd4c730f05aa5562018e34c8b10dee74d3d3e",
+    "production_sha256": "d2ed856609dc436b1c1e8286ad966bf53e2cf6f34f0d86363bbbbd4090237fb6",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/noroeste/index.html",
+    "source_sha256": "a642fc1be0e030e84a57231e41861e00f84bac6cf6868242e20dee26d5b50539",
+    "production_sha256": "a5cb78f7a8b0fd25db8c1a8cd7a02ce78cadb8372f905d25943a7003a5809cb4",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/noroeste/mao-de-obra/app/index.html",
+    "source_sha256": "ef8b12e6226255318db48bb27c72704f320a147abd5a7168fe02e72fe6b36fd0",
+    "production_sha256": "3aaf355f8e8110d794f0a776d092ef5ddc528b6c2b5db756e63a26955f1322f1",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/noroeste/visual.css",
+    "source_sha256": "aab1328523dce7e398806a754f914b02338e7bea2cce7915a263650ee028926b",
+    "production_sha256": "4a854ae36021b6dd3ddfdfb5ebd6cef9ff67c22768c8eb1782ffa7ddb315c484",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/pederneiras/app/index.html",
+    "source_sha256": "e2737f61e930567f31b21476a0eddd7d5bfefdc0921e8521902b28fd9dd655ba",
+    "production_sha256": "600a3885d7978726c0add5947c8f0f5a9ab30d556f37d94d5168c68cfec10b49",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/pederneiras/index.html",
+    "source_sha256": "1803cd1a43d2e294e21ab02dc3bedb4498baafb5d2ac35d642b432bba505e312",
+    "production_sha256": "ee4de41b4e1dda8da60f3ff4cfa5a07ff96d60c3f66727532a5530e518a753a7",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/pederneiras/mao-de-obra/app/index.html",
+    "source_sha256": "accd5bfb9e094816cd897fdda93a0fc1d12d688578be3e6866fd721d0ffdcf01",
+    "production_sha256": "d38a11ff0b9a7a5fa491c3fa97539203d1702b667f04b57e9a0c2be7a5c312a1",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/ribeirao/app/index.html",
+    "source_sha256": "c0ad1d78c26652a5479fcc2af50b62ddf94189c4f81722b2662baea31e32e253",
+    "production_sha256": "0ce83a4dfb4762cbc3db852b0051ca63f7cadee09b8c9cbd17f94a7894c2e3b5",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/ribeirao/index.html",
+    "source_sha256": "c0a72fbb6fdde08dcd3f4aee75ee36ba3b5fe2975c2f8b86256ecdde4086d6b1",
+    "production_sha256": "5143ecf65db9ff6f4b5509810bf46279ad44cf8204c0516f9e191b0885b055f5",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/producao/ribeirao/mao-de-obra/app/index.html",
+    "source_sha256": "9dbd1ed9d473105d501ec21a9980cc3123e010cb79ad76928340eec8cdbb5fa9",
+    "production_sha256": "5b9d44877d8596877c246a8a356e21db4f5ad5148c0e68fb6f857f4b54bbeb6c",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/qualidade/assets/index-Bn4z2eAt.js",
+    "source_sha256": "7b81acd161de3837db105f99c2b19a93923715d07bd2cb29bfb5a753e2d9461f",
+    "production_sha256": "8a222e94d03ab7f890287fa04d6a13f180b64716a200da1a5f508cdea659ab44",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/qualidade/assets/index-CI1pdTnl.js",
+    "source_sha256": "b91692b78f6f4da5f87f443302442bada40b540b8802c4db4096c11d255d1d6f",
+    "production_sha256": "74c1fe81a7adf183f4f4f790f6a6a99264a7c5ced8024e6e35445533d384baf7",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/qualidade/assets/index-Dix4Rzzi.js",
+    "source_sha256": "313a1d9676fc59a4d98481eb7519740dcce50486b23e359bb193ba462db7f1c9",
+    "production_sha256": "de4ae11c50b3896d578dce00efcbcffc42ad8c16c6275ceefa2b66ab21c753cd",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/qualidade/assets/tasks-router-274ea3190b48.js",
+    "source_sha256": "97a07a69a50038e8d2f9dee538315e2b6058fe349a645104d7b850a9ef43ca02",
+    "production_sha256": "f7fc025401ffa413c92664b53bcf68c40575f09b4a1217bc41c6b799db942829",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/qualidade/assets/tasks-router-9b49a09df402.js",
+    "source_sha256": "0fa7cba8231145b0feb7c16e53d759d4cf46826f85ee6cef2bc397babe4bc156",
+    "production_sha256": "9b49a09df4029f023c1b8163f6e5de47bbb731c5e79dc931fb8f658643e9c9cb",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/qualidade/index.html",
+    "source_sha256": "1cfcd0622bd8e940d71e21c1041719f878d9b32432485c1c7be76e3852a0c161",
+    "production_sha256": "30e9c8f6f6b81d24f2a4669d143c9e80e7a1241063e23e6c07f44502c4e43d4b",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/relatorios/acmp-concretagem/confirmacao.css",
+    "source_sha256": "242ec9d9dc80fb8559f8e2c35fe772b30392e3dee0911b5a4d82b52ea4c05819",
+    "production_sha256": "91092eb02ad21ffa19c9404a15d6734bb42dfd231c18f18925034e9cd003ea7c",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/relatorios/acmp-concretagem/confirmacao.js",
+    "source_sha256": "c6f5103f1309016d901e4161fb10f9e2f1a1f71562a36c8ce74de7cf4ee656f6",
+    "production_sha256": "905f77155dd696a312b3c75a7b6d0237b941d0fbc0dd2c2df7b329e9030ed4a3",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/relatorios/acmp-concretagem/index.html",
+    "source_sha256": "fbe3ab9d60940850b3e904fdf801340169b32ee76477933e63884d98194a9437",
+    "production_sha256": "bc09fe3e606465144775df6ffe0b7d2918964fe42d4a084f219935c5dea9a22c",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/relatorios/fechamento-diario/index.html",
+    "source_sha256": "76097d043ba030e504d2bf121e4befe394faa412ebdc0703c00143e572be2d05",
+    "production_sha256": "c45605715c0569695ce9ae4c3fb6a700b1e056f777d8e003eaecf7cd9ffd7d91",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/auth.js",
+    "source_sha256": "caa4b1c84e30e06b6c41de47380275da211fc29254d0b2680be4a8be9bcf2ce6",
+    "production_sha256": "04d643695f4cf9d8229b33429eabbcfd8d3b3aa0a4d8954210489e32d7609400",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/aviso.json",
+    "source_sha256": "50c6fbb1b0c41e42d1c8d3b59cae352e9b867b91dc87fdef4505a298137e9811",
+    "production_sha256": "7b51825ffcc167f4ab27bec8b747a43f362b06a68702571165bea85c7c8c2769",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/busca.css",
+    "source_sha256": "bf3bccd98577b2497e0a800cacb28b665dfab70950d04ae00c983b8c75f5e57b",
+    "production_sha256": "d329dcdeb8ab06ad59f5b88eec05866ec5c5a2a64300fa904b640cfd6353263f",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/busca.js",
+    "source_sha256": "7a25d8bbb4fd5a9df98375b710af4e79ee50f2ba50ad2c4e788541dc45a676d1",
+    "production_sha256": "0298842b00eb2f0d6d2f37618d18270a5a8e0f8f57b9cbeb310d5a3235a52584",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/components.js",
+    "source_sha256": "c1bb4864fec9bbe394ecab38a8dd1aa38843c5060ecece681b52d18fc9ba90f3",
+    "production_sha256": "df22d6663cdbe4ecfed2d1b6b9b4dede356041b4a89d9903cd949bbb577bd057",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/embedded.css",
+    "source_sha256": "3d1c07fc5a9b856bcc7687a53c7c39303de57afb0ba1c14167ccdc2db0e91d04",
+    "production_sha256": "f04aaa7bacfe84ba3b879195600ee5a9ef521533bd92a8915b1227b5667d42d5",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/home-header-compact.js",
+    "source_sha256": "8357acc81bcc9b3344ac9dea02eecb3a0aabab40a175afd5eadf6fbe36be64f3",
+    "production_sha256": "90fca5e29d15cfa6c3afd2ad5400ba5501fda92f3153209c651b905f15e6a457",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/icons.js",
+    "source_sha256": "fbf7e9b5a4d9787974877a01945dd10dc84cecd2498db49d019677961bf22739",
+    "production_sha256": "a414546027eb201262030d65b9e10d6b9f30fea1c6bd8948129068ed0803f764",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/login-desktop.css",
+    "source_sha256": "e52d6ba94a55109b6f5ba531abd14f0039ead1ba27531f553c5ffef46fb8ac17",
+    "production_sha256": "16b6947e70ea5bb6c307b748e286a6bc83b8f8fc1efe7841fe2a6ac77970888a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/login-uni.css",
+    "source_sha256": "66f11eb6cf91c1f088394ca5a9a2c8068667dca0329d02d7a02f0079a396df2e",
+    "production_sha256": "3d58b6608089020c26a1f36badeca65750324e1466cc90d84f299b5f58c1f089",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/login-uni.js",
+    "source_sha256": "f60863cd66ccbd710b1d3f9a34b4440e2e08a53679b0d02b9911b74699f146bf",
+    "production_sha256": "f7c66d18025d53fdc2da21cee2299f96941f5363d02f2d043746ede642e1a2e2",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/menu.config.js",
+    "source_sha256": "c9f571eab58065926c83c783ac5976b0763de5e0c022bdb8da7781d301417881",
+    "production_sha256": "47754be265fb14c0dc11c9809087492c1bd4bbe50ff7b7299c2cdbaa486ee821",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/modelo-a/menu.js",
+    "source_sha256": "f8d6b0e3089ea57564ae9345dc2523a0c461fcd002305d0cbb3d7f085358fd82",
+    "production_sha256": "c798b9d5a38c92c5b10613cc98900b72a54a863cd843d66a5a430faeb18be9de",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/modelo-a-host.css",
+    "source_sha256": "e23a29cf382552c84b9549fc4451f7f2fe9e1907ecbb04f4183d5a14c31f11a5",
+    "production_sha256": "eaad6d48e52e732a87708202d6b99501014889fb8be7088f6171cedbdccf93d6",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/modelo-a-loader.js",
+    "source_sha256": "0d56276c33b4b9b1e93a7a3e48907ed310b1d6f1187be9960df6161e4a9b8799",
+    "production_sha256": "902f52d33b668adeed137b34fe94664ddaa9bab544735bb6fec150ffc5dfac79",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/module-pages-mobile.js",
+    "source_sha256": "f571c0e5c12262759ff896445ba763b0d6d60d43a19876dc458974d245821326",
+    "production_sha256": "3341bd4ec4a0bb9cf1949770640140198d2eabbe03f319aa79d9d72d8803f6b3",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/module-pages.js",
+    "source_sha256": "23b4de9e40c11a02db6bbc6fec2b8b4234a6f12e9f334503b62f88b8601ed806",
+    "production_sha256": "bb44be6740f95d49b848fdcebab0d35387e7e86a14e62b81fb4b6ee31b684523",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/module-theme.js",
+    "source_sha256": "4eba6ed676c0da898eee53b4e3590c666f844fe00f95a11bbb734426c709b3ca",
+    "production_sha256": "cfc3017d7afc48ed7c67be14021324de5c9efd7dbaaf8c069ff14cb0a666dacf",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/navigation.js",
+    "source_sha256": "ca2dee99fa02f6c7376465fee40e88f97c049ff6fa862b27f7eeb8513c9aea6d",
+    "production_sha256": "103fb6690bfba1b764ec68ea33a76d447a0472d0da590e64532ca866c2a2af78",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/password-visibility.js",
+    "source_sha256": "b0e86963f2f936dd3e1b8314d1135d95fcf4f19f93f137c1df9d4b7b7c37449e",
+    "production_sha256": "099478266c7a76fe2920734638fc6aca8ea2e2a54042c932a210e80084bf858f",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/quick-access.js",
+    "source_sha256": "905186699f546d80ae7f745d3b4860a9c8faf0a7ea20ea6e224606a79ea60dfa",
+    "production_sha256": "fa9273793c91923856293f96c19194cacbcd058c6a19bcb1d22d29287921d3b9",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/review-complete.css",
+    "source_sha256": "979a66218477fb0f2942afe1d3d62878960595b23346cab2ba577f3ac6f85358",
+    "production_sha256": "70138d0aae9af5fa39446361e7eac7f8b09936415683bb5db55dd4b4146f6d41",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/router.js",
+    "source_sha256": "0d374a6a4d805dad411fd978e309a3288aaa4860b1f6ab928b910715b5807776",
+    "production_sha256": "450275c5fccdc566fa03ff4653bf479475092694b52454c39649dc6b70b1b95c",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/shell.js",
+    "source_sha256": "901470a863bb1c37816977739f4b5649943441ef1cb5552b59779e53d0cf717d",
+    "production_sha256": "22877204e60aaa4d0abb0acbab20e3abd2aa6b007381e291f445b6aed6073a42",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/shell/tokens.css",
+    "source_sha256": "2289b99bbae3b1204dab7911d5b1fbc538cb546553dd2c5b67563f0721e16379",
+    "production_sha256": "f680461f63847e42574dcb98ba7806db602e841e104b94f762bb2fb59f57cab7",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/almoxarifado/index.html",
+    "source_sha256": "819dd8a33978953fa99a53a254db205712f57fdc50f1056e2212c3ee0d061c32",
+    "production_sha256": "1fae2a23f596a7c6897774588cf431f1d543ea18b413a282c7af8105643c3970",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/analises/index.html",
+    "source_sha256": "0ebb7a1fc160bab442e130a45a672025510e2eb93f94840e2846ecea6a394795",
+    "production_sha256": "005aa194d71d5a6702b5f23ccf473dc87e720c08c4426e98b66f9f5e1af48cac",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/cadastros/index.html",
+    "source_sha256": "71277cef0e178ec800c8424334db15ef1ee876535baf3694433a0d51147a2256",
+    "production_sha256": "393938def3556e1b123d21fd8b8e715498e4306fc20d41fcdf5e6793aa0c82c9",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/cotacoes/index.html",
+    "source_sha256": "755acf75f631394a449819b9ecd23b0aae75576a8fba48c2354b2c63fcfbc4e8",
+    "production_sha256": "fb5029689d431a1cc9648ac7f6e988a13344128c570c92c1ceff2a15f07d2335",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/fornecedores/index.html",
+    "source_sha256": "20666d4633b2ac2db8a4329b042e64a438e5fdc2e006b7695c75863d1f561632",
+    "production_sha256": "a60d02006cdcdb73bd1669ddc0af91b8f13e12eed6694ffc6c8fbe9e04d3e625",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/analises.css",
+    "source_sha256": "851ef769c95c12c894f1eb58b8ac9322214cf5de026cc2f039e19ef3eae2a488",
+    "production_sha256": "7f3c4fe5b4ede2e7b620e460f5967822015d0b805183c64558e9beaaa9b10acb",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/analises.js",
+    "source_sha256": "119edaa2408676db4869b7b04ab42585b36537f144b3d8ccaef3d37c545b9f97",
+    "production_sha256": "173b86bf341b8201731fc91bb618108a296c704da32bc3616d83b2d7ca86719f",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/app.css",
+    "source_sha256": "18cfbce4598aabedd888d738d894f2cba5fa4181a6c984fc8e38041cbf0ce4ab",
+    "production_sha256": "ecf23c7538241a934f293c1ab00090177ea942ef6a1484a39ad96958c34b6585",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/app.js",
+    "source_sha256": "7f23f53033e297127e2bfc832d977cbbebb52ccce618d0e327e51be39db40d47",
+    "production_sha256": "8df7958b6171eaff5768057b861b1c535d1efe81cc902f6a46385ca296c18f8e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/compras.css",
+    "source_sha256": "5e0744d7adce51a1e6848a479a6f081bef80f1312a2b8f3c846887c37249f2b5",
+    "production_sha256": "e8b6d5189ec9a2c009cd07ca352c8ddf6537e4845975fdacdf298b29bbe07333",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/compras.js",
+    "source_sha256": "356198a2d6f2ecfea1b5511c3bd2186f861471b45ca7651414464789ca4604fb",
+    "production_sha256": "32c3b93e17beec483944a008858f4e7389813100dc8284cfc690d263b1a6a39b",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/dialog.css",
+    "source_sha256": "0088c370a38b372f9575d25b2b4cd33eda35b19877a2442976bd28f060af4a1a",
+    "production_sha256": "40d8492aba24b80a6aee0a8d1c575ad738bca18770759e8d0281a21f317bf163",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/estoque.css",
+    "source_sha256": "636d33d3abd0dfc6903be776395e429736c5a7c65d247ae37be00352f29cee27",
+    "production_sha256": "bde94ffe1ab117ecedfd6c0c827745f2ddca823a8bee2951d002facec2ba558a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/estoque.js",
+    "source_sha256": "0ccabefae5a5535cc8621a8fb69a84a8b494a1d8d992e941aa921c02503d95ec",
+    "production_sha256": "82d62029470d8ae00f88f8c5a0cd08620cec12f6a11eed1d0c6d341d8d02b3e2",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/recebimento-excecao.js",
+    "source_sha256": "b67298b76f0493654d58fc38580e504485eb184d66d899b7e8f6645a9be2614f",
+    "production_sha256": "4681d45d7180c23ab077dec5af4a084f64a03cc6fb6b4cd908a683fef410b844",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/recebimento-financeiro.js",
+    "source_sha256": "b44d0cea28850b906807696f6ed06a898ba907eb1aa2d1b291637a16e517943b",
+    "production_sha256": "d525242f52ea9aec4f2a9a69bee0de59ce0d2e8f57560d3b3f3e9cfb7fddb39b",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/recebimento-pedido.css",
+    "source_sha256": "8057ee10974e70194f0dd121a8f4f8b48e47e870ab1069060ffe74a647b49723",
+    "production_sha256": "59aa1924a3f9e66ae4735a5ca3f51d6d58eb434f3ac748f48803738afad46bed",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/recebimento-pedido.js",
+    "source_sha256": "f01ec94d76ce8f422e457f8cdb9d75aee9d2a06b35b4343cdbf99761e54b818d",
+    "production_sha256": "ccf8f56149b7cfbe2cf6dd832a22dfdaefd8c204aead613f42918ab22dfb68cd",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/recebimento.css",
+    "source_sha256": "24d1317bc5e21ea423f5762f6564f11e4198ccd84c3e568a1e0767d21961a6e2",
+    "production_sha256": "894d87cc8798030b193486427d1ddfb78afc40f2ed5d46969a3b7e8b7b8d3fe0",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/frontend/recebimento.js",
+    "source_sha256": "af12bf696b150fc0529e3d84533d21a72b15c0daa63e76684274155e983b24f2",
+    "production_sha256": "94f200e01c05cfa4d5558c1e0075981529bcada38256e222d9151c87116cc2cb",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/inventario/index.html",
+    "source_sha256": "6133bc65e89e52d1fda3c5839d5f87f0290ca254a2ce4315d492198636ca1f0a",
+    "production_sha256": "c7d3378f400945839d6eab5054b5277d43663f9c788be4920aecd7ba32901b05",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/nova/index.html",
+    "source_sha256": "71277cef0e178ec800c8424334db15ef1ee876535baf3694433a0d51147a2256",
+    "production_sha256": "393938def3556e1b123d21fd8b8e715498e4306fc20d41fcdf5e6793aa0c82c9",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/painel/index.html",
+    "source_sha256": "71277cef0e178ec800c8424334db15ef1ee876535baf3694433a0d51147a2256",
+    "production_sha256": "393938def3556e1b123d21fd8b8e715498e4306fc20d41fcdf5e6793aa0c82c9",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/pwa/app.css",
+    "source_sha256": "67f606090da38c049c32ff6f29efc8ac9363d0388bd422b820dd9c0043778ecd",
+    "production_sha256": "b51b790d70852d8b019da4c91dfe01dc9e9d1bf082b556832a63cc39b88e9728",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/pwa/app.js",
+    "source_sha256": "9f6704c311cfa18b7d0724d39e01c82dda9a69d0e6d1c8ae6f7fd31c4c1cf4e6",
+    "production_sha256": "0ce43a98b090a93f35df5e2780b26629ed7648549797b463273dad9aac604eca",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/pwa/index.html",
+    "source_sha256": "a64f9153751f20c6c714d750f8cfc7c476c8ea27ae79857a23caacdc1c0c6031",
+    "production_sha256": "6d6907394f958ad3d3dcf9f8a960f9a61c325f0db21e06a0c8275f9fa3204658",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/recebimento/index.html",
+    "source_sha256": "7396fca9c8f3fddbc1370d10ecae77c379118c77dcc5e4a25c847908397c35b4",
+    "production_sha256": "a57490cd6ba86e1ccc522a2785ff40497e7470b2f047fec7f21f4858b824bb8c",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/solicitacao/index.html",
+    "source_sha256": "71277cef0e178ec800c8424334db15ef1ee876535baf3694433a0d51147a2256",
+    "production_sha256": "393938def3556e1b123d21fd8b8e715498e4306fc20d41fcdf5e6793aa0c82c9",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/suprimentos/solicitacoes/index.html",
+    "source_sha256": "71277cef0e178ec800c8424334db15ef1ee876535baf3694433a0d51147a2256",
+    "production_sha256": "393938def3556e1b123d21fd8b8e715498e4306fc20d41fcdf5e6793aa0c82c9",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/sw.js",
+    "source_sha256": "dabfcf9b33fe462eb1ce60c109763308e1de44bfb21330da53412f5df50b4ef4",
+    "production_sha256": "8e1efbc7abe94d88fc2454af2573476e26286f782bc86a6ed67a7a01e186c02a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/tv/formas/index.html",
+    "source_sha256": "c97efcb66e19fcbfc680fd89fe7cd6f5c42bfc5f83cd16531901b123c4a9ed34",
+    "production_sha256": "10d72bb5b3dbd78b5c510ffd22b69ebaa1f9a0a8353905b6378b92c7062f8958",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/carta-traco.html",
+    "source_sha256": "c7779b06434d1c1020602f2e1f0910f27f2bf13d13e35de7a1e89d5e78dd2ec8",
+    "production_sha256": "c3451d27073035805370d5b8961c9ed17ed76f0233a506dac2dbfa09fa05f0c4",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/cec-native.css",
+    "source_sha256": "5b7794bc49dd12e040cefa6c29919f742007c062472b882a0521e598bed89138",
+    "production_sha256": "cf4fb8db9878417e814cd74837f1e35d1eb0308ee7771662496f422f279fd980",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/fechamento-diario.html",
+    "source_sha256": "f0788eef9ff6068a543fcbe3f611e8771e80b7518fb67bcaafff4cf3e3fc6377",
+    "production_sha256": "ee829766c7df1d88cd55159ec2b3f6f78f8a983c64a989c3efb4e5f631d4d97f",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/fechamento.html",
+    "source_sha256": "a8decc5ebf9744dc4674417f76ffb27335b33433df448828a01dddc5ac7e5fb9",
+    "production_sha256": "42c6bfcaacb545bdbf73bb9f50b00026b6f4ab55e10fb233177765895171b16c",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/index.html",
+    "source_sha256": "c7779b06434d1c1020602f2e1f0910f27f2bf13d13e35de7a1e89d5e78dd2ec8",
+    "production_sha256": "c3451d27073035805370d5b8961c9ed17ed76f0233a506dac2dbfa09fa05f0c4",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/native-areas.css",
+    "source_sha256": "467f54e3baf87a9a454b15d8619ad1d3b7d77c856d214af49591826d688039b6",
+    "production_sha256": "2b247d22c6bfdf0ab494ccd12a64c385e0c6c1b7be2826ead3dd349dc98491c2",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/native-areas.js",
+    "source_sha256": "330870c8e8e05a99b371293c123e5e2a85ec68fa3b5f136447cc668dbbe095eb",
+    "production_sha256": "826cdec37bcf4773ae748664e20ce6d0a97d74d60440c71499209cc829e869ee",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/noroeste/index.html",
+    "source_sha256": "3d92563351839bbfb324672631ad1b8566ec6968537607432757122110a6a555",
+    "production_sha256": "22a22c4d0b9eeecf8f5b7c2f2c90e105ea347cdf1b52db2f876e73acff38aaca",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/noroeste/noro-cec.js",
+    "source_sha256": "9b6eb2a2740cc16913ccec5b1bd095df85979e013668c6111bf561abffda3850",
+    "production_sha256": "efe12a34846628a4ed08733f1f7ab6b0fc407aa729f1cf4b18fb8100512d06b1",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/noroeste/noro-native.css",
+    "source_sha256": "4a5d299a81882f6b115c4e71cade160a277f569f2dcc59bf96117cb650446bf6",
+    "production_sha256": "023ebe7cdea3b78ef99b92bda80b38d09e19ef4178ffe0081f833e169b0bddd8",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/noroeste/noro-native.js",
+    "source_sha256": "ab609526fd2c5add936126916690d10144bc01470780a957d901c71a9c467e7f",
+    "production_sha256": "cbc11f55bfe21cec71c2a25a5e21906ca080d9d13ff86b82bf556ffe1c2d6347",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/cartas-traco/index.html",
+    "source_sha256": "3785bf791a9d812235eed343082b8262fe76583476736e7de83ed899a6c8c22c",
+    "production_sha256": "4fedd48cc6b8f6cb26568e7c0dd21b2bfc514ba9a3f99200efe0d4ed82cef369",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/consumo/index.html",
+    "source_sha256": "d00f77319795f74c7ae3f2bc59c3d379c87bb4594de94ff070214df96a0e8dcf",
+    "production_sha256": "a898c9859197c5afc43113cc52d99d3448de7facdb877230e526af125623a67e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/custos/carta-slide/index.html",
+    "source_sha256": "e26eb2a368e9bef5ae77438f2506cb13bc5338bfb406fb260ccccf8ac8ac43b6",
+    "production_sha256": "7276387d798cd5c1ff098bdb12f03c8cd2c13402d37cd782edbd44a41de88072",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/custos/comparar/index.html",
+    "source_sha256": "766e0cf8c5bbb8066cbb262f8bdb91c37fc4994977545e2b1dfef473d587b89c",
+    "production_sha256": "0f0892ea61b865933d1bf147fa4fa6b189bb199d4975ee43d9ca3e631b4521c2",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/custos/index.html",
+    "source_sha256": "23c8a53da7d49a520b0db861b4ede9f646ae6a0310f16466e328e68acb31180d",
+    "production_sha256": "a5472343fd71fb3d327c2c62867d8ff65f3673eb41e41d6cd4e0b994ad38691b",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/exportar/index.html",
+    "source_sha256": "3f50a8c4fa66e84a5a7051d60dc1c7940c03cfe9dba8f5e64f20e6abdb1f7787",
+    "production_sha256": "49be3d4c4e66d7e717473f25e311d8d4ee598e46d0d80e4a62df280afbf042d4",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/fechamento/index.html",
+    "source_sha256": "9bb936c7940453d5c78773811606f05a79bbdab82e2d4a5d6eace48601243084",
+    "production_sha256": "975d99fc44649c3fcf8ef95597a2421c454c64e4f0f6c8d80a3f9dea5cf4f985",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/fechamento-diario/index.html",
+    "source_sha256": "ecbe295d411d932e83ee6a82c964197cc343ab0929825439247bec9bfb26c05d",
+    "production_sha256": "eccd8c2d33f4df53c2b080da188d467691e21709315e88473f92aa799153b809",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/index.html",
+    "source_sha256": "ae6e33c21408a617b4f53c4241426f94fb3ba76baeec3201d06653be04b70733",
+    "production_sha256": "c51773126668e5cba742f3a1e1333fbaceafcbd68e0a807af4f8a9cc0a5644c0",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/iqt/index.html",
+    "source_sha256": "1478345fad42d3eb35f2efdbfa0d53459e5ff263bfd4939389350198473dc5e9",
+    "production_sha256": "b8ccddc5179c7cce73375c306f5fac955d2b9745a3d57d1eb5972815e11c12f0",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/producao-periodo/index.html",
+    "source_sha256": "30e51bcd97ea519a7645ef9eec5894eaa49069743d6d1dc8dc629b22f99a3360",
+    "production_sha256": "a98a4187e5684ddac4da71a857f8eeac38ff202e009a4d5e91a29665dfa85c7a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/usinas/relatorios/reports-diarios/index.html",
+    "source_sha256": "7037cc65f374d67ca011a3ef3fe441287a5e5cb11e496f1586d8ec5b14da07c0",
+    "production_sha256": "dd86c984b9fe02ed00617c38957d87a7b1172cdb9c76c5bf01b5540a73775e87",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/vendor/bootstrap/bootstrap.bundle.min.js",
+    "source_sha256": "eb37e4d8bf11df00a045b673a64122ed4602d9b73a7d81888057cd7aac8e5a74",
+    "production_sha256": "0833b2e9c3a26c258476c46266e6877fc75218625162e0460be9a3a098a61c6c",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/vendor/bootstrap/bootstrap.min.css",
+    "source_sha256": "b0a21045f42b8884ae43d97fe386f5cc77d09e21972611a89d5b41d8b952b88b",
+    "production_sha256": "3c8f27e6009ccfd710a905e6dcf12d0ee3c6f2ac7da05b0572d3e0d12e736fc8",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/vendor/bootstrap-icons/bootstrap-icons.css",
+    "source_sha256": "4bf247ce809919c28f9f1cff068fa5cb9bb0484633f6dc432c2b8e98c1e78dbc",
+    "production_sha256": "4ffa6bea4304d2eda418683f56261685ed47bf00995039f27e5ad62d53938d2d",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/vendor/chart.js/chart.umd.js",
+    "source_sha256": "2e3da592d5f6a2bd75385fbd2e6eee45e61d22b33441140ac71543d992239989",
+    "production_sha256": "fed6a739f8d0f0687174de6cd14745fc0fc7809144ab113d22908a26bf0d7fea",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/vendor/html2pdf/html2pdf.bundle.min.js",
+    "source_sha256": "917be8b20da93f22db22d1d887efff1ef5a11ee2e72c61bf0e4d96ea0149cf2e",
+    "production_sha256": "85e6ee9ce246e3ae4424313f7e46a5ed860a28d757811de8dc9c43f306049d65",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "public/vendor/xlsx/xlsx.full.min.js",
+    "source_sha256": "06b0589566e576e48d0da0c357c804bef26fd09f7e7e8e9fee3ee2d582a51b48",
+    "production_sha256": "c9506197caf809a075b6dee1da0d36fb19da7158ffe8a88e7b0c96c5d8623c99",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "schema/mapa/quick_access.sql",
+    "source_sha256": "bf857b719d3ce0e1534884d9acd94499d2716508dbf9ad5d947cf90b88c9df01",
+    "production_sha256": "1c3a5e12feaa3d281578f2a90634be7b5d5c6c8516844be0f8d37d7ca674d08e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "schema/mapa/user_units.sql",
+    "source_sha256": "dcbce7d7d1e80c154bf1e39cc0254c2c95f606770fb0fc24a9899a5ce9768536",
+    "production_sha256": "9a56c698a1b76183b15ab22611eaba951ef0028deb2a8e612b1a745d896bcfa8",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/carta-static/carta-traco.css",
+    "source_sha256": "7e55a39ed81625f08476e5b8202259d88b18ad5073c84b533f6021db1af93b45",
+    "production_sha256": "a65fca6509d360ca1d4e655df3a94b110bc43a81f3ab83b512a46b2864584bfd",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/dosagem-static/dosagem-native.css",
+    "source_sha256": "318137c4c574709b211114ec8b34dc9d7eaf410ae337c8eca2fd5e811ec976ca",
+    "production_sha256": "01614074df343d68e8dde09afc7a5a132cbf625c42b2caa59ac164f3a7ca660d",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/analise/index.html",
+    "source_sha256": "66e5b68ccfd7e4e53a69ab9e3df2cc10886ea4904c642f9c5ef82f7a937e04c2",
+    "production_sha256": "ea6e2c6983ab2ca0167260bcd6a7df7af0dbae36f8ca8875d710cb4d2054e645",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/assets/vendor/bootstrap-icons.min.css",
+    "source_sha256": "4c0b89a77d6d1bdc99cdda8ad15064b992f6f352e294a7a2b1e99994750df04b",
+    "production_sha256": "3f2358e166c2ca3b5d1e8f321c6036b3659939de02f1c183f45df88ae374df49",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/assets/vendor/bootstrap.min.css",
+    "source_sha256": "aefac90ab610417ada099683cd3ccab43874f8b3264be4e7e2f7350b8252469a",
+    "production_sha256": "f74a91eeb8e720211d784780f1d14b86c2739bcfbc5215132a3c68b2c0702d30",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/cec/assets/vendor/montserrat.css",
+    "source_sha256": "d63d2aebcb05869a9fe992b06a8745ee584a8ab154a33b2e043af91e64e2a480",
+    "production_sha256": "b64e5d38cb30bee110059acfa86d25f8a296a53f9c98d42caa27fed2700e7c66",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/cronoanalise/cronoanalise.html",
+    "source_sha256": "fc687874c23775d50c01556fac5db57b1d2f5f9c82eef527169b6e29a3358c99",
+    "production_sha256": "73c128eb651ae21acb95d22f4a4fcdb39a74baae5004bed63277173158da52cf",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/cronoanalise/metodologia-conteudo.html",
+    "source_sha256": "8989e67e8cac81ce179f2399e4096be0f38301afe768893cdbfacf4dc9a9823e",
+    "production_sha256": "686e876e06288db0cf92aeaa19fa24ba38ea027f4dc13e4a7e29511f9d3c0bf8",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/laboratorio-bridge.js",
+    "source_sha256": "fce8047c80686c12eb9dd1a6ab36008c03dfa60ccf051420a716506764c7db8f",
+    "production_sha256": "bf3227a4bf3a7132d64ea5db9f0284c1f104cb454635931ccd81a75b536ff0c4",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/laboratorio-embedded.css",
+    "source_sha256": "751ae48e1b2c106172ffb259ba930332803e944d924dcccccc3a71e27fd4c646",
+    "production_sha256": "5f2869052c76af10db6533a9aaa83a348c6a36e047289f9e18c6906b4b7cb13a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/analise/index.html",
+    "source_sha256": "1adb8e9f0d60b7c9095431cabae79ff2b839c29288b80eb45df4d26cd8de754a",
+    "production_sha256": "866139587ed20c895512a3b627784de82b146e667e7fe696b147ff07b080b24f",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/assets/vendor/bootstrap-icons.min.css",
+    "source_sha256": "4c0b89a77d6d1bdc99cdda8ad15064b992f6f352e294a7a2b1e99994750df04b",
+    "production_sha256": "3f2358e166c2ca3b5d1e8f321c6036b3659939de02f1c183f45df88ae374df49",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/assets/vendor/bootstrap.min.css",
+    "source_sha256": "aefac90ab610417ada099683cd3ccab43874f8b3264be4e7e2f7350b8252469a",
+    "production_sha256": "f74a91eeb8e720211d784780f1d14b86c2739bcfbc5215132a3c68b2c0702d30",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/cec/assets/vendor/montserrat.css",
+    "source_sha256": "d63d2aebcb05869a9fe992b06a8745ee584a8ab154a33b2e043af91e64e2a480",
+    "production_sha256": "b64e5d38cb30bee110059acfa86d25f8a296a53f9c98d42caa27fed2700e7c66",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/noroeste/usuarios/users.css",
+    "source_sha256": "c035b0732a9442c3f599169eb2160ebff24689c706988e038f454c8f8b22135b",
+    "production_sha256": "dd7c911d5286e8aa263b306a0dc485c5b485a42a9add6831b1b4a1811792c88a",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/novo/assets/cura.css",
+    "source_sha256": "62f928e01dbfad9c112fb7efab460aee4d22f5c298745e4e97f57e974cd1258c",
+    "production_sha256": "12f78f36149a0a24702631978cb209136818b56d698d464615d5bc7f4d57b6f9",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/novo/assets/tokens.css",
+    "source_sha256": "e6eeabf29e120985ff9ae2eb6df32ec08cc41cdb29e46f8b5427730049201ef4",
+    "production_sha256": "5757743aa1646ef5f3e0d967ffadfae481e5b52af003b8af468ae5037c5cb65e",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/novo/postes/absorcao.html",
+    "source_sha256": "39a086dbb081afb354d1d813ee4621676ab87484f97e6b9bb8fea69aa986d61a",
+    "production_sha256": "a62517ef5d38ad9e5aeddade3380aaea4a3f38e256f99046c3edbc447b082017",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/novo/postes/metodologia-conteudo.html",
+    "source_sha256": "8989e67e8cac81ce179f2399e4096be0f38301afe768893cdbfacf4dc9a9823e",
+    "production_sha256": "686e876e06288db0cf92aeaa19fa24ba38ea027f4dc13e4a7e29511f9d3c0bf8",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/novo/postes/novo.html",
+    "source_sha256": "d0b8668ecd9f3a7c7a49529f1485632d31e903f2ddc53c6ed6075a01a4409546",
+    "production_sha256": "0dd676700d82fdd05c2b7cd003e1ea46f0c0976c973ea19ffa8f23c504907c85",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/postes/index.html",
+    "source_sha256": "e2fe5f83c2eed5c5bb0dc63a9578b13f64a0bc653ec12386ac3f632408fbf514",
+    "production_sha256": "2dbed0aec4cc6678b6e26e246856aced7da391751735923ccc8258f4ac8d26d3",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/postes/metodologia-conteudo.html",
+    "source_sha256": "8989e67e8cac81ce179f2399e4096be0f38301afe768893cdbfacf4dc9a9823e",
+    "production_sha256": "686e876e06288db0cf92aeaa19fa24ba38ea027f4dc13e4a7e29511f9d3c0bf8",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/slump/flow.css",
+    "source_sha256": "327e5d45080ffea8f0c38982b4d461e59e0fee7116f75e6f06618e1760c770e3",
+    "production_sha256": "b49dff33eda2a3c55f6ddc0ad8c65b1e1d7d82cdf762063b913f898c1ed091df",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/slump/slump.css",
+    "source_sha256": "95b099b1290b5b71d995d26b7f0b0ad3ea2f917f9bf440167aea9d244278b60d",
+    "production_sha256": "180499779676b44388e35ea93d287c89b4842fe7541d6ac140fb4e9268cea4c2",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/slump/umidade.css",
+    "source_sha256": "4cb18a702d8864b43afb049d81d8f4748ddfe739f4a170e8abea2697c2d868f4",
+    "production_sha256": "02eb15d43fe4d9669267ec12b033c233b70b3926940160ea15a215f8af512ef5",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  },
+  {
+    "file": "services/laboratorio/server/static/usinas-relatorios/native-areas.css",
+    "source_sha256": "283b44df1d41d294505354f46be0fdc27614dee1eb80352349e1a452a80a3a91",
+    "production_sha256": "fc818e654ca51a76bfebae9d07c71c93ef06f3e12ee61d2c70f2069b26e154d1",
+    "reason": "explicit production environment/test-identity/test-screen exclusions"
+  }
+]

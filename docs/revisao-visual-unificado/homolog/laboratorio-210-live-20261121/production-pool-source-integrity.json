@@ -1,0 +1,94 @@
+{
+  "production_pool_source_files_unchanged": [
+    {
+      "path": "/opt/concrefer-unificado/homolog/laboratorio/carta_traco_api/reporting_service/carta_traco/deps.py",
+      "canonical_utf8_sha256": "bbd51e3177aa8ae6c14de6acae41abc5c393b2b158260bf763cd0859275e8beb"
+    },
+    {
+      "path": "/opt/concrefer-unificado/armacao-api/armacao/auth.py",
+      "canonical_utf8_sha256": "7298c992c270224e3e543fdf9c3859802d295cd5344cafa41d487416e4c1ab42"
+    },
+    {
+      "path": "/opt/concrefer-unificado/armacao-api/armacao/db.py",
+      "canonical_utf8_sha256": "5d022f5ec009dcaca7a8c3ec4039331943786e6baa271aee0db931befcf2f4bc"
+    },
+    {
+      "path": "/opt/concrefer-unificado/dosagem-native/api/app/db.py",
+      "canonical_utf8_sha256": "c38f17a34ccebb75c740c5459dba10aef6a0bf86c19ef286e14398652a98d175"
+    },
+    {
+      "path": "/opt/concrefer-unificado/logistica-api/logistica/db.py",
+      "canonical_utf8_sha256": "fb42416e6e7c63be73e711b7bd825a6d77908ada9b4d83f31c701b92b842f21a"
+    },
+    {
+      "path": "/var/www/dashboard-noroeste/app/db.py",
+      "canonical_utf8_sha256": "009c290eaa2138a10fadf62c66b59a6883b2eee5d310fa0fa5182bb3316cfe23"
+    },
+    {
+      "path": "/var/www/dashboard-pederneiras/app/db.py",
+      "canonical_utf8_sha256": "009c290eaa2138a10fadf62c66b59a6883b2eee5d310fa0fa5182bb3316cfe23"
+    },
+    {
+      "path": "/var/www/dashboard-ribeirao/app/db.py",
+      "canonical_utf8_sha256": "009c290eaa2138a10fadf62c66b59a6883b2eee5d310fa0fa5182bb3316cfe23"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog/laboratorio/service/server/postes_db.py",
+      "canonical_utf8_sha256": "18aee5c37e3b4d5b77e709c3389a8c4a6a13f592f53f9d8588049d82e9fe4b49"
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog/laboratorio/service/server/app.py",
+      "canonical_utf8_sha256": "f86e6b74d5584293d7052d9a673264f11b24ef0aacb1176373641cca24a108f5"
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/postes_db.py",
+      "canonical_utf8_sha256": "c7b47524f1ad824dd3ef3687e362102463acd0e73b6e9d22c31bbf9020a57668"
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/app.py",
+      "canonical_utf8_sha256": "535c2f194ba81ac386d80c23d321ca69de2de5ed644eb62ab48e326fcd98ccdb"
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server.before-1.2.0-20261109/postes_db.py",
+      "canonical_utf8_sha256": "c7b47524f1ad824dd3ef3687e362102463acd0e73b6e9d22c31bbf9020a57668"
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server.before-1.2.0-20261109/app.py",
+      "canonical_utf8_sha256": "f6629560c3ae537aca6ed8884ba3177d684a198be30f93d55eb7595f2af44ddb"
+    },
+    {
+      "path": "/opt/monitor_concreto/server/postes_db.py",
+      "canonical_utf8_sha256": "c9d61930aeba1f50c9d86bcf2d53d1745189aca5b88858323272b0018a2d6430"
+    },
+    {
+      "path": "/opt/concrefer-unificado/pcp-api/app/core/database.py",
+      "canonical_utf8_sha256": "b6dbe996a0751c724c6a7c9d63288d07e9eb49496c9d88a449e36cfb4db8229c"
+    },
+    {
+      "path": "/opt/qualidade/service/quality/db.py",
+      "canonical_utf8_sha256": "593705ac52ede7c539303f0c5a443e2032d23e1c04b0b12a56b3b5f28266d206"
+    },
+    {
+      "path": "/opt/concrefer-unificado/suprimentos/service/suprimentos/db.py",
+      "canonical_utf8_sha256": "3684dc29fc2055e787efc1d63183832dc4112ef14597745d97ae392b0937b3c2"
+    }
+  ],
+  "hash_kind": "canonical UTF8/LF, same as Part A pool source inventory",
+  "homolog_pool_values": [
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/armacao/armacao/db.py",
+      "options": {
+        "pool_size": 1,
+        "max_overflow": 1
+      }
+    },
+    {
+      "path": "/opt/concrefer-unificado/homolog-next/visual-full/pcp/app/core/database.py",
+      "options": {
+        "pool_size": 1,
+        "max_overflow": 1
+      }
+    }
+  ],
+  "passed": true
+}

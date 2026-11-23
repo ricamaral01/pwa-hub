@@ -1,0 +1,9 @@
+{
+  "dosagem_database": "dosagem_visual_homolog_20261118",
+  "monitor_loopback_port": 14190,
+  "monitor_snapshot": "filesystem copy; no live device collection",
+  "pcp_closing_report": "same published ERP implementation; isolated 14189",
+  "production_database_connections": 0,
+  "production_service_changes": false,
+  "application_permissions_changed": false
+}

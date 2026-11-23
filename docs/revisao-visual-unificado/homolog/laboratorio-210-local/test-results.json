@@ -1,0 +1,68 @@
+[
+  {
+    "suite": "permissions",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/unificado",
+      "-p",
+      "test_lab210_permissions.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "seconds": 0.23,
+    "log": "permissions-tests.log",
+    "local_only": true
+  },
+  {
+    "suite": "api",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/unificado",
+      "-p",
+      "test_lab210_api_local.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "seconds": 8.11,
+    "log": "api-tests.log",
+    "local_only": true
+  },
+  {
+    "suite": "search",
+    "command": [
+      "node",
+      "--test",
+      "tests/unificado/busca.test.cjs"
+    ],
+    "exit_code": 0,
+    "seconds": 0.72,
+    "log": "search-tests.log",
+    "local_only": true
+  },
+  {
+    "suite": "import",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/unificado",
+      "-p",
+      "test_lab210_import.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "seconds": 0.36,
+    "log": "import-tests.log",
+    "local_only": true
+  }
+]

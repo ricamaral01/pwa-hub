@@ -1,0 +1,68 @@
+{
+  "status": "ok",
+  "production_original_files_unchanged": 394,
+  "production_current_files_pids_vhost_unchanged": true,
+  "homolog_manifest_files": 101,
+  "published_backend_parity": {
+    "armacao-api/requirements.txt": "190531e774092492dccdd20a50b02f61b24f0d3ac1f54c94583a0b7dc9693d59",
+    "armacao-api/alembic.ini": "247a41c634d45d9983e337d7cd40172e1bbf0865497943ae1e934c3b77d25f47",
+    "armacao-api/iam-alembic.ini": "bc68eafc1a325e39a225636ee6d5472a7bdd9329788bbba5253ffcdd66b095fb",
+    "armacao-api/armacao/auth.py": "7298c992c270224e3e543fdf9c3859802d295cd5344cafa41d487416e4c1ab42",
+    "armacao-api/armacao/fechamento.py": "0e1de52037df2e6d7eb4c208e1f69cf931c9e62b8aa2d107aad235c15d78bfbf",
+    "armacao-api/armacao/bobinas.py": "1cc278abc01745bae507c051d62bd43521066fae454df7e06d6f7884b11a8058",
+    "armacao-api/armacao/ocr.py": "52c29ce73ad1a66a50e2bf5fcf55ccf7848c9d634adb7fa8b1a3ac3219a62113",
+    "armacao-api/armacao/routes.py": "ab4d7796a4dc793ada9c2855c41e49d2958cfd71437bc938ddc35287f690296a",
+    "armacao-api/armacao/__init__.py": "ae53aa55ce8496b6284d42d8a3db1ba81e7e146ee070cf9169214365c61c6f2c",
+    "armacao-api/armacao/rastreio.py": "bb59a7c9ae3290d53235a95f4cdf542afdc4ae4099532c22ff319512c41f4268",
+    "armacao-api/armacao/banca.py": "82700886c196991ca483be568ec7f85847469847e5016319e7a0581a54bc9b37",
+    "armacao-api/armacao/db.py": "5d022f5ec009dcaca7a8c3ec4039331943786e6baa271aee0db931befcf2f4bc",
+    "armacao-api/armacao/corte.py": "1e52d061c5aaa15c32ac6e08d6aed4586325eec8143d9502c74769fe5400fb4a",
+    "armacao-api/armacao/cadastros.py": "365ef4859523e2a38b4a63c714c118094c1a24d3145be77410480e32a6ee80a5",
+    "armacao-api/armacao/main.py": "5a841a70cc6dddcaefe08f955fbe92adf0b70a7220238c4235fe79127859c2f3",
+    "armacao-api/tests/test_a2_a5.py": "a577d1cd898a50cf00ad2bd3258754bf0bd0029d33b76981eddd8c64736bfba3",
+    "armacao-api/iam_migrations/env.py": "b2daf669ed9dc2da073ddbfa891175afbf5f97044a1601d4cf77692af992ae5a",
+    "armacao-api/data/aco_produto_seed.csv": "b7e23eabb08a01809089eb0a76525ccd784925046ee1a6e4baf769782d43fba2",
+    "armacao-api/migrations/env.py": "7e317de02117a3d5a9becc6c5279d2f586a35134fed948b99f9b1e9d2b19014c",
+    "armacao-api/iam_migrations/versions/a2_20261029_armacao_grants.py": "bd8d469427aac3340eba64688ea76c1d93165ad629d9735ac5d07d7d53afd03b",
+    "armacao-api/migrations/versions/a6_20261029_fechamento.py": "b74e84b72eb5cf2fdf624db1d7b77a5fef9aa0350ff2035eb2cbf598748a103f",
+    "armacao-api/migrations/versions/a6c_20261030_corrige_texto_produtos.py": "1949e7ac99cef9335e23f8554f901518b4e93019f027b93280fdc508eec47872",
+    "armacao-api/migrations/versions/a1_20261029_armacao_base.py": "3ebc7b4276bc7acae58163198084c92b7794e8615bed867f0638b5f63fdf64c5",
+    "armacao-api/migrations/versions/a6b_20261029_idempotencia.py": "1094fef6b6914f0ae024827e5cf09a10588b9c08dfeab88ee90517148c64d592",
+    "mapa-api/quick_access.py": "5e1bd972d14ae3023f13aaae254ba8df34632d72d3cd5903a69136a7e39873f5"
+  },
+  "armacao_migration_head": "a6c_20261030",
+  "quick_access_and_user_units_assignments": 0,
+  "business_profiles_permissions": [
+    {
+      "database": "pcp_unificado_homolog_20261016",
+      "table": "usuarios",
+      "rows": 24,
+      "unchanged": true
+    },
+    {
+      "database": "mapa_unificado_homolog_20261016",
+      "table": "usuarios",
+      "rows": 64,
+      "unchanged": true
+    },
+    {
+      "database": "mapa_unificado_homolog_20261016",
+      "table": "user_screen_permissions",
+      "rows": 667,
+      "unchanged": true
+    },
+    {
+      "database": "mapa_unificado_homolog_20261016",
+      "table": "user_action_permissions",
+      "rows": 21,
+      "unchanged": true
+    },
+    {
+      "database": "mapa_unificado_homolog_20261016",
+      "table": "identity_links",
+      "rows": 17,
+      "unchanged": true
+    }
+  ],
+  "read_only_database_connections": "documented homolog databases only"
+}

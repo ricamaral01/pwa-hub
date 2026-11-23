@@ -1,0 +1,157 @@
+{
+  "directory": "/opt/concrefer-unificado/backups/producao-20261120T170515Z",
+  "created_at": "2026-11-20T17:05:15.813549+00:00",
+  "retain_until": "2026-12-20T17:05:15.813549+00:00",
+  "files": {
+    "candidate.tgz": {
+      "bytes": 7743045,
+      "sha256": "899286028563d1ca2a5911cd8f163d340dcfbb7a06d25e36ecd4bb8b1b9cbedc"
+    },
+    "candidate-manifest.json": {
+      "bytes": 62093,
+      "sha256": "94bfb07b5e5bc353ce79e1e67e78e99a12c2d8ea2b88330a41442825d4fb1867"
+    },
+    "deployment-plan.json": {
+      "bytes": 165986,
+      "sha256": "8f6e548906e1467791dad41b709488abf219231e0bdad280f610ef47f04aea65"
+    },
+    "inventory.json": {
+      "bytes": 1443839,
+      "sha256": "b3c1a734e3f37fb81a869d86934e8f244ca3af96af38b560527f293f7a19b626"
+    },
+    "frozen.json": {
+      "bytes": 616,
+      "sha256": "0fa1fd6c308450a652438389f39a3bd449f77a16862ed824f95fa827ee3481df"
+    },
+    "migration-audit.json": {
+      "bytes": 666684,
+      "sha256": "d1f558f3b071f1d2ad029f1ed7bc9fa3ab9eb7ea520a6235c6dbf9a42486f662"
+    },
+    "originals-manifest.json": {
+      "bytes": 44506,
+      "sha256": "e2fa5d90c944e01e9f5fed11c12d92ec53f9662aa006a08b7c64ed8b6d276eca"
+    },
+    "public-unificado.tar.gz": {
+      "bytes": 11932074,
+      "sha256": "c4c1125c7061da823fcfee31fafd1b127f887e9256c3f46a733f793a7ac18402"
+    },
+    "laboratorio-backend.tar.gz": {
+      "bytes": 11900784,
+      "sha256": "1bb92c1d7eb0f17295600b4d545fe80adb03060d47917488a2020d3f3b247bf7"
+    },
+    "dosagem-backend.tar.gz": {
+      "bytes": 38286833,
+      "sha256": "b7a32257f8ef632fe53459e9a92aaa8bfa6ea3528eb9d084a59abc0abc7fb78a"
+    },
+    "carta-backend.tar.gz": {
+      "bytes": 6510838,
+      "sha256": "1318473fa70d520a7a81ebe4a5e2a913903f304e99c23a7b66c4df3b04d95f5b"
+    },
+    "config-files.txt": {
+      "bytes": 7209,
+      "sha256": "6215623490ea7a1ec3159e64d9584e762704122a0729331bf72d4b413ff51f68"
+    },
+    "services-nginx-config.tar.gz": {
+      "bytes": 38581,
+      "sha256": "b519f22b91a64d70e07211dc76bb257f568202bd284c11bfefbc8c4985c8bd9e"
+    },
+    "mapa_unificado_teste.toc": {
+      "bytes": 43202,
+      "sha256": "ca674ca21222254e0e3828e76070b4b3fe897adedc2daa20338d033fa2c19e40"
+    },
+    "mapa_unificado_teste.dump": {
+      "bytes": 116158955,
+      "sha256": "c4d9835f43fa3fa89cb8667633f0306ed23963b1be5dffd196dd1e6286f6a9cf"
+    },
+    "pcp_unificado_teste.toc": {
+      "bytes": 62056,
+      "sha256": "5f3a44d1ddb648ebcd7abaaf4f9d78f10a88eaa1340bc87e678b2a578ba32b12"
+    },
+    "pcp_unificado_teste.dump": {
+      "bytes": 4748318,
+      "sha256": "aca898f3763c353a98d8762119894bae91325212392eaea32d1969c812215a2f"
+    },
+    "concretrack_postes.toc": {
+      "bytes": 15609,
+      "sha256": "34847656fadfffb105e26384605b33ff8756fc1ccce819ec066ae99d3339cf1f"
+    },
+    "concretrack_postes.dump": {
+      "bytes": 260840,
+      "sha256": "f9a373ed509b25f4138a0f9e2d98a2d4d45b094feb8d165d69af03b291791df0"
+    },
+    "suprimentos_prod.toc": {
+      "bytes": 42238,
+      "sha256": "c4b706b94829946fdc81f1dc847df7050ca5898d9b1a99cfae6f9fde75e93357"
+    },
+    "suprimentos_prod.dump": {
+      "bytes": 427851,
+      "sha256": "554ceb6a8c0f63fc25e32b1b60e9bc512358f86aeee6d764cd2887e16d0d9328"
+    },
+    "qualidade.toc": {
+      "bytes": 25818,
+      "sha256": "14b6b34e2947b7e4eecb357784f060cacc55dcde2075ed0d4ce3ceddafddbe68"
+    },
+    "qualidade.dump": {
+      "bytes": 305845,
+      "sha256": "a059d181852a354112bb17f6164a255b15523b608ab7de15c8e16d1ae3a0449a"
+    },
+    "ged_postgres.toc": {
+      "bytes": 17701,
+      "sha256": "4a6d5216176ddc1d8dc99254ea5035a9477739eb62c81dcdd51e802c6880f4f7"
+    },
+    "ged_postgres.dump": {
+      "bytes": 135774,
+      "sha256": "0857c3fa17025b9da45785ff68be75875f28e463e9c277d39db9b7f05dd2fa60"
+    },
+    "permissions-before.sql": {
+      "bytes": 155,
+      "sha256": "ac7a9892e56c67d97c1c8347e608b2644a46aeed3500f22b5a5a3d3fb9b84e10"
+    },
+    "RETENTION.txt": {
+      "bytes": 124,
+      "sha256": "06338c0415f2444b7b7c8fe3fcc4563bb3a4880eee99c579d7900dd7c6468e94"
+    }
+  },
+  "dumps": {
+    "mapa_unificado_teste": {
+      "pg_restore_list": true,
+      "pg_restore_full_decode": true,
+      "bytes": 116158955,
+      "sha256": "c4d9835f43fa3fa89cb8667633f0306ed23963b1be5dffd196dd1e6286f6a9cf"
+    },
+    "pcp_unificado_teste": {
+      "pg_restore_list": true,
+      "pg_restore_full_decode": true,
+      "bytes": 4748318,
+      "sha256": "aca898f3763c353a98d8762119894bae91325212392eaea32d1969c812215a2f"
+    },
+    "concretrack_postes": {
+      "pg_restore_list": true,
+      "pg_restore_full_decode": true,
+      "bytes": 260840,
+      "sha256": "f9a373ed509b25f4138a0f9e2d98a2d4d45b094feb8d165d69af03b291791df0"
+    },
+    "suprimentos_prod": {
+      "pg_restore_list": true,
+      "pg_restore_full_decode": true,
+      "bytes": 427851,
+      "sha256": "554ceb6a8c0f63fc25e32b1b60e9bc512358f86aeee6d764cd2887e16d0d9328"
+    },
+    "qualidade": {
+      "pg_restore_list": true,
+      "pg_restore_full_decode": true,
+      "bytes": 305845,
+      "sha256": "a059d181852a354112bb17f6164a255b15523b608ab7de15c8e16d1ae3a0449a"
+    },
+    "ged_postgres": {
+      "pg_restore_list": true,
+      "pg_restore_full_decode": true,
+      "bytes": 135774,
+      "sha256": "0857c3fa17025b9da45785ff68be75875f28e463e9c277d39db9b7f05dd2fa60"
+    }
+  },
+  "production_application_mutations": 0,
+  "production_database_mutations": 0,
+  "duration_seconds": 14.84,
+  "complete": true
+}

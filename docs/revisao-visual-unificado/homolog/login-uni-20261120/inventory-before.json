@@ -1,0 +1,578 @@
+[
+  {
+    "file": "unificado/atualizar.html",
+    "line": 6,
+    "before": "<title>Atualizar Unificado — Concrefer</title>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/atualizar.html",
+    "line": 16,
+    "before": "<main><img src=\"assets/img/logo-concrefer.png\" alt=\"Concrefer\"><h1>Atualizando o Unificado</h1><p id=\"status\" role=\"status\">Preparando a versão atual. Aguarde…</p><button id=\"retry\" hidden>Tentar novamente</button></main>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/index.html",
+    "line": 9,
+    "before": "  <title>Concrefer — Sistema unificado</title>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/index.html",
+    "line": 45,
+    "before": "          <span class=\"user-pill\"><span class=\"avatar\">C</span><span><strong>Concrefer</strong><small>Sistema unificado</small></span></span>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/index.html",
+    "line": 71,
+    "before": "      <div id=\"module-host\" class=\"module-host\" hidden aria-label=\"Tela do sistema unificado\"></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/login.html",
+    "line": 20,
+    "before": "  <aside class=\"login-desktop-story\" aria-label=\"Unificado Concrefer\">",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/login.html",
+    "line": 23,
+    "before": "    <div class=\"login-story-app\">Unificado · planejamento, produção, laboratório e qualidade</div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/manifest.webmanifest",
+    "line": 3,
+    "before": "  \"name\": \"Concrefer Unificado\",",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/armacao/service/armacao/auth.py",
+    "line": 42,
+    "before": "        raise HTTPException(401, \"Sessão do Unificado necessária\")",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/laboratorio/service/server/static/usinas-relatorios/native-areas.js",
+    "line": 29,
+    "before": "      {id:'reports',title:'Reports diários',description:'A geração dos reports executa uma rotina na origem e ainda não está disponível no Unificado.'}",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/laboratorio/service/server/static/usinas-relatorios/native-areas.js",
+    "line": 85,
+    "before": "      if(response.status===401){showStatus(nativeReport?'Sua sessão do Unificado expirou. Entre novamente.':'Entre com sua conta antiga do ConcreTrack para consultar esta tela.',true);const loginBox=panel.querySelector('.native-login');if(loginBox)loginBox.hidden=false;return}",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/logistica/index.html",
+    "line": 1,
+    "before": "<!doctype html><html lang=\"pt-BR\"><meta charset=\"utf-8\"><title>Logística · Unificado</title><script>location.replace('/unificado/?view='+encodeURIComponent(location.pathname.replace('/unificado/','')+location.search))</script><a href=\"/unificado/?view=logistica%2F\">Abrir Logística no Unificado</a></html>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/m/inspecao/login.html",
+    "line": 27,
+    "before": "      <p>Entre com seu usuário e senha do Unificado.</p>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/m/inspecao/menu.html",
+    "line": 19,
+    "before": "  <iframe id=\"pwa-menu-frame\" class=\"pwa-menu-frame\" title=\"Sistema Unificado e demais funções\"></iframe>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/m/maodeobra/index.html",
+    "line": 23,
+    "before": "        <section class=\"install-card\"><h2>Instalar app</h2><p>Tenha um ícone Mão de Obra separado do Unificado na tela inicial.</p><button id=\"mdo-install-button\" class=\"primary\" type=\"button\" hidden>Instalar</button><p id=\"mdo-android-help\" hidden>Abra o menu do navegador e escolha “Instalar app” ou “Adicionar à tela inicial”.</p><div id=\"mdo-ios-help\" hidden><p>No iPhone:</p><ol><li>Abra esta página no Safari.</li><li>Toque em <strong>Compartilhar</strong>.</li><li>Toque em <strong>Adicionar à Tela de Início</strong>.</li><li>Confirme em <strong>Adicionar</strong> e abra o ícone Mão de Obra.</li></ol></div></section>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/m/maodeobra/index.html",
+    "line": 24,
+    "before": "        <div class=\"install-bottom\"><button id=\"mdo-continue\" class=\"secondary\" type=\"button\">Continuar no navegador</button><span>Use seu login do Unificado. Os dados só são enviados após confirmação do servidor.</span></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/m/maodeobra/login.html",
+    "line": 28,
+    "before": "      <p>Entre com seu usuário e senha do Unificado para acessar a Mão de Obra.</p>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/manutencao-usina/app.js",
+    "line": 37,
+    "before": "    $('policy').textContent=state.canEdit?'Você pode cadastrar e atualizar as atividades. Todos os usuários do Unificado podem acompanhar.':'Você está visualizando o acompanhamento. A edição está disponível aos gestores.';",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/mapa/index.html",
+    "line": 17,
+    "before": "      <p class=\"legacy-print-title\">Sistema unificado</p>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/mapa/api/usinas_stock_service_stage1.py",
+    "line": 79,
+    "before": "  if not user or not user.get('ativo',True):return jsonify(error='Sua sessão do Unificado expirou.'),401",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/mapa/operacao/dashboard-defeitos-v5.js",
+    "line": 295,
+    "before": "      ? 'Fonte: imagem enviada (jan–set/2026, total geral); outubro: Unificado, conferido em 06/11/2026. Média = total de defeitos ÷ total produzido nos meses com dados.'",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/mapa/operacao/dashboard-defeitos-v5.js",
+    "line": 296,
+    "before": "      : 'Fonte: inspeções registradas no Unificado. Aplicados os mesmos filtros de setor, status e busca; período anual completo.';",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/mapa/operacao/manifest.json",
+    "line": 2,
+    "before": "  \"name\": \"Concrefer Unificado\",",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/mapa/operacao/unificado-bridge.js",
+    "line": 209,
+    "before": "    scroll.setAttribute(\"aria-label\", \"Menu unificado\");",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/mapa/operacao/unificado-bridge.js",
+    "line": 311,
+    "before": "        dialog.innerHTML = '<section class=\"unificado-install-card\"><div class=\"unificado-install-logos\" aria-label=\"Concrefer e ConcreTrack\"><img src=\"/unificado/assets/img/logo-concrefer.png\" alt=\"Concrefer\"><img src=\"/unificado/assets/img/logo-concretrack.png\" alt=\"ConcreTrack\"></div><h2>Instalar Produção Concrefer</h2><p>Este aplicativo abre o módulo Produção do sistema unificado.</p><button type=\"button\" data-install>Instalar</button><button type=\"button\" class=\"secondary\" data-close>Cancelar</button></section>';",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/mapa/operacao/users-unificado.js",
+    "line": 574,
+    "before": "        note.textContent = 'Ao marcar Produção ou Laboratório, o acesso unificado será criado automaticamente. A pessoa entra com seu login e senha atuais do PCP novo.';",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/mapa/operacao/users-unificado.js",
+    "line": 579,
+    "before": "        note.textContent = 'Ao marcar uma tela, o acesso ao PCP novo será criado automaticamente. A pessoa entra com seu login e senha atuais do unificado.';",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/pcp/fechamento-diario/index.html",
+    "line": 567,
+    "before": "            <div class=\"kpi\"><span>Total de postes</span><small>Mapa Unificado</small><strong>${fmtInt(c.total_postes_produzidos)}</strong></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/pcp/fechamento-diario/index.html",
+    "line": 578,
+    "before": "              <tbody>${setores.length ? setores.map(s => `<tr><td class=\"type\">${escapeHtml(s.setor)}</td><td class=\"num\">${fmtInt(s.postes)}</td><td class=\"num m3\">${fmtVolumePostes(s)}</td></tr>`).join(\"\") : `<tr><td colspan=\"3\" class=\"text-center fw-bold\">Sem registros por setor no Mapa Unificado nesta data</td></tr>`}</tbody>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/pcp/fechamento-diario/index.html",
+    "line": 583,
+    "before": "            <div class=\"section-head\"><h3>Mão de obra direta por grupo</h3><span>PCP Unificado - MOD</span></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/pcp/fechamento-diario/index.html",
+    "line": 612,
+    "before": "              <tbody>${postes.length ? postes.map(p => `<tr><td class=\"type\">${escapeHtml(p.tipo)}</td><td class=\"num\">${fmtInt(p.qtd)}</td><td class=\"num m3\">${fmtVolumePostes(p)}</td></tr>`).join(\"\") : `<tr><td colspan=\"3\" class=\"text-center fw-bold\">Sem postes registrados no Mapa Unificado nesta data</td></tr>`}</tbody>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/pcp/fechamento-diario/index.html",
+    "line": 700,
+    "before": "          warnMapa.textContent = `Postes do Mapa Unificado nao disponiveis para esta data. Detalhe: ${statusLabel(mapaSrc)}.`;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/pcp/fechamento-diario/index.html",
+    "line": 705,
+    "before": "          warnFuncionarios.textContent = `Mão de obra direta dos grupos 1+2, 3 e 4 incompleta ou sem lancamento no PCP Unificado para esta data. Os indices de produtividade por trabalhador ficam indisponiveis. Detalhe: ${statusLabel(funcSrc)}.`;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/pcp/programacao-semanal/index.html",
+    "line": 101,
+    "before": "<dialog id=\"publish-dialog\" class=\"publish-dialog\" aria-labelledby=\"publish-title\"><div class=\"dialog-head\"><div><p class=\"legacy-print-title\">REVISÃO FINAL</p><h2 id=\"publish-title\">Publicar versão</h2><p id=\"dialog-period\"></p></div><button type=\"button\" id=\"close-dialog\" class=\"dialog-close\" aria-label=\"Fechar\">×</button></div><div class=\"dialog-body\"><div id=\"dialog-cards\" class=\"dialog-cards\"></div><div id=\"dialog-checks\" class=\"dialog-checks\"></div><h3>O que muda em relação à versão anterior</h3><div class=\"dialog-table-wrap\"><table class=\"dialog-table\"><thead><tr><th>Setor</th><th>Poste</th><th>Dia</th><th>Antes</th><th>Agora</th><th>Dif.</th></tr></thead><tbody id=\"diff-body\"></tbody></table></div><label class=\"dialog-label\" for=\"publish-reason\">Motivo da revisão <span id=\"reason-required\"></span></label><textarea id=\"publish-reason\" rows=\"2\" placeholder=\"Descreva o motivo da mudança\"></textarea><label class=\"notice-check\"><input id=\"notify-production\" type=\"checkbox\"><span>Avisar responsáveis dos setores 1 e 2 dentro do Unificado</span></label><p class=\"notice-note\">O painel da TV lê a programação oficial automaticamente. Com a opção marcada, um aviso aparece nas telas dos setores 1 e 2 até ser marcado como lido neste dispositivo.</p></div><div class=\"dialog-footer\"><button type=\"button\" id=\"back-to-grid\" class=\"btn btn-outline-primary\">Voltar à grade</button><button type=\"button\" id=\"confirm-publish\" class=\"btn btn-primary-pcp\">Publicar versão</button></div></dialog>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/pcp/programacao-semanal/semana.js",
+    "line": 363,
+    "before": "      showToast(result.aviso_producao === 'disponivel_unificado' ? 'Semana publicada. O aviso está disponível nos setores 1 e 2 do Unificado.' : 'Semana publicada com sucesso', 'success', 7000);",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/pcp/usuarios/index.html",
+    "line": 84,
+    "before": "      <p class=\"mb-3\">Crie usuários no Unificado. Selecione a Unidade (Campinas, Pederneiras, Ribeirão ou Noroeste), a alçada e revise as telas pré-selecionadas.</p>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/pcp/usuarios/index.html",
+    "line": 85,
+    "before": "      <a class=\"btn btn-accent btn-sm\" href=\"/unificado/mapa/operacao/?tela=USUARIOS\">Abrir cadastro unificado</a>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/producao/campinas-unificado/index.html",
+    "line": 3,
+    "before": "<title>Campinas Unificado · Indicadores</title>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/producao/campinas-unificado/index.html",
+    "line": 8,
+    "before": "  <header class=\"hero\"><div><span class=\"legacy-print-title\">CAMPINAS · SETORES 1 + 2 + 3 + 4</span><h1>Campinas Unificado</h1><p>Quilos e postes por homem de toda a produção de Campinas.</p></div><span class=\"hero-mark\" aria-hidden=\"true\">▦</span></header>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/producao/campinas-unificado/index.html",
+    "line": 12,
+    "before": "    <div class=\"section-heading\"><div><span class=\"kicker\">CAMPINAS · CONSOLIDADO</span><h2 id=\"unified-title\">Campinas · Unificado</h2><p>Produção dos setores 1 + 2 + 3 + 4 ÷ MOD + MOI dos grupos 1 e 2 e 3 e 4, na mesma data.</p></div><span class=\"unit-label\">Setores 1 + 2 + 3 + 4</span></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/producao/campinas-unificado/index.html",
+    "line": 13,
+    "before": "    <div class=\"summary unified-summary\" id=\"unified-summary\" aria-label=\"Resumo de Campinas Unificado\"></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/producao/campinas-unificado/index.html",
+    "line": 15,
+    "before": "    <div class=\"chart-pair\" id=\"unified-charts\" aria-label=\"Indicadores diários de Campinas Unificado\"></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/producao/campinas-unificado/index.html",
+    "line": 16,
+    "before": "    <section class=\"table-card\"><div class=\"section-heading\"><div><h2>Campinas Unificado · Dados dia a dia</h2><p>Mão de obra do PCP. “—” indica indicador indisponível; a equipe precisa estar apontada em cada grupo com produção.</p></div></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/producao/indicadores-gerais/app.js",
+    "line": 28,
+    "before": "    if (!response.ok) throw new Error('Sessão do Planejamento indisponível. Entre novamente no Unificado.');",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/producao/indicadores-gerais/app.js",
+    "line": 321,
+    "before": "    const unit={id:'campinas_unificado',name:'Campinas · Unificado',color:'#176a79'};",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/producao/indicadores-gerais/app.js",
+    "line": 385,
+    "before": "        feedback.hidden=false;feedback.textContent='Não foi possível carregar Campinas Unificado: '+message;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/producao/indicadores-gerais/index.html",
+    "line": 22,
+    "before": "  <p class=\"indicator-link\"><a class=\"page-link\" href=\"/unificado/producao/campinas-unificado/\" target=\"_top\">Campinas Unificado · Indicadores dos setores 1 + 2 + 3 + 4 →</a></p>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/qualidade/assets/index-Bn4z2eAt.js",
+    "line": 40,
+    "before": "`+a.stack}return{value:e,source:t,stack:i,digest:null}}function Ta(e,t,n){return{value:e,source:null,stack:n??null,digest:t??null}}function za(e,t){try{console.error(t.value)}catch(n){setTimeout(function(){throw n})}}var qd=typeof WeakMap==\"function\"?WeakMap:Map;function hu(e,t,n){n=ln(-1,n),n.tag=3,n.payload={element:null};var l=t.value;return n.callback=function(){ai||(ai=!0,Ka=l),za(e,t)},n}function mu(e,t,n){n=ln(-1,n),n.tag=3;var l=e.type.getDerivedStateFromError;if(typeof l==\"function\"){var i=t.value;n.payload=function(){return l(i)},n.callback=function(){za(e,t)}}var a=e.stateNode;return a!==null&&typeof a.componentDidCatch==\"function\"&&(n.callback=function(){za(e,t),typeof l!=\"function\"&&(En===null?En=new Set([this]):En.add(this));var s=t.stack;this.componentDidCatch(t.value,{componentStack:s!==null?s:\"\"})}),n}function vu(e,t,n){var l=e.pingCache;if(l===null){l=e.pingCache=new qd;var i=new Set;l.set(t,i)}else i=l.get(t),i===void 0&&(i=new Set,l.set(t,i));i.has(n)||(i.add(n),e=lf.bind(null,e,t,n),t.then(e,e))}function gu(e){do{var t;if((t=e.tag===13)&&(t=e.memoizedState,t=t!==null?t.dehydrated!==null:!0),t)return e;e=e.return}while(e!==null);return null}function xu(e,t,n,l,i){return(e.mode&1)===0?(e===t?e.flags|=65536:(e.flags|=128,n.flags|=131072,n.flags&=-52805,n.tag===1&&(n.alternate===null?n.tag=17:(t=ln(-1,1),t.tag=2,Nn(n,t,1))),n.lanes|=1),e):(e.flags|=65536,e.lanes=i,e)}var Qd=ne.ReactCurrentOwner,ut=!1;function rt(e,t,n,l){t.child=e===null?Mo(t,null,n,l):fr(t,e.child,n,l)}function yu(e,t,n,l,i){n=n.render;var a=t.ref;return hr(t,i),l=wa(e,t,n,l,a,i),n=Na(),e!",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/qualidade/assets/index-CI1pdTnl.js",
+    "line": 40,
+    "before": "`+i.stack}return{value:e,source:n,stack:a,digest:null}}function vi(e,n,t){return{value:e,source:null,stack:t??null,digest:n??null}}function gi(e,n){try{console.error(n.value)}catch(t){setTimeout(function(){throw t})}}var bd=typeof WeakMap==\"function\"?WeakMap:Map;function ou(e,n,t){t=Fn(-1,t),t.tag=3,t.payload={element:null};var r=n.value;return t.callback=function(){Pl||(Pl=!0,Ti=r),gi(e,n)},t}function uu(e,n,t){t=Fn(-1,t),t.tag=3;var r=e.type.getDerivedStateFromError;if(typeof r==\"function\"){var a=n.value;t.payload=function(){return r(a)},t.callback=function(){gi(e,n)}}var i=e.stateNode;return i!==null&&typeof i.componentDidCatch==\"function\"&&(t.callback=function(){gi(e,n),typeof r!=\"function\"&&(Zn===null?Zn=new Set([this]):Zn.add(this));var s=n.stack;this.componentDidCatch(n.value,{componentStack:s!==null?s:\"\"})}),t}function cu(e,n,t){var r=e.pingCache;if(r===null){r=e.pingCache=new bd;var a=new Set;r.set(n,a)}else a=r.get(n),a===void 0&&(a=new Set,r.set(n,a));a.has(t)||(a.add(t),e=of.bind(null,e,n,t),n.then(e,e))}function du(e){do{var n;if((n=e.tag===13)&&(n=e.memoizedState,n=n!==null?n.dehydrated!==null:!0),n)return e;e=e.return}while(e!==null);return null}function fu(e,n,t,r,a){return(e.mode&1)===0?(e===n?e.flags|=65536:(e.flags|=128,t.flags|=131072,t.flags&=-52805,t.tag===1&&(t.alternate===null?t.tag=17:(n=Fn(-1,1),n.tag=2,Xn(t,n,1))),t.lanes|=1),e):(e.flags|=65536,e.lanes=a,e)}var Kd=J.ReactCurrentOwner,tn=!1;function Xe(e,n,t,r){n.child=e===null?To(n,null,t,r):Dt(n,e.child,t,r)}function pu(e,n,t,r,a){t=t.render;var i=n.ref;return Ft(n,a),r=oi(e,n,t,r,i,a),t=ui(),e!=",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/qualidade/assets/index-Dix4Rzzi.js",
+    "line": 40,
+    "before": "`+a.stack}return{value:e,source:t,stack:i,digest:null}}function Ta(e,t,n){return{value:e,source:null,stack:n??null,digest:t??null}}function za(e,t){try{console.error(t.value)}catch(n){setTimeout(function(){throw n})}}var qd=typeof WeakMap==\"function\"?WeakMap:Map;function hu(e,t,n){n=ln(-1,n),n.tag=3,n.payload={element:null};var l=t.value;return n.callback=function(){ai||(ai=!0,Ka=l),za(e,t)},n}function mu(e,t,n){n=ln(-1,n),n.tag=3;var l=e.type.getDerivedStateFromError;if(typeof l==\"function\"){var i=t.value;n.payload=function(){return l(i)},n.callback=function(){za(e,t)}}var a=e.stateNode;return a!==null&&typeof a.componentDidCatch==\"function\"&&(n.callback=function(){za(e,t),typeof l!=\"function\"&&(En===null?En=new Set([this]):En.add(this));var s=t.stack;this.componentDidCatch(t.value,{componentStack:s!==null?s:\"\"})}),n}function vu(e,t,n){var l=e.pingCache;if(l===null){l=e.pingCache=new qd;var i=new Set;l.set(t,i)}else i=l.get(t),i===void 0&&(i=new Set,l.set(t,i));i.has(n)||(i.add(n),e=lf.bind(null,e,t,n),t.then(e,e))}function gu(e){do{var t;if((t=e.tag===13)&&(t=e.memoizedState,t=t!==null?t.dehydrated!==null:!0),t)return e;e=e.return}while(e!==null);return null}function xu(e,t,n,l,i){return(e.mode&1)===0?(e===t?e.flags|=65536:(e.flags|=128,n.flags|=131072,n.flags&=-52805,n.tag===1&&(n.alternate===null?n.tag=17:(t=ln(-1,1),t.tag=2,Nn(n,t,1))),n.lanes|=1),e):(e.flags|=65536,e.lanes=i,e)}var Qd=ne.ReactCurrentOwner,ut=!1;function rt(e,t,n,l){t.child=e===null?Mo(t,null,n,l):fr(t,e.child,n,l)}function yu(e,t,n,l,i){n=n.render;var a=t.ref;return hr(t,i),l=wa(e,t,n,l,a,i),n=Na(),e!",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/qualidade/dist/assets/index-Dix4Rzzi.js",
+    "line": 40,
+    "before": "`+a.stack}return{value:e,source:t,stack:i,digest:null}}function Ta(e,t,n){return{value:e,source:null,stack:n??null,digest:t??null}}function za(e,t){try{console.error(t.value)}catch(n){setTimeout(function(){throw n})}}var qd=typeof WeakMap==\"function\"?WeakMap:Map;function hu(e,t,n){n=ln(-1,n),n.tag=3,n.payload={element:null};var l=t.value;return n.callback=function(){ai||(ai=!0,Ka=l),za(e,t)},n}function mu(e,t,n){n=ln(-1,n),n.tag=3;var l=e.type.getDerivedStateFromError;if(typeof l==\"function\"){var i=t.value;n.payload=function(){return l(i)},n.callback=function(){za(e,t)}}var a=e.stateNode;return a!==null&&typeof a.componentDidCatch==\"function\"&&(n.callback=function(){za(e,t),typeof l!=\"function\"&&(En===null?En=new Set([this]):En.add(this));var s=t.stack;this.componentDidCatch(t.value,{componentStack:s!==null?s:\"\"})}),n}function vu(e,t,n){var l=e.pingCache;if(l===null){l=e.pingCache=new qd;var i=new Set;l.set(t,i)}else i=l.get(t),i===void 0&&(i=new Set,l.set(t,i));i.has(n)||(i.add(n),e=lf.bind(null,e,t,n),t.then(e,e))}function gu(e){do{var t;if((t=e.tag===13)&&(t=e.memoizedState,t=t!==null?t.dehydrated!==null:!0),t)return e;e=e.return}while(e!==null);return null}function xu(e,t,n,l,i){return(e.mode&1)===0?(e===t?e.flags|=65536:(e.flags|=128,n.flags|=131072,n.flags&=-52805,n.tag===1&&(n.alternate===null?n.tag=17:(t=ln(-1,1),t.tag=2,Nn(n,t,1))),n.lanes|=1),e):(e.flags|=65536,e.lanes=i,e)}var Qd=ne.ReactCurrentOwner,ut=!1;function rt(e,t,n,l){t.child=e===null?Mo(t,null,n,l):fr(t,e.child,n,l)}function yu(e,t,n,l,i){n=n.render;var a=t.ref;return hr(t,i),l=wa(e,t,n,l,a,i),n=Na(),e!",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/qualidade/frontend/task-fixture.html",
+    "line": 7,
+    "before": "const lists=[{id:1,nome:'Qualidade',cor:'#007AFF',compartilhada:false},{id:2,nome:'Laboratório',cor:'#FFCC00',compartilhada:false},{id:3,nome:'Projeto Unificado',cor:'#AF52DE',compartilhada:false},{id:4,nome:'Pessoal',cor:'#8E8E93',compartilhada:false}];",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/qualidade/frontend/src/main.tsx",
+    "line": 28,
+    "before": "  if (error && !ctx) return <main className=\"solo\"><h1>Qualidade</h1><p role=\"alert\">{error}</p><a href=\"/unificado/\">Voltar ao Unificado</a></main>;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/qualidade/frontend/src/main.tsx",
+    "line": 34,
+    "before": "    <div className=\"body\">{!embedded && !path.startsWith('/tarefas') && <nav className=\"rail\" aria-label=\"Qualidade\"><button onClick={() => go('/')}>Não conformidades</button><button onClick={() => go('/abrir')}>Abrir RNC</button><button onClick={() => go('/resultados-bancada')}>Resultados de bancada</button>{can(ctx, 'qualidade.nc.cadastros') && <button onClick={() => go('/cadastros')}>Cadastros</button>}<a href=\"/unificado/\">← Unificado</a></nav>}",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/relatorios/fechamento-diario/index.html",
+    "line": 560,
+    "before": "            <div class=\"kpi\"><span>Total de postes</span><small>Mapa Unificado</small><strong>${fmtInt(c.total_postes_produzidos)}</strong></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/relatorios/fechamento-diario/index.html",
+    "line": 571,
+    "before": "              <tbody>${setores.length ? setores.map(s => `<tr><td class=\"type\">${escapeHtml(s.setor)}</td><td class=\"num\">${fmtInt(s.postes)}</td><td class=\"num m3\">${fmtVolumePostes(s)}</td></tr>`).join(\"\") : `<tr><td colspan=\"3\" class=\"text-center fw-bold\">Sem registros por setor no Mapa Unificado nesta data</td></tr>`}</tbody>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/relatorios/fechamento-diario/index.html",
+    "line": 576,
+    "before": "            <div class=\"section-head\"><h3>Mão de obra direta por grupo</h3><span>PCP Unificado - MOD</span></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/relatorios/fechamento-diario/index.html",
+    "line": 605,
+    "before": "              <tbody>${postes.length ? postes.map(p => `<tr><td class=\"type\">${escapeHtml(p.tipo)}</td><td class=\"num\">${fmtInt(p.qtd)}</td><td class=\"num m3\">${fmtVolumePostes(p)}</td></tr>`).join(\"\") : `<tr><td colspan=\"3\" class=\"text-center fw-bold\">Sem postes registrados no Mapa Unificado nesta data</td></tr>`}</tbody>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/relatorios/fechamento-diario/index.html",
+    "line": 693,
+    "before": "          warnMapa.textContent = `Postes do Mapa Unificado nao disponiveis para esta data. Detalhe: ${statusLabel(mapaSrc)}.`;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/relatorios/fechamento-diario/index.html",
+    "line": 698,
+    "before": "          warnFuncionarios.textContent = `Mão de obra direta dos grupos 1+2, 3 e 4 incompleta ou sem lancamento no PCP Unificado para esta data. Os indices de produtividade por trabalhador ficam indisponiveis. Detalhe: ${statusLabel(funcSrc)}.`;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/shell/menu.config.js",
+    "line": 86,
+    "before": "        { id: 'campinasUnificado', mono: 'CU', label: 'Campinas Unificado · S1+2+3+4', path: '/unificado/producao/campinas-unificado/', permissionId: 'produtividade' },",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/shell/navigation.js",
+    "line": 27,
+    "before": "  const keyFor = module => `unificado.navigation.${userId}.${module}`;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/shell/navigation.js",
+    "line": 28,
+    "before": "  const recentKey = `unificado.navigation.recent.${userId}`;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/shell/navigation.js",
+    "line": 29,
+    "before": "  const tabletKey = `unificado.navigation.tablet.${userId}`;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/shell/navigation.js",
+    "line": 64,
+    "before": "  const nav = el('nav','nav-modern'); nav.id='nav-modern'; nav.setAttribute('aria-label','Navegação do Unificado');",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/shell/navigation.js",
+    "line": 69,
+    "before": "  const brand=el('a','nav-brand');brand.href='/unificado/';brand.setAttribute('aria-label','Início do Unificado');",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/shell/navigation.js",
+    "line": 319,
+    "before": "    railBrand.setAttribute('aria-label','Início do Unificado');",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/shell/router.js",
+    "line": 420,
+    "before": "        if (!mapaUser?.id) throw new Error('Identidade do Unificado indisponível');",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/shell/shell.js",
+    "line": 402,
+    "before": "    console.warn('Atualização do Unificado falhou:', error);",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/suprimentos/pwa/app.js",
+    "line": 65,
+    "before": "      if(!me){app.innerHTML='<div class=\"error\">Conecte-se e entre no Unificado uma vez para usar o PWA offline.</div>';return;}",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/suprimentos/pwa/app.js",
+    "line": 69,
+    "before": "      if(!bootstrap?.ok){app.innerHTML='<div class=\"error\">Entre no Unificado para usar Suprimentos.</div>';return;}",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/suprimentos/pwa/app.js",
+    "line": 78,
+    "before": "  app.innerHTML=`<header class=\"top\"><div class=\"top-inner\"><div class=\"brand\"><span class=\"brand-mark\">C</span>Suprimentos</div><span class=\"sync ${!navigator.onLine?'offline':state.pending?'pending':''}\">${esc(sync)}</span></div></header><main>${state.authExpired?'<div class=\"banner warn\">Sua sessão terminou. Entre novamente no Unificado; os envios pendentes continuam neste aparelho.</div>':''}${content}</main><nav class=\"app-nav\" aria-label=\"Navegação\">${nav('inicio','Início','⌂')}${nav('nova','Nova','＋')}${nav('minhas','Minhas','▤')}${state.me?.flags?.S3C&&state.me?.papeis?.some(p=>p.papel==='ALMOXARIFE')?nav('receber','Receber','↓'):''}${isApprover()?nav('aprovar','Aprovar','✓',count):''}</nav>`;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/testar/index.html",
+    "line": 6,
+    "before": "  <title>Suporte do sistema unificado</title>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/testar/index.html",
+    "line": 51,
+    "before": "  <h1>Suporte do sistema unificado</h1>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/testar/index.html",
+    "line": 52,
+    "before": "  <p class=\"notice\">Acompanhamento do sistema unificado</p>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/testar/index.html",
+    "line": 53,
+    "before": "  <p class=\"meta\">Fotografia dos dados: <strong data-review-date>{{SNAPSHOT_AT}}</strong>. Use sua conta ativa do sistema unificado para acessar esta página.</p>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/testar/index.html",
+    "line": 55,
+    "before": "    <img src=\"/unificado/testar/qr-unificado.png\" alt=\"QR code para abrir o sistema unificado\">",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/carta-traco.html",
+    "line": 196,
+    "before": "      <div class=\"toolbar\"><div><h2 id=\"area-nativa-titulo\"></h2><p class=\"sub\">Campinas · telas do Unificado</p></div></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/carta-traco.html",
+    "line": 234,
+    "before": "      $('intro').textContent = 'Telas operacionais de Campinas integradas ao Unificado.';",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/carta-traco.html",
+    "line": 327,
+    "before": "        if(!response.ok) throw new Error(response.status === 401 ? 'Sessão expirada. Entre novamente no Unificado.' : 'Não foi possível consultar as receitas.');",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/fechamento.html",
+    "line": 303,
+    "before": "          if(res.status===401)throw new Error('Sua sessão do Unificado expirou. Entre novamente.');",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/index.html",
+    "line": 196,
+    "before": "      <div class=\"toolbar\"><div><h2 id=\"area-nativa-titulo\"></h2><p class=\"sub\">Campinas · telas do Unificado</p></div></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/index.html",
+    "line": 234,
+    "before": "      $('intro').textContent = 'Telas operacionais de Campinas integradas ao Unificado.';",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/index.html",
+    "line": 327,
+    "before": "        if(!response.ok) throw new Error(response.status === 401 ? 'Sessão expirada. Entre novamente no Unificado.' : 'Não foi possível consultar as receitas.');",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/native-areas.js",
+    "line": 29,
+    "before": "      {id:'reports',title:'Reports diários',description:'A geração dos reports executa uma rotina na origem e ainda não está disponível no Unificado.'}",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/native-areas.js",
+    "line": 95,
+    "before": "      if(response.status===401){showStatus(nativeReport?'Sua sessão do Unificado expirou. Entre novamente.':'Entre com sua conta antiga do ConcreTrack para consultar esta tela.',true);const loginBox=panel.querySelector('.native-login');if(loginBox)loginBox.hidden=false;return}",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/noroeste/noro-cec.js",
+    "line": 84,
+    "before": "  const notice=element('p','Registros novos ficam no Unificado. O aplicativo antigo continua oficial durante o paralelo.','noro-note');",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/noroeste/noro-cec.js",
+    "line": 209,
+    "before": "        feedback.textContent='Leitura enviada ao Unificado.';",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/noroeste/noro-native.js",
+    "line": 154,
+    "before": "  content.append(el('p','Cartas operacionais em consulta. Revisões históricas ficam no banco do Unificado.','noro-note'));",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/noroeste/noro-native.js",
+    "line": 227,
+    "before": "  content.append(el('p','Saldo calculado no Unificado a partir do espelho Noroeste. O aplicativo antigo continua oficial para lançamentos.','noro-note'));",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/relatorios/fechamento-diario/index.html",
+    "line": 590,
+    "before": "            <div class=\"kpi\"><span>Total de postes</span><small>Mapa Unificado</small><strong>${fmtInt(c.total_postes_produzidos)}</strong></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/relatorios/fechamento-diario/index.html",
+    "line": 601,
+    "before": "              <tbody>${setores.length ? setores.map(s => `<tr><td class=\"type\">${escapeHtml(s.setor)}</td><td class=\"num\">${fmtInt(s.postes)}</td><td class=\"num m3\">${fmtVolumePostes(s)}</td></tr>`).join(\"\") : `<tr><td colspan=\"3\" class=\"text-center fw-bold\">Sem registros por setor no Mapa Unificado nesta data</td></tr>`}</tbody>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/relatorios/fechamento-diario/index.html",
+    "line": 606,
+    "before": "            <div class=\"section-head\"><h3>Mão de obra direta por grupo</h3><span>PCP Unificado - MOD</span></div>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/relatorios/fechamento-diario/index.html",
+    "line": 635,
+    "before": "              <tbody>${postes.length ? postes.map(p => `<tr><td class=\"type\">${escapeHtml(p.tipo)}</td><td class=\"num\">${fmtInt(p.qtd)}</td><td class=\"num m3\">${fmtVolumePostes(p)}</td></tr>`).join(\"\") : `<tr><td colspan=\"3\" class=\"text-center fw-bold\">Sem postes registrados no Mapa Unificado nesta data</td></tr>`}</tbody>",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/relatorios/fechamento-diario/index.html",
+    "line": 723,
+    "before": "          warnMapa.textContent = `Postes do Mapa Unificado nao disponiveis para esta data. Detalhe: ${statusLabel(mapaSrc)}.`;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  },
+  {
+    "file": "unificado/usinas/relatorios/fechamento-diario/index.html",
+    "line": 728,
+    "before": "          warnFuncionarios.textContent = `Mão de obra direta dos grupos 1+2, 3 e 4 incompleta ou sem lancamento no PCP Unificado para esta data. Os indices de produtividade por trabalhador ficam indisponiveis. Detalhe: ${statusLabel(funcSrc)}.`;",
+    "kind": "source_label_candidate; review identifiers in mixed lines"
+  }
+]

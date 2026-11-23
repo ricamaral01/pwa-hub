@@ -1,0 +1,148 @@
+{
+  "concurrency": 1,
+  "stop_above": 80,
+  "new_accounts": 0,
+  "passwords_changed": 0,
+  "password_login_waived_by_user": true,
+  "checks": [
+    {
+      "category": "central",
+      "role": "MONTADOR",
+      "existing_user": "alexh",
+      "session_check": "real signed session; password login waived by user",
+      "ok": true,
+      "connections_before": 66,
+      "connections_after": 66,
+      "screenshot": "perfil-central-montador.png",
+      "allowed_module_ids": [
+        "producao",
+        "qualidade"
+      ]
+    },
+    {
+      "category": "central",
+      "role": "GESTOR",
+      "existing_user": "josue",
+      "session_check": "real signed session; password login waived by user",
+      "ok": true,
+      "connections_before": 66,
+      "connections_after": 66,
+      "screenshot": "perfil-central-gestor.png",
+      "allowed_module_ids": [
+        "producao",
+        "qualidade"
+      ]
+    },
+    {
+      "category": "central",
+      "role": "GERENCIA",
+      "existing_user": "alex",
+      "session_check": "real signed session; password login waived by user",
+      "ok": true,
+      "connections_before": 66,
+      "connections_after": 67,
+      "screenshot": "perfil-central-gerencia.png",
+      "allowed_module_ids": [
+        "logistica",
+        "planejamento",
+        "producao",
+        "qualidade",
+        "usinas",
+        "laboratorio",
+        "ged"
+      ]
+    },
+    {
+      "category": "central",
+      "role": "APONTADOR",
+      "existing_user": "setor1",
+      "session_check": "real signed session; password login waived by user",
+      "ok": true,
+      "connections_before": 67,
+      "connections_after": 67,
+      "screenshot": "perfil-central-apontador.png",
+      "allowed_module_ids": [
+        "producao",
+        "qualidade"
+      ]
+    },
+    {
+      "category": "central",
+      "role": "CONVIDADO",
+      "existing_user": "e2e-suprimentos-almox",
+      "session_check": "real signed session; password login waived by user",
+      "ok": true,
+      "connections_before": 67,
+      "connections_after": 67,
+      "screenshot": "perfil-central-convidado.png",
+      "allowed_module_ids": [
+        "qualidade",
+        "suprimentos"
+      ]
+    },
+    {
+      "category": "PCP",
+      "role": "ADMIN",
+      "existing_user": "Ricardo",
+      "session_check": "real signed session; password login waived by user",
+      "ok": true,
+      "connections_before": 67,
+      "connections_after": 67,
+      "screenshot": "perfil-pcp-admin.png",
+      "allowed_module_ids": [
+        "logistica",
+        "planejamento",
+        "producao",
+        "qualidade",
+        "usinas",
+        "laboratorio",
+        "suprimentos",
+        "ged"
+      ]
+    },
+    {
+      "category": "PCP",
+      "role": "PCP",
+      "existing_user": "Diego",
+      "session_check": "real signed session; password login waived by user",
+      "ok": true,
+      "connections_before": 67,
+      "connections_after": 67,
+      "screenshot": "perfil-pcp-pcp.png",
+      "allowed_module_ids": [
+        "planejamento",
+        "producao",
+        "qualidade"
+      ]
+    },
+    {
+      "category": "PCP",
+      "role": "PRODUCAO",
+      "existing_user": "producao",
+      "session_check": "real signed session; password login waived by user",
+      "ok": true,
+      "connections_before": 68,
+      "connections_after": 67,
+      "screenshot": "perfil-pcp-producao.png",
+      "allowed_module_ids": [
+        "planejamento"
+      ]
+    },
+    {
+      "category": "PCP",
+      "role": "CONSULTA",
+      "existing_user": "e2e-pcp-quality-link-probe",
+      "session_check": "real signed session; password login waived by user",
+      "ok": true,
+      "connections_before": 67,
+      "connections_after": 67,
+      "screenshot": "perfil-pcp-consulta.png",
+      "allowed_module_ids": [
+        "planejamento",
+        "producao",
+        "qualidade"
+      ]
+    }
+  ],
+  "all_ok": true
+}

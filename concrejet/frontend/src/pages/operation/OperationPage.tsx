@@ -1,587 +1,894 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
-import { apiClient, apiPost, getApiErrorMessage } from '@/api/client';
-import {
-  MachineHeader,
-  NumericField,
-  NumericKeypad,
-  OperatorHeader,
-  StatusLamp,
-  TabletActionBar,
-  TabletShell,
-  TouchSelect,
-} from '@/ui/tablet';
-import { IndustrialAlert, OfflineIndicator, SyncIndicator } from '@/ui/feedback';
-import { db } from '@/db/schema';
-import { useQueue } from '@/hooks/useQueue';
-import { useOnlineStatus } from '@/hooks/useOnlineStatus';
+import { useLiveQuery } from 'dexie-react-hooks';
+
+import { TopBar, LockOverlay, RotateWarning } from '@/components/TopBar';
+import { Button } from '@/components/Button';
+import { Field, NumericInput, Select, ReadOnlyField } from '@/components/Field';
+import { LossStatusBadge, type LossStatus } from '@/components/Badge';
 import { useSessionStore } from '@/store/session.store';
+import { useSession } from '@/hooks/useSession';
+import { useQueue } from '@/hooks/useQueue';
+import { db } from '@/db/schema';
+import { capabilities, isDemoMode } from '@/config/runtime';
+import { getProductionDataRepository } from '@/features/production/repositories/getProductionDataRepository';
+import type { OrdemProducao, LoteResina, Molde } from '@/features/production/domain/types';
 
-type Step = 'login' | 'opening' | 'running';
-type Operator = { id: string; matricula: string; nome: string; token: string } | null;
-type Catalog = {
-  machine: { id: string; codigo: string; nome: string } | null;
-  operations: Array<{ id: string; codigo: string; descricao: string }>;
-  productionOrders: Array<{
-    id: string;
-    numero: string;
-    status: string;
-    item: { id: string; codigo: string; descricao: string };
-    molde: { id: string; codigo: string; descricao: string };
-  }>;
-  moldsByItem: Record<
-    string,
-    Array<{ id: string; codigo: string; descricao: string; configuracaoId: string }>
-  >;
-  lots: Array<{
-    id: string;
-    codigo: string;
-    saldoAtualKg: number;
-    status: string;
-    resina: { codigo: string; descricao: string } | null;
-    fornecedor: { nome: string; documento: string } | null;
-  }>;
-};
-type CalcResult = {
-  injecaoUtilKg: number;
-  perdaTotalKg: number;
-  perdaSemGalhoKg: number;
-  perdaPct: number | null;
-};
-type CurrentAppointment = {
-  id: string;
-  versao: number;
-  ordemProducaoId: string;
-  itemId: string;
-  moldeId: string;
-  configuracaoItemMoldeId: string;
-  loteResinaId: string;
-  operacaoId: string;
-  inicioEm: string;
-} | null;
-
-const fallbackDeviceId = sessionStorage.getItem('concretrack.deviceId') || 'DEV-TABLET-01';
-
-export default function OperationPage() {
-  const [step, setStep] = useState<Step>('login');
-  const [operator, setOperator] = useState<Operator>(null);
-  const [matricula] = useState('OP001');
-  const [pin, setPin] = useState('');
-  const [error, setError] = useState('');
-  const [catalog, setCatalog] = useState<Catalog | null>(null);
-  const [activeField, setActiveField] = useState('pecasBoas');
-  const [recordId, setRecordId] = useState('');
-  const [version, setVersion] = useState(1);
-  const { enqueue, pendingCount } = useQueue();
-  const { isOnline } = useOnlineStatus();
-  const setOperatorToken = useSessionStore((state) => state.setOperatorToken);
-  const setOperatorSession = useSessionStore((state) => state.setOperator);
-  const [selection, setSelection] = useState({
-    operacaoId: '',
-    ordemProducaoId: '',
-    itemId: '',
-    moldeId: '',
-    configuracaoItemMoldeId: '',
-    loteResinaId: '',
+// ─────────────────────────────────────────────
+// Schema de validação Zod
+// ─────────────────────────────────────────────
+const appointmentSchema = z
+  .object({
+    ordemProducaoId: z.string().min(1, 'Selecione a ordem de produção.'),
+    moldeId: z.string().min(1, 'Selecione o molde.'),
+    loteResinaId: z.string().min(1, 'Selecione o lote de resina.'),
+    pecasBoas: z.coerce.number().int().min(0, 'Não pode ser negativo.'),
+    refugo: z.coerce.number().int().min(0, 'Não pode ser negativo.'),
+    falhaPreenchimento: z.coerce.number().int().min(0, 'Não pode ser negativo.'),
+    borra: z.coerce.number().int().min(0, 'Não pode ser negativo.'),
+    galho: z.coerce.number().int().min(0, 'Não pode ser negativo.'),
+    outrasPerdas: z.coerce.number().int().min(0, 'Não pode ser negativo.'),
+  })
+  .refine((d) => d.pecasBoas + d.refugo + d.falhaPreenchimento >= 0, {
+    message: 'Total de peças não pode ser negativo.',
+    path: ['pecasBoas'],
   });
-  const [quantities, setQuantities] = useState<Record<string, string>>({
-    pecasBoas: '0',
-    pecasRefugo: '0',
-    falhaPreenchimentoQtd: '0',
-    borraKg: '0',
-    galhoKg: '0',
-    outrasPerdasKg: '0',
+
+type AppointmentFormData = z.infer<typeof appointmentSchema>;
+
+// ─────────────────────────────────────────────
+// Limites de perda (%) — TODO: buscar do backend
+// ─────────────────────────────────────────────
+const LOSS_LIMIT_ATTENTION = 3.0;
+const LOSS_LIMIT_ABOVE = 5.0;
+const LOSS_LIMIT_CRITICAL = 8.0;
+
+function calcLossStatus(percent: number): LossStatus {
+  if (percent >= LOSS_LIMIT_CRITICAL) return 'critical';
+  if (percent >= LOSS_LIMIT_ABOVE) return 'above-limit';
+  if (percent >= LOSS_LIMIT_ATTENTION) return 'attention';
+  return 'normal';
+}
+
+// ─────────────────────────────────────────────
+// Componente principal
+// ─────────────────────────────────────────────
+const OperationPage: React.FC = () => {
+  const { state, device, operator, transitionTo } = useSessionStore();
+  const { unlockSession, switchOperador } = useSession();
+  const { enqueue } = useQueue();
+
+  // Estado local da tela
+  const [startTime, setStartTime] = useState<Date | null>(null);
+  const [elapsed, setElapsed] = useState(0); // segundos
+  const [confirmCancel, setConfirmCancel] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // Dados derivados do form
+  const [selectedOrdem, setSelectedOrdem] = useState<OrdemProducao | null>(null);
+  const [selectedLote, setSelectedLote] = useState<LoteResina | null>(null);
+  const [availableMoldes, setAvailableMoldes] = useState<Molde[]>([]);
+  const [ordensDisponiveis, setOrdensDisponiveis] = useState<OrdemProducao[]>([]);
+  const [lotesDisponiveis, setLotesDisponiveis] = useState<LoteResina[]>([]);
+  const [repositoryError, setRepositoryError] = useState('');
+  const productionRepository = useMemo(() => getProductionDataRepository(), []);
+
+  // Apontamento ativo no IndexedDB
+  const activeAppointment = useLiveQuery(() => db.activeAppointment.get(1));
+
+  // Form
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<AppointmentFormData>({
+    resolver: zodResolver(appointmentSchema),
+    mode: 'onChange',
+    defaultValues: {
+      ordemProducaoId: '',
+      moldeId: '',
+      loteResinaId: '',
+      pecasBoas: 0,
+      refugo: 0,
+      falhaPreenchimento: 0,
+      borra: 0,
+      galho: 0,
+      outrasPerdas: 0,
+    },
   });
+
+  const watchedValues = watch();
+
+  // Cálculos de perda
+  const { perdasTotal, perdasSemGalho, percentualPerda, lossStatus } = useMemo(() => {
+    const { pecasBoas, refugo, falhaPreenchimento, borra, galho, outrasPerdas } = watchedValues;
+    const perdas = refugo + falhaPreenchimento + borra + galho + outrasPerdas;
+    const perdasSemGalho = refugo + falhaPreenchimento + borra + outrasPerdas;
+    const total = pecasBoas + perdas;
+    const pct = total > 0 ? (perdas / total) * 100 : 0;
+    return {
+      perdasTotal: perdas,
+      perdasSemGalho,
+      percentualPerda: pct,
+      lossStatus: calcLossStatus(pct),
+    };
+  }, [watchedValues]);
+
+  // Cronômetro
+  useEffect(() => {
+    if (state !== 'IN_PROGRESS' && state !== 'STOP_ACTIVE') return;
+
+    // Usar a hora persistida para calcular o tempo, não apenas setInterval
+    const ref = startTime ?? new Date();
+    const interval = setInterval(() => {
+      setElapsed(Math.floor((Date.now() - ref.getTime()) / 1000));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [state, startTime]);
+
+  // Restaurar apontamento ativo do IndexedDB ao montar
+  useEffect(() => {
+    if (!activeAppointment) return;
+    if (activeAppointment.ordemProducaoId) {
+      setValue('ordemProducaoId', activeAppointment.ordemProducaoId);
+    }
+    if (activeAppointment.moldeId) {
+      setValue('moldeId', activeAppointment.moldeId);
+    }
+    if (activeAppointment.loteResinaId) {
+      setValue('loteResinaId', activeAppointment.loteResinaId);
+    }
+    if (activeAppointment.inicioEm) {
+      setStartTime(new Date(activeAppointment.inicioEm));
+      transitionTo('IN_PROGRESS');
+    }
+  }, [activeAppointment, setValue, transitionTo]);
 
   useEffect(() => {
-    void restoreLocalState();
-  }, []);
+    if (capabilities.productionData === 'unavailable') {
+      setRepositoryError('Dados de producao ainda nao estao implementados no backend da Fase 0.');
+      return;
+    }
 
-  const selectedOrder = catalog?.productionOrders.find(
-    (item) => item.id === selection.ordemProducaoId,
-  );
-  const availableMolds = selection.itemId ? (catalog?.moldsByItem[selection.itemId] ?? []) : [];
-  const calc = useMemo<CalcResult>(() => calculateLocal(152.2, quantities), [quantities]);
-  const perdaState =
-    calc.perdaPct === null
-      ? 'atencao'
-      : calc.perdaPct >= 12
-        ? 'parada'
-        : calc.perdaPct >= 7
-          ? 'atencao'
-          : 'info';
+    let active = true;
 
-  async function restoreLocalState() {
-    const active = await db.activeAppointment.get(1);
-    const savedQuantities = await db.appointmentQuantities.get(1);
-    const storedSession = useSessionStore.getState();
-    const storedOperator = storedSession.operator;
-    const storedToken = storedSession.operatorToken;
-    if (storedOperator && storedToken) {
-      const restoredOperator = { ...storedOperator, token: storedToken };
-      setOperator(restoredOperator);
+    async function loadProductionData() {
       try {
-        const catalogResponse = await apiClient.get<Catalog>('/production-catalog', {
-          headers: { Authorization: `Bearer ${storedToken}` },
-        });
-        setCatalog(catalogResponse.data);
+        const [ordens, lotes] = await Promise.all([
+          productionRepository.getOrdensByMaquina(device?.maquinaId ?? ''),
+          productionRepository.getLotesDisponiveis(),
+        ]);
+        if (!active) return;
+        setOrdensDisponiveis(ordens);
+        setLotesDisponiveis(lotes);
+        setRepositoryError('');
       } catch (err) {
-        storedSession.clearOperator();
-        setOperator(null);
-        setStep('login');
-        setError(getApiErrorMessage(err));
-        return;
+        if (!active) return;
+        setRepositoryError(err instanceof Error ? err.message : 'Dados indisponiveis.');
       }
-    } else if (active?.inicioEm) {
-      setStep('login');
-      setError('Sessao operacional expirada. Faca login novamente para recuperar o apontamento.');
-      return;
     }
-    if (active?.inicioEm) {
-      setRecordId(active.localUuid);
-      setSelection((state) => ({
-        ...state,
-        ordemProducaoId: active.ordemProducaoId ?? '',
-        itemId: active.itemId ?? '',
-        moldeId: active.moldeId ?? '',
-        loteResinaId: active.loteResinaId ?? '',
-      }));
-      setStep('running');
-    } else if (storedOperator && storedToken) {
-      setStep('opening');
-    }
-    if (savedQuantities) {
-      setQuantities({
-        pecasBoas: String(savedQuantities.pecasBoas),
-        pecasRefugo: String(savedQuantities.refugo),
-        falhaPreenchimentoQtd: String(savedQuantities.falhaPreenchimento),
-        borraKg: String(savedQuantities.borra),
-        galhoKg: String(savedQuantities.galho),
-        outrasPerdasKg: String(savedQuantities.outrasPerdas),
-      });
-    }
-  }
 
-  async function authorizedPost<T>(url: string, data: unknown): Promise<T> {
-    const response = await apiClient.post<T>(url, data, {
-      headers: { Authorization: `Bearer ${operator?.token}` },
-    });
-    return response.data;
-  }
+    void loadProductionData();
 
-  async function login() {
-    try {
-      setError('');
-      const response = await apiPost<{
-        token: string;
-        operador: { id: string; matricula: string; nome: string };
-      }>('/auth/operator-login', { matricula, pin, dispositivoId: fallbackDeviceId });
-      const logged = { ...response.operador, token: response.token };
-      setOperator(logged);
-      setOperatorSession({
-        id: logged.id,
-        nome: logged.nome,
-        matricula: logged.matricula,
-        perfis: [],
-        iniciadaEm: new Date().toISOString(),
-      });
-      setOperatorToken(logged.token);
-      setPin('');
-      const catalogResponse = await apiClient.get<Catalog>('/production-catalog', {
-        headers: { Authorization: `Bearer ${logged.token}` },
-      });
-      setCatalog(catalogResponse.data);
-      await restoreCurrentAppointment(logged.token, catalogResponse.data);
-      await db.activeSession.put({
-        id: 1,
-        operadorId: logged.id,
-        operadorNome: logged.nome,
-        operadorMatricula: logged.matricula,
-        iniciadaEm: new Date().toISOString(),
-        ultimaAtividadeEm: new Date().toISOString(),
-      });
-      setStep((current) => (current === 'running' ? 'running' : 'opening'));
-    } catch (err) {
-      setError(getApiErrorMessage(err));
-    }
-  }
+    return () => {
+      active = false;
+    };
+  }, [device?.maquinaId, productionRepository]);
 
-  async function start() {
-    try {
-      setError('');
-      if (!operator) return;
-      const payload = {
-        dispositivoId: fallbackDeviceId,
-        operadorId: operator.id,
-        ordemProducaoId: selection.ordemProducaoId,
-        itemId: selection.itemId,
-        configuracaoItemMoldeId: selection.configuracaoItemMoldeId,
-        loteResinaId: selection.loteResinaId,
-        operacaoId: selection.operacaoId,
-        idempotencyKey: uuidv4(),
-      };
-      if (!isOnline) {
-        const localId = await enqueue('apontamento', payload);
-        await persistActiveAppointment(localId);
-        setRecordId(localId);
-        setStep('running');
-        setError('Salvo neste dispositivo - aguardando sincronizacao.');
-        return;
+  // Ao selecionar ordem: preencher moldes disponíveis
+  const handleOrdemChange = useCallback(
+    (ordemId: string) => {
+      const ordem = ordensDisponiveis.find((o) => o.id === ordemId) ?? null;
+      setSelectedOrdem(ordem);
+      setValue('moldeId', '');
+      if (ordem) {
+        void productionRepository
+          .getMoldesByItem(ordem.itemId)
+          .then(setAvailableMoldes)
+          .catch(() => {
+            setAvailableMoldes([]);
+            setRepositoryError('Moldes indisponiveis nesta fase.');
+          });
+      } else {
+        setAvailableMoldes([]);
       }
-      const response = await authorizedPost<{ id: string; versao: number }>(
-        '/production-records',
-        payload,
-      );
-      await persistActiveAppointment(response.id);
-      setRecordId(response.id);
-      setVersion(response.versao);
-      setStep('running');
-    } catch (err) {
-      setError(getApiErrorMessage(err));
-    }
-  }
-
-  async function restoreCurrentAppointment(token: string, currentCatalog: Catalog) {
-    const response = await apiClient.get<CurrentAppointment>(
-      '/production-records/current-by-device',
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    );
-    const current = response.data;
-    if (!current) return;
-    const order = currentCatalog.productionOrders.find(
-      (item) => item.id === current.ordemProducaoId,
-    );
-    const lot = currentCatalog.lots.find((item) => item.id === current.loteResinaId);
-    const mold = currentCatalog.moldsByItem[current.itemId]?.find(
-      (item) => item.id === current.moldeId,
-    );
-    setRecordId(current.id);
-    setVersion(current.versao);
-    setSelection({
-      operacaoId: current.operacaoId,
-      ordemProducaoId: current.ordemProducaoId,
-      itemId: current.itemId,
-      moldeId: current.moldeId,
-      configuracaoItemMoldeId: current.configuracaoItemMoldeId,
-      loteResinaId: current.loteResinaId,
-    });
-    await db.activeAppointment.put({
-      id: 1,
-      localUuid: current.id,
-      ordemProducaoId: current.ordemProducaoId,
-      ordemProducaoNumero: order?.numero ?? null,
-      itemId: current.itemId,
-      itemCodigo: order?.item.codigo ?? null,
-      itemDescricao: order?.item.descricao ?? null,
-      moldeId: current.moldeId,
-      moldeCodigo: mold?.codigo ?? null,
-      cavidades: null,
-      loteResinaId: current.loteResinaId,
-      loteNumero: lot?.codigo ?? null,
-      resinaDescricao: lot?.resina?.descricao ?? null,
-      fornecedor: lot?.fornecedor?.nome ?? null,
-      tipoResina: lot?.resina?.codigo ?? null,
-      saldoLote: lot?.saldoAtualKg ?? null,
-      inicioEm: current.inicioEm,
-      state: 'in_progress',
-    });
-    setStep('running');
-  }
-
-  async function finish() {
-    try {
-      setError('');
-      if (!recordId) return;
-      const payload = {
-        ...toPayload(quantities),
-        fimEm: new Date().toISOString(),
-        version,
-      };
-      if (!isOnline) {
-        await persistQuantities();
-        await enqueue('apontamento', { recordId, operation: 'finish', payload }, version);
-        setError('Salvo neste dispositivo - aguardando sincronizacao.');
-        setStep('opening');
-        return;
-      }
-      const response = await authorizedPost<{ versao: number }>(
-        `/production-records/${recordId}/finish`,
-        payload,
-      );
-      setVersion(response.versao);
-      await db.activeAppointment.delete(1);
-      setStep('opening');
-      setRecordId('');
-    } catch (err) {
-      setError(getApiErrorMessage(err));
-    }
-  }
-
-  async function persistActiveAppointment(localUuid: string) {
-    await db.activeAppointment.put({
-      id: 1,
-      localUuid,
-      ordemProducaoId: selection.ordemProducaoId,
-      ordemProducaoNumero: selectedOrder?.numero ?? null,
-      itemId: selection.itemId,
-      itemCodigo: selectedOrder?.item.codigo ?? null,
-      itemDescricao: selectedOrder?.item.descricao ?? null,
-      moldeId: selection.moldeId,
-      moldeCodigo: availableMolds.find((item) => item.id === selection.moldeId)?.codigo ?? null,
-      cavidades: null,
-      loteResinaId: selection.loteResinaId,
-      loteNumero: catalog?.lots.find((item) => item.id === selection.loteResinaId)?.codigo ?? null,
-      resinaDescricao:
-        catalog?.lots.find((item) => item.id === selection.loteResinaId)?.resina?.descricao ?? null,
-      fornecedor:
-        catalog?.lots.find((item) => item.id === selection.loteResinaId)?.fornecedor?.nome ?? null,
-      tipoResina:
-        catalog?.lots.find((item) => item.id === selection.loteResinaId)?.resina?.codigo ?? null,
-      saldoLote:
-        catalog?.lots.find((item) => item.id === selection.loteResinaId)?.saldoAtualKg ?? null,
-      inicioEm: new Date().toISOString(),
-      state: 'in_progress',
-    });
-  }
-
-  async function persistQuantities() {
-    await db.appointmentQuantities.put({
-      id: 1,
-      pecasBoas: Number(quantities.pecasBoas),
-      refugo: Number(quantities.pecasRefugo),
-      falhaPreenchimento: Number(quantities.falhaPreenchimentoQtd),
-      borra: Number(quantities.borraKg),
-      galho: Number(quantities.galhoKg),
-      outrasPerdas: Number(quantities.outrasPerdasKg),
-    });
-  }
-
-  function digit(digitValue: string) {
-    if (step === 'login') {
-      setPin((value) => `${value}${digitValue}`.slice(0, 12));
-      return;
-    }
-    setQuantities((values) => ({
-      ...values,
-      [activeField]:
-        values[activeField] === '0' ? digitValue : `${values[activeField]}${digitValue}`,
-    }));
-  }
-
-  function backspace() {
-    if (step === 'login') {
-      setPin((value) => value.slice(0, -1));
-      return;
-    }
-    setQuantities((values) => ({
-      ...values,
-      [activeField]: values[activeField].slice(0, -1) || '0',
-    }));
-  }
-
-  const header = (
-    <MachineHeader
-      machine={
-        catalog?.machine
-          ? `${catalog.machine.codigo} - ${catalog.machine.nome}`
-          : 'INJ-01 - Injetora 01'
-      }
-      status={
-        <StatusLamp variant={step === 'running' ? 'ok' : 'ocioso'}>
-          {step === 'running' ? 'Rodando' : 'Aguardando'}
-        </StatusLamp>
-      }
-      right={
-        <>
-          <OfflineIndicator online={isOnline} pending={pendingCount} />
-          <SyncIndicator
-            state={pendingCount ? 'pendente' : 'sincronizado'}
-            pending={pendingCount}
-          />
-          {operator ? <OperatorHeader name={operator.nome} detail={operator.matricula} /> : null}
-        </>
-      }
-    />
+    },
+    [ordensDisponiveis, productionRepository, setValue],
   );
 
-  if (step === 'login') {
-    return (
-      <TabletShell header={header} columns="1fr 300px">
-        <section className="tablet-panel">
-          <span className="section-label">Identificacao do operador</span>
-          <NumericField label="Matricula" value={matricula} onFocus={() => undefined} />
-          <NumericField label="PIN" value={'*'.repeat(pin.length)} onFocus={() => undefined} />
-          {error ? <IndustrialAlert variant="parada">{error}</IndustrialAlert> : null}
-        </section>
-        <section className="tablet-panel">
-          <NumericKeypad onDigit={digit} onBackspace={backspace} onConfirm={() => void login()} />
-        </section>
-      </TabletShell>
-    );
-  }
-
-  return (
-    <TabletShell
-      header={header}
-      alert={
-        error ? (
-          <IndustrialAlert variant="parada">{error}</IndustrialAlert>
-        ) : (
-          <IndustrialAlert variant={perdaState}>
-            {isOnline ? 'Online' : 'Sem conexao - saldo do lote pode estar desatualizado.'} - Perda{' '}
-            {calc.perdaPct === null ? 'sem base' : `${calc.perdaPct.toFixed(1)}%`}
-          </IndustrialAlert>
-        )
-      }
-      footer={
-        <TabletActionBar>
-          <button
-            className="primary"
-            type="button"
-            disabled={step === 'running'}
-            onClick={() => void start()}
-          >
-            Iniciar
-          </button>
-          <button type="button" disabled={step !== 'running'} onClick={() => void finish()}>
-            Concluir
-          </button>
-          <button type="button" onClick={() => setStep('opening')}>
-            Voltar
-          </button>
-          <a href="/stop">Parada</a>
-        </TabletActionBar>
-      }
-    >
-      <section className="tablet-panel">
-        <TouchSelect
-          label="Operacao"
-          value={selection.operacaoId}
-          onChange={(id) => setSelection((state) => ({ ...state, operacaoId: id }))}
-          options={(catalog?.operations ?? []).map((item) => ({
-            id: item.id,
-            title: `${item.codigo} - ${item.descricao}`,
-          }))}
-        />
-        <TouchSelect
-          label="O.P."
-          value={selection.ordemProducaoId}
-          onChange={(id) => {
-            const ordem = catalog?.productionOrders.find((item) => item.id === id);
-            setSelection((state) => ({
-              ...state,
-              ordemProducaoId: id,
-              itemId: ordem?.item.id ?? '',
-              moldeId: ordem?.molde.id ?? '',
-              configuracaoItemMoldeId:
-                catalog?.moldsByItem[ordem?.item.id ?? '']?.find(
-                  (item) => item.id === ordem?.molde.id,
-                )?.configuracaoId ?? '',
-            }));
-          }}
-          options={(catalog?.productionOrders ?? []).map((item) => ({
-            id: item.id,
-            title: item.numero,
-            description: `${item.item.codigo} - ${item.item.descricao}`,
-          }))}
-        />
-        {selectedOrder ? (
-          <div className="kpi-card">
-            <span>Item</span>
-            <strong>
-              {selectedOrder.item.codigo} - {selectedOrder.item.descricao}
-            </strong>
-          </div>
-        ) : null}
-        <TouchSelect
-          label="Molde"
-          value={selection.moldeId}
-          onChange={(id) =>
-            setSelection((state) => ({
-              ...state,
-              moldeId: id,
-              configuracaoItemMoldeId:
-                availableMolds.find((item) => item.id === id)?.configuracaoId ?? '',
-            }))
-          }
-          options={availableMolds.map((item) => ({
-            id: item.id,
-            title: `${item.codigo} - ${item.descricao}`,
-          }))}
-        />
-        <TouchSelect
-          label="Lote"
-          value={selection.loteResinaId}
-          onChange={(id) => setSelection((state) => ({ ...state, loteResinaId: id }))}
-          options={(catalog?.lots ?? []).map((item) => ({
-            id: item.id,
-            title: `${item.codigo} - ${item.resina?.codigo ?? 'resina'}`,
-            description: `${item.fornecedor?.nome ?? 'sem fornecedor'} - saldo ${item.saldoAtualKg} kg - ${item.status}`,
-          }))}
-        />
-      </section>
-      <section className="tablet-panel">
-        {Object.entries({
-          pecasBoas: 'Pecas boas',
-          pecasRefugo: 'Refugo',
-          falhaPreenchimentoQtd: 'Falha preench.',
-          borraKg: 'Borra kg',
-          galhoKg: 'Galho kg',
-          outrasPerdasKg: 'Outras kg',
-        }).map(([key, label]) => (
-          <NumericField
-            key={key}
-            label={label}
-            value={quantities[key]}
-            focused={activeField === key}
-            onFocus={() => setActiveField(key)}
-          />
-        ))}
-      </section>
-      <section className="tablet-panel">
-        <NumericKeypad
-          onDigit={digit}
-          onBackspace={backspace}
-          allowDecimal={activeField.endsWith('Kg')}
-        />
-        <div className="kpi-card">
-          <span>Injecao util</span>
-          <strong className="num">{calc.injecaoUtilKg.toFixed(2)} kg</strong>
-        </div>
-        <div className="kpi-card">
-          <span>Perda total</span>
-          <strong className="num">{calc.perdaTotalKg.toFixed(2)} kg</strong>
-        </div>
-        <div className="kpi-card">
-          <span>Perda sem galho</span>
-          <strong className="num">{calc.perdaSemGalhoKg.toFixed(2)} kg</strong>
-        </div>
-      </section>
-    </TabletShell>
+  // Ao selecionar lote: preencher dados da resina
+  const handleLoteChange = useCallback(
+    (loteId: string) => {
+      const lote = lotesDisponiveis.find((l) => l.id === loteId) ?? null;
+      setSelectedLote(lote);
+    },
+    [lotesDisponiveis],
   );
-}
 
-function toPayload(values: Record<string, string>) {
-  return Object.fromEntries(Object.entries(values).map(([key, value]) => [key, Number(value)]));
-}
+  // Iniciar apontamento
+  const handleStart = useCallback(async () => {
+    const now = new Date();
+    setStartTime(now);
+    const uuid = uuidv4();
 
-function calculateLocal(weightG: number, values: Record<string, string>): CalcResult {
-  const weightKg = weightG / 1000;
-  const payload = toPayload(values);
-  const injecaoUtilKg = (payload.pecasBoas ?? 0) * weightKg;
-  const perdaTotalKg =
-    ((payload.pecasRefugo ?? 0) + (payload.falhaPreenchimentoQtd ?? 0)) * weightKg +
-    (payload.borraKg ?? 0) +
-    (payload.galhoKg ?? 0) +
-    (payload.outrasPerdasKg ?? 0);
-  const perdaSemGalhoKg = perdaTotalKg - (payload.galhoKg ?? 0);
-  const base = injecaoUtilKg + perdaTotalKg;
-  return {
-    injecaoUtilKg,
-    perdaTotalKg,
-    perdaSemGalhoKg,
-    perdaPct: base > 0 ? (perdaTotalKg / base) * 100 : null,
+    await db.activeAppointment.put({
+      id: 1,
+      localUuid: uuid,
+      ordemProducaoId: watchedValues.ordemProducaoId,
+      ordemProducaoNumero: selectedOrdem?.numero ?? null,
+      itemId: selectedOrdem?.itemId ?? null,
+      itemCodigo: selectedOrdem?.item.codigo ?? null,
+      itemDescricao: selectedOrdem?.item.descricao ?? null,
+      moldeId: watchedValues.moldeId,
+      moldeCodigo: null,
+      cavidades: null,
+      loteResinaId: watchedValues.loteResinaId,
+      loteNumero: selectedLote?.numero ?? null,
+      resinaDescricao: selectedLote?.resina.descricao ?? null,
+      fornecedor: selectedLote?.fornecedor ?? null,
+      tipoResina: selectedLote?.resina.tipo ?? null,
+      saldoLote: selectedLote?.saldo ?? null,
+      inicioEm: now.toISOString(),
+      state: 'in_progress',
+    });
+
+    transitionTo('IN_PROGRESS');
+  }, [watchedValues, selectedOrdem, selectedLote, transitionTo]);
+
+  // Concluir apontamento
+  const onSubmit = useCallback(
+    async (data: AppointmentFormData) => {
+      if (state !== 'IN_PROGRESS' && state !== 'READY_TO_COMPLETE') return;
+
+      transitionTo('SAVING');
+      const endTime = new Date();
+
+      const payload = {
+        maquinaId: device?.maquinaId,
+        operadorId: operator?.id,
+        ordemProducaoId: data.ordemProducaoId,
+        moldeId: data.moldeId,
+        loteResinaId: data.loteResinaId,
+        inicioEm: startTime?.toISOString(),
+        fimEm: endTime.toISOString(),
+        pecasBoas: data.pecasBoas,
+        refugo: data.refugo,
+        falhaPreenchimento: data.falhaPreenchimento,
+        borra: data.borra,
+        galho: data.galho,
+        outrasPerdas: data.outrasPerdas,
+        idempotencyKey: activeAppointment?.localUuid ?? uuidv4(),
+      };
+
+      try {
+        if (!isDemoMode) {
+          throw new Error('Persistencia de apontamento ainda nao foi implementada.');
+        }
+
+        await enqueue('apontamento', payload);
+        await db.activeAppointment.delete(1);
+        await db.appointmentQuantities.delete(1);
+
+        transitionTo('SAVED');
+        setSaveSuccess(true);
+        reset();
+        setStartTime(null);
+        setElapsed(0);
+        setSelectedOrdem(null);
+        setSelectedLote(null);
+
+        setTimeout(() => {
+          setSaveSuccess(false);
+          transitionTo('IDLE');
+        }, 2500);
+      } catch {
+        transitionTo('SYNC_ERROR');
+      }
+    },
+    [state, device, operator, startTime, activeAppointment, enqueue, transitionTo, reset],
+  );
+
+  // Cancelar apontamento
+  const handleCancel = useCallback(async () => {
+    if (!cancelReason.trim()) return;
+    await db.activeAppointment.delete(1);
+    reset();
+    setStartTime(null);
+    setElapsed(0);
+    setSelectedOrdem(null);
+    setSelectedLote(null);
+    setConfirmCancel(false);
+    setCancelReason('');
+    transitionTo('IDLE');
+  }, [cancelReason, reset, transitionTo]);
+
+  const formatElapsed = (sec: number) => {
+    const h = Math.floor(sec / 3600)
+      .toString()
+      .padStart(2, '0');
+    const m = Math.floor((sec % 3600) / 60)
+      .toString()
+      .padStart(2, '0');
+    const s = (sec % 60).toString().padStart(2, '0');
+    return `${h}:${m}:${s}`;
   };
-}
+
+  const isInProgress = state === 'IN_PROGRESS';
+  const canStart = isValid && state === 'IDLE' && !repositoryError && isDemoMode;
+  const canComplete = isInProgress && watchedValues.pecasBoas >= 0;
+
+  // ─── Render ─────────────────────────────────
+  return (
+    <>
+      <RotateWarning />
+
+      {/* Lock overlay */}
+      {state === 'SESSION_LOCKED' && operator && (
+        <LockOverlay
+          operatorName={operator.nome}
+          machineName={device ? `${device.maquinaCodigo} — ${device.maquinaNome}` : ''}
+          onUnlock={unlockSession}
+          onSwitch={() => void switchOperador()}
+        />
+      )}
+
+      {/* Diálogo de confirmação de cancelamento */}
+      {confirmCancel && (
+        <div
+          className="confirm-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Cancelar apontamento"
+        >
+          <div className="confirm-dialog-box">
+            <h2 style={{ color: 'var(--color-red-light)', marginBottom: 'var(--space-4)' }}>
+              ⚠ Cancelar apontamento
+            </h2>
+            <p className="text-secondary" style={{ marginBottom: 'var(--space-5)' }}>
+              Informe o motivo do cancelamento. Esta ação não pode ser desfeita.
+            </p>
+            <Field label="Justificativa" required>
+              <input
+                className="input-base"
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                placeholder="Descreva o motivo do cancelamento"
+                autoFocus
+                style={{ userSelect: 'auto', WebkitUserSelect: 'auto' }}
+              />
+            </Field>
+            <div style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-6)' }}>
+              <Button variant="ghost" size="lg" fullWidth onClick={() => setConfirmCancel(false)}>
+                Voltar
+              </Button>
+              <Button
+                variant="danger"
+                size="lg"
+                fullWidth
+                disabled={!cancelReason.trim()}
+                onClick={() => void handleCancel()}
+                id="btn-confirm-cancel"
+              >
+                Confirmar cancelamento
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sucesso */}
+      {saveSuccess && (
+        <div
+          role="status"
+          aria-live="assertive"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(22, 163, 74, 0.12)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 400,
+            gap: 'var(--space-4)',
+          }}
+        >
+          <div style={{ fontSize: 64 }} aria-hidden="true">
+            ✓
+          </div>
+          <h2 style={{ color: 'var(--color-green-light)', fontSize: 'var(--text-2xl)' }}>
+            Simulacao concluida
+          </h2>
+          <p className="text-muted">Nenhum dado foi persistido no backend.</p>
+        </div>
+      )}
+
+      {/* Layout principal */}
+      <div className="operation-layout" role="main">
+        {/* TopBar */}
+        <TopBar
+          onLock={() => transitionTo('SESSION_LOCKED')}
+          onSwitchOperator={() => void switchOperador()}
+        />
+
+        {/* Três colunas */}
+        <div className="operation-main">
+          {repositoryError && (
+            <div className="feature-blocker" role="alert">
+              {repositoryError}
+            </div>
+          )}
+          {/* ── Coluna Esquerda: Identificação ── */}
+          <aside className="operation-column" aria-label="Identificação do apontamento">
+            <div className="column-header">Identificação</div>
+            <div className="column-content">
+              {/* Ordem de Produção */}
+              <Field label="Ordem de Produção" required error={errors.ordemProducaoId?.message}>
+                <Controller
+                  name="ordemProducaoId"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        handleOrdemChange(e.target.value);
+                      }}
+                      disabled={isInProgress}
+                      hasError={!!errors.ordemProducaoId}
+                      placeholder="Selecionar ordem…"
+                      options={ordensDisponiveis.map((o) => ({
+                        value: o.id,
+                        label: `${o.numero} — ${o.item.codigo}`,
+                      }))}
+                    />
+                  )}
+                />
+              </Field>
+
+              {/* Item (preenchido automaticamente) */}
+              <ReadOnlyField
+                label="Item"
+                value={
+                  selectedOrdem
+                    ? `${selectedOrdem.item.codigo} — ${selectedOrdem.item.descricao}`
+                    : null
+                }
+                source="Ordem de produção"
+              />
+
+              {/* Molde */}
+              <Field label="Molde" required error={errors.moldeId?.message}>
+                <Controller
+                  name="moldeId"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      disabled={isInProgress || !selectedOrdem}
+                      hasError={!!errors.moldeId}
+                      placeholder={selectedOrdem ? 'Selecionar molde…' : 'Selecione a OP primeiro'}
+                      options={availableMoldes.map((m) => ({
+                        value: m.id,
+                        label: `${m.codigo} (${m.cavidades} cav.)`,
+                      }))}
+                    />
+                  )}
+                />
+              </Field>
+
+              {/* Cavidades */}
+              <ReadOnlyField
+                label="Cavidades"
+                value={
+                  availableMoldes.find((m) => m.id === watchedValues.moldeId)?.cavidades ?? null
+                }
+                source="Molde"
+              />
+
+              {/* Ciclo padrão — placeholder */}
+              <ReadOnlyField
+                label="Ciclo Padrão (s)"
+                value={selectedOrdem ? '28,5' : null}
+                source="Configuração item-molde"
+              />
+
+              {/* Peso aplicado */}
+              <ReadOnlyField
+                label="Peso Aplicado (g)"
+                value={selectedOrdem ? '42,3' : null}
+                source="Configuração item-molde"
+              />
+            </div>
+          </aside>
+
+          {/* ── Coluna Central: Resina + Produção ── */}
+          <section className="operation-column" aria-label="Resina e quantidades de produção">
+            <div className="column-header">Resina e Produção</div>
+            <div className="column-content">
+              {/* Lote de resina */}
+              <Field label="Lote de Resina" required error={errors.loteResinaId?.message}>
+                <Controller
+                  name="loteResinaId"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        handleLoteChange(e.target.value);
+                      }}
+                      disabled={isInProgress}
+                      hasError={!!errors.loteResinaId}
+                      placeholder="Selecionar lote…"
+                      options={lotesDisponiveis.map((l) => ({
+                        value: l.id,
+                        label: `${l.numero} — ${l.resina.codigo}`,
+                      }))}
+                    />
+                  )}
+                />
+              </Field>
+
+              {/* Dados do lote preenchidos automaticamente */}
+              <ReadOnlyField
+                label="Resina"
+                value={selectedLote?.resina.descricao ?? null}
+                source="Lote"
+              />
+              <ReadOnlyField
+                label="Fornecedor"
+                value={selectedLote?.fornecedor ?? null}
+                source="Lote"
+              />
+              <ReadOnlyField label="Tipo" value={selectedLote?.resina.tipo ?? null} source="Lote" />
+              <ReadOnlyField
+                label="Saldo do Lote (kg)"
+                value={selectedLote?.saldo.toFixed(1) ?? null}
+                source="Lote"
+              />
+
+              {/* Aviso de saldo baixo */}
+              {selectedLote && selectedLote.saldo < 50 && (
+                <div
+                  role="alert"
+                  style={{
+                    background: 'rgba(245, 158, 11, 0.1)',
+                    border: '1px solid rgba(245, 158, 11, 0.3)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: 'var(--space-3)',
+                    fontSize: 'var(--text-sm)',
+                    color: 'var(--color-amber-light)',
+                    display: 'flex',
+                    gap: 'var(--space-2)',
+                    alignItems: 'center',
+                  }}
+                >
+                  <span aria-hidden="true">⚠</span>
+                  Saldo baixo — verifique disponibilidade
+                </div>
+              )}
+
+              <div className="divider" />
+
+              {/* Quantidades produzidas */}
+              <Field label="Peças Boas" required error={errors.pecasBoas?.message}>
+                <Controller
+                  name="pecasBoas"
+                  control={control}
+                  render={({ field }) => (
+                    <NumericInput
+                      {...field}
+                      value={field.value}
+                      onChange={field.onChange}
+                      hasError={!!errors.pecasBoas}
+                      aria-label="Quantidade de peças boas"
+                    />
+                  )}
+                />
+              </Field>
+
+              <Field label="Refugo" error={errors.refugo?.message}>
+                <Controller
+                  name="refugo"
+                  control={control}
+                  render={({ field }) => (
+                    <NumericInput
+                      {...field}
+                      value={field.value}
+                      onChange={field.onChange}
+                      hasError={!!errors.refugo}
+                    />
+                  )}
+                />
+              </Field>
+
+              <Field label="Falha de Preenchimento" error={errors.falhaPreenchimento?.message}>
+                <Controller
+                  name="falhaPreenchimento"
+                  control={control}
+                  render={({ field }) => (
+                    <NumericInput
+                      {...field}
+                      value={field.value}
+                      onChange={field.onChange}
+                      hasError={!!errors.falhaPreenchimento}
+                    />
+                  )}
+                />
+              </Field>
+
+              <Field label="Borra" error={errors.borra?.message}>
+                <Controller
+                  name="borra"
+                  control={control}
+                  render={({ field }) => (
+                    <NumericInput
+                      {...field}
+                      value={field.value}
+                      onChange={field.onChange}
+                      hasError={!!errors.borra}
+                    />
+                  )}
+                />
+              </Field>
+
+              <Field label="Galho" error={errors.galho?.message}>
+                <Controller
+                  name="galho"
+                  control={control}
+                  render={({ field }) => (
+                    <NumericInput
+                      {...field}
+                      value={field.value}
+                      onChange={field.onChange}
+                      hasError={!!errors.galho}
+                    />
+                  )}
+                />
+              </Field>
+
+              <Field label="Outras Perdas" error={errors.outrasPerdas?.message}>
+                <Controller
+                  name="outrasPerdas"
+                  control={control}
+                  render={({ field }) => (
+                    <NumericInput
+                      {...field}
+                      value={field.value}
+                      onChange={field.onChange}
+                      hasError={!!errors.outrasPerdas}
+                    />
+                  )}
+                />
+              </Field>
+            </div>
+          </section>
+
+          {/* ── Coluna Direita: Tempo e Resultados ── */}
+          <aside className="operation-column" aria-label="Tempo e resultados">
+            <div className="column-header">Tempo e Resultados</div>
+            <div className="column-content">
+              {/* Cronômetro principal */}
+              <div
+                className="card"
+                style={{ background: isInProgress ? 'rgba(22, 163, 74, 0.06)' : 'var(--bg-card)' }}
+              >
+                <div className="card-body" style={{ alignItems: 'center', gap: 'var(--space-2)' }}>
+                  <p className="field-label-text">Duração</p>
+                  <div
+                    className="display-number"
+                    style={{
+                      fontSize: 'var(--text-4xl)',
+                      color: isInProgress ? 'var(--color-green-light)' : 'var(--text-disabled)',
+                    }}
+                    role="timer"
+                    aria-label={`Duração: ${formatElapsed(elapsed)}`}
+                  >
+                    {formatElapsed(elapsed)}
+                  </div>
+                  {startTime && (
+                    <p className="text-xs text-muted">
+                      Início:{' '}
+                      {startTime.toLocaleTimeString('pt-BR', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Ciclo real */}
+              <ReadOnlyField
+                label="Ciclo Real (s)"
+                value={
+                  watchedValues.pecasBoas > 0 && elapsed > 0
+                    ? (elapsed / watchedValues.pecasBoas).toFixed(1)
+                    : null
+                }
+              />
+
+              <div className="divider" />
+
+              {/* Resultados de perda */}
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title">Análise de Perdas</span>
+                </div>
+                <div className="card-body">
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '1fr 1fr',
+                      gap: 'var(--space-3)',
+                    }}
+                  >
+                    <ReadOnlyField
+                      label="Injeção Útil"
+                      value={watchedValues.pecasBoas.toString()}
+                    />
+                    <ReadOnlyField label="Perda Total" value={perdasTotal.toString()} />
+                    <ReadOnlyField label="Perda s/ Galho" value={perdasSemGalho.toString()} />
+                    <ReadOnlyField label="% Perda" value={`${percentualPerda.toFixed(2)}%`} />
+                  </div>
+
+                  {/* Indicador visual de status de perda */}
+                  <LossStatusBadge
+                    status={lossStatus}
+                    percent={percentualPerda}
+                    limit={LOSS_LIMIT_ABOVE}
+                  />
+                </div>
+              </div>
+
+              {/* Histórico comparativo — placeholder */}
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title">Histórico (últimos 5 apontamentos)</span>
+                </div>
+                <div className="card-body">
+                  <p
+                    className="text-muted text-sm"
+                    style={{ textAlign: 'center', padding: 'var(--space-2) 0' }}
+                  >
+                    Disponível após integração com a API
+                  </p>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        {/* ── Faixa de Ocorrências ── */}
+        <div className={`occurrence-bar`} aria-label="Ocorrências e paradas" role="region">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <span className="text-xs text-muted uppercase" style={{ letterSpacing: '0.06em' }}>
+              Ocorrências
+            </span>
+            <span
+              className="text-secondary"
+              style={{ fontSize: 'var(--text-sm)', fontWeight: 600 }}
+            >
+              {isInProgress ? 'Em produção — sem parada ativa' : 'Nenhum apontamento em andamento'}
+            </span>
+          </div>
+
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: 'var(--space-3)' }}>
+            <Button
+              variant="warning"
+              size="md"
+              disabled={!isInProgress}
+              id="btn-start-stop"
+              aria-label="Registrar parada"
+            >
+              Registrar parada
+            </Button>
+          </div>
+        </div>
+
+        {/* ── Faixa de Ações ── */}
+        <div className="action-bar" role="toolbar" aria-label="Ações do apontamento">
+          {/* Botão principal — muda com o estado */}
+          <div className="action-bar-primary">
+            {state === 'IDLE' || state === 'FORM_INCOMPLETE' ? (
+              <Button
+                variant="primary"
+                size="xl"
+                fullWidth
+                disabled={!canStart}
+                onClick={() => void handleStart()}
+                id="btn-main-start"
+                aria-label="Iniciar apontamento"
+              >
+                Iniciar apontamento
+              </Button>
+            ) : state === 'IN_PROGRESS' ? (
+              <Button
+                variant="primary"
+                size="xl"
+                fullWidth
+                disabled={!canComplete}
+                onClick={() => void handleSubmit(onSubmit)()}
+                id="btn-main-complete"
+                aria-label="Concluir apontamento"
+              >
+                Concluir apontamento
+              </Button>
+            ) : state === 'SAVING' ? (
+              <Button variant="surface" size="xl" fullWidth loading aria-label="Salvando…">
+                Salvando…
+              </Button>
+            ) : state === 'SAVED' ? (
+              <Button
+                variant="primary"
+                size="xl"
+                fullWidth
+                disabled
+                aria-label="Simulacao concluida"
+              >
+                Simulacao concluida
+              </Button>
+            ) : null}
+          </div>
+
+          {/* Botões secundários */}
+          <div className="action-bar-secondary">
+            <Button
+              variant="ghost"
+              size="md"
+              disabled={!isInProgress}
+              onClick={() => {
+                void db.activeAppointment.put({
+                  id: 1,
+                  localUuid: activeAppointment?.localUuid ?? uuidv4(),
+                  ordemProducaoId: watchedValues.ordemProducaoId,
+                  ordemProducaoNumero: selectedOrdem?.numero ?? null,
+                  itemId: selectedOrdem?.itemId ?? null,
+                  itemCodigo: selectedOrdem?.item.codigo ?? null,
+                  itemDescricao: selectedOrdem?.item.descricao ?? null,
+                  moldeId: watchedValues.moldeId,
+                  moldeCodigo: null,
+                  cavidades: null,
+                  loteResinaId: watchedValues.loteResinaId,
+                  loteNumero: selectedLote?.numero ?? null,
+                  resinaDescricao: selectedLote?.resina.descricao ?? null,
+                  fornecedor: selectedLote?.fornecedor ?? null,
+                  tipoResina: selectedLote?.resina.tipo ?? null,
+                  saldoLote: selectedLote?.saldo ?? null,
+                  inicioEm: startTime?.toISOString() ?? null,
+                  state: 'in_progress',
+                });
+              }}
+              id="btn-save-draft"
+              aria-label="Salvar rascunho"
+            >
+              Salvar rascunho
+            </Button>
+
+            <Button
+              variant="danger"
+              size="md"
+              disabled={state === 'IDLE'}
+              onClick={() => setConfirmCancel(true)}
+              id="btn-cancel"
+              aria-label="Cancelar apontamento"
+            >
+              Cancelar
+            </Button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default OperationPage;

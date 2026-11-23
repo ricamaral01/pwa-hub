@@ -1,0 +1,59 @@
+--- 1.4.6/services/laboratorio/server/static/noroeste/cec/index.html
++++ 1.4.31/services/laboratorio/server/static/noroeste/cec/index.html
+@@ -8,7 +8,8 @@
+   <link href="/unificado/laboratorio/noroeste/cec/assets/vendor/bootstrap-icons.min.css" rel="stylesheet">
+   <link href="/unificado/laboratorio/noroeste/cec/assets/vendor/montserrat.css" rel="stylesheet">
+   
+-  <style>
++  <style>@media print {
++
+     :root {
+       --ct-orange:#E07A3A; --ct-gray:#343B43; --ct-gray-lt:#5A6270;
+       --ct-blue:#1976D2; --ct-navy:#0D3B66; --ct-silver:#BFC5CC; --ct-bg:#F2F3F5;
+@@ -60,8 +61,44 @@
+     a.module-link { text-decoration:none; color:inherit; }
+     .app-footer { text-align:center; padding:20px; font-size:11px; color:var(--ct-silver); }
+     .app-footer span { color:var(--ct-orange); font-weight:600; }
+-  </style>
+-</head>
++  
++}
++@media screen {
++:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-blue:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);}
++*{margin:0;padding:0;box-sizing:border-box;}
++body{background:var(--ct-bg);}
++.app-topbar{background:var(--ct-gray);color:var(--c-surface);}
++.topbar-inner{display:flex;align-items:center;padding:12px 0;gap:12px;}
++.topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:var(--r);}
++.topbar-title{font-size:18px;font-weight:700;}
++.topbar-title span{color:var(--ct-orange);}
++.topbar-sub{font-size:10px;color:var(--ct-silver);}
++.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
++.btn-back{border-radius:var(--r);height:36px;font-weight:600;font-size:12px;border:1px solid rgba(255,255,255,.18);color:var(--c-surface);background:rgba(255,255,255,.06);display:inline-flex;align-items:center;gap:6px;padding:0 14px;text-decoration:none;transition:background .2s;}
++.btn-back:hover{background:rgba(255,255,255,.12);color:var(--c-surface);}
++.btn-logout{border-radius:var(--r);border:1px solid rgba(255,255,255,.15);color:var(--c-surface);font-size:12px;padding:5px 14px;background:rgba(224,122,58,.25);font-weight:600;cursor:pointer;transition:background .2s;}
++.btn-logout:hover{background:rgba(224,122,58,.5);}
++.topbar-accent{height:3px;background:var(--c-surface);}
++.page-header{padding:28px 0 14px;}
++.page-header h2{font-size:22px;font-weight:800;color:var(--ct-gray);}
++.page-header h2 span{color:var(--ct-orange);}
++.page-header p{color:var(--ct-gray-lt);font-size:13px;}
++.module-card{background:var(--c-surface);border-radius:var(--r);border:1px solid rgba(15,23,42,.06);padding:22px;transition:box-shadow .2s, transform .2s;}
++.module-card:hover{box-shadow:none;transform:none;}
++.module-card h5{font-weight:700;margin-bottom:4px;font-size:15px;color:var(--ct-gray);}
++.module-card p{font-size:12px;color:var(--ct-gray-lt);margin:0;}
++.module-card .icon-box{width:48px;height:48px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--c-surface);flex-shrink:0;}
++.icon-blue{background:var(--c-surface);}
++.icon-orange{background:var(--c-surface);}
++.icon-navy{background:var(--c-surface);}
++.icon-gray{background:var(--c-surface);}
++a.module-link{text-decoration:none;color:inherit;}
++.app-footer{text-align:center;padding:20px;font-size:11px;color:var(--ct-silver);}
++.app-footer span{color:var(--ct-orange);font-weight:600;}
++
++}
++</style>
++<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.26"><link rel="stylesheet" href="/unificado/shell/laboratorio-visual.css?v=1.4.26"><script defer src="/unificado/shell/components.js?v=1.4.26"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.26" media="screen"></head>
+ <body>
+   <div class="app-topbar">
+     <div class="container">

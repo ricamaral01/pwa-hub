@@ -1,0 +1,1393 @@
+[
+  {
+    "id": "dashboard",
+    "module": "planejamento",
+    "label": "Dashboard",
+    "path": "/unificado/pcp/dashboard/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "comparacao",
+    "module": "planejamento",
+    "label": "Programado vs Realizado",
+    "path": "/unificado/pcp/comparacao/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "programacao12",
+    "module": "planejamento",
+    "label": "Setor 1 e 2",
+    "path": "/unificado/pcp/programacao-alex/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "programacaoSemanal12",
+    "module": "planejamento",
+    "label": "Semanal S1 e S2",
+    "path": "/unificado/pcp/programacao-semanal/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "programacao34",
+    "module": "planejamento",
+    "label": "Setor 3 e 4",
+    "path": "/unificado/pcp/programacao/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "circular3",
+    "module": "planejamento",
+    "label": "Circular Setor 3",
+    "path": "/unificado/pcp/programacao-circular-s3/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "dt4",
+    "module": "planejamento",
+    "label": "DT Setor 4",
+    "path": "/unificado/pcp/programacao-circular-s4/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "programacaoFinal",
+    "module": "planejamento",
+    "label": "Programação Final",
+    "path": "/unificado/pcp/programacao-final/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "relatorio12",
+    "module": "planejamento",
+    "label": "Setor 1 e 2",
+    "path": "/unificado/pcp/relatorio-producao/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "relatorio3",
+    "module": "planejamento",
+    "label": "Setor 3",
+    "path": "/unificado/pcp/relatorio-programacao-s3/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "relatorio4",
+    "module": "planejamento",
+    "label": "Setor 4",
+    "path": "/unificado/pcp/relatorio-programacao-s4/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "etiquetas",
+    "module": "planejamento",
+    "label": "Padrão",
+    "path": "/unificado/pcp/etiquetas/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "etiquetasSc",
+    "module": "planejamento",
+    "label": "Setor 3",
+    "path": "/unificado/pcp/etiquetas-sc/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "etiquetasSetor4",
+    "module": "planejamento",
+    "label": "Setor 4",
+    "path": "/unificado/pcp/etiquetas-setor4/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "etiquetasArmaduras",
+    "module": "planejamento",
+    "label": "Armaduras",
+    "path": "/unificado/pcp/etiquetas-armaduras/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "pcpDiario",
+    "module": "planejamento",
+    "label": "PCP Diário",
+    "path": "/unificado/pcp/pcp-diario/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
+  },
+  {
+    "id": "acompMensal",
+    "module": "planejamento",
+    "label": "Acompanhamento Mensal",
+    "path": "/unificado/pcp/acompanhamento-mensal/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "acompMensal34",
+    "module": "planejamento",
+    "label": "Acompanhamento Mensal Setor 3 e 4",
+    "path": "/unificado/pcp/acompanhamento-mensal-setor-34/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "apontamentoMega",
+    "module": "planejamento",
+    "label": "Apontamento Mega",
+    "path": "/unificado/pcp/apontamento-mega/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
+  },
+  {
+    "id": "producaoPcp",
+    "module": "planejamento",
+    "label": "Produção PCP",
+    "path": "/unificado/pcp/producao/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
+  },
+  {
+    "id": "maodeobra",
+    "module": "planejamento",
+    "label": "Mão de Obra",
+    "path": "/unificado/pcp/maodeobra/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
+  },
+  {
+    "id": "maodeobraRateio",
+    "module": "planejamento",
+    "label": "Rateio de Mão de Obra",
+    "path": "/unificado/pcp/maodeobra-rateio/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
+  },
+  {
+    "id": "formasPorSetor",
+    "module": "planejamento",
+    "label": "Formas por Setor",
+    "path": "/unificado/pcp/formas-por-setor/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "testeProgramacao",
+    "module": "planejamento",
+    "label": "Teste Programação",
+    "path": "/unificado/pcp/teste-programacao/",
+    "query": "",
+    "screen": null,
+    "require": "ADMIN"
+  },
+  {
+    "id": "liberacao",
+    "module": "producao",
+    "label": "Produção / Liberação",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=LIBERACAO",
+    "screen": "LIBERACAO",
+    "require": null
+  },
+  {
+    "id": "setor1",
+    "module": "producao",
+    "label": "Setor 1",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=LIBERACAO_S1",
+    "screen": "LIBERACAO_S1",
+    "require": null
+  },
+  {
+    "id": "setor2",
+    "module": "producao",
+    "label": "Setor 2",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=LIBERACAO_S2",
+    "screen": "LIBERACAO_S2",
+    "require": null
+  },
+  {
+    "id": "setor3",
+    "module": "producao",
+    "label": "Setor 3",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=LIBERACAO_S3",
+    "screen": "LIBERACAO_S3",
+    "require": null
+  },
+  {
+    "id": "setor4",
+    "module": "producao",
+    "label": "Setor 4",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=LIBERACAO_S4",
+    "screen": "LIBERACAO_S4",
+    "require": null
+  },
+  {
+    "id": "mandril",
+    "module": "producao",
+    "label": "Mandril Circular",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=MANDRIL_CIRCULAR",
+    "screen": "MANDRIL_CIRCULAR",
+    "require": null
+  },
+  {
+    "id": "inspecao",
+    "module": "producao",
+    "label": "Inspeção Setor 3 e 4",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=INSPECAO",
+    "screen": "INSPECAO",
+    "require": null
+  },
+  {
+    "id": "montagem",
+    "module": "producao",
+    "label": "Montagem Postes",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=MONTAGEM_POSTES",
+    "screen": "MONTAGEM_POSTES",
+    "require": null
+  },
+  {
+    "id": "sequencia",
+    "module": "producao",
+    "label": "Sequência Setor 3",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=SEQUENCIA_S3",
+    "screen": "SEQUENCIA_S3",
+    "require": null
+  },
+  {
+    "id": "relatorioMapa",
+    "module": "producao",
+    "label": "Relatório Enc. Produção",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=RELATORIO",
+    "screen": "RELATORIO",
+    "require": null
+  },
+  {
+    "id": "historico",
+    "module": "producao",
+    "label": "Histórico",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=HISTORICO",
+    "screen": "HISTORICO",
+    "require": null
+  },
+  {
+    "id": "acmpConcretagem",
+    "module": "producao",
+    "label": "Acmp. Concretagem",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=ACMP_CONCRETAGEM",
+    "screen": "ACMP_CONCRETAGEM",
+    "require": null
+  },
+  {
+    "id": "manutencao",
+    "module": "producao",
+    "label": "Manutenção Formas",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=RELATORIO_MANUTENCAO",
+    "screen": "RELATORIO_MANUTENCAO",
+    "require": null
+  },
+  {
+    "id": "tratativa",
+    "module": "producao",
+    "label": "Tratativa Defeitos",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=TRATATIVA_DEFEITOS",
+    "screen": "TRATATIVA_DEFEITOS",
+    "require": null
+  },
+  {
+    "id": "dashMontagem",
+    "module": "producao",
+    "label": "Dashboard Montagem",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=MONTAGEM_INDICADORES",
+    "screen": "MONTAGEM_INDICADORES",
+    "require": null
+  },
+  {
+    "id": "dashDefeitos",
+    "module": "producao",
+    "label": "Dashboard Defeitos",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=DASHBOARD_DEFEITOS",
+    "screen": "DASHBOARD_DEFEITOS",
+    "require": null
+  },
+  {
+    "id": "produtividade",
+    "module": "producao",
+    "label": "Dashboard Concretagem Matriz",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=PROD_ANALISE",
+    "screen": "PROD_ANALISE",
+    "require": null
+  },
+  {
+    "id": "pdrApontamento",
+    "module": "producao",
+    "label": "Apontamento do dia",
+    "path": "/unificado/producao/pederneiras/",
+    "query": "?tab=apontamento",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "pdrMaoDeObra",
+    "module": "producao",
+    "label": "Mão de obra",
+    "path": "/unificado/producao/pederneiras/",
+    "query": "?tab=mao-de-obra",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "pdrMensal",
+    "module": "producao",
+    "label": "Produção Pederneiras",
+    "path": "/unificado/producao/pederneiras/",
+    "query": "?tab=mensal",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "pdrIndicadores",
+    "module": "producao",
+    "label": "Indicadores",
+    "path": "/unificado/producao/pederneiras/",
+    "query": "?tab=indicadores",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "pdrProdutos",
+    "module": "producao",
+    "label": "Cadastro de produtos",
+    "path": "/unificado/producao/pederneiras/",
+    "query": "?tab=produtos",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "rbrApontamento",
+    "module": "producao",
+    "label": "Apontamento do dia",
+    "path": "/unificado/producao/ribeirao/",
+    "query": "?tab=apontamento",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "rbrMaoDeObra",
+    "module": "producao",
+    "label": "Mão de obra",
+    "path": "/unificado/producao/ribeirao/",
+    "query": "?tab=mao-de-obra",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "rbrMensal",
+    "module": "producao",
+    "label": "Produção Ribeirão",
+    "path": "/unificado/producao/ribeirao/",
+    "query": "?tab=mensal",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "rbrIndicadores",
+    "module": "producao",
+    "label": "Indicadores",
+    "path": "/unificado/producao/ribeirao/",
+    "query": "?tab=indicadores",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "rbrProdutos",
+    "module": "producao",
+    "label": "Cadastro de produtos",
+    "path": "/unificado/producao/ribeirao/",
+    "query": "?tab=produtos",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "norApontamento",
+    "module": "producao",
+    "label": "Apontamento do dia",
+    "path": "/unificado/producao/noroeste/",
+    "query": "?tab=apontamento",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "norMaoDeObra",
+    "module": "producao",
+    "label": "Mão de obra",
+    "path": "/unificado/producao/noroeste/",
+    "query": "?tab=mao-de-obra",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "norMensal",
+    "module": "producao",
+    "label": "Produção Noroeste",
+    "path": "/unificado/producao/noroeste/",
+    "query": "?tab=mensal",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "norIndicadores",
+    "module": "producao",
+    "label": "Indicadores",
+    "path": "/unificado/producao/noroeste/",
+    "query": "?tab=indicadores",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "norProdutos",
+    "module": "producao",
+    "label": "Produtos Campinas",
+    "path": "/unificado/producao/noroeste/",
+    "query": "?tab=produtos",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "fechamentoDiario",
+    "module": "producao",
+    "label": "Fechamento Diário",
+    "path": "/unificado/relatorios/fechamento-diario/",
+    "query": "",
+    "screen": "FECHAMENTO_DIARIO",
+    "require": null
+  },
+  {
+    "id": "fechamentoDiarioPcp",
+    "module": "planejamento",
+    "label": "Fechamento Diário",
+    "path": "/unificado/pcp/fechamento-diario/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
+  },
+  {
+    "id": "labMonitor",
+    "module": "laboratorio",
+    "label": "Monitoramento",
+    "path": "/unificado/laboratorio/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labHistory",
+    "module": "laboratorio",
+    "label": "Histórico de medições",
+    "path": "/unificado/laboratorio/",
+    "query": "?view=history",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labDevice",
+    "module": "laboratorio",
+    "label": "Dispositivo",
+    "path": "/unificado/laboratorio/",
+    "query": "?view=settings",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labDosagem",
+    "module": "laboratorio",
+    "label": "Dosagem",
+    "path": "/unificado/laboratorio/dosagem/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labSlump",
+    "module": "laboratorio",
+    "label": "Registro de slump / flow",
+    "path": "/unificado/laboratorio/slump",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labPole",
+    "module": "laboratorio",
+    "label": "Ensaio de postes",
+    "path": "/unificado/laboratorio/novo/postes",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labAbsorption",
+    "module": "laboratorio",
+    "label": "Absorção",
+    "path": "/unificado/laboratorio/novo/absorcao",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labTests",
+    "module": "laboratorio",
+    "label": "Histórico de ensaios",
+    "path": "/unificado/laboratorio/novo/postes",
+    "query": "?tab=historico",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labRegisters",
+    "module": "laboratorio",
+    "label": "Cadastros",
+    "path": "/unificado/laboratorio/novo/postes",
+    "query": "?tab=cadastros",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labCriteria",
+    "module": "laboratorio",
+    "label": "Critérios",
+    "path": "/unificado/laboratorio/novo/postes",
+    "query": "?tab=criterios",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labHelp",
+    "module": "laboratorio",
+    "label": "Como funciona",
+    "path": "/unificado/laboratorio/",
+    "query": "?view=help",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "prodUsuarios",
+    "module": "producao",
+    "label": "Usuários",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=USUARIOS",
+    "screen": "USUARIOS",
+    "require": "GERENCIA"
+  },
+  {
+    "id": "pcpUsuarios",
+    "module": "planejamento",
+    "label": "Usuários",
+    "path": "/unificado/pcp/usuarios/",
+    "query": "",
+    "screen": null,
+    "require": "ADMIN"
+  },
+  {
+    "id": "formasPorSetor",
+    "module": "planejamento",
+    "label": "Formas por Setor",
+    "path": "/unificado/pcp/formas-por-setor/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "labUsuarios",
+    "module": "laboratorio",
+    "label": "Usuários",
+    "path": "/unificado/laboratorio/novo/postes",
+    "query": "?tab=usuarios",
+    "screen": null,
+    "require": "admin"
+  },
+  {
+    "id": "tvFormas",
+    "module": "producao",
+    "label": "Painel TV — Formas",
+    "path": "/unificado/tv/formas/",
+    "query": "",
+    "screen": "TV_FORMAS",
+    "require": null
+  },
+  {
+    "id": "qualidadePainel",
+    "module": "qualidade",
+    "label": "Painel",
+    "path": "/unificado/qualidade/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "qualidadeAbertura",
+    "module": "qualidade",
+    "label": "Abrir NC",
+    "path": "/unificado/qualidade/abrir",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "qualidadeTarefas",
+    "module": "qualidade",
+    "label": "Tarefas",
+    "path": "/unificado/qualidade/tarefas",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "manutencaoUsina",
+    "module": "qualidade",
+    "label": "Manutenção Usina",
+    "path": "/unificado/manutencao-usina/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "qualidadeTratativa",
+    "module": "qualidade",
+    "label": "Tratativa",
+    "path": "/unificado/qualidade/nc/:id",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "qualidadeCadastros",
+    "module": "qualidade",
+    "label": "Cadastros",
+    "path": "/unificado/qualidade/cadastros",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "qualidadeResultadosBancada",
+    "module": "qualidade",
+    "label": "Resultados de bancada",
+    "path": "/unificado/qualidade/resultados-bancada",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "cronoanalise.inicio",
+    "module": "laboratorio",
+    "label": "Cronoanálise: Início",
+    "path": "/unificado/laboratorio/cronoanalise",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "cronoanalise.coletar",
+    "module": "laboratorio",
+    "label": "Cronoanálise: Coletar",
+    "path": "/unificado/laboratorio/cronoanalise/coletar",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "cronoanalise.medicoes",
+    "module": "laboratorio",
+    "label": "Cronoanálise: Medições",
+    "path": "/unificado/laboratorio/cronoanalise/medicoes",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "cronoanalise.catalogo",
+    "module": "laboratorio",
+    "label": "Cronoanálise: Catálogo",
+    "path": "/unificado/laboratorio/cronoanalise/catalogo",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "cronoanalise.dimensionar",
+    "module": "laboratorio",
+    "label": "Cronoanálise: Dimensionar",
+    "path": "/unificado/laboratorio/cronoanalise/dimensionar",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "cronoanalise.simular",
+    "module": "laboratorio",
+    "label": "Cronoanálise: Simular",
+    "path": "/unificado/laboratorio/cronoanalise/simular",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "cronoanalise.metodologia",
+    "module": "laboratorio",
+    "label": "Cronoanálise: Metodologia",
+    "path": "/unificado/laboratorio/cronoanalise/metodologia",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "usinasInicio",
+    "module": "usinas",
+    "label": "Cartas de traço",
+    "path": "/unificado/usinas/",
+    "query": "",
+    "screen": null,
+    "require": "GERENCIA"
+  },
+  {
+    "id": "labCec",
+    "module": "laboratorio",
+    "label": "Controle estatístico",
+    "path": "/unificado/laboratorio/cec/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labCecResultados",
+    "module": "laboratorio",
+    "label": "Resultados dos corpos de prova",
+    "path": "/unificado/laboratorio/cec/analise/resultado-cp.html",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labCecRelatorio",
+    "module": "laboratorio",
+    "label": "Relatório CEC",
+    "path": "/unificado/laboratorio/cec/analise/relatorio.html",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labCecAnalise",
+    "module": "laboratorio",
+    "label": "Análise estatística",
+    "path": "/unificado/laboratorio/cec/analise/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labCecEtiquetas",
+    "module": "laboratorio",
+    "label": "Etiquetas QR",
+    "path": "/unificado/laboratorio/cec/etiquetas/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labCecLeitura",
+    "module": "laboratorio",
+    "label": "Leitura de CP",
+    "path": "/unificado/laboratorio/cec/leitura/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labNoroCec",
+    "module": "laboratorio",
+    "label": "Noroeste: Controle estatístico",
+    "path": "/unificado/laboratorio/noroeste/cec/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labNoroCecResultados",
+    "module": "laboratorio",
+    "label": "Noroeste: Resultados dos corpos de prova",
+    "path": "/unificado/laboratorio/noroeste/cec/analise/resultado-cp.html",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labNoroCecRelatorio",
+    "module": "laboratorio",
+    "label": "Noroeste: Relatório CEC",
+    "path": "/unificado/laboratorio/noroeste/cec/analise/relatorio.html",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labNoroCecAnalise",
+    "module": "laboratorio",
+    "label": "Noroeste: Análise estatística",
+    "path": "/unificado/laboratorio/noroeste/cec/analise/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labNoroCecEtiquetas",
+    "module": "laboratorio",
+    "label": "Noroeste: Etiquetas QR",
+    "path": "/unificado/laboratorio/noroeste/cec/etiquetas/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labNoroCecLeitura",
+    "module": "laboratorio",
+    "label": "Noroeste: Leitura de CP",
+    "path": "/unificado/laboratorio/noroeste/cec/leitura/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labNoroCecRompimentosMes",
+    "module": "laboratorio",
+    "label": "Noroeste: Rompimentos por mês",
+    "path": "/unificado/laboratorio/noroeste/cec/rompimentos-mes/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labCertificados",
+    "module": "laboratorio",
+    "label": "Certificados de qualidade",
+    "path": "/unificado/laboratorio/certificados-qualidade/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labUsinasRelatorios",
+    "module": "laboratorio",
+    "label": "Relatórios e custos de Campinas",
+    "path": "/unificado/laboratorio/usinas-relatorios/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labCartaTraco",
+    "module": "laboratorio",
+    "label": "Carta traço e MCC",
+    "path": "/unificado/laboratorio/carta-traco/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "suprimentosPainel",
+    "module": "suprimentos",
+    "label": "Painel",
+    "path": "/unificado/suprimentos/painel/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "suprimentosSolicitacoes",
+    "module": "suprimentos",
+    "label": "Solicitações",
+    "path": "/unificado/suprimentos/solicitacoes/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "suprimentosNova",
+    "module": "suprimentos",
+    "label": "Nova solicitação",
+    "path": "/unificado/suprimentos/nova/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "suprimentosAlmoxarifado",
+    "module": "suprimentos",
+    "label": "Almoxarifado",
+    "path": "/unificado/suprimentos/almoxarifado/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "suprimentosInventario",
+    "module": "suprimentos",
+    "label": "Inventário",
+    "path": "/unificado/suprimentos/inventario/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "suprimentosFornecedores",
+    "module": "suprimentos",
+    "label": "Fornecedores",
+    "path": "/unificado/suprimentos/fornecedores/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "suprimentosCotacoes",
+    "module": "suprimentos",
+    "label": "Cotações e pedidos",
+    "path": "/unificado/suprimentos/cotacoes/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "suprimentosRecebimento",
+    "module": "suprimentos",
+    "label": "Recebimento",
+    "path": "/unificado/suprimentos/recebimento/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "suprimentosIndicadores",
+    "module": "suprimentos",
+    "label": "Indicadores",
+    "path": "/unificado/suprimentos/analises/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "suprimentosCadastros",
+    "module": "suprimentos",
+    "label": "Cadastros e alçadas",
+    "path": "/unificado/suprimentos/cadastros/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "usinasNoroPainel",
+    "module": "usinas",
+    "label": "Noroeste: Painel",
+    "path": "/unificado/usinas/noroeste/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "usinasNoroMassadas",
+    "module": "usinas",
+    "label": "Noroeste: Massadas",
+    "path": "/unificado/usinas/noroeste/",
+    "query": "?area=massadas",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "usinasNoroCartas",
+    "module": "usinas",
+    "label": "Noroeste: Cartas de traço",
+    "path": "/unificado/usinas/noroeste/",
+    "query": "?area=cartas",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "usinasNoroRelatorios",
+    "module": "usinas",
+    "label": "Noroeste: Relatórios",
+    "path": "/unificado/usinas/noroeste/",
+    "query": "?area=relatorios",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "usinasNoroCec",
+    "module": "usinas",
+    "label": "Noroeste: Controle estatístico",
+    "path": "/unificado/usinas/noroeste/",
+    "query": "?area=cec",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "usinasNoroCadastros",
+    "module": "usinas",
+    "label": "Noroeste: Cadastros",
+    "path": "/unificado/usinas/noroeste/",
+    "query": "?area=cadastros",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "usinasNoroEstoque",
+    "module": "usinas",
+    "label": "Noroeste: Estoque",
+    "path": "/unificado/usinas/noroeste/",
+    "query": "?area=estoque",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "usinasNoroCustos",
+    "module": "usinas",
+    "label": "Noroeste: Custos",
+    "path": "/unificado/usinas/noroeste/",
+    "query": "?area=custos",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "layoutFormasS4",
+    "module": "producao",
+    "label": "Editar disposição das formas DT",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=LIBERACAO_S4",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labNoroUsuarios",
+    "module": "laboratorio",
+    "label": "Noroeste: Usuários",
+    "path": "/unificado/laboratorio/noroeste/usuarios/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "armadurasProgramacao",
+    "module": "planejamento",
+    "label": "Armaduras - Programação semanal",
+    "path": "/unificado/pcp/armaduras/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "armadurasRelatorio",
+    "module": "planejamento",
+    "label": "Armaduras - Relatório de produção",
+    "path": "/unificado/pcp/armaduras-relatorio/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "postesNumerosSerie",
+    "module": "planejamento",
+    "label": "Números de série dos postes - Setor 3",
+    "path": "/unificado/pcp/numeros-serie/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "logisticaInicio",
+    "module": "logistica",
+    "label": "Início",
+    "path": "/unificado/logistica/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "logisticaPainel",
+    "module": "logistica",
+    "label": "Painel Km/Evento",
+    "path": "/unificado/logistica/painel/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "logisticaCorrecoes",
+    "module": "logistica",
+    "label": "Correções e exclusões",
+    "path": "/unificado/logistica/correcoes/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "logisticaFechamento",
+    "module": "logistica",
+    "label": "Fechamento trimestral",
+    "path": "/unificado/logistica/fechamento/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "logisticaPremiacao",
+    "module": "logistica",
+    "label": "Premiação",
+    "path": "/unificado/logistica/premiacao/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "logisticaMeses",
+    "module": "logistica",
+    "label": "Meses e importação",
+    "path": "/unificado/logistica/meses/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "logisticaCadastros",
+    "module": "logistica",
+    "label": "Cadastros",
+    "path": "/unificado/logistica/cadastros/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "logisticaMetas",
+    "module": "logistica",
+    "label": "Metas",
+    "path": "/unificado/logistica/metas/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "logisticaMotoristas",
+    "module": "logistica",
+    "label": "Motoristas",
+    "path": "/unificado/logistica/motoristas/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "logisticaAjudantes",
+    "module": "logistica",
+    "label": "Ajudantes",
+    "path": "/unificado/logistica/ajudantes/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "logisticaCobli",
+    "module": "logistica",
+    "label": "Mapeamento Cobli",
+    "path": "/unificado/logistica/mapeamento-cobli/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labPedeCec",
+    "module": "laboratorio",
+    "label": "Visão geral · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecEtiquetas",
+    "module": "laboratorio",
+    "label": "Etiquetas QR · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/etiquetas/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecLeitura",
+    "module": "laboratorio",
+    "label": "Leitura de CP · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/leitura/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecResultados",
+    "module": "laboratorio",
+    "label": "Resultados dos corpos de prova · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/analise/resultado-cp.html",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecRompimentosMes",
+    "module": "laboratorio",
+    "label": "Rompimentos por mês · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/rompimentos-mes/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecAnalise",
+    "module": "laboratorio",
+    "label": "Análise estatística · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/analise/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labPedeCecRelatorio",
+    "module": "laboratorio",
+    "label": "Relatório CEC · Pederneiras",
+    "path": "/unificado/laboratorio/pederneiras/cec/analise/relatorio.html",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCec",
+    "module": "laboratorio",
+    "label": "Visão geral · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecEtiquetas",
+    "module": "laboratorio",
+    "label": "Etiquetas QR · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/etiquetas/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecLeitura",
+    "module": "laboratorio",
+    "label": "Leitura de CP · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/leitura/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecResultados",
+    "module": "laboratorio",
+    "label": "Resultados dos corpos de prova · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/analise/resultado-cp.html",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecRompimentosMes",
+    "module": "laboratorio",
+    "label": "Rompimentos por mês · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/rompimentos-mes/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecAnalise",
+    "module": "laboratorio",
+    "label": "Análise estatística · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/analise/",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  },
+  {
+    "id": "labRibCecRelatorio",
+    "module": "laboratorio",
+    "label": "Relatório CEC · Ribeirão Preto",
+    "path": "/unificado/laboratorio/ribeirao/cec/analise/relatorio.html",
+    "query": "",
+    "screen": null,
+    "require": null,
+    "ambiente": "homolog"
+  }
+]

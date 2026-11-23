@@ -1,0 +1,10 @@
+[
+  {
+    "url": "https://concrefer.concretrack.com.br/unificado/VERSION",
+    "version": "1.4.31"
+  },
+  {
+    "url": "https://concrefer.concretrack.com.br:18446/unificado/VERSION",
+    "version": "1.4.31"
+  }
+]

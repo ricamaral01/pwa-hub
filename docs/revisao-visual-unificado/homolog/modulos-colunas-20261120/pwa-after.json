@@ -1,0 +1,13 @@
+{
+  "cache_keys": [
+    "concrefer-unificado-shell-v1.4.30"
+  ],
+  "storage_preserved": true,
+  "new_version_visible": true,
+  "combined_assets_cached": true,
+  "activation_complete_before_reload": true,
+  "registration_update_via_cache": "none (same as shell)",
+  "old_cache_absent_after_reload": true,
+  "manual_cache_clear": false,
+  "reinstall": false
+}

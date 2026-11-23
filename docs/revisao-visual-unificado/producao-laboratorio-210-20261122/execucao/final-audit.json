@@ -1,0 +1,808 @@
+{
+  "passed": true,
+  "version": "2.1.0",
+  "homolog_version": "2.1.0",
+  "source_commit": null,
+  "approved_base_commit": "53f77c6cd4026418ca33a09cb81dc0d6f4312e13",
+  "files": [
+    {
+      "path": "/opt/concrefer-unificado/mapa-api/app.py",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/app.py",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/cec_units.py",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/mapa-api/lab_cec_units.py",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/mapa-api/screen_catalog.json",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/public/unificado/VERSION",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/public/unificado/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/public/unificado/login.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/public/unificado/sw.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/public/unificado/shell/shell.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/public/unificado/shell/menu.config.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/public/unificado/shell/icons.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/public/unificado/shell/module-pages.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/public/unificado/shell/module-pages-mobile.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/etiquetas/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/relatorio/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/resultados/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/leitura/sw.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/leitura/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/leitura/manifest.json",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/analise/sw.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/analise/resultado-cp.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/analise/relatorio-icon.svg",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/analise/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/analise/relatorio.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/analise/api-client.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/analise/manifest.json",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/pederneiras/cec/rompimentos-mes/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/etiquetas/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/relatorio/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/resultados/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/leitura/sw.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/leitura/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/leitura/manifest.json",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/analise/sw.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/analise/resultado-cp.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/analise/relatorio-icon.svg",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/analise/index.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/analise/relatorio.html",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/analise/api-client.js",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/analise/manifest.json",
+      "matches": true
+    },
+    {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/static/ribeirao/cec/rompimentos-mes/index.html",
+      "matches": true
+    }
+  ],
+  "grants": [
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labPedeCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "alex",
+      "screen_id": "labRibCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labPedeCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "marcelo",
+      "screen_id": "labRibCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labPedeCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "philippe",
+      "screen_id": "labRibCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labPedeCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    },
+    {
+      "user_id": "user-ricardo",
+      "screen_id": "labRibCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:41:42.693446+00:00"
+    }
+  ],
+  "data": {
+    "pederneiras_massadas": 1613,
+    "ribeirao_massadas": 829,
+    "excluded": 0,
+    "pederneiras_readings": 0,
+    "ribeirao_readings": 0
+  },
+  "services": {
+    "unificado-homolog-mapa-realtime.service": "inactive",
+    "unificado-homolog-mapa.service": "inactive",
+    "unificado-homolog-pcp.service": "inactive",
+    "unificado-homolog-armacao.service": "inactive",
+    "unificado-homolog-qualidade.service": "inactive",
+    "suprimentos-homolog.service": "active",
+    "laboratorio-unificado.service": "active",
+    "mapa-unificado-auth.service": "active"
+  },
+  "timers": {
+    "unificado-homolog-tarefas-ged.timer": "inactive",
+    "unificado-homolog-tarefas-notify.timer": "inactive",
+    "unificado-homolog-tarefas-outbox.timer": "inactive",
+    "unificado-homolog-tarefas-suprimentos.timer": "inactive"
+  },
+  "containers_running": {
+    "mapa-homolog-postgrest-reader": false,
+    "mapa-homolog-postgrest-writer": false
+  },
+  "settings": {
+    "max_connections": 100,
+    "superuser_reserved_connections": 3
+  },
+  "rollback": "python3 /opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/rollback/release.py rollback",
+  "rollback_check": {
+    "passed": true,
+    "backup_files_sha256_verified": 12,
+    "database_dumps_verified": 3,
+    "restore_rehearsal_passed": true,
+    "mutations": 0,
+    "restores_version": "2.0.0"
+  },
+  "imports": [
+    {
+      "unit": "pederneiras",
+      "source_database": "supervisorio_db_pede",
+      "captured_at": "2026-11-23T00:31:20.732073+00:00",
+      "source_count": 1621,
+      "imported": 1613,
+      "excluded": [
+        {
+          "id": 70195,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70990,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70991,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70992,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70993,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70994,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70995,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70996,
+          "reason": "user explicitly excluded; never corrected or imported"
+        }
+      ],
+      "automatic_sync": false
+    },
+    {
+      "unit": "ribeirao",
+      "source_database": "supervisorio_db_ribe",
+      "captured_at": "2026-11-23T00:31:20.891552+00:00",
+      "source_count": 829,
+      "imported": 829,
+      "excluded": [],
+      "automatic_sync": false
+    }
+  ],
+  "mutations": 0,
+  "capacity": {
+    "total_activity": 66,
+    "client_connections": 61,
+    "common_headroom_excluding_collector": 37,
+    "by_service": {
+      "mapa-unificado-realtime.service": 1,
+      "unificado-visual-homolog-suprimentos.service": 1,
+      "monitor-concreto.service": 1,
+      "concretrack-staging-api.service": 1,
+      "unificado-visual-homolog-laboratorio.service": 1,
+      "cec-noroeste-worker.service": 1,
+      "docker:mapa-unificado-postgrest": 1,
+      "concretrack-staging-final-api.service": 1,
+      "cec-campinas-worker.service": 1,
+      "pcp-unificado-test.service": 5,
+      "unificado-visual-homolog-carta.service": 3,
+      "laboratorio-unificado.service": 1,
+      "suprimentos-homolog.service": 2,
+      "docker:mapa-unificado-postgrest-writer": 1,
+      "collector/read-only": 1,
+      "suprimentos-prod.service": 2,
+      "unificado-visual-homolog-logistica.service": 2,
+      "concrefer-logistica.service": 7,
+      "concrefer-armacao.service": 1,
+      "qualidade-api.service": 1,
+      "unificado-visual-homolog-realtime.service": 1,
+      "dashboard-pederneiras.service": 2,
+      "docker:visual-homolog-postgrest-writer": 1,
+      "docker:visual-homolog-postgrest-reader": 1,
+      "unificado-visual-homolog-armacao.service": 1,
+      "unificado-visual-homolog-qualidade.service": 1,
+      "unificado-visual-homolog-dosagem.service": 1,
+      "carta-traco-staging.service": 15,
+      "unificado-visual-homolog-pcp.service": 1,
+      "concrefer-dosagem-native.service": 2
+    }
+  }
+}

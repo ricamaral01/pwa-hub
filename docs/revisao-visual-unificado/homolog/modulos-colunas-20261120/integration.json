@@ -1,0 +1,23 @@
+{
+  "preserved_assets": {
+    "shell/module-pages-mobile.js": {
+      "before": "f571c0e5c12262759ff896445ba763b0d6d60d43a19876dc458974d245821326",
+      "after": "f571c0e5c12262759ff896445ba763b0d6d60d43a19876dc458974d245821326"
+    },
+    "shell/busca.js": {
+      "before": "7a25d8bbb4fd5a9df98375b710af4e79ee50f2ba50ad2c4e788541dc45a676d1",
+      "after": "7a25d8bbb4fd5a9df98375b710af4e79ee50f2ba50ad2c4e788541dc45a676d1"
+    },
+    "shell/busca.css": {
+      "before": "bf3bccd98577b2497e0a800cacb28b665dfab70950d04ae00c983b8c75f5e57b",
+      "after": "bf3bccd98577b2497e0a800cacb28b665dfab70950d04ae00c983b8c75f5e57b"
+    },
+    "shell/busca-sinonimos.json": {
+      "before": "121815fefc8c70d01bc3bf89ba0be44a48f00e634538db44f09f6b778201cd56",
+      "after": "121815fefc8c70d01bc3bf89ba0be44a48f00e634538db44f09f6b778201cd56"
+    }
+  },
+  "module_pages_contains_search_and_columns": true,
+  "search_commit": "964e4281",
+  "columns_commit": "da9f4526f0e345ee387f1f1622cb5fd3d3c64bb3"
+}

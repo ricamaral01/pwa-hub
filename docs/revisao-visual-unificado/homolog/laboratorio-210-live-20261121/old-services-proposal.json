@@ -1,0 +1,142 @@
+{
+  "services": [
+    {
+      "service": "unificado-homolog-mapa-realtime.service",
+      "current_connections": 1,
+      "observed_minimum": "1",
+      "observed_mean": "1.0",
+      "observed_maximum": "1",
+      "protected_18446_or_production_caller": false,
+      "configured_callers": [],
+      "evidence": "No loaded18446/443 route or configured HTTP dependency reaches this service; Nginx and all inventoried units/env hashes rechecked after pool changes",
+      "scope_note": "Stopping this service can affect the old H stack; it does not authorize stopping its database",
+      "stop_applied": false
+    },
+    {
+      "service": "unificado-homolog-mapa.service",
+      "current_connections": 0,
+      "observed_minimum": "0",
+      "observed_mean": "0.0",
+      "observed_maximum": "0",
+      "protected_18446_or_production_caller": false,
+      "configured_callers": [
+        {
+          "service": "unificado-homolog-mapa-realtime.service",
+          "port": 13152,
+          "path": "/me"
+        },
+        {
+          "service": "unificado-homolog-mapa.service",
+          "port": 13152,
+          "path": "/me"
+        }
+      ],
+      "evidence": "No loaded18446/443 route or configured HTTP dependency reaches this service; Nginx and all inventoried units/env hashes rechecked after pool changes",
+      "scope_note": "Stopping this service can affect the old H stack; it does not authorize stopping its database",
+      "stop_applied": false
+    },
+    {
+      "service": "unificado-homolog-pcp.service",
+      "current_connections": 2,
+      "observed_minimum": "2",
+      "observed_mean": "2.0",
+      "observed_maximum": "2",
+      "protected_18446_or_production_caller": false,
+      "configured_callers": [],
+      "evidence": "No loaded18446/443 route or configured HTTP dependency reaches this service; Nginx and all inventoried units/env hashes rechecked after pool changes",
+      "scope_note": "Stopping this service can affect the old H stack; it does not authorize stopping its database",
+      "stop_applied": false
+    },
+    {
+      "service": "unificado-homolog-armacao.service",
+      "current_connections": 1,
+      "observed_minimum": "1",
+      "observed_mean": "1.0",
+      "observed_maximum": "1",
+      "protected_18446_or_production_caller": false,
+      "configured_callers": [],
+      "evidence": "No loaded18446/443 route or configured HTTP dependency reaches this service; Nginx and all inventoried units/env hashes rechecked after pool changes",
+      "scope_note": "Stopping this service can affect the old H stack; it does not authorize stopping its database",
+      "stop_applied": false
+    },
+    {
+      "service": "unificado-homolog-qualidade.service",
+      "current_connections": 2,
+      "observed_minimum": "2",
+      "observed_mean": "2.0",
+      "observed_maximum": "2",
+      "protected_18446_or_production_caller": false,
+      "configured_callers": [],
+      "evidence": "No loaded18446/443 route or configured HTTP dependency reaches this service; Nginx and all inventoried units/env hashes rechecked after pool changes",
+      "scope_note": "Stopping this service can affect the old H stack; it does not authorize stopping its database",
+      "stop_applied": false
+    },
+    {
+      "service": "suprimentos-homolog.service",
+      "current_connections": 2,
+      "observed_minimum": "2",
+      "observed_mean": "2.0",
+      "observed_maximum": "2",
+      "protected_18446_or_production_caller": false,
+      "configured_callers": [
+        {
+          "service": "unificado-homolog-mapa.service",
+          "port": 13167,
+          "path": ""
+        },
+        {
+          "service": "unificado-homolog-tarefas-suprimentos.service",
+          "port": 13167,
+          "path": "/api/suprimentos/internal/task-snapshot"
+        }
+      ],
+      "evidence": "No loaded18446/443 route or configured HTTP dependency reaches this service; Nginx and all inventoried units/env hashes rechecked after pool changes",
+      "scope_note": "Stopping this service can affect the old H stack; it does not authorize stopping its database",
+      "stop_applied": false
+    },
+    {
+      "service": "docker:mapa-homolog-postgrest-reader",
+      "current_connections": 1,
+      "observed_minimum": "1",
+      "observed_mean": "1.0",
+      "observed_maximum": "1",
+      "protected_18446_or_production_caller": false,
+      "configured_callers": [
+        {
+          "service": "unificado-homolog-pcp.service",
+          "port": 13153,
+          "path": "/rest/v1 via internal13153→13151"
+        }
+      ],
+      "evidence": "No loaded18446/443 route or configured HTTP dependency reaches this service; Nginx and all inventoried units/env hashes rechecked after pool changes",
+      "scope_note": "Stopping this service can affect the old H stack; it does not authorize stopping its database",
+      "stop_applied": false
+    },
+    {
+      "service": "docker:mapa-homolog-postgrest-writer",
+      "current_connections": 1,
+      "observed_minimum": "1",
+      "observed_mean": "1.0",
+      "observed_maximum": "1",
+      "protected_18446_or_production_caller": false,
+      "configured_callers": [],
+      "evidence": "No loaded18446/443 route or configured HTTP dependency reaches this service; Nginx and all inventoried units/env hashes rechecked after pool changes",
+      "scope_note": "Stopping this service can affect the old H stack; it does not authorize stopping its database",
+      "stop_applied": false
+    }
+  ],
+  "systemd_reverse_stop_dependencies_empty": true,
+  "current_connections_releasable": 10,
+  "protected_services_excluded": [
+    "unificado-homolog-hub.service",
+    "unificado-homolog-tv.service",
+    "carta-traco-staging.service",
+    "laboratorio-homolog.service",
+    "pcp-unificado-test.service"
+  ],
+  "databases_must_be_kept": [
+    "mapa_unificado_homolog_20261016"
+  ],
+  "evidence_limit": "Shared Nginx combined logs lack destination host/port. Old stack real human inactivity cannot be proved from that log; old service journals show traffic. This is dependency isolation from18446/production, not proof the old stack is unused.",
+  "applied": false
+}

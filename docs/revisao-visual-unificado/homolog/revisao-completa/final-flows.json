@@ -1,0 +1,30 @@
+{
+  "version": "1.4.25",
+  "origin": "https://concrefer.concretrack.com.br:18446",
+  "supply_request": {
+    "number": "SOL-00084",
+    "state": "CONCLUIDA"
+  },
+  "planning": {
+    "week": "2030-03-11",
+    "state": "publicada",
+    "saved_items": 1
+  },
+  "cp_reading": {
+    "id": "71841c69-9a1e-4218-92b9-1e82f9d77394",
+    "mpa": 32.5
+  },
+  "carta": {
+    "id": 12,
+    "state": "Rascunho"
+  },
+  "nc": {
+    "number": "RNC-2026-825490",
+    "state": "ANALISE_CAUSA",
+    "containment_persisted": true
+  },
+  "pdfs": "pdf-verification.json; byte-identical original emissions",
+  "login_logout": "login-logout.json; real form, existing account, real server",
+  "new_test_writes": 0,
+  "production_calls": 0
+}

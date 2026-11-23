@@ -1,0 +1,24 @@
+/* Native Usinas/Laboratory components. Printing retains its existing layout. */
+@media screen {
+ html body .legacy-card {
+  display:flex;flex-direction:column;align-items:stretch;gap:3px;
+  min-height:44px;box-sizing:border-box;
+ }
+ html body .legacy-card>strong {
+  display:block;min-width:0;margin:0;font-size:14px;font-weight:500;
+  line-height:20px;overflow-wrap:normal;word-break:normal;
+ }
+ html body .legacy-card>span {
+  display:block;min-width:0;margin:0;font-size:12px;line-height:18px;
+  color:var(--c-ink-2);overflow-wrap:normal;word-break:normal;
+ }
+ html body table {table-layout:auto!important}
+ html body:not(:has(.login-layout)) table th {
+  overflow-wrap:normal!important;word-break:normal!important;
+  white-space:normal!important;hyphens:none;
+ }
+ html body :is(.scroll,.ct-scroll,.table-wrap,.tableWrap,.table-scroll,
+  .stops-table-wrap,.tbl-wrap,.table-responsive) {
+  min-width:0;max-width:100%;overflow-x:auto;
+ }
+}

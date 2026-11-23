@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Exportar Massadas • ConcreTrack</title>
+  <link href="/unificado/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  
+  <!-- jsPDF + autoTable for client-side PDF -->
+  <script src="/unificado/vendor/published/jspdf.umd.min-19e7da8fed.js"></script>
+  <script src="/unificado/vendor/published/jspdf.plugin.autotable.min-d480718589.js"></script>
+  
+  <style>@media print {
+
+    :root {
+      --ct-orange:#E07A3A; --ct-gray:#343B43; --ct-gray-lt:#5A6270;
+      --ct-blue:#1976D2; --ct-navy:#0D3B66; --ct-silver:#BFC5CC; --ct-bg:#F2F3F5;
+    }
+    * { font-family:"Gotham","Montserrat","Segoe UI",system-ui,sans-serif; margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--ct-bg); }
+
+    /* TOPBAR */
+    .app-topbar { background:var(--ct-gray); color:#fff; }
+    .topbar-inner { display:flex; align-items:center; padding:12px 0; gap:12px; }
+    .topbar-logo { width:41px; height:41px; object-fit:contain; border-radius:6px; }
+    .topbar-title { font-size:18px; font-weight:700; }
+    .topbar-title span { color:var(--ct-orange); }
+    .topbar-sub { font-size:10px; color:var(--ct-silver); }
+    .topbar-right { margin-left:auto; display:flex; align-items:center; gap:10px; }
+    .btn-back {
+      border-radius:10px; height:36px; font-weight:600; font-size:12px;
+      border:1px solid rgba(255,255,255,.18); color:#fff;
+      background:rgba(255,255,255,.06); display:inline-flex; align-items:center;
+      gap:6px; padding:0 14px; text-decoration:none; transition:background .2s; font-family:inherit;
+    }
+    .btn-back:hover { background:rgba(255,255,255,.12); color:#fff; }
+    .btn-logout {
+      border-radius:10px; border:1px solid rgba(255,255,255,.15);
+      color:#fff; font-size:12px; padding:5px 14px;
+      background:rgba(224,122,58,.25); font-weight:600;
+      cursor:pointer; transition:background .2s; font-family:inherit;
+    }
+    .btn-logout:hover { background:rgba(224,122,58,.5); }
+    .topbar-accent { height:3px; background:linear-gradient(90deg, var(--ct-orange), var(--ct-navy)); }
+
+    /* FILTER BAR */
+    .filter-bar {
+      background:#fff; border-radius:14px; padding:20px 24px;
+      border:1px solid rgba(15,23,42,.06);
+      box-shadow:0 2px 12px rgba(0,0,0,.04);
+      display:flex; align-items:flex-end; gap:16px; flex-wrap:wrap;
+      margin-bottom:20px;
+    }
+    .filter-group { display:flex; flex-direction:column; gap:4px; }
+    .filter-group label {
+      font-size:11px; font-weight:700; text-transform:uppercase;
+      letter-spacing:.5px; color:var(--ct-gray-lt);
+    }
+    .filter-group input {
+      border-radius:10px; border:1.5px solid #e2e8f0;
+      font-size:13px; font-family:inherit; height:40px;
+      padding:0 12px; transition:border-color .2s;
+      width:160px;
+    }
+    .filter-group input:focus { border-color:var(--ct-orange); outline:none; box-shadow:0 0 0 3px rgba(224,122,58,.12); }
+    .btn-filter {
+      border:none; border-radius:10px; height:40px;
+      background:linear-gradient(135deg, var(--ct-orange), #c96830);
+      color:#fff; font-size:13px; font-weight:700;
+      font-family:inherit; cursor:pointer; padding:0 20px;
+      display:inline-flex; align-items:center; gap:6px;
+      transition:transform .15s, box-shadow .15s;
+    }
+    .btn-filter:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(224,122,58,.3); }
+
+    /* EXPORT BUTTONS */
+    .export-bar {
+      display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; align-items:center;
+    }
+    .btn-export {
+      border:none; border-radius:12px; height:44px;
+      font-size:14px; font-weight:700; font-family:inherit;
+      cursor:pointer; padding:0 24px;
+      display:inline-flex; align-items:center; gap:8px;
+      transition:transform .15s, box-shadow .15s;
+      color:#fff;
+    }
+    .btn-export:hover { transform:translateY(-2px); }
+    .btn-pdf {
+      background:linear-gradient(135deg, #dc2626, #b91c1c);
+      box-shadow:0 4px 16px rgba(220,38,38,.25);
+    }
+    .btn-pdf:hover { box-shadow:0 8px 24px rgba(220,38,38,.35); }
+    .btn-xlsx {
+      background:linear-gradient(135deg, #059669, #047857);
+      box-shadow:0 4px 16px rgba(5,150,105,.25);
+    }
+    .btn-xlsx:hover { box-shadow:0 8px 24px rgba(5,150,105,.35); }
+    .record-count {
+      font-size:13px; color:var(--ct-gray-lt); font-weight:600;
+      margin-left:auto;
+    }
+
+    /* STATS ROW */
+    .stats-row { display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
+    .stat-card {
+      background:linear-gradient(135deg, var(--ct-gray), #2a3038);
+      border-radius:12px; padding:14px 20px; color:#fff; min-width:150px; flex:1;
+    }
+    .stat-card .sn { font-size:22px; font-weight:800; }
+    .stat-card .sl { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--ct-silver); }
+
+    /* TABLE */
+    .table-wrap {
+      background:#fff; border-radius:14px; padding:4px;
+      border:1px solid rgba(15,23,42,.06);
+      box-shadow:0 2px 12px rgba(0,0,0,.04);
+      overflow-x:auto;
+    }
+    .data-table { width:100%; border-collapse:collapse; min-width:1200px; }
+    .data-table thead th {
+      font-size:10px; font-weight:700; text-transform:uppercase;
+      letter-spacing:.4px; color:#fff; padding:10px 8px;
+      background:var(--ct-gray); white-space:nowrap;
+      position:sticky; top:0; z-index:2;
+    }
+    .data-table thead th:first-child { border-radius:10px 0 0 0; }
+    .data-table thead th:last-child { border-radius:0 10px 0 0; }
+    .data-table tbody td {
+      padding:8px; font-size:12px; color:var(--ct-gray);
+      border-bottom:1px solid #f1f5f9; white-space:nowrap;
+      text-align:center;
+    }
+    .data-table tbody tr:hover { background:rgba(224,122,58,.04); }
+    .data-table tbody tr:nth-child(even) { background:rgba(0,0,0,.015); }
+
+    .empty-msg {
+      text-align:center; padding:60px 20px; color:var(--ct-silver);
+      font-size:14px;
+    }
+    .empty-msg i { font-size:40px; display:block; margin-bottom:12px; color:#ddd; }
+    .spinner { text-align:center; padding:40px; color:var(--ct-silver); }
+    .app-footer { text-align:center; padding:20px; font-size:11px; color:var(--ct-silver); }
+    .app-footer span { color:var(--ct-orange); font-weight:600; }
+    @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  
+}
+@media screen {
+:root{--ct-orange:var(--c-orange);--ct-gray:var(--c-blue);--ct-gray-lt:var(--c-ink-2);--ct-blue:var(--c-ink-2);--ct-navy:var(--c-blue);--ct-silver:var(--c-line);--ct-bg:var(--c-bg);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--ct-bg);}
+/* TOPBAR */
+.app-topbar{background:var(--ct-gray);color:var(--c-surface);}
+.topbar-inner{display:flex;align-items:center;padding:12px 0;gap:12px;}
+.topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:var(--r);}
+.topbar-title{font-size:18px;font-weight:700;}
+.topbar-title span{color:var(--ct-orange);}
+.topbar-sub{font-size:10px;color:var(--ct-silver);}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.btn-back{border-radius:var(--r);height:36px;font-weight:600;font-size:12px;border:1px solid rgba(255,255,255,.18);color:var(--c-surface);background:rgba(255,255,255,.06);display:inline-flex;align-items:center;gap:6px;padding:0 14px;text-decoration:none;transition:background .2s;}
+.btn-back:hover{background:rgba(255,255,255,.12);color:var(--c-surface);}
+.btn-logout{border-radius:var(--r);border:1px solid rgba(255,255,255,.15);color:var(--c-surface);font-size:12px;padding:5px 14px;background:rgba(224,122,58,.25);font-weight:600;cursor:pointer;transition:background .2s;}
+.btn-logout:hover{background:rgba(224,122,58,.5);}
+.topbar-accent{height:3px;background:var(--c-surface);}
+/* FILTER BAR */
+.filter-bar{background:var(--c-surface);border-radius:var(--r);padding:20px 24px;border:1px solid rgba(15,23,42,.06);box-shadow:none;display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.filter-group{display:flex;flex-direction:column;gap:4px;}
+.filter-group label{font-size:11px;font-weight:700;text-transform:none;letter-spacing:.5px;color:var(--ct-gray-lt);}
+.filter-group input{border-radius:var(--r);border:1.5px solid var(--c-line);font-size:13px;height:40px;padding:0 12px;transition:border-color .2s;width:160px;}
+.filter-group input:focus{border-color:var(--ct-orange);outline:none;box-shadow:none;}
+.btn-filter{border:none;border-radius:var(--r);height:40px;background:var(--c-surface);color:var(--c-surface);font-size:13px;font-weight:700;cursor:pointer;padding:0 20px;display:inline-flex;align-items:center;gap:6px;transition:transform .15s, box-shadow .15s;}
+.btn-filter:hover{transform:none;box-shadow:none;}
+/* EXPORT BUTTONS */
+.export-bar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center;}
+.btn-export{border:none;border-radius:var(--r);height:44px;font-size:14px;font-weight:700;cursor:pointer;padding:0 24px;display:inline-flex;align-items:center;gap:8px;transition:transform .15s, box-shadow .15s;color:var(--c-surface);}
+.btn-export:hover{transform:none;}
+.btn-pdf{background:var(--c-surface);box-shadow:none;}
+.btn-pdf:hover{box-shadow:none;}
+.btn-xlsx{background:var(--c-surface);box-shadow:none;}
+.btn-xlsx:hover{box-shadow:none;}
+.record-count{font-size:13px;color:var(--ct-gray-lt);font-weight:600;margin-left:auto;}
+/* STATS ROW */
+.stats-row{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.stat-card{background:var(--c-surface);border-radius:var(--r);padding:14px 20px;color:var(--c-surface);min-width:150px;flex:1;}
+.stat-card .sn{font-size:22px;font-weight:800;}
+.stat-card .sl{font-size:10px;text-transform:none;letter-spacing:.5px;color:var(--ct-silver);}
+/* TABLE */
+.table-wrap{background:var(--c-surface);border-radius:var(--r);padding:4px;border:1px solid rgba(15,23,42,.06);box-shadow:none;overflow-x:auto;}
+.data-table{width:100%;border-collapse:collapse;min-width:1200px;}
+.data-table thead th{font-size:10px;font-weight:700;text-transform:none;letter-spacing:.4px;color:var(--c-surface);padding:10px 8px;background:var(--ct-gray);white-space:nowrap;position:sticky;top:0;z-index:2;}
+.data-table thead th:first-child{border-radius:var(--r);}
+.data-table thead th:last-child{border-radius:var(--r);}
+.data-table tbody td{padding:8px;font-size:12px;color:var(--ct-gray);border-bottom:1px solid var(--c-bg);white-space:nowrap;text-align:center;}
+.data-table tbody tr:hover{background:rgba(224,122,58,.04);}
+.data-table tbody tr:nth-child(even){background:rgba(0,0,0,.015);}
+.empty-msg{text-align:center;padding:60px 20px;color:var(--ct-silver);font-size:14px;}
+.empty-msg i{font-size:40px;display:block;margin-bottom:12px;color:var(--c-line);}
+.spinner{text-align:center;padding:40px;color:var(--ct-silver);}
+.app-footer{text-align:center;padding:20px;font-size:11px;color:var(--ct-silver);}
+.app-footer span{color:var(--ct-orange);font-weight:600;}
+@keyframes spin{from{transform:rotate(0);}
+to{transform:rotate(360deg);}
+}
+
+}
+</style>
+<script>
+    // Acesso direto volta à casca autenticada; no iframe preserva o layout original.
+    if (top === self) {
+      const params = new URLSearchParams({area:'relatorios'});
+      if ('exportar') params.set('app', 'exportar');
+      for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+      location.replace('/unificado/?view=' + encodeURIComponent('usinas/?' + params));
+    } else {
+      const syncShell = () => {
+        if (parent !== top || top.location.pathname !== '/unificado/') return;
+        const params = new URLSearchParams({area:'relatorios'});
+        if ('exportar') params.set('app', 'exportar');
+        for (const [name, value] of new URLSearchParams(location.search)) params.set(name, value);
+        const view = 'usinas/?' + params;
+        top.history.replaceState({view}, '', '/unificado/?view=' + encodeURIComponent(view));
+      };
+      addEventListener('DOMContentLoaded', syncShell);
+      const originalReplace = history.replaceState.bind(history);
+      history.replaceState = (...args) => { originalReplace(...args); syncShell(); };
+    }
+    function concretrackLogout() {
+      if (top.UnificadoAuth?.logout) top.UnificadoAuth.logout();
+      else top.location.assign('/unificado/login.html');
+    }
+    </script>
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/usinas-visual.css?v=1.4.27"><script defer src="/unificado/shell/components.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"><link rel="stylesheet" href="/unificado/shell/native-content.css?v=2.0.0" media="screen">
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="app-topbar">
+    <div class="container-fluid px-4">
+      <div class="topbar-inner">
+        <img src="/unificado/usinas/relatorios/assets/PRINCIPAL@2x.png" alt="Logo" class="topbar-logo">
+        <div>
+          <div class="topbar-title"><i class="bi bi-file-earmark-spreadsheet me-2"></i>Exportar <span>Massadas</span></div>
+          <div class="topbar-sub">Concre<span>Track</span> &bull; Relatório Gerencial</div>
+        </div>
+        <div class="topbar-right">
+          <a class="btn-back" href="/unificado/usinas/relatorios/"><i class="bi bi-arrow-left"></i> Relatórios</a>
+          <button class="btn-logout" onclick="concretrackLogout()"><i class="bi bi-box-arrow-right me-1"></i>Sair</button>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-accent"></div>
+  </div>
+
+  <div class="container-fluid px-4 py-4">
+
+    <!-- FILTROS -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label>Data Início</label>
+        <input type="date" id="dataIni">
+      </div>
+      <div class="filter-group">
+        <label>Data Fim</label>
+        <input type="date" id="dataFim">
+      </div>
+      <button class="btn-filter" id="btnFiltrar">
+        <i class="bi bi-funnel-fill"></i> Filtrar
+      </button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row" id="statsRow" style="display:none">
+      <div class="stat-card">
+        <div class="sn" id="stTotal">0</div>
+        <div class="sl">Total Massadas</div>
+      </div>
+      <div class="stat-card">
+        <div class="sn" id="stVolume">0</div>
+        <div class="sl">Volume Total (m³)</div>
+      </div>
+      <div class="stat-card">
+        <div class="sn" id="stFormulas">0</div>
+        <div class="sl">Fórmulas Distintas</div>
+      </div>
+      <div class="stat-card">
+        <div class="sn" id="stPeriodo">—</div>
+        <div class="sl">Período</div>
+      </div>
+    </div>
+
+    <!-- EXPORT BUTTONS -->
+    <div class="export-bar" id="exportBar" style="display:none">
+      <button class="btn-export btn-pdf" id="btnPdf">
+        <i class="bi bi-file-earmark-pdf-fill"></i> Exportar PDF
+      </button>
+      <button class="btn-export btn-xlsx" id="btnXlsx">
+        <i class="bi bi-file-earmark-excel-fill"></i> Exportar XLSX
+      </button>
+      <div class="record-count" id="recordCount"></div>
+    </div>
+
+    <!-- TABLE -->
+    <div id="loadingArea" class="spinner" style="display:none">
+      <i class="bi bi-arrow-repeat" style="font-size:28px;animation:spin 1s linear infinite"></i>
+      <div style="margin-top:8px">Carregando dados...</div>
+    </div>
+
+    <div class="table-wrap" id="tableWrap" style="display:none">
+      <table class="data-table" id="dataTable">
+        <thead>
+          <tr>
+            <th>Nº Série</th>
+            <th>Data</th>
+            <th>Início</th>
+            <th>Final</th>
+            <th>Produto</th>
+            <th>Fórmula</th>
+            <th>Qtd (m³)</th>
+            <th>Misturador</th>
+            <th>Temp °C</th>
+            <th>Silo1 Real</th>
+            <th>Silo1 Prog</th>
+            <th>Areia Industrial Real</th>
+            <th>Areia Industrial Prog</th>
+            <th>Areia Natural Real</th>
+            <th>Areia Natural Prog</th>
+            <th>Brita 1/2 Real</th>
+            <th>Brita 1/2 Prog</th>
+            <th>Brita 0 Real</th>
+            <th>Brita 0 Prog</th>
+            <th>Água Real</th>
+            <th>Água Prog</th>
+            <th>Adit1 Real</th>
+            <th>Adit1 Prog</th>
+            <th>A/C</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div id="emptyArea" style="display:none">
+      <div class="empty-msg">
+        <i class="bi bi-inbox"></i>
+        Nenhum registro encontrado para o período selecionado.
+      </div>
+    </div>
+
+    <div id="initialMsg">
+      <div class="empty-msg">
+        <i class="bi bi-calendar-range"></i>
+        Selecione um período e clique em <strong>Filtrar</strong> para carregar os dados.
+      </div>
+    </div>
+  </div>
+
+  <div class="app-footer">&copy; 2026 <span>ConcreTrack</span> &mdash; DAutomação</div>
+
+  <script>
+    let currentData = [];
+
+    const COLS = [
+      { key:"numero_serie", label:"Nº Série" },
+      { key:"data",         label:"Data" },
+      { key:"hora_inicio",  label:"Início" },
+      { key:"hora_final",   label:"Final" },
+      { key:"produto",      label:"Produto" },
+      { key:"formula",      label:"Fórmula" },
+      { key:"qtd",          label:"Qtd (m³)" },
+      { key:"misturador",   label:"Misturador" },
+      { key:"temperatura",  label:"Temp °C" },
+      { key:"real_silo1",   label:"Silo1 Real" },
+      { key:"prog_silo1",   label:"Silo1 Prog" },
+      { key:"real_agregado1", label:"Areia Industrial Real" },
+      { key:"prog_agregado1", label:"Areia Industrial Prog" },
+      { key:"real_agregado3", label:"Areia Natural Real" },
+      { key:"prog_agregado3", label:"Areia Natural Prog" },
+      { key:"real_agregado4", label:"Brita 1/2 Real" },
+      { key:"prog_agregado4", label:"Brita 1/2 Prog" },
+      { key:"real_agregado5", label:"Brita 0 Real" },
+      { key:"prog_agregado5", label:"Brita 0 Prog" },
+      { key:"real_agua1",   label:"Água Real" },
+      { key:"prog_agua1",   label:"Água Prog" },
+      { key:"real_aditivo1",label:"Adit1 Real" },
+      { key:"prog_aditivo1",label:"Adit1 Prog" },
+      { key:"ac",           label:"A/C" },
+    ];
+
+    function fmt(v) { return v != null ? v : "—"; }
+
+    function fmtDate(v) {
+      if (!v) return "—";
+      const parts = v.split("-");
+      if (parts.length === 3) return parts[2] + "/" + parts[1] + "/" + parts[0];
+      return v;
+    }
+
+    // --- FILTER ---
+    document.getElementById("btnFiltrar").addEventListener("click", loadData);
+
+    async function loadData() {
+      const ini = document.getElementById("dataIni").value;
+      const fim = document.getElementById("dataFim").value;
+
+      document.getElementById("initialMsg").style.display = "none";
+      document.getElementById("emptyArea").style.display = "none";
+      document.getElementById("tableWrap").style.display = "none";
+      document.getElementById("statsRow").style.display = "none";
+      document.getElementById("exportBar").style.display = "none";
+      document.getElementById("loadingArea").style.display = "block";
+
+      let url = "/unificado/mapa/api/usina/reporting/relatorios/massadas?";
+      if (ini) url += "data_ini=" + ini + "&";
+      if (fim) url += "data_fim=" + fim + "&";
+
+      try {
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error("Erro ao carregar");
+        currentData = await resp.json();
+        renderTable(currentData);
+        renderStats(currentData, ini, fim);
+      } catch (e) {
+        document.getElementById("loadingArea").innerHTML =
+          '<div class="empty-msg"><i class="bi bi-exclamation-triangle"></i>Erro: ' + e.message + '</div>';
+      }
+    }
+
+    function renderStats(data, ini, fim) {
+      if (data.length === 0) return;
+      document.getElementById("statsRow").style.display = "flex";
+      document.getElementById("stTotal").textContent = data.length;
+      const vol = data.reduce((s, r) => s + (r.qtd || 0), 0);
+      document.getElementById("stVolume").textContent = vol.toFixed(1);
+      const formulas = new Set(data.map(r => r.formula)).size;
+      document.getElementById("stFormulas").textContent = formulas;
+      const dIni = ini ? fmtDate(ini) : fmtDate(data[data.length - 1].data);
+      const dFim = fim ? fmtDate(fim) : fmtDate(data[0].data);
+      document.getElementById("stPeriodo").textContent = dIni + " a " + dFim;
+    }
+
+    function renderTable(data) {
+      document.getElementById("loadingArea").style.display = "none";
+
+      if (data.length === 0) {
+        document.getElementById("emptyArea").style.display = "block";
+        return;
+      }
+
+      document.getElementById("exportBar").style.display = "flex";
+      document.getElementById("recordCount").textContent = data.length + " registro(s)";
+      document.getElementById("tableWrap").style.display = "block";
+
+      const tbody = document.getElementById("tbody");
+      tbody.innerHTML = data.map(r => {
+        return "<tr>" + COLS.map(c => {
+          let v = r[c.key];
+          if (c.key === "data") v = fmtDate(v);
+          else v = fmt(v);
+          return "<td>" + v + "</td>";
+        }).join("") + "</tr>";
+      }).join("");
+    }
+
+    // --- PDF ---
+    document.getElementById("btnPdf").addEventListener("click", function() {
+      if (currentData.length === 0) return;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation:"landscape", unit:"mm", format:"a4" });
+
+      // Title
+      doc.setFontSize(16);
+      doc.setTextColor(52, 59, 67);
+      doc.text("ConcreTrack — Relatório de Massadas", 14, 15);
+      doc.setFontSize(9);
+      doc.setTextColor(90, 98, 112);
+      const ini = document.getElementById("dataIni").value;
+      const fim = document.getElementById("dataFim").value;
+      const periodo = (ini ? fmtDate(ini) : "Início") + " a " + (fim ? fmtDate(fim) : "Fim");
+      doc.text("Período: " + periodo + "   |   Total: " + currentData.length + " massada(s)", 14, 21);
+
+      // Table
+      const head = COLS.map(c => c.label);
+      const body = currentData.map(r => COLS.map(c => {
+        let v = r[c.key];
+        if (c.key === "data") return fmtDate(v);
+        return v != null ? String(v) : "";
+      }));
+
+      doc.autoTable({
+        head: [head],
+        body: body,
+        startY: 25,
+        styles: { fontSize: 7, cellPadding: 1.5, font: "helvetica" },
+        headStyles: { fillColor: [52, 59, 67], textColor: 255, fontStyle: "bold", fontSize: 7 },
+        alternateRowStyles: { fillColor: [245, 246, 248] },
+        margin: { left: 6, right: 6 },
+      });
+
+      // Footer
+      const pageCount = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.setTextColor(150);
+        doc.text("ConcreTrack • DAutomação • Página " + i + "/" + pageCount,
+          doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 6, { align: "center" });
+      }
+
+      const fname = "massadas_" + (ini || "all") + "_" + (fim || "all") + ".pdf";
+      doc.save(fname);
+    });
+
+    // --- XLSX ---
+    document.getElementById("btnXlsx").addEventListener("click", function() {
+      const ini = document.getElementById("dataIni").value;
+      const fim = document.getElementById("dataFim").value;
+      let url = "/unificado/mapa/api/usina/reporting/relatorios/massadas/xlsx?";
+      if (ini) url += "data_ini=" + ini + "&";
+      if (fim) url += "data_fim=" + fim + "&";
+      window.location.href = url;
+    });
+
+    // Set default dates (today)
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("dataIni").value = today;
+    document.getElementById("dataFim").value = today;
+  </script>
+  <script src="/unificado/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>

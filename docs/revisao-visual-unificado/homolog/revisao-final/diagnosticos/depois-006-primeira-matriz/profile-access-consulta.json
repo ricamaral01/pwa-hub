@@ -1,0 +1,40 @@
+{
+  "profile": "CONSULTA",
+  "eligible_screens": [
+    "dashboard",
+    "comparacao",
+    "programacaoSemanal12",
+    "fechamentoDiario",
+    "manutencaoUsina",
+    "armadurasProgramacao",
+    "armadurasRelatorio",
+    "postesNumerosSerie",
+    "shell-inicio",
+    "shell-login",
+    "shell-atualizar",
+    "shell-testar",
+    "module-planejamento",
+    "mobile-conta",
+    "mobile-recentes",
+    "postesNumerosSerie-tab-1",
+    "postesNumerosSerie-tab-2"
+  ],
+  "allowed_screens": [
+    "armadurasProgramacao",
+    "armadurasRelatorio",
+    "comparacao",
+    "dashboard",
+    "fechamentoDiario",
+    "manutencaoUsina",
+    "postesNumerosSerie",
+    "programacaoSemanal12"
+  ],
+  "allowed_modules": [
+    "planejamento",
+    "producao",
+    "qualidade"
+  ],
+  "permission_writes": 0,
+  "access_verified": true,
+  "permission_source": "central screen-access/me HTTP 200"
+}

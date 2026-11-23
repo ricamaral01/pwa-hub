@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campinas Uni · Indicadores</title>
+<link rel="stylesheet" href="../indicadores-gerais/style.css?v=1.4.27">
+<script defer src="../indicadores-gerais/app.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/remaining-visual.css?v=1.4.27"><script defer src="/unificado/shell/components.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"></head>
+<body data-page="campinas-unificado"><main class="dashboard">
+  <header class="hero"><div><span class="legacy-print-title">CAMPINAS · SETORES 1 + 2 + 3 + 4</span><h1>Campinas Uni</h1><p>Quilos e postes por homem de toda a produção de Campinas.</p></div><span class="hero-mark" aria-hidden="true">▦</span></header>
+  <section class="toolbar" aria-label="Filtros"><label>Mês <input id="month" type="month"></label><button id="reload" type="button">Atualizar dados</button><span id="updated" role="status"></span><a class="page-link" href="/unificado/producao/indicadores-gerais/" target="_top">Indicador geral · 4 unidades →</a></section>
+  <div id="feedback" class="feedback" role="alert" hidden></div>
+  <section class="campinas-unified" aria-labelledby="unified-title">
+    <div class="section-heading"><div><span class="kicker">CAMPINAS · CONSOLIDADO</span><h2 id="unified-title">Campinas · Uni</h2><p>Produção dos setores 1 + 2 + 3 + 4 ÷ MOD + MOI dos grupos 1 e 2 e 3 e 4, na mesma data.</p></div><span class="unit-label">Setores 1 + 2 + 3 + 4</span></div>
+    <div class="summary unified-summary" id="unified-summary" aria-label="Resumo de Campinas Uni"></div>
+    <p id="unified-weight-note" class="feedback" role="status" hidden></p>
+    <div class="chart-pair" id="unified-charts" aria-label="Indicadores diários de Campinas Uni"></div>
+    <section class="table-card"><div class="section-heading"><div><h2>Campinas Uni · Dados dia a dia</h2><p>Mão de obra do PCP. “—” indica indicador indisponível; a equipe precisa estar apontada em cada grupo com produção.</p></div></div>
+      <div class="table-scroll"><table class="unified-table" aria-label="Produção e mão de obra dos quatro setores de Campinas"><thead><tr><th scope="col" class="date-heading">Data</th><th scope="col">Postes</th><th scope="col">Peso (kg)</th><th scope="col">MOD</th><th scope="col">MOI</th><th scope="col">Homens</th><th scope="col">kg/homem</th><th scope="col">Postes/homem</th></tr></thead><tbody id="unified-rows"></tbody></table></div>
+    </section>
+  </section>
+  <section class="table-card" aria-labelledby="missing-weight-title">
+    <div class="section-heading"><div><span class="kicker">PENDÊNCIAS DE PESO</span><h2 id="missing-weight-title">Postes com peso pendente</h2><p id="missing-weight-total" role="status"></p></div></div>
+    <p class="method">Lista os modelos produzidos no mês que impedem o cálculo de kg/homem. “Modelo sem vínculo” indica que o apontamento ainda não está associado a um produto do cadastro; “Peso não informado” indica um produto cadastrado sem peso válido. As quantidades são postes produzidos, não formas.</p>
+    <div class="table-scroll"><table class="missing-weight-table" aria-label="Postes com peso pendente por setor"><thead><tr><th scope="col" class="date-heading">Setor</th><th scope="col">Código</th><th scope="col">Poste / modelo</th><th scope="col">Postes produzidos</th><th scope="col">Datas da produção</th><th scope="col">Pendência</th></tr></thead><tbody id="missing-weight-rows"></tbody></table></div>
+  </section>
+  <section class="table-card calculation-card"><div class="section-heading"><div><span class="kicker">METODOLOGIA</span><h2>Memória de cálculo</h2></div></div>
+    <div class="formula-grid"><article><h3>kg/homem</h3><p class="formula">Peso dos setores 1 + 2 + 3 + 4 ÷ (MOD + MOI)</p><p>Peso = soma de quantidade produzida × peso unitário de cada produto. Se algum produto estiver sem peso ou sem vínculo com o cadastro, o indicador fica indisponível.</p></article><article><h3>Postes/homem</h3><p class="formula">Postes dos setores 1 + 2 + 3 + 4 ÷ (MOD + MOI)</p><p>Considera os postes realizados no painel PCP. A falta de peso não impede o cálculo de postes/homem.</p></article></div>
+    <p>MOD e MOI vêm da tela <a href="/unificado/pcp/maodeobra/" target="_top">PCP · Mão de obra</a>, somando os grupos Setores 1 e 2 e Setores 3 e 4 na mesma data. A MOI do grupo 3 e 4 entra uma única vez. Se faltar apontamento em algum grupo com produção, os indicadores do dia e as médias do mês ficam indisponíveis.</p>
+    <p>O resumo do mês divide a soma dos pesos ou dos postes pela soma dos homens diários (pessoas-dia) nos dias com produção. A soma dos homens não representa funcionários distintos. Os valores de kg/homem são exibidos sem casas decimais e postes/homem com duas casas.</p>
+  </section>
+</main></body></html>

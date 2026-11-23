@@ -1,0 +1,975 @@
+[
+  {
+    "module": "Logística",
+    "group": "Geral",
+    "screen": "Início",
+    "id": "logisticaInicio",
+    "description": "Encontrar as ferramentas da Logística"
+  },
+  {
+    "module": "Logística",
+    "group": "Km/Evento",
+    "screen": "Painel Km/Evento",
+    "id": "logisticaPainel",
+    "description": "Acompanhar indicadores de km por evento"
+  },
+  {
+    "module": "Logística",
+    "group": "Km/Evento",
+    "screen": "Correções e exclusões",
+    "id": "logisticaCorrecoes",
+    "description": "Revisar falsos alarmes e exclusões"
+  },
+  {
+    "module": "Logística",
+    "group": "Km/Evento",
+    "screen": "Fechamento trimestral",
+    "id": "logisticaFechamento",
+    "description": "Conferir os meses do trimestre"
+  },
+  {
+    "module": "Logística",
+    "group": "Km/Evento",
+    "screen": "Premiação",
+    "id": "logisticaPremiacao",
+    "description": "Consultar avaliações e classificação"
+  },
+  {
+    "module": "Logística",
+    "group": "Km/Evento",
+    "screen": "Meses e importação",
+    "id": "logisticaMeses",
+    "description": "Importar e conferir relatórios mensais"
+  },
+  {
+    "module": "Logística",
+    "group": "Km/Evento",
+    "screen": "Metas",
+    "id": "logisticaMetas",
+    "description": "Definir metas por trimestre e unidade"
+  },
+  {
+    "module": "Logística",
+    "group": "Cadastros",
+    "screen": "Motoristas",
+    "id": "logisticaMotoristas",
+    "description": "Cadastrar motoristas e vínculos Cobli"
+  },
+  {
+    "module": "Logística",
+    "group": "Cadastros",
+    "screen": "Ajudantes",
+    "id": "logisticaAjudantes",
+    "description": "Cadastrar ajudantes por unidade"
+  },
+  {
+    "module": "Logística",
+    "group": "Cadastros",
+    "screen": "Mapeamento Cobli",
+    "id": "logisticaCobli",
+    "description": "Relacionar grupos Cobli às unidades"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Etiquetas",
+    "screen": "Padrão",
+    "id": "etiquetas",
+    "description": "Imprimir etiquetas dos postes"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Etiquetas",
+    "screen": "Setor 3",
+    "id": "etiquetasSc",
+    "description": "Imprimir etiquetas do setor 3"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Etiquetas",
+    "screen": "Setor 4",
+    "id": "etiquetasSetor4",
+    "description": "Imprimir etiquetas do setor 4"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Etiquetas",
+    "screen": "Armaduras",
+    "id": "etiquetasArmaduras",
+    "description": "Imprimir etiquetas das armaduras"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Acompanhamento",
+    "screen": "PCP Diário",
+    "id": "pcpDiario",
+    "description": "Acompanhar a produção diária por setor"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Acompanhamento",
+    "screen": "Acompanhamento Mensal",
+    "id": "acompMensal",
+    "description": "Comparar a programação e a produção mensal"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Acompanhamento",
+    "screen": "Acompanhamento Mensal Setor 3 e 4",
+    "id": "acompMensal34",
+    "description": "Comparar a produção mensal dos setores 3 e 4"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Acompanhamento",
+    "screen": "Apontamento Mega",
+    "id": "apontamentoMega",
+    "description": "Conferir os apontamentos do Mega"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Acompanhamento",
+    "screen": "Fechamento Diário",
+    "id": "fechamentoDiarioPcp",
+    "description": "Conferir o fechamento diário da produção"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Produção e apoio",
+    "screen": "Produção PCP",
+    "id": "producaoPcp",
+    "description": "Registrar a produção pelo PCP"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Produção e apoio",
+    "screen": "Mão de Obra",
+    "id": "maodeobra",
+    "description": "Registrar a equipe por dia e setor"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Produção e apoio",
+    "screen": "Rateio de Mão de Obra",
+    "id": "maodeobraRateio",
+    "description": "Ratear a mão de obra indireta por atividade"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Produção e apoio",
+    "screen": "Formas por Setor",
+    "id": "formasPorSetor",
+    "description": "Consultar as formas e sua situação por setor"
+  },
+  {
+    "module": "Planejamento",
+    "group": "Produção e apoio",
+    "screen": "Teste Programação",
+    "id": "testeProgramacao",
+    "description": "Testar a programação na homologação"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Produção",
+    "screen": "Produção / Liberação",
+    "id": "liberacao",
+    "description": "Acompanhar a liberação da produção"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Produção",
+    "screen": "Setor 1",
+    "id": "setor1",
+    "description": "Registrar a produção do setor 1"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Produção",
+    "screen": "Setor 2",
+    "id": "setor2",
+    "description": "Registrar a produção do setor 2"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Produção",
+    "screen": "Setor 3",
+    "id": "setor3",
+    "description": "Registrar a produção do setor 3"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Produção",
+    "screen": "Setor 4",
+    "id": "setor4",
+    "description": "Registrar a produção do setor 4"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Produção",
+    "screen": "Mandril Circular",
+    "id": "mandril",
+    "description": "Controlar os mandris circulares"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Montagem",
+    "screen": "Inspeção Setor 3 e 4",
+    "id": "inspecao",
+    "description": "Inspecionar postes dos setores 3 e 4"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Montagem",
+    "screen": "Montagem Postes",
+    "id": "montagem",
+    "description": "Registrar a montagem dos postes"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Montagem",
+    "screen": "Sequência Setor 3",
+    "id": "sequencia",
+    "description": "Consultar a sequência do setor 3"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Controle",
+    "screen": "Relatório Enc. Produção",
+    "id": "relatorioMapa",
+    "description": "Consultar o relatório da produção"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Controle",
+    "screen": "Histórico",
+    "id": "historico",
+    "description": "Consultar o histórico dos apontamentos"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Controle",
+    "screen": "Acmp. Concretagem",
+    "id": "acmpConcretagem",
+    "description": "Acompanhar o andamento da concretagem"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Controle",
+    "screen": "Manutenção Formas",
+    "id": "manutencao",
+    "description": "Consultar a manutenção das formas"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Controle",
+    "screen": "Tratativa Defeitos",
+    "id": "tratativa",
+    "description": "Acompanhar as tratativas de defeitos"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Controle",
+    "screen": "Fechamento diário",
+    "id": "fechamentoDiario",
+    "description": "Conferir o fechamento diário da produção"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Indicadores",
+    "screen": "Campinas Uni · S1+2+3+4",
+    "id": "campinasUnificado",
+    "description": "Acompanhar os quatro setores de Campinas"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Indicadores",
+    "screen": "Dashboard Montagem",
+    "id": "dashMontagem",
+    "description": "Consultar os indicadores de montagem"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Indicadores",
+    "screen": "Dashboard Defeitos",
+    "id": "dashDefeitos",
+    "description": "Analisar os defeitos da produção"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Indicadores",
+    "screen": "Dashboard Concretagem Matriz",
+    "id": "produtividade",
+    "description": "Analisar a produtividade da concretagem"
+  },
+  {
+    "module": "Produção",
+    "group": "Campinas · Indicadores",
+    "screen": "Painel TV — Formas",
+    "id": "tvFormas",
+    "description": "Acompanhar as formas no painel de produção"
+  },
+  {
+    "module": "Produção",
+    "group": "Pederneiras",
+    "screen": "Apontamento do dia",
+    "id": "pdrApontamento",
+    "description": "Registrar a produção diária de Pederneiras"
+  },
+  {
+    "module": "Produção",
+    "group": "Pederneiras",
+    "screen": "Mão de obra",
+    "id": "pdrMaoDeObra",
+    "description": "Registrar a equipe de Pederneiras"
+  },
+  {
+    "module": "Produção",
+    "group": "Pederneiras",
+    "screen": "Produção Pederneiras",
+    "id": "pdrMensal",
+    "description": "Consultar a produção mensal de Pederneiras"
+  },
+  {
+    "module": "Produção",
+    "group": "Pederneiras",
+    "screen": "Indicadores",
+    "id": "pdrIndicadores",
+    "description": "Analisar os indicadores de Pederneiras"
+  },
+  {
+    "module": "Produção",
+    "group": "Pederneiras",
+    "screen": "Cadastro de produtos",
+    "id": "pdrProdutos",
+    "description": "Cadastrar os produtos de Pederneiras"
+  },
+  {
+    "module": "Produção",
+    "group": "Ribeirão",
+    "screen": "Apontamento do dia",
+    "id": "rbrApontamento",
+    "description": "Registrar a produção diária de Ribeirão"
+  },
+  {
+    "module": "Produção",
+    "group": "Ribeirão",
+    "screen": "Mão de obra",
+    "id": "rbrMaoDeObra",
+    "description": "Registrar a equipe de Ribeirão"
+  },
+  {
+    "module": "Produção",
+    "group": "Ribeirão",
+    "screen": "Produção Ribeirão",
+    "id": "rbrMensal",
+    "description": "Consultar a produção mensal de Ribeirão"
+  },
+  {
+    "module": "Produção",
+    "group": "Ribeirão",
+    "screen": "Indicadores",
+    "id": "rbrIndicadores",
+    "description": "Analisar os indicadores de Ribeirão"
+  },
+  {
+    "module": "Produção",
+    "group": "Ribeirão",
+    "screen": "Cadastro de produtos",
+    "id": "rbrProdutos",
+    "description": "Cadastrar os produtos de Ribeirão"
+  },
+  {
+    "module": "Produção",
+    "group": "Noroeste",
+    "screen": "Apontamento do dia",
+    "id": "norApontamento",
+    "description": "Registrar a produção diária de Noroeste"
+  },
+  {
+    "module": "Produção",
+    "group": "Noroeste",
+    "screen": "Mão de obra",
+    "id": "norMaoDeObra",
+    "description": "Registrar a equipe de Noroeste"
+  },
+  {
+    "module": "Produção",
+    "group": "Noroeste",
+    "screen": "Produção Noroeste",
+    "id": "norMensal",
+    "description": "Consultar a produção mensal de Noroeste"
+  },
+  {
+    "module": "Produção",
+    "group": "Noroeste",
+    "screen": "Indicadores",
+    "id": "norIndicadores",
+    "description": "Analisar os indicadores de Noroeste"
+  },
+  {
+    "module": "Produção",
+    "group": "Noroeste",
+    "screen": "Produtos Campinas",
+    "id": "norProdutos",
+    "description": "Consultar o cadastro de produtos de Campinas"
+  },
+  {
+    "module": "Produção",
+    "group": "Indicadores gerais",
+    "screen": "Indicador geral",
+    "id": "indicadorGeralProducao",
+    "description": "Comparar a produção das quatro unidades"
+  },
+  {
+    "module": "Qualidade",
+    "group": "Geral",
+    "screen": "Tarefas",
+    "id": "qualidadeTarefas",
+    "description": "Acompanhar as tarefas da Qualidade"
+  },
+  {
+    "module": "Qualidade",
+    "group": "Geral",
+    "screen": "Manutenção Usina",
+    "id": "manutencaoUsina",
+    "description": "Acompanhar a manutenção da usina"
+  },
+  {
+    "module": "Qualidade",
+    "group": "Não conformidades",
+    "screen": "Painel",
+    "id": "qualidadePainel",
+    "description": "Acompanhar as não conformidades"
+  },
+  {
+    "module": "Qualidade",
+    "group": "Não conformidades",
+    "screen": "Abrir NC",
+    "id": "qualidadeAbertura",
+    "description": "Registrar uma não conformidade"
+  },
+  {
+    "module": "Qualidade",
+    "group": "Não conformidades",
+    "screen": "Resultados de bancada",
+    "id": "qualidadeResultadosBancada",
+    "description": "Conferir os resultados de bancada"
+  },
+  {
+    "module": "Qualidade",
+    "group": "Não conformidades",
+    "screen": "Cadastros",
+    "id": "qualidadeCadastros",
+    "description": "Gerenciar os cadastros da Qualidade"
+  },
+  {
+    "module": "Qualidade",
+    "group": "Certificados",
+    "screen": "Emitir certificado de qualidade",
+    "id": "labCertificados",
+    "description": "Emitir certificados de qualidade"
+  },
+  {
+    "module": "Qualidade",
+    "group": "Certificados",
+    "screen": "Histórico de certificados",
+    "id": "labCertificadosHistorico",
+    "description": "Consultar os certificados emitidos"
+  },
+  {
+    "module": "Qualidade",
+    "group": "Certificados",
+    "screen": "Cadastros de certificados",
+    "id": "labCertificadosCadastros",
+    "description": "Gerenciar os cadastros dos certificados"
+  },
+  {
+    "module": "Qualidade",
+    "group": "Certificados",
+    "screen": "Certificados de ensaios",
+    "id": "labTests",
+    "description": "Consultar o histórico de ensaios de postes"
+  },
+  {
+    "module": "Usinas",
+    "group": "Geral",
+    "screen": "Cartas de traço",
+    "id": "usinasInicio",
+    "description": "Consultar as cartas de traço da usina"
+  },
+  {
+    "module": "Usinas",
+    "group": "Geral",
+    "screen": "Controle estatístico",
+    "id": "usinasCec",
+    "description": "Analisar o controle estatístico do concreto"
+  },
+  {
+    "module": "Usinas",
+    "group": "Geral",
+    "screen": "Relatórios gerenciais",
+    "id": "usinasRelatorios",
+    "description": "Consultar os relatórios da usina"
+  },
+  {
+    "module": "Usinas",
+    "group": "Geral",
+    "screen": "Controle de estoque",
+    "id": "usinasEstoque",
+    "description": "Consultar o estoque de materiais da usina"
+  },
+  {
+    "module": "Usinas",
+    "group": "Noroeste",
+    "screen": "Painel",
+    "id": "usinasNoroPainel",
+    "description": "Acompanhar a operação da usina Noroeste"
+  },
+  {
+    "module": "Usinas",
+    "group": "Noroeste",
+    "screen": "Massadas",
+    "id": "usinasNoroMassadas",
+    "description": "Consultar as massadas da usina Noroeste"
+  },
+  {
+    "module": "Usinas",
+    "group": "Noroeste",
+    "screen": "Cartas de traço",
+    "id": "usinasNoroCartas",
+    "description": "Consultar as cartas de traço de Noroeste"
+  },
+  {
+    "module": "Usinas",
+    "group": "Noroeste",
+    "screen": "Relatórios",
+    "id": "usinasNoroRelatorios",
+    "description": "Consultar os relatórios da usina Noroeste"
+  },
+  {
+    "module": "Usinas",
+    "group": "Noroeste",
+    "screen": "Controle estatístico",
+    "id": "usinasNoroCec",
+    "description": "Analisar o controle estatístico de Noroeste"
+  },
+  {
+    "module": "Usinas",
+    "group": "Noroeste",
+    "screen": "Cadastros",
+    "id": "usinasNoroCadastros",
+    "description": "Gerenciar os cadastros da usina Noroeste"
+  },
+  {
+    "module": "Usinas",
+    "group": "Noroeste",
+    "screen": "Estoque",
+    "id": "usinasNoroEstoque",
+    "description": "Consultar o estoque da usina Noroeste"
+  },
+  {
+    "module": "Usinas",
+    "group": "Noroeste",
+    "screen": "Custos",
+    "id": "usinasNoroCustos",
+    "description": "Consultar os custos da usina Noroeste"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Corpos de Prova",
+    "screen": "Etiquetas QR",
+    "id": "labCecEtiquetas",
+    "description": "Emitir etiquetas QR de corpos de prova"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Corpos de Prova",
+    "screen": "Leitura de CP",
+    "id": "labCecLeitura",
+    "description": "Registrar a ruptura dos corpos de prova"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Corpos de Prova",
+    "screen": "Resultados dos corpos de prova",
+    "id": "labCecResultados",
+    "description": "Consultar os resultados dos corpos de prova"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Controle estatístico",
+    "screen": "Visão geral",
+    "id": "labCec",
+    "description": "Consultar os indicadores do concreto"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Controle estatístico",
+    "screen": "Rompimentos por mês",
+    "id": "labCecRompimentosMes",
+    "description": "Consultar os rompimentos por mês"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Controle estatístico",
+    "screen": "Análise estatística",
+    "id": "labCecAnalise",
+    "description": "Analisar os resultados de resistência"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Controle estatístico",
+    "screen": "Relatório CEC",
+    "id": "labCecRelatorio",
+    "description": "Emitir o relatório estatístico do concreto"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Visão geral",
+    "id": "labDosagem",
+    "description": "Acompanhar os estudos de dosagem"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Empacotamento",
+    "id": "labDosagemEmpacotamento",
+    "description": "Calcular a dosagem por empacotamento"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Volume",
+    "id": "labDosagemVolume",
+    "description": "Calcular a dosagem por volume absoluto"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Comparação dos métodos",
+    "id": "labDosagemComparacao",
+    "description": "Comparar os métodos de dosagem"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Traços",
+    "id": "labDosagemTracos",
+    "description": "Consultar e cadastrar traços de concreto"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Materiais",
+    "id": "labDosagemMateriais",
+    "description": "Gerenciar os materiais da dosagem"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Fornecedores",
+    "id": "labDosagemFornecedores",
+    "description": "Cadastrar os fornecedores de materiais"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Ensaios",
+    "id": "labDosagemEnsaios",
+    "description": "Registrar os ensaios dos materiais"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Ferramentas",
+    "id": "labDosagemFerramentas",
+    "description": "Calcular volume, Abrams e empacotamento"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Custos",
+    "id": "labDosagemCustos",
+    "description": "Comparar os custos dos traços"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Referência",
+    "id": "labDosagemReferencia",
+    "description": "Consultar os indicadores e o uso da dosagem"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Produção",
+    "id": "labDosagemProducao",
+    "description": "Conferir a dosagem e a desforma por lote"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Importação",
+    "id": "labDosagemImportacao",
+    "description": "Importar planilhas de dosagem para referência"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Dosagem",
+    "screen": "Configurações",
+    "id": "labDosagemConfig",
+    "description": "Configurar os parâmetros da dosagem"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Concreto fresco",
+    "screen": "Registro de slump / flow",
+    "id": "labSlump",
+    "description": "Registrar o abatimento e o espalhamento"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Usina de Campinas",
+    "screen": "Relatórios e custos",
+    "id": "labUsinasRelatorios",
+    "description": "Consultar a produção e os custos da usina"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Cura térmica",
+    "screen": "Monitoramento",
+    "id": "labMonitor",
+    "description": "Monitorar as temperaturas da cura térmica"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Cura térmica",
+    "screen": "Histórico de medições",
+    "id": "labHistory",
+    "description": "Consultar o histórico da cura térmica"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Cura térmica",
+    "screen": "Dispositivo",
+    "id": "labDevice",
+    "description": "Configurar o dispositivo de medição"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Ensaios de concreto",
+    "screen": "Absorção",
+    "id": "labAbsorption",
+    "description": "Registrar ensaios de absorção do concreto"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Postes",
+    "screen": "Certificados de qualidade",
+    "id": "labCertificados",
+    "description": "Emitir certificados de qualidade"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Postes",
+    "screen": "Ensaio de postes",
+    "id": "labPole",
+    "description": "Registrar os ensaios de postes"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Postes",
+    "screen": "Histórico de ensaios",
+    "id": "labTests",
+    "description": "Consultar o histórico de ensaios de postes"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Postes",
+    "screen": "Cadastros",
+    "id": "labRegisters",
+    "description": "Gerenciar os cadastros dos ensaios de postes"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Postes",
+    "screen": "Critérios",
+    "id": "labCriteria",
+    "description": "Configurar os critérios dos ensaios de postes"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Cronoanálise",
+    "screen": "Início",
+    "id": "cronoanalise.inicio",
+    "description": "Acompanhar os estudos de cronoanálise"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Cronoanálise",
+    "screen": "Coletar",
+    "id": "cronoanalise.coletar",
+    "description": "Cronometrar os ciclos de trabalho"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Cronoanálise",
+    "screen": "Medições",
+    "id": "cronoanalise.medicoes",
+    "description": "Consultar as medições de tempo"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Cronoanálise",
+    "screen": "Catálogo",
+    "id": "cronoanalise.catalogo",
+    "description": "Gerenciar as operações da cronoanálise"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Cronoanálise",
+    "screen": "Dimensionar",
+    "id": "cronoanalise.dimensionar",
+    "description": "Dimensionar a equipe para a produção"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Cronoanálise",
+    "screen": "Simular",
+    "id": "cronoanalise.simular",
+    "description": "Simular a capacidade de produção"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Cronoanálise",
+    "screen": "Metodologia",
+    "id": "cronoanalise.metodologia",
+    "description": "Consultar o método de cronoanálise"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Administração",
+    "screen": "Usuários",
+    "id": "labUsuarios",
+    "description": "Administrar o acesso aos ensaios de postes"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Geral",
+    "screen": "Como funciona",
+    "id": "labHelp",
+    "description": "Consultar a ajuda da cura térmica"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Corpos de Prova",
+    "screen": "Etiquetas QR",
+    "id": "labNoroCecEtiquetas",
+    "description": "Emitir etiquetas QR de corpos de prova"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Corpos de Prova",
+    "screen": "Leitura de CP",
+    "id": "labNoroCecLeitura",
+    "description": "Registrar a ruptura dos corpos de prova"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Corpos de Prova",
+    "screen": "Resultados dos corpos de prova",
+    "id": "labNoroCecResultados",
+    "description": "Consultar os resultados dos corpos de prova"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Controle estatístico",
+    "screen": "Visão geral",
+    "id": "labNoroCec",
+    "description": "Consultar os indicadores do concreto"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Controle estatístico",
+    "screen": "Rompimentos por mês",
+    "id": "labNoroCecRompimentosMes",
+    "description": "Consultar os rompimentos por mês"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Controle estatístico",
+    "screen": "Análise estatística",
+    "id": "labNoroCecAnalise",
+    "description": "Analisar os resultados de resistência"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Controle estatístico",
+    "screen": "Relatório CEC",
+    "id": "labNoroCecRelatorio",
+    "description": "Emitir o relatório estatístico do concreto"
+  },
+  {
+    "module": "Laboratório",
+    "group": "Administração",
+    "screen": "Usuários",
+    "id": "labNoroUsuarios",
+    "description": "Administrar os usuários do Laboratório"
+  },
+  {
+    "module": "Suprimentos",
+    "group": "Compras",
+    "screen": "Recebimento",
+    "id": "suprimentosRecebimento",
+    "description": "Conferir o recebimento dos pedidos"
+  },
+  {
+    "module": "Suprimentos",
+    "group": "Compras",
+    "screen": "Fornecedores",
+    "id": "suprimentosFornecedores",
+    "description": "Gerenciar os fornecedores de materiais"
+  },
+  {
+    "module": "Suprimentos",
+    "group": "Compras",
+    "screen": "Indicadores",
+    "id": "suprimentosIndicadores",
+    "description": "Analisar os indicadores de compras"
+  },
+  {
+    "module": "Suprimentos",
+    "group": "Administração",
+    "screen": "Cadastros e alçadas",
+    "id": "suprimentosCadastros",
+    "description": "Gerenciar os cadastros e as alçadas"
+  },
+  {
+    "module": "GED",
+    "group": "Gestão documental",
+    "screen": "Painel",
+    "id": "ged-dashboard",
+    "description": "Acompanhar os indicadores dos documentos"
+  },
+  {
+    "module": "GED",
+    "group": "Gestão documental",
+    "screen": "Documentos",
+    "id": "ged-documents",
+    "description": "Consultar e gerenciar os documentos"
+  },
+  {
+    "module": "GED",
+    "group": "Gestão documental",
+    "screen": "Aprovações",
+    "id": "ged-approvals",
+    "description": "Revisar as aprovações dos documentos"
+  },
+  {
+    "module": "GED",
+    "group": "Gestão documental",
+    "screen": "Calibrações",
+    "id": "ged-calibrations",
+    "description": "Acompanhar as calibrações dos instrumentos"
+  }
+]

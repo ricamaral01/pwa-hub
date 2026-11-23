@@ -1,0 +1,7 @@
+"""Inspect only the active CQ source settings and network restrictions."""
+import ast,json,subprocess
+from pathlib import Path
+from urllib.parse import urlsplit
+unit='unificado-visual-homolog-cq.service';pid=subprocess.check_output(['systemctl','show',unit,'-p','MainPID','--value'],text=True).strip();env=dict(x.split('=',1) for x in Path('/proc/'+pid+'/environ').read_bytes().decode().split('\0') if '=' in x)
+source=Path('/opt/concrefer-unificado/homolog-next/visual-full/cq/source.py').read_text();tree=ast.parse(source);defaults={t.id:ast.literal_eval(n.value) for n in tree.body if isinstance(n,ast.Assign) for t in n.targets if isinstance(t,ast.Name) and t.id in ['OLD_URL','NEW_URL']};choice=env.get('CQ_FONTE_CP','antigo');url=env.get('CQ_CP_NEW_URL' if choice=='novo' else 'CQ_CP_OLD_URL',defaults['NEW_URL' if choice=='novo' else 'OLD_URL']);parsed=urlsplit(url)
+print(json.dumps({'unit':unit,'source_choice':choice,'choice_from_default':'CQ_FONTE_CP' not in env,'active_source_url':{'scheme':parsed.scheme,'host':parsed.hostname,'port':parsed.port,'path':parsed.path},'network_restrictions':subprocess.check_output(['systemctl','show',unit,'-p','IPAddressDeny','-p','IPAddressAllow'],text=True),'diagnosis':'The selected legacy source is an external HTTPS URL, while the service only permits loopback. This explains the source timeout/503; no source or network change applied.','mutations':0}))

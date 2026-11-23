@@ -1,0 +1,8 @@
+{
+  "phase": "prepared",
+  "files": 44,
+  "prod_database_guard": "concretrack_postes",
+  "new_services": 0,
+  "new_workers": 0,
+  "new_pools": 0
+}

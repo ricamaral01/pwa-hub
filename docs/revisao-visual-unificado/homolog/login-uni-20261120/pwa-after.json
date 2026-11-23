@@ -1,0 +1,84 @@
+{
+  "before": {
+    "actual_version": "1.4.26",
+    "cache_keys": [
+      "concrefer-unificado-shell-v1.4.26"
+    ],
+    "controlled": true,
+    "synthetic_worker": false,
+    "profile": "C:\\Users\\Admin\\Documents\\pwa-hub-padrao-visual\\.codex-tmp\\login-uni-pwa-profile",
+    "installation": {
+      "installed": true,
+      "method": "Chrome CDP PWA.install; persistent real browser profile",
+      "installed_metadata": {
+        "chrome_apps": [
+          {
+            "id": "nfbgdffjclcmfjhepjfgibbhopcolfmk",
+            "title": null,
+            "name": "Concrefer Unificado",
+            "text": "Concrefer Unificado\n\n\n\n  \n    Ver na Chrome Web Store\n  \n  \n    Abrir na janela\n  \n  \n    Abrir na inicialização\n  \n  \n    Criar atalho\n  \n  \n    Instalar neste dispositivo\n  \n  \n  \n    Desinstalar\n  \n  \n    Remover do Google Chrome\n  \n  \n    Configurações do app"
+          }
+        ],
+        "windows_shortcut_paths": [
+          "C:\\Users\\Admin\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Concrefer.lnk",
+          "C:\\Users\\Admin\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\apps do Chrome\\Concrefer Unificado.lnk"
+        ]
+      },
+      "os_app_state": {
+        "badgeCount": 0,
+        "fileHandlers": []
+      }
+    }
+  },
+  "after_cache_keys": [
+    "concrefer-unificado-shell-v1.4.27"
+  ],
+  "cache_cleared_manually": false,
+  "storage_sentinel_preserved": true,
+  "new_version_visible": true,
+  "manifest": {
+    "id": "/unificado/mapa/operacao/index.html",
+    "name": "Uni",
+    "short_name": "Uni",
+    "start_url": "/unificado/",
+    "scope": "/unificado/",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#0B1730",
+    "theme_color": "#0B1730",
+    "icons": [
+      {
+        "src": "/unificado/assets/img/unificado-pwa-icon.svg",
+        "sizes": "any",
+        "type": "image/svg+xml",
+        "purpose": "any"
+      },
+      {
+        "src": "/unificado/mapa/operacao/unificado-icon.png",
+        "sizes": "1254x1254",
+        "type": "image/png",
+        "purpose": "any maskable"
+      }
+    ]
+  },
+  "os_app_state": {
+    "badgeCount": 0,
+    "fileHandlers": []
+  },
+  "installed_app_upgrade_proven": true,
+  "standalone_app_opened": true,
+  "installed_metadata_after": {
+    "chrome_apps": [
+      {
+        "id": "nfbgdffjclcmfjhepjfgibbhopcolfmk",
+        "title": null,
+        "name": "Concrefer Unificado",
+        "text": "Concrefer Unificado\n\n\n\n  \n    Ver na Chrome Web Store\n  \n  \n    Abrir na janela\n  \n  \n    Abrir na inicialização\n  \n  \n    Criar atalho\n  \n  \n    Instalar neste dispositivo\n  \n  \n  \n    Desinstalar\n  \n  \n    Remover do Google Chrome\n  \n  \n    Configurações do app"
+      }
+    ],
+    "windows_shortcut_paths": [
+      "C:\\Users\\Admin\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Concrefer.lnk",
+      "C:\\Users\\Admin\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\apps do Chrome\\Concrefer Unificado.lnk"
+    ]
+  }
+}

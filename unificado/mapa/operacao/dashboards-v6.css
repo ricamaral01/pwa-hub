@@ -1,0 +1,411 @@
+@import url("/unificado/shell/tokens.css");
+@media print {
+/* Dashboards v6: Montagem, Defeitos e Concretagem Matriz.
+   Camada visual apenas. Escopada pelos IDs das duas views; IDs, dados e endpoints não mudam. */
+#viewProdAnalise,#viewMontagemIndicadores{
+  --d6-bg:#f4f6fa;--d6-card:#fff;--d6-line:#e3e8ef;--d6-ink:#0b1730;--d6-mute:#5b6b82;
+  --d6-accent:#e8762a;--d6-accent-soft:#fdeee2;--d6-ok:#1f8a5b;--d6-bad:#ab3540;--d6-warn:#c98a10;
+  --d6-radius:16px;--d6-shadow:0 1px 2px rgba(11,23,48,.05),0 8px 24px rgba(11,23,48,.06);
+  color:var(--d6-ink);font-family:Geist,Inter,system-ui,Arial,sans-serif
+}
+#viewProdAnalise .mi-topbar,#viewMontagemIndicadores .mi-topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:16px 20px;margin-bottom:14px;background:var(--d6-card);border:1px solid var(--d6-line);
+  border-radius:var(--d6-radius);box-shadow:var(--d6-shadow)
+}
+#viewProdAnalise .mi-topbar h2,#viewMontagemIndicadores .mi-topbar h2{margin:0;font-size:clamp(20px,1.8vw,26px);letter-spacing:-.02em}
+#viewProdAnalise .mi-topbar p,#viewMontagemIndicadores .mi-topbar p{margin:2px 0 0;font-size:13px;color:var(--d6-mute)}
+#viewProdAnalise .mi-topbar-actions,#viewMontagemIndicadores .mi-topbar-actions{display:flex;gap:8px;flex-wrap:wrap}
+#viewProdAnalise .mi-icon-btn,#viewMontagemIndicadores .mi-icon-btn{
+  border:1px solid var(--d6-line);background:#fff;color:var(--d6-ink);border-radius:10px;
+  padding:9px 14px;font-weight:600;font-size:13px;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s
+}
+#viewProdAnalise .mi-icon-btn:hover,#viewMontagemIndicadores .mi-icon-btn:hover{border-color:var(--d6-accent);box-shadow:0 4px 12px rgba(232,118,42,.15);transform:translateY(-1px)}
+#viewProdAnalise .mi-icon-btn-primary,#viewMontagemIndicadores .mi-icon-btn-primary{background:var(--d6-accent);border-color:var(--d6-accent);color:#fff}
+
+/* Filtros e atalhos de período */
+#viewMontagemIndicadores .mi-fixed-filters-bar{
+  background:var(--d6-card);border:1px solid var(--d6-line);border-radius:var(--d6-radius);
+  box-shadow:var(--d6-shadow);padding:14px 18px;margin-bottom:14px
+}
+#viewProdAnalise .dashboard-filter-presets,#viewMontagemIndicadores .dashboard-filter-presets,
+#viewMontagemIndicadores .dashboard-filter-quick>div{display:inline-flex;gap:4px;padding:3px;background:var(--d6-bg);border-radius:12px;flex-wrap:wrap}
+#viewProdAnalise .dashboard-filter-presets button,#viewMontagemIndicadores .dashboard-filter-presets button,
+#viewMontagemIndicadores .dashboard-filter-quick button{
+  border:0;background:transparent;color:var(--d6-mute);border-radius:9px;padding:7px 12px;font-weight:600;font-size:12px;cursor:pointer;transition:background .15s,color .15s
+}
+#viewProdAnalise .dashboard-filter-presets button:hover,#viewMontagemIndicadores .dashboard-filter-presets button:hover,
+#viewMontagemIndicadores .dashboard-filter-quick button:hover{background:#fff;color:var(--d6-ink)}
+#viewProdAnalise .dashboard-filter-presets button.active,#viewMontagemIndicadores .dashboard-filter-presets button.active,
+#viewMontagemIndicadores .dashboard-filter-quick button.active{background:#fff;color:var(--d6-accent);box-shadow:0 1px 3px rgba(11,23,48,.12)}
+#viewMontagemIndicadores .mi-filter-item label,#viewProdAnalise .mi-drawer-field label{font-size:12px;font-weight:700;color:var(--d6-mute)}
+#viewMontagemIndicadores .input-field,#viewProdAnalise .mi-drawer-field input,#viewProdAnalise .mi-drawer-field select{
+  border:1px solid var(--d6-line);border-radius:10px;background:#fff;color:var(--d6-ink);padding:8px 10px
+}
+#viewMontagemIndicadores #miBtnFiltrar{background:var(--d6-accent)!important;border-radius:10px!important}
+#viewMontagemIndicadores #miBtnLimparFiltros{border-radius:10px!important}
+
+/* Abas em formato segmentado */
+#viewProdAnalise .mi-tabs-bar,#viewMontagemIndicadores .mi-tabs-bar{
+  display:inline-flex;gap:4px;padding:4px;margin:0 0 14px;background:#e9edf3;border-radius:14px;flex-wrap:wrap;border:0
+}
+#viewProdAnalise .mi-tab-btn,#viewMontagemIndicadores .mi-tab-btn{
+  border:0;background:transparent;color:var(--d6-mute);border-radius:10px;padding:9px 16px;font-weight:700;font-size:13px;cursor:pointer;transition:background .15s,color .15s
+}
+#viewProdAnalise .mi-tab-btn:hover,#viewMontagemIndicadores .mi-tab-btn:hover{color:var(--d6-ink)}
+#viewProdAnalise .mi-tab-btn.active,#viewMontagemIndicadores .mi-tab-btn.active{background:#fff;color:var(--d6-accent);box-shadow:0 2px 6px rgba(11,23,48,.12)}
+
+/* KPIs: grade responsiva, rótulo discreto e número em destaque */
+#viewProdAnalise .mi-kpis-grid,#viewMontagemIndicadores .mi-kpis-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px
+}
+#viewProdAnalise .mi-kpi-card,#viewMontagemIndicadores .mi-kpi-card{
+  position:relative;display:flex;flex-direction:column;gap:6px;min-height:104px;padding:16px 18px;
+  background:var(--d6-card);border:1px solid var(--d6-line);border-left:4px solid var(--d6-accent);
+  border-radius:var(--d6-radius);box-shadow:var(--d6-shadow);transition:transform .18s,box-shadow .18s
+}
+#viewProdAnalise .mi-kpi-card:hover,#viewMontagemIndicadores .mi-kpi-card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(11,23,48,.1)}
+#viewProdAnalise .mi-kpi-label,#viewMontagemIndicadores .mi-kpi-label{font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--d6-mute);text-transform:uppercase}
+#viewProdAnalise .mi-kpi-val,#viewMontagemIndicadores .mi-kpi-val{font-size:clamp(26px,2.3vw,36px);font-weight:700;line-height:1.05;letter-spacing:-.03em;color:var(--d6-ink)}
+#viewProdAnalise .db-kpi-sub{font-size:12px;color:var(--d6-mute)}
+#viewProdAnalise .mi-kpi-aprovados,#viewMontagemIndicadores .mi-kpi-aprovados{border-left-color:var(--d6-ok)}
+#viewProdAnalise .mi-kpi-recusados,#viewMontagemIndicadores .mi-kpi-recusados{border-left-color:var(--d6-bad);background:linear-gradient(180deg,#fff,#fff7f7)}
+#viewProdAnalise .mi-kpi-recusados .mi-kpi-val{color:var(--d6-bad)}
+#viewProdAnalise .mi-kpi-atingimento,#viewMontagemIndicadores .mi-kpi-atingimento{border-left-color:#285f94}
+
+/* Gráficos e painéis em cards uniformes */
+#viewProdAnalise .mi-charts-row,#viewMontagemIndicadores .mi-charts-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px;margin-bottom:14px
+}
+#viewProdAnalise .mi-chart-card,#viewMontagemIndicadores .mi-chart-card{
+  min-width:0;padding:16px 18px;background:var(--d6-card);border:1px solid var(--d6-line);
+  border-radius:var(--d6-radius);box-shadow:var(--d6-shadow)
+}
+#viewProdAnalise .mi-chart-title,#viewMontagemIndicadores .mi-chart-title{font-size:15px;font-weight:700;margin:0 0 12px;color:var(--d6-ink)}
+#viewProdAnalise .mi-chart-canvas-wrap,#viewMontagemIndicadores .mi-chart-canvas-wrap{position:relative;min-height:260px}
+
+/* Alertas em faixa compacta */
+#viewProdAnalise .pa-alerts-panel{border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:13px;border:1px solid #f1d9b5;background:#fff8ec}
+
+/* Guia de indicadores (memória de cálculo) mais leve */
+#viewMontagemIndicadores .mi-indicator-guide{
+  background:var(--d6-card);border:1px solid var(--d6-line);border-radius:var(--d6-radius);box-shadow:var(--d6-shadow);padding:16px 18px
+}
+#viewMontagemIndicadores .mi-indicator-guide-card{border-radius:12px;border:1px solid var(--d6-line);background:#fbfcfe}
+#viewMontagemIndicadores .mi-indicator-guide-primary{border-color:#f0cfb2;background:var(--d6-accent-soft)}
+
+/* Tabelas */
+#viewProdAnalise table,#viewMontagemIndicadores table{border-collapse:separate;border-spacing:0;width:100%;font-size:13px}
+#viewProdAnalise table th,#viewMontagemIndicadores table th{background:#f1f4f8;color:var(--d6-mute);font-weight:700;text-align:left;padding:10px 12px;position:sticky;top:0}
+#viewProdAnalise table td,#viewMontagemIndicadores table td{padding:10px 12px;border-bottom:1px solid #edf0f4}
+#viewProdAnalise table tbody tr:hover td,#viewMontagemIndicadores table tbody tr:hover td{background:#fafbfd}
+
+@media(max-width:700px){
+  #viewProdAnalise .mi-topbar,#viewMontagemIndicadores .mi-topbar{padding:12px 14px}
+  #viewProdAnalise .mi-tabs-bar,#viewMontagemIndicadores .mi-tabs-bar{display:flex;overflow-x:auto;flex-wrap:nowrap}
+  #viewProdAnalise .mi-charts-row,#viewMontagemIndicadores .mi-charts-row{grid-template-columns:1fr}
+}
+@media print{
+  #viewProdAnalise .mi-topbar-actions,#viewMontagemIndicadores .mi-topbar-actions,#viewProdAnalise .mi-tabs-bar,#viewMontagemIndicadores .mi-tabs-bar{display:none}
+  #viewProdAnalise .mi-kpi-card,#viewProdAnalise .mi-chart-card,#viewMontagemIndicadores .mi-kpi-card,#viewMontagemIndicadores .mi-chart-card{box-shadow:none;break-inside:avoid}
+}
+
+/* Concretagem Matriz: leitura contínua com filtros visíveis. */
+#viewProdAnalise{padding:8px 4px 28px;background:#f3f6f8}
+#viewProdAnalise .pa-topbar{margin:0 0 12px;padding:20px 22px;background:#142d41;color:#fff;border:0;box-shadow:0 12px 30px rgba(20,45,65,.14)}
+#viewProdAnalise .pa-topbar h2{color:#fff;font-size:clamp(22px,2.2vw,32px)}
+#viewProdAnalise .pa-topbar p{color:#bbcad6}
+#viewProdAnalise .pa-topbar .mi-icon-btn{background:#fff;color:#223b4f;border-color:#fff}
+#viewProdAnalise .pa-topbar .mi-icon-btn-primary{background:#e97832;color:#fff;border-color:#e97832}
+#viewProdAnalise #paBtnToggleFiltros,#viewProdAnalise #paBtnFecharFiltros{display:none}
+#viewProdAnalise .pa-filters-inline{margin:0 0 16px;background:#fff;border:1px solid #dce5eb;border-radius:16px;box-shadow:var(--d6-shadow)}
+#viewProdAnalise .pa-filters-inline .mi-drawer-content{display:block;width:100%;max-width:none;height:auto;box-shadow:none;border-radius:16px;background:transparent}
+#viewProdAnalise .pa-filters-inline .mi-drawer-header{padding:12px 18px 0;border:0}
+#viewProdAnalise .pa-filters-inline .mi-drawer-header h3{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#718294}
+#viewProdAnalise .pa-filters-inline .mi-drawer-body{display:flex;flex-direction:row;align-items:end;gap:12px;flex-wrap:wrap;padding:10px 18px;overflow:visible}
+#viewProdAnalise .pa-filters-inline .dashboard-filter-period{display:flex;align-items:end;gap:10px;flex-wrap:wrap;flex:1 1 560px}
+#viewProdAnalise .pa-filters-inline .dashboard-filter-group-label{width:100%;font-size:11px;color:#687e91;font-weight:800}
+#viewProdAnalise .pa-filters-inline .dashboard-filter-presets{align-self:end}
+#viewProdAnalise .pa-filters-inline .mi-drawer-field{min-width:130px}
+#viewProdAnalise .pa-filters-inline .mi-drawer-field input,#viewProdAnalise .pa-filters-inline .mi-drawer-field select{min-height:38px}
+#viewProdAnalise .pa-filters-inline .mi-drawer-footer{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;padding:0 18px 14px;border:0}
+#viewProdAnalise .pa-filters-inline .mi-drawer-footer button{flex:0 0 auto;min-height:36px;border-radius:9px}
+#viewProdAnalise .pa-tabs-bar{display:none!important}
+#viewProdAnalise .pa-tab-section{display:block!important;margin-bottom:18px}
+#viewProdAnalise .pa-section-heading{display:flex;align-items:baseline;gap:12px;margin:24px 2px 12px;color:#183147;font-size:18px;letter-spacing:-.025em}
+#viewProdAnalise .pa-section-heading small{font-size:11px;font-weight:500;letter-spacing:0;color:#77899a}
+#viewProdAnalise .pa-kpis-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card{min-height:122px;padding:16px;border:1px solid #dde6ec;border-top:3px solid #e97832;border-left:1px solid #dde6ec}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(1){order:1}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(2){order:2}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(5){order:3}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(9){order:4}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(10){order:5}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(4){order:6}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(3){order:7}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(6){order:8}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(7){order:9}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(8){order:10}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(11){order:11}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(3),#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(6),#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(7),#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(8),#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(11){min-height:94px;background:#fdfefe;border-top-color:#9cafbc}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-recusados{border-color:#edc4c5;border-top-color:#b9454a;background:#fff8f8}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-label{text-transform:none;letter-spacing:0;line-height:1.35}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-val{font-size:clamp(22px,2vw,30px);overflow-wrap:anywhere}
+#viewProdAnalise .mi-charts-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+#viewProdAnalise .mi-chart-card{border-radius:14px;border-color:#dce5eb;box-shadow:var(--d6-shadow)}
+#viewProdAnalise .mi-chart-title{color:#203b50}
+#viewProdAnalise .pa-kg-homem{border-radius:15px;border-color:#dce5eb;box-shadow:var(--d6-shadow)}
+#viewProdAnalise .pa-kg-homem-heading h3{color:#1b374d}
+#viewProdAnalise .pa-kg-homem-subheading{margin-top:18px}
+#viewProdAnalise .pa-kg-homem-card{border-top-color:#e97832;background:#fbfcfd}
+#viewProdAnalise .pa-kg-homem-card strong{font-size:clamp(24px,2.2vw,34px)}
+#viewProdAnalise .pa-table-wrap{max-height:420px;overflow:auto;border-radius:14px}
+@media(max-width:1400px){#viewProdAnalise .pa-kpis-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:850px){#viewProdAnalise .mi-charts-row{grid-template-columns:1fr}#viewProdAnalise .pa-filters-inline .dashboard-filter-period{flex-basis:100%}}
+@media(max-width:600px){#viewProdAnalise{padding:2px 0 20px}#viewProdAnalise .pa-topbar{padding:17px}#viewProdAnalise .pa-filters-inline .mi-drawer-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#viewProdAnalise .pa-filters-inline .dashboard-filter-period{grid-column:1/-1}#viewProdAnalise .pa-filters-inline .dashboard-filter-presets{max-width:100%;overflow:auto;flex-wrap:nowrap}#viewProdAnalise .pa-kpis-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#viewProdAnalise .pa-kpis-grid .mi-kpi-card{padding:13px;min-height:105px}#viewProdAnalise .pa-section-heading{display:block}#viewProdAnalise .pa-section-heading small{display:block;margin-top:2px}#viewProdAnalise .pa-kg-homem-grid{grid-template-columns:1fr}}
+
+/* Montagem: leitura contínua e evolução diária da equipe no mês. */
+#viewMontagemIndicadores{padding:8px 4px 28px;background:#f3f6f8}
+#viewMontagemIndicadores .mi-topbar{padding:20px 22px;background:#142d41;color:#fff;border:0;box-shadow:0 12px 30px rgba(20,45,65,.14)}
+#viewMontagemIndicadores .mi-topbar h2{color:#fff;font-size:clamp(23px,2.2vw,32px)}
+#viewMontagemIndicadores .mi-topbar p{color:#bbcad6}
+#viewMontagemIndicadores .mi-topbar .mi-icon-btn{background:#fff;color:#223b4f;border-color:#fff}
+#viewMontagemIndicadores .mi-topbar .mi-icon-btn-primary{background:#e97832;color:#fff;border-color:#e97832}
+#viewMontagemIndicadores .mi-tabs-bar{display:none!important}
+body.mode-montagem-indicadores #viewMontagemIndicadores .mi-tab-section{display:block!important;margin:0 0 22px}
+#viewMontagemIndicadores .mi-kpis-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+#viewMontagemIndicadores .mi-kpi-card{border:1px solid #dde6ec;border-top:3px solid #e97832;border-left:1px solid #dde6ec;min-height:115px}
+#viewMontagemIndicadores .mi-kpi-label{text-transform:none;letter-spacing:0}
+#viewMontagemIndicadores .mi-kpi-card small{font-size:11px;line-height:1.35;color:#697b8c}
+#viewMontagemIndicadores .mi-kpi-taxa-logins{border-top-color:#16855e;background:#f6fcf9}
+#viewMontagemIndicadores .mi-kpi-taxa-logins .mi-kpi-val{color:#13704f}
+#viewMontagemIndicadores .mi-kpi-logins{border-top-color:#285f94}
+#viewMontagemIndicadores .mi-kpi-inspecoes-logins{border-top-color:#e97832}
+#viewMontagemIndicadores .mi-timeline-card{margin:2px 0 18px;border-color:#dce5eb}
+#viewMontagemIndicadores .mi-timeline-card .mi-chart-canvas-wrap{height:330px;min-height:330px}
+#viewMontagemIndicadores #miMontagemTimelineNote{margin:-5px 0 14px;font-size:12px;line-height:1.45;color:#65798b}
+#viewMontagemIndicadores .mi-chart-card{border-color:#dce5eb}
+#viewMontagemIndicadores .mi-section-heading,#viewMontagemIndicadores .mi-tab-section:not(#miSecaoResumo):before{display:block;margin:22px 2px 12px;font-size:18px;font-weight:750;color:#183147;letter-spacing:-.025em}
+#viewMontagemIndicadores #miSecaoProducao:before{content:"Evolução e registros"}
+#viewMontagemIndicadores #miSecaoQualidade:before{content:"Setores e operadores"}
+#viewMontagemIndicadores #miSecaoProdutividade:before{content:"Equipe e tempos"}
+#viewMontagemIndicadores #miSecaoDefeitos{display:none!important}
+#viewMontagemIndicadores .mi-taxa-card{border:1px solid #dce5eb;border-radius:15px;background:#fff;box-shadow:var(--d6-shadow)}
+@media(max-width:1100px){#viewMontagemIndicadores .mi-kpis-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#viewMontagemIndicadores{padding:2px 0 20px}#viewMontagemIndicadores .mi-topbar{padding:17px}#viewMontagemIndicadores .mi-kpis-grid{gap:8px}#viewMontagemIndicadores .mi-kpi-card{padding:13px;min-height:105px}#viewMontagemIndicadores .mi-timeline-card .mi-chart-canvas-wrap{height:290px;min-height:290px}}
+
+/* Defeitos: mesma hierarquia visual, mantendo as definições e filtros existentes. */
+#viewDashboardDefeitos.df-v4-shell{background:#f3f6f8;border-radius:16px;box-shadow:none;color:#183147}
+#viewDashboardDefeitos .df-v4-topbar{background:#142d41;padding:13px 20px}
+#viewDashboardDefeitos .df-v4-body{padding:18px}
+#viewDashboardDefeitos .df-v4-title-row{align-items:center;margin-bottom:16px}
+#viewDashboardDefeitos .df-v4-title-row h2{font-size:clamp(23px,2.2vw,32px);letter-spacing:-.025em;color:#183147}
+#viewDashboardDefeitos .df-v4-title-row p{font-size:13px;font-weight:600;color:#65798b}
+#viewDashboardDefeitos .df-v4-dash-tabs{display:none}
+#viewDashboardDefeitos .df-v4-scope-tabs{gap:5px;padding:4px;background:#e9edf3;border-radius:13px;width:max-content;max-width:100%;margin-bottom:14px}
+#viewDashboardDefeitos .df-v4-scope-tabs button{border:0;background:transparent;color:#52677a;border-radius:9px;font-size:12px;min-height:34px}
+#viewDashboardDefeitos .df-v4-scope-tabs button.active{background:#fff;color:#a34e13;box-shadow:0 1px 4px rgba(11,23,48,.12)}
+#viewDashboardDefeitos .df-v4-scope-tabs button.consolidated.active{background:#fff;color:#5e3e9e}
+#viewDashboardDefeitos .df-v4-filters{border-color:#dce5eb;border-radius:15px;box-shadow:var(--d6-shadow);padding:14px}
+#viewDashboardDefeitos .df-v4-scope-caption{background:#eaf0f5;color:#52677a;border-radius:10px}
+#viewDashboardDefeitos .df-v4-data-banner{background:#fff9ed;border:1px solid #f0dfbd;color:#76531f;border-radius:10px}
+#viewDashboardDefeitos .df-new-cards{gap:12px}
+#viewDashboardDefeitos .df-new-card{border-color:#dce5eb;border-top:3px solid #e97832;box-shadow:var(--d6-shadow);min-height:185px}
+#viewDashboardDefeitos .df-new-main{background:#fff9f3;border-top-color:#c75642}
+#viewDashboardDefeitos .df-new-panels{gap:14px}
+#viewDashboardDefeitos .df-new-panel,#viewDashboardDefeitos .df-v4-panel{border-radius:15px;border-color:#dce5eb;box-shadow:var(--d6-shadow)}
+@media(max-width:700px){#viewDashboardDefeitos .df-v4-body{padding:12px}#viewDashboardDefeitos .df-v4-scope-tabs{width:100%;overflow-x:auto;flex-wrap:nowrap}#viewDashboardDefeitos .df-v4-title-row{flex-wrap:wrap}}
+
+}
+@media screen {
+/* Dashboards v6: Montagem, Defeitos e Concretagem Matriz.
+   Camada visual apenas. Escopada pelos IDs das duas views; IDs, dados e endpoints não mudam. */
+#viewProdAnalise,#viewMontagemIndicadores{--d6-bg:var(--c-bg);--d6-card:var(--c-surface);--d6-line:var(--c-line);--d6-ink:var(--c-navy);--d6-mute:var(--c-ink-2);--d6-accent:var(--c-orange);--d6-accent-soft:var(--c-line-2);--d6-ok:var(--c-ok);--d6-bad:var(--c-crit);--d6-warn:var(--c-orange);--d6-radius:var(--r);--d6-shadow:0 1px 2px rgba(11,23,48,.05),0 8px 24px rgba(11,23,48,.06);color:var(--d6-ink);}
+#viewProdAnalise .mi-topbar,#viewMontagemIndicadores .mi-topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 20px;margin-bottom:14px;background:var(--d6-card);border:1px solid var(--d6-line);border-radius:var(--r);box-shadow:none;}
+#viewProdAnalise .mi-topbar h2,#viewMontagemIndicadores .mi-topbar h2{margin:0;font-size:clamp(20px,1.8vw,26px);letter-spacing:-.02em;}
+#viewProdAnalise .mi-topbar p,#viewMontagemIndicadores .mi-topbar p{margin:2px 0 0;font-size:13px;color:var(--d6-mute);}
+#viewProdAnalise .mi-topbar-actions,#viewMontagemIndicadores .mi-topbar-actions{display:flex;gap:8px;flex-wrap:wrap;}
+#viewProdAnalise .mi-icon-btn,#viewMontagemIndicadores .mi-icon-btn{border:1px solid var(--d6-line);background:var(--c-surface);color:var(--d6-ink);border-radius:var(--r);padding:9px 14px;font-weight:600;font-size:13px;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s;}
+#viewProdAnalise .mi-icon-btn:hover,#viewMontagemIndicadores .mi-icon-btn:hover{border-color:var(--d6-accent);box-shadow:none;transform:none;}
+#viewProdAnalise .mi-icon-btn-primary,#viewMontagemIndicadores .mi-icon-btn-primary{background:var(--d6-accent);border-color:var(--d6-accent);color:var(--c-surface);}
+/* Filtros e atalhos de período */
+#viewMontagemIndicadores .mi-fixed-filters-bar{background:var(--d6-card);border:1px solid var(--d6-line);border-radius:var(--r);box-shadow:none;padding:14px 18px;margin-bottom:14px;}
+#viewProdAnalise .dashboard-filter-presets,#viewMontagemIndicadores .dashboard-filter-presets,
+#viewMontagemIndicadores .dashboard-filter-quick>div{display:inline-flex;gap:4px;padding:3px;background:var(--d6-bg);border-radius:var(--r);flex-wrap:wrap;}
+#viewProdAnalise .dashboard-filter-presets button,#viewMontagemIndicadores .dashboard-filter-presets button,
+#viewMontagemIndicadores .dashboard-filter-quick button{border:0;background:transparent;color:var(--d6-mute);border-radius:var(--r);padding:7px 12px;font-weight:600;font-size:12px;cursor:pointer;transition:background .15s,color .15s;}
+#viewProdAnalise .dashboard-filter-presets button:hover,#viewMontagemIndicadores .dashboard-filter-presets button:hover,
+#viewMontagemIndicadores .dashboard-filter-quick button:hover{background:var(--c-surface);color:var(--d6-ink);}
+#viewProdAnalise .dashboard-filter-presets button.active,#viewMontagemIndicadores .dashboard-filter-presets button.active,
+#viewMontagemIndicadores .dashboard-filter-quick button.active{background:var(--c-surface);color:var(--d6-accent);box-shadow:none;}
+#viewMontagemIndicadores .mi-filter-item label,#viewProdAnalise .mi-drawer-field label{font-size:12px;font-weight:700;color:var(--d6-mute);}
+#viewMontagemIndicadores .input-field,#viewProdAnalise .mi-drawer-field input,#viewProdAnalise .mi-drawer-field select{border:1px solid var(--d6-line);border-radius:var(--r);background:var(--c-surface);color:var(--d6-ink);padding:8px 10px;}
+#viewMontagemIndicadores #miBtnFiltrar{background:var(--d6-accent)!important;border-radius:var(--r)!important;}
+#viewMontagemIndicadores #miBtnLimparFiltros{border-radius:var(--r)!important;}
+/* Abas em formato segmentado */
+#viewProdAnalise .mi-tabs-bar,#viewMontagemIndicadores .mi-tabs-bar{display:inline-flex;gap:4px;padding:4px;margin:0 0 14px;background:var(--c-line-2);border-radius:var(--r);flex-wrap:wrap;border:0;}
+#viewProdAnalise .mi-tab-btn,#viewMontagemIndicadores .mi-tab-btn{border:0;background:transparent;color:var(--d6-mute);border-radius:var(--r);padding:9px 16px;font-weight:700;font-size:13px;cursor:pointer;transition:background .15s,color .15s;}
+#viewProdAnalise .mi-tab-btn:hover,#viewMontagemIndicadores .mi-tab-btn:hover{color:var(--d6-ink);}
+#viewProdAnalise .mi-tab-btn.active,#viewMontagemIndicadores .mi-tab-btn.active{background:var(--c-surface);color:var(--d6-accent);box-shadow:none;}
+/* KPIs: grade responsiva, rótulo discreto e número em destaque */
+#viewProdAnalise .mi-kpis-grid,#viewMontagemIndicadores .mi-kpis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px;}
+#viewProdAnalise .mi-kpi-card,#viewMontagemIndicadores .mi-kpi-card{position:relative;display:flex;flex-direction:column;gap:6px;min-height:104px;padding:16px 18px;background:var(--d6-card);border:1px solid var(--d6-line);border-left:4px solid var(--d6-accent);border-radius:var(--r);box-shadow:none;transition:transform .18s,box-shadow .18s;}
+#viewProdAnalise .mi-kpi-card:hover,#viewMontagemIndicadores .mi-kpi-card:hover{transform:none;box-shadow:none;}
+#viewProdAnalise .mi-kpi-label,#viewMontagemIndicadores .mi-kpi-label{font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--d6-mute);text-transform:none;}
+#viewProdAnalise .mi-kpi-val,#viewMontagemIndicadores .mi-kpi-val{font-size:clamp(26px,2.3vw,36px);font-weight:700;line-height:1.05;letter-spacing:-.03em;color:var(--d6-ink);}
+#viewProdAnalise .db-kpi-sub{font-size:12px;color:var(--d6-mute);}
+#viewProdAnalise .mi-kpi-aprovados,#viewMontagemIndicadores .mi-kpi-aprovados{border-left-color:var(--d6-ok);}
+#viewProdAnalise .mi-kpi-recusados,#viewMontagemIndicadores .mi-kpi-recusados{border-left-color:var(--d6-bad);background:var(--c-surface);}
+#viewProdAnalise .mi-kpi-recusados .mi-kpi-val{color:var(--d6-bad);}
+#viewProdAnalise .mi-kpi-atingimento,#viewMontagemIndicadores .mi-kpi-atingimento{border-left-color:var(--c-blue);}
+/* Gráficos e painéis em cards uniformes */
+#viewProdAnalise .mi-charts-row,#viewMontagemIndicadores .mi-charts-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px;margin-bottom:14px;}
+#viewProdAnalise .mi-chart-card,#viewMontagemIndicadores .mi-chart-card{min-width:0;padding:16px 18px;background:var(--d6-card);border:1px solid var(--d6-line);border-radius:var(--r);box-shadow:none;}
+#viewProdAnalise .mi-chart-title,#viewMontagemIndicadores .mi-chart-title{font-size:15px;font-weight:700;margin:0 0 12px;color:var(--d6-ink);}
+#viewProdAnalise .mi-chart-canvas-wrap,#viewMontagemIndicadores .mi-chart-canvas-wrap{position:relative;min-height:260px;}
+/* Alertas em faixa compacta */
+#viewProdAnalise .pa-alerts-panel{border-radius:var(--r);padding:10px 14px;margin-bottom:14px;font-size:13px;border:1px solid var(--c-line);background:var(--c-bg);}
+/* Guia de indicadores (memória de cálculo) mais leve */
+#viewMontagemIndicadores .mi-indicator-guide{background:var(--d6-card);border:1px solid var(--d6-line);border-radius:var(--r);box-shadow:none;padding:16px 18px;}
+#viewMontagemIndicadores .mi-indicator-guide-card{border-radius:var(--r);border:1px solid var(--d6-line);background:var(--c-surface);}
+#viewMontagemIndicadores .mi-indicator-guide-primary{border-color:var(--c-line);background:var(--d6-accent-soft);}
+/* Tabelas */
+#viewProdAnalise table,#viewMontagemIndicadores table{border-collapse:separate;border-spacing:0;width:100%;font-size:13px;}
+#viewProdAnalise table th,#viewMontagemIndicadores table th{background:var(--c-bg);color:var(--d6-mute);font-weight:700;text-align:left;padding:10px 12px;position:sticky;top:0;}
+#viewProdAnalise table td,#viewMontagemIndicadores table td{padding:10px 12px;border-bottom:1px solid var(--c-line-2);}
+#viewProdAnalise table tbody tr:hover td,#viewMontagemIndicadores table tbody tr:hover td{background:var(--c-surface);}
+@media (max-width:700px){#viewProdAnalise .mi-topbar,#viewMontagemIndicadores .mi-topbar{padding:12px 14px;}
+#viewProdAnalise .mi-tabs-bar,#viewMontagemIndicadores .mi-tabs-bar{display:flex;overflow-x:auto;flex-wrap:nowrap;}
+#viewProdAnalise .mi-charts-row,#viewMontagemIndicadores .mi-charts-row{grid-template-columns:1fr;}
+}
+@media print{
+  #viewProdAnalise .mi-topbar-actions,#viewMontagemIndicadores .mi-topbar-actions,#viewProdAnalise .mi-tabs-bar,#viewMontagemIndicadores .mi-tabs-bar{display:none}
+  #viewProdAnalise .mi-kpi-card,#viewProdAnalise .mi-chart-card,#viewMontagemIndicadores .mi-kpi-card,#viewMontagemIndicadores .mi-chart-card{box-shadow:none;break-inside:avoid}
+}
+/* Concretagem Matriz: leitura contínua com filtros visíveis. */
+#viewProdAnalise{padding:8px 4px 28px;background:var(--c-bg);}
+#viewProdAnalise .pa-topbar{margin:0 0 12px;padding:20px 22px;background:var(--c-navy);color:var(--c-surface);border:0;box-shadow:none;}
+#viewProdAnalise .pa-topbar h2{color:var(--c-surface);font-size:clamp(22px,2.2vw,32px);}
+#viewProdAnalise .pa-topbar p{color:var(--c-line);}
+#viewProdAnalise .pa-topbar .mi-icon-btn{background:var(--c-surface);color:var(--c-blue);border-color:var(--c-surface);}
+#viewProdAnalise .pa-topbar .mi-icon-btn-primary{background:var(--c-orange);color:var(--c-surface);border-color:var(--c-orange);}
+#viewProdAnalise #paBtnToggleFiltros,#viewProdAnalise #paBtnFecharFiltros{display:none;}
+#viewProdAnalise .pa-filters-inline{margin:0 0 16px;background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--r);box-shadow:none;}
+#viewProdAnalise .pa-filters-inline .mi-drawer-content{display:block;width:100%;max-width:none;height:auto;box-shadow:none;border-radius:var(--r);background:transparent;}
+#viewProdAnalise .pa-filters-inline .mi-drawer-header{padding:12px 18px 0;border:0;}
+#viewProdAnalise .pa-filters-inline .mi-drawer-header h3{font-size:12px;text-transform:none;letter-spacing:.1em;color:var(--c-ink-3);}
+#viewProdAnalise .pa-filters-inline .mi-drawer-body{display:flex;flex-direction:row;align-items:end;gap:12px;flex-wrap:wrap;padding:10px 18px;overflow:visible;}
+#viewProdAnalise .pa-filters-inline .dashboard-filter-period{display:flex;align-items:end;gap:10px;flex-wrap:wrap;flex:1 1 560px;}
+#viewProdAnalise .pa-filters-inline .dashboard-filter-group-label{width:100%;font-size:11px;color:var(--c-ink-2);font-weight:800;}
+#viewProdAnalise .pa-filters-inline .dashboard-filter-presets{align-self:end;}
+#viewProdAnalise .pa-filters-inline .mi-drawer-field{min-width:130px;}
+#viewProdAnalise .pa-filters-inline .mi-drawer-field input,#viewProdAnalise .pa-filters-inline .mi-drawer-field select{min-height:38px;}
+#viewProdAnalise .pa-filters-inline .mi-drawer-footer{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;padding:0 18px 14px;border:0;}
+#viewProdAnalise .pa-filters-inline .mi-drawer-footer button{flex:0 0 auto;min-height:36px;border-radius:var(--r);}
+#viewProdAnalise .pa-tabs-bar{display:none!important;}
+#viewProdAnalise .pa-tab-section{display:block!important;margin-bottom:18px;}
+#viewProdAnalise .pa-section-heading{display:flex;align-items:baseline;gap:12px;margin:24px 2px 12px;color:var(--c-navy);font-size:18px;letter-spacing:-.025em;}
+#viewProdAnalise .pa-section-heading small{font-size:11px;font-weight:500;letter-spacing:0;color:var(--c-ink-3);}
+#viewProdAnalise .pa-kpis-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card{min-height:122px;padding:16px;border:1px solid var(--c-line);border-top:3px solid var(--c-orange);border-left:1px solid var(--c-line);}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(1){order:1;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(2){order:2;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(5){order:3;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(9){order:4;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(10){order:5;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(4){order:6;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(3){order:7;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(6){order:8;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(7){order:9;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(8){order:10;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(11){order:11;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(3),#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(6),#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(7),#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(8),#viewProdAnalise .pa-kpis-grid .mi-kpi-card:nth-child(11){min-height:94px;background:var(--c-surface);border-top-color:var(--c-ink-3);}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-recusados{border-color:var(--c-line);border-top-color:var(--c-crit);background:var(--c-surface);}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-label{text-transform:none;letter-spacing:0;line-height:1.35;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-val{font-size:clamp(22px,2vw,30px);overflow-wrap:anywhere;}
+#viewProdAnalise .mi-charts-row{grid-template-columns:repeat(2,minmax(0,1fr));}
+#viewProdAnalise .mi-chart-card{border-radius:var(--r);border-color:var(--c-line);box-shadow:none;}
+#viewProdAnalise .mi-chart-title{color:var(--c-blue);}
+#viewProdAnalise .pa-kg-homem{border-radius:var(--r);border-color:var(--c-line);box-shadow:none;}
+#viewProdAnalise .pa-kg-homem-heading h3{color:var(--c-blue);}
+#viewProdAnalise .pa-kg-homem-subheading{margin-top:18px;}
+#viewProdAnalise .pa-kg-homem-card{border-top-color:var(--c-orange);background:var(--c-surface);}
+#viewProdAnalise .pa-kg-homem-card strong{font-size:clamp(24px,2.2vw,34px);}
+#viewProdAnalise .pa-table-wrap{max-height:420px;overflow:auto;border-radius:var(--r);}
+@media (max-width:1400px){#viewProdAnalise .pa-kpis-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media (max-width:850px){#viewProdAnalise .mi-charts-row{grid-template-columns:1fr;}
+#viewProdAnalise .pa-filters-inline .dashboard-filter-period{flex-basis:100%;}
+}
+@media (max-width:600px){#viewProdAnalise{padding:2px 0 20px;}
+#viewProdAnalise .pa-topbar{padding:17px;}
+#viewProdAnalise .pa-filters-inline .mi-drawer-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+#viewProdAnalise .pa-filters-inline .dashboard-filter-period{grid-column:1/-1;}
+#viewProdAnalise .pa-filters-inline .dashboard-filter-presets{max-width:100%;overflow:auto;flex-wrap:nowrap;}
+#viewProdAnalise .pa-kpis-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+#viewProdAnalise .pa-kpis-grid .mi-kpi-card{padding:13px;min-height:105px;}
+#viewProdAnalise .pa-section-heading{display:block;}
+#viewProdAnalise .pa-section-heading small{display:block;margin-top:2px;}
+#viewProdAnalise .pa-kg-homem-grid{grid-template-columns:1fr;}
+}
+/* Montagem: leitura contínua e evolução diária da equipe no mês. */
+#viewMontagemIndicadores{padding:8px 4px 28px;background:var(--c-bg);}
+#viewMontagemIndicadores .mi-topbar{padding:20px 22px;background:var(--c-navy);color:var(--c-surface);border:0;box-shadow:none;}
+#viewMontagemIndicadores .mi-topbar h2{color:var(--c-surface);font-size:clamp(23px,2.2vw,32px);}
+#viewMontagemIndicadores .mi-topbar p{color:var(--c-line);}
+#viewMontagemIndicadores .mi-topbar .mi-icon-btn{background:var(--c-surface);color:var(--c-blue);border-color:var(--c-surface);}
+#viewMontagemIndicadores .mi-topbar .mi-icon-btn-primary{background:var(--c-orange);color:var(--c-surface);border-color:var(--c-orange);}
+#viewMontagemIndicadores .mi-tabs-bar{display:none!important;}
+body.mode-montagem-indicadores #viewMontagemIndicadores .mi-tab-section{display:block!important;margin:0 0 22px;}
+#viewMontagemIndicadores .mi-kpis-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
+#viewMontagemIndicadores .mi-kpi-card{border:1px solid var(--c-line);border-top:3px solid var(--c-orange);border-left:1px solid var(--c-line);min-height:115px;}
+#viewMontagemIndicadores .mi-kpi-label{text-transform:none;letter-spacing:0;}
+#viewMontagemIndicadores .mi-kpi-card small{font-size:11px;line-height:1.35;color:var(--c-ink-2);}
+#viewMontagemIndicadores .mi-kpi-taxa-logins{border-top-color:var(--c-ok);background:var(--c-bg);}
+#viewMontagemIndicadores .mi-kpi-taxa-logins .mi-kpi-val{color:var(--c-ok);}
+#viewMontagemIndicadores .mi-kpi-logins{border-top-color:var(--c-blue);}
+#viewMontagemIndicadores .mi-kpi-inspecoes-logins{border-top-color:var(--c-orange);}
+#viewMontagemIndicadores .mi-timeline-card{margin:2px 0 18px;border-color:var(--c-line);}
+#viewMontagemIndicadores .mi-timeline-card .mi-chart-canvas-wrap{height:330px;min-height:330px;}
+#viewMontagemIndicadores #miMontagemTimelineNote{margin:-5px 0 14px;font-size:12px;line-height:1.45;color:var(--c-ink-2);}
+#viewMontagemIndicadores .mi-chart-card{border-color:var(--c-line);}
+#viewMontagemIndicadores .mi-section-heading,#viewMontagemIndicadores .mi-tab-section:not(#miSecaoResumo):before{display:block;margin:22px 2px 12px;font-size:18px;font-weight:750;color:var(--c-navy);letter-spacing:-.025em;}
+#viewMontagemIndicadores #miSecaoProducao:before{content:"Evolução e registros";}
+#viewMontagemIndicadores #miSecaoQualidade:before{content:"Setores e operadores";}
+#viewMontagemIndicadores #miSecaoProdutividade:before{content:"Equipe e tempos";}
+#viewMontagemIndicadores #miSecaoDefeitos{display:none!important;}
+#viewMontagemIndicadores .mi-taxa-card{border:1px solid var(--c-line);border-radius:var(--r);background:var(--c-surface);box-shadow:none;}
+@media (max-width:1100px){#viewMontagemIndicadores .mi-kpis-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:600px){#viewMontagemIndicadores{padding:2px 0 20px;}
+#viewMontagemIndicadores .mi-topbar{padding:17px;}
+#viewMontagemIndicadores .mi-kpis-grid{gap:8px;}
+#viewMontagemIndicadores .mi-kpi-card{padding:13px;min-height:105px;}
+#viewMontagemIndicadores .mi-timeline-card .mi-chart-canvas-wrap{height:290px;min-height:290px;}
+}
+/* Defeitos: mesma hierarquia visual, mantendo as definições e filtros existentes. */
+#viewDashboardDefeitos.df-v4-shell{background:var(--c-bg);border-radius:var(--r);box-shadow:none;color:var(--c-navy);}
+#viewDashboardDefeitos .df-v4-topbar{background:var(--c-navy);padding:13px 20px;}
+#viewDashboardDefeitos .df-v4-body{padding:18px;}
+#viewDashboardDefeitos .df-v4-title-row{align-items:center;margin-bottom:16px;}
+#viewDashboardDefeitos .df-v4-title-row h2{font-size:clamp(23px,2.2vw,32px);letter-spacing:-.025em;color:var(--c-navy);}
+#viewDashboardDefeitos .df-v4-title-row p{font-size:13px;font-weight:600;color:var(--c-ink-2);}
+#viewDashboardDefeitos .df-v4-dash-tabs{display:none;}
+#viewDashboardDefeitos .df-v4-scope-tabs{gap:5px;padding:4px;background:var(--c-line-2);border-radius:var(--r);width:max-content;max-width:100%;margin-bottom:14px;}
+#viewDashboardDefeitos .df-v4-scope-tabs button{border:0;background:transparent;color:var(--c-ink-2);border-radius:var(--r);font-size:12px;min-height:34px;}
+#viewDashboardDefeitos .df-v4-scope-tabs button.active{background:var(--c-surface);color:var(--c-warn);box-shadow:none;}
+#viewDashboardDefeitos .df-v4-scope-tabs button.consolidated.active{background:var(--c-surface);color:var(--c-ink-2);}
+#viewDashboardDefeitos .df-v4-filters{border-color:var(--c-line);border-radius:var(--r);box-shadow:none;padding:14px;}
+#viewDashboardDefeitos .df-v4-scope-caption{background:var(--c-line-2);color:var(--c-ink-2);border-radius:var(--r);}
+#viewDashboardDefeitos .df-v4-data-banner{background:var(--c-bg);border:1px solid var(--c-line);color:var(--c-warn);border-radius:var(--r);}
+#viewDashboardDefeitos .df-new-cards{gap:12px;}
+#viewDashboardDefeitos .df-new-card{border-color:var(--c-line);border-top:3px solid var(--c-orange);box-shadow:none;min-height:185px;}
+#viewDashboardDefeitos .df-new-main{background:var(--c-bg);border-top-color:var(--c-orange);}
+#viewDashboardDefeitos .df-new-panels{gap:14px;}
+#viewDashboardDefeitos .df-new-panel,#viewDashboardDefeitos .df-v4-panel{border-radius:var(--r);border-color:var(--c-line);box-shadow:none;}
+@media (max-width:700px){#viewDashboardDefeitos .df-v4-body{padding:12px;}
+#viewDashboardDefeitos .df-v4-scope-tabs{width:100%;overflow-x:auto;flex-wrap:nowrap;}
+#viewDashboardDefeitos .df-v4-title-row{flex-wrap:wrap;}
+}
+
+}

@@ -1,0 +1,20 @@
+{
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/login-uni-icon-20261120T133443Z",
+  "changes": [
+    {
+      "file": "manifest.webmanifest",
+      "before_sizes": "1254x1254",
+      "after_sizes": "any",
+      "image_bytes_changed": false
+    },
+    {
+      "file": "mapa/operacao/manifest.json",
+      "before_sizes": "1254x1254",
+      "after_sizes": "any",
+      "image_bytes_changed": false
+    }
+  ],
+  "version_unchanged": "1.4.26",
+  "production_changed": false,
+  "rollback": "restore the two manifest files from this backup; no restart"
+}

@@ -1,0 +1,19 @@
+--- 1.4.6/services/laboratorio/server/static/laboratorio-bridge.js
++++ 1.4.31/services/laboratorio/server/static/laboratorio-bridge.js
+@@ -1,6 +1,6 @@
+ (() => {
+   const prefix = '/unificado/laboratorio';
+-  const official = 'https://concrefer.concretrack.com.br:18445/novo';
++  const official = '/unificado/?view=laboratorio%2F';
+   const originalFetch = window.fetch.bind(window);
+   window.fetch = (input, init) => {
+     if (typeof input === 'string' && input.startsWith('/api/')) input = prefix + input;
+@@ -57,7 +57,7 @@
+     link.href = url;
+     link.target = '_blank';
+     link.rel = 'noopener';
+-    link.textContent = 'Abrir tela oficial';
++    link.textContent = 'Voltar ao Laborat?rio';
+     note.append(link);
+     button.insertAdjacentElement('afterend', note);
+   }

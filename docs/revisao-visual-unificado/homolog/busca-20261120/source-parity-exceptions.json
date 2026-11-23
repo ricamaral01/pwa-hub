@@ -1,0 +1,8 @@
+[
+  {
+    "file": "shell/menu.config.js",
+    "reason": "pre-existing local/display-label divergence; keep the actual homolog label while adding only the environment flag",
+    "local_label": "Indicador geral",
+    "homolog_label_preserved": "Indicador geral · 4 unidades"
+  }
+]

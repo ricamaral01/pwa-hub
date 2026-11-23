@@ -1,0 +1,4515 @@
+{
+  "version_before": "1.4.6",
+  "version_after": "1.4.30",
+  "candidate_tag": "candidata-producao-1.4.30",
+  "static_files": [
+    {
+      "file": "public/armacao/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/armacao/index.html",
+      "before": {
+        "bytes": 707,
+        "sha256": "8420943ce6bb6c120351d8d27c8addba58920c60fa3307378c6734fc782c6b5a"
+      },
+      "after": {
+        "bytes": 1087,
+        "sha256": "23161a6d44febe7695601087591fd515f072385d30671af8b449a47e4b330b83"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/assets/img/faleaqui-icon.png",
+      "destination": "/opt/concrefer-unificado/public/unificado/assets/img/faleaqui-icon.png",
+      "before": {
+        "bytes": 76868,
+        "sha256": "571108b3e41ba0dd02e42f37a5f4c49e23c079f69be352d29ab193e6f19df116"
+      },
+      "after": {
+        "bytes": 76868,
+        "sha256": "571108b3e41ba0dd02e42f37a5f4c49e23c079f69be352d29ab193e6f19df116"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/assets/img/logo-concrefer-oficial.png",
+      "destination": "/opt/concrefer-unificado/public/unificado/assets/img/logo-concrefer-oficial.png",
+      "before": null,
+      "after": {
+        "bytes": 338480,
+        "sha256": "7cd3c5acbcac6f9cf09b3f996c3b2bd2c2506dca81a5bf1ac4383618203753f9"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/assets/img/logo-concrefer.png",
+      "destination": "/opt/concrefer-unificado/public/unificado/assets/img/logo-concrefer.png",
+      "before": {
+        "bytes": 338480,
+        "sha256": "7cd3c5acbcac6f9cf09b3f996c3b2bd2c2506dca81a5bf1ac4383618203753f9"
+      },
+      "after": {
+        "bytes": 338480,
+        "sha256": "7cd3c5acbcac6f9cf09b3f996c3b2bd2c2506dca81a5bf1ac4383618203753f9"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/assets/img/logo-concretrack.png",
+      "destination": "/opt/concrefer-unificado/public/unificado/assets/img/logo-concretrack.png",
+      "before": {
+        "bytes": 444372,
+        "sha256": "36ccdb7c78e536bf53739d3ed17a713b04af212f119819016fb336452ce1c1d9"
+      },
+      "after": {
+        "bytes": 444372,
+        "sha256": "36ccdb7c78e536bf53739d3ed17a713b04af212f119819016fb336452ce1c1d9"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/assets/img/pederh-icon.png",
+      "destination": "/opt/concrefer-unificado/public/unificado/assets/img/pederh-icon.png",
+      "before": {
+        "bytes": 53165,
+        "sha256": "4b9b59eea959028af6b37ddae1f35873726dac65d491432c8c4fb27105f2bc38"
+      },
+      "after": {
+        "bytes": 53165,
+        "sha256": "4b9b59eea959028af6b37ddae1f35873726dac65d491432c8c4fb27105f2bc38"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/assets/img/unificado-pwa-icon.svg",
+      "destination": "/opt/concrefer-unificado/public/unificado/assets/img/unificado-pwa-icon.svg",
+      "before": null,
+      "after": {
+        "bytes": 1374080,
+        "sha256": "82965c1382ce0e9be33e914633073afb023ee30a31574b989e9d4d7c5f7b89e2"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/atualizar.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/atualizar.html",
+      "before": {
+        "bytes": 2358,
+        "sha256": "fb1bad5f3e0afef4f18c06bd3f27b3fec24d2ba9f8288c9ba23411fc772ec4d4"
+      },
+      "after": {
+        "bytes": 2378,
+        "sha256": "8a4b88bc05874fcaf501dc0b33b7cd05bccff9efe02636983f1fc5be18a64e2c"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/index.html",
+      "before": {
+        "bytes": 5604,
+        "sha256": "599dd0c36d8bf1c1a412e7190a7571ddd9cd055c845b3a234336556ee1e2dd99"
+      },
+      "after": {
+        "bytes": 5835,
+        "sha256": "11a887a41a8df7130e2f93e3bb7c5e14783c71a4345ce04a2ce82e97d6463ce4"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/login.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/login.html",
+      "before": {
+        "bytes": 2655,
+        "sha256": "72cd78523770312b6321d3f09a434fae1c7e6d33cc8b80b2d6d581420437ded8"
+      },
+      "after": {
+        "bytes": 4898,
+        "sha256": "20096330eebf1d62b577c1fb78ae6590623663eaf4f4d905767e3f7f08f8f49a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/logistica/dist/logistica-native.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/logistica/dist/logistica-native.css",
+      "before": null,
+      "after": {
+        "bytes": 31507,
+        "sha256": "202989c0e15aad44d1fe7e7eb2c8d90b5b4e7b732e121695c05d7e172063a71a"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/logistica/dist/logistica-native.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/logistica/dist/logistica-native.js",
+      "before": null,
+      "after": {
+        "bytes": 312590,
+        "sha256": "9a2e7c22d573c39c37611faf67b4dd2a88d3587da1e129fe647ccd6ab93f7b34"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/logistica/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/logistica/index.html",
+      "before": {
+        "bytes": 308,
+        "sha256": "03cf9a8695884c31d94845d59ad2920fa1dc13bd78799f1a0e31b871ca607e6b"
+      },
+      "after": {
+        "bytes": 296,
+        "sha256": "aeda064e3171099e5d99423428a5972e9d072b72c357a14e88aa5e0c1899271f"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/logistica/logistica-native.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/logistica/logistica-native.css",
+      "before": {
+        "bytes": 14585,
+        "sha256": "68a56aed6772044375655be17063b6f225d8abb03d5870b40e58ac3fc12a499b"
+      },
+      "after": {
+        "bytes": 31507,
+        "sha256": "202989c0e15aad44d1fe7e7eb2c8d90b5b4e7b732e121695c05d7e172063a71a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/logistica/logistica-native.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/logistica/logistica-native.js",
+      "before": {
+        "bytes": 313142,
+        "sha256": "80e163e8c4e4a482a2ded9fa8898e5a9ad633480b787030253ff4298f5871d0d"
+      },
+      "after": {
+        "bytes": 312882,
+        "sha256": "d5577f002da4629b798db3f440adb48f29a3a7c1eb1bb7336557eb3089f9e5b6"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/m/inspecao/app.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/m/inspecao/app.css",
+      "before": {
+        "bytes": 5807,
+        "sha256": "fe7689170178577060f8f5298604b7000bd51a3a47d9f3948c0b7976e07859ad"
+      },
+      "after": {
+        "bytes": 11456,
+        "sha256": "3c6df2230032b86ebe3b0b0e3829685d843d0277d372da7ee9e46c37de47ecfe"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/m/inspecao/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/m/inspecao/index.html",
+      "before": {
+        "bytes": 6085,
+        "sha256": "e1cf80b25154095010ec7a59c9fddb7ad08afab745a62343d7ed135db430a8f0"
+      },
+      "after": {
+        "bytes": 6454,
+        "sha256": "224573741d32e7c957f4383f52957d5cedd5f29b74a1e15c6c88d4cc6bb6bae1"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/m/inspecao/login.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/m/inspecao/login.html",
+      "before": {
+        "bytes": 2635,
+        "sha256": "e8288300a73113f5fe01573e525aedf6cc172df64eb9cf05935537618f0c1463"
+      },
+      "after": {
+        "bytes": 2923,
+        "sha256": "523f2a1c6e9c1e38ac8d42f92c68631426d9f691653d4ee93bb048f77c25864f"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/m/inspecao/menu.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/m/inspecao/menu.html",
+      "before": {
+        "bytes": 1058,
+        "sha256": "3d2c33cc90337fff66a59c6df1bb84699e7a2243ec465d68179356f0e8520a29"
+      },
+      "after": {
+        "bytes": 1430,
+        "sha256": "2c021e7e9bfa8e62a02704dade4c42cbc2b5135b1046678dfc882e4f5d2608d4"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/m/maodeobra/entry.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/m/maodeobra/entry.css",
+      "before": {
+        "bytes": 678,
+        "sha256": "2a40e733d9c5246243cea818660b78d61a58fe3ebc8c9f7daa9e3c86d30512d0"
+      },
+      "after": {
+        "bytes": 1449,
+        "sha256": "181b77978106fd4fe48679a94ab58d79a4520573c3efb9adc58119d6aba10467"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/m/maodeobra/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/m/maodeobra/index.html",
+      "before": {
+        "bytes": 2523,
+        "sha256": "9eff000497f54473473b86ddc47b519788d0b9ad645430a60ac0ec348e3a5a74"
+      },
+      "after": {
+        "bytes": 2833,
+        "sha256": "f33da24348b9125e1f4d3f6ad5a1de3ebae361784b9622dbc3a1e34d3e75e9cb"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/m/maodeobra/login.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/m/maodeobra/login.html",
+      "before": {
+        "bytes": 2697,
+        "sha256": "3176e5ee633336ceb6addd11255f9c132a89b8f20df91c77182796c9a5dd662a"
+      },
+      "after": {
+        "bytes": 2986,
+        "sha256": "5f4253efa4fbcdc6713925e41a101f19e81e0b40b3dec2eac9511a80e6b53ef9"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/manifest.webmanifest",
+      "destination": "/opt/concrefer-unificado/public/unificado/manifest.webmanifest",
+      "before": {
+        "bytes": 441,
+        "sha256": "b6babd6c90ec4920fb4d877979fec2d9a3ab8fc63c1379e018ad41db27a52eee"
+      },
+      "after": {
+        "bytes": 585,
+        "sha256": "b9a107ffd090e2d22259cb79000bdb4ae21e67c2365e5b25ed17daf74e001750"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/manutencao-usina/app.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/manutencao-usina/app.js",
+      "before": {
+        "bytes": 30198,
+        "sha256": "77ef7a47647c68137246ace94ed16bf323d558a1a24bf3c8a77dc1eebdc040f0"
+      },
+      "after": {
+        "bytes": 30151,
+        "sha256": "b86e437d5f2f9fbec0893eb995c538e3446045518f089fdd51afaf0226c60f89"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/manutencao-usina/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/manutencao-usina/index.html",
+      "before": {
+        "bytes": 3666,
+        "sha256": "f744b8d0d7ec8bd4dbe024b1e89d3d01a2145c1af8db9156fec8901a1c7ea871"
+      },
+      "after": {
+        "bytes": 4043,
+        "sha256": "73220ccd315eb37dcecd70c9d5a4c3a2beb384b6371eb012f5d7267acb7d8ffb"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/manutencao-usina/styles.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/manutencao-usina/styles.css",
+      "before": {
+        "bytes": 24679,
+        "sha256": "68ada63fa484a3094361103c5832002ab3104c3b102dafcb4bc487a9e2fbf583"
+      },
+      "after": {
+        "bytes": 51545,
+        "sha256": "3b44fe955385b0fb9fedebfd5f9b8b3cad8c60dc568d5cf6eb6388f3c7016b87"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/index.html",
+      "before": {
+        "bytes": 2492,
+        "sha256": "1f503169696c11a2afd9afc4c24478490ac29fdb2e0f7e3e4baec8c09ed9d3cf"
+      },
+      "after": {
+        "bytes": 2871,
+        "sha256": "fae6621fac01a1f1dc6c2fa6026040dcd00b7d7059a62c7d6959742c2233bd08"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/app.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/app.js",
+      "before": {
+        "bytes": 641411,
+        "sha256": "cfe80578d8a1f21e65296e92c03b46b9a926432a69bfc9c36f6dbb8f50dd6b9e"
+      },
+      "after": {
+        "bytes": 646027,
+        "sha256": "45f962c7c4843de13605ab2e4798fe2431ad7d64b9c3b9d6913a0f8880def51f"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/bridge.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/bridge.js",
+      "before": {
+        "bytes": 9211,
+        "sha256": "e4d6f69632d0425372ed32d06b088342690011096ef5d51e4525e1076482d6b4"
+      },
+      "after": {
+        "bytes": 9084,
+        "sha256": "a3fe0cd9e2d81afc8de1d718922c3fb41b13f40ae2fc82a81a7a9ab14da85ec8"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/dashboard-defeitos-v4.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/dashboard-defeitos-v4.css",
+      "before": {
+        "bytes": 33210,
+        "sha256": "dd9364cd32d1db9a3f2d0a5f7483c5044fa6172f163b1824630f6fd30e23861a"
+      },
+      "after": {
+        "bytes": 59211,
+        "sha256": "9ea48c170b4b324e096f8e297b068379037d1692e004dc7c7368da954e4a3674"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/dashboard-defeitos-v5.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/dashboard-defeitos-v5.css",
+      "before": {
+        "bytes": 10493,
+        "sha256": "aab08ab45ba256d030ac01aa95d0b40593681a4715663d19b321a96082d8cd70"
+      },
+      "after": {
+        "bytes": 21384,
+        "sha256": "43a327692cbef9a1c4a203789b5b82bafeef9cd0ee9684441204a5534637aa9e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/dashboard-defeitos-v5.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/dashboard-defeitos-v5.js",
+      "before": {
+        "bytes": 42309,
+        "sha256": "9c63a2ddb3ed3c2e1275fe89e5fa6821957f189daca8a36ffe79d2cf62c10510"
+      },
+      "after": {
+        "bytes": 42297,
+        "sha256": "032674345f98313317821c42aca7f6510261a811510f84cce7850a538122d45a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/dashboard-reference-layout.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/dashboard-reference-layout.css",
+      "before": {
+        "bytes": 4659,
+        "sha256": "e399963cbadf6f3e71eab7b44c0d89646653edacf1ace667280b5db15609ab0f"
+      },
+      "after": {
+        "bytes": 8977,
+        "sha256": "f6f29026f9f730884a37b0965f993bb38cb1eae6f198e93da16a4a1088077394"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/dashboards-v6.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/dashboards-v6.css",
+      "before": {
+        "bytes": 19891,
+        "sha256": "6e675112fa1790e28bd139e3273c1eef21e890f8bbeb1c937f0a2175939845d5"
+      },
+      "after": {
+        "bytes": 39948,
+        "sha256": "342598ff4205c3362fc525795ddabf1844c8631e04bf2da585bfecc873fd6be1"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/dashboards-v7.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/dashboards-v7.css",
+      "before": {
+        "bytes": 8194,
+        "sha256": "ec11190d6135d48f9a25ac3818586001c70b7aa0cffd75a675ee934d8f8bb051"
+      },
+      "after": {
+        "bytes": 16359,
+        "sha256": "262d858b80d518092f17f53d9549ef10f2171aac340a47561aad607804a2d654"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/index.html",
+      "before": {
+        "bytes": 117220,
+        "sha256": "cacd783d6f014647af84492bcd09a02be09dc6dec910a112369219b6b03ebce3"
+      },
+      "after": {
+        "bytes": 125998,
+        "sha256": "a5eb6beb298c7d3eb7dd711cc260574ac8346bb43bafae7cee04a85a402ed840"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/inspecao-defeitos.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/inspecao-defeitos.css",
+      "before": {
+        "bytes": 8159,
+        "sha256": "75ebfec6e257a2c43a6fa535ebe9e89c4cf7ebc83072dc56d40ad8df9e762a54"
+      },
+      "after": {
+        "bytes": 15938,
+        "sha256": "8174edc86706a76ffcce214ba1b0fdf85f217819b041275da8cc4b5dce4ff89a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/manifest.json",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/manifest.json",
+      "before": {
+        "bytes": 559,
+        "sha256": "d4ee8f236bacf3340daae6cd6b05758deaa9aa3b9f06382ed5385db680c1800c"
+      },
+      "after": {
+        "bytes": 667,
+        "sha256": "0fd559bb37089830af19f94b01c3b7e1ee24ced7dd8962a2f2fe382ff4367261"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/montagem-taxa.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/montagem-taxa.css",
+      "before": {
+        "bytes": 1619,
+        "sha256": "450ed3ddd6f5255f6a0b65f659b676ebb6008dfdb57d1f0b782d5b8c713f78ae"
+      },
+      "after": {
+        "bytes": 3389,
+        "sha256": "65fb9e5090ae20470dbb37c3d38c118b218bfa058395c31a595804d87d88215f"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/odin-mode.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/odin-mode.js",
+      "before": {
+        "bytes": 6671,
+        "sha256": "323bcf2833d510bb7f30dc35929f3897e62856773b1d3cde92ce3e063f0d409b"
+      },
+      "after": {
+        "bytes": 6563,
+        "sha256": "848a709b0fadee856c7933b1e18cd5b3032481af312c68e6f711a66cf7908e14"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/produtividade-refactor.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/produtividade-refactor.css",
+      "before": {
+        "bytes": 2647,
+        "sha256": "190f9dfa1a4e6fd415e38e8a8a17b80998779f4722d9fb574b6c088890d70809"
+      },
+      "after": {
+        "bytes": 5285,
+        "sha256": "54ca7900d8a4baecc130379c9ec383119e965d7b9b5d4c205ced1c570088937d"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/screen-context.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/screen-context.js",
+      "before": {
+        "bytes": 1197,
+        "sha256": "d9a7711211c7221dc58387172e5ae31c6b2c0fb0226c7f07c467c01047f656cc"
+      },
+      "after": {
+        "bytes": 1378,
+        "sha256": "8264dcda4c721ba69bdb72f35b4c8b0e381f70af820a2bf31abb5f5607b8d444"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/styles.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/styles.css",
+      "before": {
+        "bytes": 178645,
+        "sha256": "b9962e87ba141f0b1382ed370776af4051259e0e647dc9d12fc8a90909ff7841"
+      },
+      "after": {
+        "bytes": 330965,
+        "sha256": "98296a9a77bdf6aa5103019f7e601f21d6d4d73d3588303cb157209b1a20d07d"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/supabase.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/supabase.js",
+      "before": {
+        "bytes": 206627,
+        "sha256": "e576ad84a291fc7dee39faf0fe1122ae5f4f07d1ba3e8f588455a54d71113a2d"
+      },
+      "after": {
+        "bytes": 206605,
+        "sha256": "5e685d5bb2d0450cc2508f4f26d87706f4ce81262e6917f1ba030373f04a6696"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/unificado-bridge.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/unificado-bridge.css",
+      "before": {
+        "bytes": 22449,
+        "sha256": "8e2f1aff415ef1d95b3ea465446d21ba6bb1ec01db1c4d601ee36bcbfbf8c64f"
+      },
+      "after": {
+        "bytes": 44241,
+        "sha256": "643c88e50342953964c45bdf0b498232264b765327bbb263d689cc6599029bcb"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/unificado-bridge.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/unificado-bridge.js",
+      "before": {
+        "bytes": 22387,
+        "sha256": "fd769cc8eac68c0ffa07b1a2d7a1ed72ce2e77ca4d1db8ce3d01607d9596c5c9"
+      },
+      "after": {
+        "bytes": 22373,
+        "sha256": "fff6c92ee2d0b1ad3caac3a130f4262852fe5dcd0aa0a98c2d34006a7e3b554a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/mapa/operacao/users-unificado.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/mapa/operacao/users-unificado.css",
+      "before": {
+        "bytes": 8738,
+        "sha256": "68b8f9dc56127014fda26e21e59655e47c3e1848984c656bbe42f8117a3c3a27"
+      },
+      "after": {
+        "bytes": 18067,
+        "sha256": "644df87230356ac1c8fb4534e98d16081b69d5a5c182eb677be0f65ac0d40b73"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/acompanhamento-mensal/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/acompanhamento-mensal/index.html",
+      "before": {
+        "bytes": 12820,
+        "sha256": "202e91c8b1a06a9eb9209968203f07a24e42d811550f803e16ed0b5f4006f3f9"
+      },
+      "after": {
+        "bytes": 15375,
+        "sha256": "d77d74310454fbe873c311196645f589e3f17929673895d715e2e4fb2534f9e0"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/acompanhamento-mensal-setor-34/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/acompanhamento-mensal-setor-34/index.html",
+      "before": {
+        "bytes": 13768,
+        "sha256": "698988deeaba7b68933d50e3d8be4bb377cfd634acc2d8f9126dab834a9b4ab5"
+      },
+      "after": {
+        "bytes": 16323,
+        "sha256": "f294ee5bbdcc62c63543857ec3f66841ae5297820fcb353ae932ee25c34ecc50"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/apontamento-mega/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/apontamento-mega/index.html",
+      "before": {
+        "bytes": 23873,
+        "sha256": "02bdf8255fc2de64fe4adf336cda14c808852bb3b5a1fd496b98b03606fb56de"
+      },
+      "after": {
+        "bytes": 25477,
+        "sha256": "58141bc643abb69b3e1de10432046b7bd7e9328f3fdb1d659dfba84ad89d1eed"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/armaduras/armaduras.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/armaduras/armaduras.css",
+      "before": {
+        "bytes": 4491,
+        "sha256": "e6d5437428458bf00505f196473888515bc36f6fe4d762079b089452ffa00484"
+      },
+      "after": {
+        "bytes": 9536,
+        "sha256": "143000b222672a0e8e0b6531efac9bec8ea510e5fd4bc6327af3f44202bccf02"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/armaduras/armaduras.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/armaduras/armaduras.js",
+      "before": {
+        "bytes": 11993,
+        "sha256": "52e8659fd0e40dd5e0909fb8533608edf47bc6195f23d51180ad4d89355b0b22"
+      },
+      "after": {
+        "bytes": 11993,
+        "sha256": "52e8659fd0e40dd5e0909fb8533608edf47bc6195f23d51180ad4d89355b0b22"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/armaduras/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/armaduras/index.html",
+      "before": {
+        "bytes": 5835,
+        "sha256": "18c016840d22d0be992a994c5b055718804fa474032f1e42332a7c6b1f9eb3bb"
+      },
+      "after": {
+        "bytes": 6146,
+        "sha256": "395c0173f23cd05efb5153a6648fc676595d5c7cb4d67f25a161925149656c94"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/armaduras-relatorio/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/armaduras-relatorio/index.html",
+      "before": {
+        "bytes": 5835,
+        "sha256": "18c016840d22d0be992a994c5b055718804fa474032f1e42332a7c6b1f9eb3bb"
+      },
+      "after": {
+        "bytes": 6146,
+        "sha256": "395c0173f23cd05efb5153a6648fc676595d5c7cb4d67f25a161925149656c94"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/comparacao/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/comparacao/index.html",
+      "before": {
+        "bytes": 16303,
+        "sha256": "d7d3401728dab45e27641aafb291cf263d018523e01097ac796fb958a0568a96"
+      },
+      "after": {
+        "bytes": 16786,
+        "sha256": "1b44657f71d5072fece6b8063486a1e652832f5154d795b87c3b6c03f57d2d3b"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/dashboard/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/dashboard/index.html",
+      "before": {
+        "bytes": 26902,
+        "sha256": "eecf7f8ad8f14dc7e927a3d728505ad5f3bf5a6ab6f672e2578d33c40388253b"
+      },
+      "after": {
+        "bytes": 32781,
+        "sha256": "7f77ae0ac3c89c73fe96228e9a480da9c18afaf58af22d99e49e43cb0199b61e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/etiquetas/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/etiquetas/index.html",
+      "before": {
+        "bytes": 12809,
+        "sha256": "64621ecb772cd25ea01bff3bbfb5f86a4f8b679ae85adb1763170456eb17568d"
+      },
+      "after": {
+        "bytes": 16834,
+        "sha256": "35ea8c3e1905de9302ab666e28c260fecdbd116e6e422c7c4e7c8ca9354a60f8"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/etiquetas-armaduras/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/etiquetas-armaduras/index.html",
+      "before": {
+        "bytes": 7894,
+        "sha256": "def9422516c0d1e2202370d0928c4a810f423b37363e6e910d86a57a7500d949"
+      },
+      "after": {
+        "bytes": 10834,
+        "sha256": "96dc5806ce097f1a0cb264a74defde8814619491421367c5c88e8991547b9001"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/etiquetas-sc/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/etiquetas-sc/index.html",
+      "before": {
+        "bytes": 12809,
+        "sha256": "68497363d6a78f68fbd97479adcd3a11e2b4e0082a6c1e4b92a04413a5a45ff0"
+      },
+      "after": {
+        "bytes": 16781,
+        "sha256": "42c73fd228ea1ab6aa32a943c57f36bc715ae32c777ffeceb83bb1a07598b05a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/etiquetas-setor4/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/etiquetas-setor4/index.html",
+      "before": {
+        "bytes": 13012,
+        "sha256": "bb09ffc7185a4b06bc4977a4d3d02f2c76542e835120a558faafb416f2e9c926"
+      },
+      "after": {
+        "bytes": 16788,
+        "sha256": "74c6e0dd76885186b80d3c2db917ce9ce5c57afe1fc31b35c33bb8e7ae9a4403"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/fechamento-diario/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/fechamento-diario/index.html",
+      "before": {
+        "bytes": 42800,
+        "sha256": "bab26d7d914c31564e625afb70d0fb2a954bc8e8a6f4c55e95fd2d06c064fc98"
+      },
+      "after": {
+        "bytes": 55622,
+        "sha256": "ee8bd50336ee84699352cbfd95a3e13b95de09cab22ffc86f37782fe206325a8"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/formas-por-setor/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/formas-por-setor/index.html",
+      "before": {
+        "bytes": 4356,
+        "sha256": "8ba11f2e736285945b14761cfa7556f1a794487e08697cda4c8cc5daa029d89f"
+      },
+      "after": {
+        "bytes": 4854,
+        "sha256": "0e8a2b8d6963f8817558ce7e6a0400d1eaf1f3ca7e3af52d52023a83d32b3c45"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/index.html",
+      "before": {
+        "bytes": 164,
+        "sha256": "0e9b71ee2cdbf7250e5f032f78bf521f5d102bc3f496a7245abaa182b5278aaa"
+      },
+      "after": {
+        "bytes": 233,
+        "sha256": "250f678a6d79ae123fa93b6cc14ce927b21631acaff2cb35b0526fa3eddb9b2f"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/maodeobra/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/maodeobra/index.html",
+      "before": {
+        "bytes": 14195,
+        "sha256": "a6cd074c15dbec41083de422a26c8ad7f6cc48de3e72690b52a901e4193ef590"
+      },
+      "after": {
+        "bytes": 16539,
+        "sha256": "9ad10d4e4d1dd9d587db2989953f27e0fff9a0b15d1e9e2c90867e340d7e1ad4"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/maodeobra-rateio/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/maodeobra-rateio/index.html",
+      "before": {
+        "bytes": 14103,
+        "sha256": "edbda545d818af29c05198ce5842a1a947ae298e49099273a18a81420dbd410d"
+      },
+      "after": {
+        "bytes": 14766,
+        "sha256": "8f9a3b73cbe53e055e401c410be035c977af90e0bacaf3caae4b594504a59cac"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/numeros-serie/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/numeros-serie/index.html",
+      "before": {
+        "bytes": 8724,
+        "sha256": "58669528a0e557f7714a58a5f27aca8110b2ccda4273eb8bc461c24b8f0ac7d6"
+      },
+      "after": {
+        "bytes": 9003,
+        "sha256": "baed7ec66d9f6b26fe0df667b440ab376405b7a30ab7abca52f83c5cbdb3b7ae"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/numeros-serie/series.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/numeros-serie/series.css",
+      "before": {
+        "bytes": 3479,
+        "sha256": "10a745af00d3999cb052e32088012578a265616e0911383baf889b3c5227a206"
+      },
+      "after": {
+        "bytes": 7342,
+        "sha256": "66e628fa1df6d70885b694adcd7a0340035a49cdb951f2f5576995c88dc60f62"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/numeros-serie/series.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/numeros-serie/series.js",
+      "before": {
+        "bytes": 17816,
+        "sha256": "b0b7cbe06866c501362291cdb4a165cd4cca87493bedb482a0c942082e217b9f"
+      },
+      "after": {
+        "bytes": 17816,
+        "sha256": "b0b7cbe06866c501362291cdb4a165cd4cca87493bedb482a0c942082e217b9f"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/pcp-diario/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/pcp-diario/index.html",
+      "before": {
+        "bytes": 17302,
+        "sha256": "8fa49cf8d8f6dd7a250f3010c83519826da44c4fc629cfa634ae63322b9bb82d"
+      },
+      "after": {
+        "bytes": 19745,
+        "sha256": "324f98576790896e371664e0be7b59a4dde67fa2997d6d397f958e0b84dfd6a3"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/primeiro-acesso/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/primeiro-acesso/index.html",
+      "before": {
+        "bytes": 3620,
+        "sha256": "2fbeaa795b838ab833b2e7c7be022431ed7df4189a707f1a359574c8e20925b6"
+      },
+      "after": {
+        "bytes": 4118,
+        "sha256": "c3739ef8718dcf808d2758f6bbf0ece7ad6bbd8b26080812490b95b49866ed2e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/producao/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/producao/index.html",
+      "before": {
+        "bytes": 36930,
+        "sha256": "fa3561ae4f1f4c714eb66d5aa5c86acb529fd7051e7390e7b041c13a1d00e0e3"
+      },
+      "after": {
+        "bytes": 42431,
+        "sha256": "ae4a4e6168f8d6cf4e563c835fc5a697cae48fdeb1e0f835da6d243b623bc659"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/programacao/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/programacao/index.html",
+      "before": {
+        "bytes": 45017,
+        "sha256": "a97e1a02a425b50a459c40ad3d26bcb1018d48603063c9a848596c64a3049257"
+      },
+      "after": {
+        "bytes": 46252,
+        "sha256": "711c07327f1e67ec9758bde9a1b2c2c32af4be383e13d2f1fc24d85bc2b8a50e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/programacao-alex/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/programacao-alex/index.html",
+      "before": {
+        "bytes": 49506,
+        "sha256": "6e041ad08933173e9c63190e406b7ccaf33507d4cca7d686360603c61a4bc622"
+      },
+      "after": {
+        "bytes": 58355,
+        "sha256": "39e9315864d779c72c3a900af34d929775dba5b9bfda97e308304ac5a231249e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/programacao-circular-s3/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/programacao-circular-s3/index.html",
+      "before": {
+        "bytes": 9290,
+        "sha256": "cda014430a764853e17e4e1504a740a717ec4c902e2948a53536e979bae7113a"
+      },
+      "after": {
+        "bytes": 12465,
+        "sha256": "c5e658d3f341fc4009807ad9a925adab6bfda0511435538ca292223046386216"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/programacao-circular-s4/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/programacao-circular-s4/index.html",
+      "before": {
+        "bytes": 9281,
+        "sha256": "8010b3395bbc9214cd46fc865a56fab4dd746772f6f729027c698122a83d2c46"
+      },
+      "after": {
+        "bytes": 12456,
+        "sha256": "7c98f7fec519e598928145f67f337a9d29cc3d4fc1b307092336a57696460bdf"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/programacao-final/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/programacao-final/index.html",
+      "before": {
+        "bytes": 12751,
+        "sha256": "bcca2cba885517bdb73db1581712adbcb77da5bf2920f5306dfd767d3ee1cc8c"
+      },
+      "after": {
+        "bytes": 13938,
+        "sha256": "cc803b2550bb8912654227d620ae62166f2f12977488c104469b21f81149a49d"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/programacao-semanal/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/programacao-semanal/index.html",
+      "before": {
+        "bytes": 10189,
+        "sha256": "b0fe6bc401637c3222dee5a0d979a51c72aab08c6dacae9d403ab9d3fd04f76d"
+      },
+      "after": {
+        "bytes": 11326,
+        "sha256": "22bcf685603ac28fd5409c2f9fa43ff863e31840ebfdae240a106669d9687d5f"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/programacao-semanal/semana.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/programacao-semanal/semana.css",
+      "before": {
+        "bytes": 12994,
+        "sha256": "6f2d06a116a0b80bdc68699f046bb1e9d62999c8bfc4cff5d91d4eb9438bef6d"
+      },
+      "after": {
+        "bytes": 27545,
+        "sha256": "8c077abc254a83da9a71b1ccae1e8abbcae11c2effaf9d6609d1f0d96648417c"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/programacao-semanal/semana.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/programacao-semanal/semana.js",
+      "before": {
+        "bytes": 34151,
+        "sha256": "78b1bf5e62bfdf7119fea516c69e17745124b01795e68ebddcd95db210d07b21"
+      },
+      "after": {
+        "bytes": 34089,
+        "sha256": "a060f2c039a97885dc9c18208639e9cf5bea52b1572dfa8aca425e0506fa5b5e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/relatorio-producao/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/relatorio-producao/index.html",
+      "before": {
+        "bytes": 8624,
+        "sha256": "fdc7e007e05acddc407c25f83d7bc15b6915035214a5e8072eb6a649622848e7"
+      },
+      "after": {
+        "bytes": 11655,
+        "sha256": "5e0b1d62ee1e99b0107f4da5b0b180a7a615237e4e10a0490db9a7e3dee56cb9"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/relatorio-programacao-s3/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/relatorio-programacao-s3/index.html",
+      "before": {
+        "bytes": 8565,
+        "sha256": "26bcef5110c73ae963caa2e92e879f2080df9b35586cf711482552f902e26953"
+      },
+      "after": {
+        "bytes": 11609,
+        "sha256": "1ce4f752b9835b88eecbfba8e07c1cd112ce205739053d323cf336fd1aad839a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/relatorio-programacao-s4/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/relatorio-programacao-s4/index.html",
+      "before": {
+        "bytes": 8559,
+        "sha256": "5aa29785703b7529c70b5d737c47b880a41812a7bc9e283a41cc3f2d5b8ebf7d"
+      },
+      "after": {
+        "bytes": 11603,
+        "sha256": "be21a8d3b324791c99457fb752473ae36eb88d91e47e709f52a5eb69213589d9"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/css/app.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/css/app.css",
+      "before": {
+        "bytes": 13591,
+        "sha256": "2d73f453f9e99d5c63bbf01653a02b161b78b53f99482e94eeb2e4aabec8c03d"
+      },
+      "after": {
+        "bytes": 24819,
+        "sha256": "4745bad4a690366afbcc906bf7157282fa7da0fb91004cef89466b04d83aba21"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/css/formas-por-setor.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/css/formas-por-setor.css",
+      "before": {
+        "bytes": 7418,
+        "sha256": "f70f7d5531e7527a2bf8079a5121f7aa53fb9f7a6d1a1bba49ff4fedd1eea4ac"
+      },
+      "after": {
+        "bytes": 14640,
+        "sha256": "d797ac3e8f1d8df830f673eb88bb05a0e2d7c0618d018e7adbb672f40af77cc0"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/css/inter-original.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/css/inter-original.css",
+      "before": {
+        "bytes": 12320,
+        "sha256": "e6906d21bb8b14d8ddbafbf6502a21986e9d558b6bd7c452be15770dac73ffc0"
+      },
+      "after": {
+        "bytes": 12005,
+        "sha256": "fb7ebc33ef563849b1bdea0f503603682fdffd8ee43e8ee6109a8ea0a4b49a32"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/css/maodeobra-mobile.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/css/maodeobra-mobile.css",
+      "before": {
+        "bytes": 12996,
+        "sha256": "ddd69a7da2d1e23154f730b3f7f43892b44d6b519a858020126ada5369b247bf"
+      },
+      "after": {
+        "bytes": 27026,
+        "sha256": "1670ea42a6e697bbc8e52def5fe677b923c1db4254511c100f4f79f8007d74b9"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2",
+      "before": {
+        "bytes": 18748,
+        "sha256": "71d5ee93cc1e9f1d520a3a8b66456de18c7879d8df09d57fcd2eaff75fef0075"
+      },
+      "after": {
+        "bytes": 18748,
+        "sha256": "71d5ee93cc1e9f1d520a3a8b66456de18c7879d8df09d57fcd2eaff75fef0075"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7SUc.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7SUc.woff2",
+      "before": {
+        "bytes": 18996,
+        "sha256": "1be3448e292fbf05ffe176fe1e43f135013d50b1e7d324ad1a558f623d3bb6f6"
+      },
+      "after": {
+        "bytes": 18996,
+        "sha256": "1be3448e292fbf05ffe176fe1e43f135013d50b1e7d324ad1a558f623d3bb6f6"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+      "before": {
+        "bytes": 48256,
+        "sha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62"
+      },
+      "after": {
+        "bytes": 48256,
+        "sha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2",
+      "before": {
+        "bytes": 85068,
+        "sha256": "34b9c504cab7a73e37b746343a449132e56cf7b5481af2cb81dc74dcff25c956"
+      },
+      "after": {
+        "bytes": 85068,
+        "sha256": "34b9c504cab7a73e37b746343a449132e56cf7b5481af2cb81dc74dcff25c956"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2",
+      "before": {
+        "bytes": 25960,
+        "sha256": "ca157063339ac4ad418f214f3abfed119b0798ab4d377386ce5c9e5a7a435ebd"
+      },
+      "after": {
+        "bytes": 25960,
+        "sha256": "ca157063339ac4ad418f214f3abfed119b0798ab4d377386ce5c9e5a7a435ebd"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2",
+      "before": {
+        "bytes": 10252,
+        "sha256": "5c66f9e07e90c6d4ac4922cc68d60de26c17b1858e677fb5e603fce3952b3ff2"
+      },
+      "after": {
+        "bytes": 10252,
+        "sha256": "5c66f9e07e90c6d4ac4922cc68d60de26c17b1858e677fb5e603fce3952b3ff2"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2",
+      "before": {
+        "bytes": 11232,
+        "sha256": "6e9e020a25f9b56d418f2c085b1d3c09725a4da23fe693a5b463064606732190"
+      },
+      "after": {
+        "bytes": 11232,
+        "sha256": "6e9e020a25f9b56d418f2c085b1d3c09725a4da23fe693a5b463064606732190"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/static/img/concrefer-logo-alt.png",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/img/concrefer-logo-alt.png",
+      "before": {
+        "bytes": 444372,
+        "sha256": "36ccdb7c78e536bf53739d3ed17a713b04af212f119819016fb336452ce1c1d9"
+      },
+      "after": {
+        "bytes": 444372,
+        "sha256": "36ccdb7c78e536bf53739d3ed17a713b04af212f119819016fb336452ce1c1d9"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/static/img/concrefer-logo.png",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/img/concrefer-logo.png",
+      "before": {
+        "bytes": 486600,
+        "sha256": "37b5d8cc41cbe8911abb237759dfd6be20bcb08beb2d0ebf0d772b9585789c5e"
+      },
+      "after": {
+        "bytes": 486600,
+        "sha256": "37b5d8cc41cbe8911abb237759dfd6be20bcb08beb2d0ebf0d772b9585789c5e"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/static/img/logo-concrefer-relatorio.png",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/img/logo-concrefer-relatorio.png",
+      "before": {
+        "bytes": 338480,
+        "sha256": "7cd3c5acbcac6f9cf09b3f996c3b2bd2c2506dca81a5bf1ac4383618203753f9"
+      },
+      "after": {
+        "bytes": 338480,
+        "sha256": "7cd3c5acbcac6f9cf09b3f996c3b2bd2c2506dca81a5bf1ac4383618203753f9"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/static/js/_sidebar.html.txt",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/js/_sidebar.html.txt",
+      "before": {
+        "bytes": 455,
+        "sha256": "8101e94ee3ffa53b23c9cead5cd6b41caf7242c3bfdec17bba99c184d0270c8a"
+      },
+      "after": {
+        "bytes": 455,
+        "sha256": "8101e94ee3ffa53b23c9cead5cd6b41caf7242c3bfdec17bba99c184d0270c8a"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/static/js/app.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/js/app.js",
+      "before": {
+        "bytes": 22744,
+        "sha256": "9de65fa3c15fcecdeadb9de12e957af4b3085f399bf97680960bcb8e0983d013"
+      },
+      "after": {
+        "bytes": 22226,
+        "sha256": "6caedeac748b15e18a331fb35939e3cbc2f7a0bd148e6c83bdce208a228019ab"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/js/etiquetas-armaduras.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/js/etiquetas-armaduras.js",
+      "before": {
+        "bytes": 8677,
+        "sha256": "3cc852d0227a10e7c2c39a218bf0e169811680db07ca2e33d353a7770724cb4a"
+      },
+      "after": {
+        "bytes": 8502,
+        "sha256": "36e820cb545ec8ff5497d15888d201051a3d14887a35f0283d400edb36972c9e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/js/etiquetas.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/js/etiquetas.js",
+      "before": {
+        "bytes": 13220,
+        "sha256": "cde29d5e95c0748e6dff52a7c6e418f74dcff8b31335d30501f098a204292241"
+      },
+      "after": {
+        "bytes": 12945,
+        "sha256": "a38ef003ba187a6156ff698f2dc5525d30086f42ae5d76fa78af663bb0d8f0ff"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/js/formas-por-setor.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/js/formas-por-setor.js",
+      "before": {
+        "bytes": 13187,
+        "sha256": "0d85de45f7dfa503572c004fb148466c5a2d7de022f5511ff0bb17c171e4cf6a"
+      },
+      "after": {
+        "bytes": 12929,
+        "sha256": "5d178b3dd9eb574cec5ba89bc48462586beebeaef3b12e3e2f753417af2abe28"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/js/maodeobra-core.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/js/maodeobra-core.js",
+      "before": {
+        "bytes": 4937,
+        "sha256": "de95822cc7d5aef5e86ae1604c9c811be290b77384783029ea4666d5f5304234"
+      },
+      "after": {
+        "bytes": 4821,
+        "sha256": "a667df701964d6018f4634b360d14b9b5e955715680d35c86cc15cb43354e48e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/js/maodeobra-grupos.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/js/maodeobra-grupos.js",
+      "before": {
+        "bytes": 19006,
+        "sha256": "7f7968950b98705b2cd78151264d529dfe73a47df9e77ba22ac9365bed01c9a7"
+      },
+      "after": {
+        "bytes": 18617,
+        "sha256": "59457f57f6e4702e0936e487e54739043d847a442aba9d850fdce3c8a7def4c8"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/js/maodeobra-mobile.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/js/maodeobra-mobile.js",
+      "before": {
+        "bytes": 28246,
+        "sha256": "e41dc14474d8cba51f671a87dd22c6b26ced4148f7e247e89b2c893b0b011d89"
+      },
+      "after": {
+        "bytes": 27873,
+        "sha256": "c00a018c9127843e0ce78c2fd092226fdae742822af5c6c338e5e6c56706ef60"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/js/programacao-circular-s3.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/js/programacao-circular-s3.js",
+      "before": {
+        "bytes": 8915,
+        "sha256": "5690e3eca1038ec701cf4cba3703014ae89531c26dace1c3738a1092d8494c43"
+      },
+      "after": {
+        "bytes": 8721,
+        "sha256": "dc21ed300b22af439609483d67f80b9729bc57f2551490c983c26c604f52d764"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/js/programacao-formas.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/js/programacao-formas.js",
+      "before": {
+        "bytes": 8998,
+        "sha256": "19e73595757956753f8a4cccecc88c912848b31e6c105519bc73c62d062199ea"
+      },
+      "after": {
+        "bytes": 8802,
+        "sha256": "228b41b3ebeb30c8987be942295da297f627406faf8328c63cc8b40ae4a6123d"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/static/js/relatorio-producao.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/static/js/relatorio-producao.js",
+      "before": {
+        "bytes": 10633,
+        "sha256": "6b3ea4eb549644bec8ccf0299c86ad428acb0cddbf0ff0d71bd3fa07ebf47932"
+      },
+      "after": {
+        "bytes": 10465,
+        "sha256": "f75f3d8a98c91f83cfb85ca7ac9756e6873363a18af1d04887b752e41792fe7d"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/unificado-bridge.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/unificado-bridge.js",
+      "before": {
+        "bytes": 4608,
+        "sha256": "4272a8cc436a2538d2312a14351d13aeafc891bb08647c6033dcc48262e7b5aa"
+      },
+      "after": {
+        "bytes": 4518,
+        "sha256": "cd258ab51fd453f60ee3e269f6fce7235c4c2dfb8266a35a495108ff7891f83c"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/unificado-screen-context.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/unificado-screen-context.js",
+      "before": {
+        "bytes": 2771,
+        "sha256": "517f496a4ef0fb989b07aa32f1b53fcd74a38ddfaa7068fa202d8013f8be004c"
+      },
+      "after": {
+        "bytes": 2721,
+        "sha256": "b835f3e290d390abf6ab07d404816b3ab5a4572ecb681007290b268bbbee9fe5"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/unificado-shell.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/unificado-shell.css",
+      "before": {
+        "bytes": 12629,
+        "sha256": "fa9c3762485c69bb5e0b53fdb77633b450db3dd6b9fb9351a08c0fac5401cf85"
+      },
+      "after": {
+        "bytes": 24731,
+        "sha256": "5282068b99245884319d4bbf6bb03e6c6376a9b11262baad8668029db65b71b2"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/unificado-shell.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/unificado-shell.js",
+      "before": {
+        "bytes": 11131,
+        "sha256": "dffe2bc9b5fc3d97a255b61db8ddbfbfbb119075b04b612d52c1a44de5de9526"
+      },
+      "after": {
+        "bytes": 10925,
+        "sha256": "e0bee85665a1dde67aabe0016ae41cedc9abb06bb00fbf2669b86f5172dfe752"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/users-unificado-planning.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/users-unificado-planning.css",
+      "before": {
+        "bytes": 713,
+        "sha256": "f83f744aea763943621117f9d55eb741d871eed6e2139fa771e64958e859329b"
+      },
+      "after": {
+        "bytes": 1572,
+        "sha256": "7f25e5e605acac8d464d757b14370717d8517d4dadff039d1406d4fc79aab7d3"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/pcp/users-unificado-planning.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/users-unificado-planning.js",
+      "before": {
+        "bytes": 6058,
+        "sha256": "ff7a8e7a63d5827292adfbf056c6d5910cc343b7d9428484a8c9c92b5570a54b"
+      },
+      "after": {
+        "bytes": 6058,
+        "sha256": "ff7a8e7a63d5827292adfbf056c6d5910cc343b7d9428484a8c9c92b5570a54b"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/pcp/usuarios/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/pcp/usuarios/index.html",
+      "before": {
+        "bytes": 8369,
+        "sha256": "f9b0a58f9d2635c247101f089b9bb86dd8b0d99e92c835156972c226185f34b0"
+      },
+      "after": {
+        "bytes": 8735,
+        "sha256": "b4b4ce249c342e26dbf51c8f9d511d0a529192a4513754be6136ffb737d3d674"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/campinas-unificado/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/campinas-unificado/index.html",
+      "before": {
+        "bytes": 4850,
+        "sha256": "d646382e4bb7016c27fd0722ef462a2a50e0f628315a480f2db194b1a61d4fa3"
+      },
+      "after": {
+        "bytes": 5187,
+        "sha256": "ab5db0eac7cee32035d308c18dba6fdf5d93dae06ce37066c12d4920a14251cf"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/indicadores-gerais/app.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/indicadores-gerais/app.js",
+      "before": {
+        "bytes": 27478,
+        "sha256": "86b4a4765de40a15d8b674768866348e812e9960045b3b0e3e28fab916b7a1bf"
+      },
+      "after": {
+        "bytes": 27460,
+        "sha256": "861b414a4af65635252f6688aaa62d1565428391a86af726e66d0b17744e90e1"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/indicadores-gerais/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/indicadores-gerais/index.html",
+      "before": {
+        "bytes": 6015,
+        "sha256": "5005b8d34c0171a5a71a5bc64775bef59a072d4b0a1e9da899122b2bb1841027"
+      },
+      "after": {
+        "bytes": 8000,
+        "sha256": "d381f14f520d168f44d5ffe2e99b592e676908a72758efea0e1cc53436ab5ff2"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/indicadores-gerais/overview.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/indicadores-gerais/overview.css",
+      "before": null,
+      "after": {
+        "bytes": 3245,
+        "sha256": "9a8ecc8c82f0dc7fd66fa499087bd189e02d7db804d76117f0800f7a077b0263"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/producao/indicadores-gerais/overview.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/indicadores-gerais/overview.js",
+      "before": null,
+      "after": {
+        "bytes": 5110,
+        "sha256": "c8218c0c7c365dd067238554e699be74c9cb31b37ef50d5c435099d2e3bbb5ab"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/producao/indicadores-gerais/presentation.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/indicadores-gerais/presentation.js",
+      "before": null,
+      "after": {
+        "bytes": 512,
+        "sha256": "6c28b089996f1eddf35719d80b57ca21f6a4eaa580c157bc41637dd5f1bafd9b"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/producao/indicadores-gerais/style.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/indicadores-gerais/style.css",
+      "before": {
+        "bytes": 8205,
+        "sha256": "d35254d6c02b3a3ac627f5f742dd9c23470ea65836f46c574c36d93f1311fdfd"
+      },
+      "after": {
+        "bytes": 17095,
+        "sha256": "7c7113d08a6587791ac0a632fc04e45a214672bd93b313ca9b21ecef7baf0b98"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/noroeste/app/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/noroeste/app/index.html",
+      "before": {
+        "bytes": 729,
+        "sha256": "ebcc8cc4bf46833c4ab6d73c463a4e3736b48eb8652705f19f1302958ffd65f4"
+      },
+      "after": {
+        "bytes": 1113,
+        "sha256": "d2ed856609dc436b1c1e8286ad966bf53e2cf6f34f0d86363bbbbd4090237fb6"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/noroeste/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/noroeste/index.html",
+      "before": {
+        "bytes": 480,
+        "sha256": "fae572625795f2b16c47d24d53a8534bd9103748b9dcf2e8e29358b89d7d687e"
+      },
+      "after": {
+        "bytes": 945,
+        "sha256": "a5cb78f7a8b0fd25db8c1a8cd7a02ce78cadb8372f905d25943a7003a5809cb4"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/noroeste/mao-de-obra/app/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/noroeste/mao-de-obra/app/index.html",
+      "before": {
+        "bytes": 749,
+        "sha256": "19e0940d3a6dc280f81adad667a447d1d585242faeff0a6449ed58f20b9ad7d3"
+      },
+      "after": {
+        "bytes": 1135,
+        "sha256": "3aaf355f8e8110d794f0a776d092ef5ddc528b6c2b5db756e63a26955f1322f1"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/noroeste/visual.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/noroeste/visual.css",
+      "before": null,
+      "after": {
+        "bytes": 10894,
+        "sha256": "4a854ae36021b6dd3ddfdfb5ebd6cef9ff67c22768c8eb1782ffa7ddb315c484"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/producao/pederneiras/app/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/pederneiras/app/index.html",
+      "before": {
+        "bytes": 738,
+        "sha256": "30f50a79b711dedf5148b099f4152d2ca631f52dd1abf79f8b0a2894e030dc72"
+      },
+      "after": {
+        "bytes": 1122,
+        "sha256": "600a3885d7978726c0add5947c8f0f5a9ab30d556f37d94d5168c68cfec10b49"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/pederneiras/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/pederneiras/index.html",
+      "before": {
+        "bytes": 489,
+        "sha256": "ff3ba3ca0f3af4989724c5abc1a9e9b10af523374573432c48297f74557d2438"
+      },
+      "after": {
+        "bytes": 958,
+        "sha256": "ee4de41b4e1dda8da60f3ff4cfa5a07ff96d60c3f66727532a5530e518a753a7"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/pederneiras/mao-de-obra/app/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/pederneiras/mao-de-obra/app/index.html",
+      "before": {
+        "bytes": 758,
+        "sha256": "9b449cb5675488d5e95d30d4b6b6faf3f6871ecce64bedb79a4385ea0a63146d"
+      },
+      "after": {
+        "bytes": 1144,
+        "sha256": "d38a11ff0b9a7a5fa491c3fa97539203d1702b667f04b57e9a0c2be7a5c312a1"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/ribeirao/app/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/ribeirao/app/index.html",
+      "before": {
+        "bytes": 730,
+        "sha256": "e61075272902489b5bd5e92119ccd4d601e65b15898a249bb808c1f00b2f4887"
+      },
+      "after": {
+        "bytes": 1114,
+        "sha256": "0ce83a4dfb4762cbc3db852b0051ca63f7cadee09b8c9cbd17f94a7894c2e3b5"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/ribeirao/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/ribeirao/index.html",
+      "before": {
+        "bytes": 481,
+        "sha256": "6e16003a25b9ff35cf990f04072111ac0fabbb3b0706e477602946fb305d50c3"
+      },
+      "after": {
+        "bytes": 950,
+        "sha256": "5143ecf65db9ff6f4b5509810bf46279ad44cf8204c0516f9e191b0885b055f5"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/producao/ribeirao/mao-de-obra/app/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/producao/ribeirao/mao-de-obra/app/index.html",
+      "before": {
+        "bytes": 750,
+        "sha256": "3ace15af05f93df979b0a04dfea8a427da075b635775b8311e42f4414d5f0275"
+      },
+      "after": {
+        "bytes": 1136,
+        "sha256": "5b9d44877d8596877c246a8a356e21db4f5ad5148c0e68fb6f857f4b54bbeb6c"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/qualidade/assets/index-Bn4z2eAt.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/assets/index-Bn4z2eAt.js",
+      "before": null,
+      "after": {
+        "bytes": 241253,
+        "sha256": "8a222e94d03ab7f890287fa04d6a13f180b64716a200da1a5f508cdea659ab44"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/qualidade/assets/index-CI1pdTnl.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/assets/index-CI1pdTnl.js",
+      "before": {
+        "bytes": 237172,
+        "sha256": "32c9fed3eea7dee17828fad4673114d18ad9be0449cbdb8db1bebe52592aadb8"
+      },
+      "after": {
+        "bytes": 237154,
+        "sha256": "74c1fe81a7adf183f4f4f790f6a6a99264a7c5ced8024e6e35445533d384baf7"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/qualidade/assets/index-DG3K2uWx.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/assets/index-DG3K2uWx.css",
+      "before": {
+        "bytes": 39398,
+        "sha256": "dafd9fbb38cde86deb4d0fb87ed9da5c26a6a6c48f1948d6f1bc3ea3249c7640"
+      },
+      "after": {
+        "bytes": 39398,
+        "sha256": "dafd9fbb38cde86deb4d0fb87ed9da5c26a6a6c48f1948d6f1bc3ea3249c7640"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/qualidade/assets/index-Dix4Rzzi.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/assets/index-Dix4Rzzi.js",
+      "before": null,
+      "after": {
+        "bytes": 241507,
+        "sha256": "de4ae11c50b3896d578dce00efcbcffc42ad8c16c6275ceefa2b66ab21c753cd"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/qualidade/assets/index-P0t7-g3M.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/assets/index-P0t7-g3M.css",
+      "before": null,
+      "after": {
+        "bytes": 90972,
+        "sha256": "ed4b74519fc8072ca520119be3b7fe7c0fdf34283a7004ce1c7aeb1397672202"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/qualidade/assets/tasks-5Ycax9rJ.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/assets/tasks-5Ycax9rJ.css",
+      "before": {
+        "bytes": 43469,
+        "sha256": "20314fc451daa372e30c59c483fd26d283a285baec2cae5be559e47535350ff4"
+      },
+      "after": {
+        "bytes": 43469,
+        "sha256": "20314fc451daa372e30c59c483fd26d283a285baec2cae5be559e47535350ff4"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/qualidade/assets/tasks-DIImpmDG.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/assets/tasks-DIImpmDG.js",
+      "before": {
+        "bytes": 185944,
+        "sha256": "4cc7a39f4d7d97c069332f9f3233505bcba967062c417a3d37dc7c22bd8e842b"
+      },
+      "after": {
+        "bytes": 185944,
+        "sha256": "4cc7a39f4d7d97c069332f9f3233505bcba967062c417a3d37dc7c22bd8e842b"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/qualidade/assets/tasks-KvB9CIVI.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/assets/tasks-KvB9CIVI.js",
+      "before": null,
+      "after": {
+        "bytes": 185944,
+        "sha256": "4cc7a39f4d7d97c069332f9f3233505bcba967062c417a3d37dc7c22bd8e842b"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/qualidade/assets/tasks-P0t7-g3M.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/assets/tasks-P0t7-g3M.css",
+      "before": null,
+      "after": {
+        "bytes": 90972,
+        "sha256": "ed4b74519fc8072ca520119be3b7fe7c0fdf34283a7004ce1c7aeb1397672202"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/qualidade/assets/tasks-router-274ea3190b48.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/assets/tasks-router-274ea3190b48.js",
+      "before": {
+        "bytes": 731,
+        "sha256": "0309ecef61fd391d4b8a217b81832c674bfc2ea28bdc89113066f1122acf72b0"
+      },
+      "after": {
+        "bytes": 707,
+        "sha256": "f7fc025401ffa413c92664b53bcf68c40575f09b4a1217bc41c6b799db942829"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/qualidade/assets/tasks-router-9b49a09df402.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/assets/tasks-router-9b49a09df402.js",
+      "before": null,
+      "after": {
+        "bytes": 707,
+        "sha256": "9b49a09df4029f023c1b8163f6e5de47bbb731c5e79dc931fb8f658643e9c9cb"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/qualidade/dist/assets/index-P0t7-g3M.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/dist/assets/index-P0t7-g3M.css",
+      "before": null,
+      "after": {
+        "bytes": 90972,
+        "sha256": "ed4b74519fc8072ca520119be3b7fe7c0fdf34283a7004ce1c7aeb1397672202"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/qualidade/dist/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/dist/index.html",
+      "before": null,
+      "after": {
+        "bytes": 409,
+        "sha256": "9bdda974c4a069a745323578ba8cc5ee0af5304f101eb8c61b501158ba7ca87b"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/qualidade/dist-tasks/assets/tasks-KvB9CIVI.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/dist-tasks/assets/tasks-KvB9CIVI.js",
+      "before": null,
+      "after": {
+        "bytes": 185944,
+        "sha256": "4cc7a39f4d7d97c069332f9f3233505bcba967062c417a3d37dc7c22bd8e842b"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/qualidade/dist-tasks/assets/tasks-P0t7-g3M.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/dist-tasks/assets/tasks-P0t7-g3M.css",
+      "before": null,
+      "after": {
+        "bytes": 90972,
+        "sha256": "ed4b74519fc8072ca520119be3b7fe7c0fdf34283a7004ce1c7aeb1397672202"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/qualidade/dist-tasks/tasks.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/dist-tasks/tasks.html",
+      "before": null,
+      "after": {
+        "bytes": 407,
+        "sha256": "e0a92c848879fdf257b18074fb283c2b244c79280c54b429dcde59b49940f93f"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/qualidade/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/qualidade/index.html",
+      "before": {
+        "bytes": 335,
+        "sha256": "72210adca99338542b38893986dd6ddedff11908ed2c68fd1df8336d5bc2f66a"
+      },
+      "after": {
+        "bytes": 643,
+        "sha256": "30e9c8f6f6b81d24f2a4669d143c9e80e7a1241063e23e6c07f44502c4e43d4b"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/relatorios/acmp-concretagem/confirmacao.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/relatorios/acmp-concretagem/confirmacao.css",
+      "before": {
+        "bytes": 8309,
+        "sha256": "5bb3240eabc07d2c760a0f719cae198eb21f8043a9eee5541dafc4b1e68e9021"
+      },
+      "after": {
+        "bytes": 17508,
+        "sha256": "91092eb02ad21ffa19c9404a15d6734bb42dfd231c18f18925034e9cd003ea7c"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/relatorios/acmp-concretagem/confirmacao.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/relatorios/acmp-concretagem/confirmacao.js",
+      "before": {
+        "bytes": 18848,
+        "sha256": "30d6d54f454850fd7d7efc5eb0b777cfa09e861bf37927f05b98c56ad4711682"
+      },
+      "after": {
+        "bytes": 18775,
+        "sha256": "905f77155dd696a312b3c75a7b6d0237b941d0fbc0dd2c2df7b329e9030ed4a3"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/relatorios/acmp-concretagem/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/relatorios/acmp-concretagem/index.html",
+      "before": {
+        "bytes": 7588,
+        "sha256": "73af5f8f98b6313111741d2b0a113ab0512050b114e78784b3f373b9347c2ec7"
+      },
+      "after": {
+        "bytes": 12213,
+        "sha256": "bc09fe3e606465144775df6ffe0b7d2918964fe42d4a084f219935c5dea9a22c"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/relatorios/fechamento-diario/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/relatorios/fechamento-diario/index.html",
+      "before": {
+        "bytes": 42796,
+        "sha256": "40e393bf5eda1792a8a95b4eec617a1e714f8c3350c229c19ed0bec89e2893b7"
+      },
+      "after": {
+        "bytes": 55371,
+        "sha256": "c45605715c0569695ce9ae4c3fb6a700b1e056f777d8e003eaecf7cd9ffd7d91"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/auth.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/auth.js",
+      "before": {
+        "bytes": 8171,
+        "sha256": "7fba30338c9ed2e7d038217b5f92170d9e162791f55780f522320123904ebfb1"
+      },
+      "after": {
+        "bytes": 8710,
+        "sha256": "04d643695f4cf9d8229b33429eabbcfd8d3b3aa0a4d8954210489e32d7609400"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/aviso.json",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/aviso.json",
+      "before": null,
+      "after": {
+        "bytes": 50,
+        "sha256": "7b51825ffcc167f4ab27bec8b747a43f362b06a68702571165bea85c7c8c2769"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/busca-sinonimos.json",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/busca-sinonimos.json",
+      "before": null,
+      "after": {
+        "bytes": 168,
+        "sha256": "121815fefc8c70d01bc3bf89ba0be44a48f00e634538db44f09f6b778201cd56"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/busca.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/busca.css",
+      "before": null,
+      "after": {
+        "bytes": 4866,
+        "sha256": "d329dcdeb8ab06ad59f5b88eec05866ec5c5a2a64300fa904b640cfd6353263f"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/busca.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/busca.js",
+      "before": null,
+      "after": {
+        "bytes": 20213,
+        "sha256": "0298842b00eb2f0d6d2f37618d18270a5a8e0f8f57b9cbeb310d5a3235a52584"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/components.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/components.js",
+      "before": null,
+      "after": {
+        "bytes": 15466,
+        "sha256": "df22d6663cdbe4ecfed2d1b6b9b4dede356041b4a89d9903cd949bbb577bd057"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/embedded.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/embedded.css",
+      "before": {
+        "bytes": 1637,
+        "sha256": "51d05cb3cf3cc33a72808c3bc0370c89084dc65cd9af508175753bfa561855af"
+      },
+      "after": {
+        "bytes": 1684,
+        "sha256": "f04aaa7bacfe84ba3b879195600ee5a9ef521533bd92a8915b1227b5667d42d5"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/fonts/Geist-Medium.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/fonts/Geist-Medium.woff2",
+      "before": {
+        "bytes": 46464,
+        "sha256": "ed653645d0ea78ec2aeda9d705158e9c6b323efe507e0ab25cc483ae9182e97d"
+      },
+      "after": {
+        "bytes": 46464,
+        "sha256": "ed653645d0ea78ec2aeda9d705158e9c6b323efe507e0ab25cc483ae9182e97d"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/shell/fonts/Geist-Regular.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/fonts/Geist-Regular.woff2",
+      "before": {
+        "bytes": 45228,
+        "sha256": "12e7c80de776bc74044973a26bb96842ca4bfe9e16fc6128fa5c6420e8e1d8fc"
+      },
+      "after": {
+        "bytes": 45228,
+        "sha256": "12e7c80de776bc74044973a26bb96842ca4bfe9e16fc6128fa5c6420e8e1d8fc"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/shell/fonts/Geist-SemiBold.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/fonts/Geist-SemiBold.woff2",
+      "before": {
+        "bytes": 46304,
+        "sha256": "162dcce19c895344a8eeee8482017d975f8e555d90da21d4343e31e8c9334d79"
+      },
+      "after": {
+        "bytes": 46304,
+        "sha256": "162dcce19c895344a8eeee8482017d975f8e555d90da21d4343e31e8c9334d79"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/shell/fonts/GeistMono-Medium.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/fonts/GeistMono-Medium.woff2",
+      "before": {
+        "bytes": 51864,
+        "sha256": "b016f0d4235f40bfb246363f3cad04a90b88fe35b67ce764be9391b5fa57791a"
+      },
+      "after": {
+        "bytes": 51864,
+        "sha256": "b016f0d4235f40bfb246363f3cad04a90b88fe35b67ce764be9391b5fa57791a"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/shell/fonts/GeistMono-SemiBold.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/fonts/GeistMono-SemiBold.woff2",
+      "before": {
+        "bytes": 51844,
+        "sha256": "3609788228e2cb2c3ec156df82c1c1d9258b22cc9ed006fdaf1df33018a6ae9b"
+      },
+      "after": {
+        "bytes": 51844,
+        "sha256": "3609788228e2cb2c3ec156df82c1c1d9258b22cc9ed006fdaf1df33018a6ae9b"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/shell/fonts/OFL.txt",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/fonts/OFL.txt",
+      "before": {
+        "bytes": 4476,
+        "sha256": "dbc009cef0eae803f38a627911ea08fd96a283702b0302bb4d47067952ae3f95"
+      },
+      "after": {
+        "bytes": 4476,
+        "sha256": "dbc009cef0eae803f38a627911ea08fd96a283702b0302bb4d47067952ae3f95"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/shell/home-header-compact.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/home-header-compact.css",
+      "before": {
+        "bytes": 1968,
+        "sha256": "7751b0b4e1005921a44b7ca50c91f95d65f73004a78055b0310aa60eaa199ce7"
+      },
+      "after": {
+        "bytes": 1966,
+        "sha256": "f9c43aad8c6e2697180970c3db3788389fdfd8d6eb24a507866e9c3e0ab62397"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/home-header-compact.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/home-header-compact.js",
+      "before": {
+        "bytes": 1925,
+        "sha256": "69f1da16e66b9d803507647e0f66152895604fb5e7005035eaf96d2e9873f109"
+      },
+      "after": {
+        "bytes": 1580,
+        "sha256": "90fca5e29d15cfa6c3afd2ad5400ba5501fda92f3153209c651b905f15e6a457"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/icons.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/icons.js",
+      "before": null,
+      "after": {
+        "bytes": 15525,
+        "sha256": "a414546027eb201262030d65b9e10d6b9f30fea1c6bd8948129068ed0803f764"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/laboratorio-visual.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/laboratorio-visual.css",
+      "before": null,
+      "after": {
+        "bytes": 2762,
+        "sha256": "1c51560a95d2f59612831537580a8f4dbb69453a4c82e96cc3d5946150f0cbd8"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/login-desktop.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/login-desktop.css",
+      "before": null,
+      "after": {
+        "bytes": 2933,
+        "sha256": "16b6947e70ea5bb6c307b748e286a6bc83b8f8fc1efe7841fe2a6ac77970888a"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/login-original.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/login-original.css",
+      "before": null,
+      "after": {
+        "bytes": 25535,
+        "sha256": "583d6a6bd731032b85fbc1daca2b8ba3afaa0eba6bbae06f91f909608631d355"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/login-uni.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/login-uni.css",
+      "before": null,
+      "after": {
+        "bytes": 2709,
+        "sha256": "3d58b6608089020c26a1f36badeca65750324e1466cc90d84f299b5f58c1f089"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/login-uni.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/login-uni.js",
+      "before": null,
+      "after": {
+        "bytes": 2620,
+        "sha256": "f7c66d18025d53fdc2da21cee2299f96941f5363d02f2d043746ede642e1a2e2"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/menu.config.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/menu.config.js",
+      "before": {
+        "bytes": 21540,
+        "sha256": "ec15bdd703f6804ad08600a2d99a419b5ea35cea687f90ca892037eeffa9e56c"
+      },
+      "after": {
+        "bytes": 21867,
+        "sha256": "47754be265fb14c0dc11c9809087492c1bd4bbe50ff7b7299c2cdbaa486ee821"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/modelo-a/menu.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/modelo-a/menu.css",
+      "before": {
+        "bytes": 8183,
+        "sha256": "2dd80588dcebadffd1fa525e9d77059a4c234bc6709314608d690e8cab476dc8"
+      },
+      "after": {
+        "bytes": 8154,
+        "sha256": "f0b65f0c4cfc6bec10386ff1590704c2a3f1689f25607ff080155588bcf5116b"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/modelo-a/menu.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/modelo-a/menu.js",
+      "before": {
+        "bytes": 238038,
+        "sha256": "2bf2214181b4974c492e68b2d58b38d4a4ebbeb83276f2ad9838c369efe4c127"
+      },
+      "after": {
+        "bytes": 239474,
+        "sha256": "c798b9d5a38c92c5b10613cc98900b72a54a863cd843d66a5a430faeb18be9de"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/modelo-a-host.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/modelo-a-host.css",
+      "before": {
+        "bytes": 1040,
+        "sha256": "e23a29cf382552c84b9549fc4451f7f2fe9e1907ecbb04f4183d5a14c31f11a5"
+      },
+      "after": {
+        "bytes": 1012,
+        "sha256": "eaad6d48e52e732a87708202d6b99501014889fb8be7088f6171cedbdccf93d6"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/modelo-a-loader.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/modelo-a-loader.js",
+      "before": {
+        "bytes": 774,
+        "sha256": "46e4bfdede28e75ce938481e86d712d42a30728ade7054f23e10d3ab5f5f7168"
+      },
+      "after": {
+        "bytes": 796,
+        "sha256": "902f52d33b668adeed137b34fe94664ddaa9bab544735bb6fec150ffc5dfac79"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/module-cards.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/module-cards.css",
+      "before": {
+        "bytes": 5443,
+        "sha256": "fcbcf92f8ca4831cfef290362094220f9396dc7bb8a9707a6a354b3fb0b9cc75"
+      },
+      "after": {
+        "bytes": 5137,
+        "sha256": "ec6fbdba38cda189700d76055f970bf170088cefacd3584056a43b84c5d867ff"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/module-columns.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/module-columns.css",
+      "before": null,
+      "after": {
+        "bytes": 2593,
+        "sha256": "acea4963e0f7cfbe5c8c30b6de7980bfdaf8ddf84e2a00858016202c4d2434a0"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/module-components.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/module-components.css",
+      "before": null,
+      "after": {
+        "bytes": 2734,
+        "sha256": "85e9261d9d3bf781f23be7e7e270dfb7491524c5413aeea355f5070782f6799b"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/module-pages-a.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/module-pages-a.css",
+      "before": {
+        "bytes": 5818,
+        "sha256": "dcf4f30e9773ea153f0733fa6fe38493d1da595857cc67e4c9ecd9adb4ed573f"
+      },
+      "after": {
+        "bytes": 5871,
+        "sha256": "8077090908a0021f92d161fcc63a984952fd3bcef3bd187ba4e70161e9fba6f1"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/module-pages-mobile.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/module-pages-mobile.js",
+      "before": {
+        "bytes": 13530,
+        "sha256": "fa8c4c1b03a8725743df59f0555196913c0a349739949d60309c0b2bd57b4828"
+      },
+      "after": {
+        "bytes": 13664,
+        "sha256": "3341bd4ec4a0bb9cf1949770640140198d2eabbe03f319aa79d9d72d8803f6b3"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/module-pages.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/module-pages.js",
+      "before": {
+        "bytes": 14118,
+        "sha256": "261375855e9c79a46153601fac0bb2a6cae0fa3a70137ace1e3b783da9197512"
+      },
+      "after": {
+        "bytes": 14195,
+        "sha256": "bb44be6740f95d49b848fdcebab0d35387e7e86a14e62b81fb4b6ee31b684523"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/module-theme.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/module-theme.js",
+      "before": {
+        "bytes": 1258,
+        "sha256": "b745a41b9871c619317ee959683378f6cb6181acc5a3d07f4a1a351924d1e2dc"
+      },
+      "after": {
+        "bytes": 1511,
+        "sha256": "cfc3017d7afc48ed7c67be14021324de5c9efd7dbaaf8c069ff14cb0a666dacf"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/navigation.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/navigation.css",
+      "before": {
+        "bytes": 18850,
+        "sha256": "3e53f08f54541984d4d2a35284ab01a522618fd4bc8165629250230b84a4fe14"
+      },
+      "after": {
+        "bytes": 20965,
+        "sha256": "c9e758f6d41589c0622592e8fda39c2c110c4e19c71e4a72379398d85d431215"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/navigation.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/navigation.js",
+      "before": {
+        "bytes": 28571,
+        "sha256": "420633bd86d682787c0885d40bc527bf94d4f63213e6ac35b44589fad778ce4c"
+      },
+      "after": {
+        "bytes": 29527,
+        "sha256": "103fb6690bfba1b764ec68ea33a76d447a0472d0da590e64532ca866c2a2af78"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/password-visibility.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/password-visibility.css",
+      "before": {
+        "bytes": 586,
+        "sha256": "d121d22260edad5b1aff66cf054bff27306c6735c9f6480f7afe95b4cb26a959"
+      },
+      "after": {
+        "bytes": 594,
+        "sha256": "fd3cd1bb83f198472d63cf1b622ba78559ad8e5f73beff73d6e67298b434eb22"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/password-visibility.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/password-visibility.js",
+      "before": {
+        "bytes": 1655,
+        "sha256": "b0e86963f2f936dd3e1b8314d1135d95fcf4f19f93f137c1df9d4b7b7c37449e"
+      },
+      "after": {
+        "bytes": 1619,
+        "sha256": "099478266c7a76fe2920734638fc6aca8ea2e2a54042c932a210e80084bf858f"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/producao-native-visual.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/producao-native-visual.css",
+      "before": null,
+      "after": {
+        "bytes": 10789,
+        "sha256": "bdf488e66d093e41b49f6f7bc46904e995ea83482dd6e9d351642ff374630ef9"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/quick-access-admin.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/quick-access-admin.js",
+      "before": {
+        "bytes": 4252,
+        "sha256": "ec9c2ed3390339e9f78b9189ab69a9d810b49be725b6ab7ac0cb39e99680a980"
+      },
+      "after": {
+        "bytes": 4252,
+        "sha256": "ec9c2ed3390339e9f78b9189ab69a9d810b49be725b6ab7ac0cb39e99680a980"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/shell/quick-access.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/quick-access.css",
+      "before": {
+        "bytes": 5009,
+        "sha256": "b6152066c9e43b69aa6db65673fe82c3d911e87fdccdaf4990d077d8f1563c3f"
+      },
+      "after": {
+        "bytes": 5482,
+        "sha256": "5dd423a4773da4fc8b898b6bf79f3a299e3a6b5f359a34c883e1e991d5f419a5"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/quick-access.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/quick-access.js",
+      "before": {
+        "bytes": 5503,
+        "sha256": "6c6c99968fda773f34cd883c2368c1988d759c56b6332425da4a08e95f62f730"
+      },
+      "after": {
+        "bytes": 5963,
+        "sha256": "fa9273793c91923856293f96c19194cacbcd058c6a19bcb1d22d29287921d3b9"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/remaining-visual.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/remaining-visual.css",
+      "before": null,
+      "after": {
+        "bytes": 3241,
+        "sha256": "4eb24494826f883d75f8bb3b51cbe88b6caa1ccb61e398a077be5e5bddad2a8f"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/review-complete.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/review-complete.css",
+      "before": null,
+      "after": {
+        "bytes": 34461,
+        "sha256": "70138d0aae9af5fa39446361e7eac7f8b09936415683bb5db55dd4b4146f6d41"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/router.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/router.js",
+      "before": {
+        "bytes": 34515,
+        "sha256": "685d254027e1ac9a4670add59616da0383178a2892c9946ff92a3e12ce14ead9"
+      },
+      "after": {
+        "bytes": 35574,
+        "sha256": "450275c5fccdc566fa03ff4653bf479475092694b52454c39649dc6b70b1b95c"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/shared-menu.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/shared-menu.css",
+      "before": {
+        "bytes": 14552,
+        "sha256": "4359a846a07c25965be2986f2a34b317eccc076dcde22e52602fd9a7dc9d1d15"
+      },
+      "after": {
+        "bytes": 15414,
+        "sha256": "e8182b4eb1bbe3fd87e81a83dc0f98fe166722407478778cefa4e0ae5b2e366d"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/shell.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/shell.css",
+      "before": {
+        "bytes": 25057,
+        "sha256": "20c15a33dd556fba654bf14fb6cba8de1db1e87ab34f45de076951473488cce7"
+      },
+      "after": {
+        "bytes": 25223,
+        "sha256": "40ee87927c89ac09d8697f375e77da05c12a6c621dd2f3b70ba9c017dfdab06b"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/shell.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/shell.js",
+      "before": {
+        "bytes": 56594,
+        "sha256": "71f50ab66a222245a26833c55bf7d3e110409abfc0fe249d47cd97d87dc9a335"
+      },
+      "after": {
+        "bytes": 58449,
+        "sha256": "22877204e60aaa4d0abb0acbab20e3abd2aa6b007381e291f445b6aed6073a42"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/shell/tokens.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/tokens.css",
+      "before": null,
+      "after": {
+        "bytes": 19494,
+        "sha256": "f680461f63847e42574dcb98ba7806db602e841e104b94f762bb2fb59f57cab7"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/usinas-visual.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/usinas-visual.css",
+      "before": null,
+      "after": {
+        "bytes": 3082,
+        "sha256": "e7f4d9e87abf732ff80938120c8cd5aaea457469bd52e652ddca23535b489a67"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/shell/visual-shell.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/shell/visual-shell.css",
+      "before": null,
+      "after": {
+        "bytes": 23161,
+        "sha256": "396ea100e3947f394b017294713fc9a9869e19648b3160d943f0542fbcde9edb"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/suprimentos/almoxarifado/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/almoxarifado/index.html",
+      "before": {
+        "bytes": 498,
+        "sha256": "4a5c5e13453af79104c21c811fcb1705f0bbdb9678c0bed1aa167ce7f3a5eeea"
+      },
+      "after": {
+        "bytes": 733,
+        "sha256": "1fae2a23f596a7c6897774588cf431f1d543ea18b413a282c7af8105643c3970"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/analises/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/analises/index.html",
+      "before": {
+        "bytes": 578,
+        "sha256": "60ea073802a4a8149c6d5ff78601987f6e8cc71fed16e9abb19f07eb257a5424"
+      },
+      "after": {
+        "bytes": 822,
+        "sha256": "005aa194d71d5a6702b5f23ccf473dc87e720c08c4426e98b66f9f5e1af48cac"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/cadastros/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/cadastros/index.html",
+      "before": {
+        "bytes": 580,
+        "sha256": "ef03fd3a944915608227354985603a0bdaea0c876cbd742b72f96e74f4073162"
+      },
+      "after": {
+        "bytes": 812,
+        "sha256": "393938def3556e1b123d21fd8b8e715498e4306fc20d41fcdf5e6793aa0c82c9"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/cotacoes/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/cotacoes/index.html",
+      "before": {
+        "bytes": 648,
+        "sha256": "16a2320e5ef4e89180571248097734c612c5ec4c2629ba55a4722d7ef3ccb2fe"
+      },
+      "after": {
+        "bytes": 897,
+        "sha256": "fb5029689d431a1cc9648ac7f6e988a13344128c570c92c1ceff2a15f07d2335"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/fornecedores/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/fornecedores/index.html",
+      "before": {
+        "bytes": 634,
+        "sha256": "ed3f6ddeff1c254f4e40e1428420aa6060ceaccacc2e127de32ed3bf9041aba5"
+      },
+      "after": {
+        "bytes": 883,
+        "sha256": "a60d02006cdcdb73bd1669ddc0af91b8f13e12eed6694ffc6c8fbe9e04d3e625"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/analises.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/analises.css",
+      "before": {
+        "bytes": 2960,
+        "sha256": "e265b097850e64a019e2bf1fe895a431995bbdc17f94f80ac50dfe080878b459"
+      },
+      "after": {
+        "bytes": 3031,
+        "sha256": "7f3c4fe5b4ede2e7b620e460f5967822015d0b805183c64558e9beaaa9b10acb"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/analises.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/analises.js",
+      "before": {
+        "bytes": 12312,
+        "sha256": "064f84d2dd3face8b0763fab85610894ebb1f00ed4bd68e20237ffed53c41f2d"
+      },
+      "after": {
+        "bytes": 9348,
+        "sha256": "173b86bf341b8201731fc91bb618108a296c704da32bc3616d83b2d7ca86719f"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/app.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/app.css",
+      "before": {
+        "bytes": 16892,
+        "sha256": "c6f3343cca378aa0f34943e7bd2baa5b2f4dc3162fd2ab2ea3f9cc79f4b3ec2c"
+      },
+      "after": {
+        "bytes": 20155,
+        "sha256": "ecf23c7538241a934f293c1ab00090177ea942ef6a1484a39ad96958c34b6585"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/app.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/app.js",
+      "before": {
+        "bytes": 43056,
+        "sha256": "da396bd086e4bf83edda4142e6e49ecf968c4acc2ea633f180714c0955de1b49"
+      },
+      "after": {
+        "bytes": 41916,
+        "sha256": "8df7958b6171eaff5768057b861b1c535d1efe81cc902f6a46385ca296c18f8e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/compras.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/compras.css",
+      "before": {
+        "bytes": 3910,
+        "sha256": "fa9c6781ddd94f0f956f5b7b2ea673657a00a2fdae08ed39cfa95560503a521a"
+      },
+      "after": {
+        "bytes": 3551,
+        "sha256": "e8b6d5189ec9a2c009cd07ca352c8ddf6537e4845975fdacdf298b29bbe07333"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/compras.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/compras.js",
+      "before": {
+        "bytes": 34576,
+        "sha256": "b9bdaf4179cf7e860d5fe269b1bfbe72bde46fe1e65871341d82c9c5062f8818"
+      },
+      "after": {
+        "bytes": 34075,
+        "sha256": "32c3b93e17beec483944a008858f4e7389813100dc8284cfc690d263b1a6a39b"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/dialog.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/dialog.css",
+      "before": {
+        "bytes": 2291,
+        "sha256": "71817b8911f17b16b39a7f2264041beb2c3f1edf594c32addee45b521085c82a"
+      },
+      "after": {
+        "bytes": 2583,
+        "sha256": "40d8492aba24b80a6aee0a8d1c575ad738bca18770759e8d0281a21f317bf163"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/estoque.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/estoque.css",
+      "before": {
+        "bytes": 5120,
+        "sha256": "5613aef499c9b0c0cffad3f0b5f42d1edc502835c7c2820f654465605938331f"
+      },
+      "after": {
+        "bytes": 5500,
+        "sha256": "bde94ffe1ab117ecedfd6c0c827745f2ddca823a8bee2951d002facec2ba558a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/estoque.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/estoque.js",
+      "before": {
+        "bytes": 20890,
+        "sha256": "55cd952a645cd98bb9c9c2a4b2b07db5e6fe7b7c403262cd8fa552abe2927d9f"
+      },
+      "after": {
+        "bytes": 20727,
+        "sha256": "82d62029470d8ae00f88f8c5a0cd08620cec12f6a11eed1d0c6d341d8d02b3e2"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/recebimento-excecao.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/recebimento-excecao.js",
+      "before": {
+        "bytes": 9670,
+        "sha256": "b9f7be4eb5b3437a4c25463c7834174df6fc8883f2c192bcdfcab0a01eca7ab7"
+      },
+      "after": {
+        "bytes": 9618,
+        "sha256": "4681d45d7180c23ab077dec5af4a084f64a03cc6fb6b4cd908a683fef410b844"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/recebimento-financeiro.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/recebimento-financeiro.js",
+      "before": {
+        "bytes": 5987,
+        "sha256": "528706d94c007abc57a27afa7732f611ee3d5dc1edeb74a20ed46216dbc25259"
+      },
+      "after": {
+        "bytes": 5939,
+        "sha256": "d525242f52ea9aec4f2a9a69bee0de59ce0d2e8f57560d3b3f3e9cfb7fddb39b"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/recebimento-pedido.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/recebimento-pedido.css",
+      "before": {
+        "bytes": 2471,
+        "sha256": "cda7c191fa1c3149e0f6c93bf707f0f6fdc04a31e5b8f3876349fe859b4079cb"
+      },
+      "after": {
+        "bytes": 2588,
+        "sha256": "59aa1924a3f9e66ae4735a5ca3f51d6d58eb434f3ac748f48803738afad46bed"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/recebimento-pedido.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/recebimento-pedido.js",
+      "before": {
+        "bytes": 22930,
+        "sha256": "52e35f9983b356f52ff155e8981a192da14b733ef420ebf799a2d318894a71de"
+      },
+      "after": {
+        "bytes": 22889,
+        "sha256": "ccf8f56149b7cfbe2cf6dd832a22dfdaefd8c204aead613f42918ab22dfb68cd"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/recebimento.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/recebimento.css",
+      "before": {
+        "bytes": 2749,
+        "sha256": "2de67cc04fead78ddf52d8b48ac3360b9b34e7b18325c08c3801183f5a678590"
+      },
+      "after": {
+        "bytes": 2912,
+        "sha256": "894d87cc8798030b193486427d1ddfb78afc40f2ed5d46969a3b7e8b7b8d3fe0"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/frontend/recebimento.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/frontend/recebimento.js",
+      "before": {
+        "bytes": 14978,
+        "sha256": "aa26ee1d85d24a9d784d97b559f3185d53df3a15a689bc4f779b27b42ebb51fa"
+      },
+      "after": {
+        "bytes": 14871,
+        "sha256": "94f200e01c05cfa4d5558c1e0075981529bcada38256e222d9151c87116cc2cb"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/inventario/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/inventario/index.html",
+      "before": {
+        "bytes": 497,
+        "sha256": "1628a56dde1b5fa481744455aa3e0045b740986e67923ce11192f9e0ddb1a16e"
+      },
+      "after": {
+        "bytes": 732,
+        "sha256": "c7d3378f400945839d6eab5054b5277d43663f9c788be4920aecd7ba32901b05"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/nova/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/nova/index.html",
+      "before": {
+        "bytes": 580,
+        "sha256": "ef03fd3a944915608227354985603a0bdaea0c876cbd742b72f96e74f4073162"
+      },
+      "after": {
+        "bytes": 812,
+        "sha256": "393938def3556e1b123d21fd8b8e715498e4306fc20d41fcdf5e6793aa0c82c9"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/painel/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/painel/index.html",
+      "before": {
+        "bytes": 580,
+        "sha256": "ef03fd3a944915608227354985603a0bdaea0c876cbd742b72f96e74f4073162"
+      },
+      "after": {
+        "bytes": 812,
+        "sha256": "393938def3556e1b123d21fd8b8e715498e4306fc20d41fcdf5e6793aa0c82c9"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/pwa/app.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/pwa/app.css",
+      "before": {
+        "bytes": 13592,
+        "sha256": "9160244fb419cb110cc6944d4cd8833ae1b82f28b61ca3c00638c243c065e870"
+      },
+      "after": {
+        "bytes": 13904,
+        "sha256": "b51b790d70852d8b019da4c91dfe01dc9e9d1bf082b556832a63cc39b88e9728"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/pwa/app.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/pwa/app.js",
+      "before": {
+        "bytes": 26046,
+        "sha256": "3e8a680d3e16627ce7248f24debed87b773c73ca675d2e1ab0eb34343b9c53e9"
+      },
+      "after": {
+        "bytes": 26028,
+        "sha256": "0ce43a98b090a93f35df5e2780b26629ed7648549797b463273dad9aac604eca"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/pwa/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/pwa/index.html",
+      "before": {
+        "bytes": 850,
+        "sha256": "2e95548798479b940810a9f45f716bae0b764cf328fbfadd1bf6c0a6b1d3ad54"
+      },
+      "after": {
+        "bytes": 1101,
+        "sha256": "6d6907394f958ad3d3dcf9f8a960f9a61c325f0db21e06a0c8275f9fa3204658"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/recebimento/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/recebimento/index.html",
+      "before": {
+        "bytes": 667,
+        "sha256": "1bc636bcd112cceecab9b24b393866c0fc5c0506672a5828107562f2f03f37e0"
+      },
+      "after": {
+        "bytes": 913,
+        "sha256": "a57490cd6ba86e1ccc522a2785ff40497e7470b2f047fec7f21f4858b824bb8c"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/solicitacao/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/solicitacao/index.html",
+      "before": {
+        "bytes": 580,
+        "sha256": "ef03fd3a944915608227354985603a0bdaea0c876cbd742b72f96e74f4073162"
+      },
+      "after": {
+        "bytes": 812,
+        "sha256": "393938def3556e1b123d21fd8b8e715498e4306fc20d41fcdf5e6793aa0c82c9"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/suprimentos/solicitacoes/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/suprimentos/solicitacoes/index.html",
+      "before": {
+        "bytes": 580,
+        "sha256": "ef03fd3a944915608227354985603a0bdaea0c876cbd742b72f96e74f4073162"
+      },
+      "after": {
+        "bytes": 812,
+        "sha256": "393938def3556e1b123d21fd8b8e715498e4306fc20d41fcdf5e6793aa0c82c9"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/sw.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/sw.js",
+      "before": {
+        "bytes": 6355,
+        "sha256": "c239b348a603a813ea3037ed8eb6a53f5724cd7451ab17d2166a44006a98372c"
+      },
+      "after": {
+        "bytes": 7283,
+        "sha256": "8e1efbc7abe94d88fc2454af2573476e26286f782bc86a6ed67a7a01e186c02a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/tv/formas/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/tv/formas/index.html",
+      "before": {
+        "bytes": 10855,
+        "sha256": "bec57b820bf5f6a799bee17f29dcd9bf6634cccc3aa9ef2d67050c699f52f9e2"
+      },
+      "after": {
+        "bytes": 20014,
+        "sha256": "10d72bb5b3dbd78b5c510ffd22b69ebaa1f9a0a8353905b6378b92c7062f8958"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/carta-traco.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/carta-traco.html",
+      "before": null,
+      "after": {
+        "bytes": 26850,
+        "sha256": "c3451d27073035805370d5b8961c9ed17ed76f0233a506dac2dbfa09fa05f0c4"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/usinas/cec-native.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/cec-native.css",
+      "before": {
+        "bytes": 4014,
+        "sha256": "1ff7704d6b63139ac0f3c1525ad524f41fd0a267b793e83286544fea42f830d4"
+      },
+      "after": {
+        "bytes": 8494,
+        "sha256": "cf4fb8db9878417e814cd74837f1e35d1eb0308ee7771662496f422f279fd980"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/fechamento-diario.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/fechamento-diario.html",
+      "before": {
+        "bytes": 4561,
+        "sha256": "059e0ec197c142cd9223f355ca5964bbf9168af09660a418ab8d1ed1c8e454b8"
+      },
+      "after": {
+        "bytes": 4736,
+        "sha256": "ee829766c7df1d88cd55159ec2b3f6f78f8a983c64a989c3efb4e5f631d4d97f"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/fechamento-diario.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/fechamento-diario.js",
+      "before": null,
+      "after": {
+        "bytes": 5045,
+        "sha256": "d6934911251f5083238f25c61a62fd4d5d85fd34c4664ef0336dda12a415c762"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/usinas/fechamento.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/fechamento.html",
+      "before": {
+        "bytes": 28892,
+        "sha256": "cb5c6b8757bd4963f9a259d06375de0571fb5f0b06544dc1fa11f0c9ce5aa38a"
+      },
+      "after": {
+        "bytes": 40061,
+        "sha256": "42c6bfcaacb545bdbf73bb9f50b00026b6f4ab55e10fb233177765895171b16c"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/index.html",
+      "before": {
+        "bytes": 19893,
+        "sha256": "f24ba560fc04c857b2f75c63830de3a266c7854af7f90e5a43be64c0c0878fa3"
+      },
+      "after": {
+        "bytes": 26850,
+        "sha256": "c3451d27073035805370d5b8961c9ed17ed76f0233a506dac2dbfa09fa05f0c4"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/native-areas.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/native-areas.css",
+      "before": {
+        "bytes": 3580,
+        "sha256": "dbcbca1012cd85d87c207335bea24ab4a8d6574293df4c1a4d0f4f896e12c405"
+      },
+      "after": {
+        "bytes": 7482,
+        "sha256": "2b247d22c6bfdf0ab494ccd12a64c385e0c6c1b7be2826ead3dd349dc98491c2"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/native-areas.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/native-areas.js",
+      "before": {
+        "bytes": 14393,
+        "sha256": "885dbff24d3c78683b17d0702a2b0c5744ad03a6c11c03bace89fecea16c05c3"
+      },
+      "after": {
+        "bytes": 14381,
+        "sha256": "826cdec37bcf4773ae748664e20ce6d0a97d74d60440c71499209cc829e869ee"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/noroeste/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/noroeste/index.html",
+      "before": {
+        "bytes": 372,
+        "sha256": "ee5f501d3906cc63bf058a8f5b136b55fc78344693dcc25d18d0507808b7300b"
+      },
+      "after": {
+        "bytes": 820,
+        "sha256": "22a22c4d0b9eeecf8f5b7c2f2c90e105ea347cdf1b52db2f876e73acff38aaca"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/noroeste/noro-cec.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/noroeste/noro-cec.js",
+      "before": {
+        "bytes": 12870,
+        "sha256": "bd18682dc9af0ec21211ce9cac84ec5fc3d4bd6022c1f097a67c1fc961aa17d2"
+      },
+      "after": {
+        "bytes": 12852,
+        "sha256": "efe12a34846628a4ed08733f1f7ab6b0fc407aa729f1cf4b18fb8100512d06b1"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/noroeste/noro-native.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/noroeste/noro-native.css",
+      "before": {
+        "bytes": 4762,
+        "sha256": "3d9a5d3392e1f5a7dbf91a2ed796314c40e8cd59030b813c15deba1c778f2707"
+      },
+      "after": {
+        "bytes": 11400,
+        "sha256": "023ebe7cdea3b78ef99b92bda80b38d09e19ef4178ffe0081f833e169b0bddd8"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/noroeste/noro-native.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/noroeste/noro-native.js",
+      "before": {
+        "bytes": 21811,
+        "sha256": "fafe664c3eed6cbc840cee6194647ee7d53ad1de655f8a22d36cce56c38860d2"
+      },
+      "after": {
+        "bytes": 21803,
+        "sha256": "cbc11f55bfe21cec71c2a25a5e21906ca080d9d13ff86b82bf556ffe1c2d6347"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/cartas-traco/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/cartas-traco/index.html",
+      "before": {
+        "bytes": 21172,
+        "sha256": "aca510d995d005a243ca1a40d14df91ee7886d6568c05472c13e939cd530b083"
+      },
+      "after": {
+        "bytes": 28009,
+        "sha256": "4fedd48cc6b8f6cb26568e7c0dd21b2bfc514ba9a3f99200efe0d4ed82cef369"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/consumo/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/consumo/index.html",
+      "before": {
+        "bytes": 31834,
+        "sha256": "ffbb68561f7e8c2bb8ed5633d94bdafb38da81db91e83b47b783290956b15208"
+      },
+      "after": {
+        "bytes": 38564,
+        "sha256": "a898c9859197c5afc43113cc52d99d3448de7facdb877230e526af125623a67e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/custos/carta-slide/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/custos/carta-slide/index.html",
+      "before": {
+        "bytes": 20521,
+        "sha256": "7084e48af98f23b6d39007652a0a87504a944ef3d82a8127abc0547c60ac191d"
+      },
+      "after": {
+        "bytes": 26551,
+        "sha256": "7276387d798cd5c1ff098bdb12f03c8cd2c13402d37cd782edbd44a41de88072"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/custos/comparar/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/custos/comparar/index.html",
+      "before": {
+        "bytes": 18484,
+        "sha256": "ea3527b41e2dfe4886baa7bb56ddc1dd6eae71c585a4605afac8de56c273c72d"
+      },
+      "after": {
+        "bytes": 22396,
+        "sha256": "0f0892ea61b865933d1bf147fa4fa6b189bb199d4975ee43d9ca3e631b4521c2"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/custos/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/custos/index.html",
+      "before": {
+        "bytes": 31477,
+        "sha256": "61f430af2e7902ef1804e51c9100ac6caee9a8c98c7f440abaaf73289974d6a8"
+      },
+      "after": {
+        "bytes": 39360,
+        "sha256": "a5472343fd71fb3d327c2c62867d8ff65f3673eb41e41d6cd4e0b994ad38691b"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/exportar/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/exportar/index.html",
+      "before": {
+        "bytes": 19619,
+        "sha256": "227f0520363ee08805d6767ae5eb6d45f365edcb4f0babb8c4f7d9191cd1623d"
+      },
+      "after": {
+        "bytes": 24561,
+        "sha256": "49be3d4c4e66d7e717473f25e311d8d4ee598e46d0d80e4a62df280afbf042d4"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/fechamento/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/fechamento/index.html",
+      "before": {
+        "bytes": 30272,
+        "sha256": "3d82a5d3863accdd94995d041bfbf674cd93c56fddaebe25790b39cfb4a2b619"
+      },
+      "after": {
+        "bytes": 41376,
+        "sha256": "975d99fc44649c3fcf8ef95597a2421c454c64e4f0f6c8d80a3f9dea5cf4f985"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/fechamento-diario/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/fechamento-diario/index.html",
+      "before": {
+        "bytes": 44147,
+        "sha256": "64f4006077a4018fc3d770b3ab7e1bcc6d739b07ddc8361ed398e564d3626985"
+      },
+      "after": {
+        "bytes": 57122,
+        "sha256": "eccd8c2d33f4df53c2b080da188d467691e21709315e88473f92aa799153b809"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/index.html",
+      "before": {
+        "bytes": 10846,
+        "sha256": "b383f809d23c3f649265090cf544407fada6d96115c887fdb5222fac64c9586f"
+      },
+      "after": {
+        "bytes": 13861,
+        "sha256": "c51773126668e5cba742f3a1e1333fbaceafcbd68e0a807af4f8a9cc0a5644c0"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/iqt/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/iqt/index.html",
+      "before": {
+        "bytes": 9132,
+        "sha256": "5f6b6bd24332cd9ded8ea8f9cd1bae1f7df1d3af8fb7b23fc140260d4c67376e"
+      },
+      "after": {
+        "bytes": 13242,
+        "sha256": "b8ccddc5179c7cce73375c306f5fac955d2b9745a3d57d1eb5972815e11c12f0"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/producao-periodo/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/producao-periodo/index.html",
+      "before": {
+        "bytes": 51540,
+        "sha256": "32daa2859c1bd1ef78e15c06a375359d20e2dd5cdc3ad0c7bdd1232bb0c5dd36"
+      },
+      "after": {
+        "bytes": 59527,
+        "sha256": "a98a4187e5684ddac4da71a857f8eeac38ff202e009a4d5e91a29665dfa85c7a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/usinas/relatorios/reports-diarios/index.html",
+      "destination": "/opt/concrefer-unificado/public/unificado/usinas/relatorios/reports-diarios/index.html",
+      "before": {
+        "bytes": 11321,
+        "sha256": "d516d9bd2d1766d87335b14fcbaffbbd97e2a50abb8696f63c10a9644ad9fa91"
+      },
+      "after": {
+        "bytes": 15653,
+        "sha256": "dd86c984b9fe02ed00617c38957d87a7b1172cdb9c76c5bf01b5540a73775e87"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/vendor/bootstrap/bootstrap.bundle.min.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/bootstrap/bootstrap.bundle.min.js",
+      "before": {
+        "bytes": 80727,
+        "sha256": "eb37e4d8bf11df00a045b673a64122ed4602d9b73a7d81888057cd7aac8e5a74"
+      },
+      "after": {
+        "bytes": 80721,
+        "sha256": "0833b2e9c3a26c258476c46266e6877fc75218625162e0460be9a3a098a61c6c"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/vendor/bootstrap/bootstrap.min.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/bootstrap/bootstrap.min.css",
+      "before": {
+        "bytes": 232808,
+        "sha256": "b0a21045f42b8884ae43d97fe386f5cc77d09e21972611a89d5b41d8b952b88b"
+      },
+      "after": {
+        "bytes": 232803,
+        "sha256": "3c8f27e6009ccfd710a905e6dcf12d0ee3c6f2ac7da05b0572d3e0d12e736fc8"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/vendor/bootstrap/LICENSE",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/bootstrap/LICENSE",
+      "before": {
+        "bytes": 1114,
+        "sha256": "493e9d585759d93207d24c5060c77ec30b0ee0b9a1ee25e5bd3b6c77cc5846bd"
+      },
+      "after": {
+        "bytes": 1114,
+        "sha256": "493e9d585759d93207d24c5060c77ec30b0ee0b9a1ee25e5bd3b6c77cc5846bd"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/vendor/bootstrap-icons/bootstrap-icons.css",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/bootstrap-icons/bootstrap-icons.css",
+      "before": {
+        "bytes": 100333,
+        "sha256": "4bf247ce809919c28f9f1cff068fa5cb9bb0484633f6dc432c2b8e98c1e78dbc"
+      },
+      "after": {
+        "bytes": 98255,
+        "sha256": "4ffa6bea4304d2eda418683f56261685ed47bf00995039f27e5ad62d53938d2d"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/vendor/bootstrap-icons/fonts/bootstrap-icons.woff",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/bootstrap-icons/fonts/bootstrap-icons.woff",
+      "before": {
+        "bytes": 176032,
+        "sha256": "bb1de989b83970f6f4e54de1cd974c5cba55b73582da5e1b225a6d0edf029483"
+      },
+      "after": {
+        "bytes": 176032,
+        "sha256": "bb1de989b83970f6f4e54de1cd974c5cba55b73582da5e1b225a6d0edf029483"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2",
+      "before": {
+        "bytes": 130396,
+        "sha256": "476adf42b40325098fcfa8b36ab3e769186bb4f6ce6a249753e2e1a9c22bf99e"
+      },
+      "after": {
+        "bytes": 130396,
+        "sha256": "476adf42b40325098fcfa8b36ab3e769186bb4f6ce6a249753e2e1a9c22bf99e"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/vendor/bootstrap-icons/LICENSE",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/bootstrap-icons/LICENSE",
+      "before": {
+        "bytes": 1114,
+        "sha256": "4917cd7b34a6c1623070857e6cb3e8a9dda39a641e4aeace1899494e5196d848"
+      },
+      "after": {
+        "bytes": 1114,
+        "sha256": "4917cd7b34a6c1623070857e6cb3e8a9dda39a641e4aeace1899494e5196d848"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/vendor/chart.js/chart.umd.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/chart.js/chart.umd.js",
+      "before": {
+        "bytes": 205489,
+        "sha256": "2e3da592d5f6a2bd75385fbd2e6eee45e61d22b33441140ac71543d992239989"
+      },
+      "after": {
+        "bytes": 205475,
+        "sha256": "fed6a739f8d0f0687174de6cd14745fc0fc7809144ab113d22908a26bf0d7fea"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/vendor/chart.js/LICENSE.md",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/chart.js/LICENSE.md",
+      "before": {
+        "bytes": 1102,
+        "sha256": "93b9613f1b61cbf811c5875fb74e96ef9a207f99a0235849828835fc8ac0a797"
+      },
+      "after": {
+        "bytes": 1102,
+        "sha256": "93b9613f1b61cbf811c5875fb74e96ef9a207f99a0235849828835fc8ac0a797"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/vendor/html2pdf/html2pdf.bundle.min.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/html2pdf/html2pdf.bundle.min.js",
+      "before": {
+        "bytes": 905958,
+        "sha256": "917be8b20da93f22db22d1d887efff1ef5a11ee2e72c61bf0e4d96ea0149cf2e"
+      },
+      "after": {
+        "bytes": 905956,
+        "sha256": "85e6ee9ce246e3ae4424313f7e46a5ed860a28d757811de8dc9c43f306049d65"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/vendor/html2pdf/html2pdf.bundle.min.js.LICENSE.txt",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/html2pdf/html2pdf.bundle.min.js.LICENSE.txt",
+      "before": {
+        "bytes": 146582,
+        "sha256": "22e7cc7678c34a75f24031b079d262c72a87b2a3a8896dc02abda57e97ceb1f4"
+      },
+      "after": {
+        "bytes": 146582,
+        "sha256": "22e7cc7678c34a75f24031b079d262c72a87b2a3a8896dc02abda57e97ceb1f4"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/vendor/html2pdf/LICENSE",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/html2pdf/LICENSE",
+      "before": {
+        "bytes": 1095,
+        "sha256": "79ef9b18a14125dd41207af0981e151e96097919cdb26685654f863ea69d2e25"
+      },
+      "after": {
+        "bytes": 1095,
+        "sha256": "79ef9b18a14125dd41207af0981e151e96097919cdb26685654f863ea69d2e25"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/vendor/LEIA-ME.md",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/LEIA-ME.md",
+      "before": {
+        "bytes": 724,
+        "sha256": "7c3f3f0dd499b9135839777d9891339ace7081ae9986d397a2515d3c0490c07b"
+      },
+      "after": {
+        "bytes": 724,
+        "sha256": "7c3f3f0dd499b9135839777d9891339ace7081ae9986d397a2515d3c0490c07b"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/vendor/published/chart.umd.min-bd19dbbb83.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/published/chart.umd.min-bd19dbbb83.js",
+      "before": null,
+      "after": {
+        "bytes": 205889,
+        "sha256": "206b6e8bb00fc7bba2c7ee80ca41db3e9e05ba7be0aa35abeba9cfd5357f5d0e"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/vendor/published/chart.umd.min-db43a3a48e.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/published/chart.umd.min-db43a3a48e.js",
+      "before": null,
+      "after": {
+        "bytes": 205222,
+        "sha256": "0e2326c6868072bec1592760c6729043caeea2960a2b46cee6a2192aac6abff0"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/vendor/published/html2canvas.min-3e8c1b841f.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/published/html2canvas.min-3e8c1b841f.js",
+      "before": null,
+      "after": {
+        "bytes": 198689,
+        "sha256": "e87e550794322e574a1fda0c1549a3c70dae5a93d9113417a429016838eab8cb"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/vendor/published/html2pdf.bundle.min-651b119678.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/published/html2pdf.bundle.min-651b119678.js",
+      "before": null,
+      "after": {
+        "bytes": 905956,
+        "sha256": "85e6ee9ce246e3ae4424313f7e46a5ed860a28d757811de8dc9c43f306049d65"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/vendor/published/jspdf.plugin.autotable.min-d480718589.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/published/jspdf.plugin.autotable.min-d480718589.js",
+      "before": null,
+      "after": {
+        "bytes": 38976,
+        "sha256": "27a9c3b61843c6312b87f142d40fe77c0f0f054c9f3cdeccc4bfd5f3322859c8"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/vendor/published/jspdf.umd.min-19e7da8fed.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/published/jspdf.umd.min-19e7da8fed.js",
+      "before": null,
+      "after": {
+        "bytes": 364463,
+        "sha256": "98ccf17aa10c20bb1301762618fcc9b6ab3a4e7f26b6071d64d0b41154df3875"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/vendor/published/jspdf.umd.min-a15ba80217.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/published/jspdf.umd.min-a15ba80217.js",
+      "before": null,
+      "after": {
+        "bytes": 364463,
+        "sha256": "98ccf17aa10c20bb1301762618fcc9b6ab3a4e7f26b6071d64d0b41154df3875"
+      },
+      "action": "add"
+    },
+    {
+      "file": "public/vendor/xlsx/LICENSE",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/xlsx/LICENSE",
+      "before": {
+        "bytes": 11556,
+        "sha256": "f9463066a83f512aaa2c4f5bda7514c82110ec46b703f477d112c90d33b7ed83"
+      },
+      "after": {
+        "bytes": 11556,
+        "sha256": "f9463066a83f512aaa2c4f5bda7514c82110ec46b703f477d112c90d33b7ed83"
+      },
+      "action": "unchanged"
+    },
+    {
+      "file": "public/vendor/xlsx/xlsx.full.min.js",
+      "destination": "/opt/concrefer-unificado/public/unificado/vendor/xlsx/xlsx.full.min.js",
+      "before": {
+        "bytes": 881749,
+        "sha256": "06b0589566e576e48d0da0c357c804bef26fd09f7e7e8e9fee3ee2d582a51b48"
+      },
+      "after": {
+        "bytes": 881727,
+        "sha256": "c9506197caf809a075b6dee1da0d36fb19da7158ffe8a88e7b0c96c5d8623c99"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "public/VERSION",
+      "destination": "/opt/concrefer-unificado/public/unificado/VERSION",
+      "before": {
+        "bytes": 6,
+        "sha256": "563d5c80c54e77e2f8454ecd5c14388f9ab3af77edc73b6f4736ada64527952c"
+      },
+      "after": {
+        "bytes": 8,
+        "sha256": "5612fda0181af2d910e51a07b024f3b7e7f27885555b4855791cc664e92893ab"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/carta-static/carta-traco.css",
+      "destination": "/opt/concrefer-unificado/homolog/laboratorio/service/server/static/carta-traco/carta-traco.css",
+      "before": {
+        "bytes": 13827,
+        "sha256": "aa810c02baf73a10f4f4a4588a261d02ac472fee3721e6bace6b599ee280da9f"
+      },
+      "after": {
+        "bytes": 28764,
+        "sha256": "a65fca6509d360ca1d4e655df3a94b110bc43a81f3ab83b512a46b2864584bfd"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/carta-static/index.html",
+      "destination": "/opt/concrefer-unificado/homolog/laboratorio/service/server/static/carta-traco/index.html",
+      "before": {
+        "bytes": 15872,
+        "sha256": "98d5384dcecc4528177a555bba4f2955eed5e600348f172597f2931bcd714bc6"
+      },
+      "after": {
+        "bytes": 16048,
+        "sha256": "9f09f7e463e7d02f9aba55d45fe42c09f1a74206e5d4224e8980c4acf8279005"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/dosagem-static/dosagem-native.css",
+      "destination": "/opt/concrefer-unificado/dosagem-native/static/dosagem-native.css",
+      "before": {
+        "bytes": 39401,
+        "sha256": "3b424d972bb010d6fa9171d9f55a7575bcf4a6c7fc864049b2bf583102ca79f5"
+      },
+      "after": {
+        "bytes": 80183,
+        "sha256": "01614074df343d68e8dde09afc7a5a132cbf625c42b2caa59ac164f3a7ca660d"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/analise/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/analise/index.html",
+      "before": {
+        "bytes": 12013,
+        "sha256": "fa0242733aad4ec01f271a5d99f86512d3f4d8586ec330e59a71e75716b3e0bd"
+      },
+      "after": {
+        "bytes": 16975,
+        "sha256": "ea6e2c6983ab2ca0167260bcd6a7df7af0dbae36f8ca8875d710cb4d2054e645"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/analise/relatorio.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/analise/relatorio.html",
+      "before": {
+        "bytes": 50241,
+        "sha256": "87d8dfdd30eb327cb970c13e2669a4b82860715ac884a62eb23d32247c6017f5"
+      },
+      "after": {
+        "bytes": 58498,
+        "sha256": "ac4915a718694b8462fa26fade337156d006013f0f126c49b34526f8dabb06d0"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/analise/resultado-cp.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/analise/resultado-cp.html",
+      "before": {
+        "bytes": 22407,
+        "sha256": "3771b6476b894e75186bb899c69bd69c7d57c2347d0d74a6c8729fbf9edf7539"
+      },
+      "after": {
+        "bytes": 28010,
+        "sha256": "453596da1fe3844bb34b7210205f8451d7675e1d6f3f7a758236f2a597f64a15"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/assets/vendor/bootstrap-icons.min.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/assets/vendor/bootstrap-icons.min.css",
+      "before": {
+        "bytes": 85879,
+        "sha256": "240e7d6be7423788aea5668535d25299358817bfb2164a2555435050c31c1314"
+      },
+      "after": {
+        "bytes": 167240,
+        "sha256": "3f2358e166c2ca3b5d1e8f321c6036b3659939de02f1c183f45df88ae374df49"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/assets/vendor/bootstrap.min.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/assets/vendor/bootstrap.min.css",
+      "before": {
+        "bytes": 232808,
+        "sha256": "b0a21045f42b8884ae43d97fe386f5cc77d09e21972611a89d5b41d8b952b88b"
+      },
+      "after": {
+        "bytes": 468969,
+        "sha256": "f74a91eeb8e720211d784780f1d14b86c2739bcfbc5215132a3c68b2c0702d30"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/assets/vendor/montserrat.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/assets/vendor/montserrat.css",
+      "before": {
+        "bytes": 10482,
+        "sha256": "b3f8b8ecc48857b6865fd6a9256d93c5fdc616c475c11de83698d47499fa908f"
+      },
+      "after": {
+        "bytes": 1059,
+        "sha256": "b64e5d38cb30bee110059acfa86d25f8a296a53f9c98d42caa27fed2700e7c66"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/etiquetas/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/etiquetas/index.html",
+      "before": {
+        "bytes": 31502,
+        "sha256": "663813b407755491d64821d31448d40ad97b63968afc34554be829adac01a6de"
+      },
+      "after": {
+        "bytes": 37841,
+        "sha256": "abd5eebfce470c2f15e5c5a8cd203d9d6fc53155204b08938b748cb34112fdc4"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/index.html",
+      "before": {
+        "bytes": 8031,
+        "sha256": "4d984bc8b3a390e2217f3ae8842e3857d6aee4ea1c40ac3164e893819be998d7"
+      },
+      "after": {
+        "bytes": 10779,
+        "sha256": "f7928779d97976d1b332777c92df9f20d04c64495dd0c4ffbbca5536811a37e2"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/leitura/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/leitura/index.html",
+      "before": {
+        "bytes": 30781,
+        "sha256": "fff73f455eb3bf049c6c75bfe9a1f82d7aada58e153da693c55ad1ea076e65e1"
+      },
+      "after": {
+        "bytes": 38466,
+        "sha256": "51b8a2efdc934ed907578f0954a6522acbc2d12420856549a51999db3554dce3"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/relatorio/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/relatorio/index.html",
+      "before": {
+        "bytes": 7445,
+        "sha256": "90ff48d6f2c7398ff8721822dc2b934247c7cbef2cac3bc173fb6db9dc5b2304"
+      },
+      "after": {
+        "bytes": 10709,
+        "sha256": "66d8ac836cab122e5896d5b2b8ddad3197e2c1e1030b1a5ab15ddb1c494af119"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/resultados/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/resultados/index.html",
+      "before": {
+        "bytes": 13994,
+        "sha256": "989453de9047de1cb9607b758598bcc22f61554cfbb4f8bbe3e98a7b488a8709"
+      },
+      "after": {
+        "bytes": 19484,
+        "sha256": "69ffc090bc4b814912ec6d47b068b12d7586aa812bae07d3394ecf2af67e357e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cec/rompimentos-mes/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cec/rompimentos-mes/index.html",
+      "before": {
+        "bytes": 12305,
+        "sha256": "582fb822f5beac19089bb9f3b7c86b56a5817dcf6a7c065f0e12f7cc949f50a0"
+      },
+      "after": {
+        "bytes": 16107,
+        "sha256": "589a329ae590d1b3955ccfa12ac91f864a9c67ed3f62e606acdd5866c849204c"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/assets/absorcao-historico.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cronoanalise/assets/absorcao-historico.css",
+      "before": null,
+      "after": {
+        "bytes": 1155,
+        "sha256": "9448234cfa745d43c723b15d89e11807bc49d34ccb66f43842ad310ae52d9d6e"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/assets/absorcao-historico.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cronoanalise/assets/absorcao-historico.js",
+      "before": null,
+      "after": {
+        "bytes": 5631,
+        "sha256": "6077b57f57955c111a8e62331b91bf5683af5f3c72bfc7031bbf0d1dcd08f66d"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/assets/cronoanalise-B420ID87.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cronoanalise/assets/cronoanalise-B420ID87.css",
+      "before": null,
+      "after": {
+        "bytes": 11955,
+        "sha256": "5410a79d9b85a17da5ef3836959888fe21da63db1bfd5dc4a22d60c8ff2f11f5"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/assets/cronoanalise-CCcHt3IK.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cronoanalise/assets/cronoanalise-CCcHt3IK.js",
+      "before": null,
+      "after": {
+        "bytes": 189734,
+        "sha256": "8e526f4548519170c513a5d404a57aa755770158628f89e1d98621230a3839a8"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/assets/cronoanalise-DoT_CKxg.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cronoanalise/assets/cronoanalise-DoT_CKxg.js",
+      "before": null,
+      "after": {
+        "bytes": 189811,
+        "sha256": "8a47f28379edef8e4e203ecbe1eae54421876bcc0d2a56c9de6f02a52db896da"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/assets/engine.worker-Cc5MV-Im.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cronoanalise/assets/engine.worker-Cc5MV-Im.js",
+      "before": {
+        "bytes": 16276,
+        "sha256": "d6b8bf48abc16b529891e4602bcf27141c6655202ebb1c0921872ed51b202500"
+      },
+      "after": {
+        "bytes": 16275,
+        "sha256": "e9f962a6473d1a1ef58ad259f1c23213d16700e346bbde1ee377a2349aa9a0cf"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/cronoanalise.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cronoanalise/cronoanalise.html",
+      "before": {
+        "bytes": 480,
+        "sha256": "317a3b1772bb07c7db3eb87d952467a00961616171e806360d2eff9f9b225756"
+      },
+      "after": {
+        "bytes": 953,
+        "sha256": "73c128eb651ae21acb95d22f4a4fcdb39a74baae5004bed63277173158da52cf"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/cronoanalise/metodologia-conteudo.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/cronoanalise/metodologia-conteudo.html",
+      "before": {
+        "bytes": 26657,
+        "sha256": "01c769d613949bbf80483b782a56ab99dd471418ae446feb4b8cabd29132ea85"
+      },
+      "after": {
+        "bytes": 26519,
+        "sha256": "686e876e06288db0cf92aeaa19fa24ba38ea027f4dc13e4a7e29511f9d3c0bf8"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/index.html",
+      "before": {
+        "bytes": 51837,
+        "sha256": "2ad4cfc863acd6d49cde5387f21fb98275ce3935569b06d9752bdd1165242d0c"
+      },
+      "after": {
+        "bytes": 68945,
+        "sha256": "97e601ee7101b799d6ab07fbcc5e9d3dfaf7f9c32688ec50a5eedb1e49217670"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/laboratorio-bridge.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/laboratorio-bridge.js",
+      "before": {
+        "bytes": 4360,
+        "sha256": "41d349af562d9a2d1d2d235a1f948e513ed592a514fa53df8917eee10b11cfde"
+      },
+      "after": {
+        "bytes": 4264,
+        "sha256": "bf3227a4bf3a7132d64ea5db9f0284c1f104cb454635931ccd81a75b536ff0c4"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/laboratorio-embedded.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/laboratorio-embedded.css",
+      "before": {
+        "bytes": 1352,
+        "sha256": "faaaf8ba8fc186543a122bdd6af97a0502298df1358b7ddedef87821c24c9bb8"
+      },
+      "after": {
+        "bytes": 2734,
+        "sha256": "5f2869052c76af10db6533a9aaa83a348c6a36e047289f9e18c6906b4b7cb13a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/analise/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/analise/index.html",
+      "before": {
+        "bytes": 12224,
+        "sha256": "3ccf68ad89bec74870f17e862c6f556ca206c7cb2c5af486051fc23b9183df19"
+      },
+      "after": {
+        "bytes": 16940,
+        "sha256": "866139587ed20c895512a3b627784de82b146e667e7fe696b147ff07b080b24f"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/analise/relatorio.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/analise/relatorio.html",
+      "before": {
+        "bytes": 50488,
+        "sha256": "db3c7152ea21c0ae68a422b700ea99ba36127f36cb225778a9a9463a53eaaae4"
+      },
+      "after": {
+        "bytes": 58745,
+        "sha256": "8c03137b8f8ed68e4a1e3027b06a7ac1f95aecf5223c1755748164eb3ac2ac5d"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/analise/resultado-cp.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/analise/resultado-cp.html",
+      "before": {
+        "bytes": 22627,
+        "sha256": "d007147936af363ebbcccde6e99f070ec844d0366b6c4d65e065fa976e36406c"
+      },
+      "after": {
+        "bytes": 28230,
+        "sha256": "3d8b0886b5dd43dcab549529ff5dd6f9ba59df29eb7ac6b3d4ca5f2e3ef54258"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/assets/vendor/bootstrap-icons.min.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/bootstrap-icons.min.css",
+      "before": {
+        "bytes": 85879,
+        "sha256": "240e7d6be7423788aea5668535d25299358817bfb2164a2555435050c31c1314"
+      },
+      "after": {
+        "bytes": 167240,
+        "sha256": "3f2358e166c2ca3b5d1e8f321c6036b3659939de02f1c183f45df88ae374df49"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/assets/vendor/bootstrap.min.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/bootstrap.min.css",
+      "before": {
+        "bytes": 232808,
+        "sha256": "b0a21045f42b8884ae43d97fe386f5cc77d09e21972611a89d5b41d8b952b88b"
+      },
+      "after": {
+        "bytes": 468969,
+        "sha256": "f74a91eeb8e720211d784780f1d14b86c2739bcfbc5215132a3c68b2c0702d30"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/assets/vendor/montserrat.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/assets/vendor/montserrat.css",
+      "before": {
+        "bytes": 10482,
+        "sha256": "b3f8b8ecc48857b6865fd6a9256d93c5fdc616c475c11de83698d47499fa908f"
+      },
+      "after": {
+        "bytes": 1059,
+        "sha256": "b64e5d38cb30bee110059acfa86d25f8a296a53f9c98d42caa27fed2700e7c66"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/etiquetas/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/etiquetas/index.html",
+      "before": {
+        "bytes": 31592,
+        "sha256": "b6b250c97f1f2958f406f42985a8b2d3eb14c90ead334b834bf88cf84e14235e"
+      },
+      "after": {
+        "bytes": 37931,
+        "sha256": "d8603ad7d7dc40b3e4ba4ffcafe6e69043fb301e278bf7ec1f9f357e44de22ea"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/index.html",
+      "before": {
+        "bytes": 8139,
+        "sha256": "c8d9adbd83d76e7de5ab07ff2adbf6757e987f1753b6c6ac62c1e007bf2987a1"
+      },
+      "after": {
+        "bytes": 10887,
+        "sha256": "f208f443147d19a1a987e15d398ed8a559ca72ccbc655ceb2679bcf4a893bea8"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/leitura/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/leitura/index.html",
+      "before": {
+        "bytes": 30886,
+        "sha256": "8ddd276b724add3945374ac46ab55a2b5ffa00f4d35e3ba6f52447dabcebf2b8"
+      },
+      "after": {
+        "bytes": 38571,
+        "sha256": "0eb20aa749241ee1f501dfeeb7e981f6c1c4a0a1d7c70d45412e15f35c45c738"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/relatorio/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/relatorio/index.html",
+      "before": {
+        "bytes": 7499,
+        "sha256": "d21f345f890f53b1e9a5db4395012d84b9a09dab530f801118ea2b42cb8b6958"
+      },
+      "after": {
+        "bytes": 10763,
+        "sha256": "66f62b4ca67a83020b09f5643fe0d17b8545e3c50ffd33e79e83c66abb014902"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/resultados/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/resultados/index.html",
+      "before": {
+        "bytes": 14048,
+        "sha256": "686737681899aa1b8af223c6d0abae77c85c977000d24334d6384402baafef17"
+      },
+      "after": {
+        "bytes": 19538,
+        "sha256": "2fb03524e7a751d8a070e448894ade93c16407cf32f1d949a5ccda6c5f31366a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/cec/rompimentos-mes/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/cec/rompimentos-mes/index.html",
+      "before": {
+        "bytes": 12323,
+        "sha256": "5e856e322b4df7c84a05a01af8956fada06c5b7bfada8246eaf53f1e90013ac8"
+      },
+      "after": {
+        "bytes": 16125,
+        "sha256": "37b543e676a8decae4516efaf1214430446f01a8b56b1f4a259727f53acf84e3"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/usuarios/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/usuarios/index.html",
+      "before": {
+        "bytes": 1488,
+        "sha256": "2d9f35466a6503cf158bcf5d2e05e5e1097619250813052ac9454d1839d52778"
+      },
+      "after": {
+        "bytes": 1858,
+        "sha256": "b0f813b9c4423d329f2b5411a5bd7566257dfd949f3c96cf2dfef6fade6a34bf"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/noroeste/usuarios/users.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/noroeste/usuarios/users.css",
+      "before": {
+        "bytes": 1209,
+        "sha256": "fe957f19d0af96d4b23c4b0ad8c05c33ffa9e080f8c2153142a47851ce390af5"
+      },
+      "after": {
+        "bytes": 2641,
+        "sha256": "dd7c911d5286e8aa263b306a0dc485c5b485a42a9add6831b1b4a1811792c88a"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/assets/cura.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/assets/cura.css",
+      "before": {
+        "bytes": 12361,
+        "sha256": "7d3cc895036b5399e7a9d5c75728010d03a203af792fa5fdd05848618e1f8855"
+      },
+      "after": {
+        "bytes": 25373,
+        "sha256": "12f78f36149a0a24702631978cb209136818b56d698d464615d5bc7f4d57b6f9"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/assets/tokens.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/assets/tokens.css",
+      "before": {
+        "bytes": 7261,
+        "sha256": "bb17acc494623a99c26ac0014a6863a6457a56baf5113603898eed112266b4c7"
+      },
+      "after": {
+        "bytes": 6969,
+        "sha256": "5757743aa1646ef5f3e0d967ffadfae481e5b52af003b8af468ae5037c5cb65e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/index.html",
+      "before": {
+        "bytes": 52138,
+        "sha256": "e8bf4e2f9bed7e380b2ebe2e45cf745b438ba5f4e331cd0cd2d18b2db4b53607"
+      },
+      "after": {
+        "bytes": 69246,
+        "sha256": "a4852500df44e2331fc5cec5b3c4a00285b4a56baf26c1ebecd57f7c5a540f04"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/absorcao.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/postes/absorcao.html",
+      "before": {
+        "bytes": 988,
+        "sha256": "2c30b4250635d4b0656809d0e9b920f791919202d2f5b8b464ce98ff4d73efca"
+      },
+      "after": {
+        "bytes": 1443,
+        "sha256": "a62517ef5d38ad9e5aeddade3380aaea4a3f38e256f99046c3edbc447b082017"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/absorcao-C8qq_oRc.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/postes/assets/absorcao-C8qq_oRc.js",
+      "before": null,
+      "after": {
+        "bytes": 9621,
+        "sha256": "3cd42eaef408041ab12f9da3cc4d1ba1449a4805493df70fe2a9f0b2d1511528"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/absorcao-historico.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/postes/assets/absorcao-historico.css",
+      "before": {
+        "bytes": 1157,
+        "sha256": "d08985a8438dc938225f6d5b757294e196c49399017e6c5278e221f0e84d02c3"
+      },
+      "after": {
+        "bytes": 1155,
+        "sha256": "9448234cfa745d43c723b15d89e11807bc49d34ccb66f43842ad310ae52d9d6e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/absorcao-historico.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/postes/assets/absorcao-historico.js",
+      "before": {
+        "bytes": 5753,
+        "sha256": "503c9cafc9a1f3affc89aca8b05a66ab390584064997387081a4adc4cb913eca"
+      },
+      "after": {
+        "bytes": 5631,
+        "sha256": "6077b57f57955c111a8e62331b91bf5683af5f3c72bfc7031bbf0d1dcd08f66d"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/AbsorptionHistory-DpAlj5PN.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/postes/assets/AbsorptionHistory-DpAlj5PN.css",
+      "before": null,
+      "after": {
+        "bytes": 45423,
+        "sha256": "3ac4e61691205abfcd0f50b2472a78bb7a27ffa35bd31851c40af6c5947a1d0d"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/AbsorptionHistory-kgUGt9tp.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/postes/assets/AbsorptionHistory-kgUGt9tp.js",
+      "before": null,
+      "after": {
+        "bytes": 147331,
+        "sha256": "2dcb08ebf3f8eb6c1fb182f2ef41260ec26423b4cb20b4c04298511b88c35654"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/novo-1KSm-RTS.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/postes/assets/novo-1KSm-RTS.js",
+      "before": null,
+      "after": {
+        "bytes": 114057,
+        "sha256": "b878df5d22007760eebe7e114d2074e43dba38c0ee6e6ed8c663fb3fbed6a7cb"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/assets/novo-CYnAcjTw.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/postes/assets/novo-CYnAcjTw.js",
+      "before": null,
+      "after": {
+        "bytes": 113817,
+        "sha256": "474a3c5e64e65943a2d1e0526a694607533e99605c0e96aa446a8dd315d6bc10"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/metodologia-conteudo.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/postes/metodologia-conteudo.html",
+      "before": null,
+      "after": {
+        "bytes": 26519,
+        "sha256": "686e876e06288db0cf92aeaa19fa24ba38ea027f4dc13e4a7e29511f9d3c0bf8"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/novo/postes/novo.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/novo/postes/novo.html",
+      "before": {
+        "bytes": 1063,
+        "sha256": "e96769206382d3bb390a0eb52f7a22f0021b99073bafd7af6818cbf1fb1bf230"
+      },
+      "after": {
+        "bytes": 1562,
+        "sha256": "0dd676700d82fdd05c2b7cd003e1ea46f0c0976c973ea19ffa8f23c504907c85"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/assets/absorcao-historico.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/postes/assets/absorcao-historico.css",
+      "before": {
+        "bytes": 1157,
+        "sha256": "d08985a8438dc938225f6d5b757294e196c49399017e6c5278e221f0e84d02c3"
+      },
+      "after": {
+        "bytes": 1155,
+        "sha256": "9448234cfa745d43c723b15d89e11807bc49d34ccb66f43842ad310ae52d9d6e"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/assets/absorcao-historico.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/postes/assets/absorcao-historico.js",
+      "before": {
+        "bytes": 5753,
+        "sha256": "503c9cafc9a1f3affc89aca8b05a66ab390584064997387081a4adc4cb913eca"
+      },
+      "after": {
+        "bytes": 5631,
+        "sha256": "6077b57f57955c111a8e62331b91bf5683af5f3c72bfc7031bbf0d1dcd08f66d"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/assets/index-67Zoh3iH.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/postes/assets/index-67Zoh3iH.js",
+      "before": null,
+      "after": {
+        "bytes": 211790,
+        "sha256": "0d3f46ffad60d8cb6b8d7e14b3a41e3afa2e20f0b852bcbddfe1decb7ebdbef5"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/assets/index-Cseexa9g.js",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/postes/assets/index-Cseexa9g.js",
+      "before": null,
+      "after": {
+        "bytes": 211634,
+        "sha256": "0c9fc3bcdf5cfc7424b56ecaa05a65edee341a961408e3d8e1a3024e51b70f7f"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/assets/index-pdkh_yNf.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/postes/assets/index-pdkh_yNf.css",
+      "before": null,
+      "after": {
+        "bytes": 29675,
+        "sha256": "47fae2b0c8893ca5b2bac1a66a290311ee592fb619616e509c5e8cd531e1ca85"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/postes/index.html",
+      "before": {
+        "bytes": 944,
+        "sha256": "56f15d3c8c598be800b246e2fafbf11211eda4c7a4526015046e57b4791e8ffc"
+      },
+      "after": {
+        "bytes": 1333,
+        "sha256": "2dbed0aec4cc6678b6e26e246856aced7da391751735923ccc8258f4ac8d26d3"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/postes/metodologia-conteudo.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/postes/metodologia-conteudo.html",
+      "before": null,
+      "after": {
+        "bytes": 26519,
+        "sha256": "686e876e06288db0cf92aeaa19fa24ba38ea027f4dc13e4a7e29511f9d3c0bf8"
+      },
+      "action": "add"
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/flow.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/slump/flow.css",
+      "before": {
+        "bytes": 2821,
+        "sha256": "a25ce602ffb8ab3e5a780071907b88d128eddb5631539026bdab3d82f74b39dd"
+      },
+      "after": {
+        "bytes": 5898,
+        "sha256": "b49dff33eda2a3c55f6ddc0ad8c65b1e1d7d82cdf762063b913f898c1ed091df"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/flow.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/slump/flow.html",
+      "before": {
+        "bytes": 2562,
+        "sha256": "1a814c774236c297a9d2eaf622679f61d6be165bc63272be53b58dd046db969b"
+      },
+      "after": {
+        "bytes": 2953,
+        "sha256": "d2e070d6baa8209c1a9d1660f649f49e5df9c26081896331ff9d948e60be4478"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/slump/index.html",
+      "before": {
+        "bytes": 3280,
+        "sha256": "a66f47684139e66a26d756ddb7575024b3c02bc4862971c9ca8d0229d98211af"
+      },
+      "after": {
+        "bytes": 3654,
+        "sha256": "6b77cd74d64e5f78b288ec9ca43f9b13bc552e7ea6b4507dec8071283533b327"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/slump.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/slump/slump.css",
+      "before": {
+        "bytes": 4108,
+        "sha256": "b297905c8c9641d0d355f7761afebe91672dfd24021f0dc7151d8f956015f4eb"
+      },
+      "after": {
+        "bytes": 8598,
+        "sha256": "180499779676b44388e35ea93d287c89b4842fe7541d6ac140fb4e9268cea4c2"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/umidade.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/slump/umidade.css",
+      "before": {
+        "bytes": 6880,
+        "sha256": "e83f6e196a96b298d7c2d27967bc31f1a5d3ec67a96e780acabcfca093e0383d"
+      },
+      "after": {
+        "bytes": 14282,
+        "sha256": "02eb15d43fe4d9669267ec12b033c233b70b3926940160ea15a215f8af512ef5"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/slump/umidade.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/slump/umidade.html",
+      "before": {
+        "bytes": 5737,
+        "sha256": "11ab75e070c0fbee284a47aac42baa54c98e0bb812be5e61de8a4803e84f9929"
+      },
+      "after": {
+        "bytes": 6105,
+        "sha256": "42d38c8dc3f232a62df970d2f0dee9a906af00974da7b4dee033fd6e2f6a5cb8"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/usinas-relatorios/index.html",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/usinas-relatorios/index.html",
+      "before": {
+        "bytes": 1741,
+        "sha256": "6965f4c5bda3be8d4f908e2f93a8b761f2fa4288017b39959918b71334650d2f"
+      },
+      "after": {
+        "bytes": 2954,
+        "sha256": "37c0f240d4d8f82dce781c25d9ac29912647b75ce3b093e8175ae90290483a73"
+      },
+      "action": "replace"
+    },
+    {
+      "file": "services/laboratorio/server/static/usinas-relatorios/native-areas.css",
+      "destination": "/opt/concrefer-unificado/laboratorio/service/server/static/usinas-relatorios/native-areas.css",
+      "before": {
+        "bytes": 3462,
+        "sha256": "128dbbe810eddac538325bccf3cde54fe51eda4c4db3525d51c9c1c7c3f1964c"
+      },
+      "after": {
+        "bytes": 7243,
+        "sha256": "fc818e654ca51a76bfebae9d07c71c93ef06f3e12ee61d2c70f2069b26e154d1"
+      },
+      "action": "replace"
+    }
+  ],
+  "counts": {
+    "replace": 249,
+    "unchanged": 37,
+    "add": 62
+  },
+  "backend_patches": [],
+  "migrations_to_apply": [],
+  "permissions_to_change": [],
+  "services_to_restart": [],
+  "nginx_changes": [],
+  "alex": {
+    "central_and_logistica": {
+      "/opt/concrefer-unificado/mapa-api/screen_access.py": {
+        "variable": "MASTER_USER_IDS",
+        "before": [
+          "user-ricardo",
+          "marcelo",
+          "alex",
+          "alex51",
+          "philippe"
+        ],
+        "after": [
+          "user-ricardo",
+          "marcelo",
+          "alex",
+          "alex51",
+          "philippe"
+        ],
+        "changed": false
+      },
+      "/opt/concrefer-unificado/mapa-api/logistica_access.py": {
+        "variable": "MASTERS",
+        "before": [
+          "user-ricardo",
+          "alex",
+          "marcelo",
+          "suportelogistica"
+        ],
+        "after": [
+          "user-ricardo",
+          "alex",
+          "marcelo",
+          "suportelogistica"
+        ],
+        "changed": false
+      },
+      "/opt/concrefer-unificado/logistica-api/logistica/core.py": {
+        "variable": "MASTERS",
+        "before": [
+          "user-ricardo",
+          "alex",
+          "marcelo",
+          "suportelogistica"
+        ],
+        "after": [
+          "user-ricardo",
+          "alex",
+          "marcelo",
+          "suportelogistica"
+        ],
+        "changed": false
+      }
+    },
+    "ged_link": {
+      "mapa_user_id": "alex",
+      "ged_user_id": "2b103d6e-4287-4bd4-b53e-e122899f323d",
+      "active": true,
+      "approved_by": "user-ricardo",
+      "approved_at": "2026-10-16T21:32:18.313171+00:00",
+      "updated_at": "2026-10-16T21:32:18.313171+00:00"
+    },
+    "ged_user": {
+      "id": "2b103d6e-4287-4bd4-b53e-e122899f323d",
+      "name": "Alex Zaranello",
+      "email": "alex@unificado.local.invalid",
+      "role": "ADMIN_MASTER",
+      "active": true,
+      "created_at": "2026-10-16T21:32:18.313171+00:00",
+      "updated_at": "2026-10-16T21:32:18.313171+00:00",
+      "managed_area": null,
+      "company_id": "ce064b3e-f55e-41f6-b613-45fb2fe725b7",
+      "username": "alex",
+      "department_id": null,
+      "job_title": null,
+      "session_version": 0,
+      "last_login_at": null,
+      "last_login_ip": null
+    },
+    "suprimentos_roles": [
+      {
+        "id": "0a33ec4f-48b6-4ef5-9229-5ec45c3464f6",
+        "iam_user_id": "alex",
+        "unidade_id": 1,
+        "papel": "ADMIN",
+        "cc_id": null,
+        "nivel": null,
+        "ativo": true,
+        "criado_em": "2026-10-26T09:34:07.666624+00:00",
+        "criado_por": "deploy:suprimentos:20261026",
+        "atualizado_em": "2026-10-26T09:34:07.666624+00:00",
+        "atualizado_por": "deploy:suprimentos:20261026",
+        "principal_tarefas": false
+      },
+      {
+        "id": "7c2dc368-6d77-4dac-bd8a-624328215f64",
+        "iam_user_id": "alex",
+        "unidade_id": 1,
+        "papel": "APROVADOR",
+        "cc_id": null,
+        "nivel": 2,
+        "ativo": true,
+        "criado_em": "2026-10-26T09:34:07.765179+00:00",
+        "criado_por": "deploy:suprimentos:20261026",
+        "atualizado_em": "2026-10-26T09:34:07.765179+00:00",
+        "atualizado_por": "deploy:suprimentos:20261026",
+        "principal_tarefas": false
+      },
+      {
+        "id": "a93b45b6-a562-498a-bf95-cef76018d6c2",
+        "iam_user_id": "alex",
+        "unidade_id": 1,
+        "papel": "APROVADOR",
+        "cc_id": null,
+        "nivel": 1,
+        "ativo": true,
+        "criado_em": "2026-10-26T09:34:07.720178+00:00",
+        "criado_por": "deploy:suprimentos:20261026",
+        "atualizado_em": "2026-11-09T19:23:01.427561+00:00",
+        "atualizado_por": "user-request-20261109",
+        "principal_tarefas": true
+      }
+    ],
+    "decision": "Already has the maximum native roles; preserve existing real IDs and grants. No test identity changes."
+  },
+  "preserve": {
+    "stock_technical_bridge": "excluded; current production backend and cookie flow unchanged",
+    "armacao": "Required disabled, but actual production enabled:true for four units. No data change included in frozen delta; checkpoint stopped.",
+    "production_pools": "no changes",
+    "network": "no drop-ins or eBPF copied",
+    "aviso": "ativo:false"
+  },
+  "cluster": {
+    "common_headroom": 34,
+    "client_backends": 63,
+    "max_connections": 100
+  },
+  "checkpoint_schema": true,
+  "backup_databases": [
+    "mapa_unificado_teste",
+    "pcp_unificado_teste",
+    "concretrack_postes",
+    "suprimentos_prod",
+    "qualidade",
+    "ged_postgres"
+  ],
+  "database_backup_note": "No database changes are needed. Full backups retained for additional recovery coverage.",
+  "status": "BLOCKED before production deployment",
+  "configuration_checkpoint": false,
+  "runtime_configuration_discrepancies": [
+    {
+      "database": "laboratorio_visual_homolog_20261118",
+      "schema": "public",
+      "table": "cq_parametros",
+      "column": "fck_mpa",
+      "tested_homolog_default": "35",
+      "source_sql_001_007_default": "25",
+      "production_default": "25",
+      "checkpoint": "FAIL: reconcile the homolog configuration and revalidate; do not change production FCK silently."
+    }
+  ]
+}

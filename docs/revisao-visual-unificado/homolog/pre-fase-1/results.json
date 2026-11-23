@@ -1,0 +1,27 @@
+{
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/visual-endpoints-20261118T175103Z",
+  "published_armacao_migrations": [
+    "a1_20261029",
+    "a6_20261029",
+    "a6b_20261029",
+    "a6c_20261030"
+  ],
+  "mapa_migration": "published quick-access DDL only; personal seed and screen grants excluded",
+  "production_files_services_nginx_unchanged": true,
+  "business_grants_unchanged": true,
+  "homolog_service": "13168",
+  "databases": {
+    "pcp": "pcp_unificado_homolog_20261016",
+    "mapa": "mapa_unificado_homolog_20261016"
+  },
+  "dumps": {
+    "mapa.dump": {
+      "sha256": "4c550efbe75a488f0a0323013aa1f1507301f226e711426522a34bbbf3244c70",
+      "bytes": 114547062
+    },
+    "pcp.dump": {
+      "sha256": "da88295e825504ef5b404c5bc36d150418811b01426cc324487e08e1c2e0a9a0",
+      "bytes": 1146459
+    }
+  }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "francisco",
+    "unit": "pederneiras",
+    "extra_units": [],
+    "production_role": "GESTOR",
+    "laboratory_role": "tecnico"
+  },
+  {
+    "id": "ricardogoncalvesrb",
+    "unit": "ribeirao",
+    "extra_units": [
+      "noroeste"
+    ],
+    "production_role": "GESTOR",
+    "laboratory_role": "admin"
+  }
+]

@@ -1,0 +1,45 @@
+﻿serviço,banco,usuário,application_name,estado,conexões
+laboratorio-unificado.service,concretrack_postes,postes_app,,idle,5
+pcp-unificado-test.service,pcp_unificado_teste,pcp_unificado_app,,idle,5
+concrefer-logistica.service,pcp_unificado_teste,logistica_app,,idle,4
+unificado-visual-homolog-armacao.service,pcp_visual_homolog_20261118,pcp_unificado_app,,idle,4
+concrefer-logistica.service,mapa_unificado_teste,logistica_iam_login,,idle,3
+Sem processo local identificado,mapa_visual_homolog_20261118,mapa_api_authenticator,PostgREST 16.3,idle,2
+concrefer-dosagem-native.service,mapa_unificado_teste,dosagem_native_app,,idle,2
+dashboard-pederneiras.service,supervisorio_db_pede,usinaapi_user,,idle,2
+suprimentos-homolog.service,suprimentos_homolog_20261025,concrefer_suprimentos_homolog,,idle,2
+suprimentos-prod.service,suprimentos_prod,concrefer_suprimentos_prod,,idle,2
+unificado-homolog-pcp.service,pcp_unificado_homolog_20261016,pcp_unificado_app,,idle,2
+unificado-homolog-qualidade.service,qualidade_homolog_20261016,qualidade_homolog_app,,idle,2
+unificado-visual-homolog-pcp.service,pcp_visual_homolog_20261118,pcp_unificado_app,,idle,2
+Auditoria SQL / conexão local,controle_est_concre_noroeste,cec-noroeste,,idle,1
+Auditoria SQL / conexão local,postgres,postgres,psql,active,1
+Sem processo local identificado,,,,autovacuum launcher,1
+Sem processo local identificado,,,,background writer,1
+Sem processo local identificado,,,,checkpointer,1
+Sem processo local identificado,,,,walwriter,1
+Sem processo local identificado,,postgres,,logical replication launcher,1
+Sem processo local identificado,mapa_unificado_homolog_20261016,mapa_api_authenticator,PostgREST 16.3,idle,1
+Sem processo local identificado,mapa_unificado_homolog_20261016,mapa_api_writer,PostgREST 16.3,idle,1
+Sem processo local identificado,mapa_unificado_teste,mapa_api_authenticator,PostgREST 16.3,idle,1
+Sem processo local identificado,mapa_unificado_teste,mapa_api_writer,PostgREST 16.3,idle,1
+Sem processo local identificado,mapa_visual_homolog_20261118,mapa_api_writer,PostgREST 16.3,idle,1
+cec-campinas-worker.service,controle_est_concre_campinas,cec_campinas_app,,idle,1
+concrefer-armacao.service,pcp_unificado_teste,pcp_unificado_app,,idle,1
+concretrack-staging-api.service,concretrack_staging,concretrack_staging_runtime,,idle,1
+concretrack-staging-final-api.service,concretrack_staging_final,concretrack_runtime,,idle,1
+mapa-unificado-realtime.service,mapa_unificado_teste,mapa_api_login,,idle,1
+monitor-concreto.service,concretrack_postes,postes_app,,idle,1
+qualidade-api.service,qualidade,qualidade_app,,idle,1
+unificado-homolog-armacao.service,pcp_unificado_homolog_20261016,pcp_unificado_app,,idle,1
+unificado-homolog-mapa-realtime.service,mapa_unificado_homolog_20261016,mapa_api_login,,idle,1
+unificado-visual-homolog-carta.service,carta_traco_visual_homolog_20261118,mapa_api_writer,,idle,1
+unificado-visual-homolog-carta.service,mapa_visual_homolog_20261118,mapa_api_writer,,idle,1
+unificado-visual-homolog-carta.service,supervisorio_db_pede_homolog_20261016,usinaapi_user,,idle,1
+unificado-visual-homolog-dosagem.service,dosagem_visual_homolog_20261118,visual_dosagem_homolog_app,,idle,1
+unificado-visual-homolog-laboratorio.service,laboratorio_visual_homolog_20261118,postes_app,,idle,1
+unificado-visual-homolog-logistica.service,mapa_visual_homolog_20261118,mapa_api_login,,idle,1
+unificado-visual-homolog-logistica.service,pcp_visual_homolog_20261118,pcp_unificado_app,,idle,1
+unificado-visual-homolog-qualidade.service,qualidade_visual_homolog_20261118,qualidade_homolog_app,,idle,1
+unificado-visual-homolog-realtime.service,mapa_visual_homolog_20261118,mapa_api_login,,idle,1
+unificado-visual-homolog-suprimentos.service,suprimentos_visual_homolog_20261118,concrefer_suprimentos_homolog,,idle,1

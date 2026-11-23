@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Manutenção Usina · Concrefer</title><link rel="stylesheet" href="styles.css?v=1.4.27"><script type="module" src="app.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/tokens.css?v=1.4.27">
+<link rel="stylesheet" href="/unificado/shell/module-components.css?v=1.4.27"><link rel="stylesheet" href="/unificado/shell/remaining-visual.css?v=1.4.27"><script defer src="/unificado/shell/components.js?v=1.4.27"></script><link rel="stylesheet" href="/unificado/shell/review-complete.css?v=1.4.27" media="screen"></head>
+<body><main class="workspace">
+  <header class="page-head"><div><p class="legacy-print-title">ACOMPANHAMENTO COMPARTILHADO</p><h1>Manutenção Usina</h1><p>Correções dos misturadores M1, M2 e áreas comuns da usina.</p></div><div class="head-actions"><button id="refresh">Atualizar</button><button id="new" class="primary" hidden>+ Nova atividade</button></div></header>
+  <div id="notice" role="status" class="notice" hidden></div><div id="error" role="alert" class="error" hidden></div>
+  <section class="summary" aria-label="Resumo das atividades" id="summary"></section>
+  <section class="filter-panel" aria-label="Filtros"><label class="search-field">Buscar atividade, responsável ou material<input id="search" type="search" placeholder="Ex.: vedação, motor, equipe mecânica"></label><details id="filter-details" class="filter-disclosure"><summary>Filtrar por local, status e compra <span id="filter-count"></span></summary><div class="filters">
+    <label>Local<select id="group"><option value="">Todos os locais</option><option value="M1">Misturador 1</option><option value="M2">Misturador 2</option><option value="COMUM">Áreas comuns</option></select></label>
+    <label>Criticidade<select id="criticality"><option value="">Todas</option><option>Alta</option><option>Média</option><option>Baixa</option></select></label>
+    <label>Status<select id="status"><option value="">Todos os status</option><option>Não iniciado</option><option>Aguardando material</option><option>Em andamento</option><option>Concluído</option><option>Cancelado</option></select></label>
+    <label>Compra<select id="purchase-filter"><option value="">Todas as situações</option><option>Não informado</option><option>Não necessita compra</option><option>A comprar</option><option>Em cotação</option><option>Aguardando aprovação</option><option>Pedido emitido</option><option>Material recebido</option></select></label>
+    <label>Acompanhamento<select id="attention"><option value="">Todas as atividades</option><option value="open">Somente abertas</option><option value="purchase">Pendentes de compra</option><option value="waiting">Aguardando material</option><option value="no-date">Sem data prevista</option><option value="late">Com alerta de prazo</option><option value="confirm">Confirmar misturador</option><option value="excluded">Não se aplica</option></select></label>
+  </div></details></section>
+  <div class="toolbar"><div class="segmented" aria-label="Visualização"><button id="dashboard-tab" aria-pressed="true">Painel</button><button id="table-tab" aria-pressed="false">Tabela</button><button id="gantt-tab" aria-pressed="false">Gantt</button></div><div class="toolbar-end"><span id="result-count"></span><button id="clear">Limpar filtros</button><button id="config" hidden>Início do cronograma</button></div></div>
+  <div id="loading" class="loading" role="status">Carregando atividades…</div>
+  <section id="content" aria-label="Atividades de manutenção"></section>
+  <footer class="page-footer"><p id="sync"></p><p id="policy"></p><p class="source">Base inicial: <a href="Gantt_Correcoes_Usina_M1_M2.xlsx" download>Gantt_Correcoes_Usina_M1_M2.xlsx</a> · Relatório de inspeção Rev.03, de 19/10/2026. As criticidades importadas podem ser ajustadas pela equipe.</p></footer>
+</main><div id="modal-host"></div></body></html>

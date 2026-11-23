@@ -1,0 +1,54 @@
+{
+  "unit": "unificado-visual-homolog-mapa.service",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-mapa-20261120T133528Z",
+  "changes": [
+    {
+      "file": "mapa/production_labels.py",
+      "before_sha256": "517437040e73ac186ac11458af9a97eaa3225c5b3c35f136732f329a29fc6984",
+      "after_sha256": "c2cdd0f0e943bdfdfdcd8f286070ed29f502c7c8ab88042c00f0734687e706bb",
+      "patch": "--- mapa/production_labels.py\n+++ mapa/production_labels.py\n@@ -31,7 +31,7 @@\n     @app.get('/operations/production-labels')\n     def production_labels():\n         user=authenticated_user()\n-        if not user:return jsonify(ok=False,error='Entre no Unificado para consultar as etiquetas.'),401\n+        if not user:return jsonify(ok=False,error='Entre no Uni para consultar as etiquetas.'),401\n         allowed,_=screen_access_state(user)\n         readable=[s for s,screen in [('Setor 3','etiquetasSc'),('Setor 4','etiquetasSetor4')]\n                   if screen in allowed or 'etiquetas' in allowed]\n"
+    },
+    {
+      "file": "mapa/usina_iqt.py",
+      "before_sha256": "dd0132276581c664f4ddff9a96c2bffb3847bebeb3abdb59d9be539262d32660",
+      "after_sha256": "f1a3b5c022dea5a9227ea67113056c585550f0b75fba1e11d6958a34c1ff8642",
+      "patch": "--- mapa/usina_iqt.py\n+++ mapa/usina_iqt.py\n@@ -65,7 +65,7 @@\n     def usina_iqt():\n         user = authenticated_user()\n         if not user:\n-            return jsonify(ok=False, error=\"Sessão expirada no Unificado.\"), 401\n+            return jsonify(ok=False, error=\"Sessão expirada no Uni.\"), 401\n         screens, _ = screen_access_state(user)\n         if not ({\"usinasInicio\", \"labUsinasRelatorios\"} & set(screens)) or user.get(\"perfil\") == \"CONVIDADO\":\n             return jsonify(ok=False, error=\"Sem acesso a relatórios de Usinas.\"), 403\n"
+    },
+    {
+      "file": "mapa/manutencao_usina.py",
+      "before_sha256": "f703b3d1d9a3ad1eda66f01088d2e0cb37b8e3ff72e04eaa8e0958ea911e2ab1",
+      "after_sha256": "c4085dd353872f597dd910079e08f1838bb380e14f3c780d82186f57ee1e0b8e",
+      "patch": "--- mapa/manutencao_usina.py\n+++ mapa/manutencao_usina.py\n@@ -127,7 +127,7 @@\n \n     def actor(write=False):\n         user = authenticated_user()\n-        if not user: return None, response({'error': 'Entre novamente no Unificado.'}, 401)\n+        if not user: return None, response({'error': 'Entre novamente no Uni.'}, 401)\n         if write:\n             if not may_edit(user, master_ids): return None, response({'error': 'Você pode acompanhar. A edição está disponível aos gestores.'}, 403)\n             if request.headers.get('Origin') != 'https://concrefer.concretrack.com.br:18446':\n"
+    },
+    {
+      "file": "mapa/usinas_reporting.py",
+      "before_sha256": "178a7238e9379729788829612685a4c6173be551f45cecbbfd860f45ff821eda",
+      "after_sha256": "237b3d349c9a5b2042de3dbef483b8b5612e439508ebb4f2221a0c65949bf502",
+      "patch": "--- mapa/usinas_reporting.py\n+++ mapa/usinas_reporting.py\n@@ -30,7 +30,7 @@\n     def allowed():\n         user = authenticated_user()\n         if not user:\n-            return jsonify(ok=False, error=\"Sessão expirada no Unificado.\"), 401\n+            return jsonify(ok=False, error=\"Sessão expirada no Uni.\"), 401\n         screens, _ = screen_access_state(user)\n         if not ({\"usinasInicio\", \"labUsinasRelatorios\"} & set(screens)) or user.get(\"perfil\") == \"CONVIDADO\":\n             return jsonify(ok=False, error=\"Sem acesso a Usinas.\"), 403\n"
+    },
+    {
+      "file": "mapa/usina_integration.py",
+      "before_sha256": "b6a33c4628cb632c542b7a1eccaab0dc4193a4b625e75e12648c6fad721d2b47",
+      "after_sha256": "0536c3eafe729b32e4ea5bd8365ef9683b799c55aecb025400ab2b43b1a2a858",
+      "patch": "--- mapa/usina_integration.py\n+++ mapa/usina_integration.py\n@@ -102,7 +102,7 @@\n             row[\"peso_poste_kg\"] = product[0] if product else None\n             row[\"volume_catalogo_m3\"] = product[1] if product else None\n \n-        response = jsonify(rows=rows, data_filtro=day.isoformat(), source=\"Mapa Unificado\")\n+        response = jsonify(rows=rows, data_filtro=day.isoformat(), source=\"Mapa Uni\")\n         response.headers[\"Cache-Control\"] = \"no-store\"\n         return response\n \n@@ -165,7 +165,7 @@\n         status = (\"sem_lancamento\" if not lancamentos else\n                   \"ok\" if setores_lancados == 3 else \"parcial\")\n         response = jsonify(\n-            data_filtro=day.isoformat(), source=\"PCP Unificado - MOD\",\n+            data_filtro=day.isoformat(), source=\"PCP Uni - MOD\",\n             status=status, quantidade=total, lancamentos=lancamentos,\n             setores_lancados=setores_lancados, setores=setores,\n         )\n"
+    },
+    {
+      "file": "mapa/usinas_legacy_read.py",
+      "before_sha256": "04bff65ff644072865bd968976845450f98dacef4be30db563a09bbefdd705ea",
+      "after_sha256": "0915d3b4cbc7b983c828fb9e69b1cadb784dbe374390e98a6350cec1ab8586c5",
+      "patch": "--- mapa/usinas_legacy_read.py\n+++ mapa/usinas_legacy_read.py\n@@ -33,7 +33,7 @@\n     def allowed():\n         user = authenticated_user()\n         if not user:\n-            return jsonify(ok=False, error=\"Sessão expirada no Unificado.\"), 401\n+            return jsonify(ok=False, error=\"Sessão expirada no Uni.\"), 401\n         screens, _ = screen_access_state(user)\n         if \"usinasInicio\" not in screens:\n             return jsonify(ok=False, error=\"Sem acesso a Usinas.\"), 403\n"
+    }
+  ],
+  "changed_files": 6,
+  "restarted": true,
+  "responds": true,
+  "connections_before": 70,
+  "connections_after": 70,
+  "database_writes": 0,
+  "business_logic_unchanged_ast": true,
+  "rollback": {
+    "copy_each_file_from": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-mapa-20261120T133528Z",
+    "copy_to": "/opt/concrefer-unificado/homolog-next/visual-full",
+    "restart_only": "unificado-visual-homolog-mapa.service"
+  }
+}

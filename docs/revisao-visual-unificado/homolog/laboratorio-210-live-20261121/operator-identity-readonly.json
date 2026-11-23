@@ -1,0 +1,54 @@
+{
+  "planning": [
+    {
+      "id": 35,
+      "nome": "Ricardo Teste",
+      "nivel_acesso": "ADMIN",
+      "ativo": true,
+      "deleted_at": null
+    },
+    {
+      "id": 10,
+      "nome": "Ricardo Do Amaral",
+      "nivel_acesso": "ADMIN",
+      "ativo": true,
+      "deleted_at": null
+    }
+  ],
+  "erp": {
+    "pederneiras": [
+      {
+        "usuario": "ramaral",
+        "nome_completo": "Ricardo Do Amaral",
+        "nivel_acesso": "admin",
+        "ativo": true
+      },
+      {
+        "usuario": "ricardopede",
+        "nome_completo": "Ricardo Pederneiras",
+        "nivel_acesso": "administrativo",
+        "ativo": true
+      },
+      {
+        "usuario": "francisco",
+        "nome_completo": "Francisco Augusto",
+        "nivel_acesso": "gerente",
+        "ativo": true
+      }
+    ],
+    "ribeirao": [
+      {
+        "usuario": "ricardopede",
+        "nome_completo": "Ricardo Pederneiras",
+        "nivel_acesso": "gerente",
+        "ativo": true
+      },
+      {
+        "usuario": "ramaral",
+        "nome_completo": "Ricardo Do Amaral",
+        "nivel_acesso": "admin",
+        "ativo": true
+      }
+    ]
+  }
+}

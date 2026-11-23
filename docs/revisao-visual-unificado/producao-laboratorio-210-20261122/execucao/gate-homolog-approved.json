@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "gate": "7/7",
+  "homolog_screen_cases": 112,
+  "homolog_denied_posts": 12,
+  "minimum_headroom_after_timers": 27,
+  "approved_base": "53f77c6cd4026418ca33a09cb81dc0d6f4312e13",
+  "release_source_commit": "55dc95e2b4adf8a71af04ffa4704c57467d60b58"
+}

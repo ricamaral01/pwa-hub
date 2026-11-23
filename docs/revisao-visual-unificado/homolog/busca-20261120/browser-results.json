@@ -1,0 +1,129 @@
+{
+  "published_static": true,
+  "captures": [
+    "recentes-1440.png",
+    "resultados-1440.png",
+    "correcao-1440.png",
+    "sinonimo-1440.png",
+    "vazio-1440.png",
+    "recentes-1024.png",
+    "resultados-1024.png",
+    "correcao-1024.png",
+    "sinonimo-1024.png",
+    "vazio-1024.png",
+    "recentes-820.png",
+    "resultados-820.png",
+    "correcao-820.png",
+    "sinonimo-820.png",
+    "vazio-820.png",
+    "recentes-390.png",
+    "resultados-390.png",
+    "correcao-390.png",
+    "sinonimo-390.png",
+    "vazio-390.png"
+  ],
+  "profiles": [
+    {
+      "category": "central",
+      "role": "MONTADOR",
+      "existing_user": "alexh",
+      "authorized_entries": 6,
+      "unauthorized_entries": [],
+      "queries_checked": 48,
+      "connections_before": 65,
+      "connections_after": 65,
+      "ok": true
+    },
+    {
+      "category": "central",
+      "role": "GESTOR",
+      "existing_user": "josue",
+      "authorized_entries": 20,
+      "unauthorized_entries": [],
+      "queries_checked": 48,
+      "connections_before": 65,
+      "connections_after": 65,
+      "ok": true
+    },
+    {
+      "category": "central",
+      "role": "GERENCIA",
+      "existing_user": "alex",
+      "authorized_entries": 160,
+      "unauthorized_entries": [],
+      "queries_checked": 48,
+      "connections_before": 65,
+      "connections_after": 65,
+      "ok": true
+    },
+    {
+      "category": "central",
+      "role": "APONTADOR",
+      "existing_user": "setor1",
+      "authorized_entries": 8,
+      "unauthorized_entries": [],
+      "queries_checked": 48,
+      "connections_before": 70,
+      "connections_after": 65,
+      "ok": true
+    },
+    {
+      "category": "central",
+      "role": "CONVIDADO",
+      "existing_user": "e2e-suprimentos-almox",
+      "authorized_entries": 7,
+      "unauthorized_entries": [],
+      "queries_checked": 48,
+      "connections_before": 65,
+      "connections_after": 65,
+      "ok": true
+    },
+    {
+      "category": "PCP",
+      "role": "ADMIN",
+      "existing_user": "Ricardo",
+      "authorized_entries": 160,
+      "unauthorized_entries": [],
+      "queries_checked": 48,
+      "connections_before": 65,
+      "connections_after": 65,
+      "ok": true
+    },
+    {
+      "category": "PCP",
+      "role": "PCP",
+      "existing_user": "Diego",
+      "authorized_entries": 47,
+      "unauthorized_entries": [],
+      "queries_checked": 48,
+      "connections_before": 65,
+      "connections_after": 65,
+      "ok": true
+    },
+    {
+      "category": "PCP",
+      "role": "PRODUCAO",
+      "existing_user": "producao",
+      "authorized_entries": 12,
+      "unauthorized_entries": [],
+      "queries_checked": 48,
+      "connections_before": 65,
+      "connections_after": 65,
+      "ok": true
+    },
+    {
+      "category": "PCP",
+      "role": "CONSULTA",
+      "existing_user": "e2e-pcp-quality-link-probe",
+      "authorized_entries": 8,
+      "unauthorized_entries": [],
+      "queries_checked": 48,
+      "connections_before": 65,
+      "connections_after": 65,
+      "ok": true
+    }
+  ],
+  "concurrency": 1,
+  "permission_leaks": 0,
+  "all_ok": true
+}

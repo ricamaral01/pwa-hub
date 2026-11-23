@@ -1,0 +1,6266 @@
+[
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 159.640625
+      },
+      {
+        "group": "Relatórios de Programação",
+        "gap": 20
+      },
+      {
+        "group": "Etiquetas",
+        "gap": 20
+      },
+      {
+        "group": "Produção e apoio",
+        "gap": 20
+      },
+      {
+        "group": "Programação",
+        "gap": 159.640625
+      },
+      {
+        "group": "Armaduras",
+        "gap": 20
+      },
+      {
+        "group": "Acompanhamento",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 288,
+        "y": 242.640625,
+        "width": 550,
+        "height": 281.1875,
+        "bottom": 523.828125,
+        "items": 2
+      },
+      {
+        "label": "Programação",
+        "x": 858,
+        "y": 242.640625,
+        "width": 550,
+        "height": 281.1875,
+        "bottom": 523.828125,
+        "items": 6
+      },
+      {
+        "label": "Relatórios de Programação",
+        "x": 288,
+        "y": 543.828125,
+        "width": 550,
+        "height": 161.1875,
+        "bottom": 705.015625,
+        "items": 3
+      },
+      {
+        "label": "Armaduras",
+        "x": 858,
+        "y": 543.828125,
+        "width": 550,
+        "height": 161.1875,
+        "bottom": 705.015625,
+        "items": 3
+      },
+      {
+        "label": "Etiquetas",
+        "x": 288,
+        "y": 725.015625,
+        "width": 550,
+        "height": 241.1875,
+        "bottom": 966.203125,
+        "items": 4
+      },
+      {
+        "label": "Acompanhamento",
+        "x": 858,
+        "y": 725.015625,
+        "width": 550,
+        "height": 241.1875,
+        "bottom": 966.203125,
+        "items": 5
+      },
+      {
+        "label": "Produção e apoio",
+        "x": 288,
+        "y": 986.203125,
+        "width": 550,
+        "height": 241.1875,
+        "bottom": 1227.390625,
+        "items": 5
+      }
+    ],
+    "items": [
+      {
+        "id": "dashboard",
+        "description": "Programado e realizado por período",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "comparacao",
+        "description": "PCP contra apontamentos do Mapa",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacao12",
+        "description": "Programar a produção diária",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacaoSemanal12",
+        "description": "Distribuir a semana nas formas",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacao34",
+        "description": "Programar os setores 3 e 4",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "circular3",
+        "description": "Sequenciar formas circulares",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "dt4",
+        "description": "Programar postes duplo T",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacaoFinal",
+        "description": "Consolidar a programação para publicar",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio12",
+        "description": "Emitir PDF dos setores 1 e 2",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio3",
+        "description": "Emitir PDF do setor 3",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio4",
+        "description": "Emitir PDF do setor 4",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "postesNumerosSerie",
+        "description": "Consultar séries e emitir PDF",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "armadurasProgramacao",
+        "description": "Programar armaduras por dia",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "armadurasRelatorio",
+        "description": "Emitir relatório de armaduras",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasSc",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasSetor4",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasArmaduras",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pcpDiario",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "acompMensal",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "acompMensal34",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "apontamentoMega",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "fechamentoDiarioPcp",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "producaoPcp",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "maodeobra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "maodeobraRateio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "formasPorSetor",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "testeProgramacao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1227.390625,
+      966.203125
+    ],
+    "module": "planejamento",
+    "width": 1440,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 70
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Campinas · Produção",
+        "gap": 292.375
+      },
+      {
+        "group": "Campinas · Controle",
+        "gap": 20
+      },
+      {
+        "group": "Pederneiras",
+        "gap": 20
+      },
+      {
+        "group": "Noroeste",
+        "gap": 20
+      },
+      {
+        "group": "Campinas · Montagem",
+        "gap": 292.375
+      },
+      {
+        "group": "Campinas · Indicadores",
+        "gap": 20
+      },
+      {
+        "group": "Ribeirão",
+        "gap": 20
+      },
+      {
+        "group": "Indicadores gerais",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Campinas · Produção",
+        "x": 288,
+        "y": 375.375,
+        "width": 550,
+        "height": 281.1875,
+        "bottom": 656.5625,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Montagem",
+        "x": 858,
+        "y": 375.375,
+        "width": 550,
+        "height": 281.1875,
+        "bottom": 656.5625,
+        "items": 3
+      },
+      {
+        "label": "Campinas · Controle",
+        "x": 288,
+        "y": 676.5625,
+        "width": 550,
+        "height": 281.1875,
+        "bottom": 957.75,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Indicadores",
+        "x": 858,
+        "y": 676.5625,
+        "width": 550,
+        "height": 281.1875,
+        "bottom": 957.75,
+        "items": 5
+      },
+      {
+        "label": "Pederneiras",
+        "x": 288,
+        "y": 977.75,
+        "width": 550,
+        "height": 241.1875,
+        "bottom": 1218.9375,
+        "items": 5
+      },
+      {
+        "label": "Ribeirão",
+        "x": 858,
+        "y": 977.75,
+        "width": 550,
+        "height": 241.1875,
+        "bottom": 1218.9375,
+        "items": 5
+      },
+      {
+        "label": "Noroeste",
+        "x": 288,
+        "y": 1238.9375,
+        "width": 550,
+        "height": 241.1875,
+        "bottom": 1480.125,
+        "items": 5
+      },
+      {
+        "label": "Indicadores gerais",
+        "x": 858,
+        "y": 1238.9375,
+        "width": 550,
+        "height": 241.1875,
+        "bottom": 1480.125,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "liberacao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor1",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor2",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor3",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor4",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "mandril",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "inspecao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "montagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "sequencia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "relatorioMapa",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "historico",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "acmpConcretagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "manutencao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "tratativa",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "fechamentoDiario",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "campinasUnificado",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "dashMontagem",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "dashDefeitos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "produtividade",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "tvFormas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "pdrIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "rbrIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "norIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "indicadorGeralProducao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1480.125,
+      1480.125
+    ],
+    "module": "producao",
+    "width": 1440,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 248.640625
+      },
+      {
+        "group": "Dosagem",
+        "gap": 20
+      },
+      {
+        "group": "Usina de Campinas",
+        "gap": 20
+      },
+      {
+        "group": "Ensaios de concreto",
+        "gap": 20
+      },
+      {
+        "group": "Cronoanálise",
+        "gap": 20
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 248.640625
+      },
+      {
+        "group": "Concreto fresco",
+        "gap": 20
+      },
+      {
+        "group": "Cura térmica",
+        "gap": 20
+      },
+      {
+        "group": "Postes",
+        "gap": 20
+      },
+      {
+        "group": "Carta de traço",
+        "gap": 20
+      },
+      {
+        "group": "Ajuda",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 288,
+        "y": 331.640625,
+        "width": 550,
+        "height": 201.1875,
+        "bottom": 532.828125,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 858,
+        "y": 331.640625,
+        "width": 550,
+        "height": 201.1875,
+        "bottom": 532.828125,
+        "items": 4
+      },
+      {
+        "label": "Dosagem",
+        "x": 288,
+        "y": 552.828125,
+        "width": 550,
+        "height": 601.1875,
+        "bottom": 1154.015625,
+        "items": 14
+      },
+      {
+        "label": "Concreto fresco",
+        "x": 858,
+        "y": 552.828125,
+        "width": 550,
+        "height": 601.1875,
+        "bottom": 1154.015625,
+        "items": 1
+      },
+      {
+        "label": "Usina de Campinas",
+        "x": 288,
+        "y": 1174.015625,
+        "width": 550,
+        "height": 161.1875,
+        "bottom": 1335.203125,
+        "items": 1
+      },
+      {
+        "label": "Cura térmica",
+        "x": 858,
+        "y": 1174.015625,
+        "width": 550,
+        "height": 161.1875,
+        "bottom": 1335.203125,
+        "items": 3
+      },
+      {
+        "label": "Ensaios de concreto",
+        "x": 288,
+        "y": 1355.203125,
+        "width": 550,
+        "height": 241.1875,
+        "bottom": 1596.390625,
+        "items": 1
+      },
+      {
+        "label": "Postes",
+        "x": 858,
+        "y": 1355.203125,
+        "width": 550,
+        "height": 241.1875,
+        "bottom": 1596.390625,
+        "items": 5
+      },
+      {
+        "label": "Cronoanálise",
+        "x": 288,
+        "y": 1616.390625,
+        "width": 550,
+        "height": 321.1875,
+        "bottom": 1937.578125,
+        "items": 7
+      },
+      {
+        "label": "Carta de traço",
+        "x": 858,
+        "y": 1616.390625,
+        "width": 550,
+        "height": 321.1875,
+        "bottom": 1937.578125,
+        "items": 1
+      },
+      {
+        "label": "Administração",
+        "x": 288,
+        "y": 1957.578125,
+        "width": 550,
+        "height": 81.1875,
+        "bottom": 2038.765625,
+        "items": 1
+      },
+      {
+        "label": "Ajuda",
+        "x": 858,
+        "y": 1957.578125,
+        "width": 550,
+        "height": 81.1875,
+        "bottom": 2038.765625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labCecEtiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecLeitura",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecResultados",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecRompimentosMes",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecAnalise",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecRelatorio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemEmpacotamento",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemVolume",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemComparacao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemTracos",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemMateriais",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemFornecedores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemEnsaios",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemFerramentas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemCustos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemReferencia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemProducao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemImportacao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemConfig",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labSlump",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labUsinasRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labMonitor",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labHistory",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDevice",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labAbsorption",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificados",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labPole",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labTests",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labRegisters",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCriteria",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.inicio",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.coletar",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.medicoes",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.catalogo",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.dimensionar",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.simular",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.metodologia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCartaTraco",
+        "description": "Cadastrar e revisar cartas de traço",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labUsuarios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labHelp",
+        "description": "",
+        "icon": false,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      2038.765625,
+      2038.765625
+    ],
+    "module": "laboratorio",
+    "width": 1440,
+    "phase": "before",
+    "connections_before": 71,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 159.640625
+      },
+      {
+        "group": "Certificados",
+        "gap": 20
+      },
+      {
+        "group": "Não conformidades",
+        "gap": 159.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 288,
+        "y": 242.640625,
+        "width": 550,
+        "height": 201.1875,
+        "bottom": 443.828125,
+        "items": 2
+      },
+      {
+        "label": "Não conformidades",
+        "x": 858,
+        "y": 242.640625,
+        "width": 550,
+        "height": 201.1875,
+        "bottom": 443.828125,
+        "items": 4
+      },
+      {
+        "label": "Certificados",
+        "x": 288,
+        "y": 463.828125,
+        "width": 550,
+        "height": 201.1875,
+        "bottom": 665.015625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "qualidadeTarefas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "manutencaoUsina",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadePainel",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "qualidadeAbertura",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadeResultadosBancada",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadeCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCertificados",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificadosHistorico",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificadosCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labTests",
+        "description": "",
+        "icon": false,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      665.015625,
+      443.828125
+    ],
+    "module": "qualidade",
+    "width": 1440,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 159.640625
+      },
+      {
+        "group": "Noroeste",
+        "gap": 159.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 288,
+        "y": 242.640625,
+        "width": 550,
+        "height": 361.1875,
+        "bottom": 603.828125,
+        "items": 4
+      },
+      {
+        "label": "Noroeste",
+        "x": 858,
+        "y": 242.640625,
+        "width": 550,
+        "height": 361.1875,
+        "bottom": 603.828125,
+        "items": 8
+      }
+    ],
+    "items": [
+      {
+        "id": "usinasInicio",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "usinasCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasEstoque",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroPainel",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroMassadas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCartas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroEstoque",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCustos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      603.828125,
+      603.828125
+    ],
+    "module": "usinas",
+    "width": 1440,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Solicitações",
+        "gap": 159.640625
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Compras",
+        "gap": 159.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Solicitações",
+        "x": 288,
+        "y": 242.640625,
+        "width": 550,
+        "height": 241.1875,
+        "bottom": 483.828125,
+        "items": 5
+      },
+      {
+        "label": "Compras",
+        "x": 858,
+        "y": 242.640625,
+        "width": 550,
+        "height": 241.1875,
+        "bottom": 483.828125,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 288,
+        "y": 503.828125,
+        "width": 550,
+        "height": 81.1875,
+        "bottom": 585.015625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "suprimentosPainel",
+        "description": "Aprovar e acompanhar solicitações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosSolicitacoes",
+        "description": "Consultar e filtrar solicitações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosNova",
+        "description": "Solicitar materiais e serviços",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosAlmoxarifado",
+        "description": "Consultar saldos e movimentações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosInventario",
+        "description": "Conferir o estoque físico",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosCotacoes",
+        "description": "Comparar propostas de fornecedores",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosRecebimento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosFornecedores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      585.015625,
+      483.828125
+    ],
+    "module": "suprimentos",
+    "width": 1440,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "module": "logistica",
+    "width": 1440,
+    "phase": "before",
+    "native_home": true,
+    "connections_before": 71,
+    "connections_after": 69
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Gestão documental",
+        "gap": 159.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Gestão documental",
+        "x": 288,
+        "y": 242.640625,
+        "width": 550,
+        "height": 201.1875,
+        "bottom": 443.828125,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "ged-dashboard",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-documents",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-approvals",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-calibrations",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      443.828125
+    ],
+    "module": "ged",
+    "width": 1440,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 248.640625
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 248.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 288,
+        "y": 331.640625,
+        "width": 550,
+        "height": 201.1875,
+        "bottom": 532.828125,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 858,
+        "y": 331.640625,
+        "width": 550,
+        "height": 201.1875,
+        "bottom": 532.828125,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 288,
+        "y": 552.828125,
+        "width": 550,
+        "height": 81.1875,
+        "bottom": 634.015625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labNoroCecEtiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecLeitura",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecResultados",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecRompimentosMes",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecAnalise",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecRelatorio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroUsuarios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      634.015625,
+      532.828125
+    ],
+    "module": "laboratorio-noroeste",
+    "width": 1440,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 71
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 192.640625
+      },
+      {
+        "group": "Relatórios de Programação",
+        "gap": 20
+      },
+      {
+        "group": "Etiquetas",
+        "gap": 20
+      },
+      {
+        "group": "Produção e apoio",
+        "gap": 20
+      },
+      {
+        "group": "Programação",
+        "gap": 192.640625
+      },
+      {
+        "group": "Armaduras",
+        "gap": 20
+      },
+      {
+        "group": "Acompanhamento",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 288,
+        "y": 275.640625,
+        "width": 470,
+        "height": 281.1875,
+        "bottom": 556.828125,
+        "items": 2
+      },
+      {
+        "label": "Programação",
+        "x": 778,
+        "y": 275.640625,
+        "width": 470,
+        "height": 281.1875,
+        "bottom": 556.828125,
+        "items": 6
+      },
+      {
+        "label": "Relatórios de Programação",
+        "x": 288,
+        "y": 576.828125,
+        "width": 470,
+        "height": 161.1875,
+        "bottom": 738.015625,
+        "items": 3
+      },
+      {
+        "label": "Armaduras",
+        "x": 778,
+        "y": 576.828125,
+        "width": 470,
+        "height": 161.1875,
+        "bottom": 738.015625,
+        "items": 3
+      },
+      {
+        "label": "Etiquetas",
+        "x": 288,
+        "y": 758.015625,
+        "width": 470,
+        "height": 241.1875,
+        "bottom": 999.203125,
+        "items": 4
+      },
+      {
+        "label": "Acompanhamento",
+        "x": 778,
+        "y": 758.015625,
+        "width": 470,
+        "height": 241.1875,
+        "bottom": 999.203125,
+        "items": 5
+      },
+      {
+        "label": "Produção e apoio",
+        "x": 288,
+        "y": 1019.203125,
+        "width": 470,
+        "height": 241.1875,
+        "bottom": 1260.390625,
+        "items": 5
+      }
+    ],
+    "items": [
+      {
+        "id": "dashboard",
+        "description": "Programado e realizado por período",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "comparacao",
+        "description": "PCP contra apontamentos do Mapa",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacao12",
+        "description": "Programar a produção diária",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacaoSemanal12",
+        "description": "Distribuir a semana nas formas",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacao34",
+        "description": "Programar os setores 3 e 4",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "circular3",
+        "description": "Sequenciar formas circulares",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "dt4",
+        "description": "Programar postes duplo T",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacaoFinal",
+        "description": "Consolidar a programação para publicar",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio12",
+        "description": "Emitir PDF dos setores 1 e 2",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio3",
+        "description": "Emitir PDF do setor 3",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio4",
+        "description": "Emitir PDF do setor 4",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "postesNumerosSerie",
+        "description": "Consultar séries e emitir PDF",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "armadurasProgramacao",
+        "description": "Programar armaduras por dia",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "armadurasRelatorio",
+        "description": "Emitir relatório de armaduras",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasSc",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasSetor4",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasArmaduras",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pcpDiario",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "acompMensal",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "acompMensal34",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "apontamentoMega",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "fechamentoDiarioPcp",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "producaoPcp",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "maodeobra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "maodeobraRateio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "formasPorSetor",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "testeProgramacao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1260.390625,
+      999.203125
+    ],
+    "module": "planejamento",
+    "width": 1280,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Campinas · Produção",
+        "gap": 292.375
+      },
+      {
+        "group": "Campinas · Controle",
+        "gap": 20
+      },
+      {
+        "group": "Pederneiras",
+        "gap": 20
+      },
+      {
+        "group": "Noroeste",
+        "gap": 20
+      },
+      {
+        "group": "Campinas · Montagem",
+        "gap": 292.375
+      },
+      {
+        "group": "Campinas · Indicadores",
+        "gap": 20
+      },
+      {
+        "group": "Ribeirão",
+        "gap": 20
+      },
+      {
+        "group": "Indicadores gerais",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Campinas · Produção",
+        "x": 288,
+        "y": 375.375,
+        "width": 470,
+        "height": 281.1875,
+        "bottom": 656.5625,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Montagem",
+        "x": 778,
+        "y": 375.375,
+        "width": 470,
+        "height": 281.1875,
+        "bottom": 656.5625,
+        "items": 3
+      },
+      {
+        "label": "Campinas · Controle",
+        "x": 288,
+        "y": 676.5625,
+        "width": 470,
+        "height": 281.1875,
+        "bottom": 957.75,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Indicadores",
+        "x": 778,
+        "y": 676.5625,
+        "width": 470,
+        "height": 281.1875,
+        "bottom": 957.75,
+        "items": 5
+      },
+      {
+        "label": "Pederneiras",
+        "x": 288,
+        "y": 977.75,
+        "width": 470,
+        "height": 241.1875,
+        "bottom": 1218.9375,
+        "items": 5
+      },
+      {
+        "label": "Ribeirão",
+        "x": 778,
+        "y": 977.75,
+        "width": 470,
+        "height": 241.1875,
+        "bottom": 1218.9375,
+        "items": 5
+      },
+      {
+        "label": "Noroeste",
+        "x": 288,
+        "y": 1238.9375,
+        "width": 470,
+        "height": 241.1875,
+        "bottom": 1480.125,
+        "items": 5
+      },
+      {
+        "label": "Indicadores gerais",
+        "x": 778,
+        "y": 1238.9375,
+        "width": 470,
+        "height": 241.1875,
+        "bottom": 1480.125,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "liberacao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor1",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor2",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor3",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor4",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "mandril",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "inspecao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "montagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "sequencia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "relatorioMapa",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "historico",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "acmpConcretagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "manutencao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "tratativa",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "fechamentoDiario",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "campinasUnificado",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "dashMontagem",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "dashDefeitos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "produtividade",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "tvFormas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "pdrIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "rbrIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "norIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "indicadorGeralProducao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1480.125,
+      1480.125
+    ],
+    "module": "producao",
+    "width": 1280,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 70
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 281.640625
+      },
+      {
+        "group": "Dosagem",
+        "gap": 20
+      },
+      {
+        "group": "Usina de Campinas",
+        "gap": 20
+      },
+      {
+        "group": "Ensaios de concreto",
+        "gap": 20
+      },
+      {
+        "group": "Cronoanálise",
+        "gap": 20
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 281.640625
+      },
+      {
+        "group": "Concreto fresco",
+        "gap": 20
+      },
+      {
+        "group": "Cura térmica",
+        "gap": 20
+      },
+      {
+        "group": "Postes",
+        "gap": 20
+      },
+      {
+        "group": "Carta de traço",
+        "gap": 20
+      },
+      {
+        "group": "Ajuda",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 288,
+        "y": 364.640625,
+        "width": 470,
+        "height": 201.1875,
+        "bottom": 565.828125,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 778,
+        "y": 364.640625,
+        "width": 470,
+        "height": 201.1875,
+        "bottom": 565.828125,
+        "items": 4
+      },
+      {
+        "label": "Dosagem",
+        "x": 288,
+        "y": 585.828125,
+        "width": 470,
+        "height": 601.1875,
+        "bottom": 1187.015625,
+        "items": 14
+      },
+      {
+        "label": "Concreto fresco",
+        "x": 778,
+        "y": 585.828125,
+        "width": 470,
+        "height": 601.1875,
+        "bottom": 1187.015625,
+        "items": 1
+      },
+      {
+        "label": "Usina de Campinas",
+        "x": 288,
+        "y": 1207.015625,
+        "width": 470,
+        "height": 161.1875,
+        "bottom": 1368.203125,
+        "items": 1
+      },
+      {
+        "label": "Cura térmica",
+        "x": 778,
+        "y": 1207.015625,
+        "width": 470,
+        "height": 161.1875,
+        "bottom": 1368.203125,
+        "items": 3
+      },
+      {
+        "label": "Ensaios de concreto",
+        "x": 288,
+        "y": 1388.203125,
+        "width": 470,
+        "height": 241.1875,
+        "bottom": 1629.390625,
+        "items": 1
+      },
+      {
+        "label": "Postes",
+        "x": 778,
+        "y": 1388.203125,
+        "width": 470,
+        "height": 241.1875,
+        "bottom": 1629.390625,
+        "items": 5
+      },
+      {
+        "label": "Cronoanálise",
+        "x": 288,
+        "y": 1649.390625,
+        "width": 470,
+        "height": 321.1875,
+        "bottom": 1970.578125,
+        "items": 7
+      },
+      {
+        "label": "Carta de traço",
+        "x": 778,
+        "y": 1649.390625,
+        "width": 470,
+        "height": 321.1875,
+        "bottom": 1970.578125,
+        "items": 1
+      },
+      {
+        "label": "Administração",
+        "x": 288,
+        "y": 1990.578125,
+        "width": 470,
+        "height": 81.1875,
+        "bottom": 2071.765625,
+        "items": 1
+      },
+      {
+        "label": "Ajuda",
+        "x": 778,
+        "y": 1990.578125,
+        "width": 470,
+        "height": 81.1875,
+        "bottom": 2071.765625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labCecEtiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecLeitura",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecResultados",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecRompimentosMes",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecAnalise",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecRelatorio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemEmpacotamento",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemVolume",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemComparacao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemTracos",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemMateriais",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemFornecedores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemEnsaios",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemFerramentas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemCustos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemReferencia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemProducao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemImportacao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemConfig",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labSlump",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labUsinasRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labMonitor",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labHistory",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDevice",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labAbsorption",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificados",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labPole",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labTests",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labRegisters",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCriteria",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.inicio",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.coletar",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.medicoes",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.catalogo",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.dimensionar",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.simular",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.metodologia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCartaTraco",
+        "description": "Cadastrar e revisar cartas de traço",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labUsuarios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labHelp",
+        "description": "",
+        "icon": false,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      2071.765625,
+      2071.765625
+    ],
+    "module": "laboratorio",
+    "width": 1280,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 159.640625
+      },
+      {
+        "group": "Certificados",
+        "gap": 20
+      },
+      {
+        "group": "Não conformidades",
+        "gap": 159.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 288,
+        "y": 242.640625,
+        "width": 470,
+        "height": 201.1875,
+        "bottom": 443.828125,
+        "items": 2
+      },
+      {
+        "label": "Não conformidades",
+        "x": 778,
+        "y": 242.640625,
+        "width": 470,
+        "height": 201.1875,
+        "bottom": 443.828125,
+        "items": 4
+      },
+      {
+        "label": "Certificados",
+        "x": 288,
+        "y": 463.828125,
+        "width": 470,
+        "height": 201.1875,
+        "bottom": 665.015625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "qualidadeTarefas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "manutencaoUsina",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadePainel",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "qualidadeAbertura",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadeResultadosBancada",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadeCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCertificados",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificadosHistorico",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificadosCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labTests",
+        "description": "",
+        "icon": false,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      665.015625,
+      443.828125
+    ],
+    "module": "qualidade",
+    "width": 1280,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 159.640625
+      },
+      {
+        "group": "Noroeste",
+        "gap": 159.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 288,
+        "y": 242.640625,
+        "width": 470,
+        "height": 361.1875,
+        "bottom": 603.828125,
+        "items": 4
+      },
+      {
+        "label": "Noroeste",
+        "x": 778,
+        "y": 242.640625,
+        "width": 470,
+        "height": 361.1875,
+        "bottom": 603.828125,
+        "items": 8
+      }
+    ],
+    "items": [
+      {
+        "id": "usinasInicio",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "usinasCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasEstoque",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroPainel",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroMassadas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCartas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroEstoque",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCustos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      603.828125,
+      603.828125
+    ],
+    "module": "usinas",
+    "width": 1280,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 70
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Solicitações",
+        "gap": 159.640625
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Compras",
+        "gap": 159.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Solicitações",
+        "x": 288,
+        "y": 242.640625,
+        "width": 470,
+        "height": 241.1875,
+        "bottom": 483.828125,
+        "items": 5
+      },
+      {
+        "label": "Compras",
+        "x": 778,
+        "y": 242.640625,
+        "width": 470,
+        "height": 241.1875,
+        "bottom": 483.828125,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 288,
+        "y": 503.828125,
+        "width": 470,
+        "height": 81.1875,
+        "bottom": 585.015625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "suprimentosPainel",
+        "description": "Aprovar e acompanhar solicitações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosSolicitacoes",
+        "description": "Consultar e filtrar solicitações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosNova",
+        "description": "Solicitar materiais e serviços",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosAlmoxarifado",
+        "description": "Consultar saldos e movimentações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosInventario",
+        "description": "Conferir o estoque físico",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosCotacoes",
+        "description": "Comparar propostas de fornecedores",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosRecebimento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosFornecedores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      585.015625,
+      483.828125
+    ],
+    "module": "suprimentos",
+    "width": 1280,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "module": "logistica",
+    "width": 1280,
+    "phase": "before",
+    "native_home": true,
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Gestão documental",
+        "gap": 159.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Gestão documental",
+        "x": 288,
+        "y": 242.640625,
+        "width": 470,
+        "height": 201.1875,
+        "bottom": 443.828125,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "ged-dashboard",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-documents",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-approvals",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-calibrations",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      443.828125
+    ],
+    "module": "ged",
+    "width": 1280,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 70
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 248.640625
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 248.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 288,
+        "y": 331.640625,
+        "width": 470,
+        "height": 201.1875,
+        "bottom": 532.828125,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 778,
+        "y": 331.640625,
+        "width": 470,
+        "height": 201.1875,
+        "bottom": 532.828125,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 288,
+        "y": 552.828125,
+        "width": 470,
+        "height": 81.1875,
+        "bottom": 634.015625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labNoroCecEtiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecLeitura",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecResultados",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecRompimentosMes",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecAnalise",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecRelatorio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroUsuarios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      634.015625,
+      532.828125
+    ],
+    "module": "laboratorio-noroeste",
+    "width": 1280,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 188.640625
+      },
+      {
+        "group": "Relatórios de Programação",
+        "gap": 20
+      },
+      {
+        "group": "Etiquetas",
+        "gap": 20
+      },
+      {
+        "group": "Produção e apoio",
+        "gap": 20
+      },
+      {
+        "group": "Programação",
+        "gap": 188.640625
+      },
+      {
+        "group": "Armaduras",
+        "gap": 20
+      },
+      {
+        "group": "Acompanhamento",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 88,
+        "y": 271.640625,
+        "width": 446,
+        "height": 281.1875,
+        "bottom": 552.828125,
+        "items": 2
+      },
+      {
+        "label": "Programação",
+        "x": 554,
+        "y": 271.640625,
+        "width": 446,
+        "height": 281.1875,
+        "bottom": 552.828125,
+        "items": 6
+      },
+      {
+        "label": "Relatórios de Programação",
+        "x": 88,
+        "y": 572.828125,
+        "width": 446,
+        "height": 161.1875,
+        "bottom": 734.015625,
+        "items": 3
+      },
+      {
+        "label": "Armaduras",
+        "x": 554,
+        "y": 572.828125,
+        "width": 446,
+        "height": 161.1875,
+        "bottom": 734.015625,
+        "items": 3
+      },
+      {
+        "label": "Etiquetas",
+        "x": 88,
+        "y": 754.015625,
+        "width": 446,
+        "height": 241.1875,
+        "bottom": 995.203125,
+        "items": 4
+      },
+      {
+        "label": "Acompanhamento",
+        "x": 554,
+        "y": 754.015625,
+        "width": 446,
+        "height": 241.1875,
+        "bottom": 995.203125,
+        "items": 5
+      },
+      {
+        "label": "Produção e apoio",
+        "x": 88,
+        "y": 1015.203125,
+        "width": 446,
+        "height": 241.1875,
+        "bottom": 1256.390625,
+        "items": 5
+      }
+    ],
+    "items": [
+      {
+        "id": "dashboard",
+        "description": "Programado e realizado por período",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "comparacao",
+        "description": "PCP contra apontamentos do Mapa",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacao12",
+        "description": "Programar a produção diária",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacaoSemanal12",
+        "description": "Distribuir a semana nas formas",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacao34",
+        "description": "Programar os setores 3 e 4",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "circular3",
+        "description": "Sequenciar formas circulares",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "dt4",
+        "description": "Programar postes duplo T",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacaoFinal",
+        "description": "Consolidar a programação para publicar",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio12",
+        "description": "Emitir PDF dos setores 1 e 2",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio3",
+        "description": "Emitir PDF do setor 3",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio4",
+        "description": "Emitir PDF do setor 4",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "postesNumerosSerie",
+        "description": "Consultar séries e emitir PDF",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "armadurasProgramacao",
+        "description": "Programar armaduras por dia",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "armadurasRelatorio",
+        "description": "Emitir relatório de armaduras",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasSc",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasSetor4",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasArmaduras",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pcpDiario",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "acompMensal",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "acompMensal34",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "apontamentoMega",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "fechamentoDiarioPcp",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "producaoPcp",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "maodeobra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "maodeobraRateio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "formasPorSetor",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "testeProgramacao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1256.390625,
+      995.203125
+    ],
+    "module": "planejamento",
+    "width": 1024,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Campinas · Produção",
+        "gap": 288.375
+      },
+      {
+        "group": "Campinas · Controle",
+        "gap": 20
+      },
+      {
+        "group": "Pederneiras",
+        "gap": 20
+      },
+      {
+        "group": "Noroeste",
+        "gap": 20
+      },
+      {
+        "group": "Campinas · Montagem",
+        "gap": 288.375
+      },
+      {
+        "group": "Campinas · Indicadores",
+        "gap": 20
+      },
+      {
+        "group": "Ribeirão",
+        "gap": 20
+      },
+      {
+        "group": "Indicadores gerais",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Campinas · Produção",
+        "x": 88,
+        "y": 371.375,
+        "width": 446,
+        "height": 281.1875,
+        "bottom": 652.5625,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Montagem",
+        "x": 554,
+        "y": 371.375,
+        "width": 446,
+        "height": 281.1875,
+        "bottom": 652.5625,
+        "items": 3
+      },
+      {
+        "label": "Campinas · Controle",
+        "x": 88,
+        "y": 672.5625,
+        "width": 446,
+        "height": 281.1875,
+        "bottom": 953.75,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Indicadores",
+        "x": 554,
+        "y": 672.5625,
+        "width": 446,
+        "height": 281.1875,
+        "bottom": 953.75,
+        "items": 5
+      },
+      {
+        "label": "Pederneiras",
+        "x": 88,
+        "y": 973.75,
+        "width": 446,
+        "height": 241.1875,
+        "bottom": 1214.9375,
+        "items": 5
+      },
+      {
+        "label": "Ribeirão",
+        "x": 554,
+        "y": 973.75,
+        "width": 446,
+        "height": 241.1875,
+        "bottom": 1214.9375,
+        "items": 5
+      },
+      {
+        "label": "Noroeste",
+        "x": 88,
+        "y": 1234.9375,
+        "width": 446,
+        "height": 241.1875,
+        "bottom": 1476.125,
+        "items": 5
+      },
+      {
+        "label": "Indicadores gerais",
+        "x": 554,
+        "y": 1234.9375,
+        "width": 446,
+        "height": 241.1875,
+        "bottom": 1476.125,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "liberacao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor1",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor2",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor3",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor4",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "mandril",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "inspecao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "montagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "sequencia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "relatorioMapa",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "historico",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "acmpConcretagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "manutencao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "tratativa",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "fechamentoDiario",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "campinasUnificado",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "dashMontagem",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "dashDefeitos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "produtividade",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "tvFormas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "pdrIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "rbrIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "norIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "indicadorGeralProducao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1476.125,
+      1476.125
+    ],
+    "module": "producao",
+    "width": 1024,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 70
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 277.640625
+      },
+      {
+        "group": "Dosagem",
+        "gap": 20
+      },
+      {
+        "group": "Usina de Campinas",
+        "gap": 20
+      },
+      {
+        "group": "Ensaios de concreto",
+        "gap": 20
+      },
+      {
+        "group": "Cronoanálise",
+        "gap": 20
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 277.640625
+      },
+      {
+        "group": "Concreto fresco",
+        "gap": 20
+      },
+      {
+        "group": "Cura térmica",
+        "gap": 20
+      },
+      {
+        "group": "Postes",
+        "gap": 20
+      },
+      {
+        "group": "Carta de traço",
+        "gap": 20
+      },
+      {
+        "group": "Ajuda",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 88,
+        "y": 360.640625,
+        "width": 446,
+        "height": 201.1875,
+        "bottom": 561.828125,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 554,
+        "y": 360.640625,
+        "width": 446,
+        "height": 201.1875,
+        "bottom": 561.828125,
+        "items": 4
+      },
+      {
+        "label": "Dosagem",
+        "x": 88,
+        "y": 581.828125,
+        "width": 446,
+        "height": 601.1875,
+        "bottom": 1183.015625,
+        "items": 14
+      },
+      {
+        "label": "Concreto fresco",
+        "x": 554,
+        "y": 581.828125,
+        "width": 446,
+        "height": 601.1875,
+        "bottom": 1183.015625,
+        "items": 1
+      },
+      {
+        "label": "Usina de Campinas",
+        "x": 88,
+        "y": 1203.015625,
+        "width": 446,
+        "height": 161.1875,
+        "bottom": 1364.203125,
+        "items": 1
+      },
+      {
+        "label": "Cura térmica",
+        "x": 554,
+        "y": 1203.015625,
+        "width": 446,
+        "height": 161.1875,
+        "bottom": 1364.203125,
+        "items": 3
+      },
+      {
+        "label": "Ensaios de concreto",
+        "x": 88,
+        "y": 1384.203125,
+        "width": 446,
+        "height": 241.1875,
+        "bottom": 1625.390625,
+        "items": 1
+      },
+      {
+        "label": "Postes",
+        "x": 554,
+        "y": 1384.203125,
+        "width": 446,
+        "height": 241.1875,
+        "bottom": 1625.390625,
+        "items": 5
+      },
+      {
+        "label": "Cronoanálise",
+        "x": 88,
+        "y": 1645.390625,
+        "width": 446,
+        "height": 321.1875,
+        "bottom": 1966.578125,
+        "items": 7
+      },
+      {
+        "label": "Carta de traço",
+        "x": 554,
+        "y": 1645.390625,
+        "width": 446,
+        "height": 321.1875,
+        "bottom": 1966.578125,
+        "items": 1
+      },
+      {
+        "label": "Administração",
+        "x": 88,
+        "y": 1986.578125,
+        "width": 446,
+        "height": 81.1875,
+        "bottom": 2067.765625,
+        "items": 1
+      },
+      {
+        "label": "Ajuda",
+        "x": 554,
+        "y": 1986.578125,
+        "width": 446,
+        "height": 81.1875,
+        "bottom": 2067.765625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labCecEtiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecLeitura",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecResultados",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecRompimentosMes",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecAnalise",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecRelatorio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemEmpacotamento",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemVolume",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemComparacao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemTracos",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemMateriais",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemFornecedores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemEnsaios",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemFerramentas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemCustos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemReferencia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemProducao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemImportacao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemConfig",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labSlump",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labUsinasRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labMonitor",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labHistory",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDevice",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labAbsorption",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificados",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labPole",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labTests",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labRegisters",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCriteria",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.inicio",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.coletar",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.medicoes",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.catalogo",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.dimensionar",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.simular",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.metodologia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCartaTraco",
+        "description": "Cadastrar e revisar cartas de traço",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labUsuarios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labHelp",
+        "description": "",
+        "icon": false,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      2067.765625,
+      2067.765625
+    ],
+    "module": "laboratorio",
+    "width": 1024,
+    "phase": "before",
+    "connections_before": 70,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 155.640625
+      },
+      {
+        "group": "Certificados",
+        "gap": 20
+      },
+      {
+        "group": "Não conformidades",
+        "gap": 155.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 88,
+        "y": 238.640625,
+        "width": 446,
+        "height": 201.1875,
+        "bottom": 439.828125,
+        "items": 2
+      },
+      {
+        "label": "Não conformidades",
+        "x": 554,
+        "y": 238.640625,
+        "width": 446,
+        "height": 201.1875,
+        "bottom": 439.828125,
+        "items": 4
+      },
+      {
+        "label": "Certificados",
+        "x": 88,
+        "y": 459.828125,
+        "width": 446,
+        "height": 201.1875,
+        "bottom": 661.015625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "qualidadeTarefas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "manutencaoUsina",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadePainel",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "qualidadeAbertura",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadeResultadosBancada",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadeCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCertificados",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificadosHistorico",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificadosCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labTests",
+        "description": "",
+        "icon": false,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      661.015625,
+      439.828125
+    ],
+    "module": "qualidade",
+    "width": 1024,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 155.640625
+      },
+      {
+        "group": "Noroeste",
+        "gap": 155.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 88,
+        "y": 238.640625,
+        "width": 446,
+        "height": 361.1875,
+        "bottom": 599.828125,
+        "items": 4
+      },
+      {
+        "label": "Noroeste",
+        "x": 554,
+        "y": 238.640625,
+        "width": 446,
+        "height": 361.1875,
+        "bottom": 599.828125,
+        "items": 8
+      }
+    ],
+    "items": [
+      {
+        "id": "usinasInicio",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "usinasCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasEstoque",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroPainel",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroMassadas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCartas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroEstoque",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCustos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      599.828125,
+      599.828125
+    ],
+    "module": "usinas",
+    "width": 1024,
+    "phase": "before",
+    "connections_before": 77,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Solicitações",
+        "gap": 155.640625
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Compras",
+        "gap": 155.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Solicitações",
+        "x": 88,
+        "y": 238.640625,
+        "width": 446,
+        "height": 241.1875,
+        "bottom": 479.828125,
+        "items": 5
+      },
+      {
+        "label": "Compras",
+        "x": 554,
+        "y": 238.640625,
+        "width": 446,
+        "height": 241.1875,
+        "bottom": 479.828125,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 88,
+        "y": 499.828125,
+        "width": 446,
+        "height": 81.1875,
+        "bottom": 581.015625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "suprimentosPainel",
+        "description": "Aprovar e acompanhar solicitações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosSolicitacoes",
+        "description": "Consultar e filtrar solicitações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosNova",
+        "description": "Solicitar materiais e serviços",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosAlmoxarifado",
+        "description": "Consultar saldos e movimentações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosInventario",
+        "description": "Conferir o estoque físico",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosCotacoes",
+        "description": "Comparar propostas de fornecedores",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosRecebimento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosFornecedores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      581.015625,
+      479.828125
+    ],
+    "module": "suprimentos",
+    "width": 1024,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "module": "logistica",
+    "width": 1024,
+    "phase": "before",
+    "native_home": true,
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Gestão documental",
+        "gap": 155.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Gestão documental",
+        "x": 88,
+        "y": 238.640625,
+        "width": 446,
+        "height": 201.1875,
+        "bottom": 439.828125,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "ged-dashboard",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-documents",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-approvals",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-calibrations",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      439.828125
+    ],
+    "module": "ged",
+    "width": 1024,
+    "phase": "before",
+    "connections_before": 71,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 244.640625
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 244.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 88,
+        "y": 327.640625,
+        "width": 446,
+        "height": 201.1875,
+        "bottom": 528.828125,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 554,
+        "y": 327.640625,
+        "width": 446,
+        "height": 201.1875,
+        "bottom": 528.828125,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 88,
+        "y": 548.828125,
+        "width": 446,
+        "height": 81.1875,
+        "bottom": 630.015625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labNoroCecEtiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecLeitura",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecResultados",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecRompimentosMes",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecAnalise",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecRelatorio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroUsuarios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      630.015625,
+      528.828125
+    ],
+    "module": "laboratorio-noroeste",
+    "width": 1024,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 188.640625
+      },
+      {
+        "group": "Relatórios de Programação",
+        "gap": 20
+      },
+      {
+        "group": "Etiquetas",
+        "gap": 20
+      },
+      {
+        "group": "Produção e apoio",
+        "gap": 20
+      },
+      {
+        "group": "Programação",
+        "gap": 188.640625
+      },
+      {
+        "group": "Armaduras",
+        "gap": 20
+      },
+      {
+        "group": "Acompanhamento",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 88,
+        "y": 271.640625,
+        "width": 344,
+        "height": 281.1875,
+        "bottom": 552.828125,
+        "items": 2
+      },
+      {
+        "label": "Programação",
+        "x": 452,
+        "y": 271.640625,
+        "width": 344,
+        "height": 281.1875,
+        "bottom": 552.828125,
+        "items": 6
+      },
+      {
+        "label": "Relatórios de Programação",
+        "x": 88,
+        "y": 572.828125,
+        "width": 344,
+        "height": 161.1875,
+        "bottom": 734.015625,
+        "items": 3
+      },
+      {
+        "label": "Armaduras",
+        "x": 452,
+        "y": 572.828125,
+        "width": 344,
+        "height": 161.1875,
+        "bottom": 734.015625,
+        "items": 3
+      },
+      {
+        "label": "Etiquetas",
+        "x": 88,
+        "y": 754.015625,
+        "width": 344,
+        "height": 241.1875,
+        "bottom": 995.203125,
+        "items": 4
+      },
+      {
+        "label": "Acompanhamento",
+        "x": 452,
+        "y": 754.015625,
+        "width": 344,
+        "height": 241.1875,
+        "bottom": 995.203125,
+        "items": 5
+      },
+      {
+        "label": "Produção e apoio",
+        "x": 88,
+        "y": 1015.203125,
+        "width": 344,
+        "height": 241.1875,
+        "bottom": 1256.390625,
+        "items": 5
+      }
+    ],
+    "items": [
+      {
+        "id": "dashboard",
+        "description": "Programado e realizado por período",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "comparacao",
+        "description": "PCP contra apontamentos do Mapa",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacao12",
+        "description": "Programar a produção diária",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacaoSemanal12",
+        "description": "Distribuir a semana nas formas",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacao34",
+        "description": "Programar os setores 3 e 4",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "circular3",
+        "description": "Sequenciar formas circulares",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "dt4",
+        "description": "Programar postes duplo T",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "programacaoFinal",
+        "description": "Consolidar a programação para publicar",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio12",
+        "description": "Emitir PDF dos setores 1 e 2",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio3",
+        "description": "Emitir PDF do setor 3",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "relatorio4",
+        "description": "Emitir PDF do setor 4",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "postesNumerosSerie",
+        "description": "Consultar séries e emitir PDF",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "armadurasProgramacao",
+        "description": "Programar armaduras por dia",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "armadurasRelatorio",
+        "description": "Emitir relatório de armaduras",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasSc",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasSetor4",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "etiquetasArmaduras",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pcpDiario",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "acompMensal",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "acompMensal34",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "apontamentoMega",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "fechamentoDiarioPcp",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "producaoPcp",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "maodeobra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "maodeobraRateio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "formasPorSetor",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "testeProgramacao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1256.390625,
+      995.203125
+    ],
+    "module": "planejamento",
+    "width": 820,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Campinas · Produção",
+        "gap": 372.375
+      },
+      {
+        "group": "Campinas · Controle",
+        "gap": 20
+      },
+      {
+        "group": "Pederneiras",
+        "gap": 20
+      },
+      {
+        "group": "Noroeste",
+        "gap": 20
+      },
+      {
+        "group": "Campinas · Montagem",
+        "gap": 372.375
+      },
+      {
+        "group": "Campinas · Indicadores",
+        "gap": 20
+      },
+      {
+        "group": "Ribeirão",
+        "gap": 20
+      },
+      {
+        "group": "Indicadores gerais",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Campinas · Produção",
+        "x": 88,
+        "y": 455.375,
+        "width": 344,
+        "height": 281.1875,
+        "bottom": 736.5625,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Montagem",
+        "x": 452,
+        "y": 455.375,
+        "width": 344,
+        "height": 281.1875,
+        "bottom": 736.5625,
+        "items": 3
+      },
+      {
+        "label": "Campinas · Controle",
+        "x": 88,
+        "y": 756.5625,
+        "width": 344,
+        "height": 281.1875,
+        "bottom": 1037.75,
+        "items": 6
+      },
+      {
+        "label": "Campinas · Indicadores",
+        "x": 452,
+        "y": 756.5625,
+        "width": 344,
+        "height": 281.1875,
+        "bottom": 1037.75,
+        "items": 5
+      },
+      {
+        "label": "Pederneiras",
+        "x": 88,
+        "y": 1057.75,
+        "width": 344,
+        "height": 241.1875,
+        "bottom": 1298.9375,
+        "items": 5
+      },
+      {
+        "label": "Ribeirão",
+        "x": 452,
+        "y": 1057.75,
+        "width": 344,
+        "height": 241.1875,
+        "bottom": 1298.9375,
+        "items": 5
+      },
+      {
+        "label": "Noroeste",
+        "x": 88,
+        "y": 1318.9375,
+        "width": 344,
+        "height": 241.1875,
+        "bottom": 1560.125,
+        "items": 5
+      },
+      {
+        "label": "Indicadores gerais",
+        "x": 452,
+        "y": 1318.9375,
+        "width": 344,
+        "height": 241.1875,
+        "bottom": 1560.125,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "liberacao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor1",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor2",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor3",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "setor4",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "mandril",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "inspecao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "montagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "sequencia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "relatorioMapa",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "historico",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "acmpConcretagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "manutencao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "tratativa",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "fechamentoDiario",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "campinasUnificado",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "dashMontagem",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "dashDefeitos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "produtividade",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "tvFormas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "pdrIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "pdrProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "rbrIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "rbrProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norApontamento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norMaoDeObra",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norMensal",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "norIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "norProdutos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "indicadorGeralProducao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      1560.125,
+      1560.125
+    ],
+    "module": "producao",
+    "width": 820,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 277.640625
+      },
+      {
+        "group": "Dosagem",
+        "gap": 20
+      },
+      {
+        "group": "Usina de Campinas",
+        "gap": 20
+      },
+      {
+        "group": "Ensaios de concreto",
+        "gap": 20
+      },
+      {
+        "group": "Cronoanálise",
+        "gap": 20
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 277.640625
+      },
+      {
+        "group": "Concreto fresco",
+        "gap": 20
+      },
+      {
+        "group": "Cura térmica",
+        "gap": 20
+      },
+      {
+        "group": "Postes",
+        "gap": 20
+      },
+      {
+        "group": "Carta de traço",
+        "gap": 20
+      },
+      {
+        "group": "Ajuda",
+        "gap": 20
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 88,
+        "y": 360.640625,
+        "width": 344,
+        "height": 201.1875,
+        "bottom": 561.828125,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 452,
+        "y": 360.640625,
+        "width": 344,
+        "height": 201.1875,
+        "bottom": 561.828125,
+        "items": 4
+      },
+      {
+        "label": "Dosagem",
+        "x": 88,
+        "y": 581.828125,
+        "width": 344,
+        "height": 601.1875,
+        "bottom": 1183.015625,
+        "items": 14
+      },
+      {
+        "label": "Concreto fresco",
+        "x": 452,
+        "y": 581.828125,
+        "width": 344,
+        "height": 601.1875,
+        "bottom": 1183.015625,
+        "items": 1
+      },
+      {
+        "label": "Usina de Campinas",
+        "x": 88,
+        "y": 1203.015625,
+        "width": 344,
+        "height": 161.1875,
+        "bottom": 1364.203125,
+        "items": 1
+      },
+      {
+        "label": "Cura térmica",
+        "x": 452,
+        "y": 1203.015625,
+        "width": 344,
+        "height": 161.1875,
+        "bottom": 1364.203125,
+        "items": 3
+      },
+      {
+        "label": "Ensaios de concreto",
+        "x": 88,
+        "y": 1384.203125,
+        "width": 344,
+        "height": 241.1875,
+        "bottom": 1625.390625,
+        "items": 1
+      },
+      {
+        "label": "Postes",
+        "x": 452,
+        "y": 1384.203125,
+        "width": 344,
+        "height": 241.1875,
+        "bottom": 1625.390625,
+        "items": 5
+      },
+      {
+        "label": "Cronoanálise",
+        "x": 88,
+        "y": 1645.390625,
+        "width": 344,
+        "height": 321.1875,
+        "bottom": 1966.578125,
+        "items": 7
+      },
+      {
+        "label": "Carta de traço",
+        "x": 452,
+        "y": 1645.390625,
+        "width": 344,
+        "height": 321.1875,
+        "bottom": 1966.578125,
+        "items": 1
+      },
+      {
+        "label": "Administração",
+        "x": 88,
+        "y": 1986.578125,
+        "width": 344,
+        "height": 81.1875,
+        "bottom": 2067.765625,
+        "items": 1
+      },
+      {
+        "label": "Ajuda",
+        "x": 452,
+        "y": 1986.578125,
+        "width": 344,
+        "height": 81.1875,
+        "bottom": 2067.765625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labCecEtiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecLeitura",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecResultados",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecRompimentosMes",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecAnalise",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCecRelatorio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagem",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemEmpacotamento",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemVolume",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemComparacao",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemTracos",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemMateriais",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemFornecedores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemEnsaios",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemFerramentas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemCustos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labDosagemReferencia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemProducao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemImportacao",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDosagemConfig",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labSlump",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labUsinasRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labMonitor",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labHistory",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labDevice",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labAbsorption",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificados",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labPole",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labTests",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labRegisters",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCriteria",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.inicio",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.coletar",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.medicoes",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.catalogo",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.dimensionar",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.simular",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "cronoanalise.metodologia",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCartaTraco",
+        "description": "Cadastrar e revisar cartas de traço",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labUsuarios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labHelp",
+        "description": "",
+        "icon": false,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      2067.765625,
+      2067.765625
+    ],
+    "module": "laboratorio",
+    "width": 820,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 70
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 188.640625
+      },
+      {
+        "group": "Certificados",
+        "gap": 20
+      },
+      {
+        "group": "Não conformidades",
+        "gap": 188.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 88,
+        "y": 271.640625,
+        "width": 344,
+        "height": 201.1875,
+        "bottom": 472.828125,
+        "items": 2
+      },
+      {
+        "label": "Não conformidades",
+        "x": 452,
+        "y": 271.640625,
+        "width": 344,
+        "height": 201.1875,
+        "bottom": 472.828125,
+        "items": 4
+      },
+      {
+        "label": "Certificados",
+        "x": 88,
+        "y": 492.828125,
+        "width": 344,
+        "height": 201.1875,
+        "bottom": 694.015625,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "qualidadeTarefas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "manutencaoUsina",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadePainel",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "qualidadeAbertura",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadeResultadosBancada",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "qualidadeCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labCertificados",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificadosHistorico",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "labCertificadosCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labTests",
+        "description": "",
+        "icon": false,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      694.015625,
+      472.828125
+    ],
+    "module": "qualidade",
+    "width": 820,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Geral",
+        "gap": 155.640625
+      },
+      {
+        "group": "Noroeste",
+        "gap": 155.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Geral",
+        "x": 88,
+        "y": 238.640625,
+        "width": 344,
+        "height": 361.1875,
+        "bottom": 599.828125,
+        "items": 4
+      },
+      {
+        "label": "Noroeste",
+        "x": 452,
+        "y": 238.640625,
+        "width": 344,
+        "height": 361.1875,
+        "bottom": 599.828125,
+        "items": 8
+      }
+    ],
+    "items": [
+      {
+        "id": "usinasInicio",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "usinasCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasEstoque",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroPainel",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroMassadas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCartas",
+        "description": "",
+        "icon": false,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroRelatorios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroEstoque",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "usinasNoroCustos",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      599.828125,
+      599.828125
+    ],
+    "module": "usinas",
+    "width": 820,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Solicitações",
+        "gap": 188.640625
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Compras",
+        "gap": 188.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Solicitações",
+        "x": 88,
+        "y": 271.640625,
+        "width": 344,
+        "height": 241.1875,
+        "bottom": 512.828125,
+        "items": 5
+      },
+      {
+        "label": "Compras",
+        "x": 452,
+        "y": 271.640625,
+        "width": 344,
+        "height": 241.1875,
+        "bottom": 512.828125,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 88,
+        "y": 532.828125,
+        "width": 344,
+        "height": 81.1875,
+        "bottom": 614.015625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "suprimentosPainel",
+        "description": "Aprovar e acompanhar solicitações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosSolicitacoes",
+        "description": "Consultar e filtrar solicitações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosNova",
+        "description": "Solicitar materiais e serviços",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosAlmoxarifado",
+        "description": "Consultar saldos e movimentações",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosInventario",
+        "description": "Conferir o estoque físico",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosCotacoes",
+        "description": "Comparar propostas de fornecedores",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosRecebimento",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosFornecedores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosIndicadores",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "suprimentosCadastros",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      614.015625,
+      512.828125
+    ],
+    "module": "suprimentos",
+    "width": 820,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "module": "logistica",
+    "width": 820,
+    "phase": "before",
+    "native_home": true,
+    "connections_before": 69,
+    "connections_after": 71
+  },
+  {
+    "columns": 1,
+    "gaps": [
+      {
+        "group": "Gestão documental",
+        "gap": 155.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Gestão documental",
+        "x": 88,
+        "y": 238.640625,
+        "width": 344,
+        "height": 201.1875,
+        "bottom": 439.828125,
+        "items": 4
+      }
+    ],
+    "items": [
+      {
+        "id": "ged-dashboard",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-documents",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-approvals",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "ged-calibrations",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      439.828125
+    ],
+    "module": "ged",
+    "width": 820,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  },
+  {
+    "columns": 2,
+    "gaps": [
+      {
+        "group": "Corpos de Prova",
+        "gap": 277.640625
+      },
+      {
+        "group": "Administração",
+        "gap": 20
+      },
+      {
+        "group": "Controle estatístico",
+        "gap": 277.640625
+      }
+    ],
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "x": 88,
+        "y": 360.640625,
+        "width": 344,
+        "height": 201.1875,
+        "bottom": 561.828125,
+        "items": 3
+      },
+      {
+        "label": "Controle estatístico",
+        "x": 452,
+        "y": 360.640625,
+        "width": 344,
+        "height": 201.1875,
+        "bottom": 561.828125,
+        "items": 4
+      },
+      {
+        "label": "Administração",
+        "x": 88,
+        "y": 581.828125,
+        "width": 344,
+        "height": 81.1875,
+        "bottom": 663.015625,
+        "items": 1
+      }
+    ],
+    "items": [
+      {
+        "id": "labNoroCecEtiquetas",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecLeitura",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecResultados",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCec",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecRompimentosMes",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecAnalise",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroCecRelatorio",
+        "description": "",
+        "icon": true,
+        "height": 40
+      },
+      {
+        "id": "labNoroUsuarios",
+        "description": "",
+        "icon": true,
+        "height": 40
+      }
+    ],
+    "overflow": false,
+    "columnEnds": [
+      663.015625,
+      561.828125
+    ],
+    "module": "laboratorio-noroeste",
+    "width": 820,
+    "phase": "before",
+    "connections_before": 69,
+    "connections_after": 69
+  }
+]

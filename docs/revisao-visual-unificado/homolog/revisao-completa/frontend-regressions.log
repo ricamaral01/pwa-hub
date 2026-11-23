@@ -1,0 +1,14 @@
+✔ route id disambiguates parameter routes opened through shortcuts (1.7961ms)
+✔ path fallback never chooses another parameter-specific screen (1.3373ms)
+✔ screen types use distinct icons and unknown types have no invented icon (3.1589ms)
+✔ dashboard without programming has no percentage or danger tone (107.2864ms)
+✔ service worker revalidates generated GED CSS and leaves APIs alone (3.1197ms)
+✔ supply panel renders zero late approvals and a singular urgent request (2.523ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 330.802

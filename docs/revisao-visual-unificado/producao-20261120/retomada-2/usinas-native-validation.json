@@ -1,0 +1,14 @@
+{
+  "version": "1.4.31",
+  "iframe_src": "https://concrefer.concretrack.com.br:18446/unificado/usinas/",
+  "heading": "Cartas de traço",
+  "reload_loop": false,
+  "responses": [
+    {
+      "path": "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/usina/receitas",
+      "status": 200
+    }
+  ],
+  "page_errors": [],
+  "ok": true
+}

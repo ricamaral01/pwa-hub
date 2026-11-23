@@ -1,0 +1,118 @@
+{
+  "proposal_only": true,
+  "applied": false,
+  "max_connections": 100,
+  "superuser_reserved_connections": 3,
+  "other_reserved_connections": 0,
+  "production_budget": 51,
+  "total_client_budget": 82,
+  "free_ordinary_slots": 15,
+  "superuser_slots_preserved": 3,
+  "services": [
+    {
+      "service": "PCP",
+      "configuration": "1 worker; engine 2 retidas + 1 overflow",
+      "max_clients": 3
+    },
+    {
+      "service": "Logística",
+      "configuration": "2 workers; negócio 1+1 e IAM 1+1 por worker",
+      "max_clients": 8
+    },
+    {
+      "service": "Laboratório",
+      "configuration": "1 worker; engine ativo 1+1",
+      "max_clients": 2
+    },
+    {
+      "service": "Suprimentos",
+      "configuration": "1 worker; engine 1+1",
+      "max_clients": 2
+    },
+    {
+      "service": "Qualidade API",
+      "configuration": "1 worker; engine 1+1",
+      "max_clients": 2
+    },
+    {
+      "service": "Dosagem",
+      "configuration": "1 worker; engine singleton 1+1",
+      "max_clients": 2
+    },
+    {
+      "service": "Armação",
+      "configuration": "1 worker; negócio 1+1, IAM singleton 1+0; preservar as 4 unidades enabled:true",
+      "max_clients": 3
+    },
+    {
+      "service": "PostgREST leitura",
+      "configuration": "pool 3 + 1 listener",
+      "max_clients": 4
+    },
+    {
+      "service": "PostgREST escrita",
+      "configuration": "pool 2 + 1 listener",
+      "max_clients": 3
+    },
+    {
+      "service": "Mapa/autenticação",
+      "configuration": "2 workers; no máximo 2 conexões diretas simultâneas por worker",
+      "max_clients": 4
+    },
+    {
+      "service": "Realtime",
+      "configuration": "1 conexão persistente de escuta",
+      "max_clients": 1
+    },
+    {
+      "service": "Monitor de cura",
+      "configuration": "1 conexão direta",
+      "max_clients": 1
+    },
+    {
+      "service": "CEC Campinas/Noroeste",
+      "configuration": "1 conexão por worker, 2 workers no total",
+      "max_clients": 2
+    },
+    {
+      "service": "Dashboard Pederneiras",
+      "configuration": "2 processos, no máximo 1 conexão por processo",
+      "max_clients": 2
+    },
+    {
+      "service": "Carta de traço",
+      "configuration": "1 worker; 3 engines singleton, 1+0 cada",
+      "max_clients": 3
+    },
+    {
+      "service": "CQ",
+      "configuration": "1 worker; engine 1+1",
+      "max_clients": 2
+    },
+    {
+      "service": "Hub, Usinas e reporting",
+      "configuration": "Hub: 1 worker, pool 1+1 (2); sincronizador Usinas: 1 conexão; reporting: 1 worker, pool 1+0 (1)",
+      "max_clients": 4
+    },
+    {
+      "service": "TV",
+      "configuration": "1 conexão máxima",
+      "max_clients": 1
+    },
+    {
+      "service": "Jobs de Qualidade/outbox/integradores",
+      "configuration": "no máximo 2 jobs com conexão ao mesmo tempo",
+      "max_clients": 2
+    }
+  ],
+  "shared_budgets": {
+    "produção": 51,
+    "homologação visual": 20,
+    "homologações antigas": 5,
+    "staging": 2,
+    "apiempresa/outros": 2,
+    "manutenção/auditorias": 2
+  },
+  "release_context": "1.4.31, proposal only, not applied",
+  "armacao_enabled_four_units_preserved": true
+}

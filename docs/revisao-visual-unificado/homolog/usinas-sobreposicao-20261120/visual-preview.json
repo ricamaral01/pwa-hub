@@ -1,0 +1,869 @@
+{
+  "mode": "preview",
+  "screens": [
+    {
+      "url": "/unificado/usinas/",
+      "viewport": 1184,
+      "pageWidth": 1184,
+      "pageOverflow": false,
+      "links": [
+        {
+          "title": "Controle estatístico",
+          "description": "Leituras, resultados, etiquetas, análise e relatório CEC.",
+          "titleBox": {
+            "x": 51,
+            "y": 320.875,
+            "right": 179.90625,
+            "bottom": 338.875,
+            "width": 128.90625,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 51,
+            "y": 343.875,
+            "right": 346.015625,
+            "bottom": 359.875,
+            "width": 295.015625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 51,
+            "y": 319.875,
+            "width": 1082,
+            "height": 20,
+            "right": 1133,
+            "bottom": 339.875
+          },
+          "rowHeight": 70,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        },
+        {
+          "title": "Relatórios gerenciais",
+          "description": "Produção, consumo, custos, fechamento e exportações.",
+          "titleBox": {
+            "x": 51,
+            "y": 390.875,
+            "right": 187.90625,
+            "bottom": 408.875,
+            "width": 136.90625,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 51,
+            "y": 413.875,
+            "right": 354.5625,
+            "bottom": 429.875,
+            "width": 303.5625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 51,
+            "y": 389.875,
+            "width": 1082,
+            "height": 20,
+            "right": 1133,
+            "bottom": 409.875
+          },
+          "rowHeight": 70,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        },
+        {
+          "title": "Controle de estoque",
+          "description": "Entradas, saldos, consumo, silos e acertos de inventário.",
+          "titleBox": {
+            "x": 51,
+            "y": 460.875,
+            "right": 184.09375,
+            "bottom": 478.875,
+            "width": 133.09375,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 51,
+            "y": 483.875,
+            "right": 357.15625,
+            "bottom": 499.875,
+            "width": 306.15625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 51,
+            "y": 459.875,
+            "width": 1082,
+            "height": 20,
+            "right": 1133,
+            "bottom": 479.875
+          },
+          "rowHeight": 69,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        }
+      ],
+      "headers": [
+        {
+          "text": "Nome do traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 369.140625
+        },
+        {
+          "text": "Revisão",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 78.578125
+        },
+        {
+          "text": "Status",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 92.234375
+        },
+        {
+          "text": "Cimento 1",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 81.484375
+        },
+        {
+          "text": "Água",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 63.96875
+        },
+        {
+          "text": "Alterado por",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 273.84375
+        },
+        {
+          "text": "Id",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 61.359375
+        },
+        {
+          "text": "Ação",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 124.078125
+        }
+      ],
+      "tables": [
+        {
+          "width": 1144.6875,
+          "scrollParent": {
+            "className": "scroll",
+            "scrollWidth": 1145,
+            "clientWidth": 1118
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "width": 1440,
+      "height": 1000,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/usinas/",
+      "viewport": 1024,
+      "pageWidth": 1024,
+      "pageOverflow": false,
+      "links": [
+        {
+          "title": "Controle estatístico",
+          "description": "Leituras, resultados, etiquetas, análise e relatório CEC.",
+          "titleBox": {
+            "x": 51,
+            "y": 320.875,
+            "right": 179.90625,
+            "bottom": 338.875,
+            "width": 128.90625,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 51,
+            "y": 343.875,
+            "right": 346.015625,
+            "bottom": 359.875,
+            "width": 295.015625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 51,
+            "y": 319.875,
+            "width": 922,
+            "height": 20,
+            "right": 973,
+            "bottom": 339.875
+          },
+          "rowHeight": 70,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        },
+        {
+          "title": "Relatórios gerenciais",
+          "description": "Produção, consumo, custos, fechamento e exportações.",
+          "titleBox": {
+            "x": 51,
+            "y": 390.875,
+            "right": 187.90625,
+            "bottom": 408.875,
+            "width": 136.90625,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 51,
+            "y": 413.875,
+            "right": 354.5625,
+            "bottom": 429.875,
+            "width": 303.5625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 51,
+            "y": 389.875,
+            "width": 922,
+            "height": 20,
+            "right": 973,
+            "bottom": 409.875
+          },
+          "rowHeight": 70,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        },
+        {
+          "title": "Controle de estoque",
+          "description": "Entradas, saldos, consumo, silos e acertos de inventário.",
+          "titleBox": {
+            "x": 51,
+            "y": 460.875,
+            "right": 184.09375,
+            "bottom": 478.875,
+            "width": 133.09375,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 51,
+            "y": 483.875,
+            "right": 357.15625,
+            "bottom": 499.875,
+            "width": 306.15625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 51,
+            "y": 459.875,
+            "width": 922,
+            "height": 20,
+            "right": 973,
+            "bottom": 479.875
+          },
+          "rowHeight": 69,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        }
+      ],
+      "headers": [
+        {
+          "text": "Nome do traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 369.140625
+        },
+        {
+          "text": "Revisão",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 78.578125
+        },
+        {
+          "text": "Status",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 92.234375
+        },
+        {
+          "text": "Cimento 1",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 81.484375
+        },
+        {
+          "text": "Água",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 63.96875
+        },
+        {
+          "text": "Alterado por",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 273.84375
+        },
+        {
+          "text": "Id",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 61.359375
+        },
+        {
+          "text": "Ação",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 124.078125
+        }
+      ],
+      "tables": [
+        {
+          "width": 1144.6875,
+          "scrollParent": {
+            "className": "scroll",
+            "scrollWidth": 1145,
+            "clientWidth": 958
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "width": 1280,
+      "height": 900,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/usinas/",
+      "viewport": 960,
+      "pageWidth": 960,
+      "pageOverflow": false,
+      "links": [
+        {
+          "title": "Controle estatístico",
+          "description": "Leituras, resultados, etiquetas, análise e relatório CEC.",
+          "titleBox": {
+            "x": 51,
+            "y": 320.875,
+            "right": 179.90625,
+            "bottom": 338.875,
+            "width": 128.90625,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 51,
+            "y": 343.875,
+            "right": 346.015625,
+            "bottom": 359.875,
+            "width": 295.015625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 51,
+            "y": 319.875,
+            "width": 858,
+            "height": 20,
+            "right": 909,
+            "bottom": 339.875
+          },
+          "rowHeight": 70,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        },
+        {
+          "title": "Relatórios gerenciais",
+          "description": "Produção, consumo, custos, fechamento e exportações.",
+          "titleBox": {
+            "x": 51,
+            "y": 390.875,
+            "right": 187.90625,
+            "bottom": 408.875,
+            "width": 136.90625,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 51,
+            "y": 413.875,
+            "right": 354.5625,
+            "bottom": 429.875,
+            "width": 303.5625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 51,
+            "y": 389.875,
+            "width": 858,
+            "height": 20,
+            "right": 909,
+            "bottom": 409.875
+          },
+          "rowHeight": 70,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        },
+        {
+          "title": "Controle de estoque",
+          "description": "Entradas, saldos, consumo, silos e acertos de inventário.",
+          "titleBox": {
+            "x": 51,
+            "y": 460.875,
+            "right": 184.09375,
+            "bottom": 478.875,
+            "width": 133.09375,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 51,
+            "y": 483.875,
+            "right": 357.15625,
+            "bottom": 499.875,
+            "width": 306.15625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 51,
+            "y": 459.875,
+            "width": 858,
+            "height": 20,
+            "right": 909,
+            "bottom": 479.875
+          },
+          "rowHeight": 69,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        }
+      ],
+      "headers": [
+        {
+          "text": "Nome do traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 369.140625
+        },
+        {
+          "text": "Revisão",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 78.578125
+        },
+        {
+          "text": "Status",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 92.234375
+        },
+        {
+          "text": "Cimento 1",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 81.484375
+        },
+        {
+          "text": "Água",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 63.96875
+        },
+        {
+          "text": "Alterado por",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 273.84375
+        },
+        {
+          "text": "Id",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 61.359375
+        },
+        {
+          "text": "Ação",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 124.078125
+        }
+      ],
+      "tables": [
+        {
+          "width": 1144.6875,
+          "scrollParent": {
+            "className": "scroll",
+            "scrollWidth": 1145,
+            "clientWidth": 894
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "width": 1024,
+      "height": 900,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/usinas/",
+      "viewport": 756,
+      "pageWidth": 756,
+      "pageOverflow": false,
+      "links": [
+        {
+          "title": "Controle estatístico",
+          "description": "Leituras, resultados, etiquetas, análise e relatório CEC.",
+          "titleBox": {
+            "x": 35,
+            "y": 312.875,
+            "right": 163.90625,
+            "bottom": 330.875,
+            "width": 128.90625,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 35,
+            "y": 335.875,
+            "right": 330.015625,
+            "bottom": 351.875,
+            "width": 295.015625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 35,
+            "y": 311.875,
+            "width": 686,
+            "height": 20,
+            "right": 721,
+            "bottom": 331.875
+          },
+          "rowHeight": 70,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        },
+        {
+          "title": "Relatórios gerenciais",
+          "description": "Produção, consumo, custos, fechamento e exportações.",
+          "titleBox": {
+            "x": 35,
+            "y": 382.875,
+            "right": 171.90625,
+            "bottom": 400.875,
+            "width": 136.90625,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 35,
+            "y": 405.875,
+            "right": 338.5625,
+            "bottom": 421.875,
+            "width": 303.5625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 35,
+            "y": 381.875,
+            "width": 686,
+            "height": 20,
+            "right": 721,
+            "bottom": 401.875
+          },
+          "rowHeight": 70,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        },
+        {
+          "title": "Controle de estoque",
+          "description": "Entradas, saldos, consumo, silos e acertos de inventário.",
+          "titleBox": {
+            "x": 35,
+            "y": 452.875,
+            "right": 168.09375,
+            "bottom": 470.875,
+            "width": 133.09375,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 35,
+            "y": 475.875,
+            "right": 341.15625,
+            "bottom": 491.875,
+            "width": 306.15625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 35,
+            "y": 451.875,
+            "width": 686,
+            "height": 20,
+            "right": 721,
+            "bottom": 471.875
+          },
+          "rowHeight": 69,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        }
+      ],
+      "headers": [
+        {
+          "text": "Nome do traço",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 409
+        },
+        {
+          "text": "Revisão",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 409
+        },
+        {
+          "text": "Status",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 409
+        },
+        {
+          "text": "Cimento 1",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 409
+        },
+        {
+          "text": "Água",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 409
+        },
+        {
+          "text": "Alterado por",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 409
+        },
+        {
+          "text": "Id",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 409
+        },
+        {
+          "text": "Ação",
+          "brokenWords": [],
+          "whiteSpace": "normal",
+          "wordBreak": "normal",
+          "overflowWrap": "normal",
+          "width": 409
+        }
+      ],
+      "tables": [
+        {
+          "width": 830,
+          "scrollParent": {
+            "className": "scroll",
+            "scrollWidth": 830,
+            "clientWidth": 722
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "width": 820,
+      "height": 1180,
+      "connections": 67
+    },
+    {
+      "url": "/unificado/usinas/",
+      "viewport": 390,
+      "pageWidth": 390,
+      "pageOverflow": false,
+      "links": [
+        {
+          "title": "Controle estatístico",
+          "description": "Leituras, resultados, etiquetas, análise e relatório CEC.",
+          "titleBox": {
+            "x": 35,
+            "y": 398.75,
+            "right": 163.90625,
+            "bottom": 416.75,
+            "width": 128.90625,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 35,
+            "y": 421.75,
+            "right": 330.015625,
+            "bottom": 437.75,
+            "width": 295.015625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 35,
+            "y": 397.75,
+            "width": 320,
+            "height": 20,
+            "right": 355,
+            "bottom": 417.75
+          },
+          "rowHeight": 70,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        },
+        {
+          "title": "Relatórios gerenciais",
+          "description": "Produção, consumo, custos, fechamento e exportações.",
+          "titleBox": {
+            "x": 35,
+            "y": 468.75,
+            "right": 171.90625,
+            "bottom": 486.75,
+            "width": 136.90625,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 35,
+            "y": 491.75,
+            "right": 338.5625,
+            "bottom": 507.75,
+            "width": 303.5625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 35,
+            "y": 467.75,
+            "width": 320,
+            "height": 20,
+            "right": 355,
+            "bottom": 487.75
+          },
+          "rowHeight": 70,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        },
+        {
+          "title": "Controle de estoque",
+          "description": "Entradas, saldos, consumo, silos e acertos de inventário.",
+          "titleBox": {
+            "x": 35,
+            "y": 538.75,
+            "right": 168.09375,
+            "bottom": 556.75,
+            "width": 133.09375,
+            "height": 18
+          },
+          "descriptionBox": {
+            "x": 35,
+            "y": 561.75,
+            "right": 341.15625,
+            "bottom": 577.75,
+            "width": 306.15625,
+            "height": 16
+          },
+          "titleElementBox": {
+            "x": 35,
+            "y": 537.75,
+            "width": 320,
+            "height": 20,
+            "right": 355,
+            "bottom": 557.75
+          },
+          "rowHeight": 69,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "overlap": false
+        }
+      ],
+      "headers": [],
+      "tables": [
+        {
+          "width": 356,
+          "scrollParent": {
+            "className": "scroll",
+            "scrollWidth": 356,
+            "clientWidth": 356
+          }
+        }
+      ],
+      "overlaps": [],
+      "brokenHeaders": [],
+      "width": 390,
+      "height": 844,
+      "connections": 68
+    }
+  ],
+  "only_homolog": true,
+  "production_changes": 0,
+  "regression_detected_before": false,
+  "ok": true
+}

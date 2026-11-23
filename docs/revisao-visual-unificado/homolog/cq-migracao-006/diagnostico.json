@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-19",
+  "stage": "Etapa separada anterior à continuação da revisão visual",
+  "status": "interrompida antes da execução: aplicação em produção não comprovada",
+  "target": {
+    "origin": "https://concrefer.concretrack.com.br:18446",
+    "service": "unificado-visual-homolog-cq.service",
+    "environment_file": "/etc/concrefer-unificado/homolog/visual-cq.env",
+    "database": "laboratorio_visual_homolog_20261118",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "credentials_recorded": false
+  },
+  "original_error": {
+    "route": "/unificado/laboratorio/certificados-qualidade/api/certificados?q=",
+    "status": 500,
+    "exception": "psycopg.errors.UndefinedColumn: column liberacao_excepcional_por does not exist",
+    "table": "cq_certificados",
+    "column": "liberacao_excepcional_por"
+  },
+  "official_migration": {
+    "filename": "006_liberacao_excepcional.sql",
+    "production_published_path": "/opt/concrefer-unificado/cq/migrations/006_liberacao_excepcional.sql",
+    "homolog_path": "/opt/concrefer-unificado/homolog-next/visual-full/cq/migrations/006_liberacao_excepcional.sql",
+    "sha256_both_files": "c95fb280c2be0a16f6467b67c87be9f78f8e88bd19e03a73c106449b39d16799",
+    "sql_read_only_evidence": "ALTER TABLE cq_certificados\n  ADD COLUMN IF NOT EXISTS liberacao_excepcional_por text,\n  ADD COLUMN IF NOT EXISTS liberacao_excepcional_nome text,\n  ADD COLUMN IF NOT EXISTS liberacao_excepcional_motivo text,\n  ADD COLUMN IF NOT EXISTS liberacao_excepcional_em timestamptz;\n\nALTER TABLE cq_resultados_data\n  ADD COLUMN IF NOT EXISTS resultado_origem text;\n",
+    "published_file_exists": true,
+    "production_execution_confirmed": false,
+    "production_execution_state": "desconhecido; arquivo publicado não comprova execução"
+  },
+  "homolog_metadata_check": {
+    "connection_database": "laboratorio_visual_homolog_20261118",
+    "transaction": "BEGIN READ ONLY; consulta information_schema.columns; ROLLBACK",
+    "psql_exit_code": 0,
+    "columns_present_among_the_five": [],
+    "missing_columns": [
+      {"table": "cq_certificados", "column": "liberacao_excepcional_por", "type": "text"},
+      {"table": "cq_certificados", "column": "liberacao_excepcional_nome", "type": "text"},
+      {"table": "cq_certificados", "column": "liberacao_excepcional_motivo", "type": "text"},
+      {"table": "cq_certificados", "column": "liberacao_excepcional_em", "type": "timestamptz"},
+      {"table": "cq_resultados_data", "column": "resultado_origem", "type": "text"}
+    ]
+  },
+  "production_read_only_evidence": {
+    "active_service": "cq-laboratorio.service",
+    "working_directory": "/opt/concrefer-unificado/cq",
+    "service_start_utc": "2026-11-14 06:43:18 UTC",
+    "deployment_script": "/opt/concrefer-unificado/cq/deploy/deploy_phase2_production.sh",
+    "deployment_script_sha256": "de21df606caa993f62096e2a45deaa11454101733869a2be90d028ce45414c43",
+    "migrations_referenced_by_script": ["001", "002", "003", "004", "005"],
+    "application_code_runs_006_automatically": false,
+    "scanned_sources": [
+      "Código publicado em /opt/concrefer-unificado/cq: app.py, migrate.py, deploy e migrations",
+      "Arquivos textuais de backups de CQ/certificados em /opt/concrefer-unificado/backups",
+      "Histórico shell disponível: nenhuma ocorrência de 006_liberacao_excepcional.sql; comandos não executados",
+      "Journal de cq-laboratorio.service desde 2026-10-24: nenhuma entrada de migração/schema ready no filtro consultado",
+      "Documentação e histórico Git locais consultados: sem confirmação de aplicação da 006"
+    ],
+    "limitation": "A ausência de registro não prova que a migração nunca foi executada. Não há evidência suficiente para afirmar aplicação em produção."
+  },
+  "execution": {
+    "migration_applied": false,
+    "other_migrations_applied": false,
+    "dump_created": false,
+    "reason_no_dump": "Não haverá escrita enquanto a condição de execução não for satisfeita; dump verificado permanece obrigatório antes de qualquer aplicação futura.",
+    "production_database_connections": 0,
+    "application_database_writes": 0,
+    "api_changes": 0,
+    "permission_changes": 0,
+    "production_or_nginx_changes": 0,
+    "service_restarts": 0
+  },
+  "required_next_input": "Indicar um registro verificável de aplicação da 006 em produção ou decidir explicitamente como proceder sem essa comprovação.",
+  "deferred_until_migration": [
+    "Dump verificado do banco isolado antes de qualquer escrita",
+    "Aplicação exata e exclusiva de 006_liberacao_excepcional.sql, se autorizada pela condição",
+    "Histórico de certificados na 18446 com os perfis autorizados",
+    "Matriz e revisão visual da tela",
+    "Gate 7/7 posterior à migração",
+    "Continuação da revisão visual"
+  ]
+}

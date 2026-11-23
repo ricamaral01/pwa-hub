@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B1730">
+  <title>Umidade da areia · Laboratório Concrefer</title>
+  <link rel="stylesheet" href="/unificado/laboratorio/slump/umidade.css?v=1">
+  <script defer src="/unificado/laboratorio/slump/umidade.js?v=1"></script>
+<link rel="stylesheet" href="/unificado/shell/native-content.css?v=2.0.0" media="screen">
+</head>
+<body>
+  <main class="page">
+    <header class="hero"><a class="back" href="/unificado/laboratorio/slump/">← Registro de slump e flow</a><span class="eyebrow">LABORATÓRIO / AGREGADOS</span><h1>Umidade da areia</h1><p>Registre a pesagem, confira o cálculo e emita o FL-PRO-01.</p><span class="mark" aria-hidden="true">02</span></header>
+    <div class="layout">
+      <section class="card" aria-labelledby="record-title">
+        <div class="section-title"><em>01</em><h2 id="record-title">Novo ensaio</h2></div>
+        <form id="umidade-form" novalidate>
+          <div class="grid">
+            <label class="field"><span>Data e hora da coleta</span><input id="medido-em" type="datetime-local" required></label>
+            <label class="field"><span>Responsável pelo ensaio</span><input id="responsavel" type="text" maxlength="200" autocomplete="name" required></label>
+            <label class="field"><span>Tipo de areia</span><select id="tipo-areia"><option value="natural">Areia natural</option><option value="industrial">Areia industrial</option></select></label>
+            <label class="field"><span>Caixa / identificação</span><input id="caixa" type="text" maxlength="100" placeholder="Ex.: Caixa 01" required></label>
+            <label class="field full"><span>Unidade / usina</span><input id="unidade" type="text" maxlength="100" placeholder="Ex.: Campinas" required></label>
+          </div>
+          <div class="sample"><strong>Amostra</strong><span>Coletar no ponto inferior da caixa. Tarar o recipiente vazio e separar aproximadamente 500 g de agregado úmido.</span></div>
+          <div class="rule"></div>
+          <div class="grid">
+            <label class="field"><span>Peso úmido · PU</span><span class="unit"><input id="peso-umido" type="text" inputmode="decimal" autocomplete="off" placeholder="Ex.: 500,00" required></span><small>Massa do agregado após tarar o recipiente.</small></label>
+            <label class="field"><span>Peso seco · PS</span><span class="unit"><input id="peso-seco" type="text" inputmode="decimal" autocomplete="off" placeholder="Ex.: 476,00" required></span><small>Após secagem na panela elétrica.</small></label>
+          </div>
+          <div class="formula"><div class="metric"><b>Água removida · R = PU − PS</b><span id="result-r">—</span></div><div class="metric highlight"><b>Umidade · U = (R / PS) × 100</b><span id="result-u">—</span><small id="result-status">Informe os dois pesos para calcular.</small></div></div>
+          <p id="form-message" class="message" role="status" aria-live="polite"></p>
+          <div class="actions"><button id="save" class="button" type="submit">Salvar ensaio</button><a class="button secondary" href="#registros">Ver registros ↓</a></div>
+        </form>
+      </section>
+      <aside class="side-stack">
+        <section class="card" aria-labelledby="procedure-title"><div class="section-title"><em>02</em><h2 id="procedure-title">Procedimento</h2></div><ol class="steps"><li>Coletar o agregado no ponto inferior da caixa.</li><li>Tarar o recipiente vazio na balança.</li><li>Separar cerca de 500 g do agregado e colocar no recipiente.</li><li>Registrar o peso úmido (PU).</li><li>Secar na panela elétrica até remover a umidade.</li><li>Registrar o peso seco (PS).</li><li>Calcular R = PU − PS e U = (R / PS) × 100.</li><li>Registrar a umidade no FL-PRO-01 · Controle de Produção – Traço.</li></ol></section>
+        <section class="card" id="registros" aria-labelledby="history-title"><div class="section-title"><em>03</em><h2 id="history-title">Registros recentes</h2></div><div id="records" class="records" aria-live="polite">Carregando registros…</div></section>
+      </aside>
+    </div>
+    <section class="print-section" id="impressao" aria-labelledby="print-title" hidden>
+      <div class="print-heading"><h2 id="print-title">Prévia do PDF · padrão Concrefer</h2><button id="print" class="button" type="button">Imprimir / salvar PDF</button></div>
+      <div class="sheet">
+        <div class="sheet-header"><div><img src="/unificado/laboratorio/slump/concrefer-logo.png" alt="Concrefer"></div><div class="sheet-title"><strong>Controle de Produção – Traço</strong><span>Registro de umidade da areia</span></div><div class="sheet-code"><strong>FL-PRO-01</strong><br>Emissão: <span id="pdf-emissao"></span><br>Página 1 de 1</div></div>
+        <div class="sheet-meta"><span><strong>Unidade:</strong> <span id="pdf-unidade"></span></span><span><strong>Data:</strong> <span id="pdf-data"></span></span><span><strong>Responsável:</strong> <span id="pdf-responsavel"></span></span></div>
+        <h3>Determinação da umidade do agregado miúdo</h3>
+        <table><thead><tr><th>Hora</th><th>Material</th><th>Caixa</th><th>PU (g)</th><th>PS (g)</th><th>R (g)</th><th>Umidade (%)</th></tr></thead><tbody><tr><td id="pdf-hora"></td><td id="pdf-material"></td><td id="pdf-caixa"></td><td id="pdf-pu"></td><td id="pdf-ps"></td><td id="pdf-r"></td><td id="pdf-u" class="result"></td></tr></tbody></table>
+        <div class="sheet-foot"><span>Fórmula: U = [(PU − PS) / PS] × 100</span><span>Concrefer · Laboratório · Registro <span id="pdf-id"></span></span></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

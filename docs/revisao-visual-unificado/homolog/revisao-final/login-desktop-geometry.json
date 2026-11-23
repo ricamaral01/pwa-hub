@@ -1,0 +1,134 @@
+{
+  "reference": {
+    "logo": {
+      "x": 964,
+      "y": 251.921875,
+      "width": 300,
+      "height": 80.625,
+      "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+      "size": "14px",
+      "line": "20.3px"
+    },
+    "title": {
+      "x": 970,
+      "y": 368.546875,
+      "width": 380,
+      "height": 31.890625,
+      "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+      "size": "22px",
+      "line": "31.9px"
+    },
+    "label": {
+      "x": 970,
+      "y": 418.4375,
+      "width": 380,
+      "height": 18.125,
+      "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+      "size": "12.5px",
+      "line": "18.125px"
+    },
+    "user": {
+      "x": 970,
+      "y": 441.5625,
+      "width": 380,
+      "height": 42,
+      "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+      "size": "13.5px",
+      "line": "19.575px"
+    },
+    "password": {
+      "x": 970,
+      "y": 524.6875,
+      "width": 380,
+      "height": 42,
+      "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+      "size": "13.5px",
+      "line": "19.575px"
+    },
+    "button": {
+      "x": 970,
+      "y": 584.6875,
+      "width": 380,
+      "height": 44,
+      "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+      "size": "15px",
+      "line": "normal"
+    },
+    "footer": {
+      "x": 970,
+      "y": 656.6875,
+      "width": 380,
+      "height": 17.390625,
+      "font": "Geist, system-ui, \"Segoe UI\", sans-serif",
+      "size": "12px",
+      "line": "17.4px"
+    }
+  },
+  "candidate": {
+    "logo": {
+      "x": 964,
+      "y": 251.921875,
+      "width": 300,
+      "height": 80.625,
+      "font": "Geist, system-ui, sans-serif",
+      "size": "14px",
+      "line": "20.3px"
+    },
+    "title": {
+      "x": 970,
+      "y": 368.546875,
+      "width": 380,
+      "height": 31.890625,
+      "font": "Geist, system-ui, sans-serif",
+      "size": "22px",
+      "line": "31.9px"
+    },
+    "label": {
+      "x": 970,
+      "y": 418.4375,
+      "width": 380,
+      "height": 18.125,
+      "font": "Geist, system-ui, sans-serif",
+      "size": "12.5px",
+      "line": "18.125px"
+    },
+    "user": {
+      "x": 970,
+      "y": 441.5625,
+      "width": 380,
+      "height": 42,
+      "font": "Geist, system-ui, sans-serif",
+      "size": "13.5px",
+      "line": "19.575px"
+    },
+    "password": {
+      "x": 970,
+      "y": 524.6875,
+      "width": 380,
+      "height": 42,
+      "font": "Geist, system-ui, sans-serif",
+      "size": "13.5px",
+      "line": "19.575px"
+    },
+    "button": {
+      "x": 970,
+      "y": 584.6875,
+      "width": 380,
+      "height": 44,
+      "font": "Geist, system-ui, sans-serif",
+      "size": "15px",
+      "line": "21.75px"
+    },
+    "footer": {
+      "x": 970,
+      "y": 656.6875,
+      "width": 380,
+      "height": 17.390625,
+      "font": "Geist, system-ui, sans-serif",
+      "size": "12px",
+      "line": "17.4px"
+    }
+  },
+  "geometry_identical": true,
+  "comparison": "Seven elements: exact position and size; reference sample values and candidate empty fields are different UI states."
+}

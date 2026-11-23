@@ -1,0 +1,88 @@
+{
+  "before": {
+    "entries": 0,
+    "dialog": true,
+    "navigations": 1
+  },
+  "after": {
+    "entries": 20,
+    "dialog": true,
+    "query": "armação",
+    "navigations": 1,
+    "urls": [
+      "/unificado/armacao/?unidade=campinas&tela=corte",
+      "/unificado/armacao/?unidade=campinas&tela=banca",
+      "/unificado/armacao/?unidade=campinas&tela=rastreabilidade",
+      "/unificado/armacao/?unidade=campinas&tela=supervisor",
+      "/unificado/armacao/?unidade=campinas&tela=cadastros",
+      "/unificado/armacao/?unidade=pederneiras&tela=corte",
+      "/unificado/armacao/?unidade=pederneiras&tela=banca",
+      "/unificado/armacao/?unidade=pederneiras&tela=rastreabilidade",
+      "/unificado/armacao/?unidade=pederneiras&tela=supervisor",
+      "/unificado/armacao/?unidade=pederneiras&tela=cadastros",
+      "/unificado/armacao/?unidade=ribeirao&tela=corte",
+      "/unificado/armacao/?unidade=ribeirao&tela=banca",
+      "/unificado/armacao/?unidade=ribeirao&tela=rastreabilidade",
+      "/unificado/armacao/?unidade=ribeirao&tela=supervisor",
+      "/unificado/armacao/?unidade=ribeirao&tela=cadastros",
+      "/unificado/armacao/?unidade=noroeste&tela=corte",
+      "/unificado/armacao/?unidade=noroeste&tela=banca",
+      "/unificado/armacao/?unidade=noroeste&tela=rastreabilidade",
+      "/unificado/armacao/?unidade=noroeste&tela=supervisor",
+      "/unificado/armacao/?unidade=noroeste&tela=cadastros"
+    ]
+  },
+  "native_requests_before_and_after_late_response": 1,
+  "additional_search_requests": 0,
+  "reloads": 0,
+  "deduplicated_armacao_screens": 20,
+  "opened_results": [
+    {
+      "query": "armação campinas corte",
+      "unit": "campinas",
+      "tab": "corte",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/armacao/?unidade=campinas&tela=corte"
+      ],
+      "ok": true
+    },
+    {
+      "query": "armacao pederneiras banca",
+      "unit": "pederneiras",
+      "tab": "banca",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/armacao/?unidade=pederneiras&tela=banca"
+      ],
+      "ok": true
+    },
+    {
+      "query": "armacoa ribeirao corte",
+      "unit": "ribeirao",
+      "tab": "corte",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/armacao/?unidade=ribeirao&tela=corte"
+      ],
+      "ok": true
+    },
+    {
+      "query": "corte noroeste armacao",
+      "unit": "noroeste",
+      "tab": "corte",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/armacao/?unidade=noroeste&tela=corte"
+      ],
+      "ok": true
+    },
+    {
+      "query": "fechamento dia campinas armacao",
+      "unit": "campinas",
+      "tab": "banca",
+      "frames": [
+        "https://concrefer.concretrack.com.br:18446/unificado/armacao/?unidade=campinas&tela=banca"
+      ],
+      "ok": true
+    }
+  ],
+  "connections": 67,
+  "ok": true
+}

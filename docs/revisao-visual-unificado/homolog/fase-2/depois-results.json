@@ -1,0 +1,324 @@
+{
+  "base": "https://concrefer.concretrack.com.br:18446",
+  "results": [
+    {
+      "screen": "inicio",
+      "width": 1440,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Início"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "inicio",
+      "width": 390,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Início"
+      ],
+      "logos": []
+    },
+    {
+      "screen": "planejamento",
+      "width": 1440,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Planejamento"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "planejamento",
+      "width": 390,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Planejamento"
+      ],
+      "logos": []
+    },
+    {
+      "screen": "laboratorio",
+      "width": 1440,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Laboratório"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "laboratorio",
+      "width": 390,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Laboratório"
+      ],
+      "logos": []
+    },
+    {
+      "screen": "suprimentos",
+      "width": 1440,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Suprimentos"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "suprimentos",
+      "width": 390,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Suprimentos"
+      ],
+      "logos": []
+    },
+    {
+      "screen": "login",
+      "width": 1440,
+      "metrics": {
+        "font": "Geist, system-ui, sans-serif",
+        "width": 340,
+        "height": 333.328125,
+        "x": 1010,
+        "y": 298.828125,
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "screen": "login",
+      "width": 390,
+      "metrics": {
+        "font": "Geist, system-ui, sans-serif",
+        "width": 342,
+        "height": 532.9375,
+        "x": 24,
+        "y": 233.03125,
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "screen": "inicio",
+      "width": 1024,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Início"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "inicio",
+      "width": 820,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Início"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "planejamento",
+      "width": 1024,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Planejamento"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "planejamento",
+      "width": 820,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Planejamento"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "laboratorio",
+      "width": 1024,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Laboratório"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "laboratorio",
+      "width": 820,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Laboratório"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "suprimentos",
+      "width": 1024,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Suprimentos"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "suprimentos",
+      "width": 820,
+      "overflow": false,
+      "font": "Geist, system-ui, sans-serif",
+      "headings": [
+        "Suprimentos"
+      ],
+      "logos": [
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concrefer.png",
+          "ok": true
+        },
+        {
+          "src": "https://concrefer.concretrack.com.br:18446/unificado/assets/img/logo-concretrack.png",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "screen": "login",
+      "width": 1024,
+      "metrics": {
+        "font": "Geist, system-ui, sans-serif",
+        "width": 420,
+        "height": 512.640625,
+        "x": 302,
+        "y": 205.171875,
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "screen": "login",
+      "width": 820,
+      "metrics": {
+        "font": "Geist, system-ui, sans-serif",
+        "width": 420,
+        "height": 512.640625,
+        "x": 200,
+        "y": 411.171875,
+        "background": "rgb(255, 255, 255)"
+      }
+    }
+  ],
+  "js_errors": [],
+  "http_errors": [],
+  "external_attempts": []
+}

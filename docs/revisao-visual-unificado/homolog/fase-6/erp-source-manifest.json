@@ -1,0 +1,23 @@
+{
+  "source": "/var/www/concretrack-erp",
+  "files": {
+    "api\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "api\\routers\\massadas.py": "16929bf5637492b9c944410b79e97efc78bb90b36c611bf77b3954014eb8aee0",
+    "api\\routers\\health.py": "380f679a2ab5124054ba85a79b1062a5c7172ce3633e5086ac1e73b930d665c7",
+    "api\\routers\\relatorios.py": "9f8acb4c543c8b2c95178bbf52841b683973fd79ffb32eed3e1dc485677a5143",
+    "api\\routers\\pcp.py": "295d7842fa95fd8fcfb4ab808009e832df72205f19c7d6e69c7d932fa959bbf2",
+    "api\\routers\\estoque.py": "d99ee150f6c69efc9361623db411710b3443c2849548f0770d238467395fef59",
+    "api\\routers\\custos.py": "7900dd3d15a6be533b45f144209ff3bcb8b14491754ea6cc3450a7c44c3b13c7",
+    "api\\routers\\agregados.py": "ecc91d5fa30d1999f786ae445c6bd8e17924ca21cb0d0280bc11d77c4a173b9d",
+    "api\\routers\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "api\\routers\\produtos.py": "dec991663af97d9ccf1ea73f15335cbf116a860afc292d81c796872cd74e9380",
+    "api\\routers\\auth.py": "7d8b38ac8311cd1cb0564c0e9202d940d02e3fcb87cd13b705124d99c7d747cb",
+    "api\\routers\\qrcp.py": "432c4c64dc00daa18208f8438b4ed377141ee02373c31978076b879a1ae8332c",
+    "api\\routers\\tracos.py": "04e5adf4bcd82cde37738b2ee61704ce061cae8679bb201961e9be2b7dd7a66c",
+    "api\\ai_providers.py": "a7d03740574d7243756e67b7f3c3efbc791e9657748c653717a8a6db73e6ef8e",
+    "api\\settings.py": "7535c22ca84d977364225abe184648d1f96dadee39c38f4f56b0e005a0c6a32d",
+    "api\\security.py": "1b83ee50b88ccf8be37d37cf43e3f67993e3d2f4bdbe65047a3001d2473e69ba",
+    "api\\main.py": "faaf291a254f69af955f3f668564b555346bf01af3bac5e4968aadaac09fb6ed"
+  },
+  "production_database_connections": 0
+}

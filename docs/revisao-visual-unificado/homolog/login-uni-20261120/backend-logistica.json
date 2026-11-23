@@ -1,0 +1,24 @@
+{
+  "unit": "unificado-visual-homolog-logistica.service",
+  "backup": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-logistica-20261120T135346Z",
+  "changes": [
+    {
+      "file": "logistica/logistica/auth.py",
+      "before_sha256": "b1f0a39494dab8ee6caa1d13ddb2055a7b2916c3cd0357a6f107774b478c4a18",
+      "after_sha256": "94ce8665db43426f41ee83d906007be58098c8d38b19cf38887b43e8a0ef6ba2",
+      "patch": "--- logistica/logistica/auth.py\n+++ logistica/logistica/auth.py\n@@ -7,7 +7,7 @@\n \n def actor(request:Request):\n     cookie=request.cookies.get('mapa_unificado_session');secret=os.environ.get('LOGISTICA_MAPA_SIGNING_KEY','')\n-    if not cookie or not secret:fail('Entre no Unificado para continuar.',401)\n+    if not cookie or not secret:fail('Entre no Uni para continuar.',401)\n     try:claim=URLSafeTimedSerializer(secret,salt='mapa-login-v1').loads(cookie,max_age=36*3600)\n     except (BadSignature,SignatureExpired):fail('Sessão encerrada.',401)\n     if not isinstance(claim,dict) or claim.get('scope') not in ('session','legacy_session'):fail('Sessão inválida.',401)\n"
+    }
+  ],
+  "changed_files": 1,
+  "restarted": true,
+  "responds": true,
+  "connections_before": 66,
+  "connections_after": 64,
+  "database_writes": 0,
+  "business_logic_unchanged_ast": true,
+  "rollback": {
+    "copy_each_file_from": "/opt/concrefer-unificado/homolog-next/backups/login-uni-labels-logistica-20261120T135346Z",
+    "copy_to": "/opt/concrefer-unificado/homolog-next/visual-full",
+    "restart_only": "unificado-visual-homolog-logistica.service"
+  }
+}
