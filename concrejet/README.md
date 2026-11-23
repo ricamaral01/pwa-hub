@@ -99,19 +99,6 @@ npm run start:dev
 | Persistencia de apontamento | Nao implementada |
 | Sincronizacao operacional offline | Nao implementada |
 
-### Atualizacao Fase 2 - 2026-08-01
-
-A branch `feature/fase-2-apontamento` contem a primeira implementacao da fundacao visual
-industrial e do modulo de apontamento de producao. Foram adicionados endpoints
-`/production-records`, calculo de perdas, migration da tabela `apontamento`, login
-operacional por PIN e seed de desenvolvimento com maquina, dispositivo, operador,
-item, molde, lote, configuracao e O.P.
-
-Estado real: backend de apontamento, calculo e persistencia basica estao implementados;
-o frontend tablet possui o fluxo visual login/abertura/execucao, mas ainda precisa trocar
-os IDs de desenvolvimento por seletores carregados da API para fechar o ponta a ponta
-industrial sem ressalvas.
-
 ## Documentação
 
 - [docs/arquitetura.md](docs/arquitetura.md)
@@ -122,27 +109,3 @@ industrial sem ressalvas.
 - [docs/handoff.md](docs/handoff.md)
 - [docs/adr/](docs/adr/)
 - [CHANGELOG.md](CHANGELOG.md)
-
-### Planejamento das próximas fases (documentação, nada implementado)
-
-- [docs/plano-fases-2-a-6.md](docs/plano-fases-2-a-6.md) — plano mestre da Etapa 1
-  (Design System) e das Fases 2 a 6.
-- [docs/design-system-industrial.md](docs/design-system-industrial.md)
-- [docs/maquinas-de-estado.md](docs/maquinas-de-estado.md)
-- [docs/offline-sync.md](docs/offline-sync.md)
-- [docs/calculos-oee.md](docs/calculos-oee.md)
-- [docs/backlog-validacao-fase-6.md](docs/backlog-validacao-fase-6.md)
-
-### Fase 1 - Cadastros
-
-A aplica��o agora inclui cadastros administrativos reais em `/admin/cadastros/:resource`. Recursos dispon�veis: fun��es, colaboradores, m�quinas, opera��es, tipos de ocorr�ncia, fornecedores, resinas, lotes de resina, itens, moldes, configura��es item/molde e ordens de produ��o.
-
-Para ambiente local, execute migrations e seed antes de usar os cadastros administrativos.
-
-## Estado local - 2026-08-01
-
-Fases 2, 3 e 4 operacionais foram implementadas no escopo de apontamento, ocorrencias,
-paradas e offline/outbox. Backend e frontend podem rodar na rede local; em desenvolvimento,
-acesse o tablet pelo IP da maquina na porta do Vite exposta na LAN, por exemplo
-`http://192.168.0.14:5174` nesta execucao.
-Fases 5 e 6 ainda nao foram iniciadas.

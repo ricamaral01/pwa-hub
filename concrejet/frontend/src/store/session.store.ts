@@ -64,7 +64,6 @@ interface SessionStore {
 
   // Dados do operador atual
   operator: OperatorData | null;
-  operatorToken: string | null;
 
   // Online/offline
   isOnline: boolean;
@@ -81,7 +80,6 @@ interface SessionStore {
   setDevice: (device: DeviceData) => void;
   clearDevice: () => void;
   setOperator: (operator: OperatorData) => void;
-  setOperatorToken: (token: string | null) => void;
   clearOperator: () => void;
   setOnline: (online: boolean) => void;
   setQueueCount: (count: number) => void;
@@ -125,7 +123,6 @@ export const useSessionStore = create<SessionStore>()(
       state: 'DEVICE_NOT_CONFIGURED',
       device: null,
       operator: null,
-      operatorToken: null,
       isOnline: navigator.onLine,
       queueCount: 0,
       newVersionAvailable: false,
@@ -146,12 +143,10 @@ export const useSessionStore = create<SessionStore>()(
           operator,
           state: 'IDLE',
         }),
-      setOperatorToken: (operatorToken) => set({ operatorToken }),
 
       clearOperator: () =>
         set({
           operator: null,
-          operatorToken: null,
           state: get().device ? 'NO_OPERATOR' : 'DEVICE_NOT_CONFIGURED',
         }),
 
@@ -197,8 +192,6 @@ export const useSessionStore = create<SessionStore>()(
       // Operator e state são reconstruídos pelo IndexedDB
       partialize: (s) => ({
         device: s.device,
-        operator: s.operator,
-        operatorToken: s.operatorToken,
         queueCount: s.queueCount,
       }),
     },

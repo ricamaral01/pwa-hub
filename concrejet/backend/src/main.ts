@@ -14,22 +14,6 @@ async function bootstrap(): Promise<void> {
   app.useLogger(app.get(Logger));
   app.use(helmet());
   app.use(cookieParser());
-  const configService = app.get(ConfigService);
-  const isProduction = configService.get<string>('NODE_ENV') === 'production';
-  if (!isProduction) {
-    app.enableCors({
-      origin: (origin, callback) => {
-        if (!origin) return callback(null, true);
-        const allowed =
-          /^http:\/\/(localhost|127\.0\.0\.1|\[::1\]):5173$/.test(origin) ||
-          /^http:\/\/192\.168\.\d{1,3}\.\d{1,3}:5173$/.test(origin) ||
-          /^http:\/\/10\.\d{1,3}\.\d{1,3}\.\d{1,3}:5173$/.test(origin) ||
-          /^http:\/\/172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}:5173$/.test(origin);
-        callback(allowed ? null : new Error('Origem CORS nao permitida.'), allowed);
-      },
-      credentials: true,
-    });
-  }
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -39,9 +23,10 @@ async function bootstrap(): Promise<void> {
   );
   app.useGlobalFilters(new GlobalExceptionFilter());
 
+  const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT', 3000);
 
-  await app.listen(port, isProduction ? '127.0.0.1' : '0.0.0.0');
+  await app.listen(port);
 }
 
 bootstrap();

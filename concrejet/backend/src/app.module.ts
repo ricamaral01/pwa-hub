@@ -13,12 +13,6 @@ import { OrganizacaoModule } from './modules/organizacao/organizacao.module';
 import { UsuariosModule } from './modules/usuarios/usuarios.module';
 import { ProducaoBaseModule } from './modules/producao-base/producao-base.module';
 import { AuditoriaModule } from './modules/auditoria/auditoria.module';
-import { CadastrosModule } from './modules/cadastros/cadastros.module';
-import { ProducaoModule } from './modules/producao/producao.module';
-import { OcorrenciasModule } from './modules/ocorrencias/ocorrencias.module';
-import { EstoqueModule } from './modules/estoque/estoque.module';
-import { AnalyticsModule } from './modules/analytics/analytics.module';
-import { ImportacaoModule } from './modules/importacao/importacao.module';
 
 @Module({
   imports: [
@@ -36,12 +30,6 @@ import { ImportacaoModule } from './modules/importacao/importacao.module';
     UsuariosModule,
     ProducaoBaseModule,
     AuditoriaModule,
-    EstoqueModule,
-    AnalyticsModule,
-    ImportacaoModule,
-    ProducaoModule,
-    OcorrenciasModule,
-    CadastrosModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

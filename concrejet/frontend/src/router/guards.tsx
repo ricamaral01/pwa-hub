@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useDevice } from '@/hooks/useDevice';
 import { useSession } from '@/hooks/useSession';
@@ -33,7 +33,10 @@ export function OperatorGuard({ children }: { children: ReactNode }) {
   const location = useLocation();
 
   if (isSessionLoading) return <GuardLoader />;
-  if (capabilities.operatorAuthentication === 'demo' && !operator) {
+  if (capabilities.operatorAuthentication !== 'demo') {
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  }
+  if (!operator) {
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
 
@@ -46,12 +49,6 @@ export function AdminGuard({ children }: { children: ReactNode }) {
   const error = useAdminAuthStore((s) => s.error);
   const bootstrap = useAdminAuthStore((s) => s.bootstrap);
   const location = useLocation();
-
-  useEffect(() => {
-    if (status === 'unknown') {
-      void bootstrap();
-    }
-  }, [bootstrap, status]);
 
   if (status === 'unknown') return <GuardLoader />;
 
