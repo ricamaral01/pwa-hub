@@ -202,7 +202,7 @@ def bundle_rollback():
     r=receipt();assert r['phase']=='prepared';folder=Path(r['backup'])/'rollback';folder.mkdir(mode=0o700,exist_ok=True)
     original=Path(__file__).read_text();old="S=Path('/opt/concrefer-unificado/staging/lab210-production-20261122')";assert original.splitlines().count(old)==1
     (folder/'release.py').write_text(original.replace(old,'S=Path('+repr(str(folder))+')',1))
-    dest=folder/'input/scripts';dest.mkdir(parents=True,mode=0o700)
+    dest=folder/'input/scripts';dest.mkdir(parents=True,mode=0o700,exist_ok=True)
     for name in ['lab210_server_patch.py','lab210_module_fixes.py','lab210_production_patch.py','lab210_migration.py','lab210_snapshot.py']:shutil.copy2(INPUT/'scripts'/name,dest/name)
     r['rollback_command']='python3 '+str(folder/'release.py')+' rollback';r['rollback_check_command']='python3 '+str(folder/'release.py')+' rollback_check';store(r)
     result=json.loads(run(['python3',str(folder/'release.py'),'rollback_check']));r['rollback_check']=result;store(r)
