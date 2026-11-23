@@ -210,6 +210,12 @@ def bundle_rollback():
 def migrate():
     r=receipt();assert r['phase']=='prepared' and (S/'gate-homolog-approved.json').is_file()
     assert json.loads((S/'gate-homolog-approved.json').read_text())['passed']
+    if r.get('migration_applied'):
+        versions=sql(DB,"SELECT json_build_array((SELECT version FROM lab_cec_pederneiras.release_metadata),(SELECT version FROM lab_cec_ribeirao.release_metadata))",True)[0]
+        assert versions==['2.1.0','2.1.0']
+        assert sql(DB,"SELECT count(*) FROM lab_cec_pederneiras.massadas WHERE id IN (70195,70990,70991,70992,70993,70994,70995,70996)",True)[0]==0
+        r['grants_applied']=True;store(r);r['prod_grants_after']=write_grants(IAM);r['phase']='migrated';store(r)
+        return {'phase':r['phase'],'reused_own_schemas_and_preserved_data':True,'imports':r['imports'],'grant_rows':len(r['prod_grants_after']),'fixtures_imported':0}
     ddl="BEGIN;SET LOCAL lock_timeout='3s';SET LOCAL statement_timeout='30s';DO $$ BEGIN IF current_database()<>'concretrack_postes' THEN RAISE EXCEPTION 'Production Lab destination mismatch'; END IF;END $$;"+''.join(ddl_for(u) for u in SCHEMAS)+'COMMIT;'
     sql(DB,ddl);r['migration_applied']=True;store(r)
     data=extract();private=Path(r['backup'])/'source-snapshot.json';private.write_text(json.dumps(data));private.chmod(0o600)
@@ -260,6 +266,22 @@ def publish():
         if target.is_relative_to(P) and target.name!='VERSION':atomic(target,Path(entry['candidate']).read_bytes())
     atomic(P/'VERSION',b'2.1.0\n');r['phase']='published';r['published_at_utc']=datetime.now(timezone.utc).isoformat();store(r)
     return {'version':(P/'VERSION').read_text().strip(),'backup':r['backup'],'files':len(r['manifest']),'phase':r['phase']}
+def retry_prepare():
+    r=receipt();assert r['phase']=='rolled_back' and r.get('migration_applied')
+    assert (P/'VERSION').read_text().strip()=='2.0.0'
+    for entry in r['files']:
+        target=Path(entry['path'])
+        assert (target.is_file() and digest(target)==entry['sha256']) if entry['existed'] else not target.exists(),str(target)
+    assert grant_snapshot(IAM)==r['prod_grants_before'],'Target grants changed outside this release; do not overwrite'
+    state=sql(DB,"SELECT json_build_object('pederneiras_readings',(SELECT count(*) FROM lab_cec_pederneiras.rompimentos),'ribeirao_readings',(SELECT count(*) FROM lab_cec_ribeirao.rompimentos),'pederneiras_massadas',(SELECT count(*) FROM lab_cec_pederneiras.massadas),'ribeirao_massadas',(SELECT count(*) FROM lab_cec_ribeirao.massadas))",True)[0]
+    dump=Path(r['backup'])/'laboratorio-before-retry.dump'
+    assert not dump.exists(),'Never overwrite retry backup'
+    with dump.open('wb') as stream:subprocess.run(['sudo','-u','postgres','pg_dump','-Fc','-d',DB],stdout=stream,check=True)
+    dump.chmod(0o600);subprocess.run(['pg_restore','-l',str(dump)],check=True,stdout=subprocess.DEVNULL)
+    r['retry_backup']={'path':str(dump),'sha256':digest(dump),'size':dump.stat().st_size,'lab_state_preserved':state}
+    r.setdefault('attempts',[]).append({'number':1,'outcome':'rolled_back','reason':'Test harness used H401 instead of the historical production403. Production2.0.0 baseline and committed gate confirm403.','utc':datetime.now(timezone.utc).isoformat()})
+    r.update(phase='prepared',grants_applied=False,backend_files_touched=False,public_files_touched=False);store(r)
+    return {'phase':r['phase'],'files_match_original_2_0_0':True,'permissions_match_before':True,'new_data_preserved':state,'retry_backup':r['retry_backup']}
 def rollback():
     r=receipt()
     for entry in r['files'] if r.get('backend_files_touched') or r.get('public_files_touched') else []:
@@ -274,9 +296,9 @@ def rollback():
         q.append('COMMIT;');sql(IAM,'\n'.join(q))
     if r.get('backend_files_touched'):
         for unit,port in [('laboratorio-unificado.service',13064),('mapa-unificado-auth.service',13052)]:restart(unit,port)
-    r['phase']='rolled_back';r['new_lab_data_preserved']=True;store(r)
+    r.update(phase='rolled_back',new_lab_data_preserved=True,grants_applied=False,backend_files_touched=False,public_files_touched=False);store(r)
     return {'phase':r['phase'],'version':(P/'VERSION').read_text().strip(),'new_lab_data_preserved':True}
 
 if __name__=='__main__':
-    action=sys.argv[1];assert action in ['backup','rehearse','homolog_grants','homolog_role_parity','prepare','bundle_rollback','rollback_check','migrate','install','publish','rollback']
+    action=sys.argv[1];assert action in ['backup','rehearse','homolog_grants','homolog_role_parity','prepare','bundle_rollback','rollback_check','migrate','install','publish','retry_prepare','rollback']
     print(json.dumps(globals()[action]()))
