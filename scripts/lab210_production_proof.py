@@ -41,12 +41,14 @@ print(json.dumps(out))
 def guard(label,result):
     snap=activity();result.setdefault('capacity_samples',[]).append({'case':label,**snap});save(result['environment']+'-access.json',result)
     if snap['total_activity']>80:raise RuntimeError('CAPACITY_PAUSED above80: '+str(snap['total_activity']))
+    if result['environment']=='production' and snap['common_headroom_excluding_collector']<25:raise RuntimeError('Production capacity headroom below25: '+str(snap['common_headroom_excluding_collector']))
     return snap
 
 def proof(env):
     base='https://concrefer.concretrack.com.br'+(':18446' if env=='homolog' else '')
     result={'environment':env,'base':base,'cases':[],'denied_writes':[],'ui':[],'business_writes':0,'passed':False}
     people=identities(env)
+    if env=='production':people.sort(key=lambda actor:(0 if actor['id'] in ['francisco','ricardogoncalvesrb'] else 1,actor['id']))
     with sync_playwright() as pw:
         browser=pw.chromium.launch(channel='msedge',headless=True)
         for actor in people:
@@ -68,9 +70,14 @@ def proof(env):
                 result['central_roles']=[{k:u.get(k) for k in ['id','login','name','unit','extra_units','planning_role','production_role','laboratory_role']} for u in users.json()['users'] if u['id'] in ['francisco','ricardogoncalvesrb','francielli.moura']]
                 assert next(u for u in result['central_roles'] if u['id']=='francisco')['laboratory_role']=='tecnico'
                 assert next(u for u in result['central_roles'] if u['id']=='ricardogoncalvesrb')['laboratory_role']=='admin'
-            page=context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+            page=context.new_page();errors=[];http_errors=[];scope={'allowed':False};page.on('pageerror',lambda e:errors.append(str(e)))
+            def response_check(response):
+                path=urlsplit(response.url).path
+                if scope['allowed'] and response.status>=400 and (path.startswith('/unificado/laboratorio/') or path.startswith('/unificado/vendor/')):http_errors.append({'path':path,'status':response.status})
+            page.on('response',response_check)
             for unit,name in [('pederneiras','Pederneiras'),('ribeirao','Ribeirão Preto')]:
                 allowed=uid in ['alex','marcelo','philippe','user-ricardo'] or uid=='francisco' and unit=='pederneiras' or uid=='ricardogoncalvesrb' and unit=='ribeirao'
+                scope['allowed']=allowed
                 for path,label in PAGES:
                     guard(uid+'-'+unit+'-'+label,result)
                     response=context.request.get(base+'/unificado/laboratorio/'+unit+'/cec/'+path)
@@ -91,6 +98,8 @@ def proof(env):
                         frame=page.frame_locator('iframe').first
                         # The router owns the same-origin frame; wait for unit heading.
                         frame.locator('.lab-unit-name').filter(has_text=name).wait_for(timeout=25000)
+                        try:page.wait_for_load_state('networkidle',timeout=5000)
+                        except Exception:pass
                         text=frame.locator('body').inner_text();assert 'Conta antiga' not in text
                         shot=f'{env}-{uid}-{unit}-{label}.png' if env=='homolog' else None
                         if shot:page.screenshot(path=str(O/shot))
@@ -107,8 +116,10 @@ def proof(env):
                         if shot:page.screenshot(path=str(O/shot))
                         result['ui'].append({'actor':uid,'unit':unit,'screen':'denied','screenshot':shot})
                 save(env+'-access.json',result)
-            result.setdefault('browser_errors',[]).extend(errors)
+            result.setdefault('browser_errors',[]).extend(errors);result.setdefault('http_errors',[]).extend(http_errors)
+            assert not http_errors,(uid,http_errors)
             context.close()
+            print(json.dumps({'environment':env,'actor':uid,'screen_cases':len(result['cases']),'denied_posts':len(result['denied_writes'])}),flush=True)
         browser.close()
     assert not result.get('browser_errors'),result.get('browser_errors')
     result['passed']=True;save(env+'-access.json',result)

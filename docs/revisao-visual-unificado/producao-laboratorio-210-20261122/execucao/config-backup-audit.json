@@ -1,0 +1,292 @@
+[
+  {
+    "receipt": "release.json",
+    "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z",
+    "config_files": [
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/systemd/system/mapa-unificado-auth.service",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/mapa-unificado-auth.service",
+        "sha256": "6d6c0b534f1b51fd550a97e7f2b098c863234abb536dc256403dc9450a4d6f49"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/systemd/system/mapa-unificado-auth.service.d/10-long-query.conf",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/mapa-unificado-auth.service.d/10-long-query.conf",
+        "sha256": "6117a79206f4c24476ebcb38c6b15e68b42635d265704e8e16387f0bd82d9cad"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/systemd/system/mapa-unificado-auth.service.d/laboratorio.conf",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/mapa-unificado-auth.service.d/laboratorio.conf",
+        "sha256": "83bfaaa70c737dd94ab31a218afa3a46ae1c4c25934703fe6d594a04db7fc556"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/systemd/system/mapa-unificado-auth.service.d/noroeste.conf",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/mapa-unificado-auth.service.d/noroeste.conf",
+        "sha256": "a3c09ff605578185e010f62783ad10d12464eb1581d548619c65e03c979bbdc3"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/systemd/system/mapa-unificado-auth.service.d/qualidade.conf",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/mapa-unificado-auth.service.d/qualidade.conf",
+        "sha256": "127031918a5dac581c6c0e95e22569716d8d9d99e9adf7303bb353c9bf206791"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/systemd/system/mapa-unificado-auth.service.d/suprimentos.conf",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/mapa-unificado-auth.service.d/suprimentos.conf",
+        "sha256": "d9c6c6dd70ab7c75400e66fa730061fe672e8a695c48cd470be7089144ccd380"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/systemd/system/mapa-unificado-auth.service.d/usina-integration.conf",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/mapa-unificado-auth.service.d/usina-integration.conf",
+        "sha256": "c1576330bd810ff53030dd4dc3f04a4e8e556742f539789334876afe37f17379"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/mapa-unificado/auth.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/mapa-unificado/auth.env",
+        "sha256": "d8ddfcfa7e54a81470b39d47f04efc39dd8f57d14ddd0a872e75dc0e91d4b945"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/mapa-unificado/writer.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/mapa-unificado/writer.env",
+        "sha256": "199ebce64fb7b2b7445c82f20360ecadb909bdeb715efbe8186b203b8dd0767a"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/mapa-unificado/unified-auth.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/mapa-unificado/unified-auth.env",
+        "sha256": "c13d5b893ee84a937dd65f17c4cf432e97b9ef5a3bbd5460256a871d19209b20"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/concrefer-unificado/lab-map.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/concrefer-unificado/lab-map.env",
+        "sha256": "490ef0a297dd0d5848358a3673784c8edce479ed795bb4e0243edcc2dda2fc31"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/qualidade/gateway.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/qualidade/gateway.env",
+        "sha256": "bd87872fa3542e1329a4f316d09caec82900a32d67cc5874f3fd22de468f3b85"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/concrefer-unificado/prod/suprimentos-gateway.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/concrefer-unificado/prod/suprimentos-gateway.env",
+        "sha256": "6522fbd3dfea2f68ae2f6b38fb07d4ef7b7d1dd13543559f6012f688f924682e"
+      },
+      {
+        "service": "mapa-unificado-auth.service",
+        "source": "/etc/mapa-unificado/usina-integration.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/mapa-unificado/usina-integration.env",
+        "sha256": "51edc7f50152e75b8aeaa0691fe248bd54d0c500eb44979e3ca6b40f68c9e521"
+      },
+      {
+        "service": "laboratorio-unificado.service",
+        "source": "/etc/systemd/system/laboratorio-unificado.service",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/laboratorio-unificado.service",
+        "sha256": "670f31df177a92cadb579de3e01c96d5149dd76e845911114213d433f71ade0d"
+      },
+      {
+        "service": "laboratorio-unificado.service",
+        "source": "/etc/systemd/system/laboratorio-unificado.service.d/30-task-sync.conf",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/laboratorio-unificado.service.d/30-task-sync.conf",
+        "sha256": "0c651b9a47c12212d6361056f955f220a23941779971d506d03c340edaced030"
+      },
+      {
+        "service": "laboratorio-unificado.service",
+        "source": "/opt/monitor_concreto/.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/opt/monitor_concreto/.env",
+        "sha256": "bbee80c6816ef8821d901def3105186ebbe23181bc5fab1805dcaa52c40862a8"
+      },
+      {
+        "service": "laboratorio-unificado.service",
+        "source": "/etc/concrefer-unificado/laboratorio.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/concrefer-unificado/laboratorio.env",
+        "sha256": "27b4b5a804c9c567540d41a9f1df4005c7d12cef744e2195bdfc57b70ff680fd"
+      },
+      {
+        "service": "laboratorio-unificado.service",
+        "source": "/etc/qualidade/gateway.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/qualidade/gateway.env",
+        "sha256": "bd87872fa3542e1329a4f316d09caec82900a32d67cc5874f3fd22de468f3b85"
+      },
+      {
+        "service": "laboratorio-unificado.service",
+        "source": "/etc/concrefer-unificado/lab-task-sync.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/concrefer-unificado/lab-task-sync.env",
+        "sha256": "fd65c9a8eceeafc0cbdd8329462e27caa879049e139bdb399977068f1f17ca59"
+      },
+      {
+        "service": "unificado-visual-homolog-mapa.service",
+        "source": "/etc/systemd/system/unificado-visual-homolog-mapa.service",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/unificado-visual-homolog-mapa.service",
+        "sha256": "d17171b8bbbd49e157c38329dd492c004a315e696c92c940d951e52e180cd478"
+      },
+      {
+        "service": "unificado-visual-homolog-mapa.service",
+        "source": "/etc/systemd/system/unificado-visual-homolog-mapa.service.d/50-dautomacao-https.conf",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/unificado-visual-homolog-mapa.service.d/50-dautomacao-https.conf",
+        "sha256": "083846c68d7effd6dd0e74ab64c89cd3df6a334aca99f5b8aac283f15c006e96"
+      },
+      {
+        "service": "unificado-visual-homolog-mapa.service",
+        "source": "/etc/concrefer-unificado/homolog/visual-mapa.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/concrefer-unificado/homolog/visual-mapa.env",
+        "sha256": "827abe7b62bb8e420dfeb05e7fbadfd63490e152b5a16c4cbedc902cee79ad3f"
+      },
+      {
+        "service": "unificado-visual-homolog-laboratorio.service",
+        "source": "/etc/systemd/system/unificado-visual-homolog-laboratorio.service",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/systemd/system/unificado-visual-homolog-laboratorio.service",
+        "sha256": "fa531a2c067b9d2786bab89d65f152b4e304badc45cc0c1b2b32b1d4d1edcaaa"
+      },
+      {
+        "service": "unificado-visual-homolog-laboratorio.service",
+        "source": "/etc/concrefer-unificado/homolog/visual-laboratorio.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/config/etc/concrefer-unificado/homolog/visual-laboratorio.env",
+        "sha256": "4e85a7eb269936fcae9b1c24692abb3c38092558d93eaf61ec438b180133fd7d"
+      }
+    ],
+    "source_configs_unchanged": true
+  },
+  {
+    "receipt": "capacity.json",
+    "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z",
+    "config_files": [
+      {
+        "service": "unificado-homolog-mapa-realtime.service",
+        "source": "/etc/systemd/system/unificado-homolog-mapa-realtime.service",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/systemd/system/unificado-homolog-mapa-realtime.service",
+        "sha256": "d9d475eb0dbb9c475cdc9298578f44defb3c5a0953ff77d24c6837c2a6965ad4"
+      },
+      {
+        "service": "unificado-homolog-mapa-realtime.service",
+        "source": "/etc/concrefer-unificado/homolog/mapa-auth.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/mapa-auth.env",
+        "sha256": "958efa7b69c19a0b463bab65d0c4cc9780af15f09cd860968c92b135dfe2d065"
+      },
+      {
+        "service": "unificado-homolog-mapa-realtime.service",
+        "source": "/etc/concrefer-unificado/homolog/mapa-writer.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/mapa-writer.env",
+        "sha256": "4db047588d57fe15afcbd282238a9c1b5359a01c9f03934a2fb3a6e2c8beb8f7"
+      },
+      {
+        "service": "unificado-homolog-mapa.service",
+        "source": "/etc/systemd/system/unificado-homolog-mapa.service",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/systemd/system/unificado-homolog-mapa.service",
+        "sha256": "cc4ae2e4b16e1295e537cadbc323c918dd5f87e1d98879dd1cf4881ec40d0bed"
+      },
+      {
+        "service": "unificado-homolog-mapa.service",
+        "source": "/etc/systemd/system/unificado-homolog-mapa.service.d/suprimentos.conf",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/systemd/system/unificado-homolog-mapa.service.d/suprimentos.conf",
+        "sha256": "530ab88502700c190e5e4b039943157a4012824ae951ed1a5bb781cf4880287d"
+      },
+      {
+        "service": "unificado-homolog-mapa.service",
+        "source": "/etc/concrefer-unificado/homolog/mapa-auth.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/mapa-auth.env",
+        "sha256": "958efa7b69c19a0b463bab65d0c4cc9780af15f09cd860968c92b135dfe2d065"
+      },
+      {
+        "service": "unificado-homolog-mapa.service",
+        "source": "/etc/concrefer-unificado/homolog/mapa-writer.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/mapa-writer.env",
+        "sha256": "4db047588d57fe15afcbd282238a9c1b5359a01c9f03934a2fb3a6e2c8beb8f7"
+      },
+      {
+        "service": "unificado-homolog-mapa.service",
+        "source": "/etc/concrefer-unificado/homolog/mapa-unified.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/mapa-unified.env",
+        "sha256": "f61160268140cad67e5f92c3df9a06c11442c2f05b62202151c718cb9f0cf085"
+      },
+      {
+        "service": "unificado-homolog-mapa.service",
+        "source": "/etc/concrefer-unificado/homolog/mapa-lab.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/mapa-lab.env",
+        "sha256": "490ef0a297dd0d5848358a3673784c8edce479ed795bb4e0243edcc2dda2fc31"
+      },
+      {
+        "service": "unificado-homolog-mapa.service",
+        "source": "/etc/concrefer-unificado/homolog/quality-gateway.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/quality-gateway.env",
+        "sha256": "ec6ae6c16a626632fa4e497af8bf6e0f0827340975a458018e636e6250722a89"
+      },
+      {
+        "service": "unificado-homolog-mapa.service",
+        "source": "/etc/concrefer-unificado/homolog/usina.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/usina.env",
+        "sha256": "aab669b445b801e29232960569c7283543f1fbd6f2c93610473b1c391108f476"
+      },
+      {
+        "service": "unificado-homolog-mapa.service",
+        "source": "/etc/concrefer-unificado/homolog/suprimentos-gateway.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/suprimentos-gateway.env",
+        "sha256": "8bd595097be883be02d9793452d907056f99a91325aad5c75af725067877354f"
+      },
+      {
+        "service": "unificado-homolog-pcp.service",
+        "source": "/etc/systemd/system/unificado-homolog-pcp.service",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/systemd/system/unificado-homolog-pcp.service",
+        "sha256": "85f3edcccde7d4327eb799297d0064064009b051dd99a01b218c1e1b191176ef"
+      },
+      {
+        "service": "unificado-homolog-pcp.service",
+        "source": "/etc/concrefer-unificado/homolog/pcp.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/pcp.env",
+        "sha256": "ceba5e4604ddaddedb3c71d02290a4cbea8f913f3b2e956bd19a3a1d90cfdc8b"
+      },
+      {
+        "service": "unificado-homolog-armacao.service",
+        "source": "/etc/systemd/system/unificado-homolog-armacao.service",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/systemd/system/unificado-homolog-armacao.service",
+        "sha256": "aa83baa8042fe56dc79620590db0d5b74ccea38e472acce98f96aedccafcaa13"
+      },
+      {
+        "service": "unificado-homolog-armacao.service",
+        "source": "/etc/concrefer-unificado/homolog/armacao.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/armacao.env",
+        "sha256": "bae80f1c1c166931a85c541475d848dc15e32b20d8c7a993ffb5f4e8cca3686e"
+      },
+      {
+        "service": "unificado-homolog-qualidade.service",
+        "source": "/etc/systemd/system/unificado-homolog-qualidade.service",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/systemd/system/unificado-homolog-qualidade.service",
+        "sha256": "87162b42017aa0ec08cba1041a040dd9788a01d211430562aac7104cee3877b7"
+      },
+      {
+        "service": "unificado-homolog-qualidade.service",
+        "source": "/etc/concrefer-unificado/homolog/qualidade.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/qualidade.env",
+        "sha256": "04252e35fd464787cb8e8e72852b16d87a0d2712bc07e7474e743c26e73b85f4"
+      },
+      {
+        "service": "unificado-homolog-qualidade.service",
+        "source": "/etc/concrefer-unificado/homolog/quality-gateway.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/quality-gateway.env",
+        "sha256": "ec6ae6c16a626632fa4e497af8bf6e0f0827340975a458018e636e6250722a89"
+      },
+      {
+        "service": "suprimentos-homolog.service",
+        "source": "/etc/systemd/system/suprimentos-homolog.service",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/systemd/system/suprimentos-homolog.service",
+        "sha256": "0dfacd377d144e8c488792303d43ebe848c16d88b8842987ae42d45e3660ec4d"
+      },
+      {
+        "service": "suprimentos-homolog.service",
+        "source": "/etc/concrefer-unificado/homolog/suprimentos.env",
+        "backup": "/opt/concrefer-unificado/backups/lab210-old-services-20261122T235749Z/files/etc/concrefer-unificado/homolog/suprimentos.env",
+        "sha256": "8a25840991c9f5c6c6f3d0e4bdc3a610e7341f402df36533bbf8d6304cdd834f"
+      }
+    ],
+    "source_configs_unchanged": true
+  }
+]

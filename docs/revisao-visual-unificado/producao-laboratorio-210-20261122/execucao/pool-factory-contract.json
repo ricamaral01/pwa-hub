@@ -1,0 +1,8 @@
+{
+  "connect_import": [
+    "from .postes_db import connect as connect_postes, seed as seed_postes",
+    "                app.state.postes_session = connect_postes(database_url)"
+  ],
+  "connect_function": "def connect(url: str):\n    from alembic import command\n    from alembic.config import Config\n    engine = create_engine(url, pool_pre_ping=True)\n    config = Config()\n    config.set_main_option(\"script_location\", str(Path(__file__).resolve().parents[1] / \"migrations\"))\n    with engine.begin() as conn:\n        config.attributes[\"connection\"] = conn\n        command.upgrade(config, \"head\")\n    return sessionmaker(engine, expire_on_commit=False)",
+  "whole_source_sha256": "c7b47524f1ad824dd3ef3687e362102463acd0e73b6e9d22c31bbf9020a57668"
+}

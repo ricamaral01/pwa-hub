@@ -1,0 +1,59 @@
+{
+  "phase": "migrated",
+  "reused_own_schemas_and_preserved_data": true,
+  "imports": [
+    {
+      "unit": "pederneiras",
+      "source_database": "supervisorio_db_pede",
+      "captured_at": "2026-11-23T00:31:20.732073+00:00",
+      "source_count": 1621,
+      "imported": 1613,
+      "excluded": [
+        {
+          "id": 70195,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70990,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70991,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70992,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70993,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70994,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70995,
+          "reason": "user explicitly excluded; never corrected or imported"
+        },
+        {
+          "id": 70996,
+          "reason": "user explicitly excluded; never corrected or imported"
+        }
+      ],
+      "automatic_sync": false
+    },
+    {
+      "unit": "ribeirao",
+      "source_database": "supervisorio_db_ribe",
+      "captured_at": "2026-11-23T00:31:20.891552+00:00",
+      "source_count": 829,
+      "imported": 829,
+      "excluded": [],
+      "automatic_sync": false
+    }
+  ],
+  "grant_rows": 70,
+  "fixtures_imported": 0
+}

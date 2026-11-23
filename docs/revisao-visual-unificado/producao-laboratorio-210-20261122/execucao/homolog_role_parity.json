@@ -1,0 +1,46 @@
+{
+  "before": [],
+  "after": [
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labNoroCec",
+      "allowed": true
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labNoroCecAnalise",
+      "allowed": true
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labNoroCecEtiquetas",
+      "allowed": true
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labNoroCecLeitura",
+      "allowed": true
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labNoroCecRelatorio",
+      "allowed": true
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labNoroCecResultados",
+      "allowed": true
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labNoroCecRompimentosMes",
+      "allowed": true
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labNoroUsuarios",
+      "allowed": true
+    }
+  ],
+  "reason": "Mirror the confirmed existing production LB admin in Noroeste for the same central identity; no new production Noroeste grant."
+}

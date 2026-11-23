@@ -1,0 +1,104 @@
+{
+  "mapa_units": [
+    "concretagem-labels-qa.service",
+    "mapa-unificado-auth.service",
+    "mapa-unificado-realtime.service"
+  ],
+  "roots": {
+    "/opt/concrefer-unificado/public/unificado": "/opt/concrefer-unificado/public/unificado",
+    "/opt/concrefer-unificado/mapa-api": "/opt/concrefer-unificado/mapa-api",
+    "/opt/concrefer-unificado/laboratorio/service": "/opt/concrefer-unificado/laboratorio/service"
+  },
+  "disk": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda1       387G  129G  258G  34% /\n",
+  "sources": {
+    "cec": {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/cec_api.py",
+      "sha256": "000cb79df65ce6cf7ee5e65d14c9014f5eda58438b0376a59d6c43d4291ba760",
+      "functions": {
+        "parse_qr": "334e456f592994f96bf7efad6d8d9e2fb471e575ce24c091bab2062f98c63f61",
+        "parse_date": "2b98df7921f24a221b5093bcff2305d1d9b2d49353b41083928b89afc8e64e41",
+        "canonical_cp": "9f7b97d4bf22970f2d4778d73955d6456b7b1946534787a86d07b57cc2afd043"
+      }
+    },
+    "gateway": {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/postes_api.py",
+      "sha256": "f394b840ffa543ae4a5330c5b161333d414bc740d60b92172c802be5de615831",
+      "functions": {
+        "gateway_user": "9ddf8849d63f8be92483bb7c9d5b475560360969d12b38b4cf054f1362d9f621"
+      }
+    },
+    "lab_app": {
+      "path": "/opt/concrefer-unificado/laboratorio/service/server/app.py",
+      "sha256": "31b8d9244384cc15cd25dccabbdcce27d72c0c9e060388e171e817c93c43ecfa",
+      "functions": {}
+    },
+    "mapa_app": {
+      "path": "/opt/concrefer-unificado/mapa-api/app.py",
+      "sha256": "dea6087456a81d16a9fe4416761a1695818a948cd085dc4580ed5ad3d260e9b7",
+      "functions": {}
+    }
+  },
+  "tables": {
+    "concretrack_postes": {
+      "database": "concretrack_postes",
+      "bytes": 11770903,
+      "schemas": null,
+      "users_columns": null
+    },
+    "mapa_unificado_teste": {
+      "database": "mapa_unificado_teste",
+      "bytes": 234175511,
+      "schemas": null,
+      "users_columns": [
+        "id",
+        "nome",
+        "perfil",
+        "senha_hash",
+        "ativo",
+        "created_at",
+        "updated_at",
+        "setor",
+        "primeiro_acesso",
+        "deleted_at"
+      ]
+    },
+    "mapa_visual_homolog_20261118": {
+      "database": "mapa_visual_homolog_20261118",
+      "bytes": 213048343,
+      "schemas": null,
+      "users_columns": [
+        "id",
+        "nome",
+        "perfil",
+        "senha_hash",
+        "ativo",
+        "created_at",
+        "updated_at",
+        "setor",
+        "primeiro_acesso",
+        "deleted_at"
+      ]
+    }
+  },
+  "units": {
+    "concretagem-labels-qa.service": "MainPID=0\nWorkingDirectory=/opt/concrefer-unificado/staging/concretagem-etiquetas-20261117\nFragmentPath=/run/systemd/transient/concretagem-labels-qa.service\nDropInPaths=\n",
+    "mapa-unificado-auth.service": "MainPID=3458499\nEnvironmentFiles=/etc/mapa-unificado/auth.env (ignore_errors=no)\nEnvironmentFiles=/etc/mapa-unificado/writer.env (ignore_errors=no)\nEnvironmentFiles=/etc/mapa-unificado/unified-auth.env (ignore_errors=no)\nEnvironmentFiles=/etc/concrefer-unificado/lab-map.env (ignore_errors=no)\nEnvironmentFiles=/etc/qualidade/gateway.env (ignore_errors=no)\nEnvironmentFiles=/etc/concrefer-unificado/prod/suprimentos-gateway.env (ignore_errors=no)\nEnvironmentFiles=/etc/mapa-unificado/usina-integration.env (ignore_errors=no)\nWorkingDirectory=/opt/concrefer-unificado/mapa-api\nFragmentPath=/etc/systemd/system/mapa-unificado-auth.service\nDropInPaths=/etc/systemd/system/mapa-unificado-auth.service.d/10-long-query.conf /etc/systemd/system/mapa-unificado-auth.service.d/laboratorio.conf /etc/systemd/system/mapa-unificado-auth.service.d/noroeste.conf /etc/systemd/system/mapa-unificado-auth.service.d/qualidade.conf /etc/systemd/system/mapa-unificado-auth.service.d/suprimentos.conf /etc/systemd/system/mapa-unificado-auth.service.d/usina-integration.conf\n",
+    "mapa-unificado-realtime.service": "MainPID=1516721\nEnvironmentFiles=/etc/mapa-unificado/auth.env (ignore_errors=no)\nWorkingDirectory=/opt/concrefer-unificado/mapa-api\nFragmentPath=/etc/systemd/system/mapa-unificado-realtime.service\nDropInPaths=\n",
+    "laboratorio-unificado.service": "MainPID=1516637\nEnvironmentFiles=/opt/monitor_concreto/.env (ignore_errors=no)\nEnvironmentFiles=/etc/concrefer-unificado/laboratorio.env (ignore_errors=no)\nEnvironmentFiles=/etc/qualidade/gateway.env (ignore_errors=no)\nEnvironmentFiles=/etc/concrefer-unificado/lab-task-sync.env (ignore_errors=no)\nWorkingDirectory=/opt/concrefer-unificado/laboratorio/service\nFragmentPath=/etc/systemd/system/laboratorio-unificado.service\nDropInPaths=/etc/systemd/system/laboratorio-unificado.service.d/30-task-sync.conf\n"
+  },
+  "lab_app_relevant_lines": [
+    "from .cec_api import router as cec_router",
+    "    app.state.postes_session = None",
+    "    database_url = os.getenv('DATABASE_URL', '')",
+    "                app.state.postes_session = sessionmaker(create_engine(database_url, pool_pre_ping=True), expire_on_commit=False)",
+    "                app.state.postes_session = connect_postes(database_url)",
+    "                with app.state.postes_session() as session:",
+    "            app.state.postes_session = None",
+    "    app.include_router(cec_router)",
+    "    app.include_router(cec_router, prefix='/noroeste')",
+    "            factory = request.app.state.postes_session",
+    "    noro_cec_static = ROOT / 'server' / 'static' / 'noroeste' / 'cec'",
+    "    if noro_cec_static.exists():",
+    "        app.mount('/noroeste/cec', StaticFiles(directory=noro_cec_static, html=True), name='cec-noroeste')"
+  ]
+}

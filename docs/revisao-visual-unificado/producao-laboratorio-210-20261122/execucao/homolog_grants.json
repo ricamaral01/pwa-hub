@@ -1,0 +1,120 @@
+{
+  "identities": [
+    {
+      "id": "francisco",
+      "name": "Francisco Augusto",
+      "unit": "pederneiras",
+      "before": [],
+      "existing_production_identity_mirrored_to_H": true
+    },
+    {
+      "id": "ricardogoncalvesrb",
+      "name": "Ricardo Gonçalves",
+      "unit": "ribeirao",
+      "before": [],
+      "existing_production_identity_mirrored_to_H": true
+    }
+  ],
+  "grant_rows": 84,
+  "operator_grants": [
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "francisco",
+      "screen_id": "labPedeCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCec",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecAnalise",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecEtiquetas",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecLeitura",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecRelatorio",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecResultados",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    },
+    {
+      "user_id": "ricardogoncalvesrb",
+      "screen_id": "labRibCecRompimentosMes",
+      "allowed": true,
+      "updated_by": "lab210-user-approved-20261122",
+      "updated_at": "2026-11-23T00:07:16.402987+00:00"
+    }
+  ],
+  "production_permission_writes": 0
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "tv",
+    "perfil": "CONVIDADO",
+    "ativo": true
+  },
+  {
+    "id": "francielli.moura",
+    "perfil": "GERENCIA",
+    "ativo": true
+  }
+]

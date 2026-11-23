@@ -1,0 +1,27 @@
+{
+  "files_restored_and_verified": true,
+  "databases": [
+    {
+      "original": "concretrack_postes",
+      "restored_to": "lab210_rehearsal_lab_20261122",
+      "restored_tables": 39,
+      "dump_sha256_verified": true,
+      "restore_passed": true
+    },
+    {
+      "original": "mapa_unificado_teste",
+      "restored_to": "lab210_rehearsal_central_20261122",
+      "restored_tables": 128,
+      "dump_sha256_verified": true,
+      "restore_passed": true
+    },
+    {
+      "original": "mapa_visual_homolog_20261118",
+      "restored_to": "lab210_rehearsal_homolog_20261122",
+      "restored_tables": 166,
+      "dump_sha256_verified": true,
+      "restore_passed": true
+    }
+  ],
+  "temporary_databases_dropped": true
+}

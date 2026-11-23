@@ -1,0 +1,12 @@
+{
+  "command": "python3 /opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/rollback/release.py rollback",
+  "check_command": "python3 /opt/concrefer-unificado/backups/lab210-production-20261123T000518Z/rollback/release.py rollback_check",
+  "check": {
+    "passed": true,
+    "backup_files_sha256_verified": 12,
+    "database_dumps_verified": 3,
+    "restore_rehearsal_passed": true,
+    "mutations": 0,
+    "restores_version": "2.0.0"
+  }
+}

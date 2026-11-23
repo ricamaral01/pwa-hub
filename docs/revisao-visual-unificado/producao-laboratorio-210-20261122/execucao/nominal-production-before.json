@@ -1,0 +1,78 @@
+{
+  "users": [
+    {
+      "id": "marcelo",
+      "nome": "Marcelo",
+      "perfil": "GERENCIA",
+      "ativo": true,
+      "primeiro_acesso": false
+    },
+    {
+      "id": "jgabriel",
+      "nome": "João Gabriel",
+      "perfil": "GERENCIA",
+      "ativo": false,
+      "primeiro_acesso": false
+    },
+    {
+      "id": "user-ricardo",
+      "nome": "Ricardo",
+      "perfil": "GERENCIA",
+      "ativo": true,
+      "primeiro_acesso": false
+    },
+    {
+      "id": "philippe",
+      "nome": "Philippe",
+      "perfil": "GERENCIA",
+      "ativo": true,
+      "primeiro_acesso": false
+    },
+    {
+      "id": "francisco",
+      "nome": "Francisco Augusto",
+      "perfil": "GESTOR",
+      "ativo": true,
+      "primeiro_acesso": false
+    },
+    {
+      "id": "ricardogoncalvesrb",
+      "nome": "Ricardo Gonçalves",
+      "perfil": "GESTOR",
+      "ativo": true,
+      "primeiro_acesso": false
+    },
+    {
+      "id": "alex",
+      "nome": "Alex Zaranello",
+      "perfil": "GERENCIA",
+      "ativo": true,
+      "primeiro_acesso": false
+    },
+    {
+      "id": "francielli.moura",
+      "nome": "Francielli Moura",
+      "perfil": "GERENCIA",
+      "ativo": true,
+      "primeiro_acesso": false
+    }
+  ],
+  "primary_units": [
+    {
+      "user_id": "ricardogoncalvesrb",
+      "unit_code": "ribeirao",
+      "alcada": "gestao"
+    },
+    {
+      "user_id": "francisco",
+      "unit_code": "pederneiras",
+      "alcada": "gestao"
+    }
+  ],
+  "extra_units": [
+    {
+      "user_id": "ricardogoncalvesrb",
+      "unit_code": "noroeste"
+    }
+  ]
+}
