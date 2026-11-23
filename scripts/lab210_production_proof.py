@@ -82,7 +82,8 @@ def proof(env):
                     if env=='production' and uid in ['alex','francisco','ricardogoncalvesrb']:
                         for operation in ['massadas','qrcp','rompimentos-grupos']:
                             answer=context.request.get(base+'/unificado/laboratorio/'+unit+'/cec-api/'+operation);assert answer.status==200,(uid,unit,operation,answer.status)
-                            rows=answer.json();assert isinstance(rows,list),(unit,operation,type(rows).__name__)
+                            payload=answer.json();rows=payload['rows'] if operation=='rompimentos-grupos' else payload
+                            assert isinstance(rows,list),(unit,operation,type(rows).__name__)
                             if operation=='massadas' and unit=='pederneiras':assert not {70195,70990,70991,70992,70993,70994,70995,70996}.intersection(x['id'] for x in rows)
                             result.setdefault('api_data_checks',[]).append({'actor':uid,'unit':unit,'operation':operation,'status':answer.status,'rows':len(rows)})
                     for path,label in [('', 'geral'),('leitura/','leitura')]:
