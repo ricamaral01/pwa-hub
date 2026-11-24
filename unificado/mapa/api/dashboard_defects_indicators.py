@@ -1,6 +1,73 @@
 """Read-only, per-post inspection indicators for the unified Defeitos header."""
 
 from datetime import date
+import json
+from pathlib import Path
+
+
+# Use the same critical classification as inspection validation.
+CHECKLISTS = json.loads(Path(__file__).with_name('checklists.json').read_text(encoding='utf-8'))
+CRITICAL_ITEMS = json.dumps(sorted({
+    (section['id'], item['id'])
+    for sections in CHECKLISTS.values() for section in sections
+    for item in section['items'] if item['critical']
+}))
+
+PRODUCTION_QUERY = """
+WITH params AS (
+  SELECT %s::date AS start_day, %s::date AS end_day,
+         %s::text AS sector_filter, %s::text AS status_filter,
+         %s::text AS search_filter
+), critical AS (
+  SELECT value->>0 AS section, value->>1 AS item
+  FROM jsonb_array_elements(%s::jsonb)
+), produced AS MATERIALIZED (
+  SELECT pr.id, pr.setor
+  FROM public.producao pr CROSS JOIN params p
+  WHERE pr.data_fabricacao BETWEEN p.start_day AND p.end_day
+    AND (p.sector_filter='' OR pr.setor=p.sector_filter OR
+         (p.sector_filter='Setores 1 e 2' AND pr.setor IN ('Setor 1','Setor 2')))
+    AND (p.search_filter='' OR pr.forma ILIKE '%%'||p.search_filter||'%%'
+         OR pr.modelo ILIKE '%%'||p.search_filter||'%%'
+         OR EXISTS (SELECT 1 FROM public.montagem_poste m
+                    WHERE nullif(m.record_id,'')=pr.id::text
+                      AND m.montador_nome ILIKE '%%'||p.search_filter||'%%'))
+    AND (p.status_filter='' OR EXISTS (
+      SELECT 1 FROM public.montagem_poste m
+      WHERE nullif(m.record_id,'')=pr.id::text AND m.etapa<>'HISTORICO_REPROVACAO'
+        AND m.status_montagem=p.status_filter
+    ))
+), history AS (
+  SELECT m.record_id,
+    bool_or(EXISTS (
+      SELECT 1 FROM jsonb_each(coalesce(m.checklists,'{}'::jsonb)) section
+      CROSS JOIN LATERAL jsonb_each_text(
+        CASE WHEN jsonb_typeof(section.value)='object' THEN section.value ELSE '{}'::jsonb END
+      ) answer
+      WHERE section.key IN ('checagem_inicial','checagem_materiais','final','inspecao_visual')
+        AND answer.value='nao'
+    )) AS affected,
+    bool_or(EXISTS (
+      SELECT 1 FROM critical c WHERE m.checklists #>> ARRAY[c.section,c.item]='nao'
+    )) AS critical
+  FROM public.montagem_poste m
+  JOIN produced pr ON nullif(m.record_id,'')=pr.id::text
+  WHERE m.etapa IN ('FINALIZACAO','HISTORICO_REPROVACAO','INSPECAO','REINSPECAO')
+    AND (m.status_montagem IS NOT NULL OR m.finalizado_em IS NOT NULL)
+  GROUP BY m.record_id
+), pieces AS (
+  SELECT pr.setor, h.record_id IS NOT NULL AS inspected,
+         coalesce(h.affected,false) AS affected, coalesce(h.critical,false) AS critical
+  FROM produced pr LEFT JOIN history h ON h.record_id=pr.id::text
+
+)
+SELECT setor AS sector, count(*)::integer AS produced,
+       count(*) FILTER (WHERE inspected)::integer AS inspected,
+       count(*) FILTER (WHERE affected)::integer AS affected,
+       count(*) FILTER (WHERE critical)::integer AS critical,
+       count(*) FILTER (WHERE affected AND NOT critical)::integer AS noncritical_only
+FROM pieces GROUP BY setor
+"""
 
 
 QUERY = """
@@ -143,4 +210,16 @@ def load_indicators(connection, start: date, end: date, sector: str, status: str
                                 sorted(models.items(), key=lambda item: (-item[1], item[0]))]
         reported["by_day"] = [{"day": key, "count": value} for key, value in sorted(days.items())]
         reported["by_type"] = [{"type": key, "count": value} for key, value in sorted(types.items())]
-    return {"sectors": sectors, "months": months, "reported": reported}
+    with connection.cursor() as cursor:
+        cursor.execute(PRODUCTION_QUERY, (start, end, sector, status, search, CRITICAL_ITEMS))
+        production_rows = cursor.fetchall()
+    production_cohort = {f"Setor {number}": dict.fromkeys(
+        ('produced', 'inspected', 'affected', 'critical', 'noncritical_only'), 0
+    ) for number in range(1, 5)}
+    for row in production_rows:
+        if row['sector'] in production_cohort:
+            production_cohort[row['sector']] = {
+                key: row[key] for key in production_cohort[row['sector']]
+            }
+    return {"sectors": sectors, "months": months, "reported": reported,
+            "production_cohort": production_cohort}

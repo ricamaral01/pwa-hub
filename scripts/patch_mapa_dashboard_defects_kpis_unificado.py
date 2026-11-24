@@ -4,6 +4,16 @@ START = '        <section class="df-v4-hero-grid" aria-label="Resumo de defeitos
 END = '        <section class="df-v4-layout">'
 
 HEADER = '''        <section class="df-new-head" aria-label="Indicadores de qualidade">
+          <section class="df-new-panel" aria-label="Defeitos por poste produzido">
+            <h3>Defeitos por poste produzido</h3>
+            <p id="dfPieceCoverage">Aguardando dados</p>
+            <div class="df-new-cards df-piece-cards" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))">
+              <article class="df-new-card"><span>Postes com algum defeito</span><strong id="dfPieceAffected">—</strong><small id="dfPieceAffectedMeta">Aguardando dados</small><details><summary>Como é calculado</summary><p>Postes produzidos no período com pelo menos um “NÃO” registrado em inspeção concluída ÷ postes produzidos no mesmo recorte × 100. Cada poste conta uma vez, incluindo histórico e reinspeções.</p></details></article>
+              <article class="df-new-card"><span>Postes com defeito crítico</span><strong id="dfPieceCritical">—</strong><small id="dfPieceCriticalMeta">Aguardando dados</small><details><summary>Como é calculado</summary><p>Postes produzidos no período com pelo menos um item crítico reprovado no checklist ÷ postes produzidos no mesmo recorte × 100. Estão incluídos nos postes com algum defeito. Falha crítica não significa segregação confirmada.</p></details></article>
+            </div>
+            <p id="dfPieceBreakdown"></p>
+            <small>A data seleciona a fabricação do poste; inspeções posteriores também atualizam seu resultado. Sem inspeção vinculada, o poste permanece pendente. Situação filtra o status atual do poste; busca considera forma, modelo ou montador.</small>
+          </section>
           <div class="df-new-cards">
             <article class="df-new-card"><span>Inspecionados</span><strong id="dfNewInspected">—</strong><small id="dfNewCoverage">Aguardando dados</small><details><summary>Como é calculado</summary><p>Postes distintos com primeira inspeção no período. Cobertura = inspecionados ÷ produzidos.</p></details></article>
             <article class="df-new-card df-new-main"><span>Postes não conformes</span><strong id="dfNewNonconforming">—</strong><small id="dfNewNonconformingMeta">Aguardando dados</small><details><summary>Como é calculado</summary><p>Postes com pelo menos um “NÃO” na primeira inspeção ÷ postes inspecionados.</p></details></article>
@@ -41,3 +51,14 @@ def apply(html: str) -> str:
     left = html.index(START)
     right = html.index(END, left)
     return html[:left] + HEADER + html[right:]
+
+
+def apply_to_published(html: str) -> str:
+    """Add the production-cohort panel while preserving the published header."""
+    if 'id="dfPieceAffected"' in html:
+        raise RuntimeError('Production-cohort panel already published')
+    marker = '<section class="df-new-head" aria-label="Indicadores de qualidade">\n'
+    if html.count(marker) != 1:
+        raise RuntimeError('Published Defeitos header changed')
+    panel = HEADER.split(marker, 1)[1].split('          <div class="df-new-cards">', 1)[0]
+    return html.replace(marker, marker + panel, 1)

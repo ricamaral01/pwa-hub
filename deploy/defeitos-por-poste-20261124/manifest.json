@@ -1,0 +1,25 @@
+{
+  "release": "defeitos-por-poste-20261124",
+  "files": [
+    {
+      "target": "mapa-api/dashboard_defects_indicators.py",
+      "before_sha256": "414468a4aec14da31b4a994a0749fd0622f8dd7afa562c239b13327586c842e1",
+      "after_sha256": "acf90bacb6e921cf338f5b67f5a6530d4b6adb2a8e15a48b8566bdbc9381e2a9"
+    },
+    {
+      "target": "public/unificado/mapa/operacao/dashboard-defeitos-v5.js",
+      "before_sha256": "032674345f98313317821c42aca7f6510261a811510f84cce7850a538122d45a",
+      "after_sha256": "e495f3678a83adc5305debfc6dd1f155e6718c1b14eaecc05641ae1a725e862f"
+    },
+    {
+      "target": "public/unificado/mapa/operacao/index.html",
+      "before_sha256": "a5eb6beb298c7d3eb7dd711cc260574ac8346bb43bafae7cee04a85a402ed840",
+      "after_sha256": "2125ab22a59a117c728d7c88c63cfc0dc794b91c7873ad89007fc19ee9732b83"
+    },
+    {
+      "target": "public/unificado/mapa/operacao/sw.js",
+      "before_sha256": "394d7ad38f568dadcd5b6b69a5ceb5f9621df07fed621f488d266a40f478bb18",
+      "after_sha256": "8f50cd5702f3fb9fe141b46a69416930f711fa83ec292e86bc905e8147ca0949"
+    }
+  ]
+}
