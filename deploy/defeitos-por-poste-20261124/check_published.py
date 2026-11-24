@@ -21,7 +21,9 @@ session = json.loads(subprocess.check_output(['ssh', 'vps-concrefer',
 
 with sync_playwright() as p:
     browser = p.chromium.launch()
-    context = browser.new_context(viewport={'width': 1440, 'height': 1000}, service_workers='allow')
+    # A fresh worker can reload its iframe during installation and reset filters.
+    # Exercise the live UI independently; deployed worker bytes are hash-checked.
+    context = browser.new_context(viewport={'width': 1440, 'height': 1000}, service_workers='block')
     context.add_cookies([{'name': session['cookie_name'], 'value': session['cookie'],
         'domain': 'concrefer.concretrack.com.br', 'path': '/unificado/',
         'secure': True, 'httpOnly': True, 'sameSite': 'Lax'}])
@@ -31,6 +33,9 @@ with sync_playwright() as p:
     page.goto(BASE + '/unificado/login.html', wait_until='domcontentloaded')
     page.evaluate('(s)=>localStorage.setItem("pwa_mapa_auth_session_v1",JSON.stringify(s))',
         {'id': session['id'], 'name': session['name'], 'role': session['role']})
+    page.evaluate("""()=>localStorage.setItem('mapa_dashboard_filtros_df_v1',JSON.stringify({
+      DataInicio:'2026-11-01',DataFim:'2026-11-24',FiltroSetor:'',FiltroStatus:'',FiltroPesquisa:''
+    }))""")
     page.goto(BASE + '/unificado/?view=' + quote('mapa/operacao/?tela=DASHBOARD_DEFEITOS', safe=''),
         wait_until='domcontentloaded')
     frame = page.frame_locator('#module-host iframe.is-active')
@@ -61,6 +66,7 @@ with sync_playwright() as p:
     csv = (HERE / 'published-export.csv').read_text(encoding='utf-8-sig')
     assert 'Postes com algum defeito / produzidos' in csv
     assert 'Postes com defeito crítico / produzidos' in csv
+    frame.locator('#msgbox-overlay').get_by_role('button', name='OK', exact=True).click()
     frame.get_by_role('tab', name='Visão geral', exact=True).click()
     page.set_viewport_size({'width': 390, 'height': 844})
     frame.locator('#dfPieceAffected').scroll_into_view_if_needed()
